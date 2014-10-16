@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model", "PortfolioManager.Model\PortfolioManager.Model.csproj", "{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{7A3A74C5-9521-4B42-8734-83CF5077589B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3} = {7336F40C-ECD4-4A94-A1D9-C629823FE5B3}
+		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB} = {4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}
+		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805} = {BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.Memory", "PortfolioManager.Data.Memory\PortfolioManager.Data.Memory.csproj", "{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.Test", "PortfolioManager.Data.Test\PortfolioManager.Data.Test.csproj", "{4CE3C835-140F-4524-A7D1-7027854B89E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.SQLite", "PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj", "{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model.Test", "PortfolioManager.Model.Test\PortfolioManager.Model.Test.csproj", "{39DB963E-CB65-4116-A4BE-C603C9767620}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6C6A77A7-0F75-4275-929C-AFF061DA673B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39DB963E-CB65-4116-A4BE-C603C9767620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39DB963E-CB65-4116-A4BE-C603C9767620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39DB963E-CB65-4116-A4BE-C603C9767620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39DB963E-CB65-4116-A4BE-C603C9767620}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,252 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Utils;
+using PortfolioManager.Model.Data;
+
+namespace PortfolioManager.Model.Stocks
+{
+    public enum StockType {Ordinary, StapledSecurity, Trust}
+
+    public class NotStapledSecurityException : Exception
+    {
+        public NotStapledSecurityException(string asxCode)
+            : base(asxCode + " is not a stapled security.")
+        {
+        }
+    }
+
+    public class NotStapledSecurityComponentException : Exception
+    {
+        public NotStapledSecurityComponentException(string asxCode)
+            : base(asxCode + " is not a component stock of a stapled security.")
+        {
+        }
+    }
+
+
+    public class Stock: IEffectiveDatedEntity 
+    {
+        private IStockDatabase _Database;
+
+        public Guid Id { get; private set; }
+        public DateTime FromDate { get; private set; }
+        public DateTime ToDate { get; private set; }
+        public string ASXCode { get; private set; }
+        public string Name { get; private set; }
+        public StockType Type { get; private set; }
+        public Guid ParentId { get; private set; }
+
+        public decimal CurrentPrice
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public decimal PercentageOfParentCostBase(DateTime atDate)
+        {
+            if (ParentId == Guid.Empty)
+                throw new NotStapledSecurityComponentException(ASXCode);
+           
+            return _Database.StockQuery.PercentOfParentCost(this.ParentId, this.Id, atDate);
+        }
+
+
+        public Stock(IStockDatabase stockDatabase, DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
+            : this(stockDatabase, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate(), asxCode, name, type, parent)
+
+        {
+        }
+
+        public Stock(IStockDatabase stockDatabase, Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent)
+        {
+            _Database = stockDatabase;
+            Id = id;
+            FromDate = fromDate;
+            ToDate = toDate;
+            ASXCode = asxCode;
+            Name = name;
+            FromDate = fromDate;
+            Type = type;
+            ParentId = parent;
+        }
+
+        public override string ToString()
+        {
+            return ASXCode + " - " + Name;
+        }
+
+        public void ChangeASXCode(DateTime atDate, string newAsxCode, string newName)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                /* Update old effective dated record */
+                ToDate = atDate.AddDays(-1);
+                unitOfWork.StockRepository.Update(this);
+
+                /* Add new record */
+                var newStock = new Stock(_Database, Id, atDate, DateTimeConstants.NoEndDate(), newAsxCode, newName, Type, ParentId);
+                unitOfWork.StockRepository.Add(newStock);
+
+                unitOfWork.Save();
+            }
+        }
+
+        public void Delist(DateTime atDate)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {               
+                ToDate = atDate.AddDays(-1);
+                unitOfWork.StockRepository.Update(this);
+
+                unitOfWork.Save();
+            }
+        }
+
+        public void AddChildStock(Stock child)
+        {
+            if (Type != StockType.StapledSecurity)
+                throw new NotStapledSecurityException(ASXCode); 
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                child.ParentId = this.Id;
+                unitOfWork.StockRepository.Update(child);
+
+                unitOfWork.Save();
+            }
+        }
+
+        public IReadOnlyCollection<Stock> GetChildStocks()
+        {
+            return _Database.StockQuery.GetChildStocks(this.Id);
+        }
+
+        public void RemoveChildStock(Stock child)
+        {
+            if (Type != StockType.StapledSecurity)
+                throw new NotStapledSecurityException(ASXCode);
+
+            if (child.ParentId != Id)
+                throw new RecordNotFoundException(child.Id);
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                child.ParentId = Guid.Empty;
+                unitOfWork.StockRepository.Update(child);
+
+                unitOfWork.Save();
+            }
+        }
+
+        public IReadOnlyCollection<RelativeNTA> GetRelativeNTAs()
+        {
+            return _Database.StockQuery.GetRelativeNTAs(ParentId, Id);
+        }
+
+        public RelativeNTA AddRelativeNTA(DateTime atDate, decimal percentage)
+        {
+            RelativeNTA nta;
+
+            if (ParentId == Guid.Empty)
+                throw new NotStapledSecurityComponentException(ASXCode);
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                nta = new RelativeNTA(_Database, atDate, ParentId, Id, percentage);
+                unitOfWork.RelativeNTARepository.Add(nta);
+
+                unitOfWork.Save();
+
+            }
+
+            return nta;
+
+        }
+
+        public void ChangeRelativeNTA(DateTime atDate, decimal newPercentage)
+        {
+            RelativeNTA nta;
+
+            if (ParentId == Guid.Empty)
+                throw new NotStapledSecurityComponentException(ASXCode);
+
+            nta = _Database.StockQuery.GetRelativeNTA(ParentId, Id, atDate);
+            nta.ChangePercentage(newPercentage);
+        }
+
+        public void DeleteRelativeNTA(DateTime atDate)
+        {
+
+            if (ParentId == Guid.Empty)
+                throw new NotStapledSecurityComponentException(ASXCode);
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.RelativeNTARepository.Delete(ParentId, Id, atDate);
+
+                unitOfWork.Save();
+            }
+        }
+
+        public CapitalReturn AddCapitalReturn(DateTime actionDate, DateTime paymentDate, decimal amount, string description)
+        {
+            CapitalReturn captitalReturn;
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                captitalReturn = new CapitalReturn(_Database, Id, actionDate, paymentDate, amount, description);
+                unitOfWork.CorporateActionRepository.Add(captitalReturn);
+
+                unitOfWork.Save();
+
+            }
+
+            return captitalReturn;
+        }
+
+        public Dividend AddDividend(DateTime actionDate, DateTime paymentDate, decimal amount, decimal percentFranked, decimal companyTaxRate, string description)
+        {
+            return AddDividend(actionDate, paymentDate, amount, percentFranked, companyTaxRate, 0.00M, description);
+        }
+
+        public Dividend AddDividend(DateTime actionDate, DateTime paymentDate, decimal amount, decimal percentFranked, decimal companyTaxRate, decimal drpPrice, string description)
+        {
+            Dividend dividend;
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                dividend = new Dividend(_Database, Id, actionDate, paymentDate, amount, percentFranked, companyTaxRate, drpPrice, description);
+                unitOfWork.CorporateActionRepository.Add(dividend);
+
+                unitOfWork.Save();
+
+            }
+
+            return dividend;
+        }
+
+        public Transformation AddTransformation(DateTime actionDate, DateTime implementationDate, decimal cashComponent, string description)
+        {
+            Transformation transformation;
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                transformation = new Transformation(_Database, Id, actionDate, implementationDate, cashComponent, description);
+                unitOfWork.CorporateActionRepository.Add(transformation);
+
+                unitOfWork.Save();
+
+            }
+
+            return transformation;
+        }
+    }
+ 
+}
