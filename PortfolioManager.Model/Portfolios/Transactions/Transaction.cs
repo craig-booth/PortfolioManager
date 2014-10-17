@@ -15,7 +15,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         TransactionType Type { get; }
         DateTime TransactionDate { get; }
-        Guid Stock { get; }
+        string ASXCode { get; }
         string Description { get; }
     }
 

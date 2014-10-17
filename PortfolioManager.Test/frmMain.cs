@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,14 +22,40 @@ namespace PortfolioManager.Test
 
     public partial class frmMain : Form
     {
+        private PortfolioManagerSettings _Settings;
         private PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
         private Portfolio _MyPortfolio;
 
+        private class ListViewTransactionComparer : IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                ITransaction transactionX = (ITransaction)((ListViewItem)x).Tag;
+                ITransaction transactionY = (ITransaction)((ListViewItem)y).Tag;
+
+                return DateTime.Compare(transactionX.TransactionDate, transactionY.TransactionDate);
+            }
+        }
+
+        private class ListViewCorporateActionComparer : IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                ICorporateAction corporateActionX = (ICorporateAction)((ListViewItem)x).Tag;
+                ICorporateAction corporateActionY = (ICorporateAction)((ListViewItem)y).Tag;
+
+                return DateTime.Compare(corporateActionX.ActionDate, corporateActionY.ActionDate);
+            }
+        } 
 
         public frmMain()
         {
             InitializeComponent();
 
+            _Settings = PortfolioManagerSettings.Load();
+            if (_Settings == null)
+                btnSettings_Click(null, null);
+            
             string fileName = Application.CommonAppDataPath + "\\stocks.db";
             bool newDatabase = ! System.IO.File.Exists(fileName);
             IStockDatabase stockDatabase = new SQLiteStockDatabase("Data Source=" + fileName + ";Version=3;");      
@@ -51,6 +78,10 @@ namespace PortfolioManager.Test
                 DRPActive = true
             };
             _MyPortfolio.StockSetting.Add("ARG", stockSetting);
+
+
+            lsvTransactions.ListViewItemSorter = new ListViewTransactionComparer();
+            lsvCorporateActions.ListViewItemSorter = new ListViewCorporateActionComparer();
 
             DisplayTransactions();
         }
@@ -177,59 +208,45 @@ namespace PortfolioManager.Test
             
         }
 
-        private void AddTransaction(string asxCode, ITransaction transaction)
+        private void AddTransaction(ITransaction transaction)
         {
             ListViewItem item;
 
-            item = lsvTransactions.Items.Add(asxCode);
-            item.SubItems.Add(transaction.TransactionDate.ToShortDateString());
+            item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
+            item.SubItems.Add(transaction.ASXCode);
             item.SubItems.Add(transaction.Description);
             item.Tag = transaction;
         }
 
         private void DisplayTransactions()
         {
-            Stock stock;
-
             lsvTransactions.Items.Clear();
 
-            stock = _PortfolioManager.StockManager.GetStock("AGI");
-            AddTransaction("AGI", new Aquisition(new DateTime(2002, 01, 10), stock.Id, 2500, 1.14M, 16.30M, ""));
+            AddTransaction(new Aquisition(new DateTime(2002, 01, 10), "AGI", 2500, 1.14M, 16.30M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("AGIR");
-            AddTransaction("AGIR", new OpeningBalance(new DateTime(2005, 09, 30), stock.Id, 804, 0.00M, "Renounceable rights issue"));
-            AddTransaction("AGIR", new Disposal(new DateTime(2005, 10, 14), stock.Id, 804, 0.06M, 19.95M, CGTCalculationMethod.MinimizeGain, ""));
+            AddTransaction(new OpeningBalance(new DateTime(2005, 09, 30), "AGIR", 804, 0.00M, "Renounceable rights issue"));
 
-            stock = _PortfolioManager.StockManager.GetStock("BCA");
-            AddTransaction("BCA", new Aquisition(new DateTime(2002, 02, 14), stock.Id, 750, 5.22M, 16.30M, ""));
-            AddTransaction("BCA", new Aquisition(new DateTime(2003, 04, 28), stock.Id, 1250, 1.47M, 16.30M, ""));
+            AddTransaction(new Disposal(new DateTime(2005, 10, 14), "AGIR", 804, 0.06M, 19.95M, CGTCalculationMethod.MinimizeGain, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("ADZ");
-            AddTransaction("ADZ", new OpeningBalance(new DateTime(2004, 07, 01), stock.Id, 1819, 1375.00M, ""));
+            AddTransaction(new Aquisition(new DateTime(2002, 02, 14), "BCA", 750, 5.22M, 16.30M, ""));
+            AddTransaction(new Aquisition(new DateTime(2003, 04, 28), "BCA", 1250, 1.47M, 16.30M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("AMP");
-            AddTransaction("AMP", new OpeningBalance(new DateTime(2004, 07, 01), stock.Id, 1125, 4633.75M, ""));
+            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "ADZ", 1819, 1375.00M, ""));
+            AddTransaction(new Disposal(new DateTime(2004, 11, 10), "ADZ", 1819, 1.65M, 19.95M, CGTCalculationMethod.MinimizeGain, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("HHG");
-            AddTransaction("HHG", new OpeningBalance(new DateTime(2004, 07, 01), stock.Id, 1125, 1330.70M, "Demerger of HHG from AMP"));
+            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "AMP", 1125, 4633.75M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("FGL");
-            AddTransaction("FGL", new OpeningBalance(new DateTime(2004, 07, 01), stock.Id, 1125, 4633.75M, ""));
+            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "HHG", 1125, 1330.70M, "Demerger of HHG from AMP"));
 
-            stock = _PortfolioManager.StockManager.GetStock("NAB");
-            AddTransaction("NAB", new OpeningBalance(new DateTime(2004, 07, 01), stock.Id, 150, 4366.30M, ""));
+            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "FGL", 1125, 4633.75M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("TLS");
-            AddTransaction("TLS", new OpeningBalance(new DateTime(2004, 07, 01), stock.Id, 1150, 7679.90M, ""));
+            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "NAB", 150, 4366.30M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("ADZ");
-            AddTransaction("ADZ", new Disposal(new DateTime(2004, 11, 10), stock.Id, 1819, 1.65M, 19.95M, CGTCalculationMethod.MinimizeGain, ""));
+            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "TLS", 1150, 7679.90M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("WDC");
-            AddTransaction("WDC", new Aquisition(new DateTime(2004, 07, 13), stock.Id, 350, 15.32M, 19.95M, ""));
+            AddTransaction(new Aquisition(new DateTime(2004, 07, 13), "WDC", 350, 15.32M, 19.95M, ""));
 
-            stock = _PortfolioManager.StockManager.GetStock("ARG");
-            AddTransaction("ARG", new Aquisition(new DateTime(2006, 01, 13), stock.Id, 300, 6.52M, 19.95M, ""));       
+            AddTransaction(new Aquisition(new DateTime(2006, 01, 13), "ARG", 300, 6.52M, 19.95M, ""));       
         }
 
         private void DisplayCorporateActions()
@@ -258,8 +275,8 @@ namespace PortfolioManager.Test
         {
                 foreach (ICorporateAction corporateAction in corporateActions)
                 {
-                    ListViewItem item = lsvCorporateActions.Items.Add(asxCode);
-                    item.SubItems.Add(corporateAction.ActionDate.ToShortDateString());
+                    ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
+                    item.SubItems.Add(asxCode);
                     item.SubItems.Add(corporateAction.Description);
                     item.Tag = corporateAction;
                 }
@@ -310,7 +327,7 @@ namespace PortfolioManager.Test
             foreach (IncomeReceived income in allIncome)
             {
                 var item = lsvIncome.Items.Add(income.TransactionDate.ToShortDateString());
-                item.SubItems.Add(_PortfolioManager.StockManager.GetASXCode(income.Stock, income.TransactionDate));
+                item.SubItems.Add(income.ASXCode);
                 item.SubItems.Add(income.CashIncome.ToString("c"));
                 item.SubItems.Add(income.FrankingCredits.ToString("c"));
             }
@@ -352,6 +369,16 @@ namespace PortfolioManager.Test
             frmDividend.AddDividend(_PortfolioManager.StockManager);
 
             DisplayCorporateActions();
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            frmSettings settingsForm = new frmSettings();
+
+            if (settingsForm.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
 
 

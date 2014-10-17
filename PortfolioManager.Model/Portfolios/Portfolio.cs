@@ -133,7 +133,7 @@ namespace PortfolioManager.Model.Portfolios
                 transactions.Add(new OpeningBalance()
                     {
                         TransactionDate = dividend.PaymentDate,
-                        Stock = dividend.Stock,
+                        ASXCode = _StockDatabase.StockQuery.Get(dividend.Stock).ASXCode,
                         Units = drpUnits,
                         CostBase = amountPaid,
                         Comment = "DRP"
@@ -143,7 +143,7 @@ namespace PortfolioManager.Model.Portfolios
 
             transactions.Add(new IncomeReceived()
             {
-                Stock = dividend.Stock,
+                ASXCode = _StockDatabase.StockQuery.Get(dividend.Stock).ASXCode,
                 TransactionDate = dividend.PaymentDate,
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,
@@ -159,7 +159,7 @@ namespace PortfolioManager.Model.Portfolios
 
             transactions.Add(new ReturnOfCapital()
                 {
-                    Stock = capitalReturn.Stock,
+                    ASXCode = _StockDatabase.StockQuery.Get(capitalReturn.Stock).ASXCode,
                     TransactionDate = capitalReturn.PaymentDate,
                     Amount = capitalReturn.Amount
                 }
@@ -188,7 +188,7 @@ namespace PortfolioManager.Model.Portfolios
                 transactions.Add(new OpeningBalance()
                 {
                     TransactionDate = transformation.ImplementationDate,
-                    Stock = resultingStock.Stock,
+                    ASXCode = _StockDatabase.StockQuery.Get(resultingStock.Stock).ASXCode,
                     Units = units,
                     CostBase = costBase,
                     Comment = transformation.Description
@@ -204,7 +204,7 @@ namespace PortfolioManager.Model.Portfolios
                     transactions.Add(new CostBaseAdjustment()
                     {
                         TransactionDate = transformation.ImplementationDate,
-                        Stock = transformation.Stock,
+                        ASXCode = _StockDatabase.StockQuery.Get(transformation.Stock).ASXCode,
                         Percentage = originalCostBasePercentage,
                         Comment = transformation.Description
                     });
@@ -217,7 +217,7 @@ namespace PortfolioManager.Model.Portfolios
                 transactions.Add(new Disposal()
                 {
                     TransactionDate = transformation.ImplementationDate,
-                    Stock = transformation.Stock,
+                    ASXCode = _StockDatabase.StockQuery.Get(transformation.Stock).ASXCode,
                     Units = ownedParcels.Sum(x => x.Units),
                     AveragePrice = transformation.CashComponent,
                     TransactionCosts = 0.00M,
@@ -249,6 +249,8 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(Aquisition aquisition)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(aquisition.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(aquisition);
@@ -256,7 +258,7 @@ namespace PortfolioManager.Model.Portfolios
                 decimal costBase = aquisition.Units * aquisition.AveragePrice;
                 decimal amountPaid = costBase + aquisition.TransactionCosts;
 
-                var parcel = new ShareParcel(_PortfolioDatabase, aquisition.TransactionDate, aquisition.Stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
+                var parcel = new ShareParcel(_PortfolioDatabase, aquisition.TransactionDate, stock.Id, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
                 AddParcel(parcel);
 
                 unitOfWork.Save();
@@ -266,11 +268,11 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(Disposal disposal)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(disposal.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(disposal);
-
-                var stock = _StockDatabase.StockQuery.Get(disposal.Stock);
 
                 /* Create CGT calculator */
                 var CGTCalculator = new CGTCalculator();
@@ -292,11 +294,13 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(OpeningBalance openingBalance)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(openingBalance.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(openingBalance);
 
-                var parcel = new ShareParcel(_PortfolioDatabase, openingBalance.TransactionDate, openingBalance.Stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
+                var parcel = new ShareParcel(_PortfolioDatabase, openingBalance.TransactionDate, stock.Id, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
                 AddParcel(parcel);
 
                 unitOfWork.Save();
@@ -305,12 +309,14 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(CostBaseAdjustment costBaseAdjustment)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(costBaseAdjustment);
 
                 /* locate parcels that the dividend applies to */
-                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, costBaseAdjustment.Stock, costBaseAdjustment.TransactionDate);
+                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, costBaseAdjustment.TransactionDate);
 
                 /* Reduce cost base of parcels */
                 foreach (ShareParcel parcel in parcels)
@@ -324,12 +330,14 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(ReturnOfCapital returnOfCapital)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(returnOfCapital);
 
                 /* locate parcels that the dividend applies to */
-                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, returnOfCapital.Stock, returnOfCapital.TransactionDate);
+                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, returnOfCapital.TransactionDate);
 
                 /* Reduce cost base of parcels */
                 foreach (ShareParcel parcel in parcels)
