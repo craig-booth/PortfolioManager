@@ -404,24 +404,42 @@ namespace PortfolioManager.Model.Portfolios
                 IReadOnlyCollection<ITransaction> transactions;
                 TransactionType type;
                 DateTime date;
+                string asxCode;
 
                 if (corporateAction is Dividend)
                 {
-                    date = (corporateAction as Dividend).PaymentDate;
+                    Dividend dividend = corporateAction as Dividend;
+                    date = dividend.PaymentDate;
                     type = TransactionType.Income;
+                    asxCode = _StockDatabase.StockQuery.Get(dividend.Stock).ASXCode;
                 }
-             /*   else if (corporateAction is CapitalReturn)
+                else if (corporateAction is CapitalReturn)
                 {
-                   
+                    CapitalReturn capitalReturn = corporateAction as CapitalReturn;
+                    date = capitalReturn.PaymentDate;
+                    type = TransactionType.ReturnOfCapital;
+                    asxCode = _StockDatabase.StockQuery.Get(capitalReturn.Stock).ASXCode;
                 }
                 else if (corporateAction is Transformation)
                 {
+                    Transformation transformation = corporateAction as Transformation;
+                    date = transformation.ImplementationDate;
                     
-                } */
+                    if (transformation.ResultingStocks.Count > 0)
+                    {
+                        type = TransactionType.OpeningBalance;
+                        asxCode = _StockDatabase.StockQuery.Get(transformation.ResultingStocks[0].Stock).ASXCode;
+                    }
+                    else 
+                    {
+                        type = TransactionType.Disposal; 
+                        asxCode = _StockDatabase.StockQuery.Get(transformation.Stock).ASXCode;
+                    }
+                    
+                } 
                 else
                     continue;
 
-                var asxCode = _StockDatabase.StockQuery.Get(corporateAction.Stock).ASXCode;
                 transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, asxCode, type, date, date);                
                 if (transactions.Count() == 0)
                     toList.Add(corporateAction);
