@@ -95,20 +95,20 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, Guid stock, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
-                                   where transaction.Stock == stock && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
+                                   where transaction.ASXCode == asxCode && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
                                    orderby transaction.TransactionDate
                                    select transaction;
 
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, Guid stock, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
-                                   where transaction.Stock == stock && transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
+                                   where transaction.ASXCode == asxCode && transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
                                    orderby transaction.TransactionDate
                                    select transaction;
 

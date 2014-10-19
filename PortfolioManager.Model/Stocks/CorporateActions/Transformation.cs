@@ -121,7 +121,7 @@ namespace PortfolioManager.Model.Stocks
                 transactions.Add(new OpeningBalance()
                 {
                     TransactionDate = ImplementationDate,
-                    Stock = resultingStock.Stock,
+                    ASXCode = _Database.StockQuery.Get(resultingStock.Stock).ASXCode,
                     Units = units,
                     CostBase = costBase,
                     Comment = Description
@@ -137,7 +137,7 @@ namespace PortfolioManager.Model.Stocks
                     transactions.Add(new CostBaseAdjustment()
                     {
                         TransactionDate = ImplementationDate,
-                        Stock = Stock,
+                        ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
                         Percentage = originalCostBasePercentage,
                         Comment = Description
                     });
@@ -150,7 +150,7 @@ namespace PortfolioManager.Model.Stocks
                 transactions.Add(new Disposal()
                 {
                     TransactionDate = ImplementationDate,
-                    Stock = Stock,
+                    ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
                     Units = ownedParcels.Sum(x => x.Units),
                     AveragePrice = CashComponent,
                     TransactionCosts = 0.00M,

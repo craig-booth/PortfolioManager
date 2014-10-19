@@ -90,7 +90,7 @@ namespace PortfolioManager.Model.Stocks
                 transactions.Add(new OpeningBalance()
                 {
                     TransactionDate = PaymentDate,
-                    Stock = Stock,
+                    ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
                     Units = drpUnits,
                     CostBase = amountPaid,
                     Comment = "DRP"
@@ -100,7 +100,7 @@ namespace PortfolioManager.Model.Stocks
 
             transactions.Add(new IncomeReceived()
             {
-                Stock = Stock,
+                ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
                 TransactionDate = PaymentDate,
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,

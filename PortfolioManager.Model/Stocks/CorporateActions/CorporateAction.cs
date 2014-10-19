@@ -17,4 +17,12 @@ namespace PortfolioManager.Model.Stocks
 
         IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio);
     }
+
+    public class CorporateActionComparer : IComparer<ICorporateAction>
+    {
+       public int Compare(ICorporateAction x, ICorporateAction y) 
+       {
+           return DateTime.Compare(x.ActionDate, y.ActionDate);
+       }
+    }
 }

@@ -60,7 +60,7 @@ namespace PortfolioManager.Model.Stocks
 
             transactions.Add(new ReturnOfCapital()
             {
-                Stock = this.Stock,
+                ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
                 TransactionDate = this.PaymentDate,
                 Amount = this.Amount
             }

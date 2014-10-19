@@ -77,16 +77,18 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        private void UpdateHoldings(Guid stock)
+        private void UpdateHoldings(string asxCode)
         {
             if (_Holdings == null)
                 return;
 
-            var existingHolding = _Holdings.Where(x => x.Stock.Id == stock);
+            var stock = _StockDatabase.StockQuery.GetByASXCode(asxCode);
+
+            var existingHolding = _Holdings.Where(x => x.Stock.Id == stock.Id);
             if (existingHolding.Count() > 0)
                 _Holdings.Remove(existingHolding.First());
 
-            ShareHolding newHolding = GetHoldingsForStock(stock, DateTime.Now);
+            ShareHolding newHolding = GetHoldingsForStock(stock.Id, DateTime.Now);
             if (newHolding != null)
                 _Holdings.Add(newHolding);
         }
@@ -173,12 +175,14 @@ namespace PortfolioManager.Model.Portfolios
             else
                 return;
 
-            UpdateHoldings(transaction.Stock);
+            UpdateHoldings(transaction.ASXCode);
         }
 
         public void ApplyTransaction(Aquisition aquisition)
         {
             ShareParcel newParcel;
+
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(aquisition.ASXCode);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -187,7 +191,7 @@ namespace PortfolioManager.Model.Portfolios
                 decimal costBase = aquisition.Units * aquisition.AveragePrice;
                 decimal amountPaid = costBase + aquisition.TransactionCosts;
 
-                newParcel = new ShareParcel(_PortfolioDatabase, aquisition.TransactionDate, aquisition.Stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
+                newParcel = new ShareParcel(_PortfolioDatabase, aquisition.TransactionDate, stock.Id, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
                 AddParcel(newParcel);
 
                 unitOfWork.Save();    
@@ -196,11 +200,11 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(Disposal disposal)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(disposal.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(disposal);
-
-                var stock = _StockDatabase.StockQuery.Get(disposal.Stock);
 
                 /* Create CGT calculator */
                 var CGTCalculator = new CGTCalculator();
@@ -222,11 +226,13 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(OpeningBalance openingBalance)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(openingBalance.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(openingBalance);
 
-                var parcel = new ShareParcel(_PortfolioDatabase, openingBalance.TransactionDate, openingBalance.Stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
+                var parcel = new ShareParcel(_PortfolioDatabase, openingBalance.TransactionDate, stock.Id, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
                 AddParcel(parcel);
 
                 unitOfWork.Save();
@@ -235,12 +241,15 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(CostBaseAdjustment costBaseAdjustment)
         {
+
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(costBaseAdjustment);
 
                 /* locate parcels that the dividend applies to */
-                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, costBaseAdjustment.Stock, costBaseAdjustment.TransactionDate);
+                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, costBaseAdjustment.TransactionDate);
 
                 /* Reduce cost base of parcels */
                 foreach (ShareParcel parcel in parcels)
@@ -254,12 +263,14 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(ReturnOfCapital returnOfCapital)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode);
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(returnOfCapital);
 
                 /* locate parcels that the dividend applies to */
-                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, returnOfCapital.Stock, returnOfCapital.TransactionDate);
+                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, returnOfCapital.TransactionDate);
 
                 /* Reduce cost base of parcels */
                 foreach (ShareParcel parcel in parcels)
@@ -378,7 +389,10 @@ namespace PortfolioManager.Model.Portfolios
                     }
                 }    
             }
-            
+           
+            /* Sort by Action Date */
+            allCorporateActions.Sort(new CorporateActionComparer());
+
             return allCorporateActions.AsReadOnly();
         }
 
@@ -407,7 +421,8 @@ namespace PortfolioManager.Model.Portfolios
                 else
                     continue;
 
-                transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, corporateAction.Stock, type, date, date);                
+                var asxCode = _StockDatabase.StockQuery.Get(corporateAction.Stock).ASXCode;
+                transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, asxCode, type, date, date);                
                 if (transactions.Count() == 0)
                     toList.Add(corporateAction);
             }

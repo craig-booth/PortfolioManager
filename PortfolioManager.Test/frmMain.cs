@@ -37,28 +37,26 @@ namespace PortfolioManager.Test
             }
         }
 
-        private class ListViewCorporateActionComparer : IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                ICorporateAction corporateActionX = (ICorporateAction)((ListViewItem)x).Tag;
-                ICorporateAction corporateActionY = (ICorporateAction)((ListViewItem)y).Tag;
-
-                return DateTime.Compare(corporateActionX.ActionDate, corporateActionY.ActionDate);
-            }
-        } 
-
         public frmMain()
         {
             InitializeComponent();
 
+            lsvTransactions.ListViewItemSorter = new ListViewTransactionComparer();
+
             _Settings = PortfolioManagerSettings.Load();
-            if (_Settings == null)
+            if (_Settings != null)
+                LoadDatabase();
+            else
+            {
+                _Settings = new PortfolioManagerSettings();
                 btnSettings_Click(null, null);
-            
-            string fileName = Application.CommonAppDataPath + "\\stocks.db";
-            bool newDatabase = ! System.IO.File.Exists(fileName);
-            IStockDatabase stockDatabase = new SQLiteStockDatabase("Data Source=" + fileName + ";Version=3;");      
+            }
+        }
+
+        private void LoadDatabase()
+        {
+            bool newDatabase = !System.IO.File.Exists(_Settings.StockDatabaseFile);
+            IStockDatabase stockDatabase = new SQLiteStockDatabase("Data Source=" +  _Settings.StockDatabaseFile + ";Version=3;");
             IPortfolioDatabase portfolioDatabase = new MemoryPortfolioDatabase();
 
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(stockDatabase, portfolioDatabase);
@@ -68,8 +66,8 @@ namespace PortfolioManager.Test
                 AddStocks();
                 AddCorporateActions();
             }
-      
-            
+
+
             _MyPortfolio = _PortfolioManager.CreatePortfolio("Craig's Shares");
 
             /* TODO: should add this when purchasing */
@@ -78,10 +76,6 @@ namespace PortfolioManager.Test
                 DRPActive = true
             };
             _MyPortfolio.StockSetting.Add("ARG", stockSetting);
-
-
-            lsvTransactions.ListViewItemSorter = new ListViewTransactionComparer();
-            lsvCorporateActions.ListViewItemSorter = new ListViewCorporateActionComparer();
 
             DisplayTransactions();
         }
@@ -251,35 +245,17 @@ namespace PortfolioManager.Test
 
         private void DisplayCorporateActions()
         {
-            IReadOnlyCollection<ICorporateAction> corporateActions;
 
-            lsvCorporateActions.Items.Clear();          
-            foreach (ListViewItem stockItem in lsvPortfolio.Items)
+            var corporateActions = _MyPortfolio.GetUnappliedCorparateActions();
+
+            lsvCorporateActions.Items.Clear();
+            foreach (ICorporateAction corporateAction in corporateActions)
             {
-                var stock = stockItem.Tag as Stock;
-                corporateActions = _PortfolioManager.StockManager.GetCorporateActions(stock.Id, new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
-                AddCorporateActions(stock.ASXCode, corporateActions);
-                if (stock.Type == StockType.StapledSecurity)
-                {
-                    foreach (Stock childStock in stock.GetChildStocks())
-                    {
-                        corporateActions = _PortfolioManager.StockManager.GetCorporateActions(childStock.Id, new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
-                        AddCorporateActions(childStock.ASXCode, corporateActions);
-                    }
-                }
-
-            }
-        }
-
-        private void AddCorporateActions(string asxCode, IReadOnlyCollection<ICorporateAction> corporateActions)
-        {
-                foreach (ICorporateAction corporateAction in corporateActions)
-                {
-                    ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
-                    item.SubItems.Add(asxCode);
-                    item.SubItems.Add(corporateAction.Description);
-                    item.Tag = corporateAction;
-                }
+                ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
+                item.SubItems.Add(_PortfolioManager.StockManager.GetASXCode(corporateAction.Stock));
+                item.SubItems.Add(corporateAction.Description);
+                item.Tag = corporateAction;
+            }         
         }
 
         private void DisplayPortfolio()
@@ -350,11 +326,8 @@ namespace PortfolioManager.Test
             ICorporateAction corporateAction = lsvCorporateActions.FocusedItem.Tag as ICorporateAction;
             lsvCorporateActions.FocusedItem.Remove();
 
-            var transactions = _MyPortfolio.CreateTransactionListForAction(corporateAction);
-            foreach (ITransaction transaction in transactions)
-            {
-                _MyPortfolio.ApplyTransaction(transaction);
-            };
+            var transactions = corporateAction.CreateTransactionList(_MyPortfolio);
+            _MyPortfolio.ApplyTransactions(transactions);
 
             DisplayPortfolio();
         }
@@ -373,11 +346,10 @@ namespace PortfolioManager.Test
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            frmSettings settingsForm = new frmSettings();
-
+            frmSettings settingsForm = new frmSettings(_Settings);
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
-
+                LoadDatabase();
             }
         }
 

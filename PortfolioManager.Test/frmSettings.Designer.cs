@@ -101,6 +101,7 @@
             this.btnBrowsePortfolioDatabase.TabStop = false;
             this.btnBrowsePortfolioDatabase.Text = "Browse...";
             this.btnBrowsePortfolioDatabase.UseVisualStyleBackColor = true;
+            this.btnBrowsePortfolioDatabase.Click += new System.EventHandler(this.btnBrowsePortfolioDatabase_Click);
             // 
             // btnBrowseStockDatabase
             // 
@@ -111,9 +112,11 @@
             this.btnBrowseStockDatabase.TabStop = false;
             this.btnBrowseStockDatabase.Text = "Browse...";
             this.btnBrowseStockDatabase.UseVisualStyleBackColor = true;
+            this.btnBrowseStockDatabase.Click += new System.EventHandler(this.btnBrowseStockDatabase_Click);
             // 
             // openFileDialog
             // 
+            this.openFileDialog.CheckFileExists = false;
             this.openFileDialog.FileName = "openFileDialog";
             // 
             // frmSettings
