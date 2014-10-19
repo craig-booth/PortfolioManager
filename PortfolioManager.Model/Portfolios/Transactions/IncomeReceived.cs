@@ -56,7 +56,6 @@ namespace PortfolioManager.Model.Portfolios
         {
             Id = Guid.NewGuid();
         }
-
     }
     
 }

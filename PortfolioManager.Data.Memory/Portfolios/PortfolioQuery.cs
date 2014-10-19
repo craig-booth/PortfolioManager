@@ -75,14 +75,44 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<IncomeReceived> GetIncomeReceived(Guid portfolio, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate)
         {
-            var incomeQuery = from income in _Database._Transactions 
-                              where income.Type == TransactionType.Income && income.TransactionDate >= fromDate && income.TransactionDate <= toDate
-                              orderby income.TransactionDate
-                              select income as IncomeReceived;
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
+                                   orderby transaction.TransactionDate
+                                   select transaction;
 
-            return incomeQuery.ToList().AsReadOnly();
+            return transactionQuery.ToList().AsReadOnly();
+        }
+
+        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        {
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
+                                   orderby transaction.TransactionDate
+                                   select transaction;
+
+            return transactionQuery.ToList().AsReadOnly();
+        }
+
+        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, Guid stock, DateTime fromDate, DateTime toDate)
+        {
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.Stock == stock && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
+                                   orderby transaction.TransactionDate
+                                   select transaction;
+
+            return transactionQuery.ToList().AsReadOnly();
+        }
+
+        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, Guid stock, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        {
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.Stock == stock && transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
+                                   orderby transaction.TransactionDate
+                                   select transaction;
+
+            return transactionQuery.ToList().AsReadOnly();
         }
     }
 }

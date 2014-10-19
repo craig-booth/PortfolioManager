@@ -47,6 +47,5 @@ namespace PortfolioManager.Model.Portfolios
             CostBase = costBase;
             Comment = comment;
         }
-
     }
 }

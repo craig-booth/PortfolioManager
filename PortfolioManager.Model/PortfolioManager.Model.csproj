@@ -64,6 +64,7 @@
     <Compile Include="Portfolios\Transactions\Transaction.cs" />
     <Compile Include="Stocks\CorporateActions\Transformation.cs" />
     <Compile Include="Utils\DateTimeConstants.cs" />
+    <Compile Include="Utils\DecimalExtension.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

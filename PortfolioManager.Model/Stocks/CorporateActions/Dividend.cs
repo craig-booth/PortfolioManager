@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Stocks
 {
@@ -64,6 +66,48 @@ namespace PortfolioManager.Model.Stocks
         {
             Change(newActionDate, newPaymentDate, newDividendAmount, CompanyTaxRate, PercentFranked, DRPPrice);
         }
-    
+
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
+        {
+            var transactions = new List<ITransaction>();
+
+            /* locate parcels that the dividend applies to */
+            var parcels = forPortfolio.GetParcels(Stock, ActionDate);
+            if (parcels.Count == 0)
+                return transactions;
+
+            var unitsHeld = parcels.Sum(x => x.Units);
+            var amountPaid = unitsHeld * DividendAmount;
+            var franked = MathUtils.Truncate(amountPaid * PercentFranked);
+            var unFranked = MathUtils.Truncate(amountPaid * (1 - PercentFranked));
+            var frankingCredits = MathUtils.Truncate(((amountPaid / (1 - CompanyTaxRate)) - amountPaid) * PercentFranked);
+
+            /* add drp shares */
+            if (DRPPrice != 0.00M)
+            {
+                int drpUnits = (int)Math.Round(amountPaid / DRPPrice);
+
+                transactions.Add(new OpeningBalance()
+                {
+                    TransactionDate = PaymentDate,
+                    Stock = Stock,
+                    Units = drpUnits,
+                    CostBase = amountPaid,
+                    Comment = "DRP"
+                }
+                );
+            }
+
+            transactions.Add(new IncomeReceived()
+            {
+                Stock = Stock,
+                TransactionDate = PaymentDate,
+                FrankedAmount = franked,
+                UnfrankedAmount = unFranked,
+                FrankingCredits = frankingCredits
+            });
+
+            return transactions;
+        }
     }
 }

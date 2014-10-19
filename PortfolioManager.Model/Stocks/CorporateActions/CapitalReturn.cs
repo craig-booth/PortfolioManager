@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Stocks
 {
@@ -51,6 +52,21 @@ namespace PortfolioManager.Model.Stocks
 
                 unitOfWork.Save();
             }
+        }
+
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
+        {
+            var transactions = new List<ITransaction>();
+
+            transactions.Add(new ReturnOfCapital()
+            {
+                Stock = this.Stock,
+                TransactionDate = this.PaymentDate,
+                Amount = this.Amount
+            }
+            );
+
+            return transactions.AsReadOnly();
         }
     }
 }

@@ -56,9 +56,54 @@ namespace PortfolioManager.Model.Portfolios
             return allParcels.Where(x => x.IncludeInParcels == true).ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ShareHolding> GetHoldings()
+        public IReadOnlyCollection<ShareParcel> GetParcels(Guid ofStock, DateTime atDate)
         {
-            return GetHoldings(DateTime.Now);
+            var allParcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, ofStock, atDate);
+
+            return allParcels.Where(x => x.IncludeInParcels == true).ToList().AsReadOnly();
+        }
+
+        List<ShareHolding> _Holdings;
+        public IReadOnlyCollection<ShareHolding> Holdings
+        {
+            get
+            {
+                if (_Holdings == null)
+                {
+                    _Holdings = new List<ShareHolding>(GetHoldings(DateTime.Now));
+                }
+
+                return _Holdings.AsReadOnly();
+            }
+        }
+
+        private void UpdateHoldings(Guid stock)
+        {
+            if (_Holdings == null)
+                return;
+
+            var existingHolding = _Holdings.Where(x => x.Stock.Id == stock);
+            if (existingHolding.Count() > 0)
+                _Holdings.Remove(existingHolding.First());
+
+            ShareHolding newHolding = GetHoldingsForStock(stock, DateTime.Now);
+            if (newHolding != null)
+                _Holdings.Add(newHolding);
+        }
+
+        public ShareHolding GetHoldingsForStock(Guid stock, DateTime atDate)
+        {
+            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(Id, stock, atDate);
+
+            var holdingsQuery = from parcel in parcels
+                                where parcel.IncludeInHoldings
+                                group parcel by parcel.Stock into parcelGroup
+                                select new ShareHolding(_StockDatabase.StockQuery.Get(parcelGroup.Key), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.Amount));
+
+            if (holdingsQuery.Count() > 0)
+                return holdingsQuery.First();
+            else
+                return null;
         }
 
         public IReadOnlyCollection<ShareHolding> GetHoldings(DateTime atDate)
@@ -80,7 +125,12 @@ namespace PortfolioManager.Model.Portfolios
 
         public IReadOnlyCollection<IncomeReceived> GetIncomeReceived(DateTime fromDate, DateTime toDate)
         {
-            return _PortfolioDatabase.PortfolioQuery.GetIncomeReceived(this.Id, fromDate, toDate);
+            var incomeTransactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(this.Id, TransactionType.Income, fromDate, toDate);
+
+            var incomeQuery = from income in incomeTransactions
+                                select income as IncomeReceived;
+
+            return incomeQuery.ToList().AsReadOnly(); 
         }
 
         private Portfolio(string name)
@@ -98,135 +148,12 @@ namespace PortfolioManager.Model.Portfolios
             StockSetting = new Dictionary<string, StockSetting>();
         }
 
-        public List<ITransaction> CreateTransactionListForAction(ICorporateAction action)
+        public void ApplyTransactions(IEnumerable<ITransaction> transactions)
         {
-            if (action is Dividend)
-                return CreateTransactionListForAction(action as Dividend);
-            else if (action is CapitalReturn)
-                return CreateTransactionListForAction(action as CapitalReturn);
-            else if (action is Transformation)
-                return CreateTransactionListForAction(action as Transformation);
-            else
-                return null;
-        }
-
-        public List<ITransaction> CreateTransactionListForAction(Dividend dividend)
-        {
-            var transactions = new List<ITransaction>();
-
-            /* locate parcels that the dividend applies to */
-            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, dividend.Stock, dividend.ActionDate);
-            if (parcels.Count == 0)
-                return transactions;
-
-            var unitsHeld = parcels.Sum(x => x.Units);
-            var amountPaid = unitsHeld * dividend.DividendAmount;
-            var franked = Math.Round(amountPaid * dividend.PercentFranked, 2, MidpointRounding.AwayFromZero);
-            var unFranked = Math.Round(amountPaid * (1 - dividend.PercentFranked), 2, MidpointRounding.AwayFromZero);
-            var frankingCredits = Math.Round(((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked, 2, MidpointRounding.AwayFromZero);
-
-            /* add drp shares */
-            if (dividend.DRPPrice != 0.00M)
+            foreach (ITransaction transaction in transactions)
             {
-                int drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
-
-                transactions.Add(new OpeningBalance()
-                    {
-                        TransactionDate = dividend.PaymentDate,
-                        Stock = dividend.Stock,
-                        Units = drpUnits,
-                        CostBase = amountPaid,
-                        Comment = "DRP"
-                    }
-                );
-            }
-
-            transactions.Add(new IncomeReceived()
-            {
-                Stock = dividend.Stock,
-                TransactionDate = dividend.PaymentDate,
-                FrankedAmount = franked,
-                UnfrankedAmount = unFranked,
-                FrankingCredits = frankingCredits
-            });
-
-            return transactions;
-        }
-
-        public List<ITransaction> CreateTransactionListForAction(CapitalReturn capitalReturn)
-        {
-            var transactions = new List<ITransaction>();
-
-            transactions.Add(new ReturnOfCapital()
-                {
-                    Stock = capitalReturn.Stock,
-                    TransactionDate = capitalReturn.PaymentDate,
-                    Amount = capitalReturn.Amount
-                }
-            );
-
-            return transactions;
-        }
-
-        public List<ITransaction> CreateTransactionListForAction(Transformation transformation)
-        {
-            var transactions = new List<ITransaction>();
-
-            /* locate parcels that the transformation applies to */
-            var ownedParcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, transformation.Stock, transformation.ActionDate);
-            if (ownedParcels.Count == 0)
-                return transactions;
-
-            int totalUnits = ownedParcels.Sum(x => x.Units);
-            decimal totalCostBase = ownedParcels.Sum(x => x.CostBase);
-
-            /* create parcels for resulting stock */
-            foreach (ResultingStock resultingStock in transformation.ResultingStocks)
-            {
-                int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
-                decimal costBase = totalCostBase * resultingStock.CostBasePercentage;
-                transactions.Add(new OpeningBalance()
-                {
-                    TransactionDate = transformation.ImplementationDate,
-                    Stock = resultingStock.Stock,
-                    Units = units,
-                    CostBase = costBase,
-                    Comment = transformation.Description
-                });
-            }
-
-            /* Reduce the costbase of the original parcels */
-            if (transformation.ResultingStocks.Count > 0)
-            {
-                decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBasePercentage);
-                foreach (ShareParcel parcel in ownedParcels)
-                {
-                    transactions.Add(new CostBaseAdjustment()
-                    {
-                        TransactionDate = transformation.ImplementationDate,
-                        Stock = transformation.Stock,
-                        Percentage = originalCostBasePercentage,
-                        Comment = transformation.Description
-                    });
-                }
-            }
-
-            /* Handle disposal of original parcels */
-            if (transformation.CashComponent > 0)
-            {
-                transactions.Add(new Disposal()
-                {
-                    TransactionDate = transformation.ImplementationDate,
-                    Stock = transformation.Stock,
-                    Units = ownedParcels.Sum(x => x.Units),
-                    AveragePrice = transformation.CashComponent,
-                    TransactionCosts = 0.00M,
-                    CGTMethod = CGTCalculationMethod.FirstInFirstOut,
-                    Comment = transformation.Description
-                });
-            }
-
-            return transactions;
+                ApplyTransaction(transaction);
+            };
         }
 
         public void ApplyTransaction(ITransaction transaction)
@@ -245,10 +172,14 @@ namespace PortfolioManager.Model.Portfolios
                 ApplyTransaction(transaction as IncomeReceived);
             else
                 return;
+
+            UpdateHoldings(transaction.Stock);
         }
 
         public void ApplyTransaction(Aquisition aquisition)
         {
+            ShareParcel newParcel;
+
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 unitOfWork.TransactionRepository.Add(aquisition);
@@ -256,12 +187,11 @@ namespace PortfolioManager.Model.Portfolios
                 decimal costBase = aquisition.Units * aquisition.AveragePrice;
                 decimal amountPaid = costBase + aquisition.TransactionCosts;
 
-                var parcel = new ShareParcel(_PortfolioDatabase, aquisition.TransactionDate, aquisition.Stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
-                AddParcel(parcel);
+                newParcel = new ShareParcel(_PortfolioDatabase, aquisition.TransactionDate, aquisition.Stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
+                AddParcel(newParcel);
 
-                unitOfWork.Save();
+                unitOfWork.Save();    
             }
-
         }
 
         public void ApplyTransaction(Disposal disposal)
@@ -428,5 +358,61 @@ namespace PortfolioManager.Model.Portfolios
                 unitOfWork.Save();
             }
         }
+
+        public IReadOnlyCollection<ICorporateAction> GetUnappliedCorparateActions()
+        {
+            IReadOnlyCollection<ICorporateAction> corporateActions;
+
+            var allCorporateActions = new List<ICorporateAction>();
+ 
+            foreach (ShareHolding holding in Holdings)
+            {
+                corporateActions = _StockDatabase.CorporateActionQuery.Find(holding.Stock.Id, new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
+                AddUnappliedCorporateActions(allCorporateActions, corporateActions);
+                if (holding.Stock.Type == StockType.StapledSecurity)
+                {
+                    foreach (Stock childStock in holding.Stock.GetChildStocks())
+                    {
+                        corporateActions = _StockDatabase.CorporateActionQuery.Find(childStock.Id, new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
+                        AddUnappliedCorporateActions(allCorporateActions, corporateActions);
+                    }
+                }    
+            }
+            
+            return allCorporateActions.AsReadOnly();
+        }
+
+        private void AddUnappliedCorporateActions(IList<ICorporateAction> toList, IEnumerable<ICorporateAction> fromList)
+        {
+            
+            foreach (ICorporateAction corporateAction in fromList)
+            {
+                IReadOnlyCollection<ITransaction> transactions;
+                TransactionType type;
+                DateTime date;
+
+                if (corporateAction is Dividend)
+                {
+                    date = (corporateAction as Dividend).PaymentDate;
+                    type = TransactionType.Income;
+                }
+             /*   else if (corporateAction is CapitalReturn)
+                {
+                   
+                }
+                else if (corporateAction is Transformation)
+                {
+                    
+                } */
+                else
+                    continue;
+
+                transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, corporateAction.Stock, type, date, date);                
+                if (transactions.Count() == 0)
+                    toList.Add(corporateAction);
+            }
+        }
     }
 }
+
+

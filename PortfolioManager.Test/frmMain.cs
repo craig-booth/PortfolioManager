@@ -234,43 +234,25 @@ namespace PortfolioManager.Test
 
         private void DisplayCorporateActions()
         {
-            IReadOnlyCollection<ICorporateAction> corporateActions;
+            lsvCorporateActions.Items.Clear();
 
-            lsvCorporateActions.Items.Clear();          
-            foreach (ListViewItem stockItem in lsvPortfolio.Items)
+            var corporateActions = _MyPortfolio.GetUnappliedCorparateActions();
+            foreach (ICorporateAction corporateAction in corporateActions)
             {
-                var stock = stockItem.Tag as Stock;
-                corporateActions = _PortfolioManager.StockManager.GetCorporateActions(stock.Id, new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
-                AddCorporateActions(stock.ASXCode, corporateActions);
-                if (stock.Type == StockType.StapledSecurity)
-                {
-                    foreach (Stock childStock in stock.GetChildStocks())
-                    {
-                        corporateActions = _PortfolioManager.StockManager.GetCorporateActions(childStock.Id, new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
-                        AddCorporateActions(childStock.ASXCode, corporateActions);
-                    }
-                }
-
+                ListViewItem item = lsvCorporateActions.Items.Add(_PortfolioManager.StockManager.GetASXCode(corporateAction.Stock));
+                item.SubItems.Add(corporateAction.ActionDate.ToShortDateString());
+                item.SubItems.Add(corporateAction.Description);
+                item.Tag = corporateAction;
             }
+
         }
 
-        private void AddCorporateActions(string asxCode, IReadOnlyCollection<ICorporateAction> corporateActions)
-        {
-                foreach (ICorporateAction corporateAction in corporateActions)
-                {
-                    ListViewItem item = lsvCorporateActions.Items.Add(asxCode);
-                    item.SubItems.Add(corporateAction.ActionDate.ToShortDateString());
-                    item.SubItems.Add(corporateAction.Description);
-                    item.Tag = corporateAction;
-                }
-        }
 
         private void DisplayPortfolio()
         {
             /* Current Holdings */
             lsvPortfolio.Items.Clear();
-            var holdings = _MyPortfolio.GetHoldings(DateTime.Now);
-            foreach (ShareHolding holding in holdings)
+            foreach (ShareHolding holding in _MyPortfolio.Holdings)
             {          
                 var item = lsvPortfolio.Items.Add(holding.Stock.ASXCode);
                 item.Tag = holding.Stock;
@@ -333,11 +315,8 @@ namespace PortfolioManager.Test
             ICorporateAction corporateAction = lsvCorporateActions.FocusedItem.Tag as ICorporateAction;
             lsvCorporateActions.FocusedItem.Remove();
 
-            var transactions = _MyPortfolio.CreateTransactionListForAction(corporateAction);
-            foreach (ITransaction transaction in transactions)
-            {
-                _MyPortfolio.ApplyTransaction(transaction);
-            };
+            var transactions = corporateAction.CreateTransactionList(_MyPortfolio);
+            _MyPortfolio.ApplyTransactions(transactions);
 
             DisplayPortfolio();
         }

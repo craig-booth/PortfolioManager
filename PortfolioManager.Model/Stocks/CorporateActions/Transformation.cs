@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Stocks
 {
@@ -100,6 +101,67 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
+        {
+            var transactions = new List<ITransaction>();
+
+            /* locate parcels that the transformation applies to */
+            var ownedParcels = forPortfolio.GetParcels(Stock, ActionDate); 
+            if (ownedParcels.Count == 0)
+                return transactions;
+
+            int totalUnits = ownedParcels.Sum(x => x.Units);
+            decimal totalCostBase = ownedParcels.Sum(x => x.CostBase);
+
+            /* create parcels for resulting stock */
+            foreach (ResultingStock resultingStock in ResultingStocks)
+            {
+                int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
+                decimal costBase = totalCostBase * resultingStock.CostBasePercentage;
+                transactions.Add(new OpeningBalance()
+                {
+                    TransactionDate = ImplementationDate,
+                    Stock = resultingStock.Stock,
+                    Units = units,
+                    CostBase = costBase,
+                    Comment = Description
+                });
+            }
+
+            /* Reduce the costbase of the original parcels */
+            if (ResultingStocks.Count > 0)
+            {
+                decimal originalCostBasePercentage = 1 - ResultingStocks.Sum(x => x.CostBasePercentage);
+                foreach (ShareParcel parcel in ownedParcels)
+                {
+                    transactions.Add(new CostBaseAdjustment()
+                    {
+                        TransactionDate = ImplementationDate,
+                        Stock = Stock,
+                        Percentage = originalCostBasePercentage,
+                        Comment = Description
+                    });
+                }
+            }
+
+            /* Handle disposal of original parcels */
+            if (CashComponent > 0)
+            {
+                transactions.Add(new Disposal()
+                {
+                    TransactionDate = ImplementationDate,
+                    Stock = Stock,
+                    Units = ownedParcels.Sum(x => x.Units),
+                    AveragePrice = CashComponent,
+                    TransactionCosts = 0.00M,
+                    CGTMethod = CGTCalculationMethod.FirstInFirstOut,
+                    Comment = Description
+                });
+            }
+
+            return transactions.AsReadOnly();
+        }
+
     }
 
     public class ResultingStock
@@ -125,6 +187,5 @@ namespace PortfolioManager.Model.Stocks
         }
 
     }
-
 
 }

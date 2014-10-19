@@ -50,6 +50,5 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-
     }
 }
