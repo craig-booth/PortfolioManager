@@ -12,7 +12,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
-        public Guid Stock { get; set; }
+        public string ASXCode { get; set; }
         public int Units { get; set; }
         public decimal CostBase { get; set; }
         public string Comment { get; set; }
@@ -38,11 +38,11 @@ namespace PortfolioManager.Model.Portfolios
             Id = Guid.NewGuid();
         }
 
-        public OpeningBalance(DateTime transactionDate, Guid stock, int units, decimal costBase, string comment)
+        public OpeningBalance(DateTime transactionDate, string asxCode, int units, decimal costBase, string comment)
             : this()
         {
             TransactionDate = transactionDate;
-            Stock = stock;
+            ASXCode = asxCode;
             Units = units;
             CostBase = costBase;
             Comment = comment;

@@ -13,7 +13,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
-        public Guid Stock { get; set; }
+        public string ASXCode { get; set; }
         public decimal FrankedAmount { get;  set; }
         public decimal UnfrankedAmount { get; set; }
         public decimal FrankingCredits { get;  set; }

@@ -75,6 +75,8 @@
             this.btnAddDividend = new System.Windows.Forms.ToolStripButton();
             this.btnAddCapitalReturn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSettings = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tabIncome.SuspendLayout();
             this.tabCGT.SuspendLayout();
             this.tabParcels.SuspendLayout();
@@ -92,6 +94,7 @@
             this.lsvTransactions.Location = new System.Drawing.Point(7, 330);
             this.lsvTransactions.Name = "lsvTransactions";
             this.lsvTransactions.Size = new System.Drawing.Size(488, 261);
+            this.lsvTransactions.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lsvTransactions.TabIndex = 6;
             this.lsvTransactions.UseCompatibleStateImageBehavior = false;
             this.lsvTransactions.View = System.Windows.Forms.View.Details;
@@ -100,6 +103,7 @@
             // columnHeader16
             // 
             this.columnHeader16.Text = "Date";
+            this.columnHeader16.Width = 85;
             // 
             // columnHeader17
             // 
@@ -120,6 +124,7 @@
             this.lsvCorporateActions.Location = new System.Drawing.Point(552, 330);
             this.lsvCorporateActions.Name = "lsvCorporateActions";
             this.lsvCorporateActions.Size = new System.Drawing.Size(547, 261);
+            this.lsvCorporateActions.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lsvCorporateActions.TabIndex = 7;
             this.lsvCorporateActions.UseCompatibleStateImageBehavior = false;
             this.lsvCorporateActions.View = System.Windows.Forms.View.Details;
@@ -128,6 +133,7 @@
             // columnHeader19
             // 
             this.columnHeader19.Text = "Date";
+            this.columnHeader19.Width = 86;
             // 
             // columnHeader20
             // 
@@ -144,7 +150,7 @@
             this.tabIncome.Controls.Add(this.lsvIncome);
             this.tabIncome.Location = new System.Drawing.Point(4, 22);
             this.tabIncome.Name = "tabIncome";
-            this.tabIncome.Size = new System.Drawing.Size(1095, 220);
+            this.tabIncome.Size = new System.Drawing.Size(1095, 255);
             this.tabIncome.TabIndex = 2;
             this.tabIncome.Text = "Income";
             this.tabIncome.UseVisualStyleBackColor = true;
@@ -161,7 +167,7 @@
             this.lsvIncome.Location = new System.Drawing.Point(0, 0);
             this.lsvIncome.MultiSelect = false;
             this.lsvIncome.Name = "lsvIncome";
-            this.lsvIncome.Size = new System.Drawing.Size(1095, 220);
+            this.lsvIncome.Size = new System.Drawing.Size(1095, 255);
             this.lsvIncome.TabIndex = 2;
             this.lsvIncome.UseCompatibleStateImageBehavior = false;
             this.lsvIncome.View = System.Windows.Forms.View.Details;
@@ -195,7 +201,7 @@
             this.tabCGT.Location = new System.Drawing.Point(4, 22);
             this.tabCGT.Name = "tabCGT";
             this.tabCGT.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCGT.Size = new System.Drawing.Size(1095, 220);
+            this.tabCGT.Size = new System.Drawing.Size(1095, 255);
             this.tabCGT.TabIndex = 1;
             this.tabCGT.Text = "CGT";
             this.tabCGT.UseVisualStyleBackColor = true;
@@ -213,7 +219,7 @@
             this.lsvCGT.Location = new System.Drawing.Point(3, 3);
             this.lsvCGT.MultiSelect = false;
             this.lsvCGT.Name = "lsvCGT";
-            this.lsvCGT.Size = new System.Drawing.Size(1089, 214);
+            this.lsvCGT.Size = new System.Drawing.Size(1089, 249);
             this.lsvCGT.TabIndex = 1;
             this.lsvCGT.UseCompatibleStateImageBehavior = false;
             this.lsvCGT.View = System.Windows.Forms.View.Details;
@@ -252,7 +258,7 @@
             this.tabParcels.Controls.Add(this.lsvParcels);
             this.tabParcels.Location = new System.Drawing.Point(4, 22);
             this.tabParcels.Name = "tabParcels";
-            this.tabParcels.Size = new System.Drawing.Size(1095, 220);
+            this.tabParcels.Size = new System.Drawing.Size(1095, 255);
             this.tabParcels.TabIndex = 3;
             this.tabParcels.Text = "Parcels";
             this.tabParcels.UseVisualStyleBackColor = true;
@@ -272,7 +278,7 @@
             this.lsvParcels.Location = new System.Drawing.Point(0, 0);
             this.lsvParcels.MultiSelect = false;
             this.lsvParcels.Name = "lsvParcels";
-            this.lsvParcels.Size = new System.Drawing.Size(1095, 220);
+            this.lsvParcels.Size = new System.Drawing.Size(1095, 255);
             this.lsvParcels.TabIndex = 1;
             this.lsvParcels.UseCompatibleStateImageBehavior = false;
             this.lsvParcels.View = System.Windows.Forms.View.Details;
@@ -324,7 +330,7 @@
             this.tabPortfolio.Location = new System.Drawing.Point(4, 22);
             this.tabPortfolio.Name = "tabPortfolio";
             this.tabPortfolio.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPortfolio.Size = new System.Drawing.Size(1095, 220);
+            this.tabPortfolio.Size = new System.Drawing.Size(1095, 255);
             this.tabPortfolio.TabIndex = 0;
             this.tabPortfolio.Text = "Portfolio";
             this.tabPortfolio.UseVisualStyleBackColor = true;
@@ -344,7 +350,7 @@
             this.lsvPortfolio.Location = new System.Drawing.Point(3, 3);
             this.lsvPortfolio.MultiSelect = false;
             this.lsvPortfolio.Name = "lsvPortfolio";
-            this.lsvPortfolio.Size = new System.Drawing.Size(1089, 214);
+            this.lsvPortfolio.Size = new System.Drawing.Size(1089, 249);
             this.lsvPortfolio.TabIndex = 0;
             this.lsvPortfolio.UseCompatibleStateImageBehavior = false;
             this.lsvPortfolio.View = System.Windows.Forms.View.Details;
@@ -400,12 +406,14 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 28);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1103, 246);
+            this.tabControl1.Size = new System.Drawing.Size(1103, 281);
             this.tabControl1.TabIndex = 5;
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnSettings,
+            this.toolStripSeparator3,
             this.btnAddStock,
             this.toolStripSeparator2,
             this.btnAddDividend,
@@ -455,6 +463,21 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
+            this.btnSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(53, 22);
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // frmMain
             // 
@@ -527,6 +550,8 @@
         private System.Windows.Forms.ToolStripButton btnAddDividend;
         private System.Windows.Forms.ToolStripButton btnAddCapitalReturn;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton btnSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

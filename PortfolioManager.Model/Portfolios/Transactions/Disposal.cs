@@ -12,7 +12,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
-        public Guid Stock { get; set; }
+        public string ASXCode { get; set; }
         public int Units { get; set; }
         public decimal AveragePrice { get; set; }
         public decimal TransactionCosts { get; set; }
@@ -32,10 +32,10 @@ namespace PortfolioManager.Model.Portfolios
             Id = Guid.NewGuid();
         }
 
-        public Disposal(DateTime transactionDate, Guid stock, int units, decimal averagePrice, decimal transactionCosts, CGTCalculationMethod cgtMethod, string comment)
+        public Disposal(DateTime transactionDate, string asxCode, int units, decimal averagePrice, decimal transactionCosts, CGTCalculationMethod cgtMethod, string comment)
         {
             TransactionDate = transactionDate;
-            Stock = stock;
+            ASXCode = asxCode;
             Units = units;
             AveragePrice = averagePrice;
             TransactionCosts = transactionCosts;
