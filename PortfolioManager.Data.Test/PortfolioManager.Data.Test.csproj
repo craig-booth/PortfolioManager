@@ -46,6 +46,14 @@
   <ItemGroup>
     <Compile Include="Comparers.cs" />
     <Compile Include="Portfolio\PortfolioRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\AquisitionRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\CompareTransaction.cs" />
+    <Compile Include="Portfolio\Transactions\CostBaseAdjustmentRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\DisposalRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\IncomeReceivedRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\OpeningBalanceRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\ReturnOfCapitalRepositoryTest.cs" />
+    <Compile Include="Portfolio\Transactions\TransactionRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionRepositoryTest.cs" />
     <Compile Include="Stocks\RelativeNTARepositoryTest.cs" />
     <Compile Include="Stocks\StockQueryTest.cs" />

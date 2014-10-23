@@ -12,9 +12,8 @@ using System.Windows.Forms;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Data.Memory.Stocks;
-using PortfolioManager.Data.Memory.Portfolios;
 using PortfolioManager.Data.SQLite.Stocks;
+using PortfolioManager.Data.SQLite.Portfolios;
 
 namespace PortfolioManager.Test 
 {
@@ -55,18 +54,19 @@ namespace PortfolioManager.Test
 
         private void LoadDatabase()
         {
-            bool newDatabase = !System.IO.File.Exists(_Settings.StockDatabaseFile);
+            bool newStockDatabase = !System.IO.File.Exists(_Settings.StockDatabaseFile);
             IStockDatabase stockDatabase = new SQLiteStockDatabase("Data Source=" +  _Settings.StockDatabaseFile + ";Version=3;");
-            IPortfolioDatabase portfolioDatabase = new MemoryPortfolioDatabase();
+
+            bool newPortfolioDatabase = !System.IO.File.Exists(_Settings.PortfolioDatabaseFile);
+            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase("Data Source=" + _Settings.PortfolioDatabaseFile + ";Version=3;");
 
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(stockDatabase, portfolioDatabase);
 
-            if (newDatabase)
+            if (newStockDatabase)
             {
                 AddStocks();
                 AddCorporateActions();
             }
-
 
             _MyPortfolio = _PortfolioManager.CreatePortfolio("Craig's Shares");
 
@@ -77,7 +77,13 @@ namespace PortfolioManager.Test
             };
             _MyPortfolio.StockSetting.Add("ARG", stockSetting);
 
-            DisplayTransactions();
+            if (newPortfolioDatabase)
+            {
+                AddTransactions();
+               // DisplayTransactions();
+            }
+
+            
         }
 
         private void AddStocks()
@@ -202,6 +208,145 @@ namespace PortfolioManager.Test
             
         }
 
+        private void AddTransactions()
+        {
+            _MyPortfolio.AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2002, 01, 10),
+                ASXCode = "AGI",
+                Units = 2500,
+                AveragePrice = 1.14M,
+                TransactionCosts = 16.30M,
+                Comment = ""
+            }
+            );
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2005, 09, 30),
+                ASXCode = "AGIR",
+                Units = 804,
+                CostBase = 0.00M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new Disposal()
+            {
+                TransactionDate = new DateTime(2005, 10, 14),
+                ASXCode = "AGIR",
+                Units = 804,
+                AveragePrice = 0.06M,
+                TransactionCosts = 19.95M,
+                CGTMethod = CGTCalculationMethod.MinimizeGain,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2002, 02, 14),
+                ASXCode = "BCA",
+                Units = 750,
+                AveragePrice = 5.22M,
+                TransactionCosts = 16.30M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2003, 04, 28),
+                ASXCode = "BCA",
+                Units = 1250,
+                AveragePrice = 1.47M,
+                TransactionCosts = 16.30M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "ADZ",
+                Units = 1819,
+                CostBase = 1375.00M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new Disposal()
+            {
+                TransactionDate = new DateTime(2004, 11, 10),
+                ASXCode = "ADZ",
+                Units = 1819,
+                AveragePrice = 1.65M,
+                TransactionCosts = 19.95M,
+                CGTMethod = CGTCalculationMethod.MinimizeGain,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "AMP",
+                Units = 1125,
+                CostBase = 4633.75M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "HHG",
+                Units = 1125,
+                CostBase = 1330.70M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "FGL",
+                Units = 1125,
+                CostBase = 4633.75M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "NAB",
+                Units = 150,
+                CostBase = 4366.30M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "TLS",
+                Units = 1150,
+                CostBase = 7679.90M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2004, 07, 13),
+                ASXCode = "WDC",
+                Units = 350,
+                AveragePrice = 15.32M,
+                TransactionCosts = 19.95M,
+                Comment = ""
+            });
+
+            _MyPortfolio.AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2006, 01, 13),
+                ASXCode = "ARG",
+                Units = 300,
+                AveragePrice = 6.52M,
+                TransactionCosts = 19.95M,
+                Comment = ""
+            });  
+        }
+
         private void AddTransaction(ITransaction transaction)
         {
             ListViewItem item;
@@ -216,31 +361,141 @@ namespace PortfolioManager.Test
         {
             lsvTransactions2.Items.Clear();
 
-            AddTransaction(new Aquisition(new DateTime(2002, 01, 10), "AGI", 2500, 1.14M, 16.30M, ""));
+            AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2002, 01, 10),
+                ASXCode = "AGI",
+                Units = 2500,
+                AveragePrice = 1.14M,
+                TransactionCosts = 16.30M,
+                Comment = ""
+            }
+            );
 
-            AddTransaction(new OpeningBalance(new DateTime(2005, 09, 30), "AGIR", 804, 0.00M, "Renounceable rights issue"));
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2005, 09, 30),
+                ASXCode = "AGIR",
+                Units = 804,
+                CostBase = 0.00M,
+                Comment = ""
+            });
 
-            AddTransaction(new Disposal(new DateTime(2005, 10, 14), "AGIR", 804, 0.06M, 19.95M, CGTCalculationMethod.MinimizeGain, ""));
+            AddTransaction(new Disposal()
+            {
+                TransactionDate = new DateTime(2005, 10, 14),
+                ASXCode = "AGIR",
+                Units = 804,
+                AveragePrice = 0.06M,
+                TransactionCosts = 19.95M,
+                CGTMethod = CGTCalculationMethod.MinimizeGain,
+                Comment = ""
+            });
 
-            AddTransaction(new Aquisition(new DateTime(2002, 02, 14), "BCA", 750, 5.22M, 16.30M, ""));
-            AddTransaction(new Aquisition(new DateTime(2003, 04, 28), "BCA", 1250, 1.47M, 16.30M, ""));
+            AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2002, 02, 14),
+                ASXCode = "BCA",
+                Units = 750,
+                AveragePrice = 5.22M,
+                TransactionCosts = 16.30M,
+                Comment = ""
+            });
 
-            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "ADZ", 1819, 1375.00M, ""));
-            AddTransaction(new Disposal(new DateTime(2004, 11, 10), "ADZ", 1819, 1.65M, 19.95M, CGTCalculationMethod.MinimizeGain, ""));
+            AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2003, 04, 28),
+                ASXCode = "BCA",
+                Units = 1250,
+                AveragePrice = 1.47M,
+                TransactionCosts = 16.30M,
+                Comment = ""
+            });
 
-            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "AMP", 1125, 4633.75M, ""));
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "ADZ",
+                Units = 1819,
+                CostBase = 1375.00M,
+                Comment = ""
+            });
 
-            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "HHG", 1125, 1330.70M, "Demerger of HHG from AMP"));
+            AddTransaction(new Disposal()
+            {
+                TransactionDate = new DateTime(2004, 11, 10),
+                ASXCode = "ADZ",
+                Units = 1819,
+                AveragePrice = 1.65M,
+                TransactionCosts = 19.95M,
+                CGTMethod = CGTCalculationMethod.MinimizeGain,
+                Comment = ""
+            });
 
-            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "FGL", 1125, 4633.75M, ""));
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "AMP",
+                Units = 1125,
+                CostBase = 4633.75M,
+                Comment = ""
+            });
 
-            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "NAB", 150, 4366.30M, ""));
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "HHG",
+                Units = 1125,
+                CostBase = 1330.70M,
+                Comment = ""
+            });
 
-            AddTransaction(new OpeningBalance(new DateTime(2004, 07, 01), "TLS", 1150, 7679.90M, ""));
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "FGL",
+                Units = 1125,
+                CostBase = 4633.75M,
+                Comment = ""
+            });
 
-            AddTransaction(new Aquisition(new DateTime(2004, 07, 13), "WDC", 350, 15.32M, 19.95M, ""));
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "NAB",
+                Units = 150,
+                CostBase = 4366.30M,
+                Comment = ""
+            });
 
-            AddTransaction(new Aquisition(new DateTime(2006, 01, 13), "ARG", 300, 6.52M, 19.95M, ""));       
+            AddTransaction(new OpeningBalance()
+            {
+                TransactionDate = new DateTime(2004, 07, 01),
+                ASXCode = "TLS",
+                Units = 1150,
+                CostBase = 7679.90M,
+                Comment = ""
+            });
+
+            AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2004, 07, 13),
+                ASXCode = "WDC",
+                Units = 350,
+                AveragePrice = 15.32M,
+                TransactionCosts = 19.95M,
+                Comment = ""
+            });
+
+            AddTransaction(new Aquisition()
+            {
+                TransactionDate = new DateTime(2006, 01, 13),
+                ASXCode = "ARG",
+                Units = 300,
+                AveragePrice = 6.52M,
+                TransactionCosts = 19.95M,
+                Comment = ""
+            });      
         }
 
         private void DisplayCorporateActions()
@@ -325,7 +580,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = lsvTransactions2.FocusedItem.Tag as ITransaction;
             lsvTransactions2.FocusedItem.Remove();
 
-            _MyPortfolio.ApplyTransaction(transaction);
+            _MyPortfolio.AddTransaction(transaction);
      
             DisplayPortfolio();
             DisplayCorporateActions();
@@ -337,7 +592,7 @@ namespace PortfolioManager.Test
             lsvCorporateActions.FocusedItem.Remove();
 
             var transactions = corporateAction.CreateTransactionList(_MyPortfolio);
-            _MyPortfolio.ApplyTransactions(transactions);
+            _MyPortfolio.AddTransactions(transactions);
 
             DisplayPortfolio();
         }

@@ -31,5 +31,16 @@ namespace PortfolioManager.Model.Portfolios
                 return TransactionType.CostBaseAdjustment;
             }
         }
+
+        public CostBaseAdjustment()
+            : this (Guid.NewGuid())
+        {
+
+        }
+
+        public CostBaseAdjustment(Guid id)
+        {
+            Id = id;
+        }
     }
 }

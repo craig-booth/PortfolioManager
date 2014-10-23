@@ -46,19 +46,20 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return corpoarateAction;
         }
 
+        private SQLiteCommand _FindCorporateAction;
         public IReadOnlyCollection<ICorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var list = new List<ICorporateAction>();
 
-            if (_GetCorporateActionById == null)
+            if (_FindCorporateAction == null)
             {
-                _GetCorporateActionById = new SQLiteCommand("SELECT * FROM [CorporateActions] WHERE [Stock] = @Stock AND [ActionDate] BETWEEN @FromDate AND @ToDate", _Connection);
-                _GetCorporateActionById.Prepare();
+                _FindCorporateAction = new SQLiteCommand("SELECT * FROM [CorporateActions] WHERE [Stock] = @Stock AND [ActionDate] BETWEEN @FromDate AND @ToDate", _Connection);
+                _FindCorporateAction.Prepare();
             }
 
-            _GetCorporateActionById.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetCorporateActionById.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            _GetCorporateActionById.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
+            _FindCorporateAction.Parameters.AddWithValue("@Stock", stock.ToString());
+            _FindCorporateAction.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
+            _FindCorporateAction.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
 
             SQLiteDataReader reader = _GetCorporateActionById.ExecuteReader();
 

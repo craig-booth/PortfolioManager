@@ -28,18 +28,14 @@ namespace PortfolioManager.Model.Portfolios
         }
 
         public Aquisition()
+            : this (Guid.NewGuid())
         {
-            Id = Guid.NewGuid();
+
         }
 
-        public Aquisition(DateTime transactionDate, string asxCode, int units, decimal averagePrice, decimal transactionCosts, string comment)
+        public Aquisition(Guid id)
         {
-            TransactionDate = transactionDate;
-            ASXCode = asxCode;
-            Units = units;
-            AveragePrice = averagePrice;
-            TransactionCosts = transactionCosts;
-            Comment = comment;
+            Id = id;
         }
 
         public TransactionType Type
