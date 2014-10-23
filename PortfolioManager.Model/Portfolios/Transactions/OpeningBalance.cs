@@ -34,18 +34,14 @@ namespace PortfolioManager.Model.Portfolios
         }
 
         public OpeningBalance()
+            : this (Guid.NewGuid())
         {
-            Id = Guid.NewGuid();
+
         }
 
-        public OpeningBalance(DateTime transactionDate, string asxCode, int units, decimal costBase, string comment)
-            : this()
+        public OpeningBalance(Guid id)
         {
-            TransactionDate = transactionDate;
-            ASXCode = asxCode;
-            Units = units;
-            CostBase = costBase;
-            Comment = comment;
+            Id = id;
         }
     }
 }

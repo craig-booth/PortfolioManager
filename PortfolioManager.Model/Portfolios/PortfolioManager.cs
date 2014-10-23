@@ -30,14 +30,22 @@ namespace PortfolioManager.Model.Portfolios
         {
             Portfolio portfolio = new Portfolio(name, _PortfolioDatabase, _StockDatabase);
 
-            _PortfolioDatabase.CreateUnitOfWork().PortfolioRepository.Add(portfolio);
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.PortfolioRepository.Add(portfolio);
+                unitOfWork.Save();
+            }
 
             return portfolio;
         }
 
         public void DeletePortfolio(Portfolio portfolio)
         {
-            _PortfolioDatabase.CreateUnitOfWork().PortfolioRepository.Delete(portfolio);
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.PortfolioRepository.Delete(portfolio);
+                unitOfWork.Save();
+            }
         }
 
         public PortfolioManager(IStockDatabase stockDatabase, IPortfolioDatabase portfolioDatabase)

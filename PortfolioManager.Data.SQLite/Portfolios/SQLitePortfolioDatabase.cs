@@ -11,16 +11,27 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     public class SQLitePortfolioDatabase: SQLiteDatabase, IPortfolioDatabase
     {
+        /* TODO: remove this */
+        internal List<Portfolio> _Portfolios { get; private set; }
+        internal List<ShareParcel> _Parcels { get; private set; }
+        internal List<CGTEvent> _CGTEvents { get; private set; }
+        internal List<IncomeReceived> _IncomeReceived { get; private set; }
+
         public IPortfolioUnitOfWork CreateUnitOfWork()
         {
-            return null; //new SQLitePortfolioUnitOfWork(this);
+            return new SQLitePortfolioUnitOfWork(this);
         }
 
         public IPortfolioQuery PortfolioQuery {get; private set;}
 
         public SQLitePortfolioDatabase(string connectionString) : base(connectionString)
         {
-            // PortfolioQuery = new SQLitePortfolioQuery(this);
+            PortfolioQuery = new SQLitePortfolioQuery(this);
+
+            _Portfolios = new List<Portfolio>();
+            _Parcels = new List<ShareParcel>();
+            _CGTEvents = new List<CGTEvent>();
+            _IncomeReceived = new List<IncomeReceived>();
         }
 
         protected override void CreateDatabaseTables()

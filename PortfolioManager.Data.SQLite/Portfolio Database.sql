@@ -1,102 +1,83 @@
-CREATE TABLE [Stocks]
+CREATE TABLE [Transactions]
 (
 	[Id] TEXT(36) NOT NULL,
-	[FromDate] TEXT(10) NOT NULL,
-	[ToDate] TEXT(10) NOT NULL,
+	[TransactionDate] TEXT(10) NOT NULL,
+	[Type] INTEGER NOT NULL,
 	[ASXCode] TEXT(6) NOT NULL,
-	[Name] TEXT(50)  NOT NULL,
-	[Type] INTEGER NOT NULL,
-	[Parent] TEXT(36) NOT NULL,
+	[Description] TEXT(200)  NOT NULL,
 	
-	PRIMARY KEY ([Id], [FromDate])
-);
-CREATE UNIQUE INDEX [Index_Stocks_ByASXCode] ON [Stocks]
-(
-        [ASXCode]  ASC
-);
-CREATE INDEX [Index_Stocks_ByParent] ON [Stocks]
-(
-        [Parent]  ASC
-);
-
-
-CREATE TABLE [RelativeNTAs]
-(
-		[Id] TEXT(36) NOT NULL,
-        [Date] TEXT(10) NOT NULL,
-        [Parent] TEXT(36) NOT NULL,
-        [Child] TEXT(36) NOT NULL,
-        [Percentage] INTEGER,
-
 	PRIMARY KEY ([Id])
 );
-CREATE UNIQUE INDEX [Index_RelativeNTAs_ByParent] ON [RelativeNTAs]
+CREATE INDEX [Index_Transactions_ByASXCode] ON [Transactions]
 (
-        [Parent] ASC,
-	    [Date] ASC,
-	    [Child] ASC
+        [ASXCode]  ASC,
+		[TransactionDate] ASC
 );
 
-CREATE UNIQUE INDEX [Index_RelativeNTAs_ByChild] ON [RelativeNTAs]
-(
-        [Child]  ASC,
-        [Date] ASC
-);
-
-
-CREATE TABLE [CorporateActions]
+CREATE TABLE [Aquisitions]
 (
 	[Id] TEXT(36) NOT NULL,
-        [Stock]  TEXT(36) NOT NULL,
-        [ActionDate] TEXT(10) NOT NULL,
-        [Description] TEXT(50) NOT NULL,
-	[Type] INTEGER NOT NULL,
-
-	PRIMARY KEY ([Id])
-);
-CREATE INDEX [Index_CorporateActions_ByStock] ON [CorporateActions]
-(
-        [Stock]  ASC,
-        [ActionDate]  ASC
-);
-
-CREATE TABLE [Dividends]
-(
-	[Id] TEXT(36) NOT NULL,
-        [PaymentDate] TEXT(10) NOT NULL,
-        [DividendAmount] INTEGER NOT NULL,
-        [CompanyTaxRate] INTEGER NOT NULL,
-        [PercentFranked] INTEGER NOT NULL,
-        [DRPPrice] INTEGER NOT NULL,
-
+	[Units] INTEGER NOT NULL,
+	[AveragePrice] INTEGER NOT NULL,
+	[TransactionCosts] INTEGER NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
 	PRIMARY KEY ([Id])
 );
 
-CREATE TABLE [CapitalReturns]
+CREATE TABLE [CostBaseAdjustments]
 (
 	[Id] TEXT(36) NOT NULL,
-        [PaymentDate] TEXT(10) NOT NULL,
-        [Amount] INTEGER NOT NULL,
-
+	[Percentage] INTEGER NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
 	PRIMARY KEY ([Id])
 );
 
-CREATE TABLE [Transformations]
+
+CREATE TABLE [Disposals]
 (
 	[Id] TEXT(36) NOT NULL,
-        [ImplementationDate] TEXT(10) NOT NULL,
-        [CashComponent] INTEGER NOT NULL,
-
+	[Units] INTEGER NOT NULL,
+	[AveragePrice] INTEGER NOT NULL,
+	[TransactionCosts] INTEGER NOT NULL,
+	[CGTMethod] INTEGER NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
 	PRIMARY KEY ([Id])
 );
 
-CREATE TABLE [TransformationResultingStocks]
+
+CREATE TABLE [IncomeReceived]
 (
 	[Id] TEXT(36) NOT NULL,
-	[Stock]  TEXT(36) NOT NULL,
-        [OriginalUnits] INTEGER NOT NULL,
-        [NewUnits] INTEGER NOT NULL,
-        [CostBasePercentage] INTEGER NOT NULL,
+	[FrankedAmount] INTEGER NOT NULL,
+	[UnfrankedAmount] INTEGER NOT NULL,
+	[FrankingCredits] INTEGER NOT NULL,
+	[Interest] INTEGER NOT NULL,
+	[TaxDeferred] INTEGER  NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
+	PRIMARY KEY ([Id])
+);
 
-	PRIMARY KEY ([Id], [Stock])
+
+CREATE TABLE [OpeningBalances]
+(
+	[Id] TEXT(36) NOT NULL,
+	[Units] INTEGER NOT NULL,
+	[CostBase] INTEGER NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
+	PRIMARY KEY ([Id])
+);
+
+
+CREATE TABLE [ReturnsOfCapital]
+(
+	[Id] TEXT(36) NOT NULL,
+	[Amount] INTEGER NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
+	PRIMARY KEY ([Id])
 );

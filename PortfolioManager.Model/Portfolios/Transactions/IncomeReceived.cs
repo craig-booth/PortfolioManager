@@ -53,9 +53,16 @@ namespace PortfolioManager.Model.Portfolios
         }
 
         public IncomeReceived()
+            : this (Guid.NewGuid())
         {
-            Id = Guid.NewGuid();
+
         }
+
+        public IncomeReceived(Guid id)
+        {
+            Id = id;
+        }
+
     }
     
 }

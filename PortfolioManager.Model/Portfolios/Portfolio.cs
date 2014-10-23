@@ -150,7 +150,41 @@ namespace PortfolioManager.Model.Portfolios
             StockSetting = new Dictionary<string, StockSetting>();
         }
 
-        public void ApplyTransactions(IEnumerable<ITransaction> transactions)
+        public void AddTransactions(IEnumerable<ITransaction> transactions)
+        {
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                foreach (ITransaction transaction in transactions)
+                {
+                    unitOfWork.TransactionRepository.Add(transaction);
+                //    ApplyTransaction(transaction);
+                };
+                unitOfWork.Save();
+            }       
+        }
+
+        public void AddTransaction(ITransaction transaction)
+        {
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.TransactionRepository.Add(transaction);
+                unitOfWork.Save();
+            }
+
+            ApplyTransaction(transaction);
+        }
+
+        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, fromDate, toDate);
+        }
+
+        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, asxCode, fromDate, toDate);
+        }
+
+        private void ApplyTransactions(IEnumerable<ITransaction> transactions)
         {
             foreach (ITransaction transaction in transactions)
             {
@@ -158,7 +192,7 @@ namespace PortfolioManager.Model.Portfolios
             };
         }
 
-        public void ApplyTransaction(ITransaction transaction)
+        private void ApplyTransaction(ITransaction transaction)
         {
             if (transaction is Aquisition)
                 ApplyTransaction(transaction as Aquisition);
@@ -178,7 +212,7 @@ namespace PortfolioManager.Model.Portfolios
             UpdateHoldings(transaction.ASXCode);
         }
 
-        public void ApplyTransaction(Aquisition aquisition)
+        private void ApplyTransaction(Aquisition aquisition)
         {
             ShareParcel newParcel;
 
@@ -186,8 +220,6 @@ namespace PortfolioManager.Model.Portfolios
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Add(aquisition);
-
                 decimal costBase = aquisition.Units * aquisition.AveragePrice;
                 decimal amountPaid = costBase + aquisition.TransactionCosts;
 
@@ -198,14 +230,12 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public void ApplyTransaction(Disposal disposal)
+        private void ApplyTransaction(Disposal disposal)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(disposal.ASXCode);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Add(disposal);
-
                 /* Create CGT calculator */
                 var CGTCalculator = new CGTCalculator();
 
@@ -224,14 +254,12 @@ namespace PortfolioManager.Model.Portfolios
         }
 
 
-        public void ApplyTransaction(OpeningBalance openingBalance)
+        private void ApplyTransaction(OpeningBalance openingBalance)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(openingBalance.ASXCode);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Add(openingBalance);
-
                 var parcel = new ShareParcel(_PortfolioDatabase, openingBalance.TransactionDate, stock.Id, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
                 AddParcel(parcel);
 
@@ -239,15 +267,13 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public void ApplyTransaction(CostBaseAdjustment costBaseAdjustment)
+        private void ApplyTransaction(CostBaseAdjustment costBaseAdjustment)
         {
 
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Add(costBaseAdjustment);
-
                 /* locate parcels that the dividend applies to */
                 var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, costBaseAdjustment.TransactionDate);
 
@@ -261,14 +287,12 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public void ApplyTransaction(ReturnOfCapital returnOfCapital)
+        private void ApplyTransaction(ReturnOfCapital returnOfCapital)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Add(returnOfCapital);
-
                 /* locate parcels that the dividend applies to */
                 var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, returnOfCapital.TransactionDate);
 
@@ -283,14 +307,9 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public void ApplyTransaction(IncomeReceived incomeReceived)
+        private void ApplyTransaction(IncomeReceived incomeReceived)
         {
-            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
-            {
-                unitOfWork.TransactionRepository.Add(incomeReceived);
-
-                unitOfWork.Save();
-            }
+            /* No need to do anything */
         }
 
         private void AddParcel(ShareParcel parcel)

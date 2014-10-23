@@ -28,19 +28,14 @@ namespace PortfolioManager.Model.Portfolios
         }
 
         public Disposal()
+            : this (Guid.NewGuid())
         {
-            Id = Guid.NewGuid();
+
         }
 
-        public Disposal(DateTime transactionDate, string asxCode, int units, decimal averagePrice, decimal transactionCosts, CGTCalculationMethod cgtMethod, string comment)
+        public Disposal(Guid id)
         {
-            TransactionDate = transactionDate;
-            ASXCode = asxCode;
-            Units = units;
-            AveragePrice = averagePrice;
-            TransactionCosts = transactionCosts;
-            Comment = comment;
-            CGTMethod = cgtMethod;
+            Id = id;
         }
 
         public TransactionType Type

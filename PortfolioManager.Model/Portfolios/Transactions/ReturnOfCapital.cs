@@ -32,5 +32,17 @@ namespace PortfolioManager.Model.Portfolios
                 return TransactionType.ReturnOfCapital;
             }
         }
+
+        public ReturnOfCapital()
+            : this (Guid.NewGuid())
+        {
+
+        }
+
+        public ReturnOfCapital(Guid id)
+        {
+            Id = id;
+        }
+
     }
 }

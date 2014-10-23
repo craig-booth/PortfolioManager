@@ -57,20 +57,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Portfolios\PortfolioDatabase.cs" />
+    <Compile Include="Portfolios\SQLiteCGTEventRepository.cs" />
+    <Compile Include="Portfolios\SQLiteParcelRepository.cs" />
+    <Compile Include="Portfolios\SQLitePortfolioDatabase.cs" />
+    <Compile Include="Portfolios\SQLitePortfolioEntityCreator.cs" />
+    <Compile Include="Portfolios\SQLitePortfolioQuery.cs" />
+    <Compile Include="Portfolios\SQLitePortfolioRepository.cs" />
+    <Compile Include="Portfolios\SQLitePortfolioUnitOfWork.cs" />
+    <Compile Include="Portfolios\SQLiteTransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="SQLiteEffectiveDatedRepository.cs" />
     <Compile Include="SQLiteRepository.cs" />
     <Compile Include="SQLiteRepositoryTransaction.cs" />
-    <Compile Include="Stocks\CorporateActionQuery.cs" />
+    <Compile Include="Stocks\SQLiteCorporateActionQuery.cs" />
     <Compile Include="Stocks\CorporateActionRepository.cs" />
-    <Compile Include="Stocks\RelativeNTARepository.cs" />
-    <Compile Include="Stocks\StockDatabase.cs" />
-    <Compile Include="Stocks\EntityCreator.cs" />
-    <Compile Include="Stocks\StockQuery.cs" />
-    <Compile Include="Stocks\StockRepository.cs" />
-    <Compile Include="Stocks\StockUnitOfWork.cs" />
+    <Compile Include="Stocks\SQLiteRelateNTARepository.cs" />
+    <Compile Include="Stocks\SQLiteStockDatabase.cs" />
+    <Compile Include="Stocks\SQLiteStockEntityCreator.cs" />
+    <Compile Include="Stocks\SQLiteStockQuery.cs" />
+    <Compile Include="Stocks\SQLiteStockRepository.cs" />
+    <Compile Include="Stocks\SQLiteStockUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">
@@ -83,7 +90,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Portfolio Database.sql" />
+    <Content Include="Portfolio Database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Stock Database.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
