@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmAquisition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAquisition.Designer.cs">
+      <DependentUpon>frmAquisition.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDividend.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +77,9 @@
     <Compile Include="PortfolioManagerSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmAquisition.resx">
+      <DependentUpon>frmAquisition.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDividend.resx">
       <DependentUpon>frmDividend.cs</DependentUpon>
     </EmbeddedResource>

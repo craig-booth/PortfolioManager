@@ -41,7 +41,7 @@ namespace PortfolioManager.Test
         {
             InitializeComponent();
 
-            lsvTransactions.ListViewItemSorter = new ListViewTransactionComparer();
+            lsvTransactions2.ListViewItemSorter = new ListViewTransactionComparer();
 
             _Settings = PortfolioManagerSettings.Load();
             if (_Settings != null)
@@ -206,7 +206,7 @@ namespace PortfolioManager.Test
         {
             ListViewItem item;
 
-            item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
+            item = lsvTransactions2.Items.Add(transaction.TransactionDate.ToShortDateString());
             item.SubItems.Add(transaction.ASXCode);
             item.SubItems.Add(transaction.Description);
             item.Tag = transaction;
@@ -214,7 +214,7 @@ namespace PortfolioManager.Test
 
         private void DisplayTransactions()
         {
-            lsvTransactions.Items.Clear();
+            lsvTransactions2.Items.Clear();
 
             AddTransaction(new Aquisition(new DateTime(2002, 01, 10), "AGI", 2500, 1.14M, 16.30M, ""));
 
@@ -307,13 +307,23 @@ namespace PortfolioManager.Test
                 item.SubItems.Add(income.CashIncome.ToString("c"));
                 item.SubItems.Add(income.FrankingCredits.ToString("c"));
             }
+
+            /* Transactions */
+            lsvTransactions.Items.Clear();
+            var allTransactions = _MyPortfolio.GetTransactions(new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
+            foreach (ITransaction transaction in allTransactions)
+            {
+                var item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
+                item.SubItems.Add(transaction.ASXCode);
+                item.SubItems.Add(transaction.Description);
+            }
         }
 
         private void lsvTransactions_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
-            ITransaction transaction = lsvTransactions.FocusedItem.Tag as ITransaction;
-            lsvTransactions.FocusedItem.Remove();
+            ITransaction transaction = lsvTransactions2.FocusedItem.Tag as ITransaction;
+            lsvTransactions2.FocusedItem.Remove();
 
             _MyPortfolio.ApplyTransaction(transaction);
      
@@ -351,6 +361,21 @@ namespace PortfolioManager.Test
             {
                 LoadDatabase();
             }
+        }
+
+        private void btnAddAquisition_Click(object sender, EventArgs e)
+        {
+            Aquisition aquisition = frmAquisition.AddAquisition(_PortfolioManager.StockManager);
+            if (aquisition != null)
+            {
+                _MyPortfolio.ApplyTransaction(aquisition);
+
+                DisplayPortfolio();
+                DisplayCorporateActions();
+            }
+            
+    
+
         }
 
 

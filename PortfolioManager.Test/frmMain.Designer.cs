@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            this.lsvTransactions = new System.Windows.Forms.ListView();
+            this.lsvTransactions2 = new System.Windows.Forms.ListView();
             this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader17 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader18 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -69,36 +69,48 @@
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabTransactions = new System.Windows.Forms.TabPage();
+            this.lsvTransactions = new System.Windows.Forms.ListView();
+            this.colDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colASXCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSettings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAddStock = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnAddDividend = new System.Windows.Forms.ToolStripButton();
-            this.btnAddCapitalReturn = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.btnAddAquisition = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddDisposal = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddOpeningBalance = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddIncomeReceived = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddReturnOfCapital = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddCostbaseAdjustment = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddDividend = new System.Windows.Forms.ToolStripDropDownButton();
+            this.dividendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabIncome.SuspendLayout();
             this.tabCGT.SuspendLayout();
             this.tabParcels.SuspendLayout();
             this.tabPortfolio.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabTransactions.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lsvTransactions
+            // lsvTransactions2
             // 
-            this.lsvTransactions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lsvTransactions2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader16,
             this.columnHeader17,
             this.columnHeader18});
-            this.lsvTransactions.Location = new System.Drawing.Point(7, 330);
-            this.lsvTransactions.Name = "lsvTransactions";
-            this.lsvTransactions.Size = new System.Drawing.Size(488, 261);
-            this.lsvTransactions.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.lsvTransactions.TabIndex = 6;
-            this.lsvTransactions.UseCompatibleStateImageBehavior = false;
-            this.lsvTransactions.View = System.Windows.Forms.View.Details;
-            this.lsvTransactions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lsvTransactions_MouseDoubleClick);
+            this.lsvTransactions2.Location = new System.Drawing.Point(7, 330);
+            this.lsvTransactions2.Name = "lsvTransactions2";
+            this.lsvTransactions2.Size = new System.Drawing.Size(488, 261);
+            this.lsvTransactions2.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lsvTransactions2.TabIndex = 6;
+            this.lsvTransactions2.UseCompatibleStateImageBehavior = false;
+            this.lsvTransactions2.View = System.Windows.Forms.View.Details;
+            this.lsvTransactions2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lsvTransactions_MouseDoubleClick);
             // 
             // columnHeader16
             // 
@@ -402,11 +414,50 @@
             this.tabControl1.Controls.Add(this.tabParcels);
             this.tabControl1.Controls.Add(this.tabCGT);
             this.tabControl1.Controls.Add(this.tabIncome);
+            this.tabControl1.Controls.Add(this.tabTransactions);
             this.tabControl1.Location = new System.Drawing.Point(0, 28);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1103, 281);
             this.tabControl1.TabIndex = 5;
+            // 
+            // tabTransactions
+            // 
+            this.tabTransactions.Controls.Add(this.lsvTransactions);
+            this.tabTransactions.Location = new System.Drawing.Point(4, 22);
+            this.tabTransactions.Name = "tabTransactions";
+            this.tabTransactions.Size = new System.Drawing.Size(1095, 255);
+            this.tabTransactions.TabIndex = 4;
+            this.tabTransactions.Text = "Transactions";
+            this.tabTransactions.UseVisualStyleBackColor = true;
+            // 
+            // lsvTransactions
+            // 
+            this.lsvTransactions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colDate,
+            this.colASXCode,
+            this.colDescription});
+            this.lsvTransactions.Location = new System.Drawing.Point(0, 3);
+            this.lsvTransactions.Name = "lsvTransactions";
+            this.lsvTransactions.Size = new System.Drawing.Size(1099, 249);
+            this.lsvTransactions.TabIndex = 0;
+            this.lsvTransactions.UseCompatibleStateImageBehavior = false;
+            this.lsvTransactions.View = System.Windows.Forms.View.Details;
+            // 
+            // colDate
+            // 
+            this.colDate.Text = "Date";
+            this.colDate.Width = 78;
+            // 
+            // colASXCode
+            // 
+            this.colASXCode.Text = "ASX Code";
+            this.colASXCode.Width = 90;
+            // 
+            // colDescription
+            // 
+            this.colDescription.Text = "Description";
+            this.colDescription.Width = 637;
             // 
             // toolStrip1
             // 
@@ -415,9 +466,8 @@
             this.toolStripSeparator3,
             this.btnAddStock,
             this.toolStripSeparator2,
-            this.btnAddDividend,
-            this.btnAddCapitalReturn,
-            this.toolStripSeparator1});
+            this.toolStripDropDownButton1,
+            this.btnAddDividend});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1103, 25);
@@ -453,29 +503,76 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnAddAquisition,
+            this.btnAddDisposal,
+            this.btnAddOpeningBalance,
+            this.btnAddIncomeReceived,
+            this.btnAddReturnOfCapital,
+            this.btnAddCostbaseAdjustment});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(107, 22);
+            this.toolStripDropDownButton1.Text = "Add Transaction";
+            // 
+            // btnAddAquisition
+            // 
+            this.btnAddAquisition.Name = "btnAddAquisition";
+            this.btnAddAquisition.Size = new System.Drawing.Size(187, 22);
+            this.btnAddAquisition.Text = "Aquisition";
+            this.btnAddAquisition.Click += new System.EventHandler(this.btnAddAquisition_Click);
+            // 
+            // btnAddDisposal
+            // 
+            this.btnAddDisposal.Name = "btnAddDisposal";
+            this.btnAddDisposal.Size = new System.Drawing.Size(187, 22);
+            this.btnAddDisposal.Text = "Disposal";
+            // 
+            // btnAddOpeningBalance
+            // 
+            this.btnAddOpeningBalance.Name = "btnAddOpeningBalance";
+            this.btnAddOpeningBalance.Size = new System.Drawing.Size(187, 22);
+            this.btnAddOpeningBalance.Text = "Opening Balance";
+            // 
+            // btnAddIncomeReceived
+            // 
+            this.btnAddIncomeReceived.Name = "btnAddIncomeReceived";
+            this.btnAddIncomeReceived.Size = new System.Drawing.Size(187, 22);
+            this.btnAddIncomeReceived.Text = "Income Received";
+            // 
+            // btnAddReturnOfCapital
+            // 
+            this.btnAddReturnOfCapital.Name = "btnAddReturnOfCapital";
+            this.btnAddReturnOfCapital.Size = new System.Drawing.Size(187, 22);
+            this.btnAddReturnOfCapital.Text = "Return of Capital";
+            // 
+            // btnAddCostbaseAdjustment
+            // 
+            this.btnAddCostbaseAdjustment.Name = "btnAddCostbaseAdjustment";
+            this.btnAddCostbaseAdjustment.Size = new System.Drawing.Size(187, 22);
+            this.btnAddCostbaseAdjustment.Text = "Costbase Adjustment";
+            // 
             // btnAddDividend
             // 
             this.btnAddDividend.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnAddDividend.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dividendToolStripMenuItem});
             this.btnAddDividend.Image = ((System.Drawing.Image)(resources.GetObject("btnAddDividend.Image")));
             this.btnAddDividend.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddDividend.Name = "btnAddDividend";
-            this.btnAddDividend.Size = new System.Drawing.Size(83, 22);
-            this.btnAddDividend.Text = "Add Dividend";
-            this.btnAddDividend.Click += new System.EventHandler(this.btnAddDividend_Click);
+            this.btnAddDividend.Size = new System.Drawing.Size(139, 22);
+            this.btnAddDividend.Text = "Add Corporate  Action";
             // 
-            // btnAddCapitalReturn
+            // dividendToolStripMenuItem
             // 
-            this.btnAddCapitalReturn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnAddCapitalReturn.Image = ((System.Drawing.Image)(resources.GetObject("btnAddCapitalReturn.Image")));
-            this.btnAddCapitalReturn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnAddCapitalReturn.Name = "btnAddCapitalReturn";
-            this.btnAddCapitalReturn.Size = new System.Drawing.Size(111, 22);
-            this.btnAddCapitalReturn.Text = "Add Capital Return";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.dividendToolStripMenuItem.Name = "dividendToolStripMenuItem";
+            this.dividendToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dividendToolStripMenuItem.Text = "Dividend";
+            this.dividendToolStripMenuItem.Click += new System.EventHandler(this.btnAddDividend_Click);
             // 
             // frmMain
             // 
@@ -484,7 +581,7 @@
             this.ClientSize = new System.Drawing.Size(1103, 603);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.lsvCorporateActions);
-            this.Controls.Add(this.lsvTransactions);
+            this.Controls.Add(this.lsvTransactions2);
             this.Controls.Add(this.tabControl1);
             this.Name = "frmMain";
             this.Text = "Portfolio Manager";
@@ -493,6 +590,7 @@
             this.tabParcels.ResumeLayout(false);
             this.tabPortfolio.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabTransactions.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -502,7 +600,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView lsvTransactions;
+        private System.Windows.Forms.ListView lsvTransactions2;
         private System.Windows.Forms.ColumnHeader columnHeader16;
         private System.Windows.Forms.ColumnHeader columnHeader17;
         private System.Windows.Forms.ColumnHeader columnHeader18;
@@ -545,11 +643,22 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnAddStock;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton btnAddDividend;
-        private System.Windows.Forms.ToolStripButton btnAddCapitalReturn;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btnSettings;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.TabPage tabTransactions;
+        private System.Windows.Forms.ListView lsvTransactions;
+        private System.Windows.Forms.ColumnHeader colDate;
+        private System.Windows.Forms.ColumnHeader colASXCode;
+        private System.Windows.Forms.ColumnHeader colDescription;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem btnAddAquisition;
+        private System.Windows.Forms.ToolStripMenuItem btnAddDisposal;
+        private System.Windows.Forms.ToolStripMenuItem btnAddOpeningBalance;
+        private System.Windows.Forms.ToolStripMenuItem btnAddIncomeReceived;
+        private System.Windows.Forms.ToolStripMenuItem btnAddReturnOfCapital;
+        private System.Windows.Forms.ToolStripMenuItem btnAddCostbaseAdjustment;
+        private System.Windows.Forms.ToolStripDropDownButton btnAddDividend;
+        private System.Windows.Forms.ToolStripMenuItem dividendToolStripMenuItem;
     }
 }
 

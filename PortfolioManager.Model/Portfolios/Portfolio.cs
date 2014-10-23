@@ -135,6 +135,11 @@ namespace PortfolioManager.Model.Portfolios
             return incomeQuery.ToList().AsReadOnly(); 
         }
 
+        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(this.Id, fromDate, toDate);
+        }
+
         private Portfolio(string name)
         {
             Id = Guid.NewGuid();

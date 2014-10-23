@@ -82,9 +82,5 @@ namespace PortfolioManager.Test
 
         }
 
-        private void frmDividend_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

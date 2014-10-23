@@ -207,7 +207,6 @@
             this.Controls.Add(this.cboASXCode);
             this.Name = "frmDividend";
             this.Text = "frmDividend";
-            this.Load += new System.EventHandler(this.frmDividend_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
