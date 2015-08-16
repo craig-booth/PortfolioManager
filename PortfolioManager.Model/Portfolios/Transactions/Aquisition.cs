@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 
 namespace PortfolioManager.Model.Portfolios
@@ -23,7 +24,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             get
             {
-                return "Aquired " + Units.ToString("n0") + " shares @ " + AveragePrice.ToString("c");
+                return "Aquired " + Units.ToString("n0") + " shares @ " + MathUtils.FormatCurrency(AveragePrice, false, true);
             }
         }
 

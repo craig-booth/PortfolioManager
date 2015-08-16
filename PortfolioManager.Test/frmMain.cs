@@ -12,18 +12,21 @@ using System.Windows.Forms;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Utils;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 
 namespace PortfolioManager.Test 
 {
-    public enum Mode { Create, Display, Edit, Delete };
+    public enum Mode { Create, View, Edit, Delete };
 
     public partial class frmMain : Form
     {
         private PortfolioManagerSettings _Settings;
         private PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
         private Portfolio _MyPortfolio;
+
+        private int _FinancialYear;
 
         private class ListViewTransactionComparer : IComparer
         {
@@ -49,302 +52,29 @@ namespace PortfolioManager.Test
             {
                 _Settings = new PortfolioManagerSettings();
                 btnSettings_Click(null, null);
-            }
+            }          
         }
 
         private void LoadDatabase()
-        {
-            bool newStockDatabase = !System.IO.File.Exists(_Settings.StockDatabaseFile);
+        {         
             IStockDatabase stockDatabase = new SQLiteStockDatabase("Data Source=" +  _Settings.StockDatabaseFile + ";Version=3;");
 
-            bool newPortfolioDatabase = !System.IO.File.Exists(_Settings.PortfolioDatabaseFile);
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase("Data Source=" + _Settings.PortfolioDatabaseFile + ";Version=3;");
 
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(stockDatabase, portfolioDatabase);
 
-            if (newStockDatabase)
-            {
-                AddStocks();
-                AddCorporateActions();
-            }
-
             _MyPortfolio = _PortfolioManager.CreatePortfolio("Craig's Shares");
 
-            /* TODO: should add this when purchasing */
+            /* TODO: Priority Low, should add this when purchasing */
             var stockSetting = new StockSetting("ARG")
             {
                 DRPActive = true
             };
             _MyPortfolio.StockSetting.Add("ARG", stockSetting);
 
-            if (newPortfolioDatabase)
-            {
-                AddTransactions();
-               // DisplayTransactions();
-            }
-
+            cboFinancialYear.SelectedIndex = 0;
+            DisplayCorporateActions();
             
-        }
-
-        private void AddStocks()
-        {
-
-            _PortfolioManager.StockManager.AddStock("ADZ", "Adsteam Marine");
-            _PortfolioManager.StockManager.AddStock("ARG", "Argo Investments");
-            _PortfolioManager.StockManager.AddStock("FGL", "Fosters");
-            _PortfolioManager.StockManager.AddStock("AMP", "AMP Limited");
-            _PortfolioManager.StockManager.AddStock("HHG", "Henderson Group PLC");
-            _PortfolioManager.StockManager.AddStock("NAB", "National Australia Bank");
-            _PortfolioManager.StockManager.AddStock("TLS", "Telstra");
-            _PortfolioManager.StockManager.AddStock("AGI", "Ainsworth Game Tech");
-            _PortfolioManager.StockManager.AddStock("BCA", "Baycorp Advantage Limited");
-            _PortfolioManager.StockManager.AddStock("TWE", "Treasury Wine Estate", new DateTime(2011, 05, 20));
-            _PortfolioManager.StockManager.AddStock("AGIR", "Ainsworth Game Tech Rights 2005", new DateTime(2005, 08, 29));
-
-            var WDC = _PortfolioManager.StockManager.AddStock("WDC", "Westfield Group", StockType.StapledSecurity);
-            var WSF = _PortfolioManager.StockManager.AddStock("WSF", "Westfield Holdings Limited", StockType.Ordinary, WDC);
-            var WFT = _PortfolioManager.StockManager.AddStock("WFT", "Westfield Trust", StockType.Trust, WDC);
-            var WFA = _PortfolioManager.StockManager.AddStock("WFA", "Westfield America Trust", StockType.Trust, WDC);
-
-            /* Assume nta prior to merger is same as december */
-            WSF.AddRelativeNTA(new DateTime(2004, 06, 30), 0.0924M);
-            WFT.AddRelativeNTA(new DateTime(2004, 06, 30), 0.4986M);
-            WFA.AddRelativeNTA(new DateTime(2004, 06, 30), 0.4090M);
-            WSF.AddRelativeNTA(new DateTime(2004, 12, 31), 0.0924M);
-            WFT.AddRelativeNTA(new DateTime(2004, 12, 31), 0.4986M);
-            WFA.AddRelativeNTA(new DateTime(2004, 12, 31), 0.4090M);
-            WSF.AddRelativeNTA(new DateTime(2005, 06, 30), 0.0711M);
-            WFT.AddRelativeNTA(new DateTime(2005, 06, 30), 0.5195M);
-            WFA.AddRelativeNTA(new DateTime(2005, 06, 30), 0.4094M);
-            WSF.AddRelativeNTA(new DateTime(2005, 12, 31), 0.0805M);
-            WFT.AddRelativeNTA(new DateTime(2005, 12, 31), 0.5166M);
-            WFA.AddRelativeNTA(new DateTime(2005, 12, 31), 0.4029M);
-            WSF.AddRelativeNTA(new DateTime(2006, 06, 30), 0.0802M);
-            WFT.AddRelativeNTA(new DateTime(2006, 06, 30), 0.5490M);
-            WFA.AddRelativeNTA(new DateTime(2006, 06, 30), 0.3708M);
-            WSF.AddRelativeNTA(new DateTime(2006, 12, 31), 0.0738M);
-            WFT.AddRelativeNTA(new DateTime(2006, 12, 31), 0.5843M);
-            WFA.AddRelativeNTA(new DateTime(2006, 12, 31), 0.3419M);
-            WSF.AddRelativeNTA(new DateTime(2007, 06, 30), 0.0754M);
-            WFT.AddRelativeNTA(new DateTime(2007, 06, 30), 0.5922M);
-            WFA.AddRelativeNTA(new DateTime(2007, 06, 30), 0.3324M);
-            WSF.AddRelativeNTA(new DateTime(2007, 12, 31), 0.0807M);
-            WFT.AddRelativeNTA(new DateTime(2007, 12, 31), 0.6246M);
-            WFA.AddRelativeNTA(new DateTime(2007, 12, 31), 0.2947M);
-            WSF.AddRelativeNTA(new DateTime(2008, 06, 30), 0.0683M);
-            WFT.AddRelativeNTA(new DateTime(2008, 06, 30), 0.6529M);
-            WFA.AddRelativeNTA(new DateTime(2008, 06, 30), 0.2788M);
-            WSF.AddRelativeNTA(new DateTime(2008, 12, 31), 0.0570M);
-            WFT.AddRelativeNTA(new DateTime(2008, 12, 31), 0.6572M);
-            WFA.AddRelativeNTA(new DateTime(2008, 12, 31), 0.2858M);
-            WSF.AddRelativeNTA(new DateTime(2009, 06, 30), 0.0463M);
-            WFT.AddRelativeNTA(new DateTime(2009, 06, 30), 0.7132M);
-            WFA.AddRelativeNTA(new DateTime(2009, 06, 30), 0.2405M);
-            WSF.AddRelativeNTA(new DateTime(2009, 12, 31), 0.0401M);
-            WFT.AddRelativeNTA(new DateTime(2009, 12, 31), 0.7459M);
-            WFA.AddRelativeNTA(new DateTime(2009, 12, 31), 0.2140M);
-            WSF.AddRelativeNTA(new DateTime(2010, 06, 30), 0.0315M);
-            WFT.AddRelativeNTA(new DateTime(2010, 06, 30), 0.7454M);
-            WFA.AddRelativeNTA(new DateTime(2010, 06, 30), 0.2231M);
-            WSF.AddRelativeNTA(new DateTime(2010, 12, 31), 0.0404M);
-            WFT.AddRelativeNTA(new DateTime(2010, 12, 31), 0.6727M);
-            WFA.AddRelativeNTA(new DateTime(2010, 12, 31), 0.2869M);
-            WSF.AddRelativeNTA(new DateTime(2011, 06, 30), 0.0396M);
-            WFT.AddRelativeNTA(new DateTime(2011, 06, 30), 0.6832M);
-            WFA.AddRelativeNTA(new DateTime(2011, 06, 30), 0.2772M);
-            WSF.AddRelativeNTA(new DateTime(2011, 12, 31), 0.0358M);
-            WFT.AddRelativeNTA(new DateTime(2011, 12, 31), 0.6850M);
-            WFA.AddRelativeNTA(new DateTime(2011, 12, 31), 0.2792M);
-            WSF.AddRelativeNTA(new DateTime(2012, 06, 30), 0.0471M);
-            WFT.AddRelativeNTA(new DateTime(2012, 06, 30), 0.7541M);
-            WFA.AddRelativeNTA(new DateTime(2012, 06, 30), 0.1988M);
-            WSF.AddRelativeNTA(new DateTime(2012, 12, 31), 0.0536M);
-            WFT.AddRelativeNTA(new DateTime(2012, 12, 31), 0.7551M);
-            WFA.AddRelativeNTA(new DateTime(2012, 12, 31), 0.1913M);
-            WSF.AddRelativeNTA(new DateTime(2013, 06, 30), 0.0672M);
-            WFT.AddRelativeNTA(new DateTime(2013, 06, 30), 0.7382M);
-            WFA.AddRelativeNTA(new DateTime(2013, 06, 30), 0.1946M);
-            WSF.AddRelativeNTA(new DateTime(2013, 12, 31), 0.1070M);
-            WFT.AddRelativeNTA(new DateTime(2013, 12, 31), 0.7188M);
-            WFA.AddRelativeNTA(new DateTime(2013, 12, 31), 0.1742M);
-        }
-
-        private void AddCorporateActions()
-        {
-
-            /* Fosters */
-            var FGL = _PortfolioManager.StockManager.GetStock("FGL");
-            FGL.AddDividend(new DateTime(2004, 09, 01), new DateTime(2004, 10, 01), 0.105M, 1.00M, 0.30M, "");
-            FGL.AddDividend(new DateTime(2005, 09, 09), new DateTime(2005, 10, 03), 0.1075M, 1.00M, 0.30M, "");
-            FGL.AddDividend(new DateTime(2006, 03, 08), new DateTime(2006, 04, 03), 0.0975M, 1.00M, 0.30M, "");
-
-            var TWEDemerger = FGL.AddTransformation(new DateTime(2011, 5, 16), new DateTime(2011, 05, 20), 0.00M, "TWE Demerger");
-            var TWE = _PortfolioManager.StockManager.GetStock("TWE");
-            TWEDemerger.AddResultStock(TWE.Id, 3, 1, 0.2004M);
-
-            /* Baycorp Advantage */
-            var BCA = _PortfolioManager.StockManager.GetStock("BCA");
-            BCA.AddDividend(new DateTime(2005, 02, 25), new DateTime(2005, 03, 23), 0.06M, 1.00M, 0.30M, "");
-            BCA.AddDividend(new DateTime(2005, 09, 05), new DateTime(2005, 09, 26), 0.08M, 1.00M, 0.30M, "");
-            BCA.AddCapitalReturn(new DateTime(2005, 11, 17), new DateTime(2005, 11, 17), 0.50M, "");
-            BCA.AddDividend(new DateTime(2006, 02, 27), new DateTime(2006, 03, 23), 0.06M, 1.00M, 0.30M, "");
-            BCA.AddDividend(new DateTime(2006, 09, 04), new DateTime(2006, 09, 26), 0.08M, 1.00M, 0.30M, "");
-            BCA.AddDividend(new DateTime(2006, 11, 02), new DateTime(2006, 11, 17), 0.35M, 1.00M, 0.30M, "");
-            BCA.ChangeASXCode(new DateTime(2006, 11, 03), "VEA", "Veda Advantage Limited");
-            var VEA = _PortfolioManager.StockManager.GetStock("VEA");
-            BCA.AddDividend(new DateTime(2007, 02, 26), new DateTime(2007, 03, 22), 0.06M, 1.00M, 0.30M, "");
-            BCA.AddDividend(new DateTime(2007, 06, 26), new DateTime(2007, 07, 06), 0.10M, 1.00M, 0.30M, "");
-
-            var VEASchemeOfArrangement = VEA.AddTransformation(new DateTime(2007, 07, 09), new DateTime(2007, 07, 09), 3.51M, "Scheme of Arrangement");
-
-            /* Argo */
-            var ARG = _PortfolioManager.StockManager.GetStock("ARG");
-            ARG.AddDividend(new DateTime(2006, 02, 24), new DateTime(2006, 03, 10), 0.11M, 1.00M, 0.30M, 6.71M, "");
-            /* DRP amount: $6.71, received 5 shares (300 shares at the time ) */
-
-            /* National Australia Bank */
-            var NAB = _PortfolioManager.StockManager.GetStock("NAB");
-            NAB.AddDividend(new DateTime(2005, 11, 25), new DateTime(2005, 12, 19), 0.83M, 0.8M, 0.30M, "");
-            
-        }
-
-        private void AddTransactions()
-        {
-            _MyPortfolio.AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2002, 01, 10),
-                ASXCode = "AGI",
-                Units = 2500,
-                AveragePrice = 1.14M,
-                TransactionCosts = 16.30M,
-                Comment = ""
-            }
-            );
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2005, 09, 30),
-                ASXCode = "AGIR",
-                Units = 804,
-                CostBase = 0.00M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new Disposal()
-            {
-                TransactionDate = new DateTime(2005, 10, 14),
-                ASXCode = "AGIR",
-                Units = 804,
-                AveragePrice = 0.06M,
-                TransactionCosts = 19.95M,
-                CGTMethod = CGTCalculationMethod.MinimizeGain,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2002, 02, 14),
-                ASXCode = "BCA",
-                Units = 750,
-                AveragePrice = 5.22M,
-                TransactionCosts = 16.30M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2003, 04, 28),
-                ASXCode = "BCA",
-                Units = 1250,
-                AveragePrice = 1.47M,
-                TransactionCosts = 16.30M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "ADZ",
-                Units = 1819,
-                CostBase = 1375.00M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new Disposal()
-            {
-                TransactionDate = new DateTime(2004, 11, 10),
-                ASXCode = "ADZ",
-                Units = 1819,
-                AveragePrice = 1.65M,
-                TransactionCosts = 19.95M,
-                CGTMethod = CGTCalculationMethod.MinimizeGain,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "AMP",
-                Units = 1125,
-                CostBase = 4633.75M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "HHG",
-                Units = 1125,
-                CostBase = 1330.70M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "FGL",
-                Units = 1125,
-                CostBase = 4633.75M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "NAB",
-                Units = 150,
-                CostBase = 4366.30M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "TLS",
-                Units = 1150,
-                CostBase = 7679.90M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2004, 07, 13),
-                ASXCode = "WDC",
-                Units = 350,
-                AveragePrice = 15.32M,
-                TransactionCosts = 19.95M,
-                Comment = ""
-            });
-
-            _MyPortfolio.AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2006, 01, 13),
-                ASXCode = "ARG",
-                Units = 300,
-                AveragePrice = 6.52M,
-                TransactionCosts = 19.95M,
-                Comment = ""
-            });  
         }
 
         private void AddTransaction(ITransaction transaction)
@@ -355,147 +85,6 @@ namespace PortfolioManager.Test
             item.SubItems.Add(transaction.ASXCode);
             item.SubItems.Add(transaction.Description);
             item.Tag = transaction;
-        }
-
-        private void DisplayTransactions()
-        {
-            lsvTransactions2.Items.Clear();
-
-            AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2002, 01, 10),
-                ASXCode = "AGI",
-                Units = 2500,
-                AveragePrice = 1.14M,
-                TransactionCosts = 16.30M,
-                Comment = ""
-            }
-            );
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2005, 09, 30),
-                ASXCode = "AGIR",
-                Units = 804,
-                CostBase = 0.00M,
-                Comment = ""
-            });
-
-            AddTransaction(new Disposal()
-            {
-                TransactionDate = new DateTime(2005, 10, 14),
-                ASXCode = "AGIR",
-                Units = 804,
-                AveragePrice = 0.06M,
-                TransactionCosts = 19.95M,
-                CGTMethod = CGTCalculationMethod.MinimizeGain,
-                Comment = ""
-            });
-
-            AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2002, 02, 14),
-                ASXCode = "BCA",
-                Units = 750,
-                AveragePrice = 5.22M,
-                TransactionCosts = 16.30M,
-                Comment = ""
-            });
-
-            AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2003, 04, 28),
-                ASXCode = "BCA",
-                Units = 1250,
-                AveragePrice = 1.47M,
-                TransactionCosts = 16.30M,
-                Comment = ""
-            });
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "ADZ",
-                Units = 1819,
-                CostBase = 1375.00M,
-                Comment = ""
-            });
-
-            AddTransaction(new Disposal()
-            {
-                TransactionDate = new DateTime(2004, 11, 10),
-                ASXCode = "ADZ",
-                Units = 1819,
-                AveragePrice = 1.65M,
-                TransactionCosts = 19.95M,
-                CGTMethod = CGTCalculationMethod.MinimizeGain,
-                Comment = ""
-            });
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "AMP",
-                Units = 1125,
-                CostBase = 4633.75M,
-                Comment = ""
-            });
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "HHG",
-                Units = 1125,
-                CostBase = 1330.70M,
-                Comment = ""
-            });
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "FGL",
-                Units = 1125,
-                CostBase = 4633.75M,
-                Comment = ""
-            });
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "NAB",
-                Units = 150,
-                CostBase = 4366.30M,
-                Comment = ""
-            });
-
-            AddTransaction(new OpeningBalance()
-            {
-                TransactionDate = new DateTime(2004, 07, 01),
-                ASXCode = "TLS",
-                Units = 1150,
-                CostBase = 7679.90M,
-                Comment = ""
-            });
-
-            AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2004, 07, 13),
-                ASXCode = "WDC",
-                Units = 350,
-                AveragePrice = 15.32M,
-                TransactionCosts = 19.95M,
-                Comment = ""
-            });
-
-            AddTransaction(new Aquisition()
-            {
-                TransactionDate = new DateTime(2006, 01, 13),
-                ASXCode = "ARG",
-                Units = 300,
-                AveragePrice = 6.52M,
-                TransactionCosts = 19.95M,
-                Comment = ""
-            });      
         }
 
         private void DisplayCorporateActions()
@@ -515,63 +104,81 @@ namespace PortfolioManager.Test
 
         private void DisplayPortfolio()
         {
+            DateTime startDate;
+            DateTime endDate;
+            if (_FinancialYear > 0)
+            {
+                startDate = new DateTime(_FinancialYear, 07, 01);
+                endDate = new DateTime(_FinancialYear + 1, 06, 30);
+            }
+            else
+            {
+                startDate = DateTimeConstants.NoStartDate();
+                endDate = DateTimeConstants.NoEndDate();             
+            }
+
             /* Current Holdings */
             lsvPortfolio.Items.Clear();
-            var holdings = _MyPortfolio.GetHoldings(DateTime.Now);
+            var holdings = _MyPortfolio.GetHoldings(endDate).OrderBy(x => x.Stock.ASXCode);
             foreach (ShareHolding holding in holdings)
             {          
                 var item = lsvPortfolio.Items.Add(holding.Stock.ASXCode);
                 item.Tag = holding.Stock;
                 item.SubItems.Add(holding.Units.ToString("n0"));
-                item.SubItems.Add(holding.AverageUnitPrice.ToString("c"));
-                item.SubItems.Add(holding.Cost.ToString("c"));
-                item.SubItems.Add(holding.UnitValue.ToString("c"));
-                item.SubItems.Add(holding.MarketValue.ToString("c"));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.AverageUnitPrice, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.Cost, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.UnitValue, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.MarketValue, true, true));
             }
 
             /* Parcels */
             lsvParcels.Items.Clear();
-            var parcels = _MyPortfolio.GetParcels(DateTime.Now);
+            var parcels = _MyPortfolio.GetParcels(endDate);
             foreach (ShareParcel parcel in parcels)
             {
                 var item = lsvParcels.Items.Add(_PortfolioManager.StockManager.GetASXCode(parcel.Stock));
                 item.SubItems.Add(parcel.Units.ToString("n0"));
-                item.SubItems.Add(parcel.UnitPrice.ToString("c"));
-                item.SubItems.Add(parcel.CostBase.ToString("c"));
+                item.SubItems.Add(MathUtils.FormatCurrency(parcel.UnitPrice, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(parcel.CostBase, true, true));
             }
 
             /* CGT */
             lsvCGT.Items.Clear();
-            var cgtEvents = _MyPortfolio.GetCGTEvents(new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
+            var cgtEvents = _MyPortfolio.GetCGTEvents(startDate, endDate);
             foreach (CGTEvent cgtEvent in cgtEvents)
             {
                 var item = lsvCGT.Items.Add(cgtEvent.EventDate.ToShortDateString());
                 item.SubItems.Add(_PortfolioManager.StockManager.GetASXCode(cgtEvent.Stock, cgtEvent.EventDate));
-                item.SubItems.Add(cgtEvent.CostBase.ToString("c"));
-                item.SubItems.Add(cgtEvent.AmountReceived.ToString("c"));
-                item.SubItems.Add(cgtEvent.CapitalGain.ToString("c"));
+                item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.CostBase, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.AmountReceived, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.CapitalGain, true, true));
             }
 
             /* Income */
             lsvIncome.Items.Clear();
-            var allIncome = _MyPortfolio.GetIncomeReceived(new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
+            var allIncome = _MyPortfolio.GetIncomeReceived(startDate, endDate);
             foreach (IncomeReceived income in allIncome)
             {
                 var item = lsvIncome.Items.Add(income.TransactionDate.ToShortDateString());
                 item.SubItems.Add(income.ASXCode);
-                item.SubItems.Add(income.CashIncome.ToString("c"));
-                item.SubItems.Add(income.FrankingCredits.ToString("c"));
+                item.SubItems.Add(MathUtils.FormatCurrency(income.CashIncome, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(income.FrankingCredits, true));
             }
 
             /* Transactions */
             lsvTransactions.Items.Clear();
-            var allTransactions = _MyPortfolio.GetTransactions(new DateTime(0001, 01, 01), new DateTime(9999, 12, 31));
+            var allTransactions = _MyPortfolio.Transactions.Find(startDate, endDate);
             foreach (ITransaction transaction in allTransactions)
             {
                 var item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
                 item.SubItems.Add(transaction.ASXCode);
                 item.SubItems.Add(transaction.Description);
+                item.Tag = transaction;
             }
+
+            /* Cash Account */
+            lsvCashAccount.Items.Clear();
+                
         }
 
         private void lsvTransactions_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -580,7 +187,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = lsvTransactions2.FocusedItem.Tag as ITransaction;
             lsvTransactions2.FocusedItem.Remove();
 
-            _MyPortfolio.AddTransaction(transaction);
+            _MyPortfolio.Transactions.Add(transaction);
      
             DisplayPortfolio();
             DisplayCorporateActions();
@@ -589,23 +196,29 @@ namespace PortfolioManager.Test
         private void lsvCorporateActions_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ICorporateAction corporateAction = lsvCorporateActions.FocusedItem.Tag as ICorporateAction;
-            lsvCorporateActions.FocusedItem.Remove();
-
+            
             var transactions = corporateAction.CreateTransactionList(_MyPortfolio);
-            _MyPortfolio.AddTransactions(transactions);
 
-            DisplayPortfolio();
+            var form = new frmMultipleTransactions(_PortfolioManager.StockManager);
+            if (form.EditTransactions(transactions))
+            {
+                _MyPortfolio.Transactions.Add(transactions);
+                lsvCorporateActions.FocusedItem.Remove();
+
+                DisplayPortfolio();
+            }
         }
 
-        private void btnAddStock_Click(object sender, EventArgs e)
+        private void btnStockManager_Click(object sender, EventArgs e)
         {
-            frmStock.AddStock(_PortfolioManager.StockManager);
+            var stockManagerForm = new frmStockManager(_PortfolioManager.StockManager);
+            stockManagerForm.CorparateActionAdded += CorporateActionAdded;
+            stockManagerForm.ShowDialog();
         }
 
-        private void btnAddDividend_Click(object sender, EventArgs e)
-        {
-            frmDividend.AddDividend(_PortfolioManager.StockManager);
 
+        private void CorporateActionAdded(ICorporateAction corporateAction)
+        {
             DisplayCorporateActions();
         }
 
@@ -618,21 +231,104 @@ namespace PortfolioManager.Test
             }
         }
 
-        private void btnAddAquisition_Click(object sender, EventArgs e)
+        private void AddTransaction(TransactionType type)
         {
-            Aquisition aquisition = frmAquisition.AddAquisition(_PortfolioManager.StockManager);
-            if (aquisition != null)
+            var form = new frmTransaction(_PortfolioManager.StockManager);
+
+            ITransaction transaction = form.CreateTransaction(type);
+            if (transaction != null)
             {
-                _MyPortfolio.ApplyTransaction(aquisition);
+                _MyPortfolio.Transactions.Add(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();
-            }
-            
-    
-
+            }    
         }
 
+        private void cboFinancialYear_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboFinancialYear.Text == "--All--")
+                _FinancialYear = 0;
+            else
+                _FinancialYear = int.Parse(cboFinancialYear.Text.Substring(0, 4));
+
+            DisplayPortfolio();
+        }
+
+        private void btnAddAquisition_Click(object sender, EventArgs e)
+        {
+            AddTransaction(TransactionType.Aquisition);
+        }
+
+        private void btnAddDisposal_Click(object sender, EventArgs e)
+        {
+            AddTransaction(TransactionType.Disposal);
+        }
+
+        private void btnAddOpeningBalance_Click(object sender, EventArgs e)
+        {
+            AddTransaction(TransactionType.OpeningBalance);
+        }
+
+        private void btnAddIncomeReceived_Click(object sender, EventArgs e)
+        {
+            AddTransaction(TransactionType.Income);
+        }
+
+        private void btnAddReturnOfCapital_Click(object sender, EventArgs e)
+        {
+            AddTransaction(TransactionType.ReturnOfCapital);
+        }
+
+        private void btnAddCostbaseAdjustment_Click(object sender, EventArgs e)
+        {
+            AddTransaction(TransactionType.CostBaseAdjustment);
+        }
+
+        private void ctxTransaction_Opening(object sender, CancelEventArgs e)
+        {
+            if (lsvTransactions.FocusedItem == null)
+                e.Cancel = true;
+        }
+
+        private void mnuEditTransaction_Click(object sender, EventArgs e)
+        {          
+            var form = new frmTransaction(_PortfolioManager.StockManager);
+
+            ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
+            if (form.EditTransaction(transaction))
+            {
+                _MyPortfolio.Transactions.Update(transaction);
+
+                DisplayPortfolio();
+                DisplayCorporateActions();
+            }  
+        }
+
+        private void mnuDeleteTransaction_Click(object sender, EventArgs e)
+        {
+            var form = new frmTransaction(_PortfolioManager.StockManager);
+
+            ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
+            if (form.DeleteTransaction(transaction))
+            {
+                _MyPortfolio.Transactions.Delete(transaction);
+
+                DisplayPortfolio();
+                DisplayCorporateActions();
+            }  
+        }
+
+        private void lsvTransactions_ItemActivate(object sender, EventArgs e)
+        {
+            mnuEditTransaction_Click(sender, e);
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            DisplayPortfolio();
+            DisplayCorporateActions();
+        }
 
     }
 }

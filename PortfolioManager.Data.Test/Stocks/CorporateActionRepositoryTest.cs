@@ -109,7 +109,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
                 unitOfWork.CorporateActionRepository.Add(dividend);
 
-                dividend.Change(new DateTime(2005, 10, 12), dividend.PaymentDate, dividend.DividendAmount);
+                dividend.Change(new DateTime(2005, 10, 12), dividend.PaymentDate, dividend.DividendAmount, "");
 
                 dividend2 = unitOfWork.CorporateActionRepository.Get(dividend.Id) as Dividend;
                 Assert.AreEqual(dividend2.ActionDate, new DateTime(2005, 10, 12));
@@ -126,7 +126,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
                 unitOfWork.CorporateActionRepository.Add(dividend);
 
-                dividend.Change(dividend.ActionDate, dividend.PaymentDate, 1.20M);
+                dividend.Change(dividend.ActionDate, dividend.PaymentDate, 1.20M, "");
 
                 dividend2 = unitOfWork.CorporateActionRepository.Get(dividend.Id) as Dividend;
                 Assert.AreEqual(dividend2.DividendAmount, 1.20M);
@@ -182,8 +182,8 @@ namespace PortfolioManager.Data.Test.Stocks
                 transformation.AddResultStock(_ResultStock3.Id, 2, 7, 1.40M);
 
                 transformation2 = unitOfWork.CorporateActionRepository.Get(transformation.Id) as Transformation;
-                Assert.AreEqual(transformation2.ResultingStocks.Count, 3);
-                Assert.AreEqual(transformation2.ResultingStocks.Find(x => x.Stock == _ResultStock2.Id).NewUnits, 5);
+                Assert.AreEqual(transformation2.ResultingStocks.Count(), 3);
+                Assert.AreEqual(transformation2.ResultingStocks.Where(x => x.Stock == _ResultStock2.Id).First().NewUnits, 5);
             }
         }
 
@@ -202,7 +202,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 transformation.ChangeResultStock(_ResultStock1.Id, 1, 7, 0.40M);
 
                 transformation2 = unitOfWork.CorporateActionRepository.Get(transformation.Id) as Transformation;
-                Assert.AreEqual(transformation2.ResultingStocks.Find(x => x.Stock == _ResultStock1.Id).NewUnits, 7);
+                Assert.AreEqual(transformation2.ResultingStocks.Where(x => x.Stock == _ResultStock1.Id).First().NewUnits, 7);
             }
         }
 
@@ -218,12 +218,12 @@ namespace PortfolioManager.Data.Test.Stocks
                 transformation.AddResultStock(_ResultStock2.Id, 1, 5, 0.80M);
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
-                transformation.ResultingStocks.RemoveAt(1);
+                transformation.DeleteResultStock(_ResultStock1.Id);
                 unitOfWork.CorporateActionRepository.Update(transformation);
 
                 transformation2 = unitOfWork.CorporateActionRepository.Get(transformation.Id) as Transformation;
-                Assert.AreEqual(transformation2.ResultingStocks.Count, 1);
-                Assert.AreEqual(transformation2.ResultingStocks[0].NewUnits, 2);
+                Assert.AreEqual(transformation2.ResultingStocks.Count(), 1);
+                Assert.AreEqual(transformation2.ResultingStocks.First().NewUnits, 5);
             }
         }
 

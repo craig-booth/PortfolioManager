@@ -22,20 +22,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _Connection = database._Connection;
         }
 
-        private SQLiteCommand _GetStockById;
-        public Stock Get(Guid id)
-        {
-            if (_GetStockById == null)
-            {
-                _GetStockById = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [Id] = @Id", _Connection);
-                _GetStockById.Prepare();
-            }
-
-            _GetStockById.Parameters.AddWithValue("@Id", id.ToString());
-
-            return GetStock(_GetStockById);
-        }
-
         private SQLiteCommand _GetStockByIdandDate;
         public Stock Get(Guid id, DateTime atDate)
         {
@@ -52,17 +38,15 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _GetAllStocks;
-        public IReadOnlyCollection<Stock> GetAll(DateTime atDate)
+        public IReadOnlyCollection<Stock> GetAll()
         {
             var list = new List<Stock>();
 
             if (_GetAllStocks == null)
             {
-                _GetAllStocks = new SQLiteCommand("SELECT * FROM [Stocks] WHERE @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
+                _GetAllStocks = new SQLiteCommand("SELECT * FROM [Stocks]", _Connection);
                 _GetAllStocks.Prepare();
             }
-
-            _GetAllStocks.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
             SQLiteDataReader reader = _GetAllStocks.ExecuteReader();
             while (reader.Read())
@@ -75,18 +59,28 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return list.AsReadOnly();
         }
 
-        private SQLiteCommand _GetStockByASXCode;
-        public Stock GetByASXCode(string asxCode)
+        private SQLiteCommand _GetAllStocksAtDate;
+        public IReadOnlyCollection<Stock> GetAll(DateTime atDate)
         {
-            if (_GetStockByASXCode == null)
+            var list = new List<Stock>();
+
+            if (_GetAllStocksAtDate == null)
             {
-                _GetStockByASXCode = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [ASXCode] = @ASXCode", _Connection);
-                _GetStockByASXCode.Prepare();
+                _GetAllStocksAtDate = new SQLiteCommand("SELECT * FROM [Stocks] WHERE @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
+                _GetAllStocksAtDate.Prepare();
             }
 
-            _GetStockByASXCode.Parameters.AddWithValue("@ASXCode", asxCode);
+            _GetAllStocksAtDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
-            return GetStock(_GetStockByASXCode);
+            SQLiteDataReader reader = _GetAllStocksAtDate.ExecuteReader();
+            while (reader.Read())
+            {
+                Stock stock = SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
+                list.Add(stock);
+            }
+            reader.Close();
+
+            return list.AsReadOnly();
         }
 
         private SQLiteCommand _GetStockByASXCodeandDate;
@@ -105,17 +99,18 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _GetChildStocks;
-        public IReadOnlyCollection<Stock> GetChildStocks(Guid parent)
+        public IReadOnlyCollection<Stock> GetChildStocks(Guid parent, DateTime atDate)
         {
             var list = new List<Stock>();
 
             if (_GetChildStocks == null)
             {
-                _GetChildStocks = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [Parent] = @Parent", _Connection);
+                _GetChildStocks = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [Parent] = @Parent AND @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
                 _GetChildStocks.Prepare();
             }
 
             _GetChildStocks.Parameters.AddWithValue("@Parent", parent.ToString());
+            _GetChildStocks.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
             SQLiteDataReader reader = _GetChildStocks.ExecuteReader();
             while (reader.Read())

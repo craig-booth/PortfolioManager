@@ -28,7 +28,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            database.StockQuery.Get(stock.Id);
+            database.StockQuery.Get(stock.Id, new DateTime(2000, 01, 01));
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
         }
@@ -48,7 +48,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 /* no save done */
             }
 
-            database.StockQuery.Get(stock.Id);
+            database.StockQuery.Get(stock.Id, new DateTime(2000, 01, 01));
         }
 
         [Test, Description("Test nested transactions")]
@@ -77,7 +77,7 @@ namespace PortfolioManager.Data.Test.Stocks
             stock = database.StockQuery.Get(stock1.Id, new DateTime(2003, 01, 01));
             Assert.That(stock.Name, Is.EqualTo("New Name"));
 
-            stock = database.StockQuery.Get(stock2.Id);
+            stock = database.StockQuery.Get(stock2.Id, new DateTime(2000, 01, 01));
             Assert.That(stock.Name, Is.EqualTo("Test 2"));
         }
     }

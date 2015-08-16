@@ -24,6 +24,14 @@ namespace PortfolioManager.Model.Stocks
         public decimal DRPPrice { get; private set; }
         public string Description { get; private set; }
 
+        public CorporateActionType Type
+        {
+            get
+            {
+                return CorporateActionType.Dividend;
+            }
+        }
+
         public Dividend(IStockDatabase stockDatabase, Guid stock, DateTime actionDate, DateTime paymentDate, decimal amount, decimal percentFranked, decimal companyTaxRate, decimal drpPrice, string description)
             : this(stockDatabase, Guid.NewGuid(), stock, actionDate, paymentDate, amount, percentFranked, companyTaxRate, drpPrice, description)
         {
@@ -43,10 +51,16 @@ namespace PortfolioManager.Model.Stocks
             if (description != "")
                 Description = description;
             else
-                Description = "Dividend " + DividendAmount.ToString("c");
+                Description = "Dividend " + MathUtils.FormatCurrency(DividendAmount, false, true);
         }
 
-        public void Change(DateTime newActionDate, DateTime newPaymentDate, decimal newDividendAmount, decimal newCompanyTaxRate, decimal newPercentFranked, decimal newDRPPrice)
+        public void Change(DateTime newActionDate, DateTime newPaymentDate, decimal newDividendAmount, string newDesciption)
+        {
+            Change(newActionDate, newPaymentDate, newDividendAmount, PercentFranked, CompanyTaxRate, DRPPrice, newDesciption);
+        }
+
+
+        public void Change(DateTime newActionDate, DateTime newPaymentDate, decimal newDividendAmount, decimal newPercentFranked, decimal newCompanyTaxRate, decimal newDRPPrice, string newDesciption)
         {
             ActionDate = newActionDate;
             PaymentDate = newPaymentDate;
@@ -54,17 +68,16 @@ namespace PortfolioManager.Model.Stocks
             CompanyTaxRate = newCompanyTaxRate;
             PercentFranked = newPercentFranked;
             DRPPrice = newDRPPrice;
+            if (newDesciption != "")
+                Description = newDesciption;
+            else
+                Description = "Dividend " + MathUtils.FormatCurrency(DividendAmount, false, true);
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
                 unitOfWork.CorporateActionRepository.Update(this);
                 unitOfWork.Save();
             }
-        }
-
-        public void Change(DateTime newActionDate, DateTime newPaymentDate, decimal newDividendAmount)
-        {
-            Change(newActionDate, newPaymentDate, newDividendAmount, CompanyTaxRate, PercentFranked, DRPPrice);
         }
 
         public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
@@ -76,11 +89,13 @@ namespace PortfolioManager.Model.Stocks
             if (parcels.Count == 0)
                 return transactions;
 
+            var stock = _Database.StockQuery.Get(this.Stock, this.PaymentDate);
+
             var unitsHeld = parcels.Sum(x => x.Units);
             var amountPaid = unitsHeld * DividendAmount;
-            var franked = MathUtils.Truncate(amountPaid * PercentFranked);
-            var unFranked = MathUtils.Truncate(amountPaid * (1 - PercentFranked));
-            var frankingCredits = MathUtils.Truncate(((amountPaid / (1 - CompanyTaxRate)) - amountPaid) * PercentFranked);
+            var franked = MathUtils.ToCurrency(amountPaid * PercentFranked, stock.DividendRoundingRule);
+            var unFranked = MathUtils.ToCurrency(amountPaid * (1 - PercentFranked), stock.DividendRoundingRule);
+            var frankingCredits = MathUtils.ToCurrency(((amountPaid / (1 - CompanyTaxRate)) - amountPaid) * PercentFranked, stock.DividendRoundingRule);
 
             /* add drp shares */
             if (DRPPrice != 0.00M)
@@ -90,21 +105,22 @@ namespace PortfolioManager.Model.Stocks
                 transactions.Add(new OpeningBalance()
                 {
                     TransactionDate = PaymentDate,
-                    ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
+                    ASXCode = stock.ASXCode,
                     Units = drpUnits,
                     CostBase = amountPaid,
-                    Comment = "DRP"
+                    Comment = "DRP " + MathUtils.FormatCurrency(DRPPrice, false, true)
                 }
                 );
             }
 
             transactions.Add(new IncomeReceived()
             {
-                ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
+                ASXCode = stock.ASXCode,
                 TransactionDate = PaymentDate,
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,
-                FrankingCredits = frankingCredits
+                FrankingCredits = frankingCredits,
+                Comment = Description
             });
 
             return transactions;

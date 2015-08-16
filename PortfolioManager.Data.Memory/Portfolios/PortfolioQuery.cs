@@ -114,5 +114,36 @@ namespace PortfolioManager.Data.Memory.Portfolios
 
             return transactionQuery.ToList().AsReadOnly();
         }
+
+        public IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(Guid portfolio)
+        {
+            List<OwnedStock> ownedStocks = new List<OwnedStock>();
+
+            var parcelsQuery = from parcel in _Database._Parcels
+                               orderby parcel.Stock, parcel.FromDate 
+                               select parcel;
+
+            OwnedStock currentStock = null;
+            foreach (ShareParcel shareParcel in parcelsQuery)
+            {
+                if ((currentStock != null) && (shareParcel.Id == currentStock.Id) && (shareParcel.FromDate < currentStock.ToDate))
+                {
+                    if (shareParcel.ToDate > currentStock.ToDate)
+                        currentStock.ToDate = shareParcel.ToDate;
+                }
+                else
+                {
+                    currentStock = new OwnedStock()
+                    {
+                        Id = shareParcel.Id,
+                        FromDate = shareParcel.FromDate,
+                        ToDate = shareParcel.ToDate
+                    };
+                    ownedStocks.Add(currentStock);
+                }
+            }
+
+            return ownedStocks.AsReadOnly();
+        }   
     }
 }

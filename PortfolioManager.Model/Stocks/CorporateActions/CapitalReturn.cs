@@ -20,6 +20,14 @@ namespace PortfolioManager.Model.Stocks
         public decimal Amount { get; private set; }
         public string Description { get; private set; }
 
+        public CorporateActionType Type
+        {
+            get
+            {
+                return CorporateActionType.CapitalReturn;
+            }
+        }
+
         public CapitalReturn(IStockDatabase stockDatabase, Guid stock, DateTime actionDate, DateTime paymentDate, decimal amount, string description)
             : this(stockDatabase, Guid.NewGuid(), stock, actionDate, paymentDate, amount, description)
         {
@@ -36,7 +44,7 @@ namespace PortfolioManager.Model.Stocks
             if (description != "")
                 Description = description;
             else
-                Description = "Capital Return " + Amount.ToString("c");
+                Description = "Capital Return " + Amount.ToString("$#,##0.00###");
         }
 
         public void Change(DateTime newActionDate, DateTime newPaymentDate, decimal newAmount, string newDescription)
@@ -58,11 +66,14 @@ namespace PortfolioManager.Model.Stocks
         {
             var transactions = new List<ITransaction>();
 
+            var stock = _Database.StockQuery.Get(this.Stock, this.PaymentDate);
+
             transactions.Add(new ReturnOfCapital()
             {
-                ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
+                ASXCode = stock.ASXCode,
                 TransactionDate = this.PaymentDate,
-                Amount = this.Amount
+                Amount = this.Amount,
+                Comment = Description
             }
             );
 

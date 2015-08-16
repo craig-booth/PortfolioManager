@@ -44,14 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Portfolios\PorftolioTest.cs" />
+    <Compile Include="Portfolios\PortfolioConstraints.cs" />
+    <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
+    <Compile Include="Portfolios\Transactions\CostbaseAdjustmentTest.cs" />
+    <Compile Include="Portfolios\Transactions\DisposalTest.cs" />
+    <Compile Include="Portfolios\Transactions\IncomeReceviedTest.cs" />
+    <Compile Include="Portfolios\Transactions\OpeningBalanceTest.cs" />
+    <Compile Include="Portfolios\Transactions\ReturnOfCapitalTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stocks\StockManagerTest.cs" />
     <Compile Include="Stocks\StockTest.cs" />
-    <Compile Include="TestBase.cs" />
+    <Compile Include="PortfolioTestBase.cs" />
+    <Compile Include="Utils\MathUtilsTest.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Portfolios\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

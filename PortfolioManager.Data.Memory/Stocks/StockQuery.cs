@@ -18,14 +18,14 @@ namespace PortfolioManager.Data.Memory.Stocks
             _Database = database;
         }
 
-        public Stock Get(Guid id)
-        {
-            return _Database._Stocks.Find(x => x.Id == id);
-        }
-
         public Stock Get(Guid id, DateTime atDate)
         {
             return _Database._Stocks.Find(x => (x.Id == id) && (x.FromDate <= atDate) && (x.ToDate >= atDate));
+        }
+
+        public IReadOnlyCollection<Stock> GetAll()
+        {
+            return null;
         }
 
         public IReadOnlyCollection<Stock> GetAll(DateTime atDate)
@@ -35,28 +35,25 @@ namespace PortfolioManager.Data.Memory.Stocks
 
         public Stock GetByASXCode(string asxCode)
         {
-            try
-            {
-                return _Database._Stocks.First(x => x.ASXCode == asxCode);
-            }
-            catch
-            {
-                throw new RecordNotFoundException(String.Format("Unable to find ASX Code {0} in the database", asxCode));
-            }
+            return GetByASXCode(asxCode, DateTime.Today);
         }
 
         public Stock GetByASXCode(string asxCode, DateTime atDate)
         {
-            var stock = GetByASXCode(asxCode);
-
-            /* Check that the stock existed at the requested date */
-            if ((atDate < stock.FromDate) || (atDate > stock.ToDate))
+            Stock stock;
+            try
+            {
+                stock = _Database._Stocks.First(x => (x.ASXCode == asxCode) && (x.FromDate >= atDate) && (x.ToDate <= atDate));
+            }
+            catch
+            {
                 throw new RecordNotFoundException(String.Format("ASX Code {0} did not exist at {1}", asxCode, atDate));
+            }
 
             return stock;
         }
 
-        public IReadOnlyCollection<Stock> GetChildStocks(Guid parent)
+        public IReadOnlyCollection<Stock> GetChildStocks(Guid parent, DateTime atDate)
         {
             var childStocks = from childStock in _Database._Stocks
                               where childStock.ParentId == parent
@@ -83,11 +80,6 @@ namespace PortfolioManager.Data.Memory.Stocks
                                select relativeNTA;
 
             return percentQuery.First().Percentage;
-        }
-
-        public string GetASXCode(Guid id)
-        {
-            return Get(id).ASXCode;
         }
 
         public string GetASXCode(Guid id, DateTime atDate)

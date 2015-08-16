@@ -11,7 +11,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     public class SQLitePortfolioDatabase: SQLiteDatabase, IPortfolioDatabase
     {
-        /* TODO: remove this */
+        /* TODO: Priority Low, move this to the database */
         internal List<Portfolio> _Portfolios { get; private set; }
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }

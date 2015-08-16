@@ -33,7 +33,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            stock = database.StockQuery.Get(stock2.Id);
+            stock = database.StockQuery.Get(stock2.Id, new DateTime(2002, 01, 01));
 
             Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
         }
@@ -82,7 +82,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            stock = database.StockQuery.Get(Guid.NewGuid());
+            stock = database.StockQuery.Get(Guid.NewGuid(), new DateTime(2000, 01, 01));
         }
 
         [Test, Description("Test Get() for a stock before start date")]
@@ -155,7 +155,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            stock = database.StockQuery.GetByASXCode("DEF");
+            stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2002, 01, 01));
 
             Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
         }
@@ -204,7 +204,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            stock = database.StockQuery.GetByASXCode("XXX");
+            stock = database.StockQuery.GetByASXCode("XXX", new DateTime(2000, 01, 01));
         }
 
         [Test, Description("Test GetByASXCode() for a stock before start date")]
@@ -278,7 +278,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            asxCode = database.StockQuery.GetASXCode(stock1.Id);
+            asxCode = database.StockQuery.GetASXCode(stock1.Id, new DateTime(2000, 01, 01));
 
             Assert.That(asxCode, Is.EqualTo("ABC"));
         }
@@ -329,7 +329,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            asxCode = database.StockQuery.GetASXCode(Guid.NewGuid());
+            asxCode = database.StockQuery.GetASXCode(Guid.NewGuid(), new DateTime(2000, 01, 01));
         }
 
         [Test, Description("Test GetASXCode() for a stock before start date")]
@@ -405,7 +405,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            children = database.StockQuery.GetChildStocks(parent.Id);
+            children = database.StockQuery.GetChildStocks(parent.Id, new DateTime(2000, 01, 01));
             Assert.AreEqual(children.Count, 2);
 
             child = children.First();
@@ -431,7 +431,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            children = database.StockQuery.GetChildStocks(parent.Id);
+            children = database.StockQuery.GetChildStocks(parent.Id, new DateTime(2000, 01, 01));
             Assert.AreEqual(children.Count, 0);   
         }
 

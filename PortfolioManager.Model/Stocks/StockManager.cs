@@ -9,23 +9,24 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Stocks
 {
+
     public class StockManager
     {
-        private IStockDatabase _Database;
+        internal IStockDatabase _Database;
 
         public StockManager(IStockDatabase database)
         {
             _Database = database;
         }
 
-        public Stock AddStock(string asxCode, string name)
+        public Stock Add(string asxCode, string name)
         {
-            return AddStock(asxCode, name, DateTimeConstants.NoStartDate());
+            return Add(asxCode, name, DateTimeConstants.NoStartDate());
         }
 
-        public Stock AddStock(string asxCode, string name, DateTime fromDate)
+        public Stock Add(string asxCode, string name, DateTime fromDate)
         {
-            var stock = new Stock(_Database,fromDate, asxCode, name, StockType.Ordinary, Guid.Empty);
+            var stock = new Stock(_Database, fromDate, asxCode, name, StockType.Ordinary, Guid.Empty);
 
             using (IStockUnitOfWork unitOfWork =  _Database.CreateUnitOfWork())
             {
@@ -36,12 +37,12 @@ namespace PortfolioManager.Model.Stocks
             return stock;
         }
 
-        public Stock AddStock(string asxCode, string name, StockType type)
+        public Stock Add(string asxCode, string name, StockType type)
         {
-            return AddStock(asxCode, name, DateTimeConstants.NoStartDate(), type);
+            return Add(asxCode, name, DateTimeConstants.NoStartDate(), type);
         }
 
-        public Stock AddStock(string asxCode, string name, DateTime fromDate, StockType type)
+        public Stock Add(string asxCode, string name, DateTime fromDate, StockType type)
         {
             var stock = new Stock(_Database, fromDate, asxCode, name, type, Guid.Empty);
 
@@ -54,12 +55,12 @@ namespace PortfolioManager.Model.Stocks
             return stock;
         }
 
-        public Stock AddStock(string asxCode, string name, StockType type, Stock parent)
+        public Stock Add(string asxCode, string name, StockType type, Stock parent)
         {
-            return AddStock(asxCode, name, DateTimeConstants.NoStartDate(), type, parent);
+            return Add(asxCode, name, DateTimeConstants.NoStartDate(), type, parent);
         }
 
-        public Stock AddStock(string asxCode, string name, DateTime fromDate, StockType type, Stock parent)
+        public Stock Add(string asxCode, string name, DateTime fromDate, StockType type, Stock parent)
         {
             var stock = new Stock(_Database, fromDate, asxCode, name, type, parent.Id);
 
@@ -69,12 +70,56 @@ namespace PortfolioManager.Model.Stocks
                 unitOfWork.Save();
             }
 
+
             return stock;
+        }
+
+        public void Delete(Stock stock)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.StockRepository.Delete(stock);
+                unitOfWork.Save();
+            }
+
+        }
+
+        public void Delete(IEnumerable<Stock> stocks)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                foreach (Stock stock in stocks)
+                {
+                    unitOfWork.StockRepository.Delete(stock);
+                }
+
+                unitOfWork.Save();
+            }
+        }
+
+        public Stock GetStock(Guid id)
+        {
+            return _Database.StockQuery.Get(id, DateTime.Today);
+        }
+
+        public Stock GetStock(Guid id, DateTime atDate)
+        {
+            return _Database.StockQuery.Get(id, atDate);
         }
 
         public Stock GetStock(string asxCode)
         {
-            return _Database.StockQuery.GetByASXCode(asxCode);
+            return _Database.StockQuery.GetByASXCode(asxCode, DateTime.Today);
+        }
+
+        public Stock GetStock(string asxCode, DateTime atDate)
+        {
+            return _Database.StockQuery.GetByASXCode(asxCode, atDate);
+        }
+
+        public IReadOnlyCollection<Stock> GetStocks()
+        {
+            return _Database.StockQuery.GetAll();
         }
 
         public IReadOnlyCollection<Stock> GetStocks(DateTime atDate)
@@ -84,20 +129,13 @@ namespace PortfolioManager.Model.Stocks
 
         public string GetASXCode(Guid stockId)
         {
-            return _Database.StockQuery.GetASXCode(stockId);
+            return _Database.StockQuery.GetASXCode(stockId, DateTime.Today);
         }
 
         public string GetASXCode(Guid stockId, DateTime atDate)
         {
             return _Database.StockQuery.GetASXCode(stockId, atDate);
         }
-
-        public IReadOnlyCollection<ICorporateAction> GetCorporateActions(Guid stock, DateTime fromDate, DateTime toDate)
-        {
-            return _Database.CorporateActionQuery.Find(stock, fromDate, toDate);
-        }
-
-
 
     }
 }

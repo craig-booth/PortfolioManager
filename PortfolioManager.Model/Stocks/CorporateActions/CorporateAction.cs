@@ -9,8 +9,11 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Stocks
 {
+    public enum CorporateActionType { Dividend, CapitalReturn, Transformation}
+
     public interface ICorporateAction : IEntity
     {
+        CorporateActionType Type { get; }
         Guid Stock { get; }
         DateTime ActionDate { get; }
         string Description { get; }

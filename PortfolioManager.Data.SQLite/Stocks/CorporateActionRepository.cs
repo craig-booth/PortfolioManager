@@ -46,11 +46,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
             /* Add header record */
             base.Add(entity);
 
-            if (entity is Dividend)
+            if (entity.Type == CorporateActionType.Dividend)
                 AddDividendRecord(entity as Dividend);
-            else if (entity is CapitalReturn)
+            else if (entity.Type == CorporateActionType.CapitalReturn)
                 AddCapitalReturnRecord(entity as CapitalReturn);
-            else if (entity is Transformation)
+            else if (entity.Type == CorporateActionType.Transformation)
                 AddTransformationRecord(entity as Transformation);
         }      	
 
@@ -98,11 +98,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
             /* Update header record */
             base.Update(entity);
 
-            if (entity is Dividend)
+            if (entity.Type == CorporateActionType.Dividend)
                 UpdateDividendRecord(entity as Dividend);
-            else if (entity is CapitalReturn)
+            else if (entity.Type == CorporateActionType.CapitalReturn)
                 UpdateCapitalReturnRecord(entity as CapitalReturn);
-            else if (entity is Transformation)
+            else if (entity.Type == CorporateActionType.Transformation)
                 UpdateTransformationRecord(entity as Transformation);
         }
 
@@ -172,11 +172,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
             /* Delete header record */
             base.Delete(entity);
 
-            if (entity is Dividend)
+            if (entity.Type == CorporateActionType.Dividend)
                 DeleteDividendRecord(entity.Id);
-            else if (entity is CapitalReturn)
+            else if (entity.Type == CorporateActionType.CapitalReturn)
                 DeleteCapitalReturnRecord(entity.Id);
-            else if (entity is Transformation)
+            else if (entity.Type == CorporateActionType.Transformation)
                 DeleteTransformationRecord(entity.Id);
         }
 
@@ -255,7 +255,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Stock", entity.Stock.ToString());
             command.Parameters.AddWithValue("@ActionDate", entity.ActionDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Description", entity.Description);
-            command.Parameters.AddWithValue("@Type", ActionType(entity));
+            command.Parameters.AddWithValue("@Type", entity.Type);
         }
 
         private void AddDividendParameters(SQLiteCommand command, Dividend entity)
@@ -287,16 +287,5 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return SQLiteStockEntityCreator.CreateCorporateAction(_Database as SQLiteStockDatabase, reader);
         }
 
-        private int ActionType(ICorporateAction entity)
-        {
-            if (entity is Dividend)
-                return 1;
-            else if (entity is CapitalReturn)
-                return 2;
-            else if (entity is Transformation)
-                return 3;  
-            else 
-                return 0;
-        } 
     }
 }

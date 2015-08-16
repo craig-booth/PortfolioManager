@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparers.cs" />
-    <Compile Include="Portfolio\PortfolioRepositoryTest.cs" />
+    <Compile Include="Portfolio\PortfolioQueryTest.cs" />
     <Compile Include="Portfolio\Transactions\AquisitionRepositoryTest.cs" />
     <Compile Include="Portfolio\Transactions\CompareTransaction.cs" />
     <Compile Include="Portfolio\Transactions\CostBaseAdjustmentRepositoryTest.cs" />

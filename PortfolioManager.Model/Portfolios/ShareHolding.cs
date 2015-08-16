@@ -18,7 +18,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             get
             {
-                return 10.00M; /* TODO: get unit price at the holding date */
+                return 10.00M; /* TODO: Priority Medium, get unit price at the holding date */
             }
         }
         public decimal MarketValue

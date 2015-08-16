@@ -1,161 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit" total="87" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2014-10-11" time="08:19:30">
-  <environment nunit-version="2.6.3.13283" clr-version="2.0.50727.5483" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager" machine-name="P150EM-PC" user="P150EM" user-domain="P150EM-PC" />
+<test-results name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit" total="3" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2015-08-16" time="21:20:15">
+  <environment nunit-version="2.6.3.13283" clr-version="2.0.50727.5485" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Windows\system32" machine-name="P150EM-PC" user="P150EM" user-domain="P150EM-PC" />
   <culture-info current-culture="en-AU" current-uiculture="en-US" />
-  <test-suite type="Project" name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit" executed="True" result="Success" success="True" time="0.754" asserts="0">
+  <test-suite type="Project" name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit" executed="True" result="Success" success="True" time="0.830" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" executed="True" result="Success" success="True" time="0.551" asserts="0">
+      <test-suite type="Assembly" name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Success" success="True" time="0.797" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Success" success="True" time="0.551" asserts="0">
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Success" success="True" time="0.797" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Data" executed="True" result="Success" success="True" time="0.550" asserts="0">
+              <test-suite type="Namespace" name="Model" executed="True" result="Success" success="True" time="0.796" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="0.550" asserts="0">
+                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="0.796" asserts="0">
                     <results>
-                      <test-suite type="Namespace" name="Portfolio" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Success" success="True" time="0.795" asserts="0">
                         <results>
-                          <test-suite type="TestFixture" name="PortfolioRepositoryTest" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                          <test-suite type="Namespace" name="Transactions" executed="True" result="Success" success="True" time="0.795" asserts="0">
                             <results>
-                              <test-case name="PortfolioManager.Data.Test.Portfolio.PortfolioRepositoryTest.Add" description="Test adding a stock" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                            </results>
-                          </test-suite>
-                        </results>
-                      </test-suite>
-                      <test-suite type="Namespace" name="Stocks" executed="True" result="Success" success="True" time="0.543" asserts="0">
-                        <results>
-                          <test-suite type="TestFixture" name="CorporateActionRepositoryTest" executed="True" result="Success" success="True" time="0.094" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.AddCapitalReturn" description="Test adding a Capital Return" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.AddDividend" description="Test adding a Dividend" executed="True" result="Success" success="True" time="0.006" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.AddTransformation" description="Test adding a Transformation" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.DeleteCapitalReturn" description="Test Delete() for a capital return" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.DeleteDividend" description="Test Delete() for a dividend" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.DeleteTransformation" description="Test Delete() for a transformation" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.DeleteTransformationWithResultStocks" description="Test Delete() for a transformation with result stocks" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateCapitalReturn" description="Test Update() for a capital return" executed="True" result="Success" success="True" time="0.008" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateCorporateAction" description="Test Update() for a corporate action (header file)" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateDividend" description="Test Update() for a dividend" executed="True" result="Success" success="True" time="0.002" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateTransformation" description="Test Update() for a transformation" executed="True" result="Success" success="True" time="0.002" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateTransformationAddResultStock" description="Test Update() for a transformation - add result stock" executed="True" result="Success" success="True" time="0.004" asserts="2" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateTransformationRemoveResultStock" description="Test Update() for a transformation - remove result stock" executed="True" result="Success" success="True" time="0.002" asserts="2" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest.UpdateTransformationUpdateResultStock" description="Test Update() for a transformation - update result stock" executed="True" result="Success" success="True" time="0.004" asserts="1" />
-                            </results>
-                          </test-suite>
-                          <test-suite type="TestFixture" name="RelativeNTARepositoryTest" executed="True" result="Success" success="True" time="0.114" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Add" description="Test adding a Relative NTA" executed="True" result="Success" success="True" time="0.010" asserts="3" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.AddDuplicate" description="Test adding a relative nta with the same details as an existing entry" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Delete" description="Test Delete()" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteById" description="Test Delete() by Id" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByIdNotExists" description="Test Delete() by Id not exists" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByParent" description="Test Delete() by Parent" executed="True" result="Success" success="True" time="0.010" asserts="6" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByParentChild" description="Test Delete() by Parent,Child" executed="True" result="Success" success="True" time="0.010" asserts="6" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByParentChildDate" description="Test Delete() by Parent,Child,Date" executed="True" result="Success" success="True" time="0.010" asserts="6" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Get" description="Test Get()" executed="True" result="Success" success="True" time="0.008" asserts="6" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.GetNotExists" description="Test Get() for a relative NTA that doesn't exist" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Update" description="Test Update()" executed="True" result="Success" success="True" time="0.008" asserts="1" />
-                            </results>
-                          </test-suite>
-                          <test-suite type="TestFixture" name="StockQueryTest" executed="True" result="Success" success="True" time="0.187" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.Get" description="Test Get()" executed="True" result="Success" success="True" time="0.007" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetAfterEndDate" description="Test Get() for a stock after end date" executed="True" result="Success" success="True" time="0.008" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCode" description="Test GetASXCode()" executed="True" result="Success" success="True" time="0.007" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeAfterEndDate" description="Test GetASXCode() for a stock after end date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeAtDate" description="Test GetASXCode() at a particular date" executed="True" result="Success" success="True" time="0.006" asserts="2" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeBeforeStartDate" description="Test GetASXCode() for a stock before start date" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeNotExists" description="Test GetASXCode() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetAtDate" description="Test Get() at a particular date" executed="True" result="Success" success="True" time="0.006" asserts="2" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetBeforeStartDate" description="Test Get() for a stock before start date" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCode" description="Test GetByASXCode()" executed="True" result="Success" success="True" time="0.006" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeAfterEndDate" description="Test GetByASXCode() for a stock after end date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeAtDate" description="Test GetByASXCode() at a particular date" executed="True" result="Success" success="True" time="0.006" asserts="2" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeBeforeStartDate" description="Test GetByASXCode() for a stock before start date" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeNotExists" description="Test GetByASXCode() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetChildStocks" description="Test GetChildStocks()" executed="True" result="Success" success="True" time="0.012" asserts="3" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetChildStocksNoChildren" description="Test GetChildStocks() with no children" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetNotExists" description="Test Get() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCost" description="Test PercentOfParentCost()" executed="True" result="Success" success="True" time="0.013" asserts="6" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCostIdInvalid" description="Test PercentOfParentCost() invalid id" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCostNoData" description="Test PercentOfParentCost() no Relative NTA Records" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCostNoParent" description="Test PercentOfParentCost() with no parent" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                            </results>
-                          </test-suite>
-                          <test-suite type="TestFixture" name="StockRepositoryTest" executed="True" result="Success" success="True" time="0.113" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Add" description="Test adding a stock" executed="True" result="Success" success="True" time="0.006" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.AddDuplicate" description="Test adding a stock with the same ASX code as an existing stock" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Delete" description="Test Delete()" executed="True" result="Success" success="True" time="0.007" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteAllEffectiveDatedRecords" description="Test Delete() by Id for multiple effective dated records" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteById" description="Test Delete() by Id" executed="True" result="Success" success="True" time="0.006" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteByIdAtDate" description="Test Delete() by Id and date" executed="True" result="Success" success="True" time="0.008" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteByIdAtDateNotExists" description="Test Delete() by Id and date not exists" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteNotExist" description="Test Delete() for stock not existing" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Get" description="Test Get()" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetAfterEndDate" description="Test Get() for a stock after end date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetAtDate" description="Test Get() at a particular date" executed="True" result="Success" success="True" time="0.005" asserts="2" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetBeforeStartDate" description="Test Get() for a stock before start date" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetNotExists" description="Test Get() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Update" description="Test Update()" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                            </results>
-                          </test-suite>
-                          <test-suite type="TestFixture" name="StockUnitOfWorkTest" executed="True" result="Success" success="True" time="0.021" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockUnitOfWorkTest.Commit" description="Test commmit" executed="True" result="Success" success="True" time="0.005" asserts="1" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockUnitOfWorkTest.NestedTransactions" description="Test nested transactions" executed="True" result="Success" success="True" time="0.006" asserts="3" />
-                              <test-case name="PortfolioManager.Data.Test.Stocks.StockUnitOfWorkTest.Rollback" description="Test rollback" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                            </results>
-                          </test-suite>
-                        </results>
-                      </test-suite>
-                    </results>
-                  </test-suite>
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="Assembly" name="C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Success" success="True" time="0.169" asserts="0">
-        <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Success" success="True" time="0.168" asserts="0">
-            <results>
-              <test-suite type="Namespace" name="Model" executed="True" result="Success" success="True" time="0.168" asserts="0">
-                <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="0.168" asserts="0">
-                    <results>
-                      <test-suite type="Namespace" name="Stocks" executed="True" result="Success" success="True" time="0.168" asserts="0">
-                        <results>
-                          <test-suite type="TestFixture" name="StockManagerTest" executed="True" result="Success" success="True" time="0.034" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock1" description="Add Stock(string asxCode, string name)" executed="True" result="Success" success="True" time="0.006" asserts="5" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock2" description="Add Stock(string asxCode, string name, DateTime fromDate)" executed="True" result="Success" success="True" time="0.005" asserts="5" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock3" description="(string asxCode, string name, StockType type)" executed="True" result="Success" success="True" time="0.005" asserts="5" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock4" description="Add Stock(string asxCode, string name, DateTime fromDate, StockType type)" executed="True" result="Success" success="True" time="0.005" asserts="5" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.GetStock" description="Get Stock" executed="True" result="Success" success="True" time="0.004" asserts="5" />
-                            </results>
-                          </test-suite>
-                          <test-suite type="TestFixture" name="StockTest" executed="True" result="Success" success="True" time="0.131" asserts="0">
-                            <results>
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddChildStock" description="Add Child Stock" executed="True" result="Success" success="True" time="0.006" asserts="3" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddChildStockNonStapled" description="Add Child Stock for a non stapled security" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddRelativeNTA" description="Add Relative NTA" executed="True" result="Success" success="True" time="0.008" asserts="4" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddRelativeNTANonStapled" description="Add Relative NTA to a non stapled secuity" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.ChangeASXCode" description="Change ASX Code" executed="True" result="Success" success="True" time="0.005" asserts="7" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.DeleteRelativeNTA" description="Delete Relative NTA" executed="True" result="Success" success="True" time="0.008" asserts="5" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.DeleteRelativeNTANonStapled" description="Delete Relative NTA from a non stapled secuity" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.DeleteRelativeNTANotExists" description="Delete Relative NTA that doesn't exist" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.Delist" description="Delist" executed="True" result="Success" success="True" time="0.005" asserts="2" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.GetChildStocksNonStapled" description="Get Child stocks for a non stapled security" executed="True" result="Success" success="True" time="0.004" asserts="1" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.GetRelativeNTANonStapled" description="Get Relative NTA for a non stapled secuity" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.RemoveChildStock" description="Remove Child stock" executed="True" result="Success" success="True" time="0.006" asserts="3" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.RemoveChildStockNonStapled" description="Remove Child stock for a non stapled security" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.RemoveChildStockNotExists" description="Remove Child stock not exists" executed="True" result="Success" success="True" time="0.006" asserts="1" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.UpdateRelativeNTA" description="Update a Relative NTA" executed="True" result="Success" success="True" time="0.006" asserts="4" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.UpdateRelativeNTANonStapled" description="Update a Relative NTA from a non stapled secuity" executed="True" result="Success" success="True" time="0.006" asserts="0" />
-                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.UpdateRelativeNTANotExists" description="Update a Relative NTA that doesn't exist" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                              <test-suite type="TestFixture" name="AquisitionOrdinaryShare" executed="True" result="Success" success="True" time="0.790" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.073" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.ExpectedIncome" executed="True" result="Success" success="True" time="0.012" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.ExpectedParcels" executed="True" result="Success" success="True" time="0.015" asserts="1" />
+                                </results>
+                              </test-suite>
                             </results>
                           </test-suite>
                         </results>

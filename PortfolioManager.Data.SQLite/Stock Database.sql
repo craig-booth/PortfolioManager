@@ -7,6 +7,7 @@ CREATE TABLE [Stocks]
 	[Name] TEXT(50)  NOT NULL,
 	[Type] INTEGER NOT NULL,
 	[Parent] TEXT(36) NOT NULL,
+	[DividendRounding] INTEGER,
 	
 	PRIMARY KEY ([ASXCode])
 );

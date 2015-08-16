@@ -83,7 +83,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<ITransaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionDate] BETWEEN @FromDate AND @ToDate", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
@@ -105,10 +105,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<ITransaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionType] = @TransactionType AND [TransactionDate] BETWEEN @FromDate AND @ToDate", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate]", _Connection);
             query.Prepare();
 
-            query.Parameters.AddWithValue("@TransactionType", transactionType);
+            query.Parameters.AddWithValue("@Type", transactionType);
             query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
             query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
 
@@ -128,7 +128,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<ITransaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@ASXCode", asxCode);
@@ -151,11 +151,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<ITransaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionType] = @TransactionType AND [TransactionDate] BETWEEN @FromDate AND @ToDate", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@ASXCode", asxCode);
-            query.Parameters.AddWithValue("@TransactionType", transactionType);
+            query.Parameters.AddWithValue("@Type", transactionType);
             query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
             query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
 
@@ -170,5 +170,36 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             return list;
         }
+
+        public IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(Guid portfolio)
+        {
+            List<OwnedStock> ownedStocks = new List<OwnedStock>();
+
+            var parcelsQuery = from parcel in _Database._Parcels
+                               orderby parcel.Stock, parcel.FromDate
+                               select parcel;
+
+            OwnedStock currentStock = null;
+            foreach (ShareParcel shareParcel in parcelsQuery)
+            {
+                if ((currentStock != null) && (shareParcel.Stock == currentStock.Id) && (shareParcel.FromDate < currentStock.ToDate))
+                {
+                    if (shareParcel.ToDate > currentStock.ToDate)
+                        currentStock.ToDate = shareParcel.ToDate;
+                }
+                else
+                {
+                    currentStock = new OwnedStock()
+                    {
+                        Id = shareParcel.Stock,
+                        FromDate = shareParcel.FromDate,
+                        ToDate = shareParcel.ToDate
+                    };
+                    ownedStocks.Add(currentStock);
+                }
+            }
+
+            return ownedStocks.AsReadOnly();
+        }     
     }
 }

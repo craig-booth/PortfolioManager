@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit</TopNode>
-  <SelectedNode>[0-1000]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit</SelectedNode>
+  <TopNode>[0-1062]PortfolioManager.Data.Test.Stocks.StockQueryTest.Get</TopNode>
+  <SelectedNode>[0-1114]PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
-    <Node UniqueName="[0-1072]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" Expanded="true" />
-    <Node UniqueName="[0-1073]PortfolioManager" Expanded="true" />
-    <Node UniqueName="[0-1074]PortfolioManager.Data" Expanded="true" />
-    <Node UniqueName="[0-1075]PortfolioManager.Data.Test" Expanded="true" />
-    <Node UniqueName="[0-1076]PortfolioManager.Data.Test.Portfolio" Expanded="true" />
-    <Node UniqueName="[0-1001]PortfolioManager.Data.Test.Portfolio.PortfolioRepositoryTest" Expanded="true" />
-    <Node UniqueName="[0-1077]PortfolioManager.Data.Test.Stocks" Expanded="true" />
-    <Node UniqueName="[0-1003]PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest" Expanded="true" />
-    <Node UniqueName="[0-1102]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" Expanded="true" />
+    <Node UniqueName="[0-1102]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" Expanded="true" />
     <Node UniqueName="[0-1103]PortfolioManager" Expanded="true" />
-    <Node UniqueName="[0-1104]PortfolioManager.Model" Expanded="true" />
-    <Node UniqueName="[0-1105]PortfolioManager.Model.Test" Expanded="true" />
-    <Node UniqueName="[0-1106]PortfolioManager.Model.Test.Stocks" Expanded="true" />
+    <Node UniqueName="[0-1104]PortfolioManager.Data" Expanded="true" />
+    <Node UniqueName="[0-1105]PortfolioManager.Data.Test" Expanded="true" />
+    <Node UniqueName="[0-1106]PortfolioManager.Data.Test.Portfolio" Expanded="true" />
+    <Node UniqueName="[0-1107]PortfolioManager.Data.Test.Portfolio.Transactions" Expanded="true" />
+    <Node UniqueName="[0-1108]PortfolioManager.Data.Test.Stocks" Expanded="true" />
+    <Node UniqueName="[0-1033]PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTest" Expanded="true" />
+    <Node UniqueName="[0-1061]PortfolioManager.Data.Test.Stocks.StockQueryTest" Expanded="true" />
+    <Node UniqueName="[0-1181]C:\Users\P150EM\Documents\Visual Studio 2013\Projects\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" Expanded="true" />
+    <Node UniqueName="[0-1182]PortfolioManager" Expanded="true" />
+    <Node UniqueName="[0-1183]PortfolioManager.Model" Expanded="true" />
+    <Node UniqueName="[0-1184]PortfolioManager.Model.Test" Expanded="true" />
+    <Node UniqueName="[0-1185]PortfolioManager.Model.Test.Portfolios" Expanded="true" />
+    <Node UniqueName="[0-1186]PortfolioManager.Model.Test.Portfolios.Transactions" Expanded="true" />
+    <Node UniqueName="[0-1114]PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare" Expanded="true" />
+    <Node UniqueName="[0-1111]PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionTest" Expanded="true" />
+    <Node UniqueName="[0-1187]PortfolioManager.Model.Test.Stocks" Expanded="true" />
+    <Node UniqueName="[0-1188]PortfolioManager.Model.Test.Utils" Expanded="true" />
   </Nodes>
 </VisualState>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
@@ -25,7 +26,7 @@ namespace PortfolioManager.Model.Portfolios
         { 
             get 
             {
-                return "Income received " + CashIncome.ToString("c");
+                return "Income received " + MathUtils.FormatCurrency(CashIncome, false, true);
             } 
         }
 
@@ -39,12 +40,12 @@ namespace PortfolioManager.Model.Portfolios
 
         public decimal CashIncome
         {
-            get { return FrankedAmount + UnfrankedAmount + Interest + TaxDeferred; }
+            get { return FrankedAmount + UnfrankedAmount + Interest; }
         }
 
         public decimal NonCashIncome
         {
-            get { return FrankingCredits; }
+            get { return FrankingCredits + TaxDeferred; }
         }
 
         public decimal TotalIncome

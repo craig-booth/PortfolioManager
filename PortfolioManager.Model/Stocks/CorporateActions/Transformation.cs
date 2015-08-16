@@ -13,6 +13,7 @@ namespace PortfolioManager.Model.Stocks
     public class Transformation : ICorporateAction
     {
         private IStockDatabase _Database;
+        private List<ResultingStock> _ResultingStocks;
 
         public Guid Id { get; private set; }
         public Guid Stock { get; private set; }
@@ -20,7 +21,21 @@ namespace PortfolioManager.Model.Stocks
         public DateTime ImplementationDate { get; set; }
         public string Description { get; private set; }
         public decimal CashComponent { get; private set; }
-        public List<ResultingStock> ResultingStocks { get; private set; }
+        public IEnumerable<ResultingStock> ResultingStocks 
+        { 
+            get 
+            { 
+                return _ResultingStocks.AsEnumerable(); 
+            } 
+        }
+
+        public CorporateActionType Type
+        {
+            get
+            {
+                return CorporateActionType.Transformation;
+            }
+        }
 
         public Transformation(IStockDatabase stockDatabase, Guid id, Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, string description)
         {
@@ -32,7 +47,7 @@ namespace PortfolioManager.Model.Stocks
             CashComponent = cashComponent;
             Description = description;
 
-            ResultingStocks = new List<ResultingStock>();
+            _ResultingStocks = new List<ResultingStock>();
         }
 
         public Transformation(IStockDatabase stockDatabase, Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, string description)
@@ -56,11 +71,16 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
+        public void AddResultStockInternal(ResultingStock resultingStock)
+        {
+            _ResultingStocks.Add(resultingStock);
+        }
+
         public void AddResultStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage)
         {
             var resultStock = new ResultingStock(stock, originalUnits, newUnits, costBasePercentage);
 
-            ResultingStocks.Add(resultStock);
+            AddResultStockInternal(resultStock);
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -71,7 +91,7 @@ namespace PortfolioManager.Model.Stocks
 
         public void ChangeResultStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage)
         {
-            var resultStock = ResultingStocks.Find(x => x.Stock == stock);
+            var resultStock = _ResultingStocks.Find(x => x.Stock == stock);
 
             if (resultStock == null)
                 throw new RecordNotFoundException(stock);
@@ -87,12 +107,12 @@ namespace PortfolioManager.Model.Stocks
 
         public void DeleteResultStock(Guid stock)
         {
-            var resultStock = ResultingStocks.Find(x => x.Stock == stock);
+            var resultStock = _ResultingStocks.Find(x => x.Stock == stock);
 
             if (resultStock == null)
                 throw new RecordNotFoundException(stock);
 
-            ResultingStocks.Remove(resultStock);
+            _ResultingStocks.Remove(resultStock);
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -118,10 +138,11 @@ namespace PortfolioManager.Model.Stocks
             {
                 int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
                 decimal costBase = totalCostBase * resultingStock.CostBasePercentage;
+                var stock = _Database.StockQuery.Get(resultingStock.Stock, this.ImplementationDate);
                 transactions.Add(new OpeningBalance()
                 {
                     TransactionDate = ImplementationDate,
-                    ASXCode = _Database.StockQuery.Get(resultingStock.Stock).ASXCode,
+                    ASXCode = stock.ASXCode,
                     Units = units,
                     CostBase = costBase,
                     Comment = Description
@@ -129,15 +150,16 @@ namespace PortfolioManager.Model.Stocks
             }
 
             /* Reduce the costbase of the original parcels */
-            if (ResultingStocks.Count > 0)
+            if (ResultingStocks.Any())
             {
                 decimal originalCostBasePercentage = 1 - ResultingStocks.Sum(x => x.CostBasePercentage);
                 foreach (ShareParcel parcel in ownedParcels)
                 {
+                    var stock = _Database.StockQuery.Get(this.Stock, this.ImplementationDate);
                     transactions.Add(new CostBaseAdjustment()
                     {
                         TransactionDate = ImplementationDate,
-                        ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
+                        ASXCode = stock.ASXCode,
                         Percentage = originalCostBasePercentage,
                         Comment = Description
                     });
@@ -147,10 +169,11 @@ namespace PortfolioManager.Model.Stocks
             /* Handle disposal of original parcels */
             if (CashComponent > 0)
             {
+                var stock = _Database.StockQuery.Get(this.Stock, this.ImplementationDate);
                 transactions.Add(new Disposal()
                 {
                     TransactionDate = ImplementationDate,
-                    ASXCode = _Database.StockQuery.Get(this.Stock).ASXCode,
+                    ASXCode = stock.ASXCode,
                     Units = ownedParcels.Sum(x => x.Units),
                     AveragePrice = CashComponent,
                     TransactionCosts = 0.00M,

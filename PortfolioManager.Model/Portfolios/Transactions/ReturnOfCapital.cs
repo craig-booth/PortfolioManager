@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
@@ -21,7 +22,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             get
             {
-                return "Return of Capital of " + Amount.ToString("c");
+                return "Return of Capital of " + MathUtils.FormatCurrency(Amount, false, true);
             }
         }
 

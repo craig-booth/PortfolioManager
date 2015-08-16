@@ -9,77 +9,113 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Test
 {
-    public partial class frmDividend : Form
+    public partial class frmDividend : Form, ICorporateActionForm 
     {
         private Mode _Mode;
         private StockManager _StockManager;
+        private Dividend _Dividend;
+        private Stock _Stock;
 
         public frmDividend()
         {
             InitializeComponent();
         }
 
-        public frmDividend(StockManager stockManager, Dividend dividend, Mode mode)
+        public frmDividend(StockManager stockManager)
             : this()
         {
-            _Mode = mode;
             _StockManager = stockManager;
-
-            dtpRecordDate_ValueChanged(this, null);
         }
 
-        public static DialogResult EditDividend(StockManager stockManager, Dividend dividend)
+        private void SetFormValues()
         {
-            frmDividend form = new frmDividend(stockManager, dividend, Mode.Edit);
-
-            return form.ShowDialog();
+            lblASXCode.Text = _StockManager.GetASXCode(_Dividend.Stock);
+            dtpRecordDate.Value = _Dividend.ActionDate;
+            dtpPaymentDate.Value = _Dividend.PaymentDate;
+            txtDividendAmount.Text =  MathUtils.FormatCurrency(_Dividend.DividendAmount, false);
+            txtPercentFranked.Text = (_Dividend.PercentFranked * 100).ToString("#0");
+            txtCompanyTaxRate.Text = (_Dividend.CompanyTaxRate * 100).ToString("#0");
+            txtDescription.Text = _Dividend.Description;
+            txtDRPPrice.Text = MathUtils.FormatCurrency(_Dividend.DRPPrice, false);
         }
 
-        public static DialogResult AddDividend(StockManager stockManager)
+        public ICorporateAction CreateCorporateAction(Stock stock)
         {
-            frmDividend form = new frmDividend(stockManager, null, Mode.Create);
+            _Stock = stock;
+            _Mode = Mode.Create;
 
-            form.txtCompanyTaxRate.Text = "30";
+            lblASXCode.Text = stock.ASXCode;
+            txtCompanyTaxRate.Text = "30";
 
-            return form.ShowDialog();
+            if (ShowDialog() == DialogResult.OK)
+            {
+                return _Dividend;
+            }
+            else
+                return null;
+        }
+
+        public bool EditCorporateAction(ICorporateAction corporateAction)
+        {
+            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Mode = Mode.Edit;
+            _Dividend = corporateAction as Dividend;
+            SetFormValues();
+            if (ShowDialog() == DialogResult.OK)
+            {
+                _Dividend.Change(dtpRecordDate.Value, 
+                                 dtpPaymentDate.Value,
+                                 MathUtils.ParseDecimal(txtDividendAmount.Text),
+                                 MathUtils.ParseDecimal(txtPercentFranked.Text) / 100,
+                                 MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100,
+                                 MathUtils.ParseDecimal(txtDRPPrice.Text),
+                                 txtDescription.Text); 
+
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public void ViewCorporateAction(ICorporateAction corporateAction)
+        {
+            _Mode = Mode.View;
+            _Dividend = corporateAction as Dividend;
+            SetFormValues();
+            ShowDialog();
+        }
+
+        public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
+        {
+            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Mode = Mode.Delete;
+            _Dividend = corporateAction as Dividend;
+            SetFormValues();
+            if (ShowDialog() == DialogResult.OK)
+            {
+                _Stock.DeleteCorporateAction(_Dividend);
+                return true;
+            }
+            return
+                false;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (_Mode == Mode.Create)
             {
-                Stock stock = cboASXCode.SelectedItem as Stock;
-                
-                decimal percentFranked = 0.00M;
-                decimal companyTaxRate = 0.30M;
-                decimal drpPrice = 0.00M;
-                decimal amount = decimal.Parse(txtDividendAmount.Text);
-                if (txtPercentFranked.Text != "")
-                    percentFranked = decimal.Parse(txtPercentFranked.Text) / 100;              
-                if (txtCompanyTaxRate.Text != "")
-                    companyTaxRate = decimal.Parse(txtCompanyTaxRate.Text) / 100;
-                if (txtDRPPrice.Text != "")
-                    drpPrice = decimal.Parse(txtDRPPrice.Text);
-
-                stock.AddDividend(dtpRecordDate.Value, dtpPaymentDate.Value, amount, percentFranked, companyTaxRate, drpPrice, "");
-
+                _Dividend = _Stock.AddDividend(dtpRecordDate.Value, 
+                                               dtpPaymentDate.Value,
+                                               MathUtils.ParseDecimal(txtDividendAmount.Text), 
+                                               MathUtils.ParseDecimal(txtPercentFranked.Text) / 100, 
+                                               MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100, 
+                                               MathUtils.ParseDecimal(txtDRPPrice.Text), 
+                                               txtDescription.Text);
             }
-        }
-
-        private void dtpRecordDate_ValueChanged(object sender, EventArgs e)
-        {
-            var stockList = _StockManager.GetStocks(dtpRecordDate.Value);
-
-            cboASXCode.Items.Clear();
-            foreach (Stock stock in stockList)
-            {
-                cboASXCode.Items.Add(stock);
-            }
-            
-
         }
 
     }

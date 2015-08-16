@@ -61,7 +61,15 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, TransactionType transactionType, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
-        
+
+        IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(Guid portfolio);
+    }
+
+    public class OwnedStock
+    {
+        public Guid Id;
+        public DateTime FromDate;
+        public DateTime ToDate;
     }
 
 }

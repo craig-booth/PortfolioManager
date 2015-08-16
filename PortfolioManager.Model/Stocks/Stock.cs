@@ -40,6 +40,7 @@ namespace PortfolioManager.Model.Stocks
         public string Name { get; private set; }
         public StockType Type { get; private set; }
         public Guid ParentId { get; private set; }
+        public RoundingRule DividendRoundingRule { get; private set; }
 
         public decimal CurrentPrice
         {
@@ -58,15 +59,20 @@ namespace PortfolioManager.Model.Stocks
         }
 
 
-        public Stock(IStockDatabase stockDatabase, DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
-            : this(stockDatabase, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate(), asxCode, name, type, parent)
+        public Stock(IStockDatabase database, DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
+            : this(database, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate(), asxCode, name, type, parent)
 
         {
         }
 
-        public Stock(IStockDatabase stockDatabase, Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent)
+        public Stock(IStockDatabase database, Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent)
+            : this(database, id, fromDate, toDate, asxCode, name, type, parent, RoundingRule.Round)
         {
-            _Database = stockDatabase;
+        }
+
+        public Stock(IStockDatabase database, Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent, RoundingRule dividendRoundingRule)
+        {
+            _Database = database;
             Id = id;
             FromDate = fromDate;
             ToDate = toDate;
@@ -75,6 +81,7 @@ namespace PortfolioManager.Model.Stocks
             FromDate = fromDate;
             Type = type;
             ParentId = parent;
+            DividendRoundingRule = dividendRoundingRule;
         }
 
         public override string ToString()
@@ -125,7 +132,12 @@ namespace PortfolioManager.Model.Stocks
 
         public IReadOnlyCollection<Stock> GetChildStocks()
         {
-            return _Database.StockQuery.GetChildStocks(this.Id);
+            return _Database.StockQuery.GetChildStocks(this.Id, DateTime.Today);
+        }
+
+        public IReadOnlyCollection<Stock> GetChildStocks(DateTime atDate)
+        {
+            return _Database.StockQuery.GetChildStocks(this.Id, atDate);
         }
 
         public void RemoveChildStock(Stock child)
@@ -229,6 +241,7 @@ namespace PortfolioManager.Model.Stocks
 
             }
 
+
             return dividend;
         }
 
@@ -245,8 +258,38 @@ namespace PortfolioManager.Model.Stocks
 
             }
 
+
             return transformation;
         }
+
+        public IReadOnlyCollection<ICorporateAction> GetCorporateActions()
+        {
+            return _Database.CorporateActionQuery.Find(Id, DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+        }
+
+        public IReadOnlyCollection<ICorporateAction> GetCorporateActions(DateTime fromDate, DateTime toDate)
+        {
+            return _Database.CorporateActionQuery.Find(Id, fromDate, toDate);
+        }
+
+        public void DeleteCorporateAction(ICorporateAction corporateAction)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.CorporateActionRepository.Delete(corporateAction);
+                unitOfWork.Save();
+            }
+        }
+
+        public void DeleteCorporateAction(Guid id)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.CorporateActionRepository.Delete(id);
+                unitOfWork.Save();
+            }
+        }
+
     }
  
 }

@@ -8,6 +8,7 @@ using System.Data.SQLite;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Data.SQLite;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
@@ -15,6 +16,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
     {
         public static Stock CreateStock(SQLiteStockDatabase database, SQLiteDataReader reader)
         {
+            RoundingRule dividendRoundingRule = RoundingRule.Round;
+            if (! reader.IsDBNull(7))
+                dividendRoundingRule = (RoundingRule)reader.GetInt32(7);
+             
             Stock stock = new Stock(database,
                                     new Guid(reader.GetString(0)),
                                     reader.GetDateTime(1),
@@ -22,7 +27,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     reader.GetString(3),
                                     reader.GetString(4),
                                     (StockType)(reader.GetInt32(5)),
-                                    new Guid(reader.GetString(6)));
+                                    new Guid(reader.GetString(6)),
+                                    dividendRoundingRule);
 
             return stock;
         }
@@ -40,13 +46,13 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public static ICorporateAction CreateCorporateAction(SQLiteStockDatabase database, SQLiteDataReader reader)
         {
-            int actionType = reader.GetInt32(4);
+            CorporateActionType type = (CorporateActionType)reader.GetInt32(4);
 
-            if (actionType == 1)
+            if (type == CorporateActionType.Dividend)
                 return CreateDividend(database, reader);
-            else if (actionType == 2)
+            else if (type == CorporateActionType.CapitalReturn)
                 return CreateCapitalReturn(database, reader);
-            else if (actionType == 3)
+            else if (type == CorporateActionType.Transformation)
                 return CreateTransformation(database, reader);
             else
                 return null;
@@ -134,11 +140,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             while (transformationReader.Read())
             {
-                ResultingStock resultStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
+                ResultingStock resultingStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
                                         transformationReader.GetInt32(2),
                                         transformationReader.GetInt32(3),
                                         DBToDecimal(transformationReader.GetInt32(4)));
-                transformation.ResultingStocks.Add(resultStock);
+
+                transformation.AddResultStockInternal(resultingStock);
             }
 
             transformationReader.Close();

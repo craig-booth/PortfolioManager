@@ -20,7 +20,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             get
             {
-                return "Adjust cost base by %" + Percentage.ToString("n");
+                return "Adjust cost base by " + Percentage.ToString("P");
             }
         }
 

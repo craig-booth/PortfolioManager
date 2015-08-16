@@ -31,17 +31,15 @@ namespace PortfolioManager.Model.Data
     }
 
     public interface IStockQuery
-    {
-        Stock Get(Guid id);
+    {       
         Stock Get(Guid id, DateTime atDate);
+        IReadOnlyCollection<Stock> GetAll();
         IReadOnlyCollection<Stock> GetAll(DateTime atDate);
-        Stock GetByASXCode(string asxCode);
         Stock GetByASXCode(string asxCode, DateTime atDate);
-        IReadOnlyCollection<Stock> GetChildStocks(Guid parent);
+        IReadOnlyCollection<Stock> GetChildStocks(Guid parent, DateTime atDate);
         decimal PercentOfParentCost(Guid parent, Guid child, DateTime atDate);
         RelativeNTA GetRelativeNTA(Guid parent, Guid child, DateTime atDate);
         IReadOnlyCollection<RelativeNTA> GetRelativeNTAs(Guid parent, Guid child);
-        string GetASXCode(Guid id);
         string GetASXCode(Guid id, DateTime atDate);
     }
 

@@ -17,6 +17,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         public int UnitsSold { get; private set; }
         public ShareParcel Parcel { get; private set; }
+        public decimal AmountReceived { get; internal set; }
 
         public ParcelSold(int unitsSold, ShareParcel parcel)
         {
@@ -49,16 +50,28 @@ namespace PortfolioManager.Model.Portfolios
             MethodUsed = method;
             _ParcelsSold = new List<ParcelSold>(parcelsSold);
 
+            /* Apportion amount received over each parcel */             
+            ApportionedValue[] apportionedAmountReceived = new ApportionedValue[_ParcelsSold.Count];
+            int i = 0;
+            foreach (ParcelSold parcelSold in _ParcelsSold)
+                apportionedAmountReceived[i++].Units = parcelSold.UnitsSold; ;
+            MathUtils.ApportionAmount(amountReceived, apportionedAmountReceived);
+
+
             /* Calculate units sold and capital gain */
             decimal totalCostBase = 0.00M;
+            i = 0;
             foreach (ParcelSold parcelSold in _ParcelsSold)
             {
+                parcelSold.AmountReceived = apportionedAmountReceived[i++].Amount;
+
                 UnitsSold += parcelSold.UnitsSold;
                 if (parcelSold.UnitsSold == parcelSold.Parcel.Units)
                     totalCostBase += parcelSold.Parcel.CostBase;
                 else
-                    totalCostBase += parcelSold.Parcel.CostBase * (parcelSold.UnitsSold / parcelSold.Parcel.Units);
+                    totalCostBase += parcelSold.Parcel.CostBase * ((decimal)parcelSold.UnitsSold / parcelSold.Parcel.Units);
             }
+
             CapitalGain = amountReceived - totalCostBase;          
         }
 

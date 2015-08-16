@@ -61,7 +61,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _FindCorporateAction.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
             _FindCorporateAction.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
 
-            SQLiteDataReader reader = _GetCorporateActionById.ExecuteReader();
+            SQLiteDataReader reader = _FindCorporateAction.ExecuteReader();
 
             while (reader.Read())
             {

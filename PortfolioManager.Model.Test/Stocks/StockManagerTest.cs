@@ -12,14 +12,14 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Model.Test.Stocks
 {
     [TestFixture]
-    public class StockManagerTest: TestBase 
+    public class StockManagerTest: PortfolioTestBase 
     {
         [Test, Description("Add Stock(string asxCode, string name)")]
         public void AddStock1()
         {
             var manager = CreateStockManager();
 
-            manager.AddStock("ABC", "Test");
+            manager.Add("ABC", "Test");
 
             var stock = manager.GetStock("ABC");
 
@@ -36,7 +36,7 @@ namespace PortfolioManager.Model.Test.Stocks
             var manager = CreateStockManager();
 
             var fromDate = new DateTime(2001, 06, 01);
-            manager.AddStock("ABC", "Test", fromDate);
+            manager.Add("ABC", "Test", fromDate);
 
             var stock = manager.GetStock("ABC");
 
@@ -52,7 +52,7 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            manager.AddStock("ABC", "Test", StockType.Trust);
+            manager.Add("ABC", "Test", StockType.Trust);
 
             var stock = manager.GetStock("ABC");
 
@@ -69,7 +69,7 @@ namespace PortfolioManager.Model.Test.Stocks
             var manager = CreateStockManager();
 
             var fromDate = new DateTime(2001, 06, 01);
-            manager.AddStock("ABC", "Test", fromDate, StockType.Trust);
+            manager.Add("ABC", "Test", fromDate, StockType.Trust);
 
             var stock = manager.GetStock("ABC");
 
@@ -86,7 +86,7 @@ namespace PortfolioManager.Model.Test.Stocks
             var manager = CreateStockManager();
 
             var fromDate = new DateTime(2001, 06, 01);
-            manager.AddStock("ABC", "Test", fromDate);
+            manager.Add("ABC", "Test", fromDate);
 
             var stock = manager.GetStock("ABC");
 
@@ -97,9 +97,9 @@ namespace PortfolioManager.Model.Test.Stocks
             Assert.That(stock.ParentId, Is.EqualTo(Guid.Empty));
         }
 
-        /* TODO: Delete stock should also remove NTAs and Corporate actions */
+        /* TODO: Priority Low, Delete stock should also remove NTAs and Corporate actions */
 
-        /* TODO: Test delete of stapled security when children exist */
+        /* TODO: Priority Low, Test delete of stapled security when children exist */
         /*       result: exception - children exist */
 
     }
