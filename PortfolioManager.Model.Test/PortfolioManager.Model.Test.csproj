@@ -44,8 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Portfolios\CGTConstraint.cs" />
+    <Compile Include="Portfolios\IncomeConstraint.cs" />
     <Compile Include="Portfolios\PorftolioTest.cs" />
     <Compile Include="Portfolios\PortfolioConstraints.cs" />
+    <Compile Include="Portfolios\ShareParcelConstraint.cs" />
     <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
     <Compile Include="Portfolios\Transactions\CostbaseAdjustmentTest.cs" />
     <Compile Include="Portfolios\Transactions\DisposalTest.cs" />
