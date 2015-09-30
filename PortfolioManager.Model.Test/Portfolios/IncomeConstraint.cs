@@ -11,25 +11,6 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios
 {
-
-    public class IncomeReceivedEqualConstraint : GenericEntityEqualConstraint<IncomeReceived, IncomeReceivedComparer, IncomeReceviedWriter>
-    {
-        public IncomeReceivedEqualConstraint(IncomeReceived expected) 
-            : base(expected)
-        {
-
-        }
-    }
-
-    public class IncomeReceivedCollectionEqualConstraint : GenericEntityCollectionEqualConstraint<IncomeReceived, IncomeReceivedComparer, IncomeReceviedWriter>
-    {
-        public IncomeReceivedCollectionEqualConstraint(ICollection<IncomeReceived> expected)
-            : base(expected)
-        {
-
-        }
-    }
-
     public class IncomeReceivedComparer : IEqualityComparer<IncomeReceived>
     {
         public bool Equals(IncomeReceived income1, IncomeReceived income2)

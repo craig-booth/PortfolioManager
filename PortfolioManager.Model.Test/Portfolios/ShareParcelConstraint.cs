@@ -11,52 +11,13 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios
 {
-    public class ShareParcelEqual : Constraint
+
+ /*   public class ShareParcelCollectionEqualConstraint : EntityCollectionEqualConstraint<ShareParcel>
     {
-        private readonly ShareParcel _Expected;
-        private readonly ShareParcelComparer _Comparer;
 
-        public ShareParcelEqual(ShareParcel expected)
+        public ShareParcelCollectionEqualConstraint(ICollection<ShareParcel> expected, IEqualityComparer<ShareParcel> comparer, IEntityWriter<ShareParcel> writer)
+            : base(expected, comparer, writer)
         {
-            _Expected = expected;
-            _Comparer = new ShareParcelComparer();
-        }
-
-        public override bool Matches(object actual)
-        {
-            base.actual = actual;
-
-            if (actual is ShareParcel)
-                return _Comparer.Equals(_Expected, (ShareParcel)actual);
-            else
-                return false;
-        }
-
-        public override void WriteActualValueTo(MessageWriter writer)
-        {
-            if (actual is ShareParcel)
-                ShareParcelWriter.Write(writer, (ShareParcel)actual);
-            else
-                writer.WriteActualValue(actual);
-        }
-
-        public override void WriteDescriptionTo(MessageWriter writer)
-        {
-            ShareParcelWriter.Write(writer, (ShareParcel)_Expected);
-        }
-
-    }
-
-    public class ShareParcelCollectionEqual : Constraint
-    {
-        private readonly ICollection<ShareParcel> _Expected;
-        private readonly ShareParcelComparer _Comparer;
-
-        public ShareParcelCollectionEqual(ICollection<ShareParcel> expected)
-            : base(expected)
-        {
-            _Expected = expected;
-            _Comparer = new ShareParcelComparer();
         }
 
         public override bool Matches(object actual)
@@ -74,7 +35,7 @@ namespace PortfolioManager.Model.Test.Portfolios
                     found = false;
                     foreach (ShareParcel expectedParcel in expectedParcels)
                     {
-                        if (_Comparer.Equals(expectedParcel, actualParcel))
+                        if (_EntityComparer.Equals(expectedParcel, actualParcel))
                         {
                             if (expectedParcel.Parent != Guid.Empty)
                             {
@@ -82,7 +43,7 @@ namespace PortfolioManager.Model.Test.Portfolios
                                 var expectedParent = _Expected.First(x => x.Id == expectedParcel.Parent);
                                 var actualParent = actualParcels.First(x => x.Id == actualParcel.Parent);
 
-                                if (!_Comparer.Equals(expectedParent, actualParent))
+                                if (!_EntityComparer.Equals(expectedParent, actualParent))
                                     return false;
                             }
 
@@ -105,38 +66,12 @@ namespace PortfolioManager.Model.Test.Portfolios
             return false;
         }
 
+    } */
 
-        public override void WriteDescriptionTo(MessageWriter writer)
-        {
-            WriteValue(writer, _Expected);
-        }
-
-        public override void WriteActualValueTo(MessageWriter writer)
-        {
-            if (actual is IEnumerable<ShareParcel>)
-                WriteValue(writer, actual as IEnumerable<ShareParcel>);
-            else
-                writer.WriteActualValue(actual);
-        }
-
-        private void WriteValue(MessageWriter writer, IEnumerable<ShareParcel> parcels)
-        {
-            int count = 0;
-
-            writer.Write("<");
-            foreach (ShareParcel parcel in parcels)
-            {
-                if (count > 0)
-                    writer.Write(",\n              ");
-
-                ShareParcelWriter.Write(writer, parcel);
-
-                count++;
-            }
-            writer.Write(">");
-        }
+    public interface IEntityComparer<T>
+    {
+        List<PropertyDifference> FindDifferences(T entity1, T entity2);
     }
-
 
     public class ShareParcelComparer : IEqualityComparer<ShareParcel>
     {
@@ -158,12 +93,13 @@ namespace PortfolioManager.Model.Test.Portfolios
         }
     }
 
-    public static class ShareParcelWriter
+    public class ShareParcelWriter : IEntityWriter<ShareParcel>
     {
-        public static void Write(MessageWriter writer, ShareParcel parcel)
+        public void Write(MessageWriter writer, ShareParcel parcel)
         {
             writer.Write("<ShareParcel:- FromDate: {0:d}, ToDate: {1:d}, Stock: {2}, AquisitionDate {3:d}, Units: {4}, UnitPrice: {5}, CostBase: {6}, Event: {7}, Parent: {8}>",
                 new object[] { parcel.FromDate, parcel.ToDate, parcel.Stock, parcel.AquisitionDate, parcel.Units, parcel.UnitPrice, parcel.CostBase, parcel.Event, parcel.Parent });
         }
     }
+
 }

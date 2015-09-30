@@ -11,6 +11,37 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
+
+    [TestFixture, Description("Cost base adjustment of Ordinary share - single parcel")]
+    public class CostBaseAdjustmentOrdinaryShareSingleParcel : TransactionTest
+    {
+        public override void Setup()
+        {
+            SetupTestPortfolio();
+
+            _TransactionDate = new DateTime(2002, 01, 01);
+
+            var costBaseAdjustment = new CostBaseAdjustment()
+            {
+                TransactionDate = _TransactionDate,
+                ASXCode = "AAA",
+                Percentage = 0.30m,
+                Comment = "Costbase Adjustment test"
+            };
+            _Portfolio.Transactions.Add(costBaseAdjustment);
+
+            var expectedParcels = new ShareParcel[]
+            {
+                
+            };
+
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
+                {
+                    FromDate = _TransactionDate
+                });
+        }
+    }
+
     [TestFixture]
     public class CostBaseAdjustmentTest : PortfolioTestBase
     {

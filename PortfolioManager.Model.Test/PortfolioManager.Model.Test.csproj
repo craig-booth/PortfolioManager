@@ -45,8 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Portfolios\CGTConstraint.cs" />
+    <Compile Include="Portfolios\EntityComparer.cs" />
+    <Compile Include="Portfolios\EntityConstraint.cs" />
     <Compile Include="Portfolios\IncomeConstraint.cs" />
-    <Compile Include="Portfolios\PorftolioTest.cs" />
     <Compile Include="Portfolios\PortfolioConstraints.cs" />
     <Compile Include="Portfolios\ShareParcelConstraint.cs" />
     <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
@@ -55,10 +56,11 @@
     <Compile Include="Portfolios\Transactions\IncomeReceviedTest.cs" />
     <Compile Include="Portfolios\Transactions\OpeningBalanceTest.cs" />
     <Compile Include="Portfolios\Transactions\ReturnOfCapitalTest.cs" />
+    <Compile Include="Portfolios\Transactions\TransactionTest.cs" />
+    <Compile Include="PortfolioTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stocks\StockManagerTest.cs" />
     <Compile Include="Stocks\StockTest.cs" />
-    <Compile Include="PortfolioTestBase.cs" />
     <Compile Include="Utils\MathUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup />
