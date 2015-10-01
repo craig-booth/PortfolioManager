@@ -20,12 +20,11 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         protected StockManager _StockManager;
         protected Portfolio _Portfolio;
 
-        protected DateTime _TransactionDate;
-        protected List<ShareParcel> _OriginalParcels;
+//        protected DateTime _TransactionDate;
 
-        protected List<ShareParcel> _ExpectedParcels;
-        protected List<IncomeReceived> _ExpectedIncome;
-        protected List<CGTEvent> _ExpectedCGTEvents;
+ //       protected List<ShareParcel> _ExpectedParcels;
+ //       protected List<IncomeReceived> _ExpectedIncome;
+//        protected List<CGTEvent> _ExpectedCGTEvents;
 
         public TransactionTest()
         {
@@ -37,38 +36,6 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(stockDatabase, portfolioDatabase);
 
             _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
-
-            _OriginalParcels = new List<ShareParcel>();
-            _ExpectedParcels = new List<ShareParcel>();
-            _ExpectedIncome = new List<IncomeReceived>();
-            _ExpectedCGTEvents = new List<CGTEvent>();
-        }
-
-        [TestFixtureSetUp]
-        public abstract void Setup();
-
-        [Test]
-        public void ExpectedParcels()
-        {
-            var actualParcels = _Portfolio.GetParcels(_TransactionDate, true);
-            
-            Assert.That(actualParcels, PortfolioConstraint.Equals(_ExpectedParcels));  
-        }
-
-        [Test]
-        public void ExpectedIncome()
-        {
-            var actualIncome = _Portfolio.GetIncomeReceived(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
-
-            Assert.That(actualIncome, PortfolioConstraint.Equals(_ExpectedIncome));
-        }
-
-        [Test]
-        public void ExpectedCGTEvents()
-        {
-            var actualCGTEvents = _Portfolio.GetCGTEvents(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
-
-            Assert.That(actualCGTEvents, PortfolioConstraint.Equals(_ExpectedCGTEvents));
         }
 
         private void AddTestStocks()
@@ -119,26 +86,50 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             sss3.AddRelativeNTA(new DateTime(2008, 01, 01), 0.35m);
 
         }
+    }
 
-        protected void SetupTestPortfolio()
+    [TestFixture]
+    public abstract class TransactionTestWithExpectedTests : TransactionTest
+    {
+        protected DateTime _TransactionDate;
+
+        protected List<ShareParcel> _ExpectedParcels;
+        protected List<IncomeReceived> _ExpectedIncome;
+        protected List<CGTEvent> _ExpectedCGTEvents;
+
+        public TransactionTestWithExpectedTests() :
+            base()
         {
+            _ExpectedParcels = new List<ShareParcel>();
+            _ExpectedIncome = new List<IncomeReceived>();
+            _ExpectedCGTEvents = new List<CGTEvent>();
+        }
 
-            var transactions = new ITransaction[]
-            {
-                new OpeningBalance()
-                {
-                    TransactionDate = new DateTime(2000, 01, 01),
-                    ASXCode = "AAA",
-                    Units = 1000,
-                    CostBase = 1500.00m,
-                    Comment = ""
-                },
-            };
-            _Portfolio.Transactions.Add(transactions);
+        [TestFixtureSetUp]
+        public abstract void Setup();
 
-            // Store the current state for comparison later
-            _OriginalParcels.Clear();
-            _OriginalParcels.AddRange(_Portfolio.GetParcels(new DateTime(2000, 01, 01)));
+        [Test]
+        public void ExpectedParcels()
+        {
+            var actualParcels = _Portfolio.GetParcels(_TransactionDate, true);
+
+            Assert.That(actualParcels, PortfolioConstraint.Equals(_ExpectedParcels));
+        }
+
+        [Test]
+        public void ExpectedIncome()
+        {
+            var actualIncome = _Portfolio.GetIncomeReceived(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+
+            Assert.That(actualIncome, PortfolioConstraint.Equals(_ExpectedIncome));
+        }
+
+        [Test]
+        public void ExpectedCGTEvents()
+        {
+            var actualCGTEvents = _Portfolio.GetCGTEvents(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+
+            Assert.That(actualCGTEvents, PortfolioConstraint.Equals(_ExpectedCGTEvents));
         }
     }
 }

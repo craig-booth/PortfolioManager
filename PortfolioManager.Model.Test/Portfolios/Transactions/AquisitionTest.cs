@@ -13,7 +13,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
 
     [TestFixture, Description("Purchase stock")]
-    public class AquisitionOrdinaryShare : TransactionTest
+    public class AquisitionOrdinaryShare : TransactionTestWithExpectedTests 
     {
         public override void Setup()
         {
@@ -32,14 +32,11 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             decimal costBase = 10019.95m; // (1000 * 10) + 19.95
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, aquisition.Units, aquisition.AveragePrice, costBase, costBase, ParcelEvent.Aquisition));
-
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 450, aquisition.AveragePrice, costBase, costBase, ParcelEvent.Aquisition));
-            Assert.That(_ExpectedParcels[0], PortfolioConstraint.Equals(_ExpectedParcels[1]));  
         }
     }
 
     [TestFixture, Description("Purchase stapled security")]
-    public class AquisitionStapledSecurity : TransactionTest
+    public class AquisitionStapledSecurity : TransactionTestWithExpectedTests
     {
         public override void Setup()
         {
@@ -57,11 +54,15 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.Transactions.Add(aquisition);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, aquisition.Units, 10.00m, 10019.95m, 10019.95m, ParcelEvent.Aquisition);
-            _ExpectedParcels.Add(mainParcel);
+            var mainParcel = new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, aquisition.Units, 10.00m, 10019.95m, 10019.95m, ParcelEvent.Aquisition)
+            {
+                IncludeInHoldings = true,
+                IncludeInParcels = false
+            };            
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, aquisition.Units, 1.00m, 1002.00m, 1002.00m, mainParcel.Id, ParcelEvent.Aquisition));
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, aquisition.Units, 3.00m, 3005.98m, 3005.98m, mainParcel.Id, ParcelEvent.Aquisition));
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, aquisition.Units, 6.00m, 6011.97m, 6011.97m, mainParcel.Id, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(mainParcel);
         }
     }
 }

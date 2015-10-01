@@ -13,7 +13,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
 
     [TestFixture, Description("Opening balance for ordinary share")]
-    public class OpeningBalanceOrdinaryShare : TransactionTest
+    public class OpeningBalanceOrdinaryShare : TransactionTestWithExpectedTests
     {
         public override void Setup()
         {
@@ -34,7 +34,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Opening balance for stapled security")]
-    public class OpeningBalanceStapledSecurity : TransactionTest
+    public class OpeningBalanceStapledSecurity : TransactionTestWithExpectedTests
     {
         public override void Setup()
         {

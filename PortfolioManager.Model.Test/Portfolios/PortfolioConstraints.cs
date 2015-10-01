@@ -18,37 +18,32 @@ namespace PortfolioManager.Model.Test.Portfolios
     {
         public static EntityEqualConstraint<ShareParcel> Equals(ShareParcel expected)
         {
-            return new EntityEqualConstraint<ShareParcel>(expected, new ShareParcelWriter());
+            return new EntityEqualConstraint<ShareParcel>(expected, new ShareParcelComparer());
         }
         
-   /*     public static ShareParcelCollectionEqualConstraint Equals(ICollection<ShareParcel> expected)
+        public static ShareParcelCollectionEqualConstraint Equals(ICollection<ShareParcel> expected)
         {
-            return new ShareParcelCollectionEqualConstraint(expected, new ShareParcelComparer(), new ShareParcelWriter());
-        } */
-
-        public static EntityCollectionEqualConstraint<ShareParcel> Equals(ICollection<ShareParcel> expected)
-        {
-            return new EntityCollectionEqualConstraint<ShareParcel>(expected, new ShareParcelWriter());
-        }
+            return new ShareParcelCollectionEqualConstraint(expected);
+        } 
 
         public static EntityEqualConstraint<IncomeReceived> Equals(IncomeReceived expected)
         {
-            return new EntityEqualConstraint<IncomeReceived>(expected, new IncomeReceviedWriter());
+            return new EntityEqualConstraint<IncomeReceived>(expected, new IncomeReceivedComparer());
         }
 
         public static EntityCollectionEqualConstraint<IncomeReceived> Equals(ICollection<IncomeReceived> expected)
         {
-            return new EntityCollectionEqualConstraint<IncomeReceived>(expected, new IncomeReceviedWriter());
+            return new EntityCollectionEqualConstraint<IncomeReceived>(expected, new IncomeReceivedComparer());
         }
 
         public static EntityEqualConstraint<CGTEvent> Equals(CGTEvent expected)
         {
-            return new EntityEqualConstraint<CGTEvent>(expected, new CGTEventWriter());
+            return new EntityEqualConstraint<CGTEvent>(expected, new CGTEventComparer());
         }
 
         public static EntityCollectionEqualConstraint<CGTEvent> Equals(ICollection<CGTEvent> expected)
         {
-            return new EntityCollectionEqualConstraint<CGTEvent>(expected, new CGTEventWriter());
+            return new EntityCollectionEqualConstraint<CGTEvent>(expected, new CGTEventComparer());
         }
     }
 

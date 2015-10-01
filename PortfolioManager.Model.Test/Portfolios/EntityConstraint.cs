@@ -12,9 +12,10 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios
 {
-    public interface IEntityWriter<T>
-                where T : IEntity
+
+    public interface IEntityComparer<T>
     {
+        bool Equals(T expected, T actual);
         void Write(MessageWriter writer, T entity);
     }
 
@@ -22,13 +23,12 @@ namespace PortfolioManager.Model.Test.Portfolios
         where T : IEntity
     {
         protected readonly T _Expected;
-        protected readonly IEntityWriter<T> _EntityWriter;
-        protected List<PropertyDifference> _Differences;
+        protected readonly IEntityComparer<T> _EntityComparer;
 
-        public EntityEqualConstraint(T expected, IEntityWriter<T> writer)
+        public EntityEqualConstraint(T expected, IEntityComparer<T> comparer)
         {
             _Expected = expected;
-            _EntityWriter = writer;
+            _EntityComparer = comparer;
         }
 
         public override bool Matches(object actual)
@@ -36,38 +36,23 @@ namespace PortfolioManager.Model.Test.Portfolios
             base.actual = actual;
 
             if (actual is T)
-            {
-                _Differences = EntityComparer.ListDifferences(_Expected, (T)actual);
-
-                return (_Differences.Count == 0);
-            }
-            
-            return false;
+                return _EntityComparer.Equals(_Expected, (T)actual);
+            else
+                return false;
         }
 
         public override void WriteActualValueTo(MessageWriter writer)
         {
             if (actual is T)
-                _EntityWriter.Write(writer, (T)actual);
+                _EntityComparer.Write(writer, (T)actual);
             else
                 writer.WriteActualValue(actual);
         }
 
         public override void WriteDescriptionTo(MessageWriter writer)
         {
-            _EntityWriter.Write(writer, (T)_Expected);
+            _EntityComparer.Write(writer, (T)_Expected);
         }
-
-        public override void WriteMessageTo(MessageWriter writer)
-        {
-            writer.DisplayDifferences(this);
-
-            writer.Write("  Differences:\n");
-            foreach (var difference in _Differences)
-            {
-                writer.Write("      Property {0} : Expected \"{1}\" But was \"{2}\" \n", new object[] { difference.Name, difference.Expected, difference.Actual });
-            }
-        } 
 
     }
 
@@ -75,32 +60,18 @@ namespace PortfolioManager.Model.Test.Portfolios
         where T : IEntity
     {
         protected readonly ICollection<T> _Expected;
-        protected readonly IEntityWriter<T> _EntityWriter;
-        protected List<List<PropertyDifference>> _Differences;
+        protected readonly IEntityComparer<T> _EntityComparer;
 
-        public EntityCollectionEqualConstraint(ICollection<T> expected, IEntityWriter<T> writer)
+        public EntityCollectionEqualConstraint(ICollection<T> expected, IEntityComparer<T> comparer)
         {
             _Expected = expected;
-            _EntityWriter = writer;
+            _EntityComparer = comparer;
         }
 
         public override bool Matches(object actual)
         {
-            // Change to make order important - this will make the comparison simple
-            // Loop through expected.
-            //    compare to entry in corresponding entry actual
-            //    if different then add differences
-            //    if entry not in actual (ie actual.count < expected.count
-            //         note difference as missing entry *
-            //    if extra entries in expected note as extra entry *
-            //         
-            //  * create new class to represent a entry in a collection then make differences a list of these
-
-
             base.actual = actual;
             bool found;
-
-            _Differences = new List<List<PropertyDifference>>();
 
             if (actual is IEnumerable<T>)
             {
@@ -157,7 +128,7 @@ namespace PortfolioManager.Model.Test.Portfolios
                 if (count > 0)
                     writer.Write(",\n              ");
 
-                _EntityWriter.Write(writer, entity);
+                _EntityComparer.Write(writer, entity);
 
                 count++;
             }

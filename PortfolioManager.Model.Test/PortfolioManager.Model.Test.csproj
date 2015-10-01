@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Portfolios\CGTConstraint.cs" />
-    <Compile Include="Portfolios\EntityComparer.cs" />
+    <Compile Include="Portfolios\CGTEventComparer.cs" />
     <Compile Include="Portfolios\EntityConstraint.cs" />
-    <Compile Include="Portfolios\IncomeConstraint.cs" />
+    <Compile Include="Portfolios\IncomeReceivedComparer.cs" />
     <Compile Include="Portfolios\PortfolioConstraints.cs" />
+    <Compile Include="Portfolios\ShareParcelComparer.cs" />
     <Compile Include="Portfolios\ShareParcelConstraint.cs" />
     <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
     <Compile Include="Portfolios\Transactions\CostbaseAdjustmentTest.cs" />

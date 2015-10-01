@@ -13,49 +13,15 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
 
     [TestFixture, Description("Cost base adjustment of Ordinary share - single parcel")]
-    public class CostBaseAdjustmentOrdinaryShareSingleParcel : TransactionTest
+    public class CostBaseAdjustmentOrdinaryShareSingleParcel : TransactionTestWithExpectedTests
     {
         public override void Setup()
         {
-            SetupTestPortfolio();
-
             _TransactionDate = new DateTime(2002, 01, 01);
 
-            var costBaseAdjustment = new CostBaseAdjustment()
-            {
-                TransactionDate = _TransactionDate,
-                ASXCode = "AAA",
-                Percentage = 0.30m,
-                Comment = "Costbase Adjustment test"
-            };
-            _Portfolio.Transactions.Add(costBaseAdjustment);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
-                {
-                    FromDate = _TransactionDate
-                });
-        }
-    }
-
-    [TestFixture]
-    public class CostBaseAdjustmentTest : PortfolioTestBase
-    {
-        [Test, Description("Cost base adjustment of Ordinary share - single parcel")]
-        public void OrdinaryShareSingleParcel()
-        {
-            // Setup
-            var testPortfolio = CreateTestPortfolio();
-
-            DateTime aquisitionDate = new DateTime(2000, 01, 01);
-            DateTime transactionDate = new DateTime(2002, 01, 01);
-
+            var aquisitionDate = new DateTime(2000, 01, 01);
             var transactions = new ITransaction[]
-            {
+            {           
                 new OpeningBalance()
                 {
                     TransactionDate = aquisitionDate,
@@ -66,39 +32,33 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 },
                 new CostBaseAdjustment()
                 {
-                    TransactionDate = transactionDate,
+                    TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
-            testPortfolio.Transactions.Add(transactions);
+            _Portfolio.Transactions.Add(transactions);
 
-            var actualParcels = testPortfolio.GetParcels(transactionDate);
 
-            var expectedParcels = new ShareParcel[]
-            {
-                new ShareParcel(aquisitionDate, _AAAId, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
                 {
-                    FromDate = transactionDate
-                }
-            };
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+                    FromDate = _TransactionDate
+                });
         }
+    }
 
-
-        [Test, Description("Cost base adjustment of Ordinary share - multiple parcels")]
-        public void OrdinaryShareMultipleParcels()
+    [TestFixture, Description("Cost base adjustment of Ordinary share - multiple parcels")]
+    public class CostBaseAdjustmentOrdinaryShareMultipleParcels : TransactionTestWithExpectedTests
+    {
+        public override void Setup()
         {
-            var testPortfolio = CreateTestPortfolio();
+            _TransactionDate = new DateTime(2002, 01, 01);
 
             DateTime aquisitionDate1 = new DateTime(2000, 01, 01);
             DateTime aquisitionDate2 = new DateTime(2001, 01, 01);
-            DateTime transactionDate = new DateTime(2002, 01, 01);
-
             var transactions = new ITransaction[]
-            {
+            {           
                 new OpeningBalance()
                 {
                     TransactionDate = aquisitionDate1,
@@ -117,66 +77,60 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 },
                 new CostBaseAdjustment()
                 {
-                    TransactionDate = transactionDate,
+                    TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
-            testPortfolio.Transactions.Add(transactions);
+            _Portfolio.Transactions.Add(transactions);
 
-            var actualParcels = testPortfolio.GetParcels(transactionDate);
 
-            var expectedParcels = new ShareParcel[]
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
             {
-                new ShareParcel(aquisitionDate1, _AAAId, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
-                {
-                    FromDate = transactionDate
-                },
-                new ShareParcel(aquisitionDate2, _AAAId, 500, 2.40m, 1200.00m, 360.00m, ParcelEvent.CostBaseReduction)
-                {
-                    FromDate = transactionDate
-                }
-            };
+                FromDate = _TransactionDate
+            });
+             _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 500, 2.40m, 1200.00m, 360.00m, ParcelEvent.CostBaseReduction)
+            {
+                FromDate = _TransactionDate
+            });                           
 
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
         }
+    }
 
-        [Test, Description("Cost base adjustment of Ordinary share - no parcels")]
+    [TestFixture, Description("Cost base adjustment of Ordinary share - no parcels")]
+    public class CostBaseAdjustmentOrdinaryShareNoParcels : TransactionTest
+    {
+        [Test]
         [ExpectedException(typeof(NoParcelsForTransaction))]
-        public void OrdinaryNoParcels()
+        public void NoParcels()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            DateTime transactionDate = new DateTime(2002, 01, 01);
-
             var transactions = new ITransaction[]
-            {              
+            {           
                 new CostBaseAdjustment()
                 {
-                    TransactionDate = transactionDate,
+                    TransactionDate = new DateTime(2000, 01, 01),
                     ASXCode = "AAA",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
-            testPortfolio.Transactions.Add(transactions);
+            _Portfolio.Transactions.Add(transactions);
         }
+    }
 
-        [Test, Description("Cost base adjustment of Stapled Security")]
+    [TestFixture, Description("Cost base adjustment of Stapled Security")]    
+    public class CostBaseAdjustmentStapledSecurity : TransactionTest
+    {
+        [Test]
         [ExpectedException(typeof(TransctionNotSupportedForStapledSecurity))]
-        public void StapledSecurtiy()
+        public void StapledSecurity()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            DateTime aquisitionDate = new DateTime(2000, 01, 01);
-            DateTime transactionDate = new DateTime(2002, 01, 01);
-
             var transactions = new ITransaction[]
-            {
+            {           
                 new OpeningBalance()
                 {
-                    TransactionDate = aquisitionDate,
+                    TransactionDate = new DateTime(2000, 01, 01),
                     ASXCode = "SSS",
                     Units = 1000,
                     CostBase = 1500.00m,
@@ -184,13 +138,14 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 },
                 new CostBaseAdjustment()
                 {
-                    TransactionDate = transactionDate,
+                    TransactionDate = new DateTime(2000, 01, 01),
                     ASXCode = "SSS",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
-            testPortfolio.Transactions.Add(transactions);
+            _Portfolio.Transactions.Add(transactions);
         }
     }
+
 }
