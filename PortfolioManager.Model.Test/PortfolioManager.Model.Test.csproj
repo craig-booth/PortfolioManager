@@ -45,18 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Portfolios\PorftolioTest.cs" />
+    <Compile Include="Portfolios\CGTEventComparer.cs" />
+    <Compile Include="Portfolios\EntityConstraint.cs" />
+    <Compile Include="Portfolios\IncomeReceivedComparer.cs" />
     <Compile Include="Portfolios\PortfolioConstraints.cs" />
+    <Compile Include="Portfolios\ShareParcelComparer.cs" />
+    <Compile Include="Portfolios\ShareParcelConstraint.cs" />
     <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
     <Compile Include="Portfolios\Transactions\CostbaseAdjustmentTest.cs" />
     <Compile Include="Portfolios\Transactions\DisposalTest.cs" />
     <Compile Include="Portfolios\Transactions\IncomeReceviedTest.cs" />
     <Compile Include="Portfolios\Transactions\OpeningBalanceTest.cs" />
     <Compile Include="Portfolios\Transactions\ReturnOfCapitalTest.cs" />
+    <Compile Include="Portfolios\Transactions\TransactionTest.cs" />
+    <Compile Include="PortfolioTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stocks\StockManagerTest.cs" />
     <Compile Include="Stocks\StockTest.cs" />
-    <Compile Include="PortfolioTestBase.cs" />
     <Compile Include="Utils\MathUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>

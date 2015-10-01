@@ -58,16 +58,24 @@ namespace PortfolioManager.Model.Portfolios
             ApplyTransactions(allTransactions);
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcels()
+        public IReadOnlyCollection<ShareParcel> GetParcels() 
         {
-            return GetParcels(DateTime.Now);
+            return GetParcels(DateTime.Now, false);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(DateTime atDate)
         {
+            return GetParcels(atDate, false);
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(DateTime atDate, bool includeHiddenParcels)
+        {
             var allParcels = _PortfolioDatabase.PortfolioQuery.GetAllParcels(this.Id, atDate);
 
-            return allParcels.Where(x => x.IncludeInParcels == true).ToList().AsReadOnly();
+            if (includeHiddenParcels)
+                return allParcels.ToList().AsReadOnly();
+            else
+                return allParcels.Where(x => x.IncludeInParcels == true).ToList().AsReadOnly();
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(Stock ofStock)

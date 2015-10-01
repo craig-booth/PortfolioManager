@@ -11,67 +11,51 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
-    [TestFixture]
-    public class OpeningBalananceTest : PortfolioTestBase
-    {
 
-        [Test, Description("Opening balance for stock")]
-        public void OpeningBalanceForStock()
+    [TestFixture, Description("Opening balance for ordinary share")]
+    public class OpeningBalanceOrdinaryShare : TransactionTestWithExpectedTests
+    {
+        public override void Setup()
         {
-            var testPortfolio = CreateTestPortfolio();
+            _TransactionDate = new DateTime(2000, 01, 01);
 
             var openingbalance = new OpeningBalance()
             {
-                TransactionDate = new DateTime(2000, 01, 01),
+                TransactionDate = _TransactionDate,
                 ASXCode = "AAA",
                 Units = 1000,
                 CostBase = 1500.00m,
                 Comment = "Test Opening Balance"
             };
-            testPortfolio.Transactions.Add(openingbalance);
+            _Portfolio.Transactions.Add(openingbalance);
 
-            var actualParcels = testPortfolio.GetParcels(openingbalance.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                new ShareParcel(openingbalance.TransactionDate, _AAAId, openingbalance.Units, 1.50m, openingbalance.CostBase, openingbalance.CostBase, ParcelEvent.OpeningBalance)
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, openingbalance.Units, 1.50m, openingbalance.CostBase, openingbalance.CostBase, ParcelEvent.OpeningBalance));
         }
+    }
 
-        [Test, Description("Opening balance for stapled security")]
-        public void OpeningBalanceForStapledSecurity()
+    [TestFixture, Description("Opening balance for stapled security")]
+    public class OpeningBalanceStapledSecurity : TransactionTestWithExpectedTests
+    {
+        public override void Setup()
         {
-            var testPortfolio = CreateTestPortfolio();
+            _TransactionDate = new DateTime(2000, 01, 01);
 
             var openingbalance = new OpeningBalance()
             {
-                TransactionDate = new DateTime(2000, 01, 01),
+                TransactionDate = _TransactionDate,
                 ASXCode = "SSS",
                 Units = 1000,
                 CostBase = 15000.00m,
                 Comment = "Test Opening Balance"
             };
-            testPortfolio.Transactions.Add(openingbalance);
-
-            var actualParcels = testPortfolio.GetParcels(openingbalance.TransactionDate).ToList();
-            // Add in stapled security
-            actualParcels.AddRange(testPortfolio.GetParcels(_SSSId, openingbalance.TransactionDate));
+            _Portfolio.Transactions.Add(openingbalance);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(openingbalance.TransactionDate, _SSSId, openingbalance.Units, 15.00m, 15000.00m, 15000.00m, ParcelEvent.OpeningBalance);
-            var expectedParcels = new ShareParcel[]
-            {
-                new ShareParcel(openingbalance.TransactionDate, _SSS1Id, openingbalance.Units, 1.50m, 1500.00m, 1500.00m, mainParcel.Id, ParcelEvent.OpeningBalance),
-                new ShareParcel(openingbalance.TransactionDate, _SSS2Id, openingbalance.Units, 4.50m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.OpeningBalance),
-                new ShareParcel(openingbalance.TransactionDate, _SSS3Id, openingbalance.Units, 9.00m, 9000.00m, 9000.00m, mainParcel.Id, ParcelEvent.OpeningBalance),   
-                mainParcel
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));  
+            var mainParcel = new ShareParcel(openingbalance.TransactionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, openingbalance.Units, 15.00m, 15000.00m, 15000.00m, ParcelEvent.OpeningBalance);
+            _ExpectedParcels.Add(mainParcel);
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, openingbalance.Units, 1.50m, 1500.00m, 1500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, openingbalance.Units, 4.50m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, openingbalance.Units, 9.00m, 9000.00m, 9000.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
         }
-    }
+     }
 }
