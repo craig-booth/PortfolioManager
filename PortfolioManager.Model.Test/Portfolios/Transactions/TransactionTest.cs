@@ -20,12 +20,6 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         protected StockManager _StockManager;
         protected Portfolio _Portfolio;
 
-//        protected DateTime _TransactionDate;
-
- //       protected List<ShareParcel> _ExpectedParcels;
- //       protected List<IncomeReceived> _ExpectedIncome;
-//        protected List<CGTEvent> _ExpectedCGTEvents;
-
         public TransactionTest()
         {
             var stockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
