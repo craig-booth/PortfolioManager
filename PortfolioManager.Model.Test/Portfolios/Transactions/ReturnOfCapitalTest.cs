@@ -11,21 +11,17 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
-    [TestFixture]
-    public class ReturnOfCapitalTest : PortfolioTestBase
+
+    [TestFixture, Description("Return of Capital of Ordinary share - single parcel")]
+    public class ReturnOfCapitalOrdinaryShareSingleParcel : TransactionTestWithExpectedTests
     {
-
-        [Test, Description("Return of Capital of Ordinary share - single parcel")]
-        public void OrdinaryShareSingleParcel()
+        public override void PerformTest()
         {
-            // Setup
-            var testPortfolio = CreateTestPortfolio();
+            _TransactionDate = new DateTime(2002, 01, 01);
 
-            DateTime aquisitionDate = new DateTime(2000, 01, 01);
-            DateTime transactionDate = new DateTime(2002, 01, 01);
-
+            var aquisitionDate = new DateTime(2000, 01, 01);
             var transactions = new ITransaction[]
-            {
+            {           
                 new OpeningBalance()
                 {
                     TransactionDate = aquisitionDate,
@@ -36,36 +32,31 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 },
                 new ReturnOfCapital()
                 {
-                    TransactionDate = transactionDate,
+                    TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
                     Amount = 0.70m,
                     Comment = "Return of Capital test"
                 }
             };
-            testPortfolio.Transactions.Add(transactions);
+            _Portfolio.Transactions.Add(transactions);
 
-            var actualParcels = testPortfolio.GetParcels(transactionDate);
 
-            var expectedParcels = new ShareParcel[]
-            {
-                new ShareParcel(aquisitionDate, _AAAId, 1000, 1.50m, 1500.00m, 800.00m, ParcelEvent.CostBaseReduction)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 800.00m, ParcelEvent.CostBaseReduction)
                 {
-                    FromDate = transactionDate
-                }
-            };
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+                    FromDate = _TransactionDate
+                });
         }
+    }
 
-        [Test, Description("Return of Capital of Ordinary share - greater than cost base")]
-        public void OrdinaryShareGreaterThanCostBase()
+
+    [TestFixture, Description("Return of Capital of Ordinary share - greater than cost base")]
+    public class ReturnOfCapitalOrdinaryShareGreaterThanCostBase : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
         {
-            // Setup
-            var testPortfolio = CreateTestPortfolio();
+            _TransactionDate = new DateTime(2002, 01, 01);
 
-            DateTime aquisitionDate = new DateTime(2000, 01, 01);
-            DateTime transactionDate = new DateTime(2002, 01, 01);
-
+            var aquisitionDate = new DateTime(2000, 01, 01);
             var transactions = new ITransaction[]
             {
                 new OpeningBalance()
@@ -78,27 +69,86 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 },
                 new ReturnOfCapital()
                 {
-                    TransactionDate = transactionDate,
+                    TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
                     Amount = 2.00m,
                     Comment = "Return of Capital test"
                 }
             };
-            testPortfolio.Transactions.Add(transactions);
+            _Portfolio.Transactions.Add(transactions);
 
-            var actualParcels = testPortfolio.GetParcels(transactionDate);
-
-            var expectedParcels = new ShareParcel[]
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1000.00m, 0.00m, ParcelEvent.CostBaseReduction)
             {
-                new ShareParcel(aquisitionDate, _AAAId, 1000, 1.50m, 1000.00m, 0.00m, ParcelEvent.CostBaseReduction)
+                FromDate = _TransactionDate
+            });
+
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 0.00m, 0.00m));
+        }
+    }
+
+
+    [TestFixture, Description("Return of Capital of Ordinary share - multiple parcels")]
+    public class ReturnOfCapitalOrdinaryShareMultipleParcels : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    
+    
+
+    [TestFixture, Description("Return of Capital validation tests")]
+    public class ReturnOfCapitalValidationTests : TransactionTest
+    {
+        [Test, Description("Return of Capital of Ordinary share - no parcels")]
+        [ExpectedException(typeof(NoParcelsForTransaction))]
+        public void NoParcelsForTransaction()
+        {
+            var transactions = new ITransaction[]
+            {           
+                new ReturnOfCapital()
                 {
-                    FromDate = transactionDate
+                    TransactionDate = new DateTime(2002, 01, 01),
+                    ASXCode = "AAA",
+                    Amount = 0.10m,
+                    Comment = "Return of Capital test"
                 }
             };
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            _Portfolio.Transactions.Add(transactions);
         }
 
+        [Test, Description("Return of Capital of  of Stapled Security")]
+        [ExpectedException(typeof(TransctionNotSupportedForStapledSecurity))]
+        public void TransctionNotSupportedForStapledSecurity()
+        {
+            var transactions = new ITransaction[]
+            {
+                new OpeningBalance()
+                {
+                    TransactionDate = new DateTime(2000, 01, 01),
+                    ASXCode = "SSS",
+                    Units = 1000,
+                    CostBase = 1500.00m,
+                    Comment = "Return of Capital test"
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = new DateTime(2002, 01, 01),
+                    ASXCode = "SSS",
+                    Amount = 0.10m,
+                    Comment = "Return of Capital test"
+                }
+            };
+            _Portfolio.Transactions.Add(transactions);
+        }
+    }
+
+
+    [TestFixture]
+    public class ReturnOfCapitalTest : PortfolioTestBase
+    {
 
         [Test, Description("Return of Capital of Ordinary share - multiple parcels")]
         public void OrdinaryShareMultipleParcels()

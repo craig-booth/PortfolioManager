@@ -15,7 +15,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     [TestFixture, Description("Cost base adjustment of Ordinary share - single parcel")]
     public class CostBaseAdjustmentOrdinaryShareSingleParcel : TransactionTestWithExpectedTests
     {
-        public override void Setup()
+        public override void PerformTest()
         {
             _TransactionDate = new DateTime(2002, 01, 01);
 
@@ -44,14 +44,15 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
                 {
                     FromDate = _TransactionDate
-                });
+                }
+            );
         }
     }
 
     [TestFixture, Description("Cost base adjustment of Ordinary share - multiple parcels")]
     public class CostBaseAdjustmentOrdinaryShareMultipleParcels : TransactionTestWithExpectedTests
     {
-        public override void Setup()
+        public override void PerformTest()
         {
             _TransactionDate = new DateTime(2002, 01, 01);
 
@@ -98,12 +99,12 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         }
     }
 
-    [TestFixture, Description("Cost base adjustment of Ordinary share - no parcels")]
-    public class CostBaseAdjustmentOrdinaryShareNoParcels : TransactionTest
+    [TestFixture, Description("Cost base adjustment validation tests")]
+    public class CostBaseAdjustmentValidationTests : TransactionTest
     {
-        [Test]
+        [Test, Description("Cost base adjustment of Ordinary share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]
-        public void NoParcels()
+        public void NoParcelsForTransaction()
         {
             var transactions = new ITransaction[]
             {           
@@ -117,14 +118,10 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.Transactions.Add(transactions);
         }
-    }
 
-    [TestFixture, Description("Cost base adjustment of Stapled Security")]    
-    public class CostBaseAdjustmentStapledSecurity : TransactionTest
-    {
         [Test]
         [ExpectedException(typeof(TransctionNotSupportedForStapledSecurity))]
-        public void StapledSecurity()
+        public void TransctionNotSupportedForStapledSecurity()
         {
             var transactions = new ITransaction[]
             {           

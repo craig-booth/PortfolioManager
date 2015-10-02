@@ -17,23 +17,22 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     [TestFixture]
     public abstract class TransactionTest
     {
+        protected SQLiteStockDatabase _StockDatabase;
         protected StockManager _StockManager;
         protected Portfolio _Portfolio;
 
-//        protected DateTime _TransactionDate;
-
- //       protected List<ShareParcel> _ExpectedParcels;
- //       protected List<IncomeReceived> _ExpectedIncome;
-//        protected List<CGTEvent> _ExpectedCGTEvents;
-
         public TransactionTest()
         {
-            var stockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
-            _StockManager = new StockManager(stockDatabase);
+            _StockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
+            _StockManager = new StockManager(_StockDatabase);
             AddTestStocks();
+        }
 
+        [SetUp]
+        public virtual void Setup()
+        {
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
-            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(stockDatabase, portfolioDatabase);
+            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(_StockDatabase, portfolioDatabase);
 
             _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
         }
@@ -103,10 +102,21 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedParcels = new List<ShareParcel>();
             _ExpectedIncome = new List<IncomeReceived>();
             _ExpectedCGTEvents = new List<CGTEvent>();
+
+            var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
+            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(_StockDatabase, portfolioDatabase);
+
+            _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
+        }
+
+
+        public override void Setup()
+        {
+            // Prevent base setup from running
         }
 
         [TestFixtureSetUp]
-        public abstract void Setup();
+        public abstract void PerformTest();
 
         [Test]
         public void ExpectedParcels()
