@@ -11,239 +11,99 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
-    [TestFixture]
-    public class DisposalTest : PortfolioTestBase
+
+    [TestFixture, Description("Disposal of Ordinary Share - single parcel, sell all")]
+    public class DisposalOrdinaryShareSingleParcelSellAll : TransactionTestWithExpectedTests
     {
-
-        [Test, Description("Ordinary - single parcel, sell all")]
-        public void OrdinaryShareSingleParcelSellAll()
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
+            throw new NotSupportedException();
+        }
+    }
 
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
+    [TestFixture, Description("Disposal of Ordinary Share - single parcel, sell part")]
+    public class DisposalOrdinaryShareSingleParcelSellPart : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
 
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
+    [TestFixture, Description("Disposal of Ordinary Share - multiple parcels, sell all")]
+    public class DisposalOrdinaryShareMultipleParcelsSellAll : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
 
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
+    [TestFixture, Description("Disposal of Ordinary Share - multiple parcels, sell part")]
+    public class DisposalOrdinaryShareMultipleParcelsSellPart : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
 
+    [TestFixture, Description("Disposal of Stapled Security - single parcel, sell all")]
+    public class DisposalStapledSecuritySingleParcelSellAll : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
 
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+    [TestFixture, Description("Disposal of Stapled Security - single parcel, sell part")]
+    public class DisposalStapledSecuritySingleParcelSellPart : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    [TestFixture, Description("Disposal of Stapled Security - multiple parcels, sell all")]
+    public class DisposalStapledSecurityMultipleParcelsSellAll : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    [TestFixture, Description("Disposal of Stapled Security - multiple parcels, sell part")]
+    public class DisposalStapledSecurityMultipleParcelsSellPart : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    [TestFixture, Description("Disposal validation tests")]
+    public class DisposalValidationTests : TransactionTest
+    {
+        [Test, Description("Disposal of Ordinary Share - no parcels")]
+        [ExpectedException(typeof(NoParcelsForTransaction))]
+        public void NoParcelsForTransaction()
+        {
+            throw new NotSupportedException();
         }
 
-        [Test, Description("Ordinary - single parcel, sell part")]
-        public void OrdinaryShareSingleParcelSellPart()
+        [Test, Description("Disposal of Ordinary Share - single parcel, not enough shares")]
+        public void SingleParcelNotEnoughShares()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
 
-        [Test, Description("Ordinary - multiple parcels, sell all")]
-        public void OrdinaryShareMultipleParcelsSellAll()
+        [Test, Description("Disposal of Ordinary Share - multiple parcels, not enough shares")]
+        public void MultipleParcelsNotEnoughShares()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
-
-        [Test, Description("Ordinary - multiple parcels, sell part")]
-        public void OrdinaryShareMultipleParcelsSellPart()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
-        [Test, Description("Ordinary - no parcels")]
-        public void OrdinaryShareNoParcels()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
-        [Test, Description("Ordinary - single parcel, not enough shares")]
-        public void OrdinaryShareSingleParcelNotEnoughShares()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
-        [Test, Description("Ordinary - multiple parcels, not enough shares")]
-        public void OrdinaryShareMultipleParcelsNotEnoughShares()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
-        [Test, Description("Stapled - single parcel, sell part")]
-        public void StapledSingleParcelSellPart()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
-        [Test, Description("Stapled - multiple parcels, sell all")]
-        public void StapledMultipleParcelsSellAll()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
-        [Test, Description("Stapled - multiple parcels, sell part")]
-        public void StapledMultipleParcelsSellPart()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var disposal = new Disposal()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(disposal);
-
-            var actualParcels = testPortfolio.GetParcels(disposal.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-
     }
 }
