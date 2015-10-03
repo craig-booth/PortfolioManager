@@ -15,7 +15,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     [TestFixture, Description("Opening balance for ordinary share")]
     public class OpeningBalanceOrdinaryShare : TransactionTestWithExpectedTests
     {
-        public override void Setup()
+        public override void PerformTest()
         {
             _TransactionDate = new DateTime(2000, 01, 01);
 
@@ -36,7 +36,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     [TestFixture, Description("Opening balance for stapled security")]
     public class OpeningBalanceStapledSecurity : TransactionTestWithExpectedTests
     {
-        public override void Setup()
+        public override void PerformTest()
         {
             _TransactionDate = new DateTime(2000, 01, 01);
 

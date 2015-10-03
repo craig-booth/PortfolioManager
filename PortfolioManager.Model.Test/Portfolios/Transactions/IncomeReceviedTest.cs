@@ -11,13 +11,15 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
-    [TestFixture]
-    public class IncomeReceivedTest : PortfolioTestBase
+
+    [TestFixture, Description("Income Received of Ordinary share - single parcel")]
+    public class IncomeReceviedOrdinaryShareSingleParcel : TransactionTestWithExpectedTests
     {
-        [Test, Description("Income Received of Ordinary share - single parcel")]
-        public void OrdinaryShareSingleParcel()
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
+            throw new NotSupportedException();
+
+ /*           var testPortfolio = CreateTestPortfolio();
 
             var openingbalance = new OpeningBalance()
             {
@@ -56,193 +58,80 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 incomeReceived
             };
-            Assert.That(actualIncome, PortfolioConstraint.Equals(expectedIncome));
-
+            Assert.That(actualIncome, PortfolioConstraint.Equals(expectedIncome)); */
         }
- 
-        [Test, Description("Income Received of Ordinary - no parcels")]
-        public void OrdinaryShareNoParcels()
+    }
+
+    [TestFixture, Description("Income Received of Ordinary share - single parcel with DRP")]
+    public class IncomeReceviedOrdinaryShareSingleParcelWithDRP : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
+    }
 
-        [Test, Description("Income Received of Ordinary share - single parcel  with DRP")]
-        public void OrdinaryShareSingleParcelWithDRP()
+    [TestFixture, Description("Income Received of Trust- single parcel tax deferred")]
+    public class IncomeReceviedTrustSingleParcelTaxDeferred : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
+    }
 
-        [Test, Description("Income Received of Trust- single parcel tax deferred")]
-        public void TrustSingleParcelTaxDeferred()
+    [TestFixture, Description("Income Received of Ordinary share - mulitple parcels")]
+    public class IncomeReceviedOrdinaryShareMultipleParcels : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
+    }
 
-        [Test, Description("Income Received of Ordinary share - mulitple parcels")]
-        public void OrdinaryShareMutlipleParcels()
+    [TestFixture, Description("Income Received of Ordinary share - mulitple parcels with DRP")]
+    public class IncomeReceviedOrdinaryShareMultipleParcelsWithDRP : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
+    }
 
-        [Test, Description("Income Received of Ordinary share - mulitple parcels with DRP")]
-        public void OrdinaryShareMultipleParcelsWithDRP()
+    [TestFixture, Description("Income Received of Trust - single parcel tax deferred greater than cost base")]
+    public class IncomeReceviedTrustSingleParcelTaxDeferredGreaterThanCostbase : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
+    }
 
-        [Test, Description("Income Received of Trust - multiple parcels tax deferred")]
-        public void TrustMultipleParcelsTaxDeferred()
+    [TestFixture, Description("Income Received validation tests")]
+    public class IncomeReceviedValidationTests : TransactionTest
+    {
+        [Test, Description("Income Received Ordinary share - no parcels")]
+        [ExpectedException(typeof(NoParcelsForTransaction))]
+        public void NoParcelsForTransaction()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
+            var transactions = new ITransaction[]
+            {           
+                new IncomeReceived()
+                {
+                    TransactionDate = new DateTime(2000, 01, 01),
+                    ASXCode = "AAA"
+                }
             };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
-        }
-        
-        [Test, Description("Income Received of Trust - single parcel tax deferred greater than cost base")]
-        public void TrustSingleParcelTaxDeferredGreaterThanCostbase()
-        {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            _Portfolio.Transactions.Add(transactions);
         }
 
         [Test, Description("Income Received of Stapled Security")]
-        public void StapledSecuritySingleParcel()
+        [ExpectedException(typeof(TransctionNotSupportedForStapledSecurity))]
+        public void TransctionNotSupportedForStapledSecurity()
         {
-            var testPortfolio = CreateTestPortfolio();
-
-            var incomeReceived = new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2000, 01, 01),
-                ASXCode = "AAA"
-            };
-            testPortfolio.Transactions.Add(incomeReceived);
-
-            var actualParcels = testPortfolio.GetParcels(incomeReceived.TransactionDate);
-
-            var expectedParcels = new ShareParcel[]
-            {
-                
-            };
-
-
-            Assert.That(actualParcels, PortfolioConstraint.Equals(expectedParcels));
+            throw new NotSupportedException();
         }
 
     }
+
 }

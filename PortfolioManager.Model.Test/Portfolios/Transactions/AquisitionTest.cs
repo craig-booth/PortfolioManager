@@ -15,7 +15,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     [TestFixture, Description("Purchase stock")]
     public class AquisitionOrdinaryShare : TransactionTestWithExpectedTests 
     {
-        public override void Setup()
+        public override void PerformTest()
         {
             _TransactionDate = new DateTime(2000, 01, 01);
 
@@ -38,7 +38,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     [TestFixture, Description("Purchase stapled security")]
     public class AquisitionStapledSecurity : TransactionTestWithExpectedTests
     {
-        public override void Setup()
+        public override void PerformTest()
         {
             _TransactionDate = new DateTime(2000, 01, 01);
 
