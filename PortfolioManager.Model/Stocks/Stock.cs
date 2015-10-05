@@ -12,6 +12,7 @@ namespace PortfolioManager.Model.Stocks
 {
     public enum StockType {Ordinary, StapledSecurity, Trust}
 
+    [Serializable]
     public class NotStapledSecurityException : Exception
     {
         public NotStapledSecurityException(string asxCode)
@@ -20,6 +21,7 @@ namespace PortfolioManager.Model.Stocks
         }
     }
 
+    [Serializable]
     public class NotStapledSecurityComponentException : Exception
     {
         public NotStapledSecurityComponentException(string asxCode)

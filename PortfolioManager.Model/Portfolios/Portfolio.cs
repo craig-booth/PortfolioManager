@@ -167,6 +167,35 @@ namespace PortfolioManager.Model.Portfolios
                 return;
         }
 
+        internal void ValidateTransaction(ITransaction transaction)
+        {
+            if (transaction.Type == TransactionType.Aquisition)
+                ValidateTransaction(transaction as Aquisition);
+            else if (transaction.Type == TransactionType.Disposal)
+                ValidateTransaction(transaction as Disposal);
+            else if (transaction.Type == TransactionType.OpeningBalance)
+                ValidateTransaction(transaction as OpeningBalance);
+            else if (transaction.Type == TransactionType.CostBaseAdjustment)
+                ValidateTransaction(transaction as CostBaseAdjustment);
+            else if (transaction.Type == TransactionType.ReturnOfCapital)
+                ValidateTransaction(transaction as ReturnOfCapital);
+            else if (transaction.Type == TransactionType.Income)
+                ValidateTransaction(transaction as IncomeReceived);
+            else if ((transaction.Type == TransactionType.Deposit) ||
+                     (transaction.Type == TransactionType.Withdrawl) |
+                     (transaction.Type == TransactionType.Fee) ||
+                     (transaction.Type == TransactionType.Interest))
+                ValidateTransaction(transaction as CashTransaction);
+            else
+                return;
+        }
+
+
+        private void ValidateTransaction(Aquisition aquisition)
+        {
+            
+        }
+
         private void ApplyTransaction(Aquisition aquisition)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(aquisition.ASXCode, aquisition.TransactionDate);
@@ -182,6 +211,11 @@ namespace PortfolioManager.Model.Portfolios
 
                 unitOfWork.Save();    
             }
+        }
+
+        private void ValidateTransaction(Disposal disposal)
+        {
+
         }
 
         private void ApplyTransaction(Disposal disposal)
@@ -212,6 +246,10 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
+        private void ValidateTransaction(OpeningBalance openingBalance)
+        {
+
+        }
 
         private void ApplyTransaction(OpeningBalance openingBalance)
         {
@@ -225,13 +263,18 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        private void ApplyTransaction(CostBaseAdjustment costBaseAdjustment)
+        private void ValidateTransaction(CostBaseAdjustment costBaseAdjustment)
         {
-
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.TransactionDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
+        }
+
+        private void ApplyTransaction(CostBaseAdjustment costBaseAdjustment)
+        {
+
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.TransactionDate);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -249,12 +292,17 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        private void ApplyTransaction(ReturnOfCapital returnOfCapital)
+        private void ValidateTransaction(ReturnOfCapital returnOfCapital)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.TransactionDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
+        }
+
+        private void ApplyTransaction(ReturnOfCapital returnOfCapital)
+        {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.TransactionDate);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -297,6 +345,10 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
+        private void ValidateTransaction(IncomeReceived incomeReceived)
+        {
+
+        }
 
         private void ApplyTransaction(IncomeReceived incomeReceived)
         {

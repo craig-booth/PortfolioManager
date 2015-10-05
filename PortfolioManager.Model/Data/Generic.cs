@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Data
 {
+    [Serializable]
     public class RecordNotFoundException : Exception
     {
         public Guid Id;
@@ -20,8 +22,16 @@ namespace PortfolioManager.Model.Data
         {
             Id = id;
         }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue("Id", Id);
+        }
     }
 
+    [Serializable]
     public class DuplicateRecordException : Exception
     {
         public Guid Id;
@@ -30,6 +40,13 @@ namespace PortfolioManager.Model.Data
             : base("A record with the id " + id + " already exists")
         {
             Id = id;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue("Id", Id);
         }
     }
 

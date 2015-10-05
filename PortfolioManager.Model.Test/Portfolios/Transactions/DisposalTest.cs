@@ -17,8 +17,34 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     {
         public override void PerformTest()
         {
-            throw new NotSupportedException();
+            _TransactionDate = new DateTime(2002, 01, 01);
+
+            var aquisitionDate = new DateTime(2000, 01, 01);
+            var transactions = new ITransaction[]
+            {
+                new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate,
+                    ASXCode = "AAA",
+                    Units = 1000,
+                    CostBase = 1500.00m,
+                    Comment = ""
+                },
+                new Disposal()
+                {
+                    TransactionDate = _TransactionDate,
+                    ASXCode = "AAA",
+                    Units = 1000,
+                    AveragePrice = 1.70m,
+                    TransactionCosts = 10.00m,
+                    CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    Comment = ""
+                }
+            };
+
+            _ExpectedCGTEvents.Add(new CGTEvent( _StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1700.00m));
         }
+
     }
 
     [TestFixture, Description("Disposal of Ordinary Share - single parcel, sell part")]

@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Portfolios
-{
+{ 
+    [Serializable]
     class TransctionNotSupportedForStapledSecurity: Exception 
     {
         public ITransaction Transacation { get; private set; }
@@ -17,7 +18,8 @@ namespace PortfolioManager.Model.Portfolios
         }
     }
 
-    class NoParcelsForTransaction : Exception
+    [Serializable]
+class NoParcelsForTransaction : Exception
     {
         public ITransaction Transacation { get; private set; }
 

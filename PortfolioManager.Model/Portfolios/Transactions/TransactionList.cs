@@ -24,6 +24,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
+                _Portfolio.ValidateTransaction(transaction);
                 unitOfWork.TransactionRepository.Add(transaction);
                 unitOfWork.Save();
             }
@@ -37,6 +38,7 @@ namespace PortfolioManager.Model.Portfolios
             {
                 foreach (ITransaction transaction in transactions)
                 {
+                    _Portfolio.ValidateTransaction(transaction);
                     unitOfWork.TransactionRepository.Add(transaction);
                     _Portfolio.ApplyTransaction(transaction);
                 };
