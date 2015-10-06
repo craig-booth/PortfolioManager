@@ -5,28 +5,47 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Portfolios
-{ 
+{
+
     [Serializable]
-    class TransctionNotSupportedForStapledSecurity: Exception 
+    public abstract class TransactionException : Exception
     {
         public ITransaction Transacation { get; private set; }
 
-        public TransctionNotSupportedForStapledSecurity(ITransaction transcation, string message)
+        public TransactionException(ITransaction transcation, string message)
             : base(message)
         {
             Transacation = transcation;
         }
     }
 
-    [Serializable]
-class NoParcelsForTransaction : Exception
-    {
-        public ITransaction Transacation { get; private set; }
 
-        public NoParcelsForTransaction(ITransaction transcation, string message)
-            : base(message)
+    [Serializable]
+    public class TransctionNotSupportedForStapledSecurity: TransactionException 
+    {
+     
+        public TransctionNotSupportedForStapledSecurity(ITransaction transcation, string message)
+            : base(transcation, message)
         {
-            Transacation = transcation;
+        }
+    }
+
+    [Serializable]
+    public class NoParcelsForTransaction : TransactionException 
+    {
+        public NoParcelsForTransaction(ITransaction transcation, string message)
+            : base(transcation, message)
+        {
+
+        }
+    }
+
+    [Serializable]
+    public class NotEnoughSharesForDisposal : TransactionException
+    {
+        public NotEnoughSharesForDisposal(ITransaction transcation, string message)
+            : base(transcation, message)
+        {
         }
     }
 }
