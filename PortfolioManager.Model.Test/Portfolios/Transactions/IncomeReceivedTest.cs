@@ -338,7 +338,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             var incomeReceived = new IncomeReceived()
             {
                 TransactionDate = new DateTime(2002, 01, 01),
-                ASXCode = "AAA",
+                ASXCode = "SSS",
                 FrankedAmount = 100.00m,
                 UnfrankedAmount = 20.00m,
                 FrankingCredits = 30.00m,

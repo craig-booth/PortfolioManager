@@ -65,4 +65,30 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedParcels.Add(mainParcel);
         }
     }
+
+    [TestFixture, Description("Aquisition validation tests")]
+    public class AquisitionValidationTests : TransactionTest
+    {
+        [Test, Description("Aquire child security")]
+        [ExpectedException(typeof(TransctionNotSupportedForChildSecurity))]
+        public void NotSupportedForChildSecurity()
+        {
+            var transactionDate = new DateTime(2002, 01, 01);
+
+            var transactions = new ITransaction[]
+            {
+                new Aquisition()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "SSS1",
+                    Units = 1000,
+                    AveragePrice = 1.70m,
+                    TransactionCosts = 10.00m,
+                    Comment = ""
+                }
+            };
+            _Portfolio.ProcessTransactions(transactions);
+        }
+    }
+
 }

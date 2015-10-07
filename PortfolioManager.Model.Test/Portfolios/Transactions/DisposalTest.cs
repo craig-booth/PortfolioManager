@@ -41,7 +41,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
             _ExpectedCGTEvents.Add(new CGTEvent( _StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1690.00m));
         }
@@ -77,7 +77,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, ParcelEvent.Disposal)
                 {
@@ -126,7 +126,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1693.33m));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 1200.00m, 846.67m));
@@ -171,7 +171,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 300, 2.40m, 720.00m, 720.00m, ParcelEvent.Disposal)
             {
@@ -213,7 +213,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
@@ -252,20 +252,32 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7500.00m, ParcelEvent.Disposal);
+            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7500.00m, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            };
             _ExpectedParcels.Add(mainParcel);
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, mainParcel.Id, ParcelEvent.Disposal));
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, mainParcel.Id, ParcelEvent.Disposal));
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, mainParcel.Id, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, mainParcel.Id, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1699.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3398.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4500.00m, 3398.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4500.00m, 3396.00m));
         }
     }
 
@@ -311,8 +323,31 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
         }
+
+        [Test, Description("Disposal of child security")]
+        [ExpectedException(typeof(TransctionNotSupportedForChildSecurity))]
+        public void NotSupportedForChildSecurity()
+        {
+            var transactionDate = new DateTime(2002, 01, 01);
+
+            var transactions = new ITransaction[]
+            {
+                new Disposal()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "SSS1",
+                    Units = 1000,
+                    AveragePrice = 1.70m,
+                    TransactionCosts = 10.00m,
+                    CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    Comment = ""
+                }
+            };
+            _Portfolio.ProcessTransactions(transactions);
+        }
+
 
         [Test, Description("Disposal of Ordinary Share - single parcel, not enough shares")]
         [ExpectedException(typeof(NotEnoughSharesForDisposal))]
@@ -342,7 +377,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
         }
 
         [Test, Description("Disposal of Ordinary Share - multiple parcels, not enough shares")]
@@ -382,7 +417,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
         }
     }
 }

@@ -223,7 +223,10 @@ namespace PortfolioManager.Model.Portfolios
         private void ApplyAquisition(IPortfolioUnitOfWork unitOfWork, Aquisition aquisition)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(aquisition.ASXCode, aquisition.TransactionDate);
-         
+
+            if (stock.ParentId != Guid.Empty)
+                throw new TransctionNotSupportedForChildSecurity(aquisition, "Cannot aquire child securities. Aquire stapled security instead");
+
             decimal amountPaid = (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 
@@ -236,12 +239,20 @@ namespace PortfolioManager.Model.Portfolios
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(disposal.ASXCode, disposal.TransactionDate);
 
+            if (stock.ParentId != Guid.Empty)
+                throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
+
             /* Create CGT calculator */
             var CGTCalculator = new CGTCalculator();
 
             /* Determine which parcels to sell based on CGT method */
             decimal amountReceived = (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
             var CGTCalculation = CGTCalculator.CalculateCapitalGain(this, disposal.TransactionDate, stock, disposal.Units, amountReceived, disposal.CGTMethod);
+
+            if (CGTCalculation.UnitsSold == 0)
+                throw new NoParcelsForTransaction(disposal, "No parcels found for transaction");
+            else if (CGTCalculation.UnitsSold < disposal.Units)
+                throw new NotEnoughSharesForDisposal(disposal, "Not enough shares for disposal");
 
             /* dispose of select parcels */
             decimal totalAmount = 0;
@@ -258,6 +269,9 @@ namespace PortfolioManager.Model.Portfolios
         private void ApplyOpeningBalance(IPortfolioUnitOfWork unitOfWork, OpeningBalance openingBalance)
         {
             Stock stock = _StockDatabase.StockQuery.GetByASXCode(openingBalance.ASXCode, openingBalance.TransactionDate);
+
+            if (stock.ParentId != Guid.Empty)
+                throw new TransctionNotSupportedForChildSecurity(openingBalance, "Cannot aquire child securities. Aquire stapled security instead");
 
             AddParcel(unitOfWork, openingBalance.TransactionDate, stock.Id, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
         }
@@ -288,7 +302,7 @@ namespace PortfolioManager.Model.Portfolios
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
 
-            /* locate parcels that the dividend applies to */
+            /* locate parcels that the transaction applies to */
             var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, returnOfCapital.TransactionDate);
 
             if (parcels.Count == 0)
@@ -331,14 +345,20 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyIncomeReceived(IPortfolioUnitOfWork unitOfWork, IncomeReceived incomeReceived)
         {
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.TransactionDate);
+
+            if (stock.Type == StockType.StapledSecurity)
+                throw new TransctionNotSupportedForStapledSecurity(incomeReceived, "Cannot have a income for stapled securities. Income should be recorded against child securities instead");
+
+            /* locate parcels that the dividend applies to */
+            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, incomeReceived.TransactionDate);
+
+            if (parcels.Count == 0)
+                throw new NoParcelsForTransaction(incomeReceived, "No parcels found for transaction");
+
             /* Handle any tax deferred amount recieved */
             if (incomeReceived.TaxDeferred > 0)
             {
-                Stock stock = _StockDatabase.StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.TransactionDate);
-
-                /* locate parcels that the dividend applies to */
-                var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, incomeReceived.TransactionDate);
-
                 /* Apportion amount between parcels */
                 ApportionedValue[] apportionedAmounts = new ApportionedValue[parcels.Count];
                 int i = 0;
@@ -450,7 +470,7 @@ namespace PortfolioManager.Model.Portfolios
                 foreach (ShareParcel childParcel in childParcels)
                 {
                     /* Modify Parcel */
-                    costBase = childParcel.CostBase / ((decimal)units / childParcel.Units);
+                    costBase = childParcel.CostBase * ((decimal)units / childParcel.Units);
                     ModifyParcel(unitOfWork, childParcel, disposalDate, ParcelEvent.Disposal, childParcel.Units - units, childParcel.CostBase - costBase, description);
 
                     /* Create CGT Event */

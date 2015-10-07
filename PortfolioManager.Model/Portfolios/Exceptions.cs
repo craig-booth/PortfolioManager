@@ -19,12 +19,19 @@ namespace PortfolioManager.Model.Portfolios
         }
     }
 
-
     [Serializable]
     public class TransctionNotSupportedForStapledSecurity: TransactionException 
-    {
-     
+    {   
         public TransctionNotSupportedForStapledSecurity(ITransaction transcation, string message)
+            : base(transcation, message)
+        {
+        }
+    }
+
+    [Serializable]
+    public class TransctionNotSupportedForChildSecurity : TransactionException
+    {
+        public TransctionNotSupportedForChildSecurity(ITransaction transcation, string message)
             : base(transcation, message)
         {
         }

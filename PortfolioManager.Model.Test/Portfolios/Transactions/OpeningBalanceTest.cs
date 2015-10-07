@@ -58,4 +58,29 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, openingbalance.Units, 9.00m, 9000.00m, 9000.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
         }
      }
+
+    [TestFixture, Description("Opening balance validation tests")]
+    public class OpeningBalanceValidationTests : TransactionTest
+    {
+        [Test, Description("Opening balance for child security")]
+        [ExpectedException(typeof(TransctionNotSupportedForChildSecurity))]
+        public void NotSupportedForChildSecurity()
+        {
+            var transactionDate = new DateTime(2002, 01, 01);
+
+            var transactions = new ITransaction[]
+            {
+                new OpeningBalance()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "SSS1",
+                    Units = 1000,
+                    CostBase = 15000.00m,
+                    Comment = "Test Opening Balance"
+                }
+            };
+            _Portfolio.ProcessTransactions(transactions);
+        }
+    }
+
 }
