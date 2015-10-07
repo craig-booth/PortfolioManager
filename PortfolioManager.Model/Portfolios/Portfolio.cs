@@ -317,7 +317,16 @@ namespace PortfolioManager.Model.Portfolios
                 foreach (ShareParcel parcel in parcels)
                 {
                     var costBaseReduction = parcel.Units * returnOfCapital.Amount;
-                    ModifyParcel(parcel, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+
+                    if (costBaseReduction <= parcel.CostBase)
+                        ModifyParcel(parcel, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+                    else
+                    {
+                        ModifyParcel(parcel, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, 0.00m, "");
+
+                        var cgtEvent = new CGTEvent(parcel.Stock, returnOfCapital.TransactionDate, parcel.Units, parcel.CostBase, costBaseReduction - parcel.CostBase);
+                        unitOfWork.CGTEventRepository.Add(cgtEvent);
+                    }
 
                     totalAmount += costBaseReduction;
                 }
@@ -374,7 +383,16 @@ namespace PortfolioManager.Model.Portfolios
                     foreach (ShareParcel parcel in parcels)
                     {
                         decimal costBaseReduction = apportionedAmounts[i++].Amount;
-                        ModifyParcel(parcel, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+
+                        if (costBaseReduction <= parcel.CostBase)
+                            ModifyParcel(parcel, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+                        else
+                        {
+                            ModifyParcel(parcel, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, 0.00m, "");
+
+                            var cgtEvent = new CGTEvent(parcel.Stock, incomeReceived.TransactionDate, parcel.Units, parcel.CostBase, costBaseReduction - parcel.CostBase);
+                            unitOfWork.CGTEventRepository.Add(cgtEvent);
+                        }
                     }
 
                     CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);  
