@@ -38,7 +38,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = "Costbase Adjustment test"
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
 
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
@@ -84,7 +84,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = "Costbase Adjustment test"
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
 
 
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 450.00m, ParcelEvent.CostBaseReduction)
@@ -116,7 +116,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = "Costbase Adjustment test"
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = "Costbase Adjustment test"
                 }
             };
-            _Portfolio.Transactions.Add(transactions);
+            _Portfolio.ProcessTransactions(transactions);
         }
     }
 

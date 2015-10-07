@@ -34,8 +34,6 @@ namespace PortfolioManager.Model.Portfolios
 
         public Dictionary<string, StockSetting> StockSetting { get; private set; }
 
-        public TransactionList Transactions {get; private set;}
-
         private Portfolio(string name)
         {
             Id = Guid.NewGuid();
@@ -50,12 +48,12 @@ namespace PortfolioManager.Model.Portfolios
             
             StockSetting = new Dictionary<string, StockSetting>();
 
-            Transactions = new TransactionList(_PortfolioDatabase, this);
             CashAccount = new CashAccount(portfolioDatabase, this);
 
             /* Load transactions */
-            var allTransactions = Transactions.Find(DateTime.MinValue, DateTime.MaxValue);
-            ApplyTransactions(allTransactions);
+            var allTransactions = GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            foreach (var transaction in allTransactions)
+                ApplyTransaction(transaction);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels() 
@@ -136,15 +134,68 @@ namespace PortfolioManager.Model.Portfolios
             return incomeQuery.ToList().AsReadOnly(); 
         }
 
-        internal void ApplyTransactions(IEnumerable<ITransaction> transactions)
+
+        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
-            foreach (ITransaction transaction in transactions)
-            {
-                ApplyTransaction(transaction);
-            };
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, fromDate, toDate);
         }
 
-        internal void ApplyTransaction(ITransaction transaction)
+        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Id, asxCode, fromDate, toDate);
+        }
+
+        public void ProcessTransaction(ITransaction transaction)
+        {
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                ValidateTransaction(transaction);
+                ApplyTransaction(transaction);
+                unitOfWork.TransactionRepository.Add(transaction);
+                unitOfWork.Save();
+            }            
+        }
+
+        public void ProcessTransactions(IEnumerable<ITransaction> transactions)
+        {
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                foreach (ITransaction transaction in transactions)
+                {
+                    ValidateTransaction(transaction);
+                    ApplyTransaction(transaction);
+                    unitOfWork.TransactionRepository.Add(transaction);
+                    
+                };
+                unitOfWork.Save();
+            }
+        }
+
+        public void UpdateTransaction(ITransaction transaction)
+        {
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.TransactionRepository.Update(transaction);
+                unitOfWork.Save();
+            }
+
+            // Need to work out how to reapply
+            // _Portfolio.ApplyTransaction(transaction);
+        }
+
+        public void DeleteTransaction(ITransaction transaction)
+        {
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.TransactionRepository.Delete(transaction);
+                unitOfWork.Save();
+            }
+
+            // Need to work out how to reapply
+            // _Portfolio.ApplyTransaction(transaction);
+        }
+
+        private void ApplyTransaction(ITransaction transaction)
         {
             if (transaction.Type == TransactionType.Aquisition)
                 ApplyTransaction(transaction as Aquisition);
@@ -167,7 +218,7 @@ namespace PortfolioManager.Model.Portfolios
                 return;
         }
 
-        internal void ValidateTransaction(ITransaction transaction)
+        private void ValidateTransaction(ITransaction transaction)
         {
             if (transaction.Type == TransactionType.Aquisition)
                 ValidateTransaction(transaction as Aquisition);
