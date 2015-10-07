@@ -10,8 +10,6 @@ namespace PortfolioManager.Model.Portfolios
 {
     public class CashAccount
     {      
-        private Portfolio _Portfolio;
-        private IPortfolioDatabase _PortfolioDatabase;
         private List<CashAccountTransaction> _Transactions;
 
         public IEnumerable<CashAccountTransaction> GetTransactions(DateTime fromDate, DateTime toDate)
@@ -24,10 +22,8 @@ namespace PortfolioManager.Model.Portfolios
             return _Transactions.Where(t => t.Date >= atDate).Sum(x => x.Amount);
         }
 
-        public CashAccount(IPortfolioDatabase database, Portfolio portfolio)
+        public CashAccount()
         {
-            _Portfolio = portfolio;
-            _PortfolioDatabase = database;
             _Transactions = new List<CashAccountTransaction>();
         }
 
