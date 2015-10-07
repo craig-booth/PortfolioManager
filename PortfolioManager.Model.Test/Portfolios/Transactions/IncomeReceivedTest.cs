@@ -28,7 +28,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance);
+            _Portfolio.ProcessTransaction(openingBalance);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -41,7 +41,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 0.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
 
 
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate, _StockManager.GetStock("AAA", _TransactionDate).Id, openingBalance.Units, 1.50m, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance));
@@ -64,7 +64,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance);
+            _Portfolio.ProcessTransaction(openingBalance);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -77,7 +77,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 30.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
 
 
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate, _StockManager.GetStock("CCC", _TransactionDate).Id, openingBalance.Units, 1.50m, openingBalance.CostBase, openingBalance.CostBase - 30.00m, ParcelEvent.CostBaseReduction)
@@ -104,7 +104,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance1);
+            _Portfolio.ProcessTransaction(openingBalance1);
 
             var openingBalanceDate2 = new DateTime(2000, 01, 01);
             var openingBalance2 = new OpeningBalance()
@@ -115,7 +115,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 800.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance2);
+            _Portfolio.ProcessTransaction(openingBalance2);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -128,7 +128,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 0.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
 
 
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockManager.GetStock("AAA", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, openingBalance1.CostBase, ParcelEvent.OpeningBalance));
@@ -153,7 +153,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 100.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance);
+            _Portfolio.ProcessTransaction(openingBalance);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -166,7 +166,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 130.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
 
 
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate, _StockManager.GetStock("CCC", _TransactionDate).Id, openingBalance.Units, 1.00m, openingBalance.CostBase, 0.00m, ParcelEvent.CostBaseReduction)
@@ -183,7 +183,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     {
         public override void PerformTest()
         {
-            _TransactionDate = new DateTime(2001, 01, 01);
+            _TransactionDate = new DateTime(2002, 01, 01);
 
             var openingBalanceDate1 = new DateTime(2000, 01, 01);
             var openingBalance1 = new OpeningBalance()
@@ -194,7 +194,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance1);
+            _Portfolio.ProcessTransaction(openingBalance1);
 
             var openingBalanceDate2 = new DateTime(2001, 06, 01);
             var openingBalance2 = new OpeningBalance()
@@ -205,7 +205,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 100.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance2);
+            _Portfolio.ProcessTransaction(openingBalance2);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -218,10 +218,15 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 300.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
 
-
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockManager.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 1227.47m, ParcelEvent.CostBaseReduction)
+            /* new cost base 
+             * 
+             * parcel1 = 1500 - (300 * (1000 / 1100)) = 1500 - 272.73 = 1227.27
+             * parcel1 = 100 - (300 * (100 / 1100)) = 100 - 27.27 = 72.73
+             * 
+            */
+            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockManager.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 1227.27m, ParcelEvent.CostBaseReduction)
             {
                 FromDate = _TransactionDate
             });
@@ -238,7 +243,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     {
         public override void PerformTest()
         {
-            _TransactionDate = new DateTime(2001, 01, 01);
+            _TransactionDate = new DateTime(2002, 01, 01);
 
             var openingBalanceDate1 = new DateTime(2000, 01, 01);
             var openingBalance1 = new OpeningBalance()
@@ -249,7 +254,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance1);
+            _Portfolio.ProcessTransaction(openingBalance1);
 
             var openingBalanceDate2 = new DateTime(2001, 06, 01);
             var openingBalance2 = new OpeningBalance()
@@ -260,7 +265,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 100.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance2);
+            _Portfolio.ProcessTransaction(openingBalance2);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -273,10 +278,15 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 1300.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
 
-
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockManager.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 317.18m, ParcelEvent.CostBaseReduction)
+            /* new cost base 
+             * 
+             * parcel1 = 1500 - (1300 * (1000 / 1100)) = 1500 - 1181.82 = 318.18
+             * parcel1 = 100 - (1300 * (100 / 1100)) = 100 - 118.18 = -18.18
+             * 
+            */
+            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockManager.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 318.18m, ParcelEvent.CostBaseReduction)
             {
                 FromDate = _TransactionDate
             });
@@ -285,6 +295,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 FromDate = _TransactionDate
             });
             _ExpectedIncome.Add(incomeReceived);
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("CCC", _TransactionDate).Id, _TransactionDate, openingBalance2.Units, openingBalance2.CostBase, 18.18m));
         }
     }
 
@@ -306,7 +317,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 0.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
         }
 
         [Test, Description("Income Received of Stapled Security")]
@@ -322,7 +333,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = ""
             };
-            _Portfolio.Transactions.Add(openingBalance);
+            _Portfolio.ProcessTransaction(openingBalance);
 
             var incomeReceived = new IncomeReceived()
             {
@@ -335,7 +346,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TaxDeferred = 0.00m,
                 Comment = "Income test"
             };
-            _Portfolio.Transactions.Add(incomeReceived);
+            _Portfolio.ProcessTransaction(incomeReceived);
         }
 
     }

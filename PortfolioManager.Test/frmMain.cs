@@ -167,7 +167,7 @@ namespace PortfolioManager.Test
 
             /* Transactions */
             lsvTransactions.Items.Clear();
-            var allTransactions = _MyPortfolio.Transactions.Find(startDate, endDate);
+            var allTransactions = _MyPortfolio.GetTransactions(startDate, endDate);
             foreach (ITransaction transaction in allTransactions)
             {
                 var item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
@@ -187,7 +187,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = lsvTransactions2.FocusedItem.Tag as ITransaction;
             lsvTransactions2.FocusedItem.Remove();
 
-            _MyPortfolio.Transactions.Add(transaction);
+            _MyPortfolio.ProcessTransaction(transaction);
      
             DisplayPortfolio();
             DisplayCorporateActions();
@@ -202,7 +202,7 @@ namespace PortfolioManager.Test
             var form = new frmMultipleTransactions(_PortfolioManager.StockManager);
             if (form.EditTransactions(transactions))
             {
-                _MyPortfolio.Transactions.Add(transactions);
+                _MyPortfolio.ProcessTransactions(transactions);
                 lsvCorporateActions.FocusedItem.Remove();
 
                 DisplayPortfolio();
@@ -238,7 +238,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = form.CreateTransaction(type);
             if (transaction != null)
             {
-                _MyPortfolio.Transactions.Add(transaction);
+                _MyPortfolio.ProcessTransaction(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();
@@ -298,7 +298,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
             if (form.EditTransaction(transaction))
             {
-                _MyPortfolio.Transactions.Update(transaction);
+                _MyPortfolio.UpdateTransaction(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();
@@ -312,7 +312,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
             if (form.DeleteTransaction(transaction))
             {
-                _MyPortfolio.Transactions.Delete(transaction);
+                _MyPortfolio.DeleteTransaction(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();
