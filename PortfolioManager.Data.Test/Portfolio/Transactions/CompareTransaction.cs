@@ -8,7 +8,7 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Data.Test.Portfolio.Transactions
 {
-    public class TransactionComparer : IEqualityComparer<ITransaction>
+    public class TransactionComparer : IEqualityComparer<ITransaction> 
     {
         public virtual bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
@@ -30,8 +30,11 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class AquisitionComparer : TransactionComparer
     {
-        public bool Equals(Aquisition aquisition1, Aquisition aquisition2)
+        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
+            var aquisition1 = transaction1 as Aquisition;
+            var aquisition2 = transaction2 as Aquisition;
+
             if (base.Equals(aquisition1, aquisition2) &&
                 (aquisition1.AveragePrice == aquisition2.AveragePrice) &&
                 (aquisition1.Units == aquisition2.Units) &&
@@ -44,10 +47,13 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class CostBaseAdjustmentComparer : TransactionComparer
     {
-        public bool Equals(CostBaseAdjustment costbaseAdjustment1, CostBaseAdjustment aquisition2)
+        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
-            if (base.Equals(costbaseAdjustment1, aquisition2) &&
-                (costbaseAdjustment1.Percentage == aquisition2.Percentage))
+            var costbaseAdjustment1 = transaction1 as CostBaseAdjustment;
+            var costbaseAdjustment2 = transaction2 as CostBaseAdjustment;
+
+            if (base.Equals(costbaseAdjustment1, costbaseAdjustment2) &&
+                (costbaseAdjustment1.Percentage == costbaseAdjustment2.Percentage))
                 return true;
             else
                 return false;
@@ -56,8 +62,11 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class DisposalComparer : TransactionComparer
     {
-        public bool Equals(Disposal disposal1, Disposal disposal2)
+        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
+            var disposal1 = transaction1 as Disposal;
+            var disposal2 = transaction2 as Disposal;
+
             if (base.Equals(disposal1, disposal2) &&
                 (disposal1.AveragePrice == disposal2.AveragePrice) &&
                 (disposal1.Units == disposal2.Units) &&
@@ -71,9 +80,13 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class IncomeReceivedComparer : TransactionComparer
     {
-        public bool Equals(IncomeReceived incomeReceived1, IncomeReceived incomeReceived2)
+        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
-            if (base.Equals(incomeReceived1, incomeReceived2) &&
+            var incomeReceived1 = transaction1 as IncomeReceived;
+            var incomeReceived2 = transaction2 as IncomeReceived;
+
+            if (base.Equals(transaction1, transaction2) &&
+                (incomeReceived1.PaymentDate == incomeReceived2.PaymentDate) &&
                 (incomeReceived1.FrankedAmount == incomeReceived2.FrankedAmount) &&
                 (incomeReceived1.UnfrankedAmount == incomeReceived2.UnfrankedAmount) &&
                 (incomeReceived1.FrankingCredits == incomeReceived2.FrankingCredits) &&
@@ -87,8 +100,11 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class OpeningBalanceComparer : TransactionComparer
     {
-        public bool Equals(OpeningBalance openingBalance1, OpeningBalance openingBalance2)
+        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
+            var openingBalance1 = transaction1 as OpeningBalance;
+            var openingBalance2 = transaction2 as OpeningBalance;
+
             if (base.Equals(openingBalance1, openingBalance2) &&
                 (openingBalance1.CostBase == openingBalance2.CostBase) &&
                 (openingBalance1.Units == openingBalance2.Units))
@@ -100,8 +116,11 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class ReturnOfCapitalComparer : TransactionComparer
     {
-        public bool Equals(ReturnOfCapital returnOfCapital1, ReturnOfCapital returnOfCapital2)
+        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
         {
+            var returnOfCapital1 = transaction1 as ReturnOfCapital;
+            var returnOfCapital2 = transaction2 as ReturnOfCapital;
+
             if (base.Equals(returnOfCapital1, returnOfCapital2) &&
                 (returnOfCapital1.Amount == returnOfCapital2.Amount))
                 return true;

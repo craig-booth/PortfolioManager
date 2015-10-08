@@ -129,13 +129,8 @@ namespace PortfolioManager.Model.Portfolios
         } 
 
         public IReadOnlyCollection<IncomeReceived> GetIncomeReceived(DateTime fromDate, DateTime toDate)
-        {
-            var incomeTransactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(this.Id, TransactionType.Income, fromDate, toDate);
-
-            var incomeQuery = from income in incomeTransactions
-                                select income as IncomeReceived;
-
-            return incomeQuery.ToList().AsReadOnly(); 
+        {         
+            return _PortfolioDatabase.PortfolioQuery.GetIncome (this.Id, fromDate, toDate);
         }
 
 
@@ -373,20 +368,19 @@ namespace PortfolioManager.Model.Portfolios
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
                     if (costBaseReduction <= parcel.CostBase)
-                        ModifyParcel(unitOfWork, parcel, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+                        ModifyParcel(unitOfWork, parcel, incomeReceived.PaymentDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
                     else
                     {
-                        ModifyParcel(unitOfWork, parcel, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, 0.00m, "");
+                        ModifyParcel(unitOfWork, parcel, incomeReceived.PaymentDate, ParcelEvent.CostBaseReduction, parcel.Units, 0.00m, "");
 
                         var cgtEvent = new CGTEvent(parcel.Stock, incomeReceived.TransactionDate, parcel.Units, parcel.CostBase, costBaseReduction - parcel.CostBase);
                         unitOfWork.CGTEventRepository.Add(cgtEvent);
                     }
                 }
-
-                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);  
+                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.PaymentDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);  
             }
             else
-                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome); 
+                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.PaymentDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome); 
         }
 
         private void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Guid stockId, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
@@ -525,16 +519,16 @@ namespace PortfolioManager.Model.Portfolios
                 if (corporateAction.Type == CorporateActionType.Dividend)
                 {
                     Dividend dividend = corporateAction as Dividend;
-                    date = dividend.PaymentDate;
+                    date = dividend.ActionDate;
                     type = TransactionType.Income;
-                    asxCode = _StockDatabase.StockQuery.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
+                    asxCode = _StockDatabase.StockQuery.Get(dividend.Stock, date).ASXCode;
                 }
                 else if (corporateAction.Type == CorporateActionType.CapitalReturn)
                 {
                     CapitalReturn capitalReturn = corporateAction as CapitalReturn;
                     date = capitalReturn.PaymentDate;
                     type = TransactionType.ReturnOfCapital;
-                    asxCode = _StockDatabase.StockQuery.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
+                    asxCode = _StockDatabase.StockQuery.Get(capitalReturn.Stock, date).ASXCode;
                 }
                 else if (corporateAction.Type == CorporateActionType.Transformation)
                 {
@@ -544,12 +538,12 @@ namespace PortfolioManager.Model.Portfolios
                     if (transformation.ResultingStocks.Any())
                     {
                         type = TransactionType.OpeningBalance;
-                        asxCode = _StockDatabase.StockQuery.Get(transformation.ResultingStocks.First().Stock, transformation.ImplementationDate).ASXCode;
+                        asxCode = _StockDatabase.StockQuery.Get(transformation.ResultingStocks.First().Stock, date).ASXCode;
                     }
                     else 
                     {
                         type = TransactionType.Disposal; 
-                        asxCode = _StockDatabase.StockQuery.Get(transformation.Stock, transformation.ImplementationDate).ASXCode;
+                        asxCode = _StockDatabase.StockQuery.Get(transformation.Stock, date).ASXCode;
                     }
                     
                 } 

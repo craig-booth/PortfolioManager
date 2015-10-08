@@ -43,6 +43,7 @@ namespace PortfolioManager.Test.TransactionControls
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
 
+            //TODO: IncomeRecevied Change to use Payment Date, also include transaction date on the screen
             dtpPaymentDate.Value = incomeReceived.TransactionDate;
 
             foreach (Stock s in cboASXCode.Items)
@@ -67,6 +68,7 @@ namespace PortfolioManager.Test.TransactionControls
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
 
+            //TODO: IncomeRecevied Change to use Payment Date, also include transaction date on the screen
             Stock stock = cboASXCode.SelectedItem as Stock;
             incomeReceived.ASXCode = stock.ASXCode;
             incomeReceived.TransactionDate = dtpPaymentDate.Value;
@@ -80,6 +82,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpPaymentDate_ValueChanged(object sender, EventArgs e)
         {
+            //TODO: IncomeRecevied Change to use Transaction Date
             var stockList = _StockManager.GetStocks(dtpPaymentDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();

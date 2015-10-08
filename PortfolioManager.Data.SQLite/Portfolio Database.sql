@@ -51,6 +51,7 @@ CREATE TABLE [Disposals]
 CREATE TABLE [IncomeReceived]
 (
 	[Id] TEXT(36) NOT NULL,
+	[PaymentDate] TEXT(10) NOT NULL,
 	[FrankedAmount] INTEGER NOT NULL,
 	[UnfrankedAmount] INTEGER NOT NULL,
 	[FrankingCredits] INTEGER NOT NULL,

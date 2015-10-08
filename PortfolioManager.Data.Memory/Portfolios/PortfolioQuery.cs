@@ -75,6 +75,23 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
+        public IReadOnlyCollection<IncomeReceived> GetIncome(Guid portfolio, DateTime fromDate, DateTime toDate)
+        {
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.Type == TransactionType.Income
+                                   select transaction as IncomeReceived;
+
+
+
+            var incomeQuery = from income in transactionQuery
+                              where income.PaymentDate >= fromDate && income.PaymentDate <= toDate
+                              orderby income.PaymentDate
+                              select income;
+
+
+            return incomeQuery.ToList().AsReadOnly();
+        }
+
         public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions

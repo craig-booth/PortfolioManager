@@ -332,12 +332,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [IncomeReceived] ([Id], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [Comment]) VALUES (@Id, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @Comment)";
+            return "INSERT INTO [IncomeReceived] ([Id], [PaymentDate], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [Comment]) VALUES (@Id, @PaymentDate, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @Comment)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[IncomeReceived] SET [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[IncomeReceived] SET [PaymentDate] = @PaymentDate, [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [Comment] = @Comment WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -350,6 +350,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             IncomeReceived incomeReceived = entity as IncomeReceived;
 
             command.Parameters.AddWithValue("@Id", incomeReceived.Id.ToString());
+            command.Parameters.AddWithValue("@PaymentDate", incomeReceived.PaymentDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@FrankedAmount", DecimalToDB(incomeReceived.FrankedAmount));
             command.Parameters.AddWithValue("@UnfrankedAmount", DecimalToDB(incomeReceived.UnfrankedAmount));
             command.Parameters.AddWithValue("@FrankingCredits", DecimalToDB(incomeReceived.FrankingCredits));

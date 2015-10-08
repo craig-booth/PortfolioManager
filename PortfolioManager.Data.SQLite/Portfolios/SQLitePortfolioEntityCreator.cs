@@ -130,12 +130,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 TransactionDate = reader.GetDateTime(1),
                 ASXCode = reader.GetString(3),
-                FrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(1)),
-                UnfrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(2)),
-                FrankingCredits = DBToDecimal(incomeReceivedReader.GetInt32(3)),
-                Interest = DBToDecimal(incomeReceivedReader.GetInt32(4)),
-                TaxDeferred = DBToDecimal(incomeReceivedReader.GetInt32(5)),
-                Comment = incomeReceivedReader.GetString(6)
+                PaymentDate = incomeReceivedReader.GetDateTime(1),
+                FrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(2)),
+                UnfrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(3)),
+                FrankingCredits = DBToDecimal(incomeReceivedReader.GetInt32(4)),
+                Interest = DBToDecimal(incomeReceivedReader.GetInt32(5)),
+                TaxDeferred = DBToDecimal(incomeReceivedReader.GetInt32(6)),
+                Comment = incomeReceivedReader.GetString(7)
             };
             incomeReceivedReader.Close();
 

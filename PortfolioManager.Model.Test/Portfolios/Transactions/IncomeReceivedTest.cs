@@ -34,6 +34,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = _TransactionDate,
                 ASXCode = "AAA",
+                PaymentDate = _TransactionDate,
                 FrankedAmount = 100.00m,
                 UnfrankedAmount = 20.00m,
                 FrankingCredits = 30.00m,
@@ -70,6 +71,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = _TransactionDate,
                 ASXCode = "CCC",
+                PaymentDate = _TransactionDate,
                 FrankedAmount = 0.00m,
                 UnfrankedAmount = 100.00m,
                 FrankingCredits = 0.00m,
@@ -121,6 +123,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = _TransactionDate,
                 ASXCode = "AAA",
+                PaymentDate = _TransactionDate,
                 FrankedAmount = 100.00m,
                 UnfrankedAmount = 20.00m,
                 FrankingCredits = 30.00m,
@@ -159,6 +162,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = _TransactionDate,
                 ASXCode = "CCC",
+                PaymentDate = _TransactionDate,
                 FrankedAmount = 0.00m,
                 UnfrankedAmount = 100.00m,
                 FrankingCredits = 0.00m,
@@ -211,6 +215,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = _TransactionDate,
                 ASXCode = "CCC",
+                PaymentDate = _TransactionDate,
                 FrankedAmount = 0.00m,
                 UnfrankedAmount = 100.00m,
                 FrankingCredits = 0.00m,
@@ -271,6 +276,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = _TransactionDate,
                 ASXCode = "CCC",
+                PaymentDate = _TransactionDate,
                 FrankedAmount = 0.00m,
                 UnfrankedAmount = 100.00m,
                 FrankingCredits = 0.00m,
@@ -310,6 +316,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = new DateTime(2002, 01, 01),
                 ASXCode = "AAA",
+                PaymentDate = new DateTime(2002, 01, 01),
                 FrankedAmount = 100.00m,
                 UnfrankedAmount = 20.00m,
                 FrankingCredits = 30.00m,
@@ -339,6 +346,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 TransactionDate = new DateTime(2002, 01, 01),
                 ASXCode = "SSS",
+                PaymentDate = new DateTime(2002, 01, 01),
                 FrankedAmount = 100.00m,
                 UnfrankedAmount = 20.00m,
                 FrankingCredits = 30.00m,

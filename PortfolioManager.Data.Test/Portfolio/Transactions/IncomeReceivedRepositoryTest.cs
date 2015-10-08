@@ -20,6 +20,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
+                PaymentDate = new DateTime(2010, 10, 15),
                 FrankedAmount = 1.20M,
                 UnfrankedAmount = 0.80M,
                 FrankingCredits = 0.20M,
@@ -37,6 +38,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
+                PaymentDate = new DateTime(2010, 10, 15),
                 FrankedAmount = 1.20M,
                 UnfrankedAmount = 0.80M,
                 FrankingCredits = 0.20M,
@@ -55,6 +57,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
+                PaymentDate = new DateTime(2010, 10, 15),
                 FrankedAmount = 1.20M,
                 UnfrankedAmount = 0.80M,
                 FrankingCredits = 0.20M,
@@ -73,6 +76,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
+                PaymentDate = new DateTime(2010, 10, 15),
                 FrankedAmount = 1.20M,
                 UnfrankedAmount = 0.80M,
                 FrankingCredits = 0.20M,
@@ -88,6 +92,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             IncomeReceived incomeReceived = transaction as IncomeReceived;
 
             incomeReceived.TransactionDate = new DateTime(2010, 04, 30);
+            incomeReceived.PaymentDate = new DateTime(2010, 05, 10);
             incomeReceived.FrankedAmount = 1.50M;
             incomeReceived.UnfrankedAmount = 0.90M;
             incomeReceived.FrankingCredits = 1.20M;

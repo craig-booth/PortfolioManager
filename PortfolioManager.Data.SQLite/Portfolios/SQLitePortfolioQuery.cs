@@ -79,6 +79,29 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
+        public IReadOnlyCollection<IncomeReceived> GetIncome(Guid portfolio, DateTime fromDate, DateTime toDate)
+        {
+            var list = new List<IncomeReceived>();
+
+            var query = new SQLiteCommand("SELECT [Transactions].* FROM [Transactions] LEFT OUTER JOIN [IncomeReceived] ON [IncomeReceived].[Id] = [Transactions].[Id] WHERE [Type] = @Type and [PaymentDate] BETWEEN @FromDate AND @ToDate ORDER BY [PaymentDate]", _Connection);
+            query.Prepare();
+
+            query.Parameters.AddWithValue("@Type", TransactionType.Income);
+            query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
+            query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
+
+            SQLiteDataReader reader = query.ExecuteReader();
+
+            while (reader.Read())
+            {
+                IncomeReceived transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader) as IncomeReceived;
+                list.Add(transaction);
+            }
+            reader.Close();
+
+            return list;
+        }
+
         public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate)
         {
             var list = new List<ITransaction>();
