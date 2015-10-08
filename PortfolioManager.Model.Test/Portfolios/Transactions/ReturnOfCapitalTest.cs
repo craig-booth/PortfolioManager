@@ -186,6 +186,49 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         }
     }
 
+    [TestFixture, Description("Return of Capital of  Child security - single parcels")]
+    public class ReturnOfCapitalChildSecuritySingleParcels : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            _TransactionDate = new DateTime(2002, 01, 01);
+
+            var aquisitionDate = new DateTime(2000, 01, 01);
+            var transactions = new ITransaction[]
+            {           
+                new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate,
+                    ASXCode = "SSS",
+                    Units = 1000,
+                    CostBase = 15000.00m,
+                    Comment = ""
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = _TransactionDate,
+                    ASXCode = "SSS3",
+                    Amount = 0.30m,
+                    Comment = "Return of Capital test"
+                }
+            };
+            _Portfolio.ProcessTransactions(transactions);
+
+            // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
+            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 1000, 15.00m, 15000.00m, 14700.00m, ParcelEvent.CostBaseReduction)
+            {
+                FromDate = _TransactionDate
+            };
+            _ExpectedParcels.Add(mainParcel);
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 1500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 1000, 4.50m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 8700.00m, mainParcel.Id, ParcelEvent.CostBaseReduction)
+            {
+                FromDate = _TransactionDate
+            });
+
+        }
+    }
 
     [TestFixture, Description("Return of Capital validation tests")]
     public class ReturnOfCapitalValidationTests : TransactionTest

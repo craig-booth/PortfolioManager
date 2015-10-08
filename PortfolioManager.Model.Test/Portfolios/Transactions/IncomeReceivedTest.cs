@@ -305,6 +305,55 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         }
     }
 
+    [TestFixture, Description("Income Received of Child trust - single parcel tax deferred")]
+    public class IncomeReceviedChildTrustSingleParcelTaxDeferred : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            _TransactionDate = new DateTime(2002, 01, 01);
+
+            var aquisitionDate = new DateTime(2000, 01, 01);
+            var openingBalance = new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate,
+                    ASXCode = "SSS",
+                    Units = 1000,
+                    CostBase = 15000.00m,
+                    Comment = ""
+                };
+            _Portfolio.ProcessTransaction(openingBalance);
+
+            var incomeReceived = new IncomeReceived()
+            {
+                TransactionDate = _TransactionDate,
+                ASXCode = "SSS1",
+                PaymentDate = _TransactionDate,
+                FrankedAmount = 0.00m,
+                UnfrankedAmount = 100.00m,
+                FrankingCredits = 0.00m,
+                Interest = 10.00m,
+                TaxDeferred = 300.00m,
+                Comment = "Income test"
+            };
+            _Portfolio.ProcessTransaction(incomeReceived);
+
+            // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
+            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 1000, 15.00m, 15000.00m, 14700.00m, ParcelEvent.CostBaseReduction)
+            {
+                FromDate = _TransactionDate
+            };
+            _ExpectedParcels.Add(mainParcel);
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 1500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 1000, 4.50m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 8700.00m, mainParcel.Id, ParcelEvent.CostBaseReduction)
+            {
+                FromDate = _TransactionDate
+            });
+
+            _ExpectedIncome.Add(incomeReceived);
+        }
+    }
+
     [TestFixture, Description("Income Received validation tests")]
     public class IncomeReceivedValidationTests : TransactionTest
     {

@@ -287,7 +287,21 @@ namespace PortfolioManager.Model.Portfolios
 
             /* Reduce cost base of parcels */
             foreach (ShareParcel parcel in parcels)
-                ModifyParcel(unitOfWork, parcel, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase * costBaseAdjustment.Percentage, "");
+            {
+                var costBaseReduction = parcel.CostBase * (1 - costBaseAdjustment.Percentage);
+                ModifyParcel(unitOfWork, parcel, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+
+                // If a child stock then also adjust cost base of parent
+                if (stock.ParentId != Guid.Empty)
+                {
+                    // Get parent parcel
+                    var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(stock.ParentId, costBaseAdjustment.TransactionDate);
+
+                    if (parentParcel != null)
+                        ModifyParcel(unitOfWork, parentParcel, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parentParcel.Units, parentParcel.CostBase - costBaseReduction, "");
+                }
+            }
+
         }
 
         private void ApplyReturnOfCapital(IPortfolioUnitOfWork unitOfWork, ReturnOfCapital returnOfCapital)

@@ -45,7 +45,6 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             _ExpectedCGTEvents.Add(new CGTEvent( _StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1690.00m));
         }
-
     }
 
     [TestFixture, Description("Disposal of Ordinary Share - single parcel, sell part")]
@@ -84,6 +83,56 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     FromDate = _TransactionDate
                 });
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 840.00m));
+
+        }
+    }
+
+    [TestFixture, Description("Disposal of Ordinary Share - single parcel, multiple dated records, sell part")]
+    public class DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            _TransactionDate = new DateTime(2002, 01, 01);
+
+            var aquisitionDate = new DateTime(2000, 01, 01);
+            var transactions = new ITransaction[]
+            {
+                new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate,
+                    ASXCode = "AAA",
+                    Units = 1000,
+                    CostBase = 1500.00m,
+                    Comment = ""
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = aquisitionDate,
+                    ASXCode = "AAA",
+                    Amount = 0.20m,
+                    Comment = ""
+                },
+                new Disposal()
+                {
+                    TransactionDate = _TransactionDate,
+                    ASXCode = "AAA",
+                    Units = 500,
+                    AveragePrice = 1.20m,
+                    TransactionCosts = 10.00m,
+                    CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    Comment = ""
+                }
+            };
+            _Portfolio.ProcessTransactions(transactions);
+
+            // costbase prior to sale = (1500 - (1000 * 0.20)) = (1500 - 200) = 1300
+            // costbase of sold shares = (1300 / 2) = 650
+            // costbase of remainging shares = 1300 - 650 = 650
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 650.00m, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 650.00m, 590.00m));
 
         }
     }
@@ -278,6 +327,81 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4500.00m, 3396.00m));
+        }
+    }
+
+    [TestFixture, Description("Disposal of Stapled Security - single parcel, multiple dated records, sell part")]
+    public class DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart : TransactionTestWithExpectedTests
+    {
+        public override void PerformTest()
+        {
+            _TransactionDate = new DateTime(2002, 01, 01);
+
+            var aquisitionDate = new DateTime(2000, 01, 01);
+
+            var taxDeferredIncome = new IncomeReceived()
+                {
+                    TransactionDate = new DateTime(2001, 01, 01),
+                    ASXCode = "SSS3",
+                    PaymentDate = new DateTime(2001, 01, 01),
+                    FrankedAmount = 0.00m,
+                    UnfrankedAmount = 100.00m,
+                    FrankingCredits = 0.00m,
+                    Interest = 10.00m,
+                    TaxDeferred = 100.00m,
+                    Comment = "Income test"
+                };
+
+            var transactions = new ITransaction[]
+            {
+                new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate,
+                    ASXCode = "SSS",
+                    Units = 1000,
+                    CostBase = 15000.00m,
+                    Comment = "Test Opening Balance"
+                },
+                taxDeferredIncome,
+                new Disposal()
+                {
+                    TransactionDate = _TransactionDate,
+                    ASXCode = "SSS",
+                    Units = 500,
+                    AveragePrice = 17.00m,
+                    TransactionCosts = 10.00m,
+                    CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    Comment = ""
+                }
+            };
+            _Portfolio.ProcessTransactions(transactions);
+
+            // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
+            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7500.00m, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            };
+            _ExpectedParcels.Add(mainParcel);
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, mainParcel.Id, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, mainParcel.Id, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4450.00m, mainParcel.Id, ParcelEvent.Disposal)
+            {
+                FromDate = _TransactionDate
+            });
+
+            // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
+            // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4450.00m, 3396.00m));
+
+            _ExpectedIncome.Add(taxDeferredIncome);
         }
     }
 
