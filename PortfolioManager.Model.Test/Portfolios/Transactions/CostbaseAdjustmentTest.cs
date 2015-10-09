@@ -119,7 +119,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new CostBaseAdjustment()
                 {
                     TransactionDate = _TransactionDate,
-                    ASXCode = "SSS1",
+                    ASXCode = "SSS3",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 } 
@@ -127,17 +127,17 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 1000, 15.00m, 15000.00m, 6300.00m, ParcelEvent.CostBaseReduction)
-                {
-                    FromDate = _TransactionDate
-                };
+            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 1000, 15.00m, 15000.00m, 8700.00m, ParcelEvent.CostBaseReduction)
+            {
+                FromDate = _TransactionDate
+            };
             _ExpectedParcels.Add(mainParcel);
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 1500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 1000, 4.50m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.OpeningBalance));
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 2700.00m, mainParcel.Id, ParcelEvent.CostBaseReduction)
-                {
-                    FromDate = _TransactionDate
-                });
+            {
+                FromDate = _TransactionDate
+            });
 
         }
     }

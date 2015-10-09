@@ -377,7 +377,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7500.00m, ParcelEvent.Disposal)
+            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7450.00m, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             };

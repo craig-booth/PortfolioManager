@@ -51,10 +51,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
 
-        public IReadOnlyCollection<ShareParcel> GetChildParcels(Guid parcel)
+        public IReadOnlyCollection<ShareParcel> GetChildParcels(Guid parcel, DateTime atDate)
         {
             var parcelsQuery = from childParcel in _Database._Parcels
-                               where childParcel.Parent == parcel
+                               where (childParcel.Parent == parcel) && (atDate >= childParcel.FromDate && atDate <= childParcel.ToDate)
                                select childParcel;
 
             return parcelsQuery.ToList().AsReadOnly();
