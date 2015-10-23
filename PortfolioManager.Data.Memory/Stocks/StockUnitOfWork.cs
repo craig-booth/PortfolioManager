@@ -15,6 +15,7 @@ namespace PortfolioManager.Data.Memory.Stocks
         MemoryStockRepository _StockRepository;
         MemoryCorporateActionRepository _CorporateActionRepository;
         MemoryRelateNTARepository _RelativeNTARepository;
+        MemoryStockPriceRepository _StockPriceRepository; 
 
         public IStockRepository StockRepository
         {
@@ -46,6 +47,18 @@ namespace PortfolioManager.Data.Memory.Stocks
                     _RelativeNTARepository = new MemoryRelateNTARepository(_Database);
 
                 return _RelativeNTARepository;
+            }
+        }
+
+
+        public IStockPriceRepository StockPriceRepository
+        {
+            get
+            {
+                if (_StockPriceRepository == null)
+                    _StockPriceRepository = new MemoryStockPriceRepository(_Database);
+
+                return _StockPriceRepository;
             }
         }
 

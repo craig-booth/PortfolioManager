@@ -44,11 +44,40 @@ namespace PortfolioManager.Model.Stocks
         public Guid ParentId { get; private set; }
         public RoundingRule DividendRoundingRule { get; private set; }
 
+        private decimal _CurrentPrice;
         public decimal CurrentPrice
         {
             get
             {
-                return 0;
+                if (_CurrentPrice == 0.00m)
+                {
+                    _CurrentPrice = _Database.StockQuery.GetClosingPrice(Id, DateTime.Today);
+                }
+
+                return _CurrentPrice;
+            }
+        }
+
+        public decimal GetPrice(DateTime atDate)
+        {
+            return _Database.StockQuery.GetClosingPrice(Id, atDate);
+        }
+
+        public void AddPrice(DateTime atDate, decimal price)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.StockPriceRepository.Add(Id, atDate, price);
+                unitOfWork.Save();
+            }
+        }
+
+        public void ChangePrice(DateTime atDate, decimal price)
+        {
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.StockPriceRepository.Update(Id, atDate, price);
+                unitOfWork.Save();
             }
         }
 

@@ -66,6 +66,7 @@
     <Compile Include="Stocks\Stock.cs" />
     <Compile Include="Portfolios\Transactions\Transaction.cs" />
     <Compile Include="Stocks\CorporateActions\Transformation.cs" />
+    <Compile Include="Stocks\StockPrice.cs" />
     <Compile Include="Utils\DateTimeConstants.cs" />
     <Compile Include="Utils\MathUtils.cs" />
   </ItemGroup>

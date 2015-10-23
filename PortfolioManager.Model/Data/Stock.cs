@@ -21,6 +21,7 @@ namespace PortfolioManager.Model.Data
         IStockRepository StockRepository { get; }
         ICorporateActionRepository CorporateActionRepository { get; }
         IRelativeNTARepository RelativeNTARepository { get; }
+        IStockPriceRepository StockPriceRepository { get; }
 
         void Save();
     }
@@ -41,8 +42,10 @@ namespace PortfolioManager.Model.Data
         RelativeNTA GetRelativeNTA(Guid parent, Guid child, DateTime atDate);
         IReadOnlyCollection<RelativeNTA> GetRelativeNTAs(Guid parent, Guid child);
         string GetASXCode(Guid id, DateTime atDate);
-    }
 
+        decimal GetClosingPrice(Guid stock, DateTime date);
+        Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate);
+    }
 
     public interface ICorporateActionRepository : IRepository<ICorporateAction>
     {
@@ -62,4 +65,11 @@ namespace PortfolioManager.Model.Data
         void DeleteAll(Guid parent, Guid child);      
     }
 
+    public interface IStockPriceRepository
+    {
+        decimal Get(Guid stockId, DateTime date);
+        void Add(Guid stockId, DateTime date, decimal price);
+        void Update(Guid stockId, DateTime date, decimal price);
+        void Delete(Guid stockId, DateTime date);
+    }
 }

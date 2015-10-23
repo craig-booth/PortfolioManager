@@ -96,3 +96,12 @@ CREATE TABLE [TransformationResultingStocks]
 
 	PRIMARY KEY ([Id], [Stock])
 );
+
+CREATE TABLE [StockPrices]
+(
+	[Stock]  TEXT(36) NOT NULL,
+	[Date] TEXT(10) NOT NULL,
+	[Price] INTEGER NOT NULL,
+
+	PRIMARY KEY ([Stock], [Date])
+);

@@ -118,10 +118,28 @@ namespace PortfolioManager.Test
             }
 
             /* Current Holdings */
+            decimal totalCostBase = 0.00m;
+            decimal totalMarketValue = 0.00m;
+            decimal totalCapitalGain = 0.00m;
+            decimal totalCapitalGainPercentage = 0.00m;
+
             lsvPortfolio.Items.Clear();
             var holdings = _MyPortfolio.GetHoldings(endDate).OrderBy(x => x.Stock.ASXCode);
             foreach (ShareHolding holding in holdings)
             {          
+                decimal capitalGain;
+                decimal capitalGainPercentage;
+
+                capitalGain = (holding.MarketValue - holding.Cost);
+                if (holding.Cost > 0.00m)
+                    capitalGainPercentage  = capitalGain / holding.Cost;
+                else
+                    capitalGainPercentage = 0.00m;
+
+                totalCostBase += holding.Cost;
+                totalMarketValue += holding.MarketValue;
+                totalCapitalGain += capitalGain;                
+
                 var item = lsvPortfolio.Items.Add(holding.Stock.ASXCode);
                 item.Tag = holding.Stock;
                 item.SubItems.Add(holding.Units.ToString("n0"));
@@ -129,7 +147,15 @@ namespace PortfolioManager.Test
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.Cost, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.UnitValue, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.MarketValue, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(capitalGain, true, true));
+                item.SubItems.Add(capitalGainPercentage.ToString("##0.0%"));
             }
+            lblTotalCostBase.Text = MathUtils.FormatCurrency(totalCostBase, true, true);
+            lblTotalMarketValue.Text = MathUtils.FormatCurrency(totalMarketValue, true, true);
+            lblTotalCapitalGain.Text = MathUtils.FormatCurrency(totalCapitalGain, true, true);
+            totalCapitalGainPercentage = totalCapitalGain / totalCostBase;
+            lblTotalCapitalGainPercentage.Text = totalCapitalGainPercentage.ToString("##0.0%");            
+
 
             /* Parcels */
             lsvParcels.Items.Clear();
@@ -249,6 +275,13 @@ namespace PortfolioManager.Test
         {
             if (cboFinancialYear.Text == "--All--")
                 _FinancialYear = 0;
+            else if (cboFinancialYear.Text == "--Current--")
+            {
+                if (DateTime.Today.Month <= 5)
+                    _FinancialYear = DateTime.Today.Year;
+                else
+                    _FinancialYear = DateTime.Today.Year + 1;
+            }
             else
                 _FinancialYear = int.Parse(cboFinancialYear.Text.Substring(0, 4));
 
@@ -328,6 +361,11 @@ namespace PortfolioManager.Test
         {
             DisplayPortfolio();
             DisplayCorporateActions();
+        }
+
+        private void lsvPortfolio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
     }

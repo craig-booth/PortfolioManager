@@ -14,13 +14,8 @@ namespace PortfolioManager.Model.Portfolios
         public int Units { get; private set; }
         public decimal AverageUnitPrice { get; private set; }
         public decimal Cost { get; private set; }
-        public decimal UnitValue
-        {
-            get
-            {
-                return 10.00M; /* TODO: Priority Medium, get unit price at the holding date */
-            }
-        }
+        public decimal UnitValue { get; private set; }
+
         public decimal MarketValue
         {
             get
@@ -34,12 +29,13 @@ namespace PortfolioManager.Model.Portfolios
 
         }
 
-        public ShareHolding(Stock stock, int units, decimal averageUnitPrice, decimal cost)
+        public ShareHolding(Stock stock, int units, decimal averageUnitPrice, decimal cost, decimal unitValue)
         {
             Stock = stock;
             Units = units;
             AverageUnitPrice = averageUnitPrice;
             Cost = cost;
+            UnitValue = unitValue;
         }
     }
 }

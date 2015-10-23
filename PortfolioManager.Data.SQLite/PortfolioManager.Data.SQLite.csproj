@@ -76,6 +76,7 @@
     <Compile Include="SQLiteEffectiveDatedRepository.cs" />
     <Compile Include="SQLiteRepository.cs" />
     <Compile Include="SQLiteRepositoryTransaction.cs" />
+    <Compile Include="SQLiteStockPriceRepository.cs" />
     <Compile Include="Stocks\SQLiteCorporateActionQuery.cs" />
     <Compile Include="Stocks\CorporateActionRepository.cs" />
     <Compile Include="Stocks\SQLiteRelateNTARepository.cs" />

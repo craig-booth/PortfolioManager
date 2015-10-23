@@ -17,6 +17,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         SQLiteStockRepository _StockRepository;
         SQLiteCorporateActionRepository _CorporateActionRepository;
         SQLiteRelateNTARepository _RelativeNTARepository;
+        SQLiteStockPriceRepository _StockPriceRepository;
 
         public IStockRepository StockRepository
         {
@@ -48,6 +49,17 @@ namespace PortfolioManager.Data.SQLite.Stocks
                     _RelativeNTARepository = new SQLiteRelateNTARepository(_Database);
 
                 return _RelativeNTARepository;
+            }
+        }
+
+        public IStockPriceRepository StockPriceRepository
+        {
+            get
+            {
+                if (_StockPriceRepository == null)
+                    _StockPriceRepository = new SQLiteStockPriceRepository(_Database);
+
+                return _StockPriceRepository;
             }
         }
 
