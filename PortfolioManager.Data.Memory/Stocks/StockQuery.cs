@@ -86,5 +86,15 @@ namespace PortfolioManager.Data.Memory.Stocks
         {
             return Get(id, atDate).ASXCode;
         }
+
+        public decimal GetClosingPrice(Guid stock, DateTime date)
+        {
+            return 0.00m;
+        }
+
+        public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
+        {
+            return new Dictionary<DateTime, decimal>();
+        }
     }
 }

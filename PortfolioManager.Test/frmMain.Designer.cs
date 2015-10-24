@@ -101,6 +101,11 @@
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabCashAccount = new System.Windows.Forms.TabControl();
+            this.columnHeader33 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lblTotalCostBase = new System.Windows.Forms.Label();
+            this.lblTotalMarketValue = new System.Windows.Forms.Label();
+            this.lblTotalCapitalGain = new System.Windows.Forms.Label();
+            this.lblTotalCapitalGainPercentage = new System.Windows.Forms.Label();
             this.ctxCorporateAction.SuspendLayout();
             this.ctxTransaction.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -119,10 +124,9 @@
             this.columnHeader16,
             this.columnHeader17,
             this.columnHeader18});
-            this.lsvTransactions2.Location = new System.Drawing.Point(10, 508);
-            this.lsvTransactions2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lsvTransactions2.Location = new System.Drawing.Point(7, 330);
             this.lsvTransactions2.Name = "lsvTransactions2";
-            this.lsvTransactions2.Size = new System.Drawing.Size(730, 399);
+            this.lsvTransactions2.Size = new System.Drawing.Size(488, 261);
             this.lsvTransactions2.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lsvTransactions2.TabIndex = 6;
             this.lsvTransactions2.UseCompatibleStateImageBehavior = false;
@@ -151,10 +155,9 @@
             this.columnHeader20,
             this.columnHeader21});
             this.lsvCorporateActions.ContextMenuStrip = this.ctxCorporateAction;
-            this.lsvCorporateActions.Location = new System.Drawing.Point(828, 508);
-            this.lsvCorporateActions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lsvCorporateActions.Location = new System.Drawing.Point(552, 330);
             this.lsvCorporateActions.Name = "lsvCorporateActions";
-            this.lsvCorporateActions.Size = new System.Drawing.Size(818, 399);
+            this.lsvCorporateActions.Size = new System.Drawing.Size(547, 261);
             this.lsvCorporateActions.TabIndex = 7;
             this.lsvCorporateActions.UseCompatibleStateImageBehavior = false;
             this.lsvCorporateActions.View = System.Windows.Forms.View.Details;
@@ -177,50 +180,47 @@
             // 
             // ctxCorporateAction
             // 
-            this.ctxCorporateAction.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxCorporateAction.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuEditCorporateAction,
             this.mnuDeleteCorporateAction});
             this.ctxCorporateAction.Name = "ctxCorporateAction";
-            this.ctxCorporateAction.Size = new System.Drawing.Size(86, 64);
+            this.ctxCorporateAction.Size = new System.Drawing.Size(68, 48);
             // 
             // mnuEditCorporateAction
             // 
             this.mnuEditCorporateAction.Name = "mnuEditCorporateAction";
-            this.mnuEditCorporateAction.Size = new System.Drawing.Size(85, 30);
+            this.mnuEditCorporateAction.Size = new System.Drawing.Size(67, 22);
             // 
             // mnuDeleteCorporateAction
             // 
             this.mnuDeleteCorporateAction.Name = "mnuDeleteCorporateAction";
-            this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(85, 30);
+            this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(67, 22);
             // 
             // ctxTransaction
             // 
-            this.ctxTransaction.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxTransaction.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuEditTransaction,
             this.mnuDeleteTransaction});
             this.ctxTransaction.Name = "ctxTransaction";
-            this.ctxTransaction.Size = new System.Drawing.Size(148, 64);
+            this.ctxTransaction.Size = new System.Drawing.Size(108, 48);
             this.ctxTransaction.Opening += new System.ComponentModel.CancelEventHandler(this.ctxTransaction_Opening);
             // 
             // mnuEditTransaction
             // 
             this.mnuEditTransaction.Name = "mnuEditTransaction";
-            this.mnuEditTransaction.Size = new System.Drawing.Size(147, 30);
+            this.mnuEditTransaction.Size = new System.Drawing.Size(107, 22);
             this.mnuEditTransaction.Text = "Edit";
             this.mnuEditTransaction.Click += new System.EventHandler(this.mnuEditTransaction_Click);
             // 
             // mnuDeleteTransaction
             // 
             this.mnuDeleteTransaction.Name = "mnuDeleteTransaction";
-            this.mnuDeleteTransaction.Size = new System.Drawing.Size(147, 30);
+            this.mnuDeleteTransaction.Size = new System.Drawing.Size(107, 22);
             this.mnuDeleteTransaction.Text = "Delete";
             this.mnuDeleteTransaction.Click += new System.EventHandler(this.mnuDeleteTransaction_Click);
             // 
             // toolStrip1
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnSettings,
             this.toolStripSeparator3,
@@ -230,8 +230,7 @@
             this.btnRefresh});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1654, 32);
+            this.toolStrip1.Size = new System.Drawing.Size(1103, 25);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -240,14 +239,14 @@
             this.btnSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(80, 29);
+            this.btnSettings.Size = new System.Drawing.Size(53, 22);
             this.btnSettings.Text = "Settings";
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // btnStockManager
             // 
@@ -255,14 +254,14 @@
             this.btnStockManager.Image = ((System.Drawing.Image)(resources.GetObject("btnStockManager.Image")));
             this.btnStockManager.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStockManager.Name = "btnStockManager";
-            this.btnStockManager.Size = new System.Drawing.Size(129, 29);
+            this.btnStockManager.Size = new System.Drawing.Size(87, 22);
             this.btnStockManager.Text = "StockManager";
             this.btnStockManager.Click += new System.EventHandler(this.btnStockManager_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripDropDownButton1
             // 
@@ -277,48 +276,48 @@
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(157, 29);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(107, 22);
             this.toolStripDropDownButton1.Text = "Add Transaction";
             // 
             // btnAddAquisition
             // 
             this.btnAddAquisition.Name = "btnAddAquisition";
-            this.btnAddAquisition.Size = new System.Drawing.Size(267, 30);
+            this.btnAddAquisition.Size = new System.Drawing.Size(187, 22);
             this.btnAddAquisition.Text = "Aquisition";
             this.btnAddAquisition.Click += new System.EventHandler(this.btnAddAquisition_Click);
             // 
             // btnAddDisposal
             // 
             this.btnAddDisposal.Name = "btnAddDisposal";
-            this.btnAddDisposal.Size = new System.Drawing.Size(267, 30);
+            this.btnAddDisposal.Size = new System.Drawing.Size(187, 22);
             this.btnAddDisposal.Text = "Disposal";
             this.btnAddDisposal.Click += new System.EventHandler(this.btnAddDisposal_Click);
             // 
             // btnAddOpeningBalance
             // 
             this.btnAddOpeningBalance.Name = "btnAddOpeningBalance";
-            this.btnAddOpeningBalance.Size = new System.Drawing.Size(267, 30);
+            this.btnAddOpeningBalance.Size = new System.Drawing.Size(187, 22);
             this.btnAddOpeningBalance.Text = "Opening Balance";
             this.btnAddOpeningBalance.Click += new System.EventHandler(this.btnAddOpeningBalance_Click);
             // 
             // btnAddIncomeReceived
             // 
             this.btnAddIncomeReceived.Name = "btnAddIncomeReceived";
-            this.btnAddIncomeReceived.Size = new System.Drawing.Size(267, 30);
+            this.btnAddIncomeReceived.Size = new System.Drawing.Size(187, 22);
             this.btnAddIncomeReceived.Text = "Income Received";
             this.btnAddIncomeReceived.Click += new System.EventHandler(this.btnAddIncomeReceived_Click);
             // 
             // btnAddReturnOfCapital
             // 
             this.btnAddReturnOfCapital.Name = "btnAddReturnOfCapital";
-            this.btnAddReturnOfCapital.Size = new System.Drawing.Size(267, 30);
+            this.btnAddReturnOfCapital.Size = new System.Drawing.Size(187, 22);
             this.btnAddReturnOfCapital.Text = "Return of Capital";
             this.btnAddReturnOfCapital.Click += new System.EventHandler(this.btnAddReturnOfCapital_Click);
             // 
             // btnAddCostbaseAdjustment
             // 
             this.btnAddCostbaseAdjustment.Name = "btnAddCostbaseAdjustment";
-            this.btnAddCostbaseAdjustment.Size = new System.Drawing.Size(267, 30);
+            this.btnAddCostbaseAdjustment.Size = new System.Drawing.Size(187, 22);
             this.btnAddCostbaseAdjustment.Text = "Costbase Adjustment";
             this.btnAddCostbaseAdjustment.Click += new System.EventHandler(this.btnAddCostbaseAdjustment_Click);
             // 
@@ -328,7 +327,7 @@
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(74, 29);
+            this.btnRefresh.Size = new System.Drawing.Size(50, 22);
             this.btnRefresh.Tag = "0";
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
@@ -338,6 +337,7 @@
             this.cboFinancialYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFinancialYear.FormattingEnabled = true;
             this.cboFinancialYear.Items.AddRange(new object[] {
+            "--Current--",
             "2014/15",
             "2013/14",
             "2012/13",
@@ -350,31 +350,28 @@
             "2005/6",
             "2004/5",
             "--All--"});
-            this.cboFinancialYear.Location = new System.Drawing.Point(1442, 43);
-            this.cboFinancialYear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cboFinancialYear.Location = new System.Drawing.Point(961, 28);
             this.cboFinancialYear.Name = "cboFinancialYear";
-            this.cboFinancialYear.Size = new System.Drawing.Size(193, 28);
+            this.cboFinancialYear.Size = new System.Drawing.Size(130, 21);
             this.cboFinancialYear.TabIndex = 9;
             this.cboFinancialYear.SelectedIndexChanged += new System.EventHandler(this.cboFinancialYear_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1323, 48);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(882, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 20);
+            this.label1.Size = new System.Drawing.Size(77, 13);
             this.label1.TabIndex = 10;
             this.label1.Text = "Financial Year ";
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.lsvCashAccount);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage1.Size = new System.Drawing.Size(1646, 418);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1095, 267);
             this.tabPage1.TabIndex = 5;
             this.tabPage1.Text = "Cash Account";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -386,10 +383,9 @@
             this.columnHeader31,
             this.columnHeader32});
             this.lsvCashAccount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lsvCashAccount.Location = new System.Drawing.Point(4, 5);
-            this.lsvCashAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lsvCashAccount.Location = new System.Drawing.Point(3, 3);
             this.lsvCashAccount.Name = "lsvCashAccount";
-            this.lsvCashAccount.Size = new System.Drawing.Size(1638, 408);
+            this.lsvCashAccount.Size = new System.Drawing.Size(1089, 261);
             this.lsvCashAccount.TabIndex = 0;
             this.lsvCashAccount.UseCompatibleStateImageBehavior = false;
             this.lsvCashAccount.View = System.Windows.Forms.View.Details;
@@ -413,10 +409,9 @@
             // tabTransactions
             // 
             this.tabTransactions.Controls.Add(this.lsvTransactions);
-            this.tabTransactions.Location = new System.Drawing.Point(4, 29);
-            this.tabTransactions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabTransactions.Location = new System.Drawing.Point(4, 22);
             this.tabTransactions.Name = "tabTransactions";
-            this.tabTransactions.Size = new System.Drawing.Size(1646, 418);
+            this.tabTransactions.Size = new System.Drawing.Size(1095, 267);
             this.tabTransactions.TabIndex = 4;
             this.tabTransactions.Text = "Transactions";
             this.tabTransactions.UseVisualStyleBackColor = true;
@@ -430,9 +425,8 @@
             this.lsvTransactions.ContextMenuStrip = this.ctxTransaction;
             this.lsvTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvTransactions.Location = new System.Drawing.Point(0, 0);
-            this.lsvTransactions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lsvTransactions.Name = "lsvTransactions";
-            this.lsvTransactions.Size = new System.Drawing.Size(1646, 418);
+            this.lsvTransactions.Size = new System.Drawing.Size(1095, 267);
             this.lsvTransactions.TabIndex = 0;
             this.lsvTransactions.UseCompatibleStateImageBehavior = false;
             this.lsvTransactions.View = System.Windows.Forms.View.Details;
@@ -456,10 +450,9 @@
             // tabIncome
             // 
             this.tabIncome.Controls.Add(this.lsvIncome);
-            this.tabIncome.Location = new System.Drawing.Point(4, 29);
-            this.tabIncome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabIncome.Location = new System.Drawing.Point(4, 22);
             this.tabIncome.Name = "tabIncome";
-            this.tabIncome.Size = new System.Drawing.Size(1646, 418);
+            this.tabIncome.Size = new System.Drawing.Size(1095, 267);
             this.tabIncome.TabIndex = 2;
             this.tabIncome.Text = "Income";
             this.tabIncome.UseVisualStyleBackColor = true;
@@ -474,10 +467,9 @@
             this.lsvIncome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvIncome.FullRowSelect = true;
             this.lsvIncome.Location = new System.Drawing.Point(0, 0);
-            this.lsvIncome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lsvIncome.MultiSelect = false;
             this.lsvIncome.Name = "lsvIncome";
-            this.lsvIncome.Size = new System.Drawing.Size(1646, 418);
+            this.lsvIncome.Size = new System.Drawing.Size(1095, 267);
             this.lsvIncome.TabIndex = 2;
             this.lsvIncome.UseCompatibleStateImageBehavior = false;
             this.lsvIncome.View = System.Windows.Forms.View.Details;
@@ -508,11 +500,10 @@
             // tabCGT
             // 
             this.tabCGT.Controls.Add(this.lsvCGT);
-            this.tabCGT.Location = new System.Drawing.Point(4, 29);
-            this.tabCGT.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCGT.Location = new System.Drawing.Point(4, 22);
             this.tabCGT.Name = "tabCGT";
-            this.tabCGT.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabCGT.Size = new System.Drawing.Size(1646, 418);
+            this.tabCGT.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCGT.Size = new System.Drawing.Size(1095, 267);
             this.tabCGT.TabIndex = 1;
             this.tabCGT.Text = "CGT";
             this.tabCGT.UseVisualStyleBackColor = true;
@@ -527,11 +518,10 @@
             this.columnHeader15});
             this.lsvCGT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvCGT.FullRowSelect = true;
-            this.lsvCGT.Location = new System.Drawing.Point(4, 5);
-            this.lsvCGT.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lsvCGT.Location = new System.Drawing.Point(3, 3);
             this.lsvCGT.MultiSelect = false;
             this.lsvCGT.Name = "lsvCGT";
-            this.lsvCGT.Size = new System.Drawing.Size(1638, 408);
+            this.lsvCGT.Size = new System.Drawing.Size(1089, 261);
             this.lsvCGT.TabIndex = 1;
             this.lsvCGT.UseCompatibleStateImageBehavior = false;
             this.lsvCGT.View = System.Windows.Forms.View.Details;
@@ -568,10 +558,9 @@
             // tabParcels
             // 
             this.tabParcels.Controls.Add(this.lsvParcels);
-            this.tabParcels.Location = new System.Drawing.Point(4, 29);
-            this.tabParcels.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabParcels.Location = new System.Drawing.Point(4, 22);
             this.tabParcels.Name = "tabParcels";
-            this.tabParcels.Size = new System.Drawing.Size(1646, 418);
+            this.tabParcels.Size = new System.Drawing.Size(1095, 267);
             this.tabParcels.TabIndex = 3;
             this.tabParcels.Text = "Parcels";
             this.tabParcels.UseVisualStyleBackColor = true;
@@ -589,10 +578,9 @@
             this.lsvParcels.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvParcels.FullRowSelect = true;
             this.lsvParcels.Location = new System.Drawing.Point(0, 0);
-            this.lsvParcels.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lsvParcels.MultiSelect = false;
             this.lsvParcels.Name = "lsvParcels";
-            this.lsvParcels.Size = new System.Drawing.Size(1646, 418);
+            this.lsvParcels.Size = new System.Drawing.Size(1095, 267);
             this.lsvParcels.TabIndex = 1;
             this.lsvParcels.UseCompatibleStateImageBehavior = false;
             this.lsvParcels.View = System.Windows.Forms.View.Details;
@@ -640,12 +628,15 @@
             // 
             // tabPortfolio
             // 
+            this.tabPortfolio.Controls.Add(this.lblTotalCapitalGainPercentage);
+            this.tabPortfolio.Controls.Add(this.lblTotalCapitalGain);
+            this.tabPortfolio.Controls.Add(this.lblTotalMarketValue);
+            this.tabPortfolio.Controls.Add(this.lblTotalCostBase);
             this.tabPortfolio.Controls.Add(this.lsvPortfolio);
-            this.tabPortfolio.Location = new System.Drawing.Point(4, 29);
-            this.tabPortfolio.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPortfolio.Location = new System.Drawing.Point(4, 22);
             this.tabPortfolio.Name = "tabPortfolio";
-            this.tabPortfolio.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPortfolio.Size = new System.Drawing.Size(1646, 418);
+            this.tabPortfolio.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPortfolio.Size = new System.Drawing.Size(1095, 267);
             this.tabPortfolio.TabIndex = 0;
             this.tabPortfolio.Text = "Portfolio";
             this.tabPortfolio.UseVisualStyleBackColor = true;
@@ -659,17 +650,18 @@
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader6,
-            this.columnHeader7});
-            this.lsvPortfolio.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.columnHeader7,
+            this.columnHeader33});
+            this.lsvPortfolio.Dock = System.Windows.Forms.DockStyle.Top;
             this.lsvPortfolio.FullRowSelect = true;
-            this.lsvPortfolio.Location = new System.Drawing.Point(4, 5);
-            this.lsvPortfolio.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lsvPortfolio.Location = new System.Drawing.Point(3, 3);
             this.lsvPortfolio.MultiSelect = false;
             this.lsvPortfolio.Name = "lsvPortfolio";
-            this.lsvPortfolio.Size = new System.Drawing.Size(1638, 408);
+            this.lsvPortfolio.Size = new System.Drawing.Size(1089, 230);
             this.lsvPortfolio.TabIndex = 0;
             this.lsvPortfolio.UseCompatibleStateImageBehavior = false;
             this.lsvPortfolio.View = System.Windows.Forms.View.Details;
+            this.lsvPortfolio.SelectedIndexChanged += new System.EventHandler(this.lsvPortfolio_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -709,7 +701,7 @@
             // columnHeader7
             // 
             this.columnHeader7.Text = "Capital Gain";
-            this.columnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader7.Width = 102;
             // 
             // tabCashAccount
@@ -721,25 +713,65 @@
             this.tabCashAccount.Controls.Add(this.tabIncome);
             this.tabCashAccount.Controls.Add(this.tabTransactions);
             this.tabCashAccount.Controls.Add(this.tabPage1);
-            this.tabCashAccount.Location = new System.Drawing.Point(0, 48);
-            this.tabCashAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCashAccount.Location = new System.Drawing.Point(0, 31);
             this.tabCashAccount.Name = "tabCashAccount";
             this.tabCashAccount.SelectedIndex = 0;
-            this.tabCashAccount.Size = new System.Drawing.Size(1654, 451);
+            this.tabCashAccount.Size = new System.Drawing.Size(1103, 293);
             this.tabCashAccount.TabIndex = 5;
+            // 
+            // columnHeader33
+            // 
+            this.columnHeader33.Text = "Capital Gain %";
+            this.columnHeader33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader33.Width = 91;
+            // 
+            // lblTotalCostBase
+            // 
+            this.lblTotalCostBase.Location = new System.Drawing.Point(233, 236);
+            this.lblTotalCostBase.Name = "lblTotalCostBase";
+            this.lblTotalCostBase.Size = new System.Drawing.Size(73, 27);
+            this.lblTotalCostBase.TabIndex = 1;
+            this.lblTotalCostBase.Text = "0.00";
+            this.lblTotalCostBase.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblTotalMarketValue
+            // 
+            this.lblTotalMarketValue.Location = new System.Drawing.Point(388, 236);
+            this.lblTotalMarketValue.Name = "lblTotalMarketValue";
+            this.lblTotalMarketValue.Size = new System.Drawing.Size(83, 23);
+            this.lblTotalMarketValue.TabIndex = 2;
+            this.lblTotalMarketValue.Text = "0.00";
+            this.lblTotalMarketValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblTotalCapitalGain
+            // 
+            this.lblTotalCapitalGain.Location = new System.Drawing.Point(477, 236);
+            this.lblTotalCapitalGain.Name = "lblTotalCapitalGain";
+            this.lblTotalCapitalGain.Size = new System.Drawing.Size(100, 23);
+            this.lblTotalCapitalGain.TabIndex = 3;
+            this.lblTotalCapitalGain.Text = "0.00";
+            this.lblTotalCapitalGain.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblTotalCapitalGainPercentage
+            // 
+            this.lblTotalCapitalGainPercentage.Location = new System.Drawing.Point(592, 236);
+            this.lblTotalCapitalGainPercentage.Name = "lblTotalCapitalGainPercentage";
+            this.lblTotalCapitalGainPercentage.Size = new System.Drawing.Size(71, 23);
+            this.lblTotalCapitalGainPercentage.TabIndex = 4;
+            this.lblTotalCapitalGainPercentage.Text = "0.00";
+            this.lblTotalCapitalGainPercentage.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1654, 928);
+            this.ClientSize = new System.Drawing.Size(1103, 603);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboFinancialYear);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.lsvCorporateActions);
             this.Controls.Add(this.lsvTransactions2);
             this.Controls.Add(this.tabCashAccount);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frmMain";
             this.Text = "Portfolio Manager";
             this.ctxCorporateAction.ResumeLayout(false);
@@ -831,6 +863,11 @@
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.TabControl tabCashAccount;
         private System.Windows.Forms.ToolStripButton btnRefresh;
+        private System.Windows.Forms.ColumnHeader columnHeader33;
+        private System.Windows.Forms.Label lblTotalCapitalGainPercentage;
+        private System.Windows.Forms.Label lblTotalCapitalGain;
+        private System.Windows.Forms.Label lblTotalMarketValue;
+        private System.Windows.Forms.Label lblTotalCostBase;
     }
 }
 

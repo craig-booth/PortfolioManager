@@ -255,6 +255,36 @@ namespace PortfolioManager.Data.SQLite.Stocks
         public decimal DBToDecimal(int value)
         {
             return (decimal)value / 100000;
-        } 
+        }
+
+        private SQLiteCommand _GetClosingPriceCommand;
+        public decimal GetClosingPrice(Guid stock, DateTime date)
+        {
+            if (_GetClosingPriceCommand == null)
+            {
+                _GetClosingPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] <= @Date ORDER BY [Date] DESC LIMIT 1", _Connection);
+                _GetClosingPriceCommand.Prepare();
+            }
+
+            _GetClosingPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
+            _GetClosingPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            SQLiteDataReader reader = _GetClosingPriceCommand.ExecuteReader();
+
+            decimal price;
+            if (reader.Read())
+                price = DBToDecimal(reader.GetInt32(0));
+            else
+                price = 0.00m;
+           
+            reader.Close();
+
+            return price;   
+        }
+
+        public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
+        {
+            // TODO: get closing price
+            return new Dictionary<DateTime, decimal>();
+        }
     }
 }

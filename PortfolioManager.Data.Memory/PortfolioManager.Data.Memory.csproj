@@ -51,6 +51,7 @@
     <Compile Include="Stocks\CorporateActionRepository.cs" />
     <Compile Include="Stocks\RelateNTARepository.cs" />
     <Compile Include="Stocks\StockDatabase.cs" />
+    <Compile Include="Stocks\StockPriceRepository.cs" />
     <Compile Include="Stocks\StockQuery.cs" />
     <Compile Include="Stocks\StockRepository.cs" />
     <Compile Include="Stocks\StockUnitOfWork.cs" />

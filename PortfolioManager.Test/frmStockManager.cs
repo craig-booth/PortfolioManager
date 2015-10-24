@@ -254,5 +254,24 @@ namespace PortfolioManager.Test
             return false;
         }
 
+        private void btnImportPrices_Click(object sender, EventArgs e)
+        {
+            Stock stock;
+
+            stock = _StockManager.GetStock("AGI", DateTime.Today);
+            stock.AddPrice(DateTime.Today, 2.980m);
+            stock = _StockManager.GetStock("ARG", DateTime.Today);
+            stock.AddPrice(DateTime.Today, 7.70m);
+            stock = _StockManager.GetStock("BHP", DateTime.Today);
+            stock.AddPrice(DateTime.Today, 24.590m);
+            stock = _StockManager.GetStock("COH", DateTime.Today);
+            stock.AddPrice(DateTime.Today, 84.200m);
+            stock = _StockManager.GetStock("CSL", DateTime.Today);
+            stock.AddPrice(DateTime.Today, 90.390m);
+            stock = _StockManager.GetStock("WAM", DateTime.Today);
+            stock.AddPrice(DateTime.Today, 1.960m);
+
+        }
+
     }
 }
