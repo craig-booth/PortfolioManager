@@ -9,11 +9,11 @@ CREATE TABLE [Stocks]
 	[Parent] TEXT(36) NOT NULL,
 	[DividendRounding] INTEGER,
 	
-	PRIMARY KEY ([ASXCode])
+	PRIMARY KEY ([Id] ASC, [FromDate] ASC)
 );
-CREATE INDEX [Index_Stocks_ById] ON [Stocks]
+CREATE UNIQUE INDEX [Index_Stocks_ByCode] ON [Stocks]
 (
-	[Id] ASC, 
+	[ASXCode] ASC, 
 	[FromDate] ASC
 );
 CREATE INDEX [Index_Stocks_ByParent] ON [Stocks]

@@ -329,6 +329,6 @@ namespace PortfolioManager.Test
             DisplayPortfolio();
             DisplayCorporateActions();
         }
-
+        
     }
 }
