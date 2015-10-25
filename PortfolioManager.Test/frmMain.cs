@@ -108,8 +108,8 @@ namespace PortfolioManager.Test
             DateTime endDate;
             if (_FinancialYear > 0)
             {
-                startDate = new DateTime(_FinancialYear, 07, 01);
-                endDate = new DateTime(_FinancialYear + 1, 06, 30);
+                startDate = new DateTime(_FinancialYear - 1, 07, 01);
+                endDate = new DateTime(_FinancialYear, 06, 30);
             }
             else
             {
@@ -283,7 +283,7 @@ namespace PortfolioManager.Test
                     _FinancialYear = DateTime.Today.Year + 1;
             }
             else
-                _FinancialYear = int.Parse(cboFinancialYear.Text.Substring(0, 4));
+                _FinancialYear = int.Parse(cboFinancialYear.Text.Substring(0, 4)) + 1;
 
             DisplayPortfolio();
         }
