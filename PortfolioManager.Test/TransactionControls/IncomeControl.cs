@@ -28,7 +28,7 @@ namespace PortfolioManager.Test.TransactionControls
         {
             _StockManager = stockManager;
 
-            dtpPaymentDate_ValueChanged(this, null);
+            dtpRecordDate_ValueChanged(this, null);
         }
 
         public ITransaction CreateTransaction()
@@ -42,9 +42,8 @@ namespace PortfolioManager.Test.TransactionControls
         public void DisplayTransaction(ITransaction transaction)
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
-
-            //TODO: IncomeRecevied Change to use Payment Date, also include transaction date on the screen
-            dtpPaymentDate.Value = incomeReceived.TransactionDate;
+            
+            dtpRecordDate.Value = incomeReceived.TransactionDate;
 
             foreach (Stock s in cboASXCode.Items)
             {
@@ -55,6 +54,7 @@ namespace PortfolioManager.Test.TransactionControls
                 }
             };
 
+            dtpPaymentDate.Value = incomeReceived.PaymentDate;
             txtFrankedAmount.Text = MathUtils.FormatCurrency(incomeReceived.FrankedAmount);
             txtUnfrankedAmount.Text = MathUtils.FormatCurrency(incomeReceived.UnfrankedAmount);
             txtFrankingCredits.Text = MathUtils.FormatCurrency(incomeReceived.FrankingCredits);
@@ -68,10 +68,10 @@ namespace PortfolioManager.Test.TransactionControls
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
 
-            //TODO: IncomeRecevied Change to use Payment Date, also include transaction date on the screen
             Stock stock = cboASXCode.SelectedItem as Stock;
             incomeReceived.ASXCode = stock.ASXCode;
-            incomeReceived.TransactionDate = dtpPaymentDate.Value;
+            incomeReceived.TransactionDate = dtpRecordDate.Value;
+            incomeReceived.PaymentDate = dtpPaymentDate.Value;
             incomeReceived.FrankedAmount = MathUtils.ParseDecimal(txtFrankedAmount.Text);
             incomeReceived.UnfrankedAmount = MathUtils.ParseDecimal(txtUnfrankedAmount.Text);
             incomeReceived.FrankingCredits = MathUtils.ParseDecimal(txtFrankingCredits.Text);
@@ -80,10 +80,9 @@ namespace PortfolioManager.Test.TransactionControls
             incomeReceived.Comment = txtComment.Text;
         }
 
-        private void dtpPaymentDate_ValueChanged(object sender, EventArgs e)
+        private void dtpRecordDate_ValueChanged(object sender, EventArgs e)
         {
-            //TODO: IncomeRecevied Change to use Transaction Date
-            var stockList = _StockManager.GetStocks(dtpPaymentDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
+            var stockList = _StockManager.GetStocks(dtpRecordDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());
