@@ -153,17 +153,15 @@ namespace PortfolioManager.Model.Stocks
             if (ResultingStocks.Any())
             {
                 decimal originalCostBasePercentage = 1 - ResultingStocks.Sum(x => x.CostBasePercentage);
-                foreach (ShareParcel parcel in ownedParcels)
+            
+                var stock = _Database.StockQuery.Get(this.Stock, this.ImplementationDate);
+                transactions.Add(new CostBaseAdjustment()
                 {
-                    var stock = _Database.StockQuery.Get(this.Stock, this.ImplementationDate);
-                    transactions.Add(new CostBaseAdjustment()
-                    {
-                        TransactionDate = ImplementationDate,
-                        ASXCode = stock.ASXCode,
-                        Percentage = originalCostBasePercentage,
-                        Comment = Description
-                    });
-                }
+                    TransactionDate = ImplementationDate,
+                    ASXCode = stock.ASXCode,
+                    Percentage = originalCostBasePercentage,
+                    Comment = Description
+                });
             }
 
             /* Handle disposal of original parcels */
