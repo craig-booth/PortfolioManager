@@ -21,7 +21,8 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
-                Percentage = 0.40M,
+                Method = AdjustmentMethod.Percentage,
+                Value = 0.40M,
                 Comment = "Test cost base"
             };
             TestAdd(costbaseAdjustment, new CostBaseAdjustmentComparer());
@@ -34,7 +35,8 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
-                Percentage = 0.40M,
+                Method = AdjustmentMethod.Percentage,
+                Value = 0.40M,
                 Comment = "Test cost base"
             };
             TestUpdate(costbaseAdjustment, new CostBaseAdjustmentComparer());
@@ -48,7 +50,8 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
-                Percentage = 0.40M,
+                Method = AdjustmentMethod.Percentage,
+                Value = 0.40M,
                 Comment = "Test cost base"
             };
             TestDelete(costbaseAdjustment);
@@ -62,7 +65,8 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             {
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
-                Percentage = 0.40M,
+                Method = AdjustmentMethod.Percentage,
+                Value = 0.40M,
                 Comment = "Test cost base"
             };
             TestDeleteById(costbaseAdjustment);
@@ -73,7 +77,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             CostBaseAdjustment costbaseAdjustment = transaction as CostBaseAdjustment;
 
             costbaseAdjustment.TransactionDate = new DateTime(2010, 04, 30);
-            costbaseAdjustment.Percentage = 0.30M;
+            costbaseAdjustment.Value = 0.30M;
         }
     }
 }

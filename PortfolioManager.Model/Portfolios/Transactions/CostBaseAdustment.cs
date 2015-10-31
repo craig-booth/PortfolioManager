@@ -5,22 +5,33 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
+    public enum AdjustmentMethod
+    {
+        Percentage,
+        Amount
+    }
+
     public class CostBaseAdjustment : ITransaction
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
-        public decimal Percentage { get; set; }
+        public string ASXCode { get; set; } 
+        public AdjustmentMethod Method { get; set; }
+        public decimal Value { get; set; }
         public string Comment { get; set; }
 
         public string Description
         {
             get
             {
-                return "Adjust cost base by " + Percentage.ToString("P");
+                if (Method == AdjustmentMethod.Percentage)
+                    return "Adjust cost base by " + Value.ToString("P");
+                else
+                    return "Adjust costbase by " + MathUtils.FormatCurrency(Value, false, true);
             }
         }
 

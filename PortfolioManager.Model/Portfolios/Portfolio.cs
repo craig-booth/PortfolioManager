@@ -285,10 +285,27 @@ namespace PortfolioManager.Model.Portfolios
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(costBaseAdjustment, "No parcels found for transaction");
 
+            /* If method is Amount then apportion between parcels */
+            int i;
+            ApportionedValue[] reductionAmounts;
+            if (costBaseAdjustment.Method == AdjustmentMethod.Amount)
+            {
+                reductionAmounts = ApportionOverParcels(costBaseAdjustment.Value, parcels);
+            }
+            else
+            {
+                reductionAmounts = new ApportionedValue[parcels.Count];
+                i = 0;
+                foreach (ShareParcel parcel in parcels)
+                    reductionAmounts[i++].Amount = parcel.CostBase * (1 - costBaseAdjustment.Value);
+            }
+
             /* Reduce cost base of parcels */
+            i = 0;
             foreach (ShareParcel parcel in parcels)
             {
-                var costBaseReduction = parcel.CostBase * (1 - costBaseAdjustment.Percentage);
+                decimal costBaseReduction = reductionAmounts[i++].Amount;
+
                 ModifyParcel(unitOfWork, parcel, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
 
                 // If a child parcel then also adjust cost base of parent
@@ -379,14 +396,10 @@ namespace PortfolioManager.Model.Portfolios
             if (incomeReceived.TaxDeferred > 0)
             {
                 /* Apportion amount between parcels */
-                ApportionedValue[] apportionedAmounts = new ApportionedValue[parcels.Count];
-                int i = 0;
-                foreach (ShareParcel parcel in parcels)
-                    apportionedAmounts[i++].Units = parcel.Units;
-                MathUtils.ApportionAmount(incomeReceived.TaxDeferred, apportionedAmounts);
+                ApportionedValue[] apportionedAmounts = ApportionOverParcels(incomeReceived.TaxDeferred, parcels);
 
                 /* Reduce cost base of parcels */
-                i = 0;
+                int i = 0;
                 foreach (ShareParcel parcel in parcels)
                 {
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
@@ -589,7 +602,24 @@ namespace PortfolioManager.Model.Portfolios
                     toList.Add(corporateAction);
             }
         }
+
+        private ApportionedValue[] ApportionOverParcels(decimal amount, IReadOnlyCollection<ShareParcel> parcels)
+        {
+            ApportionedValue[] apportionedAmounts = new ApportionedValue[parcels.Count];
+            int i = 0;
+            foreach (ShareParcel parcel in parcels)
+                apportionedAmounts[i++].Units = parcel.Units;
+
+            MathUtils.ApportionAmount(amount, apportionedAmounts);
+
+            return apportionedAmounts;
+        }
+
     }
+
+  
+
+ 
 }
 
 
