@@ -31,7 +31,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         public ITransaction CreateTransaction()
         {
-            var transaction = new ReturnOfCapital();
+            var transaction = new OpeningBalance();
             UpdateTransaction(transaction);
 
             return transaction;
