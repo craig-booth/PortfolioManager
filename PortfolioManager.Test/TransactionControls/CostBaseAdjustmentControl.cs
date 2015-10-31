@@ -52,16 +52,7 @@ namespace PortfolioManager.Test.TransactionControls
                 }
             };
 
-            if (costbaseAdjustment.Method == AdjustmentMethod.Amount)
-            {
-                rdoAmount.Checked = true;
-                txtAmount.Text =  MathUtils.FormatCurrency(costbaseAdjustment.Value);
-            }
-            else
-            {
-                rdoPercentage.Checked = true;
-                txtAmount.Text = (costbaseAdjustment.Value * 100).ToString("#0.##");
-            }
+            txtPercentage.Text = (costbaseAdjustment.Percentage * 100).ToString("#0.##");
             txtComment.Text = costbaseAdjustment.Comment;
         }
 
@@ -72,11 +63,7 @@ namespace PortfolioManager.Test.TransactionControls
             Stock stock = cboASXCode.SelectedItem as Stock;
             costbaseAdjustment.ASXCode = stock.ASXCode;
             costbaseAdjustment.TransactionDate = dtpAdjustmentDate.Value;
-            if (rdoAmount.Checked)
-                costbaseAdjustment.Method = AdjustmentMethod.Amount;
-            else if (rdoPercentage.Checked)
-                costbaseAdjustment.Method = AdjustmentMethod.Percentage;
-            costbaseAdjustment.Value = MathUtils.ParseDecimal(txtAmount.Text) / 100;      
+            costbaseAdjustment.Percentage = MathUtils.ParseDecimal(txtPercentage.Text) / 100;      
             costbaseAdjustment.Comment = txtComment.Text;
         }
 
@@ -87,7 +74,7 @@ namespace PortfolioManager.Test.TransactionControls
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());
         }
-        
+
     }
 }
 

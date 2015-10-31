@@ -28,8 +28,7 @@ CREATE TABLE [Aquisitions]
 CREATE TABLE [CostBaseAdjustments]
 (
 	[Id] TEXT(36) NOT NULL,
-	[Method] INTEGER NOT NULL,
-	[Value] INTEGER NOT NULL,
+	[Percentage] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])

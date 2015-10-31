@@ -53,8 +53,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             var costbaseAdjustment2 = transaction2 as CostBaseAdjustment;
 
             if (base.Equals(costbaseAdjustment1, costbaseAdjustment2) &&
-                (costbaseAdjustment1.Method == costbaseAdjustment2.Method) &&
-                (costbaseAdjustment1.Value == costbaseAdjustment2.Value))
+                (costbaseAdjustment1.Percentage == costbaseAdjustment2.Percentage))
                 return true;
             else
                 return false;

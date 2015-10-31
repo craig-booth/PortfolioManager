@@ -34,8 +34,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
-                    Method = AdjustmentMethod.Percentage,
-                    Value = 0.30m,
+                    Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
@@ -80,8 +79,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
-                    Method = AdjustmentMethod.Percentage,
-                    Value = 0.30m,
+                    Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
@@ -122,8 +120,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "SSS3",
-                    Method = AdjustmentMethod.Percentage,
-                    Value = 0.30m,
+                    Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 } 
             };
@@ -158,8 +155,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = new DateTime(2000, 01, 01),
                     ASXCode = "AAA",
-                    Method = AdjustmentMethod.Percentage,
-                    Value = 0.30m,
+                    Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };
@@ -184,8 +180,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = new DateTime(2000, 01, 01),
                     ASXCode = "SSS",
-                    Method = AdjustmentMethod.Percentage,
-                    Value = 0.30m,
+                    Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
                 }
             };

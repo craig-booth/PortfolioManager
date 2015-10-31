@@ -159,8 +159,7 @@ namespace PortfolioManager.Model.Stocks
                 {
                     TransactionDate = ImplementationDate,
                     ASXCode = stock.ASXCode,
-                    Method = AdjustmentMethod.Percentage,
-                    Value = originalCostBasePercentage,
+                    Percentage = originalCostBasePercentage,
                     Comment = Description
                 });
             }

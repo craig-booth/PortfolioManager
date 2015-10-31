@@ -262,13 +262,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [CostBaseAdjustments] ([Id], [Methpd], [Value], [Comment]) VALUES (@Id, @Percentage, @Comment)";
+            return "INSERT INTO [CostBaseAdjustments] ([Id], [Percentage], [Comment]) VALUES (@Id, @Percentage, @Comment)";
 
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[CostBaseAdjustments] SET [Method] = @Method, [Value] = @Value, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[CostBaseAdjustments] SET [Percentage] = @Percentage, [Comment] = @Comment WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -281,8 +281,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             CostBaseAdjustment costBaseAdjustment = entity as CostBaseAdjustment;
 
             command.Parameters.AddWithValue("@Id", costBaseAdjustment.Id.ToString());
-            command.Parameters.AddWithValue("@Method", costBaseAdjustment.Method);
-            command.Parameters.AddWithValue("@Percentage", DecimalToDB(costBaseAdjustment.Value));
+            command.Parameters.AddWithValue("@Percentage", DecimalToDB(costBaseAdjustment.Percentage));
             command.Parameters.AddWithValue("@Comment", costBaseAdjustment.Comment); 
         }
     }

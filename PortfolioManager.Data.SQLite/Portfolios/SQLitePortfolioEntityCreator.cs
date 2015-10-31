@@ -77,9 +77,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 TransactionDate = reader.GetDateTime(1),
                 ASXCode = reader.GetString(3),
-                Method = (AdjustmentMethod)costBaseAdjustmentReader.GetInt32(1),
-                Value = DBToDecimal(costBaseAdjustmentReader.GetInt32(2)),
-                Comment = costBaseAdjustmentReader.GetString(3)
+                Percentage = DBToDecimal(costBaseAdjustmentReader.GetInt32(1)),
+                Comment = costBaseAdjustmentReader.GetString(2)
             };
             costBaseAdjustmentReader.Close();
 
