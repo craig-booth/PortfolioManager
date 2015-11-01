@@ -159,7 +159,7 @@ namespace PortfolioManager.Test
 
             /* Parcels */
             lsvParcels.Items.Clear();
-            var parcels = _MyPortfolio.GetParcels(endDate);
+            var parcels = _MyPortfolio.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
             foreach (ShareParcel parcel in parcels)
             {
                 var item = lsvParcels.Items.Add(_PortfolioManager.StockManager.GetASXCode(parcel.Stock));

@@ -25,7 +25,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             _StockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
             _StockManager = new StockManager(_StockDatabase);
-            AddTestStocks();
+            AddStocks();
         }
 
         [SetUp]
@@ -37,7 +37,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
         }
 
-        private void AddTestStocks()
+        protected virtual void AddStocks()
         {
             _StockManager.Add("AAA", "Stock AAA", StockType.Ordinary);
             _StockManager.Add("BBB", "Stock BBB", StockType.Ordinary);
