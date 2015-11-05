@@ -53,7 +53,7 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
                 new IncomeReceived()
                 {
                     TransactionDate = new DateTime(2013, 06, 21),
-                    PaymentDate = new DateTime(2013, 06, 21),
+                    RecordDate = new DateTime(2013, 06, 21),
                     ASXCode = "NWSLV",
                     FrankedAmount = 0.00m,
                     UnfrankedAmount = 0.00m,
@@ -114,7 +114,7 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
             _ExpectedIncome.Add(new IncomeReceived()
             {
                 TransactionDate = new DateTime(2013, 06, 21),
-                PaymentDate = new DateTime(2013, 06, 21),
+                RecordDate = new DateTime(2013, 06, 21),
                 ASXCode = "NWSLV",
                 FrankedAmount = 0.00m,
                 UnfrankedAmount = 0.00m,

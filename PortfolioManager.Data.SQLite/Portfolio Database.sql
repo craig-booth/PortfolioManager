@@ -28,6 +28,7 @@ CREATE TABLE [Aquisitions]
 CREATE TABLE [CostBaseAdjustments]
 (
 	[Id] TEXT(36) NOT NULL,
+	[RecordDate] TEXT(10) NOT NULL,
 	[Percentage] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
 	
@@ -51,7 +52,7 @@ CREATE TABLE [Disposals]
 CREATE TABLE [IncomeReceived]
 (
 	[Id] TEXT(36) NOT NULL,
-	[PaymentDate] TEXT(10) NOT NULL,
+	[RecordDate] TEXT(10) NOT NULL,
 	[FrankedAmount] INTEGER NOT NULL,
 	[UnfrankedAmount] INTEGER NOT NULL,
 	[FrankingCredits] INTEGER NOT NULL,
@@ -77,6 +78,7 @@ CREATE TABLE [OpeningBalances]
 CREATE TABLE [ReturnsOfCapital]
 (
 	[Id] TEXT(36) NOT NULL,
+	[RecordDate] TEXT(10) NOT NULL,
 	[Amount] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
 	

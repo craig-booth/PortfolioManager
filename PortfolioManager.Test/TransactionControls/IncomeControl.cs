@@ -43,7 +43,7 @@ namespace PortfolioManager.Test.TransactionControls
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
             
-            dtpRecordDate.Value = incomeReceived.TransactionDate;
+            dtpRecordDate.Value = incomeReceived.RecordDate;
 
             foreach (Stock s in cboASXCode.Items)
             {
@@ -54,7 +54,7 @@ namespace PortfolioManager.Test.TransactionControls
                 }
             };
 
-            dtpPaymentDate.Value = incomeReceived.PaymentDate;
+            dtpPaymentDate.Value = incomeReceived.TransactionDate;
             txtFrankedAmount.Text = MathUtils.FormatCurrency(incomeReceived.FrankedAmount);
             txtUnfrankedAmount.Text = MathUtils.FormatCurrency(incomeReceived.UnfrankedAmount);
             txtFrankingCredits.Text = MathUtils.FormatCurrency(incomeReceived.FrankingCredits);
@@ -70,8 +70,8 @@ namespace PortfolioManager.Test.TransactionControls
 
             Stock stock = cboASXCode.SelectedItem as Stock;
             incomeReceived.ASXCode = stock.ASXCode;
-            incomeReceived.TransactionDate = dtpRecordDate.Value;
-            incomeReceived.PaymentDate = dtpPaymentDate.Value;
+            incomeReceived.TransactionDate = dtpPaymentDate.Value;
+            incomeReceived.RecordDate = dtpRecordDate.Value;
             incomeReceived.FrankedAmount = MathUtils.ParseDecimal(txtFrankedAmount.Text);
             incomeReceived.UnfrankedAmount = MathUtils.ParseDecimal(txtUnfrankedAmount.Text);
             incomeReceived.FrankingCredits = MathUtils.ParseDecimal(txtFrankingCredits.Text);

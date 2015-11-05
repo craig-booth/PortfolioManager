@@ -84,8 +84,8 @@ namespace PortfolioManager.Data.Memory.Portfolios
 
 
             var incomeQuery = from income in transactionQuery
-                              where income.PaymentDate >= fromDate && income.PaymentDate <= toDate
-                              orderby income.PaymentDate
+                              where income.TransactionDate >= fromDate && income.TransactionDate <= toDate
+                              orderby income.TransactionDate
                               select income;
 
 

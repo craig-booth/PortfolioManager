@@ -343,7 +343,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = new DateTime(2001, 01, 01),
                     ASXCode = "SSS3",
-                    PaymentDate = new DateTime(2001, 01, 01),
+                    RecordDate = new DateTime(2001, 01, 01),
                     FrankedAmount = 0.00m,
                     UnfrankedAmount = 100.00m,
                     FrankingCredits = 0.00m,

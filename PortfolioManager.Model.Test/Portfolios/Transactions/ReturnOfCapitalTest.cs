@@ -34,6 +34,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
+                    RecordDate = _TransactionDate,
                     Amount = 0.70m,
                     Comment = "Return of Capital test"
                 }
@@ -71,6 +72,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
+                    RecordDate = _TransactionDate,
                     Amount = 2.00m,
                     Comment = "Return of Capital test"
                 }
@@ -118,6 +120,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
+                    RecordDate = _TransactionDate,
                     Amount = 0.10m,
                     Comment = "Return of Capital test"
                 }
@@ -167,6 +170,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "AAA",
+                    RecordDate = _TransactionDate,
                     Amount = 1.80m,
                     Comment = "Return of Capital test"
                 }
@@ -208,6 +212,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = _TransactionDate,
                     ASXCode = "SSS3",
+                    RecordDate = _TransactionDate,
                     Amount = 0.30m,
                     Comment = "Return of Capital test"
                 }
@@ -243,6 +248,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = new DateTime(2002, 01, 01),
                     ASXCode = "AAA",
+                    RecordDate = new DateTime(2002, 01, 01),
                     Amount = 0.10m,
                     Comment = "Return of Capital test"
                 }
@@ -268,6 +274,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 {
                     TransactionDate = new DateTime(2002, 01, 01),
                     ASXCode = "SSS",
+                    RecordDate = new DateTime(2002, 01, 01),
                     Amount = 0.10m,
                     Comment = "Return of Capital test"
                 }

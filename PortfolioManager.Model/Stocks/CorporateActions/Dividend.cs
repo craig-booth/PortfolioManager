@@ -115,9 +115,9 @@ namespace PortfolioManager.Model.Stocks
 
             transactions.Add(new IncomeReceived()
             {
-                TransactionDate = ActionDate,
+                TransactionDate = PaymentDate,
                 ASXCode = stock.ASXCode,
-                PaymentDate = PaymentDate,
+                RecordDate = ActionDate,
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,
                 FrankingCredits = frankingCredits,

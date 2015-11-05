@@ -86,7 +86,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             var incomeReceived2 = transaction2 as IncomeReceived;
 
             if (base.Equals(transaction1, transaction2) &&
-                (incomeReceived1.PaymentDate == incomeReceived2.PaymentDate) &&
+                (incomeReceived1.RecordDate == incomeReceived2.RecordDate) &&
                 (incomeReceived1.FrankedAmount == incomeReceived2.FrankedAmount) &&
                 (incomeReceived1.UnfrankedAmount == incomeReceived2.UnfrankedAmount) &&
                 (incomeReceived1.FrankingCredits == incomeReceived2.FrankingCredits) &&

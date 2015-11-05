@@ -262,13 +262,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [CostBaseAdjustments] ([Id], [Percentage], [Comment]) VALUES (@Id, @Percentage, @Comment)";
+            return "INSERT INTO [CostBaseAdjustments] ([Id], [RecordDate], [Percentage], [Comment]) VALUES (@Id, @RecordDate, @Percentage, @Comment)";
 
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[CostBaseAdjustments] SET [Percentage] = @Percentage, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[CostBaseAdjustments] SET [RecordDate] = @RecordDate, [Percentage] = @Percentage, [Comment] = @Comment WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -281,6 +281,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             CostBaseAdjustment costBaseAdjustment = entity as CostBaseAdjustment;
 
             command.Parameters.AddWithValue("@Id", costBaseAdjustment.Id.ToString());
+            command.Parameters.AddWithValue("@RecordDate", costBaseAdjustment.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Percentage", DecimalToDB(costBaseAdjustment.Percentage));
             command.Parameters.AddWithValue("@Comment", costBaseAdjustment.Comment); 
         }
@@ -332,12 +333,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [IncomeReceived] ([Id], [PaymentDate], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [Comment]) VALUES (@Id, @PaymentDate, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @Comment)";
+            return "INSERT INTO [IncomeReceived] ([Id], [RecordDate], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [Comment]) VALUES (@Id, @RecordDate, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @Comment)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[IncomeReceived] SET [PaymentDate] = @PaymentDate, [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[IncomeReceived] SET [RecordDate] = @RecordDate, [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [Comment] = @Comment WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -350,7 +351,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             IncomeReceived incomeReceived = entity as IncomeReceived;
 
             command.Parameters.AddWithValue("@Id", incomeReceived.Id.ToString());
-            command.Parameters.AddWithValue("@PaymentDate", incomeReceived.PaymentDate.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@RecordDate", incomeReceived.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@FrankedAmount", DecimalToDB(incomeReceived.FrankedAmount));
             command.Parameters.AddWithValue("@UnfrankedAmount", DecimalToDB(incomeReceived.UnfrankedAmount));
             command.Parameters.AddWithValue("@FrankingCredits", DecimalToDB(incomeReceived.FrankingCredits));
@@ -405,12 +406,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [ReturnsOfCapital] ([Id], [Amount], [Comment]) VALUES (@Id, @Amount, @Comment)";
+            return "INSERT INTO [ReturnsOfCapital] ([Id], [RecordDate], [Amount], [Comment]) VALUES (@Id, @RecordDate, @Amount, @Comment)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[ReturnsOfCapital] SET [Amount] = @Amount, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[ReturnsOfCapital] SET [RecordDate] = @RecordDate, [Amount] = @Amount, [Comment] = @Comment WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -423,6 +424,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             ReturnOfCapital returnOfCapital = entity as ReturnOfCapital;
 
             command.Parameters.AddWithValue("@Id", returnOfCapital.Id.ToString());
+            command.Parameters.AddWithValue("@RecordDate", returnOfCapital.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Amount", DecimalToDB(returnOfCapital.Amount));
             command.Parameters.AddWithValue("@Comment", returnOfCapital.Comment); 
         }

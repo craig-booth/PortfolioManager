@@ -274,28 +274,30 @@ namespace PortfolioManager.Model.Portfolios
         private void ApplyCostBaseAdjustment(IPortfolioUnitOfWork unitOfWork, CostBaseAdjustment costBaseAdjustment)
         {
 
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.TransactionDate);
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the dividend applies to */
-            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, costBaseAdjustment.TransactionDate);
+            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, costBaseAdjustment.RecordDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(costBaseAdjustment, "No parcels found for transaction");
 
             /* Reduce cost base of parcels */
-            foreach (ShareParcel parcel in parcels)
+            foreach (ShareParcel parcelAtRecordDate in parcels)
             {
-                var costBaseReduction = parcel.CostBase * (1 - costBaseAdjustment.Percentage);
-                ModifyParcel(unitOfWork, parcel, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+                var parcelAtPaymentDate = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtRecordDate.Id, costBaseAdjustment.TransactionDate);
+
+                var costBaseReduction = parcelAtPaymentDate.CostBase * (1 - costBaseAdjustment.Percentage);
+                ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
 
                 // If a child parcel then also adjust cost base of parent
-                if (parcel.Parent != Guid.Empty)
+                if (parcelAtPaymentDate.Parent != Guid.Empty)
                 {
                     // Get parent parcel
-                    var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(parcel.Parent, costBaseAdjustment.TransactionDate);
+                    var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtPaymentDate.Parent, costBaseAdjustment.TransactionDate);
 
                     if (parentParcel != null)
                         ModifyParcel(unitOfWork, parentParcel, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parentParcel.Units, parentParcel.CostBase - costBaseReduction, "");
@@ -306,38 +308,40 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyReturnOfCapital(IPortfolioUnitOfWork unitOfWork, ReturnOfCapital returnOfCapital)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.TransactionDate);
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the transaction applies to */
-            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, returnOfCapital.TransactionDate);
+            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, returnOfCapital.RecordDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(returnOfCapital, "No parcels found for transaction");
 
             /* Reduce cost base of parcels */
             decimal totalAmount = 0;
-            foreach (ShareParcel parcel in parcels)
+            foreach (ShareParcel parcelAtRecordDate in parcels)
             {
-                var costBaseReduction = parcel.Units * returnOfCapital.Amount;
+                var parcelAtPaymentDate = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtRecordDate.Id, returnOfCapital.TransactionDate);
 
-                if (costBaseReduction <= parcel.CostBase)
-                    ModifyParcel(unitOfWork, parcel, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+                var costBaseReduction = parcelAtPaymentDate.Units * returnOfCapital.Amount;
+
+                if (costBaseReduction <= parcelAtPaymentDate.CostBase)
+                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
                 else
                 {
-                    ModifyParcel(unitOfWork, parcel, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcel.Units, 0.00m, "");
+                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
 
-                    var cgtEvent = new CGTEvent(parcel.Stock, returnOfCapital.TransactionDate, parcel.Units, parcel.CostBase, costBaseReduction - parcel.CostBase);
+                    var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, returnOfCapital.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                     unitOfWork.CGTEventRepository.Add(cgtEvent);
                 }
 
                 // If a child parcel then also adjust cost base of parent
-                if (parcel.Parent != Guid.Empty)
+                if (parcelAtPaymentDate.Parent != Guid.Empty)
                 {
                     // Get parent parcel
-                    var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(parcel.Parent, returnOfCapital.TransactionDate);
+                    var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtPaymentDate.Parent, returnOfCapital.TransactionDate);
 
                     if (parentParcel != null)
                         ModifyParcel(unitOfWork, parentParcel, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parentParcel.Units, parentParcel.CostBase - costBaseReduction, "");
@@ -364,13 +368,13 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyIncomeReceived(IPortfolioUnitOfWork unitOfWork, IncomeReceived incomeReceived)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.TransactionDate);
+            Stock stock = _StockDatabase.StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(incomeReceived, "Cannot have a income for stapled securities. Income should be recorded against child securities instead");
 
             /* locate parcels that the dividend applies to */
-            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, incomeReceived.TransactionDate);
+            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(this.Id, stock.Id, incomeReceived.RecordDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(incomeReceived, "No parcels found for transaction");
@@ -387,34 +391,36 @@ namespace PortfolioManager.Model.Portfolios
 
                 /* Reduce cost base of parcels */
                 i = 0;
-                foreach (ShareParcel parcel in parcels)
+                foreach (ShareParcel parcelAtRecordDate in parcels)
                 {
+                    var parcelAtPaymentDate = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtRecordDate.Id, incomeReceived.TransactionDate);
+
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
-                    if (costBaseReduction <= parcel.CostBase)
-                        ModifyParcel(unitOfWork, parcel, incomeReceived.PaymentDate, ParcelEvent.CostBaseReduction, parcel.Units, parcel.CostBase - costBaseReduction, "");
+                    if (costBaseReduction <= parcelAtPaymentDate.CostBase)
+                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
                     else
                     {
-                        ModifyParcel(unitOfWork, parcel, incomeReceived.PaymentDate, ParcelEvent.CostBaseReduction, parcel.Units, 0.00m, "");
+                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
 
-                        var cgtEvent = new CGTEvent(parcel.Stock, incomeReceived.PaymentDate, parcel.Units, parcel.CostBase, costBaseReduction - parcel.CostBase);
+                        var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, incomeReceived.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                         unitOfWork.CGTEventRepository.Add(cgtEvent);
                     }
 
                     // If a child parcel then also adjust cost base of parent
-                    if (parcel.Parent != Guid.Empty)
+                    if (parcelAtPaymentDate.Parent != Guid.Empty)
                     {
                         // Get parent parcel
-                        var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(parcel.Parent, incomeReceived.PaymentDate);
+                        var parentParcel = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtPaymentDate.Parent, incomeReceived.TransactionDate);
 
                         if (parentParcel != null)
-                            ModifyParcel(unitOfWork, parentParcel, incomeReceived.PaymentDate, ParcelEvent.CostBaseReduction, parentParcel.Units, parentParcel.CostBase - costBaseReduction, "");
+                            ModifyParcel(unitOfWork, parentParcel, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parentParcel.Units, parentParcel.CostBase - costBaseReduction, "");
                     }
                 }
-                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.PaymentDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);  
+                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);  
             }
             else
-                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.PaymentDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome); 
+                CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome); 
         }
 
         private void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Guid stockId, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)

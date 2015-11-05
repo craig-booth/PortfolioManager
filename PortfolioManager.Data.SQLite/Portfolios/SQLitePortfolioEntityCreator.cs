@@ -77,8 +77,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 TransactionDate = reader.GetDateTime(1),
                 ASXCode = reader.GetString(3),
-                Percentage = DBToDecimal(costBaseAdjustmentReader.GetInt32(1)),
-                Comment = costBaseAdjustmentReader.GetString(2)
+                RecordDate = costBaseAdjustmentReader.GetDateTime(1),
+                Percentage = DBToDecimal(costBaseAdjustmentReader.GetInt32(2)),
+                Comment = costBaseAdjustmentReader.GetString(3)
             };
             costBaseAdjustmentReader.Close();
 
@@ -130,7 +131,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 TransactionDate = reader.GetDateTime(1),
                 ASXCode = reader.GetString(3),
-                PaymentDate = incomeReceivedReader.GetDateTime(1),
+                RecordDate = incomeReceivedReader.GetDateTime(1),
                 FrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(2)),
                 UnfrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(3)),
                 FrankingCredits = DBToDecimal(incomeReceivedReader.GetInt32(4)),
@@ -186,8 +187,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 TransactionDate = reader.GetDateTime(1),
                 ASXCode = reader.GetString(3),
-                Amount = DBToDecimal(returnOfCapitalReader.GetInt32(1)),
-                Comment = returnOfCapitalReader.GetString(2)
+                RecordDate = returnOfCapitalReader.GetDateTime(1),
+                Amount = DBToDecimal(returnOfCapitalReader.GetInt32(2)),
+                Comment = returnOfCapitalReader.GetString(3)
             };
             returnOfCapitalReader.Close();
 

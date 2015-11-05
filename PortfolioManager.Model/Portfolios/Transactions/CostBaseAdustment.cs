@@ -13,6 +13,7 @@ namespace PortfolioManager.Model.Portfolios
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
         public string ASXCode { get; set; }
+        public DateTime RecordDate { get; set; }
         public decimal Percentage { get; set; }
         public string Comment { get; set; }
 
