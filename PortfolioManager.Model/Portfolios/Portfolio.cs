@@ -472,20 +472,44 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, int newUnits, decimal newCostBase, string description)
         {
-            /* Update old effective dated record */
-            parcel.ToDate = changeDate.AddDays(-1);
-            unitOfWork.ParcelRepository.Update(parcel);
 
-            /* Add new record */
-            if (newUnits > 0)
+            // Check that this is the latest version of this parcel
+            if (parcel.ToDate != DateTimeConstants.NoEndDate())
+                throw new AttemptToModifyPreviousParcelVersion(parcel.Id, "");
+
+            // For stapled securities just modify the current version
+            if (parcel.FromDate == changeDate)
             {
-                var newParcel = parcel.Clone();
-                newParcel.FromDate = changeDate;
-                newParcel.ToDate = DateTimeConstants.NoEndDate();
-                newParcel.Event = parcelEvent;
-                newParcel.Units = newUnits;
-                newParcel.CostBase = newCostBase;
-                unitOfWork.ParcelRepository.Add(newParcel);
+                var stock = _StockDatabase.StockQuery.Get(parcel.Stock, parcel.FromDate);
+                if (stock.Type == StockType.StapledSecurity)
+                {
+                    /* Update existing record */
+                    parcel.Event = parcelEvent;
+                    parcel.Units = newUnits;
+                    parcel.CostBase = newCostBase;
+                    unitOfWork.ParcelRepository.Update(parcel);
+
+                }
+                else
+                    throw new Exception("Parcel already modified today !!!");
+            }
+            else
+            {
+                /* Update old effective dated record */
+                parcel.ToDate = changeDate.AddDays(-1);
+                unitOfWork.ParcelRepository.Update(parcel);
+
+                /* Add new record */
+                if (newUnits > 0)
+                {
+                    var newParcel = parcel.Clone();
+                    newParcel.FromDate = changeDate;
+                    newParcel.ToDate = DateTimeConstants.NoEndDate();
+                    newParcel.Event = parcelEvent;
+                    newParcel.Units = newUnits;
+                    newParcel.CostBase = newCostBase;
+                    unitOfWork.ParcelRepository.Add(newParcel);
+                }
             }
         }
 
@@ -559,7 +583,7 @@ namespace PortfolioManager.Model.Portfolios
                 if (corporateAction.Type == CorporateActionType.Dividend)
                 {
                     Dividend dividend = corporateAction as Dividend;
-                    date = dividend.ActionDate;
+                    date = dividend.PaymentDate;
                     type = TransactionType.Income;
                     asxCode = _StockDatabase.StockQuery.Get(dividend.Stock, date).ASXCode;
                 }

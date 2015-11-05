@@ -55,4 +55,16 @@ namespace PortfolioManager.Model.Portfolios
         {
         }
     }
+
+    [Serializable]
+    public class AttemptToModifyPreviousParcelVersion : Exception
+    {
+        public Guid Parcel { get; private set; }
+
+        public AttemptToModifyPreviousParcelVersion(Guid parcel, string message)
+            : base (message)
+        {
+            Parcel = parcel;
+        }
+    }
 }
