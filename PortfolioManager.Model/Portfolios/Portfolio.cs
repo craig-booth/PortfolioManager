@@ -118,7 +118,7 @@ namespace PortfolioManager.Model.Portfolios
             var holdingsQuery = from parcel in allParcels
                                 where parcel.IncludeInHoldings == true
                                 group parcel by parcel.Stock into parcelGroup
-                                select new ShareHolding(_StockDatabase.StockQuery.Get(parcelGroup.Key, atDate), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.Amount), _StockDatabase.StockQuery.GetClosingPrice(parcelGroup.Key, atDate));
+                                select new ShareHolding(_StockDatabase.StockQuery.Get(parcelGroup.Key, atDate), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.CostBase), _StockDatabase.StockQuery.GetClosingPrice(parcelGroup.Key, atDate));
 
             return holdingsQuery.OrderBy(x => x.Stock.ASXCode).ToList().AsReadOnly();
         }
