@@ -37,6 +37,7 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<Stock> GetAll();
         IReadOnlyCollection<Stock> GetAll(DateTime atDate);
         Stock GetByASXCode(string asxCode, DateTime atDate);
+        bool TryGetByASXCode(string asxCode, DateTime atDate, out Stock stock);
         IReadOnlyCollection<Stock> GetChildStocks(Guid parent, DateTime atDate);
         decimal PercentOfParentCost(Guid parent, Guid child, DateTime atDate);
         RelativeNTA GetRelativeNTA(Guid parent, Guid child, DateTime atDate);
@@ -44,6 +45,7 @@ namespace PortfolioManager.Model.Data
         string GetASXCode(Guid id, DateTime atDate);
 
         decimal GetClosingPrice(Guid stock, DateTime date);
+        bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price);
         Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate);
     }
 
@@ -67,7 +69,6 @@ namespace PortfolioManager.Model.Data
 
     public interface IStockPriceRepository
     {
-        bool PriceExists(Guid stockId, DateTime date);
         decimal Get(Guid stockId, DateTime date);
         void Add(Guid stockId, DateTime date, decimal price);
         void Update(Guid stockId, DateTime date, decimal price);

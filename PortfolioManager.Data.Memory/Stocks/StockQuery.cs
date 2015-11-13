@@ -23,6 +23,12 @@ namespace PortfolioManager.Data.Memory.Stocks
             return _Database._Stocks.Find(x => (x.Id == id) && (x.FromDate <= atDate) && (x.ToDate >= atDate));
         }
 
+        public bool TryGetByASXCode(string asxCode, DateTime atDate, out Stock stock)
+        {
+            stock = null;
+            return false;
+        }
+
         public IReadOnlyCollection<Stock> GetAll()
         {
             return null;
@@ -90,6 +96,12 @@ namespace PortfolioManager.Data.Memory.Stocks
         public decimal GetClosingPrice(Guid stock, DateTime date)
         {
             return 0.00m;
+        }
+
+        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
+        {
+            price = 0.00m;
+            return false;
         }
 
         public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)

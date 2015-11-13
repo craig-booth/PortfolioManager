@@ -38,20 +38,16 @@ namespace PortfolioManager.Model.Stocks
             var stockPriceRecord = GetRecord();
             while (stockPriceRecord != null)
             {
-                try
+                Stock stock;
+                if (stockQuery.TryGetByASXCode(stockPriceRecord.ASXCode, stockPriceRecord.Date, out stock))
                 {
-                    var stock = stockQuery.GetByASXCode(stockPriceRecord.ASXCode, stockPriceRecord.Date);
-
-                    if (unitOfWork.StockPriceRepository.PriceExists(stock.Id, stockPriceRecord.Date))
+                    decimal price;
+                    if (stockQuery.TryGetClosingPrice(stock.Id, stockPriceRecord.Date, out price))
                         unitOfWork.StockPriceRepository.Update(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price);
                     else
                         unitOfWork.StockPriceRepository.Add(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price);
                 }
-                catch
-                {
-
-                }
-
+                
                 stockPriceRecord = GetRecord();
             }
         }
