@@ -137,5 +137,17 @@ namespace PortfolioManager.Model.Stocks
             return _Database.StockQuery.GetASXCode(stockId, atDate);
         }
 
+        public void ImportStockPrices(string fileName)
+        {
+            var importer = new StockEasyPriceImporter(fileName);
+
+            using (var unitOfWork = _Database.CreateUnitOfWork())
+            {
+                importer.ImportToDatabase(_Database.StockQuery, unitOfWork);
+
+                unitOfWork.Save();
+            }      
+        }
+
     }
 }

@@ -67,6 +67,7 @@ namespace PortfolioManager.Model.Data
 
     public interface IStockPriceRepository
     {
+        bool PriceExists(Guid stockId, DateTime date);
         decimal Get(Guid stockId, DateTime date);
         void Add(Guid stockId, DateTime date, decimal price);
         void Update(Guid stockId, DateTime date, decimal price);

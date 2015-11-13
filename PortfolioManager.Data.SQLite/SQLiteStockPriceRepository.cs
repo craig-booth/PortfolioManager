@@ -45,6 +45,24 @@ namespace PortfolioManager.Data.SQLite
             return price;            
         }
 
+        public bool PriceExists(Guid stockId, DateTime date)
+        {
+            if (_GetCommand == null)
+            {
+                _GetCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetCommand.Prepare();
+            }
+
+            _GetCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
+            _GetCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            SQLiteDataReader reader = _GetCommand.ExecuteReader();
+
+            var exists = reader.HasRows;
+            
+            reader.Close();
+            return exists;          
+        }
+
         private SQLiteCommand _AddCommand;
         public void Add(Guid stockId, DateTime date, decimal price)
         {

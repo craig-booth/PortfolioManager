@@ -22,6 +22,11 @@ namespace PortfolioManager.Data.Memory.Stocks
             return 0.00m;
         }
 
+        public bool PriceExists(Guid stockId, DateTime date)
+        {        
+            return false;
+        }
+
         public void Add(Guid stockId, DateTime date, decimal price)
         {
         }
