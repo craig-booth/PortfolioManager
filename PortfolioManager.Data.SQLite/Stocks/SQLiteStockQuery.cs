@@ -34,7 +34,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _GetStockByIdandDate.Parameters.AddWithValue("@Id", id.ToString());
             _GetStockByIdandDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
-            return GetStock(_GetStockByIdandDate);
+            var stock = GetStock(_GetStockByIdandDate);
+            if (stock == null)
+                throw new RecordNotFoundException("");
+            return stock;
         }
 
         private SQLiteCommand _GetAllStocks;
@@ -86,6 +89,16 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private SQLiteCommand _GetStockByASXCodeandDate;
         public Stock GetByASXCode(string asxCode, DateTime atDate)
         {
+            Stock stock;
+
+            if (TryGetByASXCode(asxCode, atDate, out stock))
+                return stock;
+            else
+                throw new RecordNotFoundException("");
+        }
+
+        public bool TryGetByASXCode(string asxCode, DateTime atDate, out Stock stock)
+        {
             if (_GetStockByASXCodeandDate == null)
             {
                 _GetStockByASXCodeandDate = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [ASXCode] = @ASXCode AND @Date BETWEEN [FromDate] AND [ToDate] ORDER BY [ASXCode]", _Connection);
@@ -95,7 +108,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _GetStockByASXCodeandDate.Parameters.AddWithValue("@ASXCode", asxCode);
             _GetStockByASXCodeandDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
-            return GetStock(_GetStockByASXCodeandDate);
+           stock = GetStock(_GetStockByASXCodeandDate);
+           return (stock != null);
         }
 
         private SQLiteCommand _GetChildStocks;
@@ -226,7 +240,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             if (!reader.Read())
             {
                 reader.Close();
-                throw new RecordNotFoundException("");
+                return null;
             }
 
             Stock stock = SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
@@ -270,15 +284,45 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _GetClosingPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
             SQLiteDataReader reader = _GetClosingPriceCommand.ExecuteReader();
 
-            decimal price;
             if (reader.Read())
-                price = DBToDecimal(reader.GetInt32(0));
+            {
+                decimal price = DBToDecimal(reader.GetInt32(0));
+                reader.Close();
+                return price;
+            }
             else
-                price = 0.00m;
-           
-            reader.Close();
+            {
+                reader.Close();
+                return 0.00m;
+            }
+        }
 
-            return price;   
+        private SQLiteCommand _GetExactClosingPriceCommand;
+        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
+        {
+            if (_GetExactClosingPriceCommand == null)
+            {
+                _GetExactClosingPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetExactClosingPriceCommand.Prepare();
+            }
+
+            _GetExactClosingPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
+            _GetExactClosingPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            SQLiteDataReader reader = _GetExactClosingPriceCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                price = DBToDecimal(reader.GetInt32(0));
+                reader.Close();
+                return true;
+            }               
+            else
+            {
+                price = 0.00m;
+                reader.Close();
+                return false;
+            }
+
         }
 
         public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
