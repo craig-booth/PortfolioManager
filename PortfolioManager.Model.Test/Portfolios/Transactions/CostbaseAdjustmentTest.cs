@@ -33,6 +33,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new CostBaseAdjustment()
                 {
                     TransactionDate = _TransactionDate,
+                    RecordDate = _TransactionDate,
                     ASXCode = "AAA",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
@@ -78,6 +79,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new CostBaseAdjustment()
                 {
                     TransactionDate = _TransactionDate,
+                    RecordDate = _TransactionDate,
                     ASXCode = "AAA",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
@@ -100,7 +102,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
     [TestFixture, Description("Cost base adjustment of Child security - single parcels")]
     public class CostBaseAdjustmentChildSecuritySingleParcel : TransactionTestWithExpectedTests
-    {
+    { 
         public override void PerformTest()
         {
             _TransactionDate = new DateTime(2002, 01, 01);
@@ -119,6 +121,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new CostBaseAdjustment()
                 {
                     TransactionDate = _TransactionDate,
+                    RecordDate = _TransactionDate,
                     ASXCode = "SSS3",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
@@ -154,6 +157,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new CostBaseAdjustment()
                 {
                     TransactionDate = new DateTime(2000, 01, 01),
+                    RecordDate = new DateTime(2000, 01, 01),
                     ASXCode = "AAA",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"
@@ -179,6 +183,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new CostBaseAdjustment()
                 {
                     TransactionDate = new DateTime(2000, 01, 01),
+                    RecordDate = new DateTime(2000, 01, 01),
                     ASXCode = "SSS",
                     Percentage = 0.30m,
                     Comment = "Costbase Adjustment test"

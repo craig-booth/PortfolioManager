@@ -27,6 +27,7 @@ namespace PortfolioManager.Model.Portfolios
         public Guid Parent { get; set; }
         public bool IncludeInHoldings { get; set; }
         public bool IncludeInParcels { get; set; }
+        public Guid PurchaseId { get; set; }
 
         private ShareParcel() 
         {
@@ -35,6 +36,7 @@ namespace PortfolioManager.Model.Portfolios
             Parent = Guid.Empty;
             IncludeInHoldings = true;
             IncludeInParcels = true;
+            PurchaseId = Guid.Empty;
         }
 
         protected internal ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
@@ -85,7 +87,8 @@ namespace PortfolioManager.Model.Portfolios
                 Event = Event,
                 Parent = Parent,
                 IncludeInHoldings = IncludeInHoldings,
-                IncludeInParcels = IncludeInParcels
+                IncludeInParcels = IncludeInParcels,
+                PurchaseId = PurchaseId 
             };
         }
 

@@ -108,6 +108,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 new ReturnOfCapital()
                 {
                     TransactionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     ASXCode = "AAA",
                     Amount = 0.20m,
                     Comment = ""

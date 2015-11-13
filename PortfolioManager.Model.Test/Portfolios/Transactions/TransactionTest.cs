@@ -21,7 +21,8 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         protected StockManager _StockManager;
         protected Portfolio _Portfolio;
 
-        public TransactionTest()
+        [TestFixtureSetUp]
+        public virtual void FixtureSetup()
         {
             _StockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
             _StockManager = new StockManager(_StockDatabase);
@@ -96,9 +97,10 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         protected List<IncomeReceived> _ExpectedIncome;
         protected List<CGTEvent> _ExpectedCGTEvents;
 
-        public TransactionTestWithExpectedTests() :
-            base()
+        public override void FixtureSetup()
         {
+            base.FixtureSetup();
+
             _ExpectedParcels = new List<ShareParcel>();
             _ExpectedIncome = new List<IncomeReceived>();
             _ExpectedCGTEvents = new List<CGTEvent>();
@@ -121,7 +123,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [Test]
         public void ExpectedParcels()
         {
-            var actualParcels = _Portfolio.GetParcels(_TransactionDate, true);
+            var actualParcels = _Portfolio.GetAllParcels(_TransactionDate);
 
             Assert.That(actualParcels, PortfolioConstraint.Equals(_ExpectedParcels));
         }

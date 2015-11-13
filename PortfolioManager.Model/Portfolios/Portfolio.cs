@@ -62,22 +62,21 @@ namespace PortfolioManager.Model.Portfolios
 
         public IReadOnlyCollection<ShareParcel> GetParcels() 
         {
-            return GetParcels(DateTime.Now, false);
+            return GetParcels(DateTime.Now);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(DateTime atDate)
         {
-            return GetParcels(atDate, false);
+            var allParcels = _PortfolioDatabase.PortfolioQuery.GetAllParcels(this.Id, atDate);
+
+            return allParcels.Where(x => x.IncludeInParcels == true).ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcels(DateTime atDate, bool includeHiddenParcels)
+        public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate)
         {
             var allParcels = _PortfolioDatabase.PortfolioQuery.GetAllParcels(this.Id, atDate);
 
-            if (includeHiddenParcels)
-                return allParcels.ToList().AsReadOnly();
-            else
-                return allParcels.Where(x => x.IncludeInParcels == true).ToList().AsReadOnly();
+            return allParcels.ToList().AsReadOnly();
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(Stock ofStock)
@@ -98,29 +97,87 @@ namespace PortfolioManager.Model.Portfolios
 
         public ShareHolding GetHoldingsForStock(Guid stock, DateTime atDate)
         {
-            var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(Id, stock, atDate);
+            // TODO : IncludeInHoldings
+           /* var parcels = _PortfolioDatabase.PortfolioQuery.GetParcelsForStock(Id, stock, atDate);
 
             var holdingsQuery = from parcel in parcels
-                                where parcel.IncludeInHoldings == true
                                 group parcel by parcel.Stock into parcelGroup
                                 select new ShareHolding(_StockDatabase.StockQuery.Get(parcelGroup.Key, atDate), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.Amount), _StockDatabase.StockQuery.GetClosingPrice(parcelGroup.Key, atDate));
 
             if (holdingsQuery.Count() > 0)
                 return holdingsQuery.First();
-            else
+            else */
                 return null;
         }
 
         public IReadOnlyCollection<ShareHolding> GetHoldings(DateTime atDate)
         {
-            var allParcels = _PortfolioDatabase.PortfolioQuery.GetAllParcels(this.Id, atDate);
+            var allParcels = _PortfolioDatabase.PortfolioQuery.GetAllParcels(this.Id, atDate).OrderBy(x => x.Stock);
 
-            var holdingsQuery = from parcel in allParcels
-                                where parcel.IncludeInHoldings == true
-                                group parcel by parcel.Stock into parcelGroup
-                                select new ShareHolding(_StockDatabase.StockQuery.Get(parcelGroup.Key, atDate), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.CostBase), _StockDatabase.StockQuery.GetClosingPrice(parcelGroup.Key, atDate));
+            var holdings = new List<ShareHolding>();
+            ShareHolding holding = null;
+            foreach (var parcel in allParcels)
+            {
+                if (parcel.Units <= 0)
+                    continue;
 
-            return holdingsQuery.OrderBy(x => x.Stock.ASXCode).ToList().AsReadOnly();
+                
+                if ((holding == null) || (parcel.Stock != holding.Stock.Id))
+                {
+                    var stock = _StockDatabase.StockQuery.Get(parcel.Stock, atDate);
+
+                    /* TODO : IncludeInHoldings */
+                    if (stock.Type == StockType.StapledSecurity)
+                        continue;
+
+                    // If a stapled security then get the parent stock
+                    if (stock.ParentId != Guid.Empty)
+                    {
+                        var index = holdings.FindIndex(x => x.Stock.Id == stock.ParentId);
+                        if (index >= 0)
+                        {
+                            holding = holdings[index];
+
+                            holding.TotalCostBase += parcel.CostBase;
+                            holding.TotalCost += parcel.Units * parcel.UnitPrice;
+                        }
+                        else
+                        {
+                            stock = _StockDatabase.StockQuery.Get(stock.ParentId, atDate);
+
+                            holding = new ShareHolding();
+                            holdings.Add(holding);
+
+                            holding.Stock = stock;
+                            holding.Units = parcel.Units;
+                            holding.TotalCostBase = parcel.CostBase;
+                            holding.TotalCost = parcel.Units * parcel.UnitPrice;
+                            holding.UnitValue = _StockDatabase.StockQuery.GetClosingPrice(parcel.Stock, atDate);
+                        }
+
+                    }
+                    else
+                    {
+                        holding = new ShareHolding();
+                        holdings.Add(holding);
+
+                        holding.Stock = stock;
+                        holding.Units = parcel.Units;
+                        holding.TotalCostBase = parcel.CostBase;
+                        holding.TotalCost = parcel.Units * parcel.UnitPrice;
+                        holding.UnitValue = _StockDatabase.StockQuery.GetClosingPrice(parcel.Stock, atDate);
+                    }
+                }
+                else
+                {
+                    holding.Units += parcel.Units;
+                    holding.TotalCostBase += parcel.CostBase;
+                    holding.TotalCost += parcel.Units * parcel.UnitPrice;
+                }
+
+            }
+            return holdings.AsReadOnly();
+
         }
 
         public IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
@@ -441,7 +498,7 @@ namespace PortfolioManager.Model.Portfolios
                 int i = 0;
                 foreach (Stock childStock in childStocks)
                 {
-                    decimal percentageOfParent = childStock.PercentageOfParentCostBase(parcel.AquisitionDate);
+                    decimal percentageOfParent = childStock.PercentageOfParentCostBase(aquisitionDate);
                     int relativeValue = (int)(percentageOfParent * 10000);
 
                     apportionedAmounts[i].Units = relativeValue;
@@ -464,10 +521,13 @@ namespace PortfolioManager.Model.Portfolios
 
                     i++;
                 }
-                parcel.IncludeInParcels = false;
             }
-
-            unitOfWork.ParcelRepository.Add(parcel);
+            else
+            {
+                
+                parcel.IncludeInParcels = true;
+                unitOfWork.ParcelRepository.Add(parcel);
+            }
         }
 
         private void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, int newUnits, decimal newCostBase, string description)
