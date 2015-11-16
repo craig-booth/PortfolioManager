@@ -1,32 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="1" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2015-11-01" time="19:46:38">
-  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8662" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
+<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="1" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2015-11-16" time="20:20:25">
+  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8669" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
   <culture-info current-culture="en-AU" current-uiculture="en-GB" />
-  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="0.018" asserts="0">
+  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="0.019" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="0.018" asserts="0">
+      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="0.019" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="0.017" asserts="0">
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="0.018" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="0.017" asserts="0">
+              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="0.018" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="0.016" asserts="0">
+                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="0.017" asserts="0">
                     <results>
-                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="0.016" asserts="0">
+                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="0.017" asserts="0">
                         <results>
-                          <test-suite type="Namespace" name="ActualScenarios" executed="True" result="Failure" success="False" time="0.015" asserts="0">
+                          <test-suite type="Namespace" name="Transactions" executed="True" result="Failure" success="False" time="0.016" asserts="0">
                             <results>
-                              <test-suite type="TestFixture" name="NewsCorpDemergerAndSale" description="News corp demerger and sale" executed="True" result="Failure" success="False" time="0.015" asserts="0">
-                                <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.001" asserts="1">
-                                    <failure>
-                                      <message><![CDATA[  Expected: <>
-  But was:  <<ShareParcel:- FromDate: 06/28/2013, ToDate: 02/09/2015, Stock: 0fd957dc-e7f7-455d-8296-edb5d3d61109, AquisitionDate 11/24/2004, Units: 235, UnitPrice: 23.06, CostBase: 4453.37, Event: CostBaseReduction, Parent: 00000000-0000-0000-0000-000000000000>,
-              <ShareParcel:- FromDate: 06/28/2013, ToDate: 02/09/2015, Stock: 0fd957dc-e7f7-455d-8296-edb5d3d61109, AquisitionDate 07/27/2007, Units: 40, UnitPrice: 21.76, CostBase: 722.58, Event: CostBaseReduction, Parent: 00000000-0000-0000-0000-000000000000>>
-]]></message>
-                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 126
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Ordinary Share - single parcel, multiple dated records, sell part" executed="True" result="Error" success="False" time="0.015" asserts="0">
+                                <failure>
+                                  <message><![CDATA[SetUp : System.Exception : Parcel already modified today !!!]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Model.Portfolios.Portfolio.ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, Int32 newUnits, Decimal newCostBase, String description) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model\Portfolios\Portfolio.cs:line 551
+at PortfolioManager.Model.Portfolios.Portfolio.ApplyReturnOfCapital(IPortfolioUnitOfWork unitOfWork, ReturnOfCapital returnOfCapital) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model\Portfolios\Portfolio.cs:line 419
+at PortfolioManager.Model.Portfolios.Portfolio.ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model\Portfolios\Portfolio.cs:line 279
+at PortfolioManager.Model.Portfolios.Portfolio.ProcessTransactions(IEnumerable`1 transactions) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model\Portfolios\Portfolio.cs:line 236
+at PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.PerformTest() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\DisposalTest.cs:line 127
 ]]></stack-trace>
+                                </failure>
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Failure" success="False" time="0.000" asserts="0">
+                                    <failure>
+                                      <message><![CDATA[TestFixtureSetUp failed in DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart]]></message>
+                                      <stack-trace />
                                     </failure>
                                   </test-case>
                                 </results>

@@ -10,11 +10,22 @@ namespace PortfolioManager.Model.Portfolios
 {
     public class ShareHolding
     {
-        public Stock Stock { get; private set; }
-        public int Units { get; private set; }
-        public decimal AverageUnitPrice { get; private set; }
-        public decimal Cost { get; private set; }
-        public decimal UnitValue { get; private set; }
+        public Stock Stock { get; set; }
+        public int Units { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal TotalCostBase { get; set; }
+        public decimal UnitValue { get; set; }
+
+        public decimal AverageUnitCost
+        {
+            get
+            {
+                if (Units > 0)
+                    return TotalCost / Units;
+                else
+                    return 0;
+            }
+        }
 
         public decimal MarketValue
         {
@@ -23,19 +34,6 @@ namespace PortfolioManager.Model.Portfolios
                 return Units * UnitValue;
             }
         }
-
-        private ShareHolding()
-        {
-
-        }
-
-        public ShareHolding(Stock stock, int units, decimal averageUnitPrice, decimal cost, decimal unitValue)
-        {
-            Stock = stock;
-            Units = units;
-            AverageUnitPrice = averageUnitPrice;
-            Cost = cost;
-            UnitValue = unitValue;
-        }
+        
     }
 }

@@ -16,7 +16,6 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
     [TestFixture, Description("News corp demerger and sale")]
     public class NewsCorpDemergerAndSale : TransactionTestWithExpectedTests
     {
-
         protected override void AddStocks()
         {
 
@@ -74,6 +73,7 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
                 new ReturnOfCapital()
                 {
                     TransactionDate = new DateTime(2013, 06, 28),
+                    RecordDate = new DateTime(2013, 06, 28),
                     ASXCode = "NWSLV",
                     Amount = 4.15m,
                     Comment = "Return of capital for NNCLV stocks"

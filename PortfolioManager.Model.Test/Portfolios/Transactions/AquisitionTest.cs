@@ -54,15 +54,10 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.ProcessTransaction(aquisition);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, aquisition.Units, 10.00m, 10019.95m, 10019.95m, ParcelEvent.Aquisition)
-            {
-                IncludeInHoldings = true,
-                IncludeInParcels = false
-            };            
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, aquisition.Units, 1.00m, 1002.00m, 1002.00m, mainParcel.Id, ParcelEvent.Aquisition));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, aquisition.Units, 3.00m, 3005.98m, 3005.98m, mainParcel.Id, ParcelEvent.Aquisition));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, aquisition.Units, 6.00m, 6011.97m, 6011.97m, mainParcel.Id, ParcelEvent.Aquisition));
-            _ExpectedParcels.Add(mainParcel);
+            var purchaseId = Guid.NewGuid();
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, aquisition.Units, 1.00m, 1002.00m, 1002.00m, purchaseId, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, aquisition.Units, 3.00m, 3005.98m, 3005.98m, purchaseId, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, aquisition.Units, 6.00m, 6011.97m, 6011.97m, purchaseId, ParcelEvent.Aquisition));
         }
     }
 

@@ -130,21 +130,21 @@ namespace PortfolioManager.Test
                 decimal capitalGain;
                 decimal capitalGainPercentage;
 
-                capitalGain = (holding.MarketValue - holding.Cost);
-                if (holding.Cost > 0.00m)
-                    capitalGainPercentage  = capitalGain / holding.Cost;
+                capitalGain = (holding.MarketValue - holding.TotalCostBase);
+                if (holding.TotalCostBase > 0.00m)
+                    capitalGainPercentage  = capitalGain / holding.TotalCostBase;
                 else
                     capitalGainPercentage = 0.00m;
 
-                totalCostBase += holding.Cost;
+                totalCostBase += holding.TotalCostBase;
                 totalMarketValue += holding.MarketValue;
                 totalCapitalGain += capitalGain;                
 
                 var item = lsvPortfolio.Items.Add(holding.Stock.ASXCode);
                 item.Tag = holding.Stock;
                 item.SubItems.Add(holding.Units.ToString("n0"));
-                item.SubItems.Add(MathUtils.FormatCurrency(holding.AverageUnitPrice, true, true));
-                item.SubItems.Add(MathUtils.FormatCurrency(holding.Cost, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.AverageUnitCost, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.TotalCostBase, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.UnitValue, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.MarketValue, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(capitalGain, true, true));

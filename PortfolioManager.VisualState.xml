@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1077]PortfolioManager.Data.Test.Portfolio.Transactions.CostBaseAdjustmentRepositoryTest</TopNode>
-  <SelectedNode>[0-1272]PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale.TransactionTestWithExpectedTests.ExpectedParcels</SelectedNode>
+  <TopNode>[0-1272]PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale.TransactionTestWithExpectedTests.ExpectedParcels</TopNode>
+  <SelectedNode>[0-1183]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedParcels</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
@@ -21,6 +21,11 @@
     <Node UniqueName="[0-1283]PortfolioManager.Model.Test.Portfolios.ActualScenarios" Expanded="true" />
     <Node UniqueName="[0-1271]PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale" Expanded="true" />
     <Node UniqueName="[0-1282]PortfolioManager.Model.Test.Portfolios.Transactions" Expanded="true" />
+    <Node UniqueName="[0-1137]PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare" Expanded="true" />
+    <Node UniqueName="[0-1141]PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity" Expanded="true" />
+    <Node UniqueName="[0-1155]PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel" Expanded="true" />
+    <Node UniqueName="[0-1190]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart" Expanded="true" />
+    <Node UniqueName="[0-1182]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellAll" Expanded="true" />
     <Node UniqueName="[0-1280]PortfolioManager.Model.Test.Stocks" Expanded="true" />
     <Node UniqueName="[0-1279]PortfolioManager.Model.Test.Utils" Expanded="true" />
   </Nodes>
