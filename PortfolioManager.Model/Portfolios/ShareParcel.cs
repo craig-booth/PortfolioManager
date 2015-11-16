@@ -24,18 +24,12 @@ namespace PortfolioManager.Model.Portfolios
         public decimal Amount { get; set; }
         public decimal CostBase { get; set; }
         public ParcelEvent Event { get; set; }
-        public Guid Parent { get; set; }
-        public bool IncludeInHoldings { get; set; }
-        public bool IncludeInParcels { get; set; }
         public Guid PurchaseId { get; set; }
 
         private ShareParcel() 
         {
 
             Id = Guid.NewGuid();
-            Parent = Guid.Empty;
-            IncludeInHoldings = true;
-            IncludeInParcels = true;
             PurchaseId = Guid.Empty;
         }
 
@@ -53,7 +47,7 @@ namespace PortfolioManager.Model.Portfolios
             Event = parcelEvent;
         }
 
-        protected internal ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid parent, ParcelEvent parcelEvent)
+        protected internal ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
             : this()
         {
             FromDate = aquisitionDate;
@@ -64,11 +58,8 @@ namespace PortfolioManager.Model.Portfolios
             Units = units;
             UnitPrice = unitPrice;
             CostBase = costBase;
+            PurchaseId = purchaseId;
             Event = parcelEvent;
-
-            Parent = parent;
-            IncludeInHoldings = false;
-            IncludeInParcels = true;
         }
 
         public ShareParcel Clone()
@@ -85,9 +76,6 @@ namespace PortfolioManager.Model.Portfolios
                 UnitPrice = UnitPrice,
                 CostBase = CostBase,
                 Event = Event,
-                Parent = Parent,
-                IncludeInHoldings = IncludeInHoldings,
-                IncludeInParcels = IncludeInParcels,
                 PurchaseId = PurchaseId 
             };
         }

@@ -305,20 +305,16 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7500.00m, ParcelEvent.Disposal)
-            {
-                FromDate = _TransactionDate
-            };
-            _ExpectedParcels.Add(mainParcel);
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, mainParcel.Id, ParcelEvent.Disposal)
+            var purchaseId = Guid.NewGuid();
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, mainParcel.Id, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4500.00m, mainParcel.Id, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
@@ -378,20 +374,16 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
-            var mainParcel = new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS", _TransactionDate).Id, 500, 15.00m, 7500.00m, 7450.00m, ParcelEvent.Disposal)
-            {
-                FromDate = _TransactionDate
-            };
-            _ExpectedParcels.Add(mainParcel);
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, mainParcel.Id, ParcelEvent.Disposal)
+            var purchaseId = Guid.NewGuid();
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, mainParcel.Id, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4450.00m, mainParcel.Id, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4450.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });

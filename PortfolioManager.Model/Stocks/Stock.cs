@@ -89,7 +89,6 @@ namespace PortfolioManager.Model.Stocks
             return _Database.StockQuery.PercentOfParentCost(this.ParentId, this.Id, atDate);
         }
 
-
         public Stock(IStockDatabase database, DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
             : this(database, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate(), asxCode, name, type, parent)
 

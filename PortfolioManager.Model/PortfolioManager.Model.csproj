@@ -69,6 +69,7 @@
     <Compile Include="Stocks\StockPrice.cs" />
     <Compile Include="Utils\DateTimeConstants.cs" />
     <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\PortfolioUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

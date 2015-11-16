@@ -46,16 +46,6 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-
-        public IReadOnlyCollection<ShareParcel> GetChildParcels(Guid parcel, DateTime atDate)
-        {
-            var parcelsQuery = from childParcel in _Database._Parcels
-                               where (childParcel.Parent == parcel) && (atDate >= childParcel.FromDate && atDate <= childParcel.ToDate)
-                               select childParcel;
-
-            return parcelsQuery.ToList().AsReadOnly();
-        }
-
         public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels

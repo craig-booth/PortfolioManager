@@ -135,19 +135,19 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public CGTCalculation CalculateCapitalGain(Portfolio portfolio, DateTime saleDate, Stock stock, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
+        public CGTCalculation CalculateCapitalGain(IReadOnlyCollection<ShareParcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
         {
-            /* Get parcels owned at disposal date and sort in prefered sell order */
-            var ownedParcels = portfolio.GetParcels(stock, saleDate).Where(x => x.ToDate == DateTimeConstants.NoEndDate()).OrderBy(x => x, new CGTComparer(saleDate, method));
+            /* Sort in prefered sell order */
+            var sortedParcels = parcelsOwned.Where(x => x.ToDate == DateTimeConstants.NoEndDate()).OrderBy(x => x, new CGTComparer(saleDate, method));
 
             /* Create list of parcels sold */
             var parcelsSold = new List<ParcelSold>();
-            foreach (ShareParcel parcel in ownedParcels)
+            foreach (ShareParcel parcel in sortedParcels)
             {
                 int units;
-                if  (unitsToSell < parcel.Units)              
+                if (unitsToSell < parcel.Units)
                     units = unitsToSell;
-                else 
+                else
                     units = parcel.Units;
 
                 parcelsSold.Add(new ParcelSold(units, parcel));
@@ -159,7 +159,8 @@ namespace PortfolioManager.Model.Portfolios
 
             return new CGTCalculation(saleDate, amountReceived, parcelsSold, method);
         }
+
     }
 
- 
+
 }
