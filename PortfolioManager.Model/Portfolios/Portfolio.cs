@@ -144,10 +144,6 @@ namespace PortfolioManager.Model.Portfolios
                 {
                     var stock = _StockDatabase.StockQuery.Get(parcel.Stock, atDate);
 
-                    /* TODO : IncludeInHoldings */
-                    if (stock.Type == StockType.StapledSecurity)
-                        continue;
-
                     // If a stapled security then get the parent stock
                     if (stock.ParentId != Guid.Empty)
                     {
@@ -168,7 +164,7 @@ namespace PortfolioManager.Model.Portfolios
                             holding.Units = parcel.Units;
                             holding.TotalCostBase = parcel.CostBase;
                             holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                            holding.UnitValue = _StockDatabase.StockQuery.GetClosingPrice(parcel.Stock, atDate);
+                            holding.UnitValue = _StockDatabase.StockQuery.GetClosingPrice(stock.Id, atDate);
                         }
 
                     }
