@@ -162,10 +162,21 @@ namespace PortfolioManager.Test
             var parcels = _MyPortfolio.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
             foreach (ShareParcel parcel in parcels)
             {
-                var item = lsvParcels.Items.Add(_PortfolioManager.StockManager.GetASXCode(parcel.Stock));
+                var stock = _PortfolioManager.StockManager.GetStock(parcel.Stock, endDate);
+                var closingPrice = stock.GetPrice(endDate);
+                var marketValue = parcel.Units * closingPrice;
+                var capitalGain = marketValue - parcel.CostBase;
+                decimal capitalGainPercentage = 0.00m;
+                if (parcel.CostBase > 0.00m)
+                    capitalGainPercentage = capitalGain / parcel.CostBase;
+
+                var item = lsvParcels.Items.Add(stock.ASXCode);
                 item.SubItems.Add(parcel.Units.ToString("n0"));
                 item.SubItems.Add(MathUtils.FormatCurrency(parcel.UnitPrice, true, true));
-                item.SubItems.Add(MathUtils.FormatCurrency(parcel.CostBase, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(parcel.CostBase, true, true));                
+                item.SubItems.Add(MathUtils.FormatCurrency(marketValue, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(capitalGain, true, true));
+                item.SubItems.Add(capitalGainPercentage.ToString("##0.0%"));
             }
 
             /* CGT */

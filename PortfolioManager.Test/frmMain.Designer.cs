@@ -88,10 +88,13 @@
             this.columnHeader23 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader24 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader25 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader26 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader27 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader28 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPortfolio = new System.Windows.Forms.TabPage();
+            this.lblTotalCapitalGainPercentage = new System.Windows.Forms.Label();
+            this.lblTotalCapitalGain = new System.Windows.Forms.Label();
+            this.lblTotalMarketValue = new System.Windows.Forms.Label();
+            this.lblTotalCostBase = new System.Windows.Forms.Label();
             this.lsvPortfolio = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -100,12 +103,9 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabCashAccount = new System.Windows.Forms.TabControl();
             this.columnHeader33 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lblTotalCostBase = new System.Windows.Forms.Label();
-            this.lblTotalMarketValue = new System.Windows.Forms.Label();
-            this.lblTotalCapitalGain = new System.Windows.Forms.Label();
-            this.lblTotalCapitalGainPercentage = new System.Windows.Forms.Label();
+            this.tabCashAccount = new System.Windows.Forms.TabControl();
+            this.columnHeader34 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ctxCorporateAction.SuspendLayout();
             this.ctxTransaction.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -572,9 +572,9 @@
             this.columnHeader23,
             this.columnHeader24,
             this.columnHeader25,
-            this.columnHeader26,
             this.columnHeader27,
-            this.columnHeader28});
+            this.columnHeader28,
+            this.columnHeader34});
             this.lsvParcels.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvParcels.FullRowSelect = true;
             this.lsvParcels.Location = new System.Drawing.Point(0, 0);
@@ -608,17 +608,11 @@
             this.columnHeader25.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader25.Width = 77;
             // 
-            // columnHeader26
-            // 
-            this.columnHeader26.Text = "Last Price";
-            this.columnHeader26.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeader26.Width = 82;
-            // 
             // columnHeader27
             // 
             this.columnHeader27.Text = "Market Value";
             this.columnHeader27.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeader27.Width = 82;
+            this.columnHeader27.Width = 93;
             // 
             // columnHeader28
             // 
@@ -640,6 +634,42 @@
             this.tabPortfolio.TabIndex = 0;
             this.tabPortfolio.Text = "Portfolio";
             this.tabPortfolio.UseVisualStyleBackColor = true;
+            // 
+            // lblTotalCapitalGainPercentage
+            // 
+            this.lblTotalCapitalGainPercentage.Location = new System.Drawing.Point(592, 236);
+            this.lblTotalCapitalGainPercentage.Name = "lblTotalCapitalGainPercentage";
+            this.lblTotalCapitalGainPercentage.Size = new System.Drawing.Size(71, 23);
+            this.lblTotalCapitalGainPercentage.TabIndex = 4;
+            this.lblTotalCapitalGainPercentage.Text = "0.00";
+            this.lblTotalCapitalGainPercentage.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblTotalCapitalGain
+            // 
+            this.lblTotalCapitalGain.Location = new System.Drawing.Point(477, 236);
+            this.lblTotalCapitalGain.Name = "lblTotalCapitalGain";
+            this.lblTotalCapitalGain.Size = new System.Drawing.Size(100, 23);
+            this.lblTotalCapitalGain.TabIndex = 3;
+            this.lblTotalCapitalGain.Text = "0.00";
+            this.lblTotalCapitalGain.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblTotalMarketValue
+            // 
+            this.lblTotalMarketValue.Location = new System.Drawing.Point(388, 236);
+            this.lblTotalMarketValue.Name = "lblTotalMarketValue";
+            this.lblTotalMarketValue.Size = new System.Drawing.Size(83, 23);
+            this.lblTotalMarketValue.TabIndex = 2;
+            this.lblTotalMarketValue.Text = "0.00";
+            this.lblTotalMarketValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblTotalCostBase
+            // 
+            this.lblTotalCostBase.Location = new System.Drawing.Point(233, 236);
+            this.lblTotalCostBase.Name = "lblTotalCostBase";
+            this.lblTotalCostBase.Size = new System.Drawing.Size(73, 27);
+            this.lblTotalCostBase.TabIndex = 1;
+            this.lblTotalCostBase.Text = "0.00";
+            this.lblTotalCostBase.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lsvPortfolio
             // 
@@ -704,6 +734,12 @@
             this.columnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader7.Width = 102;
             // 
+            // columnHeader33
+            // 
+            this.columnHeader33.Text = "Capital Gain %";
+            this.columnHeader33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader33.Width = 91;
+            // 
             // tabCashAccount
             // 
             this.tabCashAccount.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -719,47 +755,11 @@
             this.tabCashAccount.Size = new System.Drawing.Size(1103, 293);
             this.tabCashAccount.TabIndex = 5;
             // 
-            // columnHeader33
+            // columnHeader34
             // 
-            this.columnHeader33.Text = "Capital Gain %";
-            this.columnHeader33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeader33.Width = 91;
-            // 
-            // lblTotalCostBase
-            // 
-            this.lblTotalCostBase.Location = new System.Drawing.Point(233, 236);
-            this.lblTotalCostBase.Name = "lblTotalCostBase";
-            this.lblTotalCostBase.Size = new System.Drawing.Size(73, 27);
-            this.lblTotalCostBase.TabIndex = 1;
-            this.lblTotalCostBase.Text = "0.00";
-            this.lblTotalCostBase.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // lblTotalMarketValue
-            // 
-            this.lblTotalMarketValue.Location = new System.Drawing.Point(388, 236);
-            this.lblTotalMarketValue.Name = "lblTotalMarketValue";
-            this.lblTotalMarketValue.Size = new System.Drawing.Size(83, 23);
-            this.lblTotalMarketValue.TabIndex = 2;
-            this.lblTotalMarketValue.Text = "0.00";
-            this.lblTotalMarketValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // lblTotalCapitalGain
-            // 
-            this.lblTotalCapitalGain.Location = new System.Drawing.Point(477, 236);
-            this.lblTotalCapitalGain.Name = "lblTotalCapitalGain";
-            this.lblTotalCapitalGain.Size = new System.Drawing.Size(100, 23);
-            this.lblTotalCapitalGain.TabIndex = 3;
-            this.lblTotalCapitalGain.Text = "0.00";
-            this.lblTotalCapitalGain.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // lblTotalCapitalGainPercentage
-            // 
-            this.lblTotalCapitalGainPercentage.Location = new System.Drawing.Point(592, 236);
-            this.lblTotalCapitalGainPercentage.Name = "lblTotalCapitalGainPercentage";
-            this.lblTotalCapitalGainPercentage.Size = new System.Drawing.Size(71, 23);
-            this.lblTotalCapitalGainPercentage.TabIndex = 4;
-            this.lblTotalCapitalGainPercentage.Text = "0.00";
-            this.lblTotalCapitalGainPercentage.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.columnHeader34.Text = "Capital Gain %";
+            this.columnHeader34.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader34.Width = 96;
             // 
             // frmMain
             // 
@@ -849,7 +849,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader23;
         private System.Windows.Forms.ColumnHeader columnHeader24;
         private System.Windows.Forms.ColumnHeader columnHeader25;
-        private System.Windows.Forms.ColumnHeader columnHeader26;
         private System.Windows.Forms.ColumnHeader columnHeader27;
         private System.Windows.Forms.ColumnHeader columnHeader28;
         private System.Windows.Forms.TabPage tabPortfolio;
@@ -868,6 +867,7 @@
         private System.Windows.Forms.Label lblTotalCapitalGain;
         private System.Windows.Forms.Label lblTotalMarketValue;
         private System.Windows.Forms.Label lblTotalCostBase;
+        private System.Windows.Forms.ColumnHeader columnHeader34;
     }
 }
 
