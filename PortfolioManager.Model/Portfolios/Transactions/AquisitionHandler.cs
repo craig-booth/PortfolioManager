@@ -24,7 +24,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             var aquisition = transaction as Aquisition;
 
-            Stock stock = _StockService.Get(aquisition.ASXCode, aquisition.TransactionDate);
+            var stock = _StockService.Get(aquisition.ASXCode, aquisition.TransactionDate);
 
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(aquisition, "Cannot aquire child securities. Aquire stapled security instead");

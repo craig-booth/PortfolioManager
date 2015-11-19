@@ -24,7 +24,7 @@ namespace PortfolioManager.Model.Utils
             return result;
         }
 
-        public static ApportionedValue[] ApportionAmountOverChildStocks(IStockQuery stockQuery, IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount)
+        public static ApportionedValue[] ApportionAmountOverChildStocks(IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount)
         {
             ApportionedValue[] result = new ApportionedValue[childStocks.Count];
             int i = 0;

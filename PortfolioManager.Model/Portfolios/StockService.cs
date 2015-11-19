@@ -33,5 +33,10 @@ namespace PortfolioManager.Model.Portfolios
             return _StockQuery.GetAll(atDate);
         }
 
+        public IReadOnlyCollection<Stock> GetChildStocks(Stock stock, DateTime date)
+        {
+            return _StockQuery.GetChildStocks(stock.Id, date);
+        }
+
     }
 }
