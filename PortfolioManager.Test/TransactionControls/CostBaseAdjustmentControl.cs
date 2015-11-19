@@ -16,17 +16,17 @@ namespace PortfolioManager.Test.TransactionControls
 {
     public partial class CostBaseAdjustmentControl : UserControl, ITransactionControl 
     {
-        private StockManager _StockManager;
+        private StockService _StockService;
 
         public CostBaseAdjustmentControl()
         {
             InitializeComponent();
         }
 
-        public CostBaseAdjustmentControl(StockManager stockManager)
+        public CostBaseAdjustmentControl(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
 
         public ITransaction CreateTransaction()
@@ -69,7 +69,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpAdjustmentDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockManager.GetStocks(dtpAdjustmentDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpAdjustmentDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());

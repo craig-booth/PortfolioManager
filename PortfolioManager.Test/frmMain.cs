@@ -24,6 +24,7 @@ namespace PortfolioManager.Test
     {
         private PortfolioManagerSettings _Settings;
         private PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
+        private IStockDatabase _StockDatabase;
         private Portfolio _MyPortfolio;
 
         private int _FinancialYear;
@@ -57,12 +58,11 @@ namespace PortfolioManager.Test
 
         private void LoadDatabase()
         {         
-            IStockDatabase stockDatabase = new SQLiteStockDatabase("Data Source=" +  _Settings.StockDatabaseFile + ";Version=3;");
+            _StockDatabase = new SQLiteStockDatabase("Data Source=" +  _Settings.StockDatabaseFile + ";Version=3;");
 
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase("Data Source=" + _Settings.PortfolioDatabaseFile + ";Version=3;");
 
-            _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(stockDatabase, portfolioDatabase);
-
+            _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);         
             _MyPortfolio = _PortfolioManager.CreatePortfolio("Craig's Shares");
 
             /* TODO: Priority Low, should add this when purchasing */
@@ -96,7 +96,7 @@ namespace PortfolioManager.Test
             foreach (ICorporateAction corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
-                item.SubItems.Add(_PortfolioManager.StockManager.GetASXCode(corporateAction.Stock));
+                item.SubItems.Add(_PortfolioManager.StockService.Get(corporateAction.Stock, corporateAction.ActionDate).ASXCode);
                 item.SubItems.Add(corporateAction.Description);
                 item.Tag = corporateAction;
             }         
@@ -162,7 +162,7 @@ namespace PortfolioManager.Test
             var parcels = _MyPortfolio.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
             foreach (ShareParcel parcel in parcels)
             {
-                var stock = _PortfolioManager.StockManager.GetStock(parcel.Stock, endDate);
+                var stock = _PortfolioManager.StockService.Get(parcel.Stock, endDate);
                 var closingPrice = stock.GetPrice(endDate);
                 var marketValue = parcel.Units * closingPrice;
                 var capitalGain = marketValue - parcel.CostBase;
@@ -185,7 +185,7 @@ namespace PortfolioManager.Test
             foreach (CGTEvent cgtEvent in cgtEvents)
             {
                 var item = lsvCGT.Items.Add(cgtEvent.EventDate.ToShortDateString());
-                item.SubItems.Add(_PortfolioManager.StockManager.GetASXCode(cgtEvent.Stock, cgtEvent.EventDate));
+                item.SubItems.Add(_PortfolioManager.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate).ASXCode);
                 item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.CostBase, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.AmountReceived, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.CapitalGain, true, true));
@@ -236,7 +236,7 @@ namespace PortfolioManager.Test
             
             var transactions = corporateAction.CreateTransactionList(_MyPortfolio);
 
-            var form = new frmMultipleTransactions(_PortfolioManager.StockManager);
+            var form = new frmMultipleTransactions(_PortfolioManager.StockService);
             if (form.EditTransactions(transactions))
             {
                 _MyPortfolio.ProcessTransactions(transactions);
@@ -248,7 +248,7 @@ namespace PortfolioManager.Test
 
         private void btnStockManager_Click(object sender, EventArgs e)
         {
-            var stockManagerForm = new frmStockManager(_PortfolioManager.StockManager);
+            var stockManagerForm = new frmStockManager(_StockDatabase);
             stockManagerForm.CorparateActionAdded += CorporateActionAdded;
             stockManagerForm.ShowDialog();
         }
@@ -270,7 +270,7 @@ namespace PortfolioManager.Test
 
         private void AddTransaction(TransactionType type)
         {
-            var form = new frmTransaction(_PortfolioManager.StockManager);
+            var form = new frmTransaction(_PortfolioManager.StockService);
 
             ITransaction transaction = form.CreateTransaction(type);
             if (transaction != null)
@@ -337,7 +337,7 @@ namespace PortfolioManager.Test
 
         private void mnuEditTransaction_Click(object sender, EventArgs e)
         {          
-            var form = new frmTransaction(_PortfolioManager.StockManager);
+            var form = new frmTransaction(_PortfolioManager.StockService);
 
             ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
             if (form.EditTransaction(transaction))
@@ -351,7 +351,7 @@ namespace PortfolioManager.Test
 
         private void mnuDeleteTransaction_Click(object sender, EventArgs e)
         {
-            var form = new frmTransaction(_PortfolioManager.StockManager);
+            var form = new frmTransaction(_PortfolioManager.StockService);
 
             ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
             if (form.DeleteTransaction(transaction))

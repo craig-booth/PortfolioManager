@@ -45,13 +45,13 @@ namespace PortfolioManager.Model.Test
         {
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
 
-            return new PortfolioManager.Model.Portfolios.PortfolioManager(_StockDatabase, portfolioDatabase);
+            return new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
         }
 
         public Portfolio CreateTestPortfolio()
         {
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
-            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(_StockDatabase, portfolioDatabase);
+            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             return portfolioManager.CreatePortfolio("Test portfolio");
         }

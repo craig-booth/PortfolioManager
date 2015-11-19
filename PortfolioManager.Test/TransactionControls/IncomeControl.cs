@@ -16,17 +16,17 @@ namespace PortfolioManager.Test.TransactionControls
 {
     public partial class IncomeControl : UserControl, ITransactionControl
     {
-        private StockManager _StockManager;
+        private readonly StockService _StockService;
 
         public IncomeControl()
         {
             InitializeComponent();
         }
 
-        public IncomeControl(StockManager stockManager)
+        public IncomeControl(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
 
             dtpRecordDate_ValueChanged(this, null);
         }
@@ -82,7 +82,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpRecordDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockManager.GetStocks(dtpRecordDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpRecordDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());

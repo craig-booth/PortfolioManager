@@ -16,17 +16,17 @@ namespace PortfolioManager.Test.TransactionControls
 {
     public partial class ReturnOfCapitalControl : UserControl, ITransactionControl
     {
-        private StockManager _StockManager;
+        private StockService _StockService;
 
         public ReturnOfCapitalControl()
         {
             InitializeComponent();
         }
 
-        public ReturnOfCapitalControl(StockManager stockManager)
+        public ReturnOfCapitalControl(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
 
         public ITransaction CreateTransaction()
@@ -69,7 +69,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpPaymentDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockManager.GetStocks(dtpPaymentDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpPaymentDate.Value).Where(x => x.Type != StockType.StapledSecurity).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());

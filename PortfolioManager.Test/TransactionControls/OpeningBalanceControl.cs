@@ -17,17 +17,17 @@ namespace PortfolioManager.Test.TransactionControls
     public partial class OpeningBalanceControl : UserControl, ITransactionControl
     {
 
-        private StockManager _StockManager;
+        private StockService _StockService;
 
         public OpeningBalanceControl()
         {
             InitializeComponent();
         }
 
-        public OpeningBalanceControl(StockManager stockManager)
+        public OpeningBalanceControl(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
 
         public ITransaction CreateTransaction()
@@ -72,7 +72,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpBalanceDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockManager.GetStocks(dtpBalanceDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpBalanceDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());

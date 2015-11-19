@@ -10,23 +10,24 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Test.TransactionControls
 {
     public partial class AquisitionControl : UserControl, ITransactionControl 
     {
-        private StockManager _StockManager;
+        private readonly StockService _StockService;
 
         public AquisitionControl()
         {
             InitializeComponent();
         }
 
-        public AquisitionControl(StockManager stockManager)
+        public AquisitionControl(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
 
             dtpAquisitionDate_ValueChanged(this, null);
         }
@@ -75,7 +76,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpAquisitionDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockManager.GetStocks(dtpAquisitionDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpAquisitionDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());

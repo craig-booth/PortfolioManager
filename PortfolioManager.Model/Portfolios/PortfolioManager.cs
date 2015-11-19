@@ -13,10 +13,11 @@ namespace PortfolioManager.Model.Portfolios
 
     public class PortfolioManager
     {
-        private IStockDatabase _StockDatabase;
-        private IPortfolioDatabase _PortfolioDatabase;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockQuery _StockQuery;
+        private readonly ICorporateActionQuery _CorporateActionQuery;
 
-        public StockManager StockManager { get; private set; }
+        public StockService StockService { get; private set; }
 
         public IReadOnlyCollection<Portfolio> Portfolios
         {
@@ -28,7 +29,7 @@ namespace PortfolioManager.Model.Portfolios
 
         public Portfolio CreatePortfolio(string name)
         {
-            Portfolio portfolio = new Portfolio(name, _PortfolioDatabase, _StockDatabase);
+            Portfolio portfolio = new Portfolio(name, _PortfolioDatabase, _StockQuery, _CorporateActionQuery);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -48,11 +49,13 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public PortfolioManager(IStockDatabase stockDatabase, IPortfolioDatabase portfolioDatabase)
+        public PortfolioManager(IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
-            _StockDatabase = stockDatabase;
-            _PortfolioDatabase = portfolioDatabase;
-            StockManager = new StockManager(_StockDatabase); 
+             _PortfolioDatabase = portfolioDatabase;
+            _StockQuery = stockQuery;
+            _CorporateActionQuery = corporateActionQuery;
+
+            StockService = new StockService(stockQuery);
         }
     }
 

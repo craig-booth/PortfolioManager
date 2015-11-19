@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Test
@@ -30,9 +31,9 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmStockManager(StockManager stockManager) : this()
+        public frmStockManager(IStockDatabase stockDatabase) : this()
         {
-            _StockManager = stockManager;
+            _StockManager = new StockManager(stockDatabase);
             _CorporateActionFormFactory = new CorporateActionFormFactory(_StockManager);
         }
 

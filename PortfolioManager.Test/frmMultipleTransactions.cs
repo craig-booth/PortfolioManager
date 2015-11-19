@@ -17,17 +17,17 @@ namespace PortfolioManager.Test
 {
     public partial class frmMultipleTransactions : Form
     {
-        private StockManager _StockManager;
+        private readonly StockService _StockService;
 
         public frmMultipleTransactions()
         {
             InitializeComponent();
         }
 
-        public frmMultipleTransactions(StockManager stockManager)
+        public frmMultipleTransactions(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
 
         private void AddTransactionTab(ITransaction transaction)
@@ -36,32 +36,32 @@ namespace PortfolioManager.Test
             string label;
             if (transaction.Type == TransactionType.Aquisition)
             {
-                control = new AquisitionControl(_StockManager);
+                control = new AquisitionControl(_StockService);
                 label = "Aquisition";
             }
             else if (transaction.Type == TransactionType.CostBaseAdjustment)
             {
-                control = new CostBaseAdjustmentControl(_StockManager);
+                control = new CostBaseAdjustmentControl(_StockService);
                 label = "Cost Base Adjustment";
             }
             else if (transaction.Type == TransactionType.Disposal)
             {
-                control = new DisposalControl(_StockManager);
+                control = new DisposalControl(_StockService);
                 label = "Disposal";
             }
             else if (transaction.Type == TransactionType.Income)
             {
-                control = new IncomeControl(_StockManager);
+                control = new IncomeControl(_StockService);
                 label = "Income";
             }
             else if (transaction.Type == TransactionType.OpeningBalance)
             {
-                control = new OpeningBalanceControl(_StockManager);
+                control = new OpeningBalanceControl(_StockService);
                 label = "Opening Balance";
             }
             else if (transaction.Type == TransactionType.ReturnOfCapital)
             {
-                control = new ReturnOfCapitalControl(_StockManager);
+                control = new ReturnOfCapitalControl(_StockService);
                 label = "Return Of Capital";
             }
             else

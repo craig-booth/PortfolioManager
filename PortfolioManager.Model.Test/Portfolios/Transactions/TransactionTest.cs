@@ -33,7 +33,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         public virtual void Setup()
         {
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
-            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(_StockDatabase, portfolioDatabase);
+            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
         }
@@ -106,7 +106,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedCGTEvents = new List<CGTEvent>();
 
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
-            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(_StockDatabase, portfolioDatabase);
+            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
         }

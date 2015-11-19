@@ -25,8 +25,9 @@ namespace PortfolioManager.Model.Portfolios
 
     public class Portfolio: IEntity
     {
-        private IPortfolioDatabase _PortfolioDatabase;
-        private IStockDatabase _StockDatabase;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockQuery _StockQuery;
+        private readonly ICorporateActionQuery _CorporateActionQuery;
 
         public Guid Id { get; private set; }
         public string Name { get; set; }
@@ -34,18 +35,24 @@ namespace PortfolioManager.Model.Portfolios
 
         public Dictionary<string, StockSetting> StockSetting { get; private set; }
 
+        private readonly Dictionary<TransactionType, ITransactionHandler> _TransactionHandlers;
+
         private Portfolio(string name)
         {
             Id = Guid.NewGuid();
             Name = name;
         }
 
-        protected internal Portfolio(string name, IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
+        protected internal Portfolio(string name, IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
             : this(name)
         {
             _PortfolioDatabase = portfolioDatabase;
-            _StockDatabase = stockDatabase;
-            
+            _StockQuery = stockQuery;
+            _CorporateActionQuery = corporateActionQuery;
+
+            _TransactionHandlers = new Dictionary<TransactionType, ITransactionHandler>();
+            _TransactionHandlers.Add(TransactionType.Aquisition, new AquisitionHandler(new ParcelService(), new StockService(stockQuery)));
+
             StockSetting = new Dictionary<string, StockSetting>();
 
             CashAccount = new CashAccount();
@@ -86,7 +93,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             var stapledParcels = new List<ShareParcel>();
 
-            var childStocks = _StockDatabase.StockQuery.GetChildStocks(ofStock, atDate);
+            var childStocks = _StockQuery.GetChildStocks(ofStock, atDate);
 
             foreach (var childStock in childStocks)
             {
@@ -120,7 +127,7 @@ namespace PortfolioManager.Model.Portfolios
 
             var holdingsQuery = from parcel in parcels
                                 group parcel by parcel.Stock into parcelGroup
-                                select new ShareHolding(_StockDatabase.StockQuery.Get(parcelGroup.Key, atDate), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.Amount), _StockDatabase.StockQuery.GetClosingPrice(parcelGroup.Key, atDate));
+                                select new ShareHolding(_StockQuery.Get(parcelGroup.Key, atDate), parcelGroup.Sum(x => x.Units), parcelGroup.Average(x => x.UnitPrice), parcelGroup.Sum(x => x.Amount), _StockQuery.GetClosingPrice(parcelGroup.Key, atDate));
 
             if (holdingsQuery.Count() > 0)
                 return holdingsQuery.First();
@@ -142,7 +149,7 @@ namespace PortfolioManager.Model.Portfolios
                 
                 if ((holding == null) || (parcel.Stock != holding.Stock.Id))
                 {
-                    var stock = _StockDatabase.StockQuery.Get(parcel.Stock, atDate);
+                    var stock = _StockQuery.Get(parcel.Stock, atDate);
 
                     // If a stapled security then get the parent stock
                     if (stock.ParentId != Guid.Empty)
@@ -155,7 +162,7 @@ namespace PortfolioManager.Model.Portfolios
                         }
                         else
                         {
-                            stock = _StockDatabase.StockQuery.Get(stock.ParentId, atDate);
+                            stock = _StockQuery.Get(stock.ParentId, atDate);
 
                             holding = new ShareHolding();
                             holdings.Add(holding);
@@ -164,7 +171,7 @@ namespace PortfolioManager.Model.Portfolios
                             holding.Units = parcel.Units;
                             holding.TotalCostBase = parcel.CostBase;
                             holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                            holding.UnitValue = _StockDatabase.StockQuery.GetClosingPrice(stock.Id, atDate);
+                            holding.UnitValue = _StockQuery.GetClosingPrice(stock.Id, atDate);
                         }
 
                     }
@@ -177,7 +184,7 @@ namespace PortfolioManager.Model.Portfolios
                         holding.Units = parcel.Units;
                         holding.TotalCostBase = parcel.CostBase;
                         holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                        holding.UnitValue = _StockDatabase.StockQuery.GetClosingPrice(parcel.Stock, atDate);
+                        holding.UnitValue = _StockQuery.GetClosingPrice(parcel.Stock, atDate);
                     }
                 }
                 else
@@ -263,6 +270,13 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
         {
+            var handler = _TransactionHandlers[transaction.Type];
+            if (handler != null)
+            {
+                handler.ApplyTransaction(unitOfWork, transaction);
+                return;
+            }
+
             if (transaction.Type == TransactionType.Aquisition)
                 ApplyAquisition(unitOfWork, transaction as Aquisition);
             else if (transaction.Type == TransactionType.Disposal)
@@ -286,7 +300,7 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyAquisition(IPortfolioUnitOfWork unitOfWork, Aquisition aquisition)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(aquisition.ASXCode, aquisition.TransactionDate);
+            Stock stock = _StockQuery.GetByASXCode(aquisition.ASXCode, aquisition.TransactionDate);
 
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(aquisition, "Cannot aquire child securities. Aquire stapled security instead");
@@ -294,14 +308,15 @@ namespace PortfolioManager.Model.Portfolios
             decimal amountPaid = (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 
-            AddParcel(unitOfWork, aquisition.TransactionDate, stock.Id, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
-
+            var parcelService = new ParcelService();
+            parcelService.AddParcel(unitOfWork, aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
+            
             CashAccount.AddTransaction(CashAccountTransactionType.Transfer, aquisition.TransactionDate, String.Format("Purchase of {0}", aquisition.ASXCode), amountPaid); 
         }
 
         private void ApplyDisposal(IPortfolioUnitOfWork unitOfWork, Disposal disposal)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(disposal.ASXCode, disposal.TransactionDate);
+            Stock stock = _StockQuery.GetByASXCode(disposal.ASXCode, disposal.TransactionDate);
 
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
@@ -323,15 +338,17 @@ namespace PortfolioManager.Model.Portfolios
             else if (CGTCalculation.UnitsSold < disposal.Units)
                 throw new NotEnoughSharesForDisposal(disposal, "Not enough shares for disposal");
 
+            var parcelService = new ParcelService();
+
             /* dispose of select parcels */
             if (stock.Type == StockType.StapledSecurity)
             {
                 foreach (ParcelSold parcelSold in CGTCalculation.ParcelsSold)
                 {
-                    var childStocks = _StockDatabase.StockQuery.GetChildStocks(stock.Id, disposal.TransactionDate);
+                    var childStocks = _StockQuery.GetChildStocks(stock.Id, disposal.TransactionDate);
 
                     // Apportion amount based on NTA of child stocks
-                    var amountsReceived = PortfolioUtils.ApportionAmountOverChildStocks(_StockDatabase.StockQuery, childStocks, disposal.TransactionDate, parcelSold.AmountReceived);
+                    var amountsReceived = PortfolioUtils.ApportionAmountOverChildStocks(_StockQuery, childStocks, disposal.TransactionDate, parcelSold.AmountReceived);
 
                     int i = 0;
                     foreach (var childStock in childStocks)
@@ -339,7 +356,7 @@ namespace PortfolioManager.Model.Portfolios
                         var childParcels = GetParcels(childStock.Id, disposal.TransactionDate);
 
                         var childParcel = childParcels.First(x => x.PurchaseId == parcelSold.Parcel.PurchaseId);
-                        DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, disposal.Description);
+                        parcelService.DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, disposal.Description);
 
                         i++;
                     } 
@@ -349,7 +366,7 @@ namespace PortfolioManager.Model.Portfolios
             else
             {
                 foreach (ParcelSold parcelSold in CGTCalculation.ParcelsSold)
-                    DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived, disposal.Description);
+                    parcelService.DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived, disposal.Description);
             }
 
             CashAccount.AddTransaction(CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), amountReceived + disposal.TransactionCosts); 
@@ -357,18 +374,19 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyOpeningBalance(IPortfolioUnitOfWork unitOfWork, OpeningBalance openingBalance)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(openingBalance.ASXCode, openingBalance.TransactionDate);
+            Stock stock = _StockQuery.GetByASXCode(openingBalance.ASXCode, openingBalance.TransactionDate);
 
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(openingBalance, "Cannot aquire child securities. Aquire stapled security instead");
 
-            AddParcel(unitOfWork, openingBalance.TransactionDate, stock.Id, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
+            var parcelService = new ParcelService();
+            parcelService.AddParcel(unitOfWork, openingBalance.TransactionDate, stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
         }
 
         private void ApplyCostBaseAdjustment(IPortfolioUnitOfWork unitOfWork, CostBaseAdjustment costBaseAdjustment)
         {
 
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
+            Stock stock = _StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
@@ -379,20 +397,22 @@ namespace PortfolioManager.Model.Portfolios
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(costBaseAdjustment, "No parcels found for transaction");
 
+            var parcelService = new ParcelService();
+
             /* Reduce cost base of parcels */
             foreach (ShareParcel parcelAtRecordDate in parcels)
             {
                 var parcelAtPaymentDate = _PortfolioDatabase.PortfolioQuery.GetParcel(parcelAtRecordDate.Id, costBaseAdjustment.TransactionDate);
 
                 var costBaseReduction = parcelAtPaymentDate.CostBase * (1 - costBaseAdjustment.Percentage);
-                ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                parcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
             }
 
         }
 
         private void ApplyReturnOfCapital(IPortfolioUnitOfWork unitOfWork, ReturnOfCapital returnOfCapital)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
+            Stock stock = _StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
@@ -403,6 +423,8 @@ namespace PortfolioManager.Model.Portfolios
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(returnOfCapital, "No parcels found for transaction");
 
+            var parcelService = new ParcelService();
+
             /* Reduce cost base of parcels */
             decimal totalAmount = 0;
             foreach (ShareParcel parcelAtRecordDate in parcels)
@@ -412,10 +434,10 @@ namespace PortfolioManager.Model.Portfolios
                 var costBaseReduction = parcelAtPaymentDate.Units * returnOfCapital.Amount;
 
                 if (costBaseReduction <= parcelAtPaymentDate.CostBase)
-                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                    parcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
                 else
                 {
-                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
+                    parcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
 
                     var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, returnOfCapital.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                     unitOfWork.CGTEventRepository.Add(cgtEvent);
@@ -442,7 +464,7 @@ namespace PortfolioManager.Model.Portfolios
 
         private void ApplyIncomeReceived(IPortfolioUnitOfWork unitOfWork, IncomeReceived incomeReceived)
         {
-            Stock stock = _StockDatabase.StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.RecordDate);
+            Stock stock = _StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(incomeReceived, "Cannot have a income for stapled securities. Income should be recorded against child securities instead");
@@ -463,6 +485,8 @@ namespace PortfolioManager.Model.Portfolios
                     apportionedAmounts[i++].Units = parcel.Units;
                 MathUtils.ApportionAmount(incomeReceived.TaxDeferred, apportionedAmounts);
 
+                var parcelService = new ParcelService();
+
                 /* Reduce cost base of parcels */
                 i = 0;
                 foreach (ShareParcel parcelAtRecordDate in parcels)
@@ -472,10 +496,10 @@ namespace PortfolioManager.Model.Portfolios
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
                     if (costBaseReduction <= parcelAtPaymentDate.CostBase)
-                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                        parcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
                     else
                     {
-                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
+                        parcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
 
                         var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, incomeReceived.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                         unitOfWork.CGTEventRepository.Add(cgtEvent);
@@ -487,93 +511,6 @@ namespace PortfolioManager.Model.Portfolios
                 CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome); 
         }
 
-        private void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Guid stockId, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
-        {
-            /* Handle Stapled Securities */
-            var stock = _StockDatabase.StockQuery.Get(stockId, aquisitionDate);
-            if (stock.Type == StockType.StapledSecurity)
-            {
-                /* Get child stocks */
-                var childStocks = _StockDatabase.StockQuery.GetChildStocks(stockId, aquisitionDate);
-
-                /* Apportion amount and cost base */
-                ApportionedValue[] apportionedAmounts = new ApportionedValue[childStocks.Count];
-                ApportionedValue[] apportionedCostBases = new ApportionedValue[childStocks.Count];
-                ApportionedValue[] apportionedUnitPrices = new ApportionedValue[childStocks.Count];
-                int i = 0;
-                foreach (Stock childStock in childStocks)
-                {
-                    decimal percentageOfParent = childStock.PercentageOfParentCostBase(aquisitionDate);
-                    int relativeValue = (int)(percentageOfParent * 10000);
-
-                    apportionedAmounts[i].Units = relativeValue;
-                    apportionedCostBases[i].Units = relativeValue;
-                    apportionedUnitPrices[i].Units = relativeValue;
-                    i++;
-                }
-                MathUtils.ApportionAmount(amount, apportionedAmounts);
-                MathUtils.ApportionAmount(costBase, apportionedCostBases);
-                MathUtils.ApportionAmount(unitPrice, apportionedUnitPrices);
-
-                i = 0;
-                var purchaseId = Guid.NewGuid();
-                foreach (Stock childStock in childStocks)
-                {            
-                    var childParcel = new ShareParcel(aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId, parcelEvent);
-
-                    unitOfWork.ParcelRepository.Add(childParcel);
-
-                    i++;
-                }
-            }
-           else
-            {
-                var parcel = new ShareParcel(aquisitionDate, stockId, units, unitPrice, amount, costBase, parcelEvent);
-                unitOfWork.ParcelRepository.Add(parcel);
-            }
-        }
-
-        private void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, int newUnits, decimal newCostBase, string description)
-        {
-
-            // Check that this is the latest version of this parcel
-            if (parcel.ToDate != DateTimeConstants.NoEndDate())
-                throw new AttemptToModifyPreviousParcelVersion(parcel.Id, "");
-
-            if (parcel.FromDate == changeDate)
-                throw new Exception("Parcel already modified today !!!");
-            
-            /* Update old effective dated record */
-            parcel.ToDate = changeDate.AddDays(-1);
-            unitOfWork.ParcelRepository.Update(parcel);
-
-            /* Add new record */
-            if (newUnits > 0)
-            {
-                var newParcel = parcel.Clone();
-                newParcel.FromDate = changeDate;
-                newParcel.ToDate = DateTimeConstants.NoEndDate();
-                newParcel.Event = parcelEvent;
-                newParcel.Units = newUnits;
-                newParcel.CostBase = newCostBase;
-                unitOfWork.ParcelRepository.Add(newParcel);
-            }
-        }
-
-        private void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int units, decimal amountReceived, string description)
-        {
-            decimal costBase;
-            CGTEvent cgtEvent;
-
-            /* Modify Parcel */
-            costBase = parcel.CostBase * ((decimal)units / parcel.Units);
-            ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, parcel.Units - units, parcel.CostBase - costBase, description);
-
-            /* Record CGT Event */
-            cgtEvent = new CGTEvent(parcel.Stock, disposalDate, units, costBase, amountReceived);
-            unitOfWork.CGTEventRepository.Add(cgtEvent);
-        }
-
         public IReadOnlyCollection<ICorporateAction> GetUnappliedCorparateActions()
         {
             // Get a list of all stocks held
@@ -582,7 +519,7 @@ namespace PortfolioManager.Model.Portfolios
             var allCorporateActions = new List<ICorporateAction>();
             foreach (OwnedStock ownedStock in allOwnedStocks)
             {
-                var corporateActions = _StockDatabase.CorporateActionQuery.Find(ownedStock.Id, ownedStock.FromDate, ownedStock.ToDate);
+                var corporateActions = _CorporateActionQuery.Find(ownedStock.Id, ownedStock.FromDate, ownedStock.ToDate);
                 AddUnappliedCorporateActions(allCorporateActions, corporateActions);   
             }
            
@@ -607,14 +544,14 @@ namespace PortfolioManager.Model.Portfolios
                     Dividend dividend = corporateAction as Dividend;
                     date = dividend.PaymentDate;
                     type = TransactionType.Income;
-                    asxCode = _StockDatabase.StockQuery.Get(dividend.Stock, date).ASXCode;
+                    asxCode = _StockQuery.Get(dividend.Stock, date).ASXCode;
                 }
                 else if (corporateAction.Type == CorporateActionType.CapitalReturn)
                 {
                     CapitalReturn capitalReturn = corporateAction as CapitalReturn;
                     date = capitalReturn.PaymentDate;
                     type = TransactionType.ReturnOfCapital;
-                    asxCode = _StockDatabase.StockQuery.Get(capitalReturn.Stock, date).ASXCode;
+                    asxCode = _StockQuery.Get(capitalReturn.Stock, date).ASXCode;
                 }
                 else if (corporateAction.Type == CorporateActionType.Transformation)
                 {
@@ -624,12 +561,12 @@ namespace PortfolioManager.Model.Portfolios
                     if (transformation.ResultingStocks.Any())
                     {
                         type = TransactionType.OpeningBalance;
-                        asxCode = _StockDatabase.StockQuery.Get(transformation.ResultingStocks.First().Stock, date).ASXCode;
+                        asxCode = _StockQuery.Get(transformation.ResultingStocks.First().Stock, date).ASXCode;
                     }
                     else 
                     {
                         type = TransactionType.Disposal; 
-                        asxCode = _StockDatabase.StockQuery.Get(transformation.Stock, date).ASXCode;
+                        asxCode = _StockQuery.Get(transformation.Stock, date).ASXCode;
                     }
                     
                 } 

@@ -16,16 +16,16 @@ namespace PortfolioManager.Test.TransactionControls
 {
     public partial class DisposalControl : UserControl, ITransactionControl 
     {
-        private StockManager _StockManager;
+        private readonly StockService _StockService;
 
         public DisposalControl()
         {
             InitializeComponent();
         }
-        public DisposalControl(StockManager stockManager)
+        public DisposalControl(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
 
         public ITransaction CreateTransaction()
@@ -72,7 +72,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         private void dtpDisposalDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockManager.GetStocks(dtpDisposalDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpDisposalDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());        
