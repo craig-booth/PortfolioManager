@@ -13,7 +13,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         private readonly IStockQuery _StockQuery;
 
-        public StockService(IStockQuery stockQuery)
+        internal StockService(IStockQuery stockQuery)
         {
             _StockQuery = stockQuery;
         }

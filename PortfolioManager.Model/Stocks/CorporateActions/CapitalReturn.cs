@@ -62,7 +62,7 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService)
         {
             var transactions = new List<ITransaction>();
 

@@ -121,12 +121,13 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService)
         {
             var transactions = new List<ITransaction>();
 
             /* locate parcels that the transformation applies to */
-            var ownedParcels = forPortfolio.GetParcels(Stock, ActionDate); 
+            var transfomationStock = _Database.StockQuery.Get(Stock, ActionDate);
+            var ownedParcels = parcelService.GetParcels(transfomationStock, ActionDate);
             if (ownedParcels.Count == 0)
                 return transactions;
 

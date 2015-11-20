@@ -18,7 +18,7 @@ namespace PortfolioManager.Model.Stocks
         DateTime ActionDate { get; }
         string Description { get; }
 
-        IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio);
+        IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService);
     }
 
     public class CorporateActionComparer : IComparer<ICorporateAction>

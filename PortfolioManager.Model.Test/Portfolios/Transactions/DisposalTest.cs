@@ -41,7 +41,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             _ExpectedCGTEvents.Add(new CGTEvent( _StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1690.00m));
         }
@@ -76,7 +76,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, ParcelEvent.Disposal)
                 {
@@ -124,7 +124,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             // costbase prior to sale = (1500 - (1000 * 0.20)) = (1500 - 200) = 1300
             // costbase of sold shares = (1300 / 2) = 650
@@ -176,7 +176,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1693.33m));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 1200.00m, 846.67m));
@@ -221,7 +221,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 300, 2.40m, 720.00m, 720.00m, ParcelEvent.Disposal)
             {
@@ -263,7 +263,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
@@ -302,7 +302,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
@@ -371,7 +371,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
@@ -440,7 +440,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
         }
 
         [Test, Description("Disposal of child security")]
@@ -462,7 +462,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
         }
 
 
@@ -494,7 +494,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
         }
 
         [Test, Description("Disposal of Ordinary Share - multiple parcels, not enough shares")]
@@ -534,7 +534,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
         }
     }
 }

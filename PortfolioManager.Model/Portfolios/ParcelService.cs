@@ -10,15 +10,30 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class ParcelService
+    public class ParcelService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
 
-        public ParcelService(IPortfolioQuery portfolioQuery, StockService stockService)
+        internal ParcelService(IPortfolioQuery portfolioQuery, StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetAllParcels(Guid.Empty, fromDate, toDate);
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(DateTime date)
+        {
+            return _PortfolioQuery.GetAllParcels(Guid.Empty, date);
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetParcelsForStock(Guid.Empty, stock.Id, fromDate, toDate);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime date)
@@ -63,7 +78,7 @@ namespace PortfolioManager.Model.Portfolios
             return _PortfolioQuery.GetParcel(id, date);
         }
 
-        public void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
+        internal void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
         {
             /* Handle Stapled Securities */
             if (stock.Type == StockType.StapledSecurity)
@@ -108,7 +123,7 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, int newUnits, decimal newCostBase, string description)
+        internal void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, int newUnits, decimal newCostBase, string description)
         {
 
             // Check that this is the latest version of this parcel
@@ -135,7 +150,7 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        public void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int units, decimal amountReceived, string description)
+        internal void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int units, decimal amountReceived, string description)
         {
             decimal costBase;
             CGTEvent cgtEvent;

@@ -19,6 +19,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     {
         protected SQLiteStockDatabase _StockDatabase;
         protected StockManager _StockManager;
+        protected PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
         protected Portfolio _Portfolio;
 
         [TestFixtureSetUp]
@@ -33,9 +34,9 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         public virtual void Setup()
         {
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
-            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
+            _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
-            _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
+            _Portfolio = _PortfolioManager.CreatePortfolio("Test portfolio");
         }
 
         protected virtual void AddStocks()
@@ -106,9 +107,9 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedCGTEvents = new List<CGTEvent>();
 
             var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
-            var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
+            _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
-            _Portfolio = portfolioManager.CreatePortfolio("Test portfolio");
+            _Portfolio = _PortfolioManager.CreatePortfolio("Test portfolio");
         }
 
 
@@ -123,7 +124,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [Test]
         public void ExpectedParcels()
         {
-            var actualParcels = _Portfolio.GetAllParcels(_TransactionDate);
+            var actualParcels = _PortfolioManager.ParcelService.GetParcels(_TransactionDate);
 
             Assert.That(actualParcels, PortfolioConstraint.Equals(_ExpectedParcels));
         }
@@ -131,7 +132,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [Test]
         public void ExpectedIncome()
         {
-            var actualIncome = _Portfolio.GetIncomeReceived(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+            var actualIncome = _PortfolioManager.IncomeService.GetIncome(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
 
             Assert.That(actualIncome, PortfolioConstraint.Equals(_ExpectedIncome));
         }
@@ -139,7 +140,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [Test]
         public void ExpectedCGTEvents()
         {
-            var actualCGTEvents = _Portfolio.GetCGTEvents(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+            var actualCGTEvents = _PortfolioManager.CGTService.GetEvents(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
 
             Assert.That(actualCGTEvents, PortfolioConstraint.Equals(_ExpectedCGTEvents));
         }

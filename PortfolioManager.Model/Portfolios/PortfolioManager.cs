@@ -18,6 +18,27 @@ namespace PortfolioManager.Model.Portfolios
         private readonly ICorporateActionQuery _CorporateActionQuery;
 
         public StockService StockService { get; private set; }
+        public ParcelService ParcelService { get; private set; }
+        public ShareHoldingService ShareHoldingService { get; private set; }
+        public TransactionService TransactionService { get; private set; }
+        public IncomeService IncomeService { get; private set; }
+        public CGTService CGTService { get; private set; }
+        public CorporateActionService CorporateActionService { get; private set; }
+
+        public PortfolioManager(IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
+        {
+            _PortfolioDatabase = portfolioDatabase;
+            _StockQuery = stockQuery;
+            _CorporateActionQuery = corporateActionQuery;
+
+            StockService = new StockService(stockQuery);
+            ParcelService = new ParcelService(_PortfolioDatabase.PortfolioQuery, StockService);
+            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, _StockQuery);
+            TransactionService = new TransactionService(_PortfolioDatabase, ParcelService, StockService);
+            IncomeService = new IncomeService(_PortfolioDatabase.PortfolioQuery);
+            CGTService = new CGTService(_PortfolioDatabase.PortfolioQuery);
+            CorporateActionService = new CorporateActionService(_CorporateActionQuery, ParcelService, StockService, TransactionService);
+        }
 
         public IReadOnlyCollection<Portfolio> Portfolios
         {
@@ -29,7 +50,7 @@ namespace PortfolioManager.Model.Portfolios
 
         public Portfolio CreatePortfolio(string name)
         {
-            Portfolio portfolio = new Portfolio(name, _PortfolioDatabase, _StockQuery, _CorporateActionQuery);
+            Portfolio portfolio = new Portfolio(name);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -37,6 +58,14 @@ namespace PortfolioManager.Model.Portfolios
                 unitOfWork.Save();
             }
 
+            /* Load transactions */
+            var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                foreach (var transaction in allTransactions)
+                    TransactionService.ApplyTransaction(unitOfWork, transaction);
+                unitOfWork.Save();
+            }
             return portfolio;
         }
 
@@ -48,15 +77,7 @@ namespace PortfolioManager.Model.Portfolios
                 unitOfWork.Save();
             }
         }
-
-        public PortfolioManager(IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
-        {
-             _PortfolioDatabase = portfolioDatabase;
-            _StockQuery = stockQuery;
-            _CorporateActionQuery = corporateActionQuery;
-
-            StockService = new StockService(stockQuery);
-        }
+        
     }
 
 }

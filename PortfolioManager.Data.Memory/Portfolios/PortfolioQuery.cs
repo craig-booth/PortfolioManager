@@ -46,10 +46,28 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
+        public IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime fromDate, DateTime toDate)
+        {
+            var parcelsQuery = from parcel in _Database._Parcels
+                               where parcel.ToDate >= fromDate && parcel.FromDate <= toDate
+                               select parcel;
+
+            return parcelsQuery.ToList().AsReadOnly();
+        }
+
         public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
                                where (parcel.Stock == stock) && ((atDate >= parcel.FromDate && atDate <= parcel.ToDate))
+                               select parcel;
+
+            return parcelsQuery.ToList().AsReadOnly();
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime fromDate, DateTime toDate)
+        {
+            var parcelsQuery = from parcel in _Database._Parcels
+                               where (parcel.Stock == stock) && ((parcel.ToDate >= fromDate && parcel.FromDate <= toDate))
                                select parcel;
 
             return parcelsQuery.ToList().AsReadOnly();
@@ -121,36 +139,6 @@ namespace PortfolioManager.Data.Memory.Portfolios
 
             return transactionQuery.ToList().AsReadOnly();
         }
-
-        public IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(Guid portfolio)
-        {
-            List<OwnedStock> ownedStocks = new List<OwnedStock>();
-
-            var parcelsQuery = from parcel in _Database._Parcels
-                               orderby parcel.Stock, parcel.FromDate 
-                               select parcel;
-
-            OwnedStock currentStock = null;
-            foreach (ShareParcel shareParcel in parcelsQuery)
-            {
-                if ((currentStock != null) && (shareParcel.Id == currentStock.Id) && (shareParcel.FromDate < currentStock.ToDate))
-                {
-                    if (shareParcel.ToDate > currentStock.ToDate)
-                        currentStock.ToDate = shareParcel.ToDate;
-                }
-                else
-                {
-                    currentStock = new OwnedStock()
-                    {
-                        Id = shareParcel.Id,
-                        FromDate = shareParcel.FromDate,
-                        ToDate = shareParcel.ToDate
-                    };
-                    ownedStocks.Add(currentStock);
-                }
-            }
-
-            return ownedStocks.AsReadOnly();
-        }   
+ 
     }
 }

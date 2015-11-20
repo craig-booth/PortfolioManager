@@ -46,9 +46,14 @@
     <Compile Include="Data\Portfolio.cs" />
     <Compile Include="Data\Stock.cs" />
     <Compile Include="Portfolios\CashAccount.cs" />
+    <Compile Include="Portfolios\CGTService.cs" />
+    <Compile Include="Portfolios\CorporateActionService.cs" />
     <Compile Include="Portfolios\Exceptions.cs" />
+    <Compile Include="Portfolios\IncomeService.cs" />
     <Compile Include="Portfolios\ParcelService.cs" />
+    <Compile Include="Portfolios\ShareHoldingService.cs" />
     <Compile Include="Portfolios\StockService.cs" />
+    <Compile Include="Portfolios\TransactionService.cs" />
     <Compile Include="Portfolios\Transactions\Aquisition.cs" />
     <Compile Include="Portfolios\CGTCalculator.cs" />
     <Compile Include="Portfolios\CGTEvent.cs" />

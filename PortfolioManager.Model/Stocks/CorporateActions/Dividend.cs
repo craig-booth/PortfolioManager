@@ -80,12 +80,13 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(Portfolio forPortfolio)
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService)
         {
             var transactions = new List<ITransaction>();
 
             /* locate parcels that the dividend applies to */
-            var parcels = forPortfolio.GetParcels(Stock, ActionDate);
+            var dividendStock = _Database.StockQuery.Get(Stock, ActionDate);
+            var parcels = parcelService.GetParcels(dividendStock, ActionDate);
             if (parcels.Count == 0)
                 return transactions;
 

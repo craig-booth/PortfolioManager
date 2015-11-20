@@ -28,7 +28,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TransactionCosts = 19.95m,
                 Comment = "Test aquisition"
             };
-            _Portfolio.ProcessTransaction(aquisition);
+            _PortfolioManager.TransactionService.ProcessTransaction(aquisition);
 
             decimal costBase = 10019.95m; // (1000 * 10) + 19.95
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, aquisition.Units, aquisition.AveragePrice, costBase, costBase, ParcelEvent.Aquisition));
@@ -51,7 +51,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 TransactionCosts = 19.95m,
                 Comment = "Test aquisition"
             };
-            _Portfolio.ProcessTransaction(aquisition);
+            _PortfolioManager.TransactionService.ProcessTransaction(aquisition);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
@@ -82,7 +82,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = ""
                 }
             };
-            _Portfolio.ProcessTransactions(transactions);
+            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
         }
     }
 
