@@ -18,12 +18,14 @@ namespace PortfolioManager.Model.Portfolios
         private readonly ICorporateActionQuery _CorporateActionQuery;
 
         public StockService StockService { get; private set; }
+        public StockPriceService StockPriceService { get; private set; }
         public ParcelService ParcelService { get; private set; }
         public ShareHoldingService ShareHoldingService { get; private set; }
         public TransactionService TransactionService { get; private set; }
         public IncomeService IncomeService { get; private set; }
         public CGTService CGTService { get; private set; }
         public CorporateActionService CorporateActionService { get; private set; }
+        
 
         public PortfolioManager(IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
@@ -32,12 +34,13 @@ namespace PortfolioManager.Model.Portfolios
             _CorporateActionQuery = corporateActionQuery;
 
             StockService = new StockService(stockQuery);
+            StockPriceService = new StockPriceService(stockQuery);
             ParcelService = new ParcelService(_PortfolioDatabase.PortfolioQuery, StockService);
-            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, _StockQuery);
+            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);
             TransactionService = new TransactionService(_PortfolioDatabase, ParcelService, StockService);
             IncomeService = new IncomeService(_PortfolioDatabase.PortfolioQuery);
             CGTService = new CGTService(_PortfolioDatabase.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(_CorporateActionQuery, ParcelService, StockService, TransactionService);
+            CorporateActionService = new CorporateActionService(_CorporateActionQuery, ParcelService, StockService, TransactionService);            
         }
 
         public IReadOnlyCollection<Portfolio> Portfolios

@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PortfolioManager.Model.Portfolios.PortfolioManager" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <AssociationLine Name="StockService" Type="PortfolioManager.Model.Portfolios.StockService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.625" Y="1.062" />
+        <Point X="1.625" Y="2.25" />
+        <Point X="5.417" Y="2.25" Type="JumpStart" />
+        <Point X="5.583" Y="2.25" Type="JumpEnd" />
+        <Point X="11.062" Y="2.25" />
+        <Point X="11.062" Y="2.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CGTService" Type="PortfolioManager.Model.Portfolios.CGTService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="0.688" Y="1.062" />
+        <Point X="0.688" Y="7.781" />
+        <Point X="4.75" Y="7.781" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="IncomeService" Type="PortfolioManager.Model.Portfolios.IncomeService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="0.875" Y="1.062" />
+        <Point X="0.875" Y="6.781" />
+        <Point X="4.75" Y="6.781" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ParcelService" Type="PortfolioManager.Model.Portfolios.ParcelService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.25" Y="1.062" />
+        <Point X="1.25" Y="4.781" />
+        <Point X="4.75" Y="4.781" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CorporateActionService" Type="PortfolioManager.Model.Portfolios.CorporateActionService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.812" Y="1.062" />
+        <Point X="1.812" Y="1.781" />
+        <Point X="4.75" Y="1.781" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ShareHoldingService" Type="PortfolioManager.Model.Portfolios.ShareHoldingService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.062" Y="1.062" />
+        <Point X="1.062" Y="5.781" />
+        <Point X="4.75" Y="5.781" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.516" Y="0.07" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="StockPriceService" Type="PortfolioManager.Model.Portfolios.StockPriceService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.438" Y="1.062" />
+        <Point X="1.438" Y="3.781" />
+        <Point X="5.417" Y="3.781" Type="JumpStart" />
+        <Point X="5.583" Y="3.781" Type="JumpEnd" />
+        <Point X="6.542" Y="3.781" Type="JumpStart" />
+        <Point X="6.708" Y="3.781" Type="JumpEnd" />
+        <Point X="8.521" Y="3.781" Type="JumpStart" />
+        <Point X="8.688" Y="3.781" Type="JumpEnd" />
+        <Point X="10.75" Y="3.781" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIAQAAAAAAAAAAAAQAAABAIAQAAABAAAAAUAAA2AQA=</HashCode>
+      <FileName>Portfolios\PortfolioManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="StockService" />
+      <Property Name="CGTService" />
+      <Property Name="IncomeService" />
+      <Property Name="ParcelService" />
+      <Property Name="CorporateActionService" />
+      <Property Name="ShareHoldingService" />
+      <Property Name="TransactionService" />
+      <Property Name="StockPriceService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.StockService" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <AssociationLine Name="_StockQuery" Type="PortfolioManager.Model.Data.IStockQuery" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.25" Y="2.781" />
+        <Point X="13.76" Y="2.781" Type="JumpStart" />
+        <Point X="13.927" Y="2.781" Type="JumpEnd" />
+        <Point X="14.812" Y="2.781" />
+        <Point X="14.812" Y="2.312" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAABAAAAAAAAAAAAAAAAAAgAAAAAgAAA=</HashCode>
+      <FileName>Portfolios\StockService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_StockQuery" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.CGTService" Collapsed="true">
+    <Position X="4.75" Y="7.5" Width="1.5" />
+    <AssociationLine Name="_PortfolioQuery" Type="PortfolioManager.Model.Data.IPortfolioQuery" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="7.813" />
+        <Point X="14.375" Y="7.813" />
+        <Point X="14.375" Y="5.562" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.068" Y="0.529" Height="0.182" Width="1.211" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Portfolios\CGTService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_PortfolioQuery" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.IncomeService" Collapsed="true">
+    <Position X="4.75" Y="6.5" Width="1.5" />
+    <AssociationLine Name="_PortfolioQuery" Type="PortfolioManager.Model.Data.IPortfolioQuery" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="6.781" />
+        <Point X="13.625" Y="6.781" />
+        <Point X="13.625" Y="5.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Portfolios\IncomeService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_PortfolioQuery" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.ParcelService" Collapsed="true">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <AssociationLine Name="_StockService" Type="PortfolioManager.Model.Portfolios.StockService" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="4.687" />
+        <Point X="6.542" Y="4.687" Type="JumpStart" />
+        <Point X="6.708" Y="4.687" Type="JumpEnd" />
+        <Point X="8.604" Y="4.687" />
+        <Point X="8.604" Y="2.938" />
+        <Point X="10.75" Y="2.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_PortfolioQuery" Type="PortfolioManager.Model.Data.IPortfolioQuery" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="4.875" />
+        <Point X="6.542" Y="4.875" Type="JumpStart" />
+        <Point X="6.708" Y="4.875" Type="JumpEnd" />
+        <Point X="11.417" Y="4.875" Type="JumpStart" />
+        <Point X="11.583" Y="4.875" Type="JumpEnd" />
+        <Point X="13" Y="4.875" />
+        <Point X="13" Y="4.75" />
+        <Point X="14" Y="4.75" />
+        <Point X="14" Y="5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIBQAAIAAAAAAAACAAAAAAAAAAAAQABAAAAgA=</HashCode>
+      <FileName>Portfolios\ParcelService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_StockService" />
+      <Field Name="_PortfolioQuery" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.CorporateActionService" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <AssociationLine Name="_ParcelService" Type="PortfolioManager.Model.Portfolios.ParcelService" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="2.062" />
+        <Point X="5.5" Y="4.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_StockService" Type="PortfolioManager.Model.Portfolios.StockService" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="1.781" />
+        <Point X="11.938" Y="1.781" />
+        <Point X="11.938" Y="2.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAABAAIAAAAAAgAAQAEAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Portfolios\CorporateActionService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_ParcelService" />
+      <Field Name="_StockService" />
+      <Field Name="_TransactionService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.ShareHoldingService" Collapsed="true">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="_StockService" Type="PortfolioManager.Model.Portfolios.StockService" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="5.609" />
+        <Point X="6.625" Y="5.609" />
+        <Point X="6.625" Y="2.688" />
+        <Point X="10.75" Y="2.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAhAAIAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Portfolios\ShareHoldingService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_ParcelService" />
+      <Field Name="_StockPriceService" />
+      <Field Name="_StockService" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.TransactionService" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAACAAIAAAAAAAABEAAAgAABAAAAIAAAAAAAA=</HashCode>
+      <FileName>Portfolios\TransactionService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_PortfolioDatabase" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PortfolioManager.Model.Portfolios.StockPriceService" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAA=</HashCode>
+      <FileName>Portfolios\StockPriceService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_StockQuery" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="PortfolioManager.Model.Data.IPortfolioQuery" Collapsed="true">
+    <Position X="13.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAACAIACgAAAAAAAAYAgAAAAA=</HashCode>
+      <FileName>Data\Portfolio.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PortfolioManager.Model.Data.IStockQuery" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAISABQIAAAAACAAAAAAAAAAgAAABAEAAA=</HashCode>
+      <FileName>Data\Stock.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PortfolioManager.Model.Data.IPortfolioDatabase" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAA=</HashCode>
+      <FileName>Data\Portfolio.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

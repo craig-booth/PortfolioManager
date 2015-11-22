@@ -52,6 +52,7 @@
     <Compile Include="Portfolios\IncomeService.cs" />
     <Compile Include="Portfolios\ParcelService.cs" />
     <Compile Include="Portfolios\ShareHoldingService.cs" />
+    <Compile Include="Portfolios\StockPriceService.cs" />
     <Compile Include="Portfolios\StockService.cs" />
     <Compile Include="Portfolios\TransactionService.cs" />
     <Compile Include="Portfolios\Transactions\Aquisition.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Utils\PortfolioUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ServicesClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,13 +13,13 @@ namespace PortfolioManager.Model.Portfolios
     {
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
-        private readonly IStockQuery _StockQuery;
+        private readonly StockPriceService _StockPriceService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, IStockQuery stockQuery)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
-            _StockQuery = stockQuery;
+            _StockPriceService = stockPriceService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -28,7 +28,7 @@ namespace PortfolioManager.Model.Portfolios
 
             var holding = new ShareHolding();
             holding.Stock = stock;
-            holding.UnitValue = _StockQuery.GetClosingPrice(stock.Id, date);
+            holding.UnitValue = _StockPriceService.GetClosingPrice(stock, date);
 
             foreach (var parcel in parcels)
             {
@@ -76,7 +76,7 @@ namespace PortfolioManager.Model.Portfolios
                             holding.Units = parcel.Units;
                             holding.TotalCostBase = parcel.CostBase;
                             holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                            holding.UnitValue = _StockQuery.GetClosingPrice(stock.Id, date);
+                            holding.UnitValue = _StockPriceService.GetClosingPrice(stock, date);
                         }
 
                     }
@@ -89,7 +89,7 @@ namespace PortfolioManager.Model.Portfolios
                         holding.Units = parcel.Units;
                         holding.TotalCostBase = parcel.CostBase;
                         holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                        holding.UnitValue = _StockQuery.GetClosingPrice(parcel.Stock, date);
+                        holding.UnitValue = _StockPriceService.GetClosingPrice(stock, date);
                     }
                 }
                 else
