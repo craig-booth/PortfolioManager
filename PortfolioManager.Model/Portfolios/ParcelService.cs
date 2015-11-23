@@ -21,19 +21,9 @@ namespace PortfolioManager.Model.Portfolios
             _StockService = stockService;
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcels(DateTime fromDate, DateTime toDate)
-        {
-            return _PortfolioQuery.GetAllParcels(Guid.Empty, fromDate, toDate);
-        }
-
         public IReadOnlyCollection<ShareParcel> GetParcels(DateTime date)
         {
             return _PortfolioQuery.GetAllParcels(Guid.Empty, date);
-        }
-
-        public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime fromDate, DateTime toDate)
-        {
-            return _PortfolioQuery.GetParcelsForStock(Guid.Empty, stock.Id, fromDate, toDate);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime date)

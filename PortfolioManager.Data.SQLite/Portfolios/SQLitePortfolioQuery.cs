@@ -50,28 +50,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime fromDate, DateTime toDate)
-        {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where parcel.ToDate >= fromDate && parcel.FromDate <= toDate
-                               select parcel;
-
-            return parcelsQuery.ToList().AsReadOnly();
-        }
-
         public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
                                where (parcel.Stock == stock) && ((atDate >= parcel.FromDate && atDate <= parcel.ToDate))
-                               select parcel;
-
-            return parcelsQuery.ToList().AsReadOnly();
-        }
-
-        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime fromDate, DateTime toDate)
-        {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Stock == stock) && ((parcel.ToDate >= fromDate && parcel.FromDate <= toDate))
                                select parcel;
 
             return parcelsQuery.ToList().AsReadOnly();

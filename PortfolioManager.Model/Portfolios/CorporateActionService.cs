@@ -60,7 +60,7 @@ namespace PortfolioManager.Model.Portfolios
         public IReadOnlyCollection<ICorporateAction> GetUnappliedCorparateActions()
         {
             // Get a list of all stocks held
-            var allOwnedStocks = GetStocksInPortfolio();
+            var allOwnedStocks = GetStocksInPortfolio(DateTime.Today);
 
             var allCorporateActions = new List<ICorporateAction>();
             foreach (OwnedStock ownedStock in allOwnedStocks)
@@ -75,11 +75,11 @@ namespace PortfolioManager.Model.Portfolios
             return allCorporateActions.AsReadOnly(); 
         }
 
-        private IReadOnlyCollection<OwnedStock> GetStocksInPortfolio()
+        private IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(DateTime date)
         {
             List<OwnedStock> ownedStocks = new List<OwnedStock>();
 
-            var parcels = _ParcelService.GetParcels(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate()).OrderBy(x => x.Stock).ThenBy(x => x.FromDate);
+            var parcels = _ParcelService.GetParcels(date).OrderBy(x => x.Stock).ThenBy(x => x.FromDate);
 
             OwnedStock currentStock = null;
             foreach (var shareParcel in parcels)
@@ -98,27 +98,6 @@ namespace PortfolioManager.Model.Portfolios
                         ToDate = shareParcel.ToDate
                     };
                     ownedStocks.Add(currentStock);
-                }
-            }
-
-            // Check for stapled securities
-            foreach (var ownedStock in ownedStocks)
-            {
-                var stock = _StockService.Get(ownedStock.Id, ownedStock.FromDate);
-                if (stock.ParentId != Guid.Empty)
-                {
-                    if (ownedStocks.Find(x => x.Id == stock.ParentId) == null)
-                    {
-                        var parentStock = _StockService.Get(stock.ParentId, ownedStock.FromDate);
-
-                        currentStock = new OwnedStock()
-                        {
-                            Id = parentStock.Id,
-                            FromDate = ownedStock.FromDate,
-                            ToDate = ownedStock.ToDate
-                        };
-                        ownedStocks.Add(currentStock);
-                    }                                  
                 }
             }
 

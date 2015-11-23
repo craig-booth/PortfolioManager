@@ -53,9 +53,7 @@ namespace PortfolioManager.Model.Data
 
         ShareParcel GetParcel(Guid id, DateTime atDate);
         IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<CGTEvent> GetCGTEvents(Guid portfolio, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<IncomeReceived> GetIncome(Guid portfolio, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate);
