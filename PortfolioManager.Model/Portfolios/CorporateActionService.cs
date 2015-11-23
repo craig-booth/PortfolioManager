@@ -17,12 +17,31 @@ namespace PortfolioManager.Model.Portfolios
         private readonly StockService _StockService;
         private readonly TransactionService _TransactionService;
 
+        private readonly Dictionary<CorporateActionType, ICorporateActionHandler> _CorporateActionHandlers;
+
         internal CorporateActionService(ICorporateActionQuery corporateActionQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService)
         {
             _CorporateActionQuery = corporateActionQuery;
             _ParcelService = parcelService;
             _StockService = stockService;
             _TransactionService = transactionService;
+
+
+            _CorporateActionHandlers = new Dictionary<CorporateActionType, ICorporateActionHandler>();
+
+            /* Add corporate action handlers */
+            _CorporateActionHandlers.Add(CorporateActionType.CapitalReturn, new CapitalReturnHandler(_StockService, _ParcelService));
+            _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(_StockService, _ParcelService));
+            _CorporateActionHandlers.Add(CorporateActionType.Transformation, new TransformationHandler(_StockService, _ParcelService));
+        }
+
+        public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
+        {
+            var handler = _CorporateActionHandlers[corporateAction.Type];
+            if (handler == null)
+                throw new NotSupportedException("Transaction type not supported");
+
+            return handler.CreateTransactionList(corporateAction);
         }
 
         public IReadOnlyCollection<ICorporateAction> GetUnappliedCorparateActions(Stock stock, DateTime fromDate, DateTime toDate)

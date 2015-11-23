@@ -234,7 +234,7 @@ namespace PortfolioManager.Test
         {
             ICorporateAction corporateAction = lsvCorporateActions.FocusedItem.Tag as ICorporateAction;
             
-            var transactions = corporateAction.CreateTransactionList(_PortfolioManager.ParcelService);
+            var transactions = _PortfolioManager.CorporateActionService.CreateTransactionList(corporateAction);
 
             var form = new frmMultipleTransactions(_PortfolioManager.StockService);
             if (form.EditTransactions(transactions))

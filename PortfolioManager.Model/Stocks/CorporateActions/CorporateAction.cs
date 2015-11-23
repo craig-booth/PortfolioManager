@@ -17,8 +17,6 @@ namespace PortfolioManager.Model.Stocks
         Guid Stock { get; }
         DateTime ActionDate { get; }
         string Description { get; }
-
-        IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService);
     }
 
     public class CorporateActionComparer : IComparer<ICorporateAction>

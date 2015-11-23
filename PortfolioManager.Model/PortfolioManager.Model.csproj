@@ -49,6 +49,10 @@
     <Compile Include="Portfolios\CashAccount.cs" />
     <Compile Include="Portfolios\CGTService.cs" />
     <Compile Include="Portfolios\CorporateActionService.cs" />
+    <Compile Include="Portfolios\CorporateActions\CapitalReturnHandler.cs" />
+    <Compile Include="Portfolios\CorporateActions\CorporateActionHandler.cs" />
+    <Compile Include="Portfolios\CorporateActions\DividendHandler.cs" />
+    <Compile Include="Portfolios\CorporateActions\TransformationHandler.cs" />
     <Compile Include="Portfolios\Exceptions.cs" />
     <Compile Include="Portfolios\IncomeService.cs" />
     <Compile Include="Portfolios\ParcelService.cs" />

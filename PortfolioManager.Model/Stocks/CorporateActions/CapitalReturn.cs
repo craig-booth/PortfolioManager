@@ -62,22 +62,5 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService)
-        {
-            var transactions = new List<ITransaction>();
-
-            var stock = _Database.StockQuery.Get(this.Stock, this.PaymentDate);
-
-            transactions.Add(new ReturnOfCapital()
-            {
-                ASXCode = stock.ASXCode,
-                TransactionDate = this.PaymentDate,
-                Amount = this.Amount,
-                Comment = Description
-            }
-            );
-
-            return transactions.AsReadOnly();
-        }
     }
 }

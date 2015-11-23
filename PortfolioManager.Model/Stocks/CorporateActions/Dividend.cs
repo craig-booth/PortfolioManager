@@ -80,52 +80,5 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ParcelService parcelService)
-        {
-            var transactions = new List<ITransaction>();
-
-            /* locate parcels that the dividend applies to */
-            var dividendStock = _Database.StockQuery.Get(Stock, ActionDate);
-            var parcels = parcelService.GetParcels(dividendStock, ActionDate);
-            if (parcels.Count == 0)
-                return transactions;
-
-            var stock = _Database.StockQuery.Get(this.Stock, this.PaymentDate);
-
-            var unitsHeld = parcels.Sum(x => x.Units);
-            var amountPaid = unitsHeld * DividendAmount;
-            var franked = MathUtils.ToCurrency(amountPaid * PercentFranked, stock.DividendRoundingRule);
-            var unFranked = MathUtils.ToCurrency(amountPaid * (1 - PercentFranked), stock.DividendRoundingRule);
-            var frankingCredits = MathUtils.ToCurrency(((amountPaid / (1 - CompanyTaxRate)) - amountPaid) * PercentFranked, stock.DividendRoundingRule);
-
-            /* add drp shares */
-            if (DRPPrice != 0.00M)
-            {
-                int drpUnits = (int)Math.Round(amountPaid / DRPPrice);
-
-                transactions.Add(new OpeningBalance()
-                {
-                    TransactionDate = PaymentDate,
-                    ASXCode = stock.ASXCode,
-                    Units = drpUnits,
-                    CostBase = amountPaid,
-                    Comment = "DRP " + MathUtils.FormatCurrency(DRPPrice, false, true)
-                }
-                );
-            }
-
-            transactions.Add(new IncomeReceived()
-            {
-                TransactionDate = PaymentDate,
-                ASXCode = stock.ASXCode,
-                RecordDate = ActionDate,
-                FrankedAmount = franked,
-                UnfrankedAmount = unFranked,
-                FrankingCredits = frankingCredits,
-                Comment = Description
-            });
-
-            return transactions;
-        }
     }
 }
