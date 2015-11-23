@@ -90,8 +90,7 @@ namespace PortfolioManager.Test
         private void DisplayCorporateActions()
         {
 
-            var corporateActions = _PortfolioManager.CorporateActionService.GetUnappliedCorparateActions();
-
+            var corporateActions = _MyPortfolio.CorporateActionService.GetUnappliedCorparateActions();
             lsvCorporateActions.Items.Clear();
             foreach (ICorporateAction corporateAction in corporateActions)
             {
@@ -124,7 +123,7 @@ namespace PortfolioManager.Test
             decimal totalCapitalGainPercentage = 0.00m;
 
             lsvPortfolio.Items.Clear();
-            var holdings = _PortfolioManager.ShareHoldingService.GetHoldings(endDate).OrderBy(x => x.Stock.ASXCode);
+            var holdings = _MyPortfolio.ShareHoldingService.GetHoldings(endDate).OrderBy(x => x.Stock.ASXCode);
             foreach (ShareHolding holding in holdings)
             {          
                 decimal capitalGain;
@@ -159,7 +158,7 @@ namespace PortfolioManager.Test
 
             /* Parcels */
             lsvParcels.Items.Clear();
-            var parcels = _PortfolioManager.ParcelService.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
+            var parcels = _MyPortfolio.ParcelService.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
             foreach (ShareParcel parcel in parcels)
             {
                 var stock = _PortfolioManager.StockService.Get(parcel.Stock, endDate);
@@ -181,7 +180,7 @@ namespace PortfolioManager.Test
 
             /* CGT */
             lsvCGT.Items.Clear();
-            var cgtEvents = _PortfolioManager.CGTService.GetEvents(startDate, endDate);
+            var cgtEvents = _MyPortfolio.CGTService.GetEvents(startDate, endDate);
             foreach (CGTEvent cgtEvent in cgtEvents)
             {
                 var item = lsvCGT.Items.Add(cgtEvent.EventDate.ToShortDateString());
@@ -193,7 +192,7 @@ namespace PortfolioManager.Test
 
             /* Income */
             lsvIncome.Items.Clear();
-            var allIncome = _PortfolioManager.IncomeService.GetIncome(startDate, endDate);
+            var allIncome = _MyPortfolio.IncomeService.GetIncome(startDate, endDate);
             foreach (IncomeReceived income in allIncome)
             {
                 var item = lsvIncome.Items.Add(income.TransactionDate.ToShortDateString());
@@ -204,7 +203,7 @@ namespace PortfolioManager.Test
 
             /* Transactions */
             lsvTransactions.Items.Clear();
-            var allTransactions = _PortfolioManager.TransactionService.GetTransactions(startDate, endDate);
+            var allTransactions = _MyPortfolio.TransactionService.GetTransactions(startDate, endDate);
             foreach (ITransaction transaction in allTransactions)
             {
                 var item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
@@ -224,7 +223,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = lsvTransactions2.FocusedItem.Tag as ITransaction;
             lsvTransactions2.FocusedItem.Remove();
 
-            _PortfolioManager.TransactionService.ProcessTransaction(transaction);
+            _MyPortfolio.TransactionService.ProcessTransaction(transaction);
      
             DisplayPortfolio();
             DisplayCorporateActions();
@@ -234,12 +233,12 @@ namespace PortfolioManager.Test
         {
             ICorporateAction corporateAction = lsvCorporateActions.FocusedItem.Tag as ICorporateAction;
             
-            var transactions = _PortfolioManager.CorporateActionService.CreateTransactionList(corporateAction);
+            var transactions = _MyPortfolio.CorporateActionService.CreateTransactionList(corporateAction);
 
             var form = new frmMultipleTransactions(_PortfolioManager.StockService);
             if (form.EditTransactions(transactions))
             {
-                _PortfolioManager.TransactionService.ProcessTransactions(transactions);
+                _MyPortfolio.TransactionService.ProcessTransactions(transactions);
                 lsvCorporateActions.FocusedItem.Remove();
 
                 DisplayPortfolio();
@@ -275,7 +274,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = form.CreateTransaction(type);
             if (transaction != null)
             {
-                _PortfolioManager.TransactionService.ProcessTransaction(transaction);
+                _MyPortfolio.TransactionService.ProcessTransaction(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();
@@ -342,7 +341,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
             if (form.EditTransaction(transaction))
             {
-                _PortfolioManager.TransactionService.UpdateTransaction(transaction);
+                _MyPortfolio.TransactionService.UpdateTransaction(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();
@@ -356,7 +355,7 @@ namespace PortfolioManager.Test
             ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
             if (form.DeleteTransaction(transaction))
             {
-                _PortfolioManager.TransactionService.DeleteTransaction(transaction);
+                _MyPortfolio.TransactionService.DeleteTransaction(transaction);
 
                 DisplayPortfolio();
                 DisplayCorporateActions();

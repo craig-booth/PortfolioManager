@@ -19,14 +19,7 @@ namespace PortfolioManager.Model.Portfolios
 
         public StockService StockService { get; private set; }
         public StockPriceService StockPriceService { get; private set; }
-        public ParcelService ParcelService { get; private set; }
-        public ShareHoldingService ShareHoldingService { get; private set; }
-        public TransactionService TransactionService { get; private set; }
-        public IncomeService IncomeService { get; private set; }
-        public CGTService CGTService { get; private set; }
-        public CorporateActionService CorporateActionService { get; private set; }
-        
-
+      
         public PortfolioManager(IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
             _PortfolioDatabase = portfolioDatabase;
@@ -34,13 +27,7 @@ namespace PortfolioManager.Model.Portfolios
             _CorporateActionQuery = corporateActionQuery;
 
             StockService = new StockService(stockQuery);
-            StockPriceService = new StockPriceService(stockQuery);
-            ParcelService = new ParcelService(_PortfolioDatabase.PortfolioQuery, StockService);
-            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);
-            TransactionService = new TransactionService(_PortfolioDatabase, ParcelService, StockService);
-            IncomeService = new IncomeService(_PortfolioDatabase.PortfolioQuery);
-            CGTService = new CGTService(_PortfolioDatabase.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(_CorporateActionQuery, ParcelService, StockService, TransactionService);            
+            StockPriceService = new StockPriceService(stockQuery);                       
         }
 
         public IReadOnlyCollection<Portfolio> Portfolios
@@ -53,7 +40,7 @@ namespace PortfolioManager.Model.Portfolios
 
         public Portfolio CreatePortfolio(string name)
         {
-            Portfolio portfolio = new Portfolio(name);
+            Portfolio portfolio = new Portfolio(name, _PortfolioDatabase, StockService, StockPriceService, _CorporateActionQuery);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -62,11 +49,11 @@ namespace PortfolioManager.Model.Portfolios
             }
 
             /* Load transactions */
-            var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            var allTransactions = portfolio.TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 foreach (var transaction in allTransactions)
-                    TransactionService.ApplyTransaction(unitOfWork, transaction);
+                    portfolio.TransactionService.ApplyTransaction(unitOfWork, transaction);
                 unitOfWork.Save();
             }
             return portfolio;

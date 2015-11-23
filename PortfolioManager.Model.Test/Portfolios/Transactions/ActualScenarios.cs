@@ -97,7 +97,7 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
                     Comment = "Disposal of FOXLV"
                 }
             };
-            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
+            _Portfolio.TransactionService.ProcessTransactions(transactions);
 
             _TransactionDate = new DateTime(2015, 02, 10);
 

@@ -27,7 +27,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 1500.00m,
                 Comment = "Test Opening Balance"
             };
-            _PortfolioManager.TransactionService.ProcessTransaction(openingbalance);
+            _Portfolio.TransactionService.ProcessTransaction(openingbalance);
 
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, openingbalance.Units, 1.50m, openingbalance.CostBase, openingbalance.CostBase, ParcelEvent.OpeningBalance));
         }
@@ -48,7 +48,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 CostBase = 15000.00m,
                 Comment = "Test Opening Balance"
             };
-            _PortfolioManager.TransactionService.ProcessTransaction(openingbalance);
+            _Portfolio.TransactionService.ProcessTransaction(openingbalance);
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
@@ -78,7 +78,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     Comment = "Test Opening Balance"
                 }
             };
-            _PortfolioManager.TransactionService.ProcessTransactions(transactions);
+            _Portfolio.TransactionService.ProcessTransactions(transactions);
         }
     }
 
