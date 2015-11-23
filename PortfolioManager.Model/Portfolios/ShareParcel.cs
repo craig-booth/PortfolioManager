@@ -37,7 +37,7 @@ namespace PortfolioManager.Model.Portfolios
             : this()
         {
             FromDate = aquisitionDate;
-            ToDate = DateTimeConstants.NoEndDate();
+            ToDate = DateTimeConstants.NoEndDate;
             Stock = stock;
             AquisitionDate = aquisitionDate;
             Amount = amount;
@@ -51,7 +51,7 @@ namespace PortfolioManager.Model.Portfolios
             : this()
         {
             FromDate = aquisitionDate;
-            ToDate = DateTimeConstants.NoEndDate();
+            ToDate = DateTimeConstants.NoEndDate;
             Stock = stock;
             AquisitionDate = aquisitionDate;
             Amount = amount;

@@ -67,7 +67,7 @@ namespace PortfolioManager.Model.Portfolios
         {
 
             // Check that this is the latest version of this parcel
-            if (parcel.ToDate != DateTimeConstants.NoEndDate())
+            if (parcel.ToDate != DateTimeConstants.NoEndDate)
                 throw new AttemptToModifyPreviousParcelVersion(parcel.Id, "");
 
             if (parcel.FromDate == changeDate)
@@ -82,7 +82,7 @@ namespace PortfolioManager.Model.Portfolios
             {
                 var newParcel = parcel.Clone();
                 newParcel.FromDate = changeDate;
-                newParcel.ToDate = DateTimeConstants.NoEndDate();
+                newParcel.ToDate = DateTimeConstants.NoEndDate;
                 newParcel.Event = parcelEvent;
                 newParcel.Units = newUnits;
                 newParcel.CostBase = newCostBase;

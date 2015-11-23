@@ -112,8 +112,8 @@ namespace PortfolioManager.Test
             }
             else
             {
-                startDate = DateTimeConstants.NoStartDate();
-                endDate = DateTimeConstants.NoEndDate();             
+                startDate = DateTimeConstants.NoStartDate;
+                endDate = DateTimeConstants.NoEndDate;             
             }
 
             /* Current Holdings */

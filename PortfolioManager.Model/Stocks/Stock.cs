@@ -90,7 +90,7 @@ namespace PortfolioManager.Model.Stocks
         }
 
         public Stock(IStockDatabase database, DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
-            : this(database, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate(), asxCode, name, type, parent)
+            : this(database, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate, asxCode, name, type, parent)
 
         {
         }
@@ -128,7 +128,7 @@ namespace PortfolioManager.Model.Stocks
                 unitOfWork.StockRepository.Update(this);
 
                 /* Add new record */
-                var newStock = new Stock(_Database, Id, atDate, DateTimeConstants.NoEndDate(), newAsxCode, newName, Type, ParentId);
+                var newStock = new Stock(_Database, Id, atDate, DateTimeConstants.NoEndDate, newAsxCode, newName, Type, ParentId);
                 unitOfWork.StockRepository.Add(newStock);
 
                 unitOfWork.Save();
@@ -294,7 +294,7 @@ namespace PortfolioManager.Model.Stocks
 
         public IReadOnlyCollection<ICorporateAction> GetCorporateActions()
         {
-            return _Database.CorporateActionQuery.Find(Id, DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+            return _Database.CorporateActionQuery.Find(Id, DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
         }
 
         public IReadOnlyCollection<ICorporateAction> GetCorporateActions(DateTime fromDate, DateTime toDate)

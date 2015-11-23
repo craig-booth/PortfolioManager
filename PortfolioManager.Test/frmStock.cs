@@ -56,7 +56,7 @@ namespace PortfolioManager.Test
                 StockType stockType = (StockType) cboType.SelectedIndex;
                 DateTime fromDate;
                 if (chkNoStartDate.Checked)
-                    fromDate = DateTimeConstants.NoStartDate();
+                    fromDate = DateTimeConstants.NoStartDate;
                 else
                     fromDate = dtpFromDate.Value;
                 _StockManager.Add(txtASXCode.Text, txtName.Text, fromDate, stockType);

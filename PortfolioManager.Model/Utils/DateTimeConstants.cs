@@ -8,14 +8,17 @@ namespace PortfolioManager.Model.Utils
 {
     public class DateTimeConstants
     {
-        public static DateTime NoStartDate()
+        private readonly static DateTime _NoStartDate = new DateTime(0001, 01, 01);
+        private readonly static DateTime _NoEndDate = new DateTime(9999, 12, 31);
+
+        public static DateTime NoStartDate 
         {
-            return new DateTime(0001, 01, 01);
+            get { return _NoStartDate; }
         }
 
-        public static DateTime NoEndDate()
+        public static DateTime NoEndDate
         {
-            return new DateTime(9999, 12, 31);
+            get { return _NoEndDate; }
         }
     }
 }

@@ -132,7 +132,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [Test]
         public void ExpectedIncome()
         {
-            var actualIncome = _Portfolio.IncomeService.GetIncome(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+            var actualIncome = _Portfolio.IncomeService.GetIncome(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
 
             Assert.That(actualIncome, PortfolioConstraint.Equals(_ExpectedIncome));
         }
@@ -140,7 +140,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [Test]
         public void ExpectedCGTEvents()
         {
-            var actualCGTEvents = _Portfolio.CGTService.GetEvents(DateTimeConstants.NoStartDate(), DateTimeConstants.NoEndDate());
+            var actualCGTEvents = _Portfolio.CGTService.GetEvents(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
 
             Assert.That(actualCGTEvents, PortfolioConstraint.Equals(_ExpectedCGTEvents));
         }

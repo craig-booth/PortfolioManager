@@ -21,7 +21,7 @@ namespace PortfolioManager.Model.Stocks
 
         public Stock Add(string asxCode, string name)
         {
-            return Add(asxCode, name, DateTimeConstants.NoStartDate());
+            return Add(asxCode, name, DateTimeConstants.NoStartDate);
         }
 
         public Stock Add(string asxCode, string name, DateTime fromDate)
@@ -39,7 +39,7 @@ namespace PortfolioManager.Model.Stocks
 
         public Stock Add(string asxCode, string name, StockType type)
         {
-            return Add(asxCode, name, DateTimeConstants.NoStartDate(), type);
+            return Add(asxCode, name, DateTimeConstants.NoStartDate, type);
         }
 
         public Stock Add(string asxCode, string name, DateTime fromDate, StockType type)
@@ -57,7 +57,7 @@ namespace PortfolioManager.Model.Stocks
 
         public Stock Add(string asxCode, string name, StockType type, Stock parent)
         {
-            return Add(asxCode, name, DateTimeConstants.NoStartDate(), type, parent);
+            return Add(asxCode, name, DateTimeConstants.NoStartDate, type, parent);
         }
 
         public Stock Add(string asxCode, string name, DateTime fromDate, StockType type, Stock parent)
