@@ -13,6 +13,7 @@ namespace PortfolioManager.Model.Data
     {
         IPortfolioUnitOfWork CreateUnitOfWork();
         IPortfolioQuery PortfolioQuery { get; }
+        IPortfolioUnitOfWork IPortfolioUnitOfWork { get; set; }
     }
 
     public interface IPortfolioUnitOfWork : IDisposable

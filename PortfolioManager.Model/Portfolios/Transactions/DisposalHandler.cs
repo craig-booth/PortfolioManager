@@ -10,7 +10,7 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class DisposalHandler : ITransactionHandler
+    class DisposalHandler : TransacactionHandler, ITransactionHandler
     {
         public readonly ParcelService _ParcelService;
         public readonly StockService _StockService;
@@ -62,7 +62,7 @@ namespace PortfolioManager.Model.Portfolios
                         var childParcels = _ParcelService.GetParcels(childStock, disposal.TransactionDate);
 
                         var childParcel = childParcels.First(x => x.PurchaseId == parcelSold.Parcel.PurchaseId);
-                        _ParcelService.DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, disposal.Description);
+                        DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, disposal.Description);
 
                         i++;
                     }
@@ -72,7 +72,7 @@ namespace PortfolioManager.Model.Portfolios
             else
             {
                 foreach (ParcelSold parcelSold in CGTCalculation.ParcelsSold)
-                    _ParcelService.DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived, disposal.Description);
+                    DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived, disposal.Description);
             }
 
             //CashAccount.AddTransaction(CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), amountReceived + disposal.TransactionCosts);

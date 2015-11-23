@@ -5,18 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class AquisitionHandler : ITransactionHandler
+    class AquisitionHandler : TransacactionHandler, ITransactionHandler
     {
-        public readonly ParcelService _ParcelService;
         public readonly StockService _StockService;
 
-        public AquisitionHandler(ParcelService parcelService, StockService stockService)
+        public AquisitionHandler(StockService stockService)
         {
-            _ParcelService = parcelService;
             _StockService = stockService;
         }
 
@@ -32,7 +29,7 @@ namespace PortfolioManager.Model.Portfolios
             decimal amountPaid = (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 
-            _ParcelService.AddParcel(unitOfWork, aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
+            AddParcel(unitOfWork, aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
 
             //CashAccount.AddTransaction(CashAccountTransactionType.Transfer, aquisition.TransactionDate, String.Format("Purchase of {0}", aquisition.ASXCode), amountPaid);
         }

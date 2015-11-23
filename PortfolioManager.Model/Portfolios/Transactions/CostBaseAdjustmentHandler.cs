@@ -10,7 +10,7 @@ using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class CostBaseAdjustmentHandler : ITransactionHandler
+    class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
         public readonly ParcelService _ParcelService;
         public readonly StockService _StockService;
@@ -45,7 +45,7 @@ namespace PortfolioManager.Model.Portfolios
                     parcelAtPaymentDate = _ParcelService.GetParcel(parcelAtRecordDate.Id, costBaseAdjustment.TransactionDate);
 
                 var costBaseReduction = parcelAtPaymentDate.CostBase * (1 - costBaseAdjustment.Percentage);
-                _ParcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
             }
 
         }

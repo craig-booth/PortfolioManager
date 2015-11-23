@@ -10,7 +10,7 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class IncomeReceivedHandler : ITransactionHandler
+    class IncomeReceivedHandler : TransacactionHandler, ITransactionHandler
     {
         public readonly ParcelService _ParcelService;
         public readonly StockService _StockService;
@@ -59,10 +59,10 @@ namespace PortfolioManager.Model.Portfolios
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
                     if (costBaseReduction <= parcelAtPaymentDate.CostBase)
-                        _ParcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
                     else
                     {
-                        _ParcelService.ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
+                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
 
                         var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, incomeReceived.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                         unitOfWork.CGTEventRepository.Add(cgtEvent);

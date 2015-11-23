@@ -92,6 +92,7 @@
     <Compile Include="Utils\PortfolioUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TransactionClassDiagram.cd" />
     <None Include="ServicesClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
