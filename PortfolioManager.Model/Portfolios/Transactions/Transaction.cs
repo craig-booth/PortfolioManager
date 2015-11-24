@@ -15,6 +15,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         TransactionType Type { get; }
         DateTime TransactionDate { get; }
+        int Sequence { get;  }
         string ASXCode { get; }
         string Description { get; }
     }
