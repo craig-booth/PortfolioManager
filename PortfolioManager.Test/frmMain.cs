@@ -48,7 +48,13 @@ namespace PortfolioManager.Test
 
             _Settings = PortfolioManagerSettings.Load();
             if (_Settings != null)
+            {
+                // Temporary change to force database files to be in the application folder while database being updated
+                _Settings.PortfolioDatabaseFile = System.IO.Path.Combine(Application.StartupPath, "Portfolio.db");
+                _Settings.StockDatabaseFile = System.IO.Path.Combine(Application.StartupPath, "Stocks.db");
+
                 LoadDatabase();
+            }
             else
             {
                 _Settings = new PortfolioManagerSettings();
