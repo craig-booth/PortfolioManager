@@ -13,7 +13,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
-        public int Sequence { get; private set; }
+        public int Sequence { get; set; }
         public string ASXCode { get; set; }
         public int Units { get; set; }
         public decimal AveragePrice { get; set; }

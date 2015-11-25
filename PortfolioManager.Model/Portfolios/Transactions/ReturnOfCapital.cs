@@ -14,7 +14,7 @@ namespace PortfolioManager.Model.Portfolios
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
-        public int Sequence { get; private set; }
+        public int Sequence { get; set; }
         public string ASXCode { get; set; }
         public DateTime RecordDate { get; set; }
         public decimal Amount { get; set; }
