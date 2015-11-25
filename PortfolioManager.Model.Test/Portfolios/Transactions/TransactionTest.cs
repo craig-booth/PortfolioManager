@@ -25,7 +25,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
         {
-            _StockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
+            _StockDatabase = new SQLiteStockDatabase(":memory:");
             _StockManager = new StockManager(_StockDatabase);
             AddStocks();
         }
@@ -33,7 +33,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         [SetUp]
         public virtual void Setup()
         {
-            var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
+            var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             _Portfolio = _PortfolioManager.CreatePortfolio("Test portfolio");
@@ -106,7 +106,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedIncome = new List<IncomeReceived>();
             _ExpectedCGTEvents = new List<CGTEvent>();
 
-            var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
+            var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             _Portfolio = _PortfolioManager.CreatePortfolio("Test portfolio");

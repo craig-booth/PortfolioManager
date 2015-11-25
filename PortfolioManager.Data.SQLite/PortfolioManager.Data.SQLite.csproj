@@ -85,6 +85,8 @@
     <Compile Include="Stocks\SQLiteStockQuery.cs" />
     <Compile Include="Stocks\SQLiteStockRepository.cs" />
     <Compile Include="Stocks\SQLiteStockUnitOfWork.cs" />
+    <Compile Include="Upgrade\SQLiteDatabaseUpgrade.cs" />
+    <Compile Include="Upgrade\PortfolioDatabaseUpgradeToVersion1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">
@@ -103,6 +105,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Stock Database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion1A.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion1B.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

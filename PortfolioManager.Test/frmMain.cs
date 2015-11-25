@@ -64,9 +64,9 @@ namespace PortfolioManager.Test
 
         private void LoadDatabase()
         {         
-            _StockDatabase = new SQLiteStockDatabase("Data Source=" +  _Settings.StockDatabaseFile + ";Version=3;");
+            _StockDatabase = new SQLiteStockDatabase(_Settings.StockDatabaseFile);
 
-            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase("Data Source=" + _Settings.PortfolioDatabaseFile + ";Version=3;");
+            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(_Settings.PortfolioDatabaseFile);
 
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);         
             _MyPortfolio = _PortfolioManager.CreatePortfolio("Craig's Shares");

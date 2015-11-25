@@ -39,6 +39,9 @@ namespace PortfolioManager.Model.Portfolios
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 ApplyTransaction(unitOfWork, transaction);
+
+                /* Issue2: Assign sequence number */
+
                 unitOfWork.TransactionRepository.Add(transaction);
                 unitOfWork.Save();
             }

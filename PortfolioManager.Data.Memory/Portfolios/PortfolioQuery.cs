@@ -86,7 +86,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
-                                   orderby transaction.TransactionDate
+                                   orderby transaction.TransactionDate, transaction.Sequence 
                                    select transaction;
 
             return transactionQuery.ToList().AsReadOnly();
@@ -96,7 +96,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
-                                   orderby transaction.TransactionDate
+                                   orderby transaction.TransactionDate, transaction.Sequence 
                                    select transaction;
 
             return transactionQuery.ToList().AsReadOnly();
@@ -106,7 +106,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.ASXCode == asxCode && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
-                                   orderby transaction.TransactionDate
+                                   orderby transaction.TransactionDate, transaction.Sequence 
                                    select transaction;
 
             return transactionQuery.ToList().AsReadOnly();
@@ -116,7 +116,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.ASXCode == asxCode && transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
-                                   orderby transaction.TransactionDate
+                                   orderby transaction.TransactionDate, transaction.Sequence
                                    select transaction;
 
             return transactionQuery.ToList().AsReadOnly();

@@ -8,11 +8,18 @@ using System.Data.SQLite;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
+using PortfolioManager.Data.SQLite.Upgrade;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
     public class SQLiteStockDatabase: SQLiteDatabase, IStockDatabase
     {
+
+        protected override int RepositoryVersion
+        {
+            get { return 0; }
+        }
+
         public IStockUnitOfWork CreateUnitOfWork()
         {
             return new SQLiteStockUnitOfWork(this);
@@ -21,15 +28,20 @@ namespace PortfolioManager.Data.SQLite.Stocks
         public IStockQuery StockQuery {get; private set;}
         public ICorporateActionQuery CorporateActionQuery { get; private set; }
 
-        public SQLiteStockDatabase(string connectionString) : base(connectionString)
+        public SQLiteStockDatabase(string fileName) : base(fileName)
         {
             StockQuery = new SQLiteStockQuery(this);
             CorporateActionQuery = new SQLiteCorporateActionQuery(this);
         }
 
+        protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)
+        {
+            throw new NotSupportedException();
+        }
+
         protected override void CreateDatabaseTables()
         {
-            CreateDatabaseTables("Stock Database.sql");
+            ExecuteScript("Stock Database.sql");
         }
     }
 

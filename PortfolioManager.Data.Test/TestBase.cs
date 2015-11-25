@@ -14,14 +14,14 @@ namespace PortfolioManager.Data.Test
     {
         public IStockDatabase CreateStockDatabase()
         {
-            return new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
+            return new SQLiteStockDatabase(":memory:");
 
           //  return new SQLiteStockDatabase("Data Source=C:\\Users\\P150EM\\Desktop\\test.db;Version=3;");
         }
 
         public IPortfolioDatabase CreatePortfolioDatabase()
         {
-            return new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
+            return new SQLitePortfolioDatabase(":memory");
 
           //  return new SQLitePortfolioDatabase("Data Source=C:\\Users\\craigb\\Desktop\\test.db;Version=3;");
         }

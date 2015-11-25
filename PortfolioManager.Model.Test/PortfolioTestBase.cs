@@ -28,7 +28,7 @@ namespace PortfolioManager.Model.Test
 
         public PortfolioTestBase()
         {
-            _StockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
+            _StockDatabase = new SQLiteStockDatabase(":memory:");
             var stockManager = new StockManager(_StockDatabase);
             AddTestStocks(stockManager);
         }
@@ -36,21 +36,21 @@ namespace PortfolioManager.Model.Test
 
         public StockManager CreateStockManager()
         {
-            var stockDatabase = new SQLiteStockDatabase("Data Source=:memory:;Version=3;");
+            var stockDatabase = new SQLiteStockDatabase(":memory:");
 
             return new StockManager(stockDatabase);
         }
 
         public PortfolioManager.Model.Portfolios.PortfolioManager CreatePortfolioManager()
         {
-            var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
+            var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
 
             return new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
         }
 
         public Portfolio CreateTestPortfolio()
         {
-            var portfolioDatabase = new SQLitePortfolioDatabase("Data Source=:memory:;Version=3;");
+            var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
             var portfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             return portfolioManager.CreatePortfolio("Test portfolio");
