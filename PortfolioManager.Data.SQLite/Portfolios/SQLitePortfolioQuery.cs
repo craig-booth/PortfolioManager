@@ -73,7 +73,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<IncomeReceived>();
 
-            var query = new SQLiteCommand("SELECT [Transactions].* FROM [Transactions] LEFT OUTER JOIN [IncomeReceived] ON [IncomeReceived].[Id] = [Transactions].[Id] WHERE [Type] = @Type and [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate]", _Connection);
+            var query = new SQLiteCommand("SELECT [Transactions].* FROM [Transactions] LEFT OUTER JOIN [IncomeReceived] ON [IncomeReceived].[Id] = [Transactions].[Id] WHERE [Type] = @Type and [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@Type", TransactionType.Income);

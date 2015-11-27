@@ -38,11 +38,9 @@ namespace PortfolioManager.Model.Portfolios
         {
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                ApplyTransaction(unitOfWork, transaction);
+                ApplyTransaction(unitOfWork, transaction);                
+                AddTransaction(unitOfWork, transaction);
 
-                /* Issue2: Assign sequence number */
-
-                unitOfWork.TransactionRepository.Add(transaction);
                 unitOfWork.Save();
             }
         }
@@ -53,12 +51,17 @@ namespace PortfolioManager.Model.Portfolios
             {
                 foreach (ITransaction transaction in transactions)
                 {
-                    ApplyTransaction(unitOfWork, transaction);
-                    unitOfWork.TransactionRepository.Add(transaction);
+                    ApplyTransaction(unitOfWork, transaction);                
+                    AddTransaction(unitOfWork, transaction);
 
                 };
                 unitOfWork.Save();
             }
+        }
+
+        private void AddTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
+        {
+            unitOfWork.TransactionRepository.Add(transaction);
         }
 
         internal void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)

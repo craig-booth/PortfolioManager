@@ -14,6 +14,48 @@ using PortfolioManager.Data.SQLite.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios.Transactions
 {
+
+    [TestFixture, Description("General transaction tests")]
+    public class GeneralTransactionTests : TransactionTest
+    {
+        [Test, Description("Multiple transactions on the same date")]
+        public void MultipleTransactionsOnTheSameDay()
+        {
+            var transactionDate = new DateTime(2010, 01, 01);
+            var transactions = new ITransaction[]
+            {
+                new Aquisition()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    Units = 1000,
+                    AveragePrice = 1.70m,
+                    TransactionCosts = 10.00m,
+                    Comment = ""
+                },
+                new Disposal
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    Units = 1000,
+                    AveragePrice = 1.70m,
+                    TransactionCosts = 10.00m,
+                    CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    Comment = ""
+                }
+            };
+            _Portfolio.TransactionService.ProcessTransactions(transactions);
+
+            // Check that transactions are stored int eh correct order
+            var actualTransactions = _Portfolio.TransactionService.GetTransactions(transactionDate, transactionDate);
+            var transaction1 = actualTransactions.First(x => x.Type == TransactionType.Aquisition);
+            var transaction2 = actualTransactions.First(x => x.Type == TransactionType.Disposal);
+            Assert.That(transaction1.Sequence, Is.EqualTo(0));
+            Assert.That(transaction1.Sequence, Is.EqualTo(1));
+        }
+    }
+
+
     [TestFixture]
     public abstract class TransactionTest
     {

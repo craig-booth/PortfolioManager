@@ -115,7 +115,7 @@ namespace PortfolioManager.Data.SQLite
 
         protected void SetDbVersion()
         {
-            var insertCommand = new SQLiteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime", _Connection);
+            var insertCommand = new SQLiteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", _Connection);
             insertCommand.Prepare();
 
             insertCommand.Parameters.AddWithValue("@Version", Version.Version);
