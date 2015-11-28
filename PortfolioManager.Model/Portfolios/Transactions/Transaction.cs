@@ -9,7 +9,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public enum TransactionType { Aquisition, Disposal, CostBaseAdjustment, OpeningBalance, ReturnOfCapital, Income, Deposit, Withdrawl, Interest, Fee }
+    public enum TransactionType { Aquisition, Disposal, CostBaseAdjustment, OpeningBalance, ReturnOfCapital, Income, SplitConsolidation, Deposit, Withdrawl, Interest, Fee }
 
     public interface ITransaction: IEntity 
     {

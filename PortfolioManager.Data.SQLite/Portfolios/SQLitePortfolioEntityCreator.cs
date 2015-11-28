@@ -15,7 +15,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         public static ITransaction CreateTransaction(SQLitePortfolioDatabase database, SQLiteDataReader reader)
         {
-            TransactionType type = (TransactionType)reader.GetInt32(3);
+            TransactionType type = (TransactionType)reader.GetInt32(2);
 
             if (type == TransactionType.Aquisition)
                 return CreateAquisition(database, reader);
@@ -49,8 +49,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             Aquisition aquisition = new Aquisition(new Guid(reader.GetString(0)))
             {
                 TransactionDate = reader.GetDateTime(1),
-                Sequence = reader.GetInt32(2),
-                ASXCode = reader.GetString(4),
+                ASXCode = reader.GetString(3),
                 Units = aquisitionReader.GetInt32(1),
                 AveragePrice = DBToDecimal(aquisitionReader.GetInt32(2)),
                 TransactionCosts = DBToDecimal(aquisitionReader.GetInt32(3)),
@@ -77,8 +76,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             CostBaseAdjustment costBaseAdjustment = new CostBaseAdjustment(new Guid(reader.GetString(0)))
             {
                 TransactionDate = reader.GetDateTime(1),
-                Sequence = reader.GetInt32(2),
-                ASXCode = reader.GetString(4),
+                ASXCode = reader.GetString(3),
                 RecordDate = costBaseAdjustmentReader.GetDateTime(1),
                 Percentage = DBToDecimal(costBaseAdjustmentReader.GetInt32(2)),
                 Comment = costBaseAdjustmentReader.GetString(3)
@@ -104,8 +102,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             Disposal disposal = new Disposal(new Guid(reader.GetString(0)))
             {
                 TransactionDate = reader.GetDateTime(1),
-                Sequence = reader.GetInt32(2),
-                ASXCode = reader.GetString(4),
+                ASXCode = reader.GetString(3),
                 Units = disposalReader.GetInt32(1),
                 AveragePrice = DBToDecimal(disposalReader.GetInt32(2)),
                 TransactionCosts = DBToDecimal(disposalReader.GetInt32(3)),
@@ -133,8 +130,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             IncomeReceived incomeReceived = new IncomeReceived(new Guid(reader.GetString(0)))
             {
                 TransactionDate = reader.GetDateTime(1),
-                Sequence = reader.GetInt32(2),
-                ASXCode = reader.GetString(4),
+                ASXCode = reader.GetString(3),
                 RecordDate = incomeReceivedReader.GetDateTime(1),
                 FrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(2)),
                 UnfrankedAmount = DBToDecimal(incomeReceivedReader.GetInt32(3)),
@@ -164,8 +160,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             OpeningBalance openingBalance = new OpeningBalance(new Guid(reader.GetString(0)))
             {
                 TransactionDate = reader.GetDateTime(1),
-                Sequence = reader.GetInt32(2),
-                ASXCode = reader.GetString(4),
+                ASXCode = reader.GetString(3),
                 Units = openingBalanceReader.GetInt32(1),
                 CostBase = DBToDecimal(openingBalanceReader.GetInt32(2)),
                 Comment = openingBalanceReader.GetString(3)
@@ -191,8 +186,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             ReturnOfCapital returnOfCapital = new ReturnOfCapital(new Guid(reader.GetString(0)))
             {
                 TransactionDate = reader.GetDateTime(1),
-                Sequence = reader.GetInt32(2),
-                ASXCode = reader.GetString(4),
+                ASXCode = reader.GetString(3),
                 RecordDate = returnOfCapitalReader.GetDateTime(1),
                 Amount = DBToDecimal(returnOfCapitalReader.GetInt32(2)),
                 Comment = returnOfCapitalReader.GetString(3)
