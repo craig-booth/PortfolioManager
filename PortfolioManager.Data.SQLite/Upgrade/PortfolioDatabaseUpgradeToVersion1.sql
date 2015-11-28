@@ -8,7 +8,7 @@ INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES (0, "0
 
 
 ALTER TABLE [Transactions] RENAME TO [TransactionsBackup];
-
+DROP INDEX [Index_Transactions_ByASXCode];
 
 CREATE TABLE [Transactions]
 (
@@ -31,7 +31,14 @@ CREATE INDEX [Index_Transactions_ByDate] ON [Transactions]
 		[Sequence] ASC
 );
 
+CREATE UNIQUE INDEX [Index_Transactions_ByASXCode] ON [Transactions]
+(
+        [ASXCode]  ASC,
+		[TransactionDate] ASC,
+		[Sequence] ASC
+);
+
 INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description]) 
-   SELECT [Id], [TransactionDate], [Type], [ASXCode], [Description] FROM [TransactionsBackup]; 
+   SELECT [Id], [TransactionDate], [Type], [ASXCode], [Description] FROM [TransactionsBackup] ORDER BY [TransactionDate], [ASXCode]; 
 
 DROP TABLE [TransactionsBackup];
