@@ -23,7 +23,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Sequence], [Type], [ASXCode], [Description]) VALUES (@Id, @TransactionDate, @Sequence, @Type, @ASXCode, @Description)", _Connection);
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -35,7 +35,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Sequence] = @Sequence, [Description] = @Description WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -124,7 +124,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@TransactionDate", entity.TransactionDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Sequence", entity.Sequence);
             command.Parameters.AddWithValue("@Type", entity.Type);
             command.Parameters.AddWithValue("@ASXCode", entity.ASXCode);
             command.Parameters.AddWithValue("@Description", entity.Description);

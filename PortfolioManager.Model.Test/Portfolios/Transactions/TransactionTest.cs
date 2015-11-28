@@ -33,6 +33,46 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     TransactionCosts = 10.00m,
                     Comment = ""
                 },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    RecordDate = transactionDate,
+                    Amount = 0.40m,
+                    Comment = ""
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    RecordDate = transactionDate,
+                    Amount = 0.41m,
+                    Comment = ""
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    RecordDate = transactionDate,
+                    Amount = 0.42m,
+                    Comment = ""
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    RecordDate = transactionDate,
+                    Amount = 0.43m,
+                    Comment = ""
+                },
+                new ReturnOfCapital()
+                {
+                    TransactionDate = transactionDate,
+                    ASXCode = "AAA",
+                    RecordDate = transactionDate,
+                    Amount = 0.44m,
+                    Comment = ""
+                },
                 new Disposal
                 {
                     TransactionDate = transactionDate,
@@ -46,12 +86,13 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            // Check that transactions are stored int eh correct order
+            // Check that transactions are stored in the correct order
             var actualTransactions = _Portfolio.TransactionService.GetTransactions(transactionDate, transactionDate);
-            var transaction1 = actualTransactions.First(x => x.Type == TransactionType.Aquisition);
-            var transaction2 = actualTransactions.First(x => x.Type == TransactionType.Disposal);
-            Assert.That(transaction1.Sequence, Is.EqualTo(0));
-            Assert.That(transaction1.Sequence, Is.EqualTo(1));
+
+            var expectedTransactionIds = transactions.Select<ITransaction, Guid>(x => x.Id).ToList();
+            var actualTransactionIds = actualTransactions.Select<ITransaction, Guid>(x => x.Id).ToList();
+
+            Assert.That(actualTransactionIds, Is.EqualTo(expectedTransactionIds));
         }
     }
 

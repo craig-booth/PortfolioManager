@@ -34,4 +34,25 @@ namespace PortfolioManager.Data.SQLite.Upgrade
         }
     }
 
+    public class SQLiteSimpleDatabaseUpgrade : SQLiteDatabaseUpgrade
+    {
+        private readonly string _ScriptFile;
+
+        public SQLiteSimpleDatabaseUpgrade(int version, string scriptFile)
+        {
+            _Version = version;
+            _ScriptFile = scriptFile;
+        }
+
+        public override void Upgrade(SQLiteDatabase database)
+        {
+            var transaction = database._Connection.BeginTransaction();
+
+            database.ExecuteScript(_ScriptFile);
+
+            transaction.Commit();
+        }
+
+    }
+
 }

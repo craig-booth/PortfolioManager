@@ -38,7 +38,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)
         {
             if (forVersion == 0)
-                return new PortfolioDatabaseUpgradeToVersion1();
+                return new SQLiteSimpleDatabaseUpgrade(1, "Upgrade\\PortfolioDatabaseUpgradeToVersion1.sql");
 
             throw new NotSupportedException();
         }

@@ -9,12 +9,15 @@ CREATE TABLE [Transactions]
 (
 	[Id] TEXT(36) NOT NULL,
 	[TransactionDate] TEXT(10) NOT NULL,
-	[Sequence] INTEGER NOT NULL,
+	[Sequence] INTEGER PRIMARY KEY AUTOINCREMENT,
 	[Type] INTEGER NOT NULL,
 	[ASXCode] TEXT(6) NOT NULL,
-	[Description] TEXT(200)  NOT NULL,
-	
-	PRIMARY KEY ([Id])
+	[Description] TEXT(200)  NOT NULL
+);
+
+CREATE UNIQUE INDEX [Index_Transactions_Id] ON[Transactions]
+(
+		[Id]
 );
 
 CREATE INDEX [Index_Transactions_ByDate] ON [Transactions]

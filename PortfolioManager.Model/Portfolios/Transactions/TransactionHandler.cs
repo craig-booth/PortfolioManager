@@ -71,22 +71,29 @@ namespace PortfolioManager.Model.Portfolios
                 throw new AttemptToModifyPreviousParcelVersion(parcel.Id, "");
 
             if (parcel.FromDate == changeDate)
-                throw new Exception("Parcel already modified today !!!");
-
-            /* Update old effective dated record */
-            parcel.ToDate = changeDate.AddDays(-1);
-            unitOfWork.ParcelRepository.Update(parcel);
-
-            /* Add new record */
-            if (newUnits > 0)
             {
-                var newParcel = parcel.Clone();
-                newParcel.FromDate = changeDate;
-                newParcel.ToDate = DateTimeConstants.NoEndDate;
-                newParcel.Event = parcelEvent;
-                newParcel.Units = newUnits;
-                newParcel.CostBase = newCostBase;
-                unitOfWork.ParcelRepository.Add(newParcel);
+                parcel.Event = parcelEvent;
+                parcel.Units = newUnits;
+                parcel.CostBase = newCostBase;
+                unitOfWork.ParcelRepository.Update(parcel);
+            }
+            else
+            {
+                /* Update old effective dated record */
+                parcel.ToDate = changeDate.AddDays(-1);
+                unitOfWork.ParcelRepository.Update(parcel);
+
+                /* Add new record */
+                if (newUnits > 0)
+                {
+                    var newParcel = parcel.Clone();
+                    newParcel.FromDate = changeDate;
+                    newParcel.ToDate = DateTimeConstants.NoEndDate;
+                    newParcel.Event = parcelEvent;
+                    newParcel.Units = newUnits;
+                    newParcel.CostBase = newCostBase;
+                    unitOfWork.ParcelRepository.Add(newParcel);
+                }
             }
         }
 

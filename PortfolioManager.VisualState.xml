@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1147]PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareSingleParcel</TopNode>
-  <SelectedNode>[0-1170]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart</SelectedNode>
+  <TopNode>[0-1273]PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale</TopNode>
+  <SelectedNode>[0-1284]PortfolioManager.Model.Test.Portfolios.Transactions</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
@@ -13,16 +13,16 @@
     <Node UniqueName="[0-1108]PortfolioManager.Data.Test.Portfolio.Transactions" Expanded="true" />
     <Node UniqueName="[0-1106]PortfolioManager.Data.Test.Stocks" Expanded="true" />
     <Node UniqueName="[0-1017]PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest" Expanded="true" />
-    <Node UniqueName="[0-1275]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" Expanded="true" />
-    <Node UniqueName="[0-1276]PortfolioManager" Expanded="true" />
-    <Node UniqueName="[0-1277]PortfolioManager.Model" Expanded="true" />
-    <Node UniqueName="[0-1278]PortfolioManager.Model.Test" Expanded="true" />
-    <Node UniqueName="[0-1281]PortfolioManager.Model.Test.Portfolios" Expanded="true" />
-    <Node UniqueName="[0-1283]PortfolioManager.Model.Test.Portfolios.ActualScenarios" Expanded="true" />
-    <Node UniqueName="[0-1271]PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale" Expanded="true" />
-    <Node UniqueName="[0-1282]PortfolioManager.Model.Test.Portfolios.Transactions" Expanded="true" />
+    <Node UniqueName="[0-1277]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" Expanded="true" />
+    <Node UniqueName="[0-1278]PortfolioManager" Expanded="true" />
+    <Node UniqueName="[0-1279]PortfolioManager.Model" Expanded="true" />
+    <Node UniqueName="[0-1280]PortfolioManager.Model.Test" Expanded="true" />
+    <Node UniqueName="[0-1283]PortfolioManager.Model.Test.Portfolios" Expanded="true" />
+    <Node UniqueName="[0-1285]PortfolioManager.Model.Test.Portfolios.ActualScenarios" Expanded="true" />
+    <Node UniqueName="[0-1284]PortfolioManager.Model.Test.Portfolios.Transactions" Expanded="true" />
     <Node UniqueName="[0-1170]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart" Expanded="true" />
-    <Node UniqueName="[0-1280]PortfolioManager.Model.Test.Stocks" Expanded="true" />
-    <Node UniqueName="[0-1279]PortfolioManager.Model.Test.Utils" Expanded="true" />
+    <Node UniqueName="[0-1271]PortfolioManager.Model.Test.Portfolios.Transactions.GeneralTransactionTests" Expanded="true" />
+    <Node UniqueName="[0-1282]PortfolioManager.Model.Test.Stocks" Expanded="true" />
+    <Node UniqueName="[0-1281]PortfolioManager.Model.Test.Utils" Expanded="true" />
   </Nodes>
 </VisualState>
