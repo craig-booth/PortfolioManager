@@ -58,6 +58,7 @@
     <Compile Include="Portfolios\Transactions\OpeningBalanceTest.cs" />
     <Compile Include="Portfolios\Transactions\ReturnOfCapitalTest.cs" />
     <Compile Include="Portfolios\Transactions\TransactionTest.cs" />
+    <Compile Include="Portfolios\Transactions\UnitCountAdjustmentTest.cs" />
     <Compile Include="PortfolioTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stocks\StockManagerTest.cs" />

@@ -190,6 +190,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedCGTEvents = new List<CGTEvent>();
 
             var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
+            //var portfolioDatabase = new SQLitePortfolioDatabase("C:\\Users\\CraigB\\Desktop\\test.db");
             _PortfolioManager = new PortfolioManager.Model.Portfolios.PortfolioManager(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
 
             _Portfolio = _PortfolioManager.CreatePortfolio("Test portfolio");

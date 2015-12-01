@@ -9,7 +9,7 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class SplitConsolidation : ITransaction 
+    class UnitCountAdjustment : ITransaction 
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }
@@ -22,17 +22,17 @@ namespace PortfolioManager.Model.Portfolios
         {
             get
             {
-                return "Split/Consolidation " + OriginalUnits.ToString("n0") + ":" + NewUnits.ToString("n0");
+                return "Adjust unit count using ratio " + OriginalUnits.ToString("n0") + ":" + NewUnits.ToString("n0");
             }
         }
         
-        public SplitConsolidation()
+        public UnitCountAdjustment()
             : this (Guid.NewGuid())
         {
 
         }
 
-        public SplitConsolidation(Guid id)
+        public UnitCountAdjustment(Guid id)
         {
             Id = id;
         }
@@ -41,7 +41,7 @@ namespace PortfolioManager.Model.Portfolios
         {
             get
             {
-                return TransactionType.SplitConsolidation;
+                return TransactionType.UnitCountAdjustment;
             }
         }
 

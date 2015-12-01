@@ -10,7 +10,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public enum ParcelEvent { Aquisition, Disposal, OpeningBalance, CostBaseReduction, SplitConsolidation};
+    public enum ParcelEvent { Aquisition, Disposal, OpeningBalance, CostBaseReduction, UnitCountChange};
 
     public class ShareParcel: IEffectiveDatedEntity 
     {
