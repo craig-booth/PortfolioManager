@@ -12,10 +12,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLiteTransactionRepository : SQLiteRepository<ITransaction>, ITransactionRepository
     {
+        private Dictionary<TransactionType, TransactionDetailRepository> _DetailRepositories;
+
         protected internal SQLiteTransactionRepository(SQLitePortfolioDatabase database)
             : base(database, "Transactions")
         {
             _Database = database;
+
+            _DetailRepositories = new Dictionary<TransactionType, TransactionDetailRepository>();
+            _DetailRepositories.Add(TransactionType.Aquisition, new AquisitionRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.CostBaseAdjustment, new CostBaseAdjustmentRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.Disposal, new DisposalRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.Income, new IncomeReceivedRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.OpeningBalance, new OpeningBalanceRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.ReturnOfCapital, new ReturnOfCapitalRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.UnitCountAdjustment, new UnitCountAdjustmentRepository(_Connection));
         }
 
         private SQLiteCommand _GetAddRecordCommand;
@@ -42,52 +53,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return _GetUpdateRecordCommand;
         }
 
-        private TransactionDetailRepository _AquisitionRepository;
-        private TransactionDetailRepository _CostBaseAdjustmentRepository;
-        private TransactionDetailRepository _DisposalRepository;
-        private TransactionDetailRepository _IncomeReceivedRepository;
-        private TransactionDetailRepository _OpeningBalanceRepository;
-        private TransactionDetailRepository _ReturnOfCapitalRepository;
         private TransactionDetailRepository GetDetailRepository(TransactionType type)
         {
-            if (type == TransactionType.Aquisition)
-            {
-                if (_AquisitionRepository == null)
-                    _AquisitionRepository = new AquisitionRepository(_Connection);
-                return _AquisitionRepository;
-            }
-           else if (type == TransactionType.CostBaseAdjustment)
-            {
-                if (_CostBaseAdjustmentRepository == null)
-                    _CostBaseAdjustmentRepository = new CostBaseAdjustmentRepository(_Connection);
-                return _CostBaseAdjustmentRepository;
-            }
-            else if (type == TransactionType.Disposal)
-            {
-                if (_DisposalRepository == null)
-                    _DisposalRepository = new DisposalRepository(_Connection);
-                return _DisposalRepository;
-            }
-            else if (type == TransactionType.Income)
-            {
-                if (_IncomeReceivedRepository == null)
-                    _IncomeReceivedRepository = new IncomeReceivedRepository(_Connection);
-                return _IncomeReceivedRepository;
-            }
-            else if (type == TransactionType.OpeningBalance)
-            {
-                if (_OpeningBalanceRepository == null)
-                    _OpeningBalanceRepository = new OpeningBalanceRepository(_Connection);
-                return _OpeningBalanceRepository;
-            }
-            else if (type == TransactionType.ReturnOfCapital)
-            {
-                if (_ReturnOfCapitalRepository == null)
-                    _ReturnOfCapitalRepository = new ReturnOfCapitalRepository(_Connection);
-                return _ReturnOfCapitalRepository;
-            }  
+            TransactionDetailRepository detailRepository;
+            if (_DetailRepositories.TryGetValue(type, out detailRepository))
+                return detailRepository;
             else
-                return null;
+                throw new NotSupportedException();
             
         }
 
@@ -427,6 +399,40 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@RecordDate", returnOfCapital.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Amount", DecimalToDB(returnOfCapital.Amount));
             command.Parameters.AddWithValue("@Comment", returnOfCapital.Comment); 
+        }
+    }
+
+    public class UnitCountAdjustmentRepository : TransactionDetailRepository
+    {
+
+        public UnitCountAdjustmentRepository(SQLiteConnection connection)
+            : base(connection)
+        {
+        }
+
+        protected override string GetAddSQL()
+        {
+            return "INSERT INTO [UnitCountAdjustments] ([Id], [OriginalUnits], [NewUnits], [Comment]) VALUES (@Id, @OriginalUnits, @NewUnits, @Comment)";
+        }
+
+        protected override string GetUpdateSQL()
+        {
+            return "UPDATE[UnitCountAdjustments] SET [OriginalUnits] = @OriginalUnits, [NewUnits] = @NewUnits, [Comment] = @Comment WHERE [Id] = @Id";
+        }
+
+        protected override string GetDeleteSQL()
+        {
+            return "DELETE FROM [UnitCountAdjustments] WHERE [Id] = @Id";
+        }
+
+        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        {
+            UnitCountAdjustment unitCountAdjustment = entity as UnitCountAdjustment;
+
+            command.Parameters.AddWithValue("@Id", unitCountAdjustment.Id.ToString());
+            command.Parameters.AddWithValue("@OriginalUnits", unitCountAdjustment.OriginalUnits);
+            command.Parameters.AddWithValue("@NewUnits", unitCountAdjustment.NewUnits);
+            command.Parameters.AddWithValue("@Comment", unitCountAdjustment.Comment);
         }
     }
 

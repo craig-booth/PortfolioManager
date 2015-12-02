@@ -39,8 +39,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (forVersion == 0)
                 return new SQLiteSimpleDatabaseUpgrade(1, "Upgrade\\PortfolioDatabaseUpgradeToVersion1.sql");
-
-            throw new NotSupportedException();
+            else if (forVersion == 1)
+                return new SQLiteSimpleDatabaseUpgrade(2, "Upgrade\\PortfolioDatabaseUpgradeToVersion2.sql");
+            else
+                throw new NotSupportedException();
         }
 
         public IPortfolioUnitOfWork CreateUnitOfWork()

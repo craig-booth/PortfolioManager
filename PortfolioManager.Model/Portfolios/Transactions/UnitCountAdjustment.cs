@@ -9,7 +9,7 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class UnitCountAdjustment : ITransaction 
+    public class UnitCountAdjustment : ITransaction 
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }

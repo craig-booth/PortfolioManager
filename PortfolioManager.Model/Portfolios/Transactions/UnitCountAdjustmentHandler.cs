@@ -9,13 +9,13 @@ using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class UnitCountAdjustmnetHandler : TransacactionHandler, ITransactionHandler
+    class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
 
         public readonly ParcelService _ParcelService;
         public readonly StockService _StockService;
 
-        public UnitCountAdjustmnetHandler(ParcelService parcelService, StockService stockService)
+        public UnitCountAdjustmentHandler(ParcelService parcelService, StockService stockService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
@@ -23,24 +23,24 @@ namespace PortfolioManager.Model.Portfolios
 
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
         {
-            var unitCostAdjustment = transaction as UnitCountAdjustment;
+            var unitCountAdjustment = transaction as UnitCountAdjustment;
 
-            var stock = _StockService.Get(unitCostAdjustment.ASXCode, unitCostAdjustment.TransactionDate);
+            var stock = _StockService.Get(unitCountAdjustment.ASXCode, unitCountAdjustment.TransactionDate);
 
             if (stock.Type == StockType.StapledSecurity)
-                throw new TransctionNotSupportedForStapledSecurity(unitCostAdjustment, "Cannot adjust unit count of stapled securities. Adjust unit count of child securities instead");
+                throw new TransctionNotSupportedForStapledSecurity(unitCountAdjustment, "Cannot adjust unit count of stapled securities. Adjust unit count of child securities instead");
 
             /* locate parcels that the split/consolidation applies to */
-            var parcels = _ParcelService.GetParcels(stock, unitCostAdjustment.TransactionDate);
+            var parcels = _ParcelService.GetParcels(stock, unitCountAdjustment.TransactionDate);
 
             if (parcels.Count == 0)
-                throw new NoParcelsForTransaction(unitCostAdjustment, "No parcels found for transaction");
+                throw new NoParcelsForTransaction(unitCountAdjustment, "No parcels found for transaction");
 
             /* Reduce cost base of parcels */
             foreach (ShareParcel parcel in parcels)
             {
-                var newUnitCount = (int)Math.Round(parcel.Units * ((decimal)unitCostAdjustment.NewUnits / (decimal)unitCostAdjustment.OriginalUnits));
-                ModifyParcel(unitOfWork, parcel, unitCostAdjustment.TransactionDate, ParcelEvent.UnitCountChange, newUnitCount, parcel.CostBase, "");
+                var newUnitCount = (int)Math.Round(parcel.Units * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
+                ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, newUnitCount, parcel.CostBase, "");
             }
 
         }
