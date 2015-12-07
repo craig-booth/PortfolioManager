@@ -80,6 +80,7 @@
     <Compile Include="Portfolios\Transactions\UnitCountAdjustmentHandler.cs" />
     <Compile Include="Portfolios\Transactions\TransactionHandler.cs" />
     <Compile Include="Stocks\CorporateActions\CapitalReturn.cs" />
+    <Compile Include="Stocks\CorporateActions\CompositeAction.cs" />
     <Compile Include="Stocks\CorporateActions\Dividend.cs" />
     <Compile Include="Stocks\CorporateActions\SplitConsolidation.cs" />
     <Compile Include="Stocks\StockManager.cs" />
