@@ -275,5 +275,14 @@ namespace PortfolioManager.Test
                 AddCorporateAction(stock, CorporateActionType.SplitConsolidation);
             }
         }
+
+        private void btnAddCompositeAction_Click(object sender, EventArgs e)
+        {
+            if (lsvStocks.FocusedItem != null)
+            {
+                Stock stock = (Stock)lsvStocks.FocusedItem.Tag;
+                AddCorporateAction(stock, CorporateActionType.Composite);
+            }
+        }
     }
 }

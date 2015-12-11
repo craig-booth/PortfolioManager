@@ -68,6 +68,12 @@
     <Compile Include="frmCapitalReturn.Designer.cs">
       <DependentUpon>frmCapitalReturn.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCompositeAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCompositeAction.Designer.cs">
+      <DependentUpon>frmCompositeAction.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMultipleTransactions.cs">
       <SubType>Form</SubType>
     </Compile>

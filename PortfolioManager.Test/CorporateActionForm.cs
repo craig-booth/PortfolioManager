@@ -37,6 +37,8 @@ namespace PortfolioManager.Test
                 return new frmTransformation(_StockManager);
             else if (type == CorporateActionType.SplitConsolidation)
                 return new frmSplitConsolidation(_StockManager);
+            else if (type == CorporateActionType.Composite)
+                return new frmCompositeAction(_StockManager);
             else
                 throw new NotSupportedException();
         }
