@@ -9,7 +9,7 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Stocks
 {
-    class CompositeAction : ICorporateAction
+    public class CompositeAction : ICorporateAction
     {
 
         private IStockDatabase _Database;

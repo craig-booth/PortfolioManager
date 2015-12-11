@@ -297,6 +297,8 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.CorporateActionRepository.Get(transformation.Id);
             }
         }
+
+
     }
 
 }
