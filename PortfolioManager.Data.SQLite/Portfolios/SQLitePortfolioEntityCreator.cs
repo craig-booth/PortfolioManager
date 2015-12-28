@@ -13,6 +13,16 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLitePortfolioEntityCreator
     {
+        private static int DecimalToDB(decimal value)
+        {
+            return (int)Math.Floor(value * 100000);
+        }
+
+        private static decimal DBToDecimal(int value)
+        {
+            return (decimal)value / 100000;
+        }
+
         public static ITransaction CreateTransaction(SQLitePortfolioDatabase database, SQLiteDataReader reader)
         {
             TransactionType type = (TransactionType)reader.GetInt32(3);
@@ -29,6 +39,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 return CreateOpeningBalance(database, reader);
             else if (type == TransactionType.ReturnOfCapital)
                 return CreateReturnOfCapital(database, reader);
+            else if (type == TransactionType.UnitCountAdjustment)
+                return CreateUnitCountAdjustment(database, reader);
             else
                 return null;
         }
@@ -196,14 +208,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return returnOfCapital;
         }
 
-        private static int DecimalToDB(decimal value)
+        private static UnitCountAdjustment CreateUnitCountAdjustment(SQLitePortfolioDatabase database, SQLiteDataReader reader)
         {
-            return (int)Math.Floor(value * 100000);
-        }
+            /* Get opening balance values */
+            var command = new SQLiteCommand("SELECT * FROM [UnitCountAdjustments] WHERE [Id] = @Id", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            SQLiteDataReader unitCountAdjustmentReader = command.ExecuteReader();
+            if (!unitCountAdjustmentReader.Read())
+            {
+                unitCountAdjustmentReader.Close();
+                throw new RecordNotFoundException(reader.GetString(0));
+            }
 
-        private static decimal DBToDecimal(int value)
-        {
-            return (decimal)value / 100000;
+            UnitCountAdjustment unitCountAdjustmnet = new UnitCountAdjustment(new Guid(reader.GetString(0)))
+            {
+                TransactionDate = reader.GetDateTime(1),
+                ASXCode = reader.GetString(4),
+                OriginalUnits = unitCountAdjustmentReader.GetInt32(1),
+                NewUnits = unitCountAdjustmentReader.GetInt32(2),
+                Comment = unitCountAdjustmentReader.GetString(3)
+            };
+            unitCountAdjustmentReader.Close();
+
+            return unitCountAdjustmnet;
         }
     }
 }
+

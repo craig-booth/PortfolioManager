@@ -379,10 +379,9 @@ namespace PortfolioManager.Test
             DisplayCorporateActions();
         }
 
-        private void lsvPortfolio_SelectedIndexChanged(object sender, EventArgs e)
+        private void unitCountAdjustmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            AddTransaction(TransactionType.UnitCountAdjustment);
         }
-
     }
 }

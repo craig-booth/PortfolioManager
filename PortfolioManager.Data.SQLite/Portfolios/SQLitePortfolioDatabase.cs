@@ -14,7 +14,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         protected override int RepositoryVersion
         {
-            get { return 1; }
+            get { return 2; }
         }
 
         /* TODO: Priority Low, move this to the database */

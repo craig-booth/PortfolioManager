@@ -27,6 +27,8 @@ namespace PortfolioManager.Test.TransactionControls
             : this()
         {
             _StockService = stockService;
+
+            dtpPaymentDate_ValueChanged(this, null);
         }
 
         public ITransaction CreateTransaction()

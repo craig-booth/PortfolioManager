@@ -8,22 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Test.TransactionControls
 {
-    public partial class CostBaseAdjustmentControl : UserControl, ITransactionControl 
+    public partial class UnitAdjustmentControl : UserControl, ITransactionControl
     {
         private StockService _StockService;
 
-        public CostBaseAdjustmentControl()
+        public UnitAdjustmentControl()
         {
             InitializeComponent();
         }
 
-        public CostBaseAdjustmentControl(StockService stockService)
+        public UnitAdjustmentControl(StockService stockService)
             : this()
         {
             _StockService = stockService;
@@ -33,7 +34,7 @@ namespace PortfolioManager.Test.TransactionControls
 
         public ITransaction CreateTransaction()
         {
-            var transaction = new CostBaseAdjustment();
+            var transaction = new UnitCountAdjustment();
             UpdateTransaction(transaction);
 
             return transaction;
@@ -41,32 +42,34 @@ namespace PortfolioManager.Test.TransactionControls
 
         public void DisplayTransaction(ITransaction transaction)
         {
-            CostBaseAdjustment costbaseAdjustment = transaction as CostBaseAdjustment;
+            UnitCountAdjustment unitCountAdjustment = transaction as UnitCountAdjustment;
 
-            dtpAdjustmentDate.Value = costbaseAdjustment.TransactionDate;
+            dtpAdjustmentDate.Value = unitCountAdjustment.TransactionDate;
 
             foreach (Stock s in cboASXCode.Items)
             {
-                if (s.ASXCode == costbaseAdjustment.ASXCode)
+                if (s.ASXCode == unitCountAdjustment.ASXCode)
                 {
                     cboASXCode.SelectedItem = s;
                     break;
                 }
             };
-
-            txtPercentage.Text = (costbaseAdjustment.Percentage * 100).ToString("#0.##");
-            txtComment.Text = costbaseAdjustment.Comment;
+        
+            txtOldUnits.Text = unitCountAdjustment.OriginalUnits.ToString("#0");
+            txtNewUnits.Text = unitCountAdjustment.NewUnits.ToString("#0");
+            txtComment.Text = unitCountAdjustment.Comment;
         }
 
         public void UpdateTransaction(ITransaction transaction)
         {
-            CostBaseAdjustment costbaseAdjustment = transaction as CostBaseAdjustment;
+            UnitCountAdjustment unitCountAdjustment = transaction as UnitCountAdjustment;
 
             Stock stock = cboASXCode.SelectedItem as Stock;
-            costbaseAdjustment.ASXCode = stock.ASXCode;
-            costbaseAdjustment.TransactionDate = dtpAdjustmentDate.Value;
-            costbaseAdjustment.Percentage = MathUtils.ParseDecimal(txtPercentage.Text) / 100;      
-            costbaseAdjustment.Comment = txtComment.Text;
+            unitCountAdjustment.ASXCode = stock.ASXCode;
+            unitCountAdjustment.TransactionDate = dtpAdjustmentDate.Value;
+            unitCountAdjustment.OriginalUnits = MathUtils.ParseInt(txtOldUnits.Text);
+            unitCountAdjustment.NewUnits = MathUtils.ParseInt(txtNewUnits.Text);
+            unitCountAdjustment.Comment = txtComment.Text;
         }
 
         private void dtpAdjustmentDate_ValueChanged(object sender, EventArgs e)
@@ -77,6 +80,6 @@ namespace PortfolioManager.Test.TransactionControls
             cboASXCode.Items.AddRange(stockList.ToArray());
         }
 
+
     }
 }
-

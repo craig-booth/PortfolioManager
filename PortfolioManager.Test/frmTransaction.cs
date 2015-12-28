@@ -44,6 +44,8 @@ namespace PortfolioManager.Test
                 control = new OpeningBalanceControl(_StockService);
             else if (type == TransactionType.ReturnOfCapital)
                 control = new ReturnOfCapitalControl(_StockService);
+            else if (type == TransactionType.UnitCountAdjustment)
+                control = new UnitAdjustmentControl(_StockService);
             else
                 throw new NotSupportedException();
 

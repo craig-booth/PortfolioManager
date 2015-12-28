@@ -156,6 +156,12 @@
     <Compile Include="TransactionControls\ReturnOfCapitalControl.Designer.cs">
       <DependentUpon>ReturnOfCapitalControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TransactionControls\UnitAdjustmentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TransactionControls\UnitAdjustmentControl.Designer.cs">
+      <DependentUpon>UnitAdjustmentControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmCapitalReturn.resx">
       <DependentUpon>frmCapitalReturn.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TransactionControls\ReturnOfCapitalControl.resx">
       <DependentUpon>ReturnOfCapitalControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransactionControls\UnitAdjustmentControl.resx">
+      <DependentUpon>UnitAdjustmentControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
