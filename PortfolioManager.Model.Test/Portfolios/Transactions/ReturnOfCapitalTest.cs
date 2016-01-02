@@ -28,6 +28,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate,
                     Comment = "Return of Capital test"
                 },
                 new ReturnOfCapital()
@@ -66,6 +67,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate,
                     Comment = "Return of Capital test"
                 },
                 new ReturnOfCapital()
@@ -106,6 +108,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate1,
                     Comment = "Return of Capital test"
                 },
                 new OpeningBalance()
@@ -114,6 +117,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 500,
                     CostBase = 1200.00m,
+                    AquisitionDate = aquisitionDate2,
                     Comment = "Return of Capital test"
                 },
                 new ReturnOfCapital()
@@ -156,6 +160,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate1,
                     Comment = "Return of Capital test"
                 },
                 new OpeningBalance()
@@ -164,6 +169,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 500,
                     CostBase = 1200.00m,
+                    AquisitionDate = aquisitionDate2,
                     Comment = "Return of Capital test"
                 },
                 new ReturnOfCapital()
@@ -206,6 +212,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "SSS",
                     Units = 1000,
                     CostBase = 15000.00m,
+                    AquisitionDate = aquisitionDate,
                     Comment = ""
                 },
                 new ReturnOfCapital()
@@ -264,6 +271,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "SSS",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = new DateTime(2000, 01, 01),
                     Comment = "Return of Capital test"
                 },
                 new ReturnOfCapital()

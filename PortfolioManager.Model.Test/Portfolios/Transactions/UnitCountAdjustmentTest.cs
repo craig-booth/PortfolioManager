@@ -27,6 +27,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate,
                     Comment = "Costbase Adjustment test"
                 },
                 new UnitCountAdjustment()
@@ -65,6 +66,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate1,
                     Comment = "Costbase Adjustment test"
                 },
                 new OpeningBalance()
@@ -73,6 +75,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 500,
                     CostBase = 1200.00m,
+                    AquisitionDate = aquisitionDate2,
                     Comment = "Costbase Adjustment test"
                 },
                 new UnitCountAdjustment()
@@ -117,6 +120,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 100,
                     CostBase = 1500.00m,
+                    AquisitionDate = aquisitionDate1,
                     Comment = "Costbase Adjustment test"
                 },
                 new OpeningBalance()
@@ -125,6 +129,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "AAA",
                     Units = 200,
                     CostBase = 1200.00m,
+                    AquisitionDate = aquisitionDate2,
                     Comment = "Costbase Adjustment test"
                 },
                 new UnitCountAdjustment()
@@ -166,6 +171,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "SSS",
                     Units = 1000,
                     CostBase = 15000.00m,
+                    AquisitionDate = aquisitionDate,
                     Comment = ""
                 },
                 new UnitCountAdjustment()
@@ -225,6 +231,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "SSS",
                     Units = 1000,
                     CostBase = 1500.00m,
+                    AquisitionDate = new DateTime(2000, 01, 01),
                     Comment = "Costbase Adjustment test"
                 },
                 new UnitCountAdjustment()

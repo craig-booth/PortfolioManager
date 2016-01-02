@@ -51,6 +51,7 @@ namespace PortfolioManager.Model.Portfolios
                     ASXCode = stock.ASXCode,
                     Units = drpUnits,
                     CostBase = amountPaid,
+                    AquisitionDate = dividend.PaymentDate,
                     Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
                 }
                 );

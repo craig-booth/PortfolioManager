@@ -26,6 +26,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "AAA",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
@@ -63,6 +64,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "CCC",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
@@ -104,6 +106,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "AAA",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = openingBalanceDate1,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance1);
@@ -115,6 +118,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "AAA",
                 Units = 500,
                 CostBase = 800.00m,
+                AquisitionDate = openingBalanceDate2,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance2);
@@ -154,6 +158,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "CCC",
                 Units = 100,
                 CostBase = 100.00m,
+                AquisitionDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
@@ -196,6 +201,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "CCC",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = openingBalanceDate1,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance1);
@@ -207,6 +213,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "CCC",
                 Units = 100,
                 CostBase = 100.00m,
+                AquisitionDate = openingBalanceDate2,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance2);
@@ -257,6 +264,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "CCC",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = openingBalanceDate1,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance1);
@@ -268,6 +276,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "CCC",
                 Units = 100,
                 CostBase = 100.00m,
+                AquisitionDate = openingBalanceDate2,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance2);
@@ -319,7 +328,8 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "SSS",
                     Units = 1000,
                     CostBase = 15000.00m,
-                    Comment = ""
+                    AquisitionDate = aquisitionDate,
+                Comment = ""
                 };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
 
@@ -383,6 +393,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "SSS",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);

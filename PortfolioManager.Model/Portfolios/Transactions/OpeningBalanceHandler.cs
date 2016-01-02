@@ -26,7 +26,7 @@ namespace PortfolioManager.Model.Portfolios
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(openingBalance, "Cannot aquire child securities. Aquire stapled security instead");
             
-            AddParcel(unitOfWork, openingBalance.TransactionDate, stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
+            AddParcel(unitOfWork, openingBalance.AquisitionDate, stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
         }
     }
 }

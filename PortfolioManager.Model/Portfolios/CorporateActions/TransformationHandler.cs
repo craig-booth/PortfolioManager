@@ -46,6 +46,7 @@ namespace PortfolioManager.Model.Portfolios
                     ASXCode = stock.ASXCode,
                     Units = units,
                     CostBase = costBase,
+                    AquisitionDate = transformation.ImplementationDate,
                     Comment = transformation.Description
                 });
             }

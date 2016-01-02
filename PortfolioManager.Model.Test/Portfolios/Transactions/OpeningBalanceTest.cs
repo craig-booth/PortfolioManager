@@ -25,6 +25,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "AAA",
                 Units = 1000,
                 CostBase = 1500.00m,
+                AquisitionDate = _TransactionDate,
                 Comment = "Test Opening Balance"
             };
             _Portfolio.TransactionService.ProcessTransaction(openingbalance);
@@ -46,6 +47,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 ASXCode = "SSS",
                 Units = 1000,
                 CostBase = 15000.00m,
+                AquisitionDate = _TransactionDate,
                 Comment = "Test Opening Balance"
             };
             _Portfolio.TransactionService.ProcessTransaction(openingbalance);
@@ -75,6 +77,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     ASXCode = "SSS1",
                     Units = 1000,
                     CostBase = 15000.00m,
+                    AquisitionDate = transactionDate,
                     Comment = "Test Opening Balance"
                 }
             };

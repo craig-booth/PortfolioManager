@@ -15,6 +15,7 @@ namespace PortfolioManager.Model.Portfolios
         public string ASXCode { get; set; }
         public int Units { get; set; }
         public decimal CostBase { get; set; }
+        public DateTime AquisitionDate { get; set; }
         public string Comment { get; set; }
 
         public string Description

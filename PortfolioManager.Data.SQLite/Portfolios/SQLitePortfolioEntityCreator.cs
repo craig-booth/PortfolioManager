@@ -175,8 +175,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 ASXCode = reader.GetString(4),
                 Units = openingBalanceReader.GetInt32(1),
                 CostBase = DBToDecimal(openingBalanceReader.GetInt32(2)),
-                Comment = openingBalanceReader.GetString(3)
+                Comment = openingBalanceReader.GetString(4)
             };
+            if (openingBalanceReader.IsDBNull(3))
+                openingBalance.AquisitionDate = openingBalance.TransactionDate;
+            else
+                openingBalance.AquisitionDate = openingBalanceReader.GetDateTime(3);
+
             openingBalanceReader.Close();
 
             return openingBalance;

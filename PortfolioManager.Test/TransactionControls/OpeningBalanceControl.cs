@@ -18,6 +18,7 @@ namespace PortfolioManager.Test.TransactionControls
     {
 
         private StockService _StockService;
+        private bool _AquisitionDateSet;
 
         public OpeningBalanceControl()
         {
@@ -35,6 +36,7 @@ namespace PortfolioManager.Test.TransactionControls
         public ITransaction CreateTransaction()
         {
             var transaction = new OpeningBalance();
+            _AquisitionDateSet = false;
             UpdateTransaction(transaction);
 
             return transaction;
@@ -57,7 +59,10 @@ namespace PortfolioManager.Test.TransactionControls
 
             txtUnits.Text = openingBalance.Units.ToString();
             txtCostBase.Text = openingBalance.CostBase.ToString("n");
+            dtpAquisitionDate.Value = openingBalance.AquisitionDate;
             txtComment.Text = openingBalance.Comment;
+
+            _AquisitionDateSet = true;
         }
 
         public void UpdateTransaction(ITransaction transaction)
@@ -69,6 +74,7 @@ namespace PortfolioManager.Test.TransactionControls
             openingBalance.TransactionDate = dtpBalanceDate.Value;
             openingBalance.Units = MathUtils.ParseInt(txtUnits.Text);
             openingBalance.CostBase = MathUtils.ParseDecimal(txtCostBase.Text);
+            openingBalance.AquisitionDate = dtpAquisitionDate.Value;
             openingBalance.Comment = txtComment.Text;
         }
 
@@ -78,6 +84,9 @@ namespace PortfolioManager.Test.TransactionControls
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());
+
+            if (!_AquisitionDateSet)
+                dtpAquisitionDate.Value = dtpBalanceDate.Value;
         }
     }
 }
