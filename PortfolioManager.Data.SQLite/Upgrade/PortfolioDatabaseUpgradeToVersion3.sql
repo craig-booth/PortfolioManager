@@ -1,19 +1,7 @@
 ﻿
-ALTER TABLE [OpeningBalances] RENAME TO [OpeningBalancesBackup];
 
-CREATE TABLE [OpeningBalances]
-(
-	[Id] TEXT(36) NOT NULL,
-	[Units] INTEGER NOT NULL,
-	[CostBase] INTEGER NOT NULL,
-	[AquisitionDate] TEXT(10) NOT NULL,
-	[Comment] TEXT(200) NOT NULL,
+ALTER TABLE [OpeningBalances]
+	ADD COLUMN [AquisitionDate] TEXT(10) NOT NULL DEFAULT "";
 
-	PRIMARY KEY ([Id])
-);
-
-INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [AquisitionDate], [Comment]) 
-   SELECT [OpeningBalancesBackup].[Id], [Units], [CostBase], [TransactionDate], [Comment] FROM [OpeningBalancesBackup]
-   LEFT OUTER JOIN [Transactions] ON [Transactions].[Id] = [OpeningBalancesBackup].[Id];
-
-DROP TABLE [OpeningBalancesBackup];
+UPDATE [OpeningBalances]
+	SET [AquisitionDate] = (SELECT [TransactionDate] FROM [Transactions] WHERE [Transactions].[Id] = [OpeningBalances].[Id]);

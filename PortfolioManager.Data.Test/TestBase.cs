@@ -21,7 +21,7 @@ namespace PortfolioManager.Data.Test
 
         public IPortfolioDatabase CreatePortfolioDatabase()
         {
-            return new SQLitePortfolioDatabase(":memory");
+            return new SQLitePortfolioDatabase(":memory:");
 
           //  return new SQLitePortfolioDatabase("Data Source=C:\\Users\\craigb\\Desktop\\test.db;Version=3;");
         }

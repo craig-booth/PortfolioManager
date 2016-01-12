@@ -89,6 +89,7 @@ CREATE TABLE [OpeningBalances]
 	[Units] INTEGER NOT NULL,
 	[CostBase] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
+	[AquisitionDate] TEXT(10) NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
