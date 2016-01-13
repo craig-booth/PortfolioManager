@@ -12,7 +12,6 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Data.Test.Stocks
 {
 
-
     [TestFixture]
     public class CorporateActionRepositoryTest : TestBase
     {
@@ -66,23 +65,6 @@ namespace PortfolioManager.Data.Test.Stocks
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
                 corporateAction = unitOfWork.CorporateActionRepository.Get(Guid.NewGuid());
-            }
-        }
-
-        [Test, Description("Test Update() for a corporate action (header file)")]
-        public void UpdateCorporateAction()
-        {
-            Dividend dividend, dividend2;
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
-                unitOfWork.CorporateActionRepository.Add(dividend);
-
-                dividend.Change(new DateTime(2005, 10, 12), dividend.PaymentDate, dividend.DividendAmount, "");
-
-                dividend2 = unitOfWork.CorporateActionRepository.Get(dividend.Id) as Dividend;
-                Assert.AreEqual(dividend2.ActionDate, new DateTime(2005, 10, 12));
             }
         }
 
