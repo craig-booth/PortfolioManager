@@ -36,7 +36,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)
         {
-            throw new NotSupportedException();
+
+            if (forVersion == 0)
+                return new SQLiteSimpleDatabaseUpgrade(1, "Upgrade\\StockDatabaseUpgradeToVersion1.sql");
+                throw new NotSupportedException();
         }
 
         protected override void CreateDatabaseTables()

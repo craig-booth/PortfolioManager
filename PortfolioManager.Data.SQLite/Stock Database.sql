@@ -84,6 +84,16 @@ CREATE TABLE [CapitalReturns]
 	PRIMARY KEY ([Id])
 );
 
+CREATE TABLE [SplitConsolidations]
+(
+	[Id] TEXT(36) NOT NULL,
+	[OldUnits] INTEGER NOT NULL,
+	[NewUnits] INTEGER NOT NULL,
+
+	PRIMARY KEY ([Id])
+);
+
+
 CREATE TABLE [Transformations]
 (
 	[Id] TEXT(36) NOT NULL,
