@@ -33,6 +33,7 @@ namespace PortfolioManager.Model.Portfolios
             _CorporateActionHandlers.Add(CorporateActionType.CapitalReturn, new CapitalReturnHandler(_StockService, _ParcelService));
             _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(_StockService, _ParcelService));
             _CorporateActionHandlers.Add(CorporateActionType.Transformation, new TransformationHandler(_StockService, _ParcelService));
+            _CorporateActionHandlers.Add(CorporateActionType.SplitConsolidation, new SplitConsolidationHandler(_StockService));
         }
 
         public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)

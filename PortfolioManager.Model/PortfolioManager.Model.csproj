@@ -52,6 +52,7 @@
     <Compile Include="Portfolios\CorporateActions\CapitalReturnHandler.cs" />
     <Compile Include="Portfolios\CorporateActions\CorporateActionHandler.cs" />
     <Compile Include="Portfolios\CorporateActions\DividendHandler.cs" />
+    <Compile Include="Portfolios\CorporateActions\SplitConsolidationHandler.cs" />
     <Compile Include="Portfolios\CorporateActions\TransformationHandler.cs" />
     <Compile Include="Portfolios\Exceptions.cs" />
     <Compile Include="Portfolios\IncomeService.cs" />
