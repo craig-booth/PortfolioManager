@@ -54,6 +54,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 return CreateCapitalReturn(database, reader);
             else if (type == CorporateActionType.Transformation)
                 return CreateTransformation(database, reader);
+            else if (type == CorporateActionType.SplitConsolidation)
+                return CreateSplitConsolidation(database, reader);
             else
                 return null;
         }
@@ -110,6 +112,32 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             return capitalReturn;
         }
+
+        private static SplitConsolidation CreateSplitConsolidation(SQLiteStockDatabase database, SQLiteDataReader reader)
+        {
+            /* Get capital return vales */
+            var command = new SQLiteCommand("SELECT * FROM [SplitConsolidations] WHERE [Id] = @Id", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            SQLiteDataReader spitConsolidationReader = command.ExecuteReader();
+            if (!spitConsolidationReader.Read())
+            {
+                spitConsolidationReader.Close();
+                throw new RecordNotFoundException(reader.GetString(0));
+            }
+
+            SplitConsolidation splitConsolidation = new SplitConsolidation(database,
+                                    new Guid(reader.GetString(0)),
+                                    new Guid(reader.GetString(1)),
+                                    reader.GetDateTime(2),
+                                    spitConsolidationReader.GetInt32(1),
+                                    spitConsolidationReader.GetInt32(2),
+                                    reader.GetString(3));
+            spitConsolidationReader.Close();
+
+            return splitConsolidation;
+        }
+
 
         private static Transformation CreateTransformation(SQLiteStockDatabase database, SQLiteDataReader reader)
         {

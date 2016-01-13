@@ -52,6 +52,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 AddCapitalReturnRecord(entity as CapitalReturn);
             else if (entity.Type == CorporateActionType.Transformation)
                 AddTransformationRecord(entity as Transformation);
+            else if (entity.Type == CorporateActionType.SplitConsolidation)
+                AddSplitConsolidationRecord(entity as SplitConsolidation);
+            else
+                throw new NotSupportedException();
         }      	
 
         private SQLiteCommand _AddDivendedRecordCommand;
@@ -80,6 +84,20 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _AddCapitalReturnRecordCommand.ExecuteNonQuery();
         }
 
+        private SQLiteCommand _AddSplitConsolidationRecordCommand;
+        private void AddSplitConsolidationRecord(SplitConsolidation entity)
+        {
+            if (_AddSplitConsolidationRecordCommand == null)
+            {
+                _AddSplitConsolidationRecordCommand = new SQLiteCommand("INSERT INTO [SplitConsolidations] ([Id], [OldUnits], [NewUnits]) VALUES (@Id, @OldUnits, @NewUnits)", _Connection);
+                _AddSplitConsolidationRecordCommand.Prepare();
+            }
+
+            AddSplitConsolidationParameters(_AddSplitConsolidationRecordCommand, entity);
+            _AddSplitConsolidationRecordCommand.ExecuteNonQuery();
+        }
+
+
         private SQLiteCommand _AddTransformationRecordCommand;
         private void AddTransformationRecord(Transformation entity)
         {
@@ -104,6 +122,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 UpdateCapitalReturnRecord(entity as CapitalReturn);
             else if (entity.Type == CorporateActionType.Transformation)
                 UpdateTransformationRecord(entity as Transformation);
+            else if (entity.Type == CorporateActionType.SplitConsolidation)
+                UpdateSplitConsolidationRecord(entity as SplitConsolidation);
+            else
+                throw new NotSupportedException();
         }
 
         private SQLiteCommand _UpdateDivendedRecordCommand;
@@ -130,6 +152,19 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             AddCapitalReturnParameters(_UpdateCapitalReturnRecordCommand, entity);
             _UpdateCapitalReturnRecordCommand.ExecuteNonQuery();
+        }
+
+        private SQLiteCommand _UpdateSplitConsolidationRecordCommand;
+        private void UpdateSplitConsolidationRecord(SplitConsolidation entity)
+        {
+            if (_UpdateSplitConsolidationRecordCommand == null)
+            {
+                _UpdateSplitConsolidationRecordCommand = new SQLiteCommand("UPDATE [SplitConsolidations] SET [OldUnits] = @OldUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id", _Connection);
+                _UpdateSplitConsolidationRecordCommand.Prepare();
+            }
+
+            AddSplitConsolidationParameters(_UpdateSplitConsolidationRecordCommand, entity);
+            _UpdateSplitConsolidationRecordCommand.ExecuteNonQuery();
         }
 
         private SQLiteCommand _UpdateTransformationRecordCommand;
@@ -178,6 +213,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 DeleteCapitalReturnRecord(entity.Id);
             else if (entity.Type == CorporateActionType.Transformation)
                 DeleteTransformationRecord(entity.Id);
+            else if (entity.Type == CorporateActionType.SplitConsolidation)
+                DeleteSplitConsolidationRecord(entity.Id);
+            else
+                throw new NotSupportedException();
         }
 
         public override void Delete(Guid id)
@@ -189,6 +228,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             DeleteDividendRecord(id);
             DeleteCapitalReturnRecord(id);
             DeleteTransformationRecord(id);
+            DeleteSplitConsolidationRecord(id);
         }
 
         private SQLiteCommand _DeleteDivendedRecordCommand;
@@ -215,6 +255,19 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             _DeleteCapitalReturnRecordCommand.Parameters.AddWithValue("@Id", id.ToString());
             _DeleteCapitalReturnRecordCommand.ExecuteNonQuery();
+        }
+
+        private SQLiteCommand _DeleteSplitConsolidationRecordCommand;
+        private void DeleteSplitConsolidationRecord(Guid id)
+        {
+            if (_DeleteSplitConsolidationRecordCommand == null)
+            {
+                _DeleteSplitConsolidationRecordCommand = new SQLiteCommand("DELETE FROM [SplitConsolidations] WHERE [Id] = @Id", _Connection);
+                _DeleteSplitConsolidationRecordCommand.Prepare();
+            }
+
+            _DeleteSplitConsolidationRecordCommand.Parameters.AddWithValue("@Id", id.ToString());
+            _DeleteSplitConsolidationRecordCommand.ExecuteNonQuery();
         }
 
         private SQLiteCommand _DeleteTransformationRecordCommand;
@@ -273,6 +326,13 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@PaymentDate", entity.PaymentDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Amount", DecimalToDB(entity.Amount));
+        }
+
+        private void AddSplitConsolidationParameters(SQLiteCommand command, SplitConsolidation entity)
+        {
+            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
+            command.Parameters.AddWithValue("@OldUnits", entity.OldUnits);
+            command.Parameters.AddWithValue("@NewUnits", entity.NewUnits);
         }
 
         private void AddTransformationParameters(SQLiteCommand command, Transformation entity)
