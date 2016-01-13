@@ -9,7 +9,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Stocks
 {
-    public enum CorporateActionType { Dividend, CapitalReturn, Transformation}
+    public enum CorporateActionType { Dividend, CapitalReturn, Transformation, SplitConsolidation}
 
     public interface ICorporateAction : IEntity
     {
