@@ -39,5 +39,13 @@ namespace PortfolioManager.Model.Portfolios
             return transactions.AsReadOnly();
         }
 
+        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        {
+            SplitConsolidation splitConsolidation = corporateAction as SplitConsolidation;
+            string asxCode = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate).ASXCode;
+
+            var transactions = transactionService.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
+            return (transactions.Count() == 0);
+        }
     }
 }

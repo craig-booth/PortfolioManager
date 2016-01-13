@@ -40,5 +40,14 @@ namespace PortfolioManager.Model.Portfolios
             return transactions.AsReadOnly();
         }
 
+        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        {
+            CapitalReturn capitalReturn = corporateAction as CapitalReturn;
+            string asxCode = _StockService.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
+
+            var transactions = transactionService.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);
+            return (transactions.Count() == 0);
+        }
+
     }
 }

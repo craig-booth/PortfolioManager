@@ -85,6 +85,27 @@ namespace PortfolioManager.Model.Portfolios
             return transactions.AsReadOnly();
         }
 
+        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        {
+            Transformation transformation = corporateAction as Transformation;
+
+            IReadOnlyCollection<ITransaction> transactions;
+            string asxCode;
+
+            if (transformation.ResultingStocks.Any())
+            {
+                asxCode = _StockService.Get(transformation.ResultingStocks.First().Stock, transformation.ImplementationDate).ASXCode;
+                transactions = transactionService.GetTransactions(asxCode, TransactionType.OpeningBalance, transformation.ImplementationDate, transformation.ImplementationDate);
+            }
+            else
+            { 
+                asxCode = _StockService.Get(transformation.Stock, transformation.ImplementationDate).ASXCode;
+
+                transactions = transactionService.GetTransactions(asxCode, TransactionType.Disposal, transformation.ImplementationDate, transformation.ImplementationDate);
+            }
+            return (transactions.Count() == 0);
+        }
+
     }
 
 

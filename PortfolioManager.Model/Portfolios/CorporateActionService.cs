@@ -110,47 +110,11 @@ namespace PortfolioManager.Model.Portfolios
 
             foreach (ICorporateAction corporateAction in fromList)
             {
-                IReadOnlyCollection<ITransaction> transactions;
-                TransactionType type;
-                DateTime date;
-                string asxCode;
-
-                if (corporateAction.Type == CorporateActionType.Dividend)
-                {
-                    Dividend dividend = corporateAction as Dividend;
-                    date = dividend.PaymentDate;
-                    type = TransactionType.Income;
-                    asxCode = _StockService.Get(dividend.Stock, date).ASXCode;
-                }
-                else if (corporateAction.Type == CorporateActionType.CapitalReturn)
-                {
-                    CapitalReturn capitalReturn = corporateAction as CapitalReturn;
-                    date = capitalReturn.PaymentDate;
-                    type = TransactionType.ReturnOfCapital;
-                    asxCode = _StockService.Get(capitalReturn.Stock, date).ASXCode;
-                }
-                else if (corporateAction.Type == CorporateActionType.Transformation)
-                {
-                    Transformation transformation = corporateAction as Transformation;
-                    date = transformation.ImplementationDate;
-
-                    if (transformation.ResultingStocks.Any())
-                    {
-                        type = TransactionType.OpeningBalance;
-                        asxCode = _StockService.Get(transformation.ResultingStocks.First().Stock, date).ASXCode;
-                    }
-                    else
-                    {
-                        type = TransactionType.Disposal;
-                        asxCode = _StockService.Get(transformation.Stock, date).ASXCode;
-                    }
-
-                }
-                else
+                var handler = _CorporateActionHandlers[corporateAction.Type];
+                if (handler == null)
                     continue;
 
-                transactions = _TransactionService.GetTransactions(asxCode, type, date, date);
-                if (transactions.Count() == 0)
+                if (! handler.HasBeenApplied(corporateAction, _TransactionService))
                     toList.Add(corporateAction);
             }
         }

@@ -70,6 +70,16 @@ namespace PortfolioManager.Model.Portfolios
 
             return transactions;
         }
+
+        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        {
+            Dividend dividend = corporateAction as Dividend;
+            string asxCode = _StockService.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
+           
+            var transactions = transactionService.GetTransactions(asxCode, TransactionType.Income, dividend.PaymentDate, dividend.PaymentDate);
+            return (transactions.Count() == 0); 
+        }
+
     }
 
 
