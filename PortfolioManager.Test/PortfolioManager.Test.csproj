@@ -74,6 +74,12 @@
     <Compile Include="frmMultipleTransactions.Designer.cs">
       <DependentUpon>frmMultipleTransactions.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSplitConsolidation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitConsolidation.Designer.cs">
+      <DependentUpon>frmSplitConsolidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTransaction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMultipleTransactions.resx">
       <DependentUpon>frmMultipleTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitConsolidation.resx">
+      <DependentUpon>frmSplitConsolidation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTransaction.resx">
       <DependentUpon>frmTransaction.cs</DependentUpon>

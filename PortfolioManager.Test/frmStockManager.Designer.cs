@@ -37,7 +37,9 @@
             this.btnAddCapitalReturn = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddDividend = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddTransformation = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddSplitConsolidation = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDownloadDividends = new System.Windows.Forms.ToolStripButton();
+            this.btnImportPrices = new System.Windows.Forms.ToolStripButton();
             this.lsvStocks = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -52,7 +54,6 @@
             this.ctxCorporateActions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuEditCorporateAction = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDeleteCorporateAction = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnImportPrices = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.ctxStocks.SuspendLayout();
             this.ctxCorporateActions.SuspendLayout();
@@ -60,6 +61,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnRefresh,
             this.btnAddStock,
@@ -68,7 +70,7 @@
             this.btnImportPrices});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1012, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1349, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -78,7 +80,7 @@
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(50, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(62, 24);
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
@@ -88,7 +90,7 @@
             this.btnAddStock.Image = ((System.Drawing.Image)(resources.GetObject("btnAddStock.Image")));
             this.btnAddStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddStock.Name = "btnAddStock";
-            this.btnAddStock.Size = new System.Drawing.Size(65, 22);
+            this.btnAddStock.Size = new System.Drawing.Size(81, 24);
             this.btnAddStock.Text = "Add Stock";
             this.btnAddStock.Click += new System.EventHandler(this.btnAddStock_Click);
             // 
@@ -98,33 +100,41 @@
             this.btnAddCorporateAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnAddCapitalReturn,
             this.btnAddDividend,
-            this.btnAddTransformation});
+            this.btnAddTransformation,
+            this.btnAddSplitConsolidation});
             this.btnAddCorporateAction.Image = ((System.Drawing.Image)(resources.GetObject("btnAddCorporateAction.Image")));
             this.btnAddCorporateAction.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddCorporateAction.Name = "btnAddCorporateAction";
-            this.btnAddCorporateAction.Size = new System.Drawing.Size(139, 22);
+            this.btnAddCorporateAction.Size = new System.Drawing.Size(173, 24);
             this.btnAddCorporateAction.Text = "Add Corporate  Action";
             // 
             // btnAddCapitalReturn
             // 
             this.btnAddCapitalReturn.Name = "btnAddCapitalReturn";
-            this.btnAddCapitalReturn.Size = new System.Drawing.Size(156, 22);
+            this.btnAddCapitalReturn.Size = new System.Drawing.Size(204, 26);
             this.btnAddCapitalReturn.Text = "Capital Return";
             this.btnAddCapitalReturn.Click += new System.EventHandler(this.btnAddCapitalReturn_Click);
             // 
             // btnAddDividend
             // 
             this.btnAddDividend.Name = "btnAddDividend";
-            this.btnAddDividend.Size = new System.Drawing.Size(156, 22);
+            this.btnAddDividend.Size = new System.Drawing.Size(204, 26);
             this.btnAddDividend.Text = "Dividend";
             this.btnAddDividend.Click += new System.EventHandler(this.btnAddDividend_Click);
             // 
             // btnAddTransformation
             // 
             this.btnAddTransformation.Name = "btnAddTransformation";
-            this.btnAddTransformation.Size = new System.Drawing.Size(156, 22);
+            this.btnAddTransformation.Size = new System.Drawing.Size(204, 26);
             this.btnAddTransformation.Text = "Transformation";
             this.btnAddTransformation.Click += new System.EventHandler(this.btnAddTransformation_Click);
+            // 
+            // btnAddSplitConsolidation
+            // 
+            this.btnAddSplitConsolidation.Name = "btnAddSplitConsolidation";
+            this.btnAddSplitConsolidation.Size = new System.Drawing.Size(204, 26);
+            this.btnAddSplitConsolidation.Text = "Split/Cosolidation";
+            this.btnAddSplitConsolidation.Click += new System.EventHandler(this.btnAddSplitConsolidation_Click);
             // 
             // btnDownloadDividends
             // 
@@ -132,9 +142,19 @@
             this.btnDownloadDividends.Image = ((System.Drawing.Image)(resources.GetObject("btnDownloadDividends.Image")));
             this.btnDownloadDividends.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDownloadDividends.Name = "btnDownloadDividends";
-            this.btnDownloadDividends.Size = new System.Drawing.Size(120, 22);
+            this.btnDownloadDividends.Size = new System.Drawing.Size(152, 24);
             this.btnDownloadDividends.Text = "Download Dividends";
             this.btnDownloadDividends.Click += new System.EventHandler(this.btnDownloadDividends_Click);
+            // 
+            // btnImportPrices
+            // 
+            this.btnImportPrices.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnImportPrices.Image = ((System.Drawing.Image)(resources.GetObject("btnImportPrices.Image")));
+            this.btnImportPrices.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnImportPrices.Name = "btnImportPrices";
+            this.btnImportPrices.Size = new System.Drawing.Size(100, 24);
+            this.btnImportPrices.Text = "Import Prices";
+            this.btnImportPrices.Click += new System.EventHandler(this.btnImportPrices_Click);
             // 
             // lsvStocks
             // 
@@ -146,10 +166,11 @@
             this.columnHeader2});
             this.lsvStocks.ContextMenuStrip = this.ctxStocks;
             this.lsvStocks.FullRowSelect = true;
-            this.lsvStocks.Location = new System.Drawing.Point(0, 28);
+            this.lsvStocks.Location = new System.Drawing.Point(0, 34);
+            this.lsvStocks.Margin = new System.Windows.Forms.Padding(4);
             this.lsvStocks.MultiSelect = false;
             this.lsvStocks.Name = "lsvStocks";
-            this.lsvStocks.Size = new System.Drawing.Size(345, 485);
+            this.lsvStocks.Size = new System.Drawing.Size(459, 596);
             this.lsvStocks.TabIndex = 1;
             this.lsvStocks.UseCompatibleStateImageBehavior = false;
             this.lsvStocks.View = System.Windows.Forms.View.Details;
@@ -167,39 +188,40 @@
             // 
             // ctxStocks
             // 
+            this.ctxStocks.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ctxStocks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuDeleteStock,
             this.mnuRenameStock,
             this.mnuChangeASXCode,
             this.mnuDelistStock});
             this.ctxStocks.Name = "ctxStocks";
-            this.ctxStocks.Size = new System.Drawing.Size(171, 92);
+            this.ctxStocks.Size = new System.Drawing.Size(205, 108);
             // 
             // mnuDeleteStock
             // 
             this.mnuDeleteStock.Name = "mnuDeleteStock";
-            this.mnuDeleteStock.Size = new System.Drawing.Size(170, 22);
+            this.mnuDeleteStock.Size = new System.Drawing.Size(204, 26);
             this.mnuDeleteStock.Text = "Delete";
             this.mnuDeleteStock.Click += new System.EventHandler(this.mnuDeleteStock_Click);
             // 
             // mnuRenameStock
             // 
             this.mnuRenameStock.Name = "mnuRenameStock";
-            this.mnuRenameStock.Size = new System.Drawing.Size(170, 22);
+            this.mnuRenameStock.Size = new System.Drawing.Size(204, 26);
             this.mnuRenameStock.Text = "Rename";
             this.mnuRenameStock.Click += new System.EventHandler(this.mnuRenameStock_Click);
             // 
             // mnuChangeASXCode
             // 
             this.mnuChangeASXCode.Name = "mnuChangeASXCode";
-            this.mnuChangeASXCode.Size = new System.Drawing.Size(170, 22);
+            this.mnuChangeASXCode.Size = new System.Drawing.Size(204, 26);
             this.mnuChangeASXCode.Text = "Change ASX Code";
             this.mnuChangeASXCode.Click += new System.EventHandler(this.mnuChangeASXCode_Click);
             // 
             // mnuDelistStock
             // 
             this.mnuDelistStock.Name = "mnuDelistStock";
-            this.mnuDelistStock.Size = new System.Drawing.Size(170, 22);
+            this.mnuDelistStock.Size = new System.Drawing.Size(204, 26);
             this.mnuDelistStock.Text = "Delist";
             this.mnuDelistStock.Click += new System.EventHandler(this.mnuDelistStock_Click);
             // 
@@ -213,9 +235,10 @@
             this.colDescription});
             this.lsvCorporateActions.ContextMenuStrip = this.ctxCorporateActions;
             this.lsvCorporateActions.FullRowSelect = true;
-            this.lsvCorporateActions.Location = new System.Drawing.Point(351, 28);
+            this.lsvCorporateActions.Location = new System.Drawing.Point(468, 34);
+            this.lsvCorporateActions.Margin = new System.Windows.Forms.Padding(4);
             this.lsvCorporateActions.Name = "lsvCorporateActions";
-            this.lsvCorporateActions.Size = new System.Drawing.Size(661, 485);
+            this.lsvCorporateActions.Size = new System.Drawing.Size(880, 596);
             this.lsvCorporateActions.TabIndex = 2;
             this.lsvCorporateActions.UseCompatibleStateImageBehavior = false;
             this.lsvCorporateActions.View = System.Windows.Forms.View.Details;
@@ -233,44 +256,36 @@
             // 
             // ctxCorporateActions
             // 
+            this.ctxCorporateActions.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ctxCorporateActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuEditCorporateAction,
             this.mnuDeleteCorporateAction});
             this.ctxCorporateActions.Name = "ctxCorporateActions";
-            this.ctxCorporateActions.Size = new System.Drawing.Size(108, 48);
+            this.ctxCorporateActions.Size = new System.Drawing.Size(129, 56);
             // 
             // mnuEditCorporateAction
             // 
             this.mnuEditCorporateAction.Name = "mnuEditCorporateAction";
-            this.mnuEditCorporateAction.Size = new System.Drawing.Size(107, 22);
+            this.mnuEditCorporateAction.Size = new System.Drawing.Size(128, 26);
             this.mnuEditCorporateAction.Text = "Edit";
             this.mnuEditCorporateAction.Click += new System.EventHandler(this.mnuEditCorporateAction_Click);
             // 
             // mnuDeleteCorporateAction
             // 
             this.mnuDeleteCorporateAction.Name = "mnuDeleteCorporateAction";
-            this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(107, 22);
+            this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(128, 26);
             this.mnuDeleteCorporateAction.Text = "Delete";
             this.mnuDeleteCorporateAction.Click += new System.EventHandler(this.mnuDeleteCorporateAction_Click);
             // 
-            // btnImportPrices
-            // 
-            this.btnImportPrices.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnImportPrices.Image = ((System.Drawing.Image)(resources.GetObject("btnImportPrices.Image")));
-            this.btnImportPrices.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnImportPrices.Name = "btnImportPrices";
-            this.btnImportPrices.Size = new System.Drawing.Size(81, 22);
-            this.btnImportPrices.Text = "Import Prices";
-            this.btnImportPrices.Click += new System.EventHandler(this.btnImportPrices_Click);
-            // 
             // frmStockManager
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1012, 513);
+            this.ClientSize = new System.Drawing.Size(1349, 631);
             this.Controls.Add(this.lsvCorporateActions);
             this.Controls.Add(this.lsvStocks);
             this.Controls.Add(this.toolStrip1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmStockManager";
             this.Text = "Stock Manager";
             this.Shown += new System.EventHandler(this.frmStockManager_Shown);
@@ -308,5 +323,6 @@
         private System.Windows.Forms.ToolStripMenuItem btnAddTransformation;
         private System.Windows.Forms.ToolStripButton btnDownloadDividends;
         private System.Windows.Forms.ToolStripButton btnImportPrices;
+        private System.Windows.Forms.ToolStripMenuItem btnAddSplitConsolidation;
     }
 }
