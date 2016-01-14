@@ -46,7 +46,7 @@ namespace PortfolioManager.Model.Portfolios
             string asxCode = _StockService.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
 
             var transactions = transactionService.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);
-            return (transactions.Count() == 0);
+            return (transactions.Count() > 0);
         }
 
     }

@@ -45,7 +45,7 @@ namespace PortfolioManager.Model.Portfolios
             string asxCode = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate).ASXCode;
 
             var transactions = transactionService.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
-            return (transactions.Count() == 0);
+            return (transactions.Count() > 0);
         }
     }
 }

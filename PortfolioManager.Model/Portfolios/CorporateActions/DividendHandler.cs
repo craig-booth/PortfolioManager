@@ -77,7 +77,7 @@ namespace PortfolioManager.Model.Portfolios
             string asxCode = _StockService.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
            
             var transactions = transactionService.GetTransactions(asxCode, TransactionType.Income, dividend.PaymentDate, dividend.PaymentDate);
-            return (transactions.Count() == 0); 
+            return (transactions.Count() > 0); 
         }
 
     }

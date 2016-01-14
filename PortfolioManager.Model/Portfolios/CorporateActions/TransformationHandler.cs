@@ -103,7 +103,7 @@ namespace PortfolioManager.Model.Portfolios
 
                 transactions = transactionService.GetTransactions(asxCode, TransactionType.Disposal, transformation.ImplementationDate, transformation.ImplementationDate);
             }
-            return (transactions.Count() == 0);
+            return (transactions.Count() > 0);
         }
 
     }
