@@ -170,11 +170,11 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 36, 10.00m, 1100.00m, 1100.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 37, 10.00m, 1100.00m, 1100.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 45, 10.00m, 1310.00m, 1310.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 43, 10.00m, 1310.00m, 1310.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });

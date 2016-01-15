@@ -40,7 +40,7 @@ namespace PortfolioManager.Model.Portfolios
             if (incomeReceived.TaxDeferred > 0)
             {
                 /* Apportion amount between parcels */
-                ApportionedValue[] apportionedAmounts = new ApportionedValue[parcels.Count];
+                ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[parcels.Count];
                 int i = 0;
                 foreach (ShareParcel parcel in parcels)
                     apportionedAmounts[i++].Units = parcel.Units;

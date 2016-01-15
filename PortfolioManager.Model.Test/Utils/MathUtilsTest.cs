@@ -15,7 +15,7 @@ namespace PortfolioManager.Model.Test.Utils
         [Test, Description("ApportionAmmount into thirds")]
         public void ApportionAmountThirds()
         {
-            ApportionedValue[] values = new ApportionedValue[3];
+            ApportionedCurrencyValue[] values = new ApportionedCurrencyValue[3];
 
             values[0].Units = 50;
             values[1].Units = 50;
@@ -31,7 +31,7 @@ namespace PortfolioManager.Model.Test.Utils
         [Test, Description("ApportionAmmount single value")]
         public void ApportionAmountSingle()
         {
-            ApportionedValue[] values = new ApportionedValue[1];
+            ApportionedCurrencyValue[] values = new ApportionedCurrencyValue[1];
 
             values[0].Units = 50;
 
@@ -43,7 +43,7 @@ namespace PortfolioManager.Model.Test.Utils
         [Test, Description("ApportionAmmount different values")]
         public void ApportionAmountComplex()
         {
-            ApportionedValue[] values = new ApportionedValue[5];
+            ApportionedCurrencyValue[] values = new ApportionedCurrencyValue[5];
 
             values[0].Units = 11;
             values[1].Units = 42;

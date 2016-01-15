@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
@@ -37,18 +38,16 @@ namespace PortfolioManager.Model.Portfolios
                 throw new NoParcelsForTransaction(unitCountAdjustment, "No parcels found for transaction");
 
             /* Determine total number of units after split/consolidation */
-            //var originalTotalUnitCount = parcels.Sum(x => x.Units);
-            //var newTotalUnitCount = (int)Math.Round(originalTotalUnitCount * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
-            
+            var originalTotalUnitCount = parcels.Sum(x => x.Units);
+            var newTotalUnitCount = (int)Math.Round(originalTotalUnitCount * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
+
             /* Apportion unit count over parcels */
-            
+            var newUnitCounts = PortfolioUtils.ApportionAmountOverParcels(parcels, newTotalUnitCount);
 
             /* Reduce cost base of parcels */
+            int i = 0;
             foreach (ShareParcel parcel in parcels)
-            {
-                var newUnitCount = (int)Math.Round(parcel.Units * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
-                ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, newUnitCount, parcel.CostBase, "");
-            }
+                ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, newUnitCounts[i++].Amount, parcel.CostBase, "");
 
         }
 

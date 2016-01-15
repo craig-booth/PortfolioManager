@@ -27,9 +27,9 @@ namespace PortfolioManager.Model.Portfolios
                 var childStocks = stock.GetChildStocks(aquisitionDate);
 
                 /* Apportion amount and cost base */
-                ApportionedValue[] apportionedAmounts = new ApportionedValue[childStocks.Count];
-                ApportionedValue[] apportionedCostBases = new ApportionedValue[childStocks.Count];
-                ApportionedValue[] apportionedUnitPrices = new ApportionedValue[childStocks.Count];
+                ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[childStocks.Count];
+                ApportionedCurrencyValue[] apportionedCostBases = new ApportionedCurrencyValue[childStocks.Count];
+                ApportionedCurrencyValue[] apportionedUnitPrices = new ApportionedCurrencyValue[childStocks.Count];
                 int i = 0;
                 foreach (Stock childStock in childStocks)
                 {

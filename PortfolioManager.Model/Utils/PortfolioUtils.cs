@@ -13,9 +13,9 @@ namespace PortfolioManager.Model.Utils
     public static class PortfolioUtils
     {
 
-        public static ApportionedValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, decimal amount)
+        public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, decimal amount)
         {
-            ApportionedValue[] result = new ApportionedValue[parcels.Count];
+            ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[parcels.Count];
             int i = 0;
             foreach (ShareParcel parcel in parcels)
                 result[i++].Units = parcel.Units;
@@ -24,9 +24,20 @@ namespace PortfolioManager.Model.Utils
             return result;
         }
 
-        public static ApportionedValue[] ApportionAmountOverChildStocks(IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount)
+        public static ApportionedIntegerValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, int amount)
         {
-            ApportionedValue[] result = new ApportionedValue[childStocks.Count];
+            ApportionedIntegerValue[] result = new ApportionedIntegerValue[parcels.Count];
+            int i = 0;
+            foreach (ShareParcel parcel in parcels)
+                result[i++].Units = parcel.Units;
+            MathUtils.ApportionAmount(amount, result);
+
+            return result;
+        }
+
+        public static ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount)
+        {
+            ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[childStocks.Count];
             int i = 0;
             foreach (Stock childStock in childStocks)
             {

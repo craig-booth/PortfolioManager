@@ -51,7 +51,7 @@ namespace PortfolioManager.Model.Portfolios
             _ParcelsSold = new List<ParcelSold>(parcelsSold);
 
             /* Apportion amount received over each parcel */             
-            ApportionedValue[] apportionedAmountReceived = new ApportionedValue[_ParcelsSold.Count];
+            ApportionedCurrencyValue[] apportionedAmountReceived = new ApportionedCurrencyValue[_ParcelsSold.Count];
             int i = 0;
             foreach (ParcelSold parcelSold in _ParcelsSold)
                 apportionedAmountReceived[i++].Units = parcelSold.UnitsSold; ;
