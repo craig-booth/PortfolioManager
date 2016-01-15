@@ -132,6 +132,24 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                     AquisitionDate = aquisitionDate2,
                     Comment = "Costbase Adjustment test"
                 },
+                new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate2,
+                    ASXCode = "AAA",
+                    Units = 110,
+                    CostBase = 1100.00m,
+                    AquisitionDate = aquisitionDate2,
+                    Comment = "Costbase Adjustment test"
+                },
+                new OpeningBalance()
+                {
+                    TransactionDate = aquisitionDate2,
+                    ASXCode = "AAA",
+                    Units = 131,
+                    CostBase = 1310.00m,
+                    AquisitionDate = aquisitionDate2,
+                    Comment = "Costbase Adjustment test"
+                },
                 new UnitCountAdjustment()
                 {
                     TransactionDate = _TransactionDate,
@@ -149,6 +167,14 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 FromDate = _TransactionDate
             });
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 67, 6.00m, 1200.00m, 1200.00m, ParcelEvent.UnitCountChange)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 36, 10.00m, 1100.00m, 1100.00m, ParcelEvent.UnitCountChange)
+            {
+                FromDate = _TransactionDate
+            });
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 45, 10.00m, 1310.00m, 1310.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });

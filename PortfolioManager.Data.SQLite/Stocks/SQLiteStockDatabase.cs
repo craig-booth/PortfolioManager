@@ -17,7 +17,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         protected override int RepositoryVersion
         {
-            get { return 0; }
+            get { return 1; }
         }
 
         public IStockUnitOfWork CreateUnitOfWork()

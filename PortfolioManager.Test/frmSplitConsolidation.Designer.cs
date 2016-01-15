@@ -48,7 +48,7 @@
             this.txtDescription.Margin = new System.Windows.Forms.Padding(4);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(459, 22);
-            this.txtDescription.TabIndex = 36;
+            this.txtDescription.TabIndex = 3;
             // 
             // label5
             // 
@@ -66,7 +66,7 @@
             this.txtNewUnits.Margin = new System.Windows.Forms.Padding(4);
             this.txtNewUnits.Name = "txtNewUnits";
             this.txtNewUnits.Size = new System.Drawing.Size(132, 22);
-            this.txtNewUnits.TabIndex = 34;
+            this.txtNewUnits.TabIndex = 2;
             // 
             // lblNewUnits
             // 
@@ -115,7 +115,7 @@
             this.dtpActionDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpActionDate.Name = "dtpActionDate";
             this.dtpActionDate.Size = new System.Drawing.Size(153, 22);
-            this.dtpActionDate.TabIndex = 27;
+            this.dtpActionDate.TabIndex = 0;
             // 
             // btnCAncel
             // 
@@ -124,7 +124,7 @@
             this.btnCAncel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCAncel.Name = "btnCAncel";
             this.btnCAncel.Size = new System.Drawing.Size(100, 28);
-            this.btnCAncel.TabIndex = 26;
+            this.btnCAncel.TabIndex = 5;
             this.btnCAncel.Text = "Cancel";
             this.btnCAncel.UseVisualStyleBackColor = true;
             // 
@@ -135,9 +135,10 @@
             this.btnOK.Margin = new System.Windows.Forms.Padding(4);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 28);
-            this.btnOK.TabIndex = 25;
+            this.btnOK.TabIndex = 4;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // txtOriginalUnits
             // 
@@ -145,7 +146,7 @@
             this.txtOriginalUnits.Margin = new System.Windows.Forms.Padding(4);
             this.txtOriginalUnits.Name = "txtOriginalUnits";
             this.txtOriginalUnits.Size = new System.Drawing.Size(132, 22);
-            this.txtOriginalUnits.TabIndex = 38;
+            this.txtOriginalUnits.TabIndex = 1;
             // 
             // label3
             // 

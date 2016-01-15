@@ -36,6 +36,13 @@ namespace PortfolioManager.Model.Portfolios
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(unitCountAdjustment, "No parcels found for transaction");
 
+            /* Determine total number of units after split/consolidation */
+            //var originalTotalUnitCount = parcels.Sum(x => x.Units);
+            //var newTotalUnitCount = (int)Math.Round(originalTotalUnitCount * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
+            
+            /* Apportion unit count over parcels */
+            
+
             /* Reduce cost base of parcels */
             foreach (ShareParcel parcel in parcels)
             {

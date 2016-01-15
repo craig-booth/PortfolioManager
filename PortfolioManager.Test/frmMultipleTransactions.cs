@@ -64,6 +64,11 @@ namespace PortfolioManager.Test
                 control = new ReturnOfCapitalControl(_StockService);
                 label = "Return Of Capital";
             }
+            else if (transaction.Type == TransactionType.UnitCountAdjustment)
+            {
+                control = new UnitAdjustmentControl(_StockService);
+                label = "Unit Count Adjustment";
+            }
             else
                 throw new NotSupportedException();
 
@@ -95,6 +100,11 @@ namespace PortfolioManager.Test
             }
             else
                 return false;
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

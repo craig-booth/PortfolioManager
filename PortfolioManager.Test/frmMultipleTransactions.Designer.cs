@@ -36,9 +36,10 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(386, 439);
+            this.btnCancel.Location = new System.Drawing.Point(515, 540);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 28);
             this.btnCancel.TabIndex = 15;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -46,29 +47,33 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(305, 439);
+            this.btnOK.Location = new System.Drawing.Point(407, 540);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.Size = new System.Drawing.Size(100, 28);
             this.btnOK.TabIndex = 14;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // tabTransactions
             // 
-            this.tabTransactions.Location = new System.Drawing.Point(12, 12);
+            this.tabTransactions.Location = new System.Drawing.Point(16, 15);
+            this.tabTransactions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabTransactions.Name = "tabTransactions";
             this.tabTransactions.SelectedIndex = 0;
-            this.tabTransactions.Size = new System.Drawing.Size(453, 421);
+            this.tabTransactions.Size = new System.Drawing.Size(604, 518);
             this.tabTransactions.TabIndex = 16;
             // 
             // frmMultipleTransactions
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(477, 469);
+            this.ClientSize = new System.Drawing.Size(636, 577);
             this.Controls.Add(this.tabTransactions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmMultipleTransactions";
             this.Text = "frmMultipleTransactions";
             this.ResumeLayout(false);
