@@ -56,6 +56,7 @@
             this.btnAddIncomeReceived = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddReturnOfCapital = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddCostbaseAdjustment = new System.Windows.Forms.ToolStripMenuItem();
+            this.unitCountAdjustmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
             this.cboFinancialYear = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -71,7 +72,6 @@
             this.colDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabIncome = new System.Windows.Forms.TabPage();
             this.lsvIncome = new System.Windows.Forms.ListView();
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader29 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -106,7 +106,7 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader33 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabCashAccount = new System.Windows.Forms.TabControl();
-            this.unitCountAdjustmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnHeader26 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ctxCorporateAction.SuspendLayout();
             this.ctxTransaction.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -126,7 +126,7 @@
             this.columnHeader17,
             this.columnHeader18});
             this.lsvTransactions2.Location = new System.Drawing.Point(9, 406);
-            this.lsvTransactions2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvTransactions2.Margin = new System.Windows.Forms.Padding(4);
             this.lsvTransactions2.Name = "lsvTransactions2";
             this.lsvTransactions2.Size = new System.Drawing.Size(649, 320);
             this.lsvTransactions2.Sorting = System.Windows.Forms.SortOrder.Ascending;
@@ -158,7 +158,7 @@
             this.columnHeader21});
             this.lsvCorporateActions.ContextMenuStrip = this.ctxCorporateAction;
             this.lsvCorporateActions.Location = new System.Drawing.Point(736, 406);
-            this.lsvCorporateActions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvCorporateActions.Margin = new System.Windows.Forms.Padding(4);
             this.lsvCorporateActions.Name = "lsvCorporateActions";
             this.lsvCorporateActions.Size = new System.Drawing.Size(728, 320);
             this.lsvCorporateActions.TabIndex = 7;
@@ -188,17 +188,17 @@
             this.mnuEditCorporateAction,
             this.mnuDeleteCorporateAction});
             this.ctxCorporateAction.Name = "ctxCorporateAction";
-            this.ctxCorporateAction.Size = new System.Drawing.Size(76, 56);
+            this.ctxCorporateAction.Size = new System.Drawing.Size(70, 48);
             // 
             // mnuEditCorporateAction
             // 
             this.mnuEditCorporateAction.Name = "mnuEditCorporateAction";
-            this.mnuEditCorporateAction.Size = new System.Drawing.Size(75, 26);
+            this.mnuEditCorporateAction.Size = new System.Drawing.Size(69, 22);
             // 
             // mnuDeleteCorporateAction
             // 
             this.mnuDeleteCorporateAction.Name = "mnuDeleteCorporateAction";
-            this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(75, 26);
+            this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(69, 22);
             // 
             // ctxTransaction
             // 
@@ -328,6 +328,13 @@
             this.btnAddCostbaseAdjustment.Text = "Costbase Adjustment";
             this.btnAddCostbaseAdjustment.Click += new System.EventHandler(this.btnAddCostbaseAdjustment_Click);
             // 
+            // unitCountAdjustmentToolStripMenuItem
+            // 
+            this.unitCountAdjustmentToolStripMenuItem.Name = "unitCountAdjustmentToolStripMenuItem";
+            this.unitCountAdjustmentToolStripMenuItem.Size = new System.Drawing.Size(234, 26);
+            this.unitCountAdjustmentToolStripMenuItem.Text = "Unit Count Adjustment";
+            this.unitCountAdjustmentToolStripMenuItem.Click += new System.EventHandler(this.unitCountAdjustmentToolStripMenuItem_Click);
+            // 
             // btnRefresh
             // 
             this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -358,7 +365,7 @@
             "2004/5",
             "--All--"});
             this.cboFinancialYear.Location = new System.Drawing.Point(1281, 34);
-            this.cboFinancialYear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboFinancialYear.Margin = new System.Windows.Forms.Padding(4);
             this.cboFinancialYear.Name = "cboFinancialYear";
             this.cboFinancialYear.Size = new System.Drawing.Size(172, 24);
             this.cboFinancialYear.TabIndex = 9;
@@ -378,9 +385,9 @@
             // 
             this.tabPage1.Controls.Add(this.lsvCashAccount);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(1463, 332);
             this.tabPage1.TabIndex = 5;
             this.tabPage1.Text = "Cash Account";
@@ -394,7 +401,7 @@
             this.columnHeader32});
             this.lsvCashAccount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvCashAccount.Location = new System.Drawing.Point(4, 4);
-            this.lsvCashAccount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvCashAccount.Margin = new System.Windows.Forms.Padding(4);
             this.lsvCashAccount.Name = "lsvCashAccount";
             this.lsvCashAccount.Size = new System.Drawing.Size(1455, 324);
             this.lsvCashAccount.TabIndex = 0;
@@ -421,7 +428,7 @@
             // 
             this.tabTransactions.Controls.Add(this.lsvTransactions);
             this.tabTransactions.Location = new System.Drawing.Point(4, 25);
-            this.tabTransactions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabTransactions.Margin = new System.Windows.Forms.Padding(4);
             this.tabTransactions.Name = "tabTransactions";
             this.tabTransactions.Size = new System.Drawing.Size(1463, 332);
             this.tabTransactions.TabIndex = 4;
@@ -437,7 +444,7 @@
             this.lsvTransactions.ContextMenuStrip = this.ctxTransaction;
             this.lsvTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvTransactions.Location = new System.Drawing.Point(0, 0);
-            this.lsvTransactions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvTransactions.Margin = new System.Windows.Forms.Padding(4);
             this.lsvTransactions.Name = "lsvTransactions";
             this.lsvTransactions.Size = new System.Drawing.Size(1463, 332);
             this.lsvTransactions.TabIndex = 0;
@@ -464,7 +471,7 @@
             // 
             this.tabIncome.Controls.Add(this.lsvIncome);
             this.tabIncome.Location = new System.Drawing.Point(4, 25);
-            this.tabIncome.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabIncome.Margin = new System.Windows.Forms.Padding(4);
             this.tabIncome.Name = "tabIncome";
             this.tabIncome.Size = new System.Drawing.Size(1463, 332);
             this.tabIncome.TabIndex = 2;
@@ -474,26 +481,19 @@
             // lsvIncome
             // 
             this.lsvIncome.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader12,
             this.columnHeader13,
             this.columnHeader14,
             this.columnHeader29});
             this.lsvIncome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvIncome.FullRowSelect = true;
             this.lsvIncome.Location = new System.Drawing.Point(0, 0);
-            this.lsvIncome.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvIncome.Margin = new System.Windows.Forms.Padding(4);
             this.lsvIncome.MultiSelect = false;
             this.lsvIncome.Name = "lsvIncome";
             this.lsvIncome.Size = new System.Drawing.Size(1463, 332);
             this.lsvIncome.TabIndex = 2;
             this.lsvIncome.UseCompatibleStateImageBehavior = false;
             this.lsvIncome.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "Date";
-            this.columnHeader12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader12.Width = 70;
             // 
             // columnHeader13
             // 
@@ -516,9 +516,9 @@
             // 
             this.tabCGT.Controls.Add(this.lsvCGT);
             this.tabCGT.Location = new System.Drawing.Point(4, 25);
-            this.tabCGT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCGT.Margin = new System.Windows.Forms.Padding(4);
             this.tabCGT.Name = "tabCGT";
-            this.tabCGT.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCGT.Padding = new System.Windows.Forms.Padding(4);
             this.tabCGT.Size = new System.Drawing.Size(1463, 332);
             this.tabCGT.TabIndex = 1;
             this.tabCGT.Text = "CGT";
@@ -535,7 +535,7 @@
             this.lsvCGT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvCGT.FullRowSelect = true;
             this.lsvCGT.Location = new System.Drawing.Point(4, 4);
-            this.lsvCGT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvCGT.Margin = new System.Windows.Forms.Padding(4);
             this.lsvCGT.MultiSelect = false;
             this.lsvCGT.Name = "lsvCGT";
             this.lsvCGT.Size = new System.Drawing.Size(1455, 324);
@@ -576,7 +576,7 @@
             // 
             this.tabParcels.Controls.Add(this.lsvParcels);
             this.tabParcels.Location = new System.Drawing.Point(4, 25);
-            this.tabParcels.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabParcels.Margin = new System.Windows.Forms.Padding(4);
             this.tabParcels.Name = "tabParcels";
             this.tabParcels.Size = new System.Drawing.Size(1463, 332);
             this.tabParcels.TabIndex = 3;
@@ -592,11 +592,12 @@
             this.columnHeader25,
             this.columnHeader27,
             this.columnHeader28,
-            this.columnHeader34});
+            this.columnHeader34,
+            this.columnHeader26});
             this.lsvParcels.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lsvParcels.FullRowSelect = true;
             this.lsvParcels.Location = new System.Drawing.Point(0, 0);
-            this.lsvParcels.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvParcels.Margin = new System.Windows.Forms.Padding(4);
             this.lsvParcels.MultiSelect = false;
             this.lsvParcels.Name = "lsvParcels";
             this.lsvParcels.Size = new System.Drawing.Size(1463, 332);
@@ -643,7 +644,7 @@
             // 
             this.columnHeader34.Text = "Capital Gain %";
             this.columnHeader34.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeader34.Width = 96;
+            this.columnHeader34.Width = 104;
             // 
             // tabPortfolio
             // 
@@ -653,9 +654,9 @@
             this.tabPortfolio.Controls.Add(this.lblTotalCostBase);
             this.tabPortfolio.Controls.Add(this.lsvPortfolio);
             this.tabPortfolio.Location = new System.Drawing.Point(4, 25);
-            this.tabPortfolio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPortfolio.Margin = new System.Windows.Forms.Padding(4);
             this.tabPortfolio.Name = "tabPortfolio";
-            this.tabPortfolio.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPortfolio.Padding = new System.Windows.Forms.Padding(4);
             this.tabPortfolio.Size = new System.Drawing.Size(1463, 332);
             this.tabPortfolio.TabIndex = 0;
             this.tabPortfolio.Text = "Portfolio";
@@ -715,7 +716,7 @@
             this.lsvPortfolio.Dock = System.Windows.Forms.DockStyle.Top;
             this.lsvPortfolio.FullRowSelect = true;
             this.lsvPortfolio.Location = new System.Drawing.Point(4, 4);
-            this.lsvPortfolio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lsvPortfolio.Margin = new System.Windows.Forms.Padding(4);
             this.lsvPortfolio.MultiSelect = false;
             this.lsvPortfolio.Name = "lsvPortfolio";
             this.lsvPortfolio.Size = new System.Drawing.Size(1455, 282);
@@ -780,18 +781,17 @@
             this.tabCashAccount.Controls.Add(this.tabTransactions);
             this.tabCashAccount.Controls.Add(this.tabPage1);
             this.tabCashAccount.Location = new System.Drawing.Point(0, 38);
-            this.tabCashAccount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCashAccount.Margin = new System.Windows.Forms.Padding(4);
             this.tabCashAccount.Name = "tabCashAccount";
             this.tabCashAccount.SelectedIndex = 0;
             this.tabCashAccount.Size = new System.Drawing.Size(1471, 361);
             this.tabCashAccount.TabIndex = 5;
             // 
-            // unitCountAdjustmentToolStripMenuItem
+            // columnHeader26
             // 
-            this.unitCountAdjustmentToolStripMenuItem.Name = "unitCountAdjustmentToolStripMenuItem";
-            this.unitCountAdjustmentToolStripMenuItem.Size = new System.Drawing.Size(234, 26);
-            this.unitCountAdjustmentToolStripMenuItem.Text = "Unit Count Adjustment";
-            this.unitCountAdjustmentToolStripMenuItem.Click += new System.EventHandler(this.unitCountAdjustmentToolStripMenuItem_Click);
+            this.columnHeader26.Text = "Discounted Gain";
+            this.columnHeader26.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeader26.Width = 120;
             // 
             // frmMain
             // 
@@ -804,7 +804,7 @@
             this.Controls.Add(this.lsvCorporateActions);
             this.Controls.Add(this.lsvTransactions2);
             this.Controls.Add(this.tabCashAccount);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMain";
             this.Text = "Portfolio Manager";
             this.ctxCorporateAction.ResumeLayout(false);
@@ -865,7 +865,6 @@
         private System.Windows.Forms.ColumnHeader colDescription;
         private System.Windows.Forms.TabPage tabIncome;
         private System.Windows.Forms.ListView lsvIncome;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.ColumnHeader columnHeader13;
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.ColumnHeader columnHeader29;
@@ -902,6 +901,7 @@
         private System.Windows.Forms.Label lblTotalCostBase;
         private System.Windows.Forms.ColumnHeader columnHeader34;
         private System.Windows.Forms.ToolStripMenuItem unitCountAdjustmentToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader26;
     }
 }
 

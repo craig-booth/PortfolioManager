@@ -159,10 +159,11 @@ namespace PortfolioManager.Test
             lblTotalMarketValue.Text = MathUtils.FormatCurrency(totalMarketValue, true, true);
             lblTotalCapitalGain.Text = MathUtils.FormatCurrency(totalCapitalGain, true, true);
             totalCapitalGainPercentage = totalCapitalGain / totalCostBase;
-            lblTotalCapitalGainPercentage.Text = totalCapitalGainPercentage.ToString("##0.0%");            
+            lblTotalCapitalGainPercentage.Text = totalCapitalGainPercentage.ToString("##0.0%");
 
 
             /* Parcels */
+            var discountDate = DateTime.Today.AddYears(-1);
             lsvParcels.Items.Clear();
             var parcels = _MyPortfolio.ParcelService.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
             foreach (ShareParcel parcel in parcels)
@@ -174,6 +175,11 @@ namespace PortfolioManager.Test
                 decimal capitalGainPercentage = 0.00m;
                 if (parcel.CostBase > 0.00m)
                     capitalGainPercentage = capitalGain / parcel.CostBase;
+                decimal discountedCapitalGain;
+                if (parcel.AquisitionDate.CompareTo(discountDate) < 0)
+                    discountedCapitalGain = capitalGain / 2;
+                else
+                    discountedCapitalGain = capitalGain;
 
                 var item = lsvParcels.Items.Add(stock.ASXCode);
                 item.SubItems.Add(parcel.Units.ToString("n0"));
@@ -182,6 +188,7 @@ namespace PortfolioManager.Test
                 item.SubItems.Add(MathUtils.FormatCurrency(marketValue, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(capitalGain, true, true));
                 item.SubItems.Add(capitalGainPercentage.ToString("##0.0%"));
+                item.SubItems.Add(MathUtils.FormatCurrency(discountedCapitalGain, true, true));
             }
 
             /* CGT */
@@ -199,10 +206,9 @@ namespace PortfolioManager.Test
             /* Income */
             lsvIncome.Items.Clear();
             var allIncome = _MyPortfolio.IncomeService.GetIncome(startDate, endDate);
-            foreach (IncomeReceived income in allIncome)
+            foreach (Income income in allIncome)
             {
-                var item = lsvIncome.Items.Add(income.TransactionDate.ToShortDateString());
-                item.SubItems.Add(income.ASXCode);
+                var item = lsvIncome.Items.Add(income.ASXCode);
                 item.SubItems.Add(MathUtils.FormatCurrency(income.CashIncome, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(income.FrankingCredits, true));
             }
