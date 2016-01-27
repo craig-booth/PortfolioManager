@@ -71,7 +71,7 @@ namespace PortfolioManager.Test
                         Stock = resultingStock.Stock,
                         OriginalUnits = resultingStock.OriginalUnits,
                         NewUnits = resultingStock.NewUnits,
-                        CostBasePercentage = resultingStock.CostBasePercentage
+                        CostBasePercentage = resultingStock.CostBase
 
                     });
             }

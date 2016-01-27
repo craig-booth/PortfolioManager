@@ -297,7 +297,7 @@ namespace PortfolioManager.Model.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, Id, actionDate, implementationDate, cashComponent, description);
+                transformation = new Transformation(_Database, Id, actionDate, implementationDate, cashComponent, true, description);
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
                 unitOfWork.Save();

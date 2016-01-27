@@ -38,7 +38,7 @@ namespace PortfolioManager.Model.Portfolios
             foreach (ResultingStock resultingStock in transformation.ResultingStocks)
             {
                 int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
-                decimal costBase = totalCostBase * resultingStock.CostBasePercentage;
+                decimal costBase = totalCostBase * resultingStock.CostBase;
                 var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
                 transactions.Add(new OpeningBalance()
                 {
@@ -54,7 +54,7 @@ namespace PortfolioManager.Model.Portfolios
             /* Reduce the costbase of the original parcels */
             if (transformation.ResultingStocks.Any())
             {
-                decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBasePercentage);
+                decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBase);
 
                 var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
                 transactions.Add(new CostBaseAdjustment()

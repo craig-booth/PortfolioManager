@@ -157,6 +157,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     reader.GetDateTime(2),
                                     transformationReader.GetDateTime(1),
                                     DBToDecimal(transformationReader.GetInt32(2)),
+                                    true,
                                     reader.GetString(3));
             transformationReader.Close();
 
