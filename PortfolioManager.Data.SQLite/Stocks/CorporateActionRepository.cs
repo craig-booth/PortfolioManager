@@ -103,7 +103,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddTransformationRecordCommand == null)
             {
-                _AddTransformationRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent]) VALUES (@Id, @ImplementationDate, @CashComponent)", _Connection);
+                _AddTransformationRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [RolloverRelief], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent)", _Connection);
                 _AddTransformationRecordCommand.Prepare();
             }
 
@@ -172,7 +172,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_UpdateTransformationRecordCommand == null)
             {
-                _UpdateTransformationRecordCommand = new SQLiteCommand("UPDATE [Transformations] SET [ImplementationDate] = @ImplementationDate, [CashComponent] = @CashComponent WHERE [Id] = @Id", _Connection);
+                _UpdateTransformationRecordCommand = new SQLiteCommand("UPDATE [Transformations] SET [ImplementationDate] = @ImplementationDate, [CashComponent] = @CashComponent, [RolloverRelief] = @RolloverRelief WHERE [Id] = @Id", _Connection);
                 _UpdateTransformationRecordCommand.Prepare();
             }
 
@@ -190,7 +190,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddTransformationResultRecordCommand == null)
             {
-                _AddTransformationResultRecordCommand = new SQLiteCommand("INSERT INTO [TransformationResultingStocks] ([Id], [Stock], [OriginalUnits], [NewUnits], [CostBasePercentage]) VALUES (@Id, @Stock, @OriginalUnits, @NewUnits, @CostBasePercentage)", _Connection);
+                _AddTransformationResultRecordCommand = new SQLiteCommand("INSERT INTO [TransformationResultingStocks] ([Id], [Stock], [OriginalUnits], [NewUnits], [CostBasePercentage], [AquisitionDate]) VALUES (@Id, @Stock, @OriginalUnits, @NewUnits, @CostBasePercentage, @AquisitionDate)", _Connection);
                 _AddTransformationResultRecordCommand.Prepare();
             }
             _AddTransformationResultRecordCommand.Parameters.AddWithValue("@Id", transformationId.ToString());
@@ -198,6 +198,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _AddTransformationResultRecordCommand.Parameters.AddWithValue("@OriginalUnits", entity.OriginalUnits);
             _AddTransformationResultRecordCommand.Parameters.AddWithValue("@NewUnits", entity.NewUnits);
             _AddTransformationResultRecordCommand.Parameters.AddWithValue("@CostBasePercentage", DecimalToDB(entity.CostBase));
+            _AddTransformationResultRecordCommand.Parameters.AddWithValue("@AquisitionDate", entity.AquisitionDate.ToString("yyyy-MM-dd"));
 
             _AddTransformationResultRecordCommand.ExecuteNonQuery();
         }
@@ -340,6 +341,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@ImplementationDate", entity.ImplementationDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@CashComponent", DecimalToDB(entity.CashComponent));
+            command.Parameters.AddWithValue("@RolloverRelief", entity.RolloverRefliefApplies ? "Y": "N");
         }
 
         protected override ICorporateAction CreateEntity(SQLiteDataReader reader)

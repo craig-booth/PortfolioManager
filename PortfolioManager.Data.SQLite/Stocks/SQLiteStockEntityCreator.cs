@@ -157,7 +157,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     reader.GetDateTime(2),
                                     transformationReader.GetDateTime(1),
                                     DBToDecimal(transformationReader.GetInt32(2)),
-                                    true,
+                                    transformationReader.GetString(3) == "Y"? true: false,
                                     reader.GetString(3));
             transformationReader.Close();
 
@@ -172,7 +172,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 ResultingStock resultingStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
                                         transformationReader.GetInt32(2),
                                         transformationReader.GetInt32(3),
-                                        DBToDecimal(transformationReader.GetInt32(4)));
+                                        DBToDecimal(transformationReader.GetInt32(4)),
+                                        transformationReader.GetDateTime(5));
 
                 transformation.AddResultStockInternal(resultingStock);
             }
