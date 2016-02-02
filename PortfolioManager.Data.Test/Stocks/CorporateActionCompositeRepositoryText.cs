@@ -18,11 +18,18 @@ namespace PortfolioManager.Data.Test.Stocks
         public void AddCompositeAction()
         {
             throw new NotSupportedException();
-         /*   Transformation transformation, result;
 
-            transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
-            result = AddCorporateAction(transformation) as Transformation;
-            Assert.That(result, Is.EqualTo(transformation).Using(new EntityComparer())); */
+            var actionDate = new DateTime(2005, 10, 10);
+
+            var compositeAction = new CompositeAction(_Database, _Stock.Id, actionDate, "Test");
+
+            var childAction1 = new CapitalReturn(_Database, _Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "test c1");
+            compositeAction.AddChildAction(childAction1);
+            var childAction2 = new Dividend(_Database, _Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "test c2");
+            compositeAction.AddChildAction(childAction2);
+
+            var result = AddCorporateAction(compositeAction) as CompositeAction;
+            Assert.That(result, Is.EqualTo(compositeAction).Using(new EntityComparer()));
         }
 
         [Test, Description("Test Update() for a Composite Action")]
