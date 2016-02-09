@@ -16,9 +16,7 @@ namespace PortfolioManager.Data.Test.Stocks
     {
         [Test, Description("Test adding a Composite Action")]
         public void AddCompositeAction()
-        {
-            throw new NotSupportedException();
-
+        {         
             var actionDate = new DateTime(2005, 10, 10);
 
             var compositeAction = new CompositeAction(_Database, _Stock.Id, actionDate, "Test");

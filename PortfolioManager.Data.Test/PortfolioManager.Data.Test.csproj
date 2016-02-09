@@ -54,8 +54,8 @@
     <Compile Include="Portfolio\Transactions\OpeningBalanceRepositoryTest.cs" />
     <Compile Include="Portfolio\Transactions\ReturnOfCapitalRepositoryTest.cs" />
     <Compile Include="Portfolio\Transactions\TransactionRepositoryTest.cs" />
-    <Compile Include="Stocks\CorporateActionCapitalReturnRepositoryText.cs" />
-    <Compile Include="Stocks\CorporateActionCompositeRepositoryText.cs" />
+    <Compile Include="Stocks\CorporateActionCapitalReturnRepositoryTest.cs" />
+    <Compile Include="Stocks\CorporateActionCompositeRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionDividendRepositoryText.cs" />
     <Compile Include="Stocks\CorporateActionRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionTransformationRepositoryText.cs" />
