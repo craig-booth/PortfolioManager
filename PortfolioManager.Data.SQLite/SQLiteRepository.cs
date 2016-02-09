@@ -137,15 +137,5 @@ namespace PortfolioManager.Data.SQLite
 
             command.ExecuteNonQuery();
         }
-
-        public int DecimalToDB(decimal value)
-        {
-            return (int)Math.Floor(value * 100000);
-        }
-
-        public decimal DBToDecimal(int value)
-        {
-            return (decimal)value / 100000;
-        }
     }
 }
