@@ -111,18 +111,7 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
             //      FromDate = new DateTime(2013, 06, 28)
             //  });
 
-            _ExpectedIncome.Add(new IncomeReceived()
-            {
-                TransactionDate = new DateTime(2013, 06, 21),
-                RecordDate = new DateTime(2013, 06, 21),
-                ASXCode = "NWSLV",
-                FrankedAmount = 0.00m,
-                UnfrankedAmount = 0.00m,
-                Interest = 0.00m,
-                TaxDeferred = 12.20m,
-                FrankingCredits = 0.00m,
-                Comment = "Amount received for fractional shares"
-            });
+            _ExpectedIncome.Add(new Income("NWSLV", 0.00m, 0.00m, 0.00m, 0.00m, 12.20m));
 
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("NNCLV", new DateTime(2013, 07, 22)).Id, new DateTime(2013, 07, 22), 68, 68 * 16.60m, (68 * 17.32m) - 19.95m));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 235, 4453.37m, (235 * 35.79m) - 17.05m));

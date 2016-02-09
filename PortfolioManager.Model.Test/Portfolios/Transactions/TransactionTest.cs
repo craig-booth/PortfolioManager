@@ -178,7 +178,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         protected DateTime _TransactionDate;
 
         protected List<ShareParcel> _ExpectedParcels;
-        protected List<IncomeReceived> _ExpectedIncome;
+        protected List<Income> _ExpectedIncome;
         protected List<CGTEvent> _ExpectedCGTEvents;
 
         public override void FixtureSetup()
@@ -186,7 +186,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             base.FixtureSetup();
 
             _ExpectedParcels = new List<ShareParcel>();
-            _ExpectedIncome = new List<IncomeReceived>();
+            _ExpectedIncome = new List<Income>();
             _ExpectedCGTEvents = new List<CGTEvent>();
 
             var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");

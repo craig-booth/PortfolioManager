@@ -17,6 +17,41 @@ namespace PortfolioManager.Model.Portfolios
         public decimal Interest { get; set; }
         public decimal TaxDeferred { get; set; }
 
+        public Income(string asxCode, decimal frankedAmount, decimal unfrankedAmount, decimal frankingCredits)
+            :this(asxCode, frankedAmount, unfrankedAmount, frankingCredits, 0.00m, 0.00m)
+        {
+            
+        }
+
+        public Income(string asxCode, decimal frankedAmount, decimal unfrankedAmount, decimal frankingCredits, decimal interest, decimal taxDeferred)
+        {
+            ASXCode = asxCode;
+            FrankedAmount = frankedAmount;
+            UnfrankedAmount = unfrankedAmount;
+            FrankingCredits = frankingCredits;
+            Interest = interest;
+            TaxDeferred = taxDeferred;
+        }
+
+        public Income(IncomeReceived incomeReceived)
+            : this(incomeReceived.ASXCode, incomeReceived.FrankedAmount, incomeReceived.UnfrankedAmount, incomeReceived.FrankingCredits, incomeReceived.Interest, incomeReceived.TaxDeferred)
+        {
+
+        }
+
+        public Income(IEnumerable<IncomeReceived> incomeReceivedTransactions)
+            : this(incomeReceivedTransactions.First().ASXCode, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m)
+        {
+            foreach (var incomeReceived in incomeReceivedTransactions)
+            {
+                FrankedAmount += incomeReceived.FrankedAmount;
+                UnfrankedAmount += incomeReceived.UnfrankedAmount;
+                FrankingCredits += incomeReceived.FrankingCredits;
+                Interest += incomeReceived.Interest;
+                TaxDeferred += incomeReceived.TaxDeferred;
+            }                   
+        }
+
         public decimal CashIncome
         {
             get { return FrankedAmount + UnfrankedAmount + Interest; }
@@ -46,23 +81,20 @@ namespace PortfolioManager.Model.Portfolios
 
         public IReadOnlyCollection<Income> GetIncome(DateTime fromDate, DateTime toDate)
         {
-            var incomeTransactions = _PortfolioQuery.GetTransactions(Guid.Empty, TransactionType.Income, fromDate, toDate);
+            var incomeTransactions = _PortfolioQuery.GetTransactions(Guid.Empty, TransactionType.Income, fromDate, toDate).Cast<IncomeReceived>();
 
-            var incomeQuery = from incomeReceived in incomeTransactions
+            var transactionsByASXCode = from incomeReceived in incomeTransactions 
                               group incomeReceived by incomeReceived.ASXCode into g
                               orderby g.Key
-                              select new Income()
-                              {
-                                    ASXCode = g.Key,
-                                    FrankedAmount = g.Sum(x => (x as IncomeReceived).FrankedAmount),
-                                    UnfrankedAmount = g.Sum(x => (x as IncomeReceived).UnfrankedAmount),
-                                    FrankingCredits = g.Sum(x => (x as IncomeReceived).FrankingCredits),
-                                    Interest = g.Sum(x => (x as IncomeReceived).Interest),
-                                    TaxDeferred = g.Sum(x => (x as IncomeReceived).TaxDeferred)
-                              };
+                              select g;
 
-            return incomeQuery.ToList().AsReadOnly();
+            var result = new List<Income>();
+            foreach (var incomeReceivedTransactions in transactionsByASXCode)
+            {
+                result.Add(new Income(incomeReceivedTransactions));
+            }
 
+            return result;
         }
     }
 }

@@ -103,7 +103,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddTransformationRecordCommand == null)
             {
-                _AddTransformationRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [RolloverRelief], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent)", _Connection);
+                _AddTransformationRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent, @RolloverRelief)", _Connection);
                 _AddTransformationRecordCommand.Prepare();
             }
 

@@ -20,7 +20,6 @@ namespace PortfolioManager.Model.Test.Portfolios
     }
 
     public class EntityEqualConstraint<T> : Constraint
-        where T : IEntity
     {
         protected readonly T _Expected;
         protected readonly IEntityComparer<T> _EntityComparer;
@@ -57,7 +56,6 @@ namespace PortfolioManager.Model.Test.Portfolios
     }
 
     public class EntityCollectionEqualConstraint<T> : Constraint
-        where T : IEntity
     {
         protected readonly ICollection<T> _Expected;
         protected readonly IEntityComparer<T> _EntityComparer;
