@@ -361,7 +361,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Income Received validation tests")]
-    public class IncomeReceivedValidationTests : TransactionTest
+    public class IncomeReceivedValidationTests : PortfolioTest
     {
         [Test, Description("Income Received Ordinary share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]

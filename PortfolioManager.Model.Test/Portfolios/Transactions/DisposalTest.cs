@@ -429,7 +429,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Disposal validation tests")]
-    public class DisposalValidationTests : TransactionTest
+    public class DisposalValidationTests : PortfolioTest
     {
         [Test, Description("Disposal of Ordinary Share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]

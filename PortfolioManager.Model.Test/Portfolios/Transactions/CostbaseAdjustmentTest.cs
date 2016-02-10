@@ -146,7 +146,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Cost base adjustment validation tests")]
-    public class CostBaseAdjustmentValidationTests : TransactionTest
+    public class CostBaseAdjustmentValidationTests : PortfolioTest
     {
         [Test, Description("Cost base adjustment of Ordinary share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]
