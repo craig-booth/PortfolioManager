@@ -32,6 +32,7 @@ namespace PortfolioManager.Model.Portfolios
                 {
                     ASXCode = stock.ASXCode,
                     TransactionDate = capitalReturn.PaymentDate,
+                    RecordDate = capitalReturn.ActionDate,
                     Amount = capitalReturn.Amount,
                     Comment = capitalReturn.Description
                 }
