@@ -1,27 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="3" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2016-02-11" time="20:27:26">
+<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="7" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2016-02-13" time="20:23:52">
   <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8669" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
   <culture-info current-culture="en-AU" current-uiculture="en-GB" />
-  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Success" success="True" time="0.327" asserts="0">
+  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="0.115" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Success" success="True" time="0.317" asserts="0">
+      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="0.114" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Success" success="True" time="0.317" asserts="0">
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="0.114" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Model" executed="True" result="Success" success="True" time="0.317" asserts="0">
+              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="0.113" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="0.316" asserts="0">
+                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="0.113" asserts="0">
                     <results>
-                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Success" success="True" time="0.316" asserts="0">
+                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="0.112" asserts="0">
                         <results>
-                          <test-suite type="Namespace" name="CorporateActionHandlers" executed="True" result="Success" success="True" time="0.315" asserts="0">
+                          <test-suite type="Namespace" name="CorporateActionHandlers" executed="True" result="Failure" success="False" time="0.112" asserts="0">
                             <results>
-                              <test-suite type="TestFixture" name="CapitalReturnHandlerTest" description="Capital Return Handler Tests" executed="True" result="Success" success="True" time="0.314" asserts="0">
+                              <test-suite type="TestFixture" name="CapitalReturnHandlerTest" description="Capital Return Handler Tests" executed="True" result="Failure" success="False" time="0.072" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.MultipleParcels" description="Multiple Parcels" executed="True" result="Success" success="True" time="0.064" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.NoParcels" description="No Parcels" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.MultipleParcels" description="Multiple Parcels" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.NoParcels" description="No Parcels" executed="True" result="Failure" success="False" time="0.030" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <>
+  But was:  <<ReturnOfCapital:- TransactionDate: 02/01/2010, ASXCode: AAA, Description: Return of Capital of $0.50, Amount: 0.50, RecordDate: 01/01/2010, Comment: Test>>
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.NoParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\CorporateActionHandlers\CapitalReturnHandlerTest.cs:line 126
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.SingleParcel" description="Single Parcel" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DividendHandlerTest" description="Dividend Handler Tests" executed="True" result="Success" success="True" time="0.035" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.MultipleParcelsDRP" description="Multiple Parcels, DRP" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.MultipleParcelsNoDRP" description="Multiple Parcels, No DRP" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.NoParcels" description="No Parcels" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.SingleParcelNoDRP" description="Single Parcel, No DRP" executed="True" result="Success" success="True" time="0.004" asserts="1" />
                                 </results>
                               </test-suite>
                             </results>

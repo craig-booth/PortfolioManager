@@ -45,7 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Portfolios\CGTEventComparer.cs" />
-    <Compile Include="Portfolios\CorporateActionHandlers\CapitalReturnHandler.cs" />
+    <Compile Include="Portfolios\CorporateActionHandlers\CapitalReturnHandlerTest.cs" />
+    <Compile Include="Portfolios\CorporateActionHandlers\DividendHandlerTest.cs" />
+    <Compile Include="Portfolios\CorporateActionHandlers\SplitConsolidationHandlerTest.cs" />
+    <Compile Include="Portfolios\CorporateActionHandlers\TransformationHandlerTest.cs" />
     <Compile Include="Portfolios\EntityConstraint.cs" />
     <Compile Include="Portfolios\IncomeReceivedComparer.cs" />
     <Compile Include="Portfolios\PortfolioConstraints.cs" />

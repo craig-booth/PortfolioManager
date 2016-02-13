@@ -171,7 +171,7 @@ namespace PortfolioManager.Model.Test.Portfolios
             var incomeReceived = transaction as IncomeReceived;
 
             writer.Write("<IncomeReceived:- Transactionate: {0:d}, ASXCode: {1}, Description: {2}, FrankedAmount: {3}, UnfrankedAmount: {4}, FrankingCredits: {5}, TaxDeferred: {6}, Interest: {7}, RecordDate: {8:d}, Comment: {9}>",
-                new object[] { incomeReceived.TransactionDate, incomeReceived.ASXCode, incomeReceived.Description, incomeReceived.FrankedAmount, incomeReceived.UnfrankedAmount, incomeReceived.TaxDeferred, incomeReceived.Interest, incomeReceived.RecordDate, incomeReceived.Comment });
+                new object[] { incomeReceived.TransactionDate, incomeReceived.ASXCode, incomeReceived.Description, incomeReceived.FrankedAmount, incomeReceived.UnfrankedAmount, incomeReceived.FrankingCredits, incomeReceived.TaxDeferred, incomeReceived.Interest, incomeReceived.RecordDate, incomeReceived.Comment });
         }
     }
 

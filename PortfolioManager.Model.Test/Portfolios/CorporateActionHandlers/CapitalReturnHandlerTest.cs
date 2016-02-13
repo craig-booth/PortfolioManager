@@ -121,14 +121,6 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
 
             var expectedTransactions = new ITransaction[]
             {
-                new ReturnOfCapital()
-                {
-                    TransactionDate = paymentDate,
-                    ASXCode = "AAA",
-                    RecordDate = recordDate,
-                    Amount = 0.50m,
-                    Comment = "Test"
-                }
             };
 
             Assert.That(actualTransactions, PortfolioConstraint.Equals(expectedTransactions));
