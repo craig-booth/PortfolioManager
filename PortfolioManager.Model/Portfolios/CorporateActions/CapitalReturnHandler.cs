@@ -26,7 +26,12 @@ namespace PortfolioManager.Model.Portfolios
 
             var transactions = new List<ITransaction>();
 
-            var stock = _StockService.Get(capitalReturn.Stock, capitalReturn.PaymentDate);
+            var stock = _StockService.Get(capitalReturn.Stock, capitalReturn.ActionDate);
+
+            /* locate parcels that the capital return applies to */
+            var parcels = _ParcelService.GetParcels(stock, capitalReturn.ActionDate);
+            if (parcels.Count == 0)
+                return transactions;
 
             transactions.Add(new ReturnOfCapital()
                 {

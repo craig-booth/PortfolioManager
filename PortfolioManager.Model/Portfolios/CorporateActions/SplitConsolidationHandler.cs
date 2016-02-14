@@ -12,10 +12,12 @@ namespace PortfolioManager.Model.Portfolios
     {
 
         private readonly StockService _StockService;
+        private readonly ParcelService _ParcelService;
 
-        public SplitConsolidationHandler(StockService stockService) 
+        public SplitConsolidationHandler(StockService stockService, ParcelService parcelService) 
         {
             _StockService = stockService;
+            _ParcelService = parcelService;
         }
 
         public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
@@ -25,6 +27,11 @@ namespace PortfolioManager.Model.Portfolios
             var transactions = new List<ITransaction>();
 
             var stock = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate);
+
+            /* locate parcels that the capital return applies to */
+            var parcels = _ParcelService.GetParcels(stock, splitConsolidation.ActionDate);
+            if (parcels.Count == 0)
+                return transactions;
 
             transactions.Add(new UnitCountAdjustment()
             {

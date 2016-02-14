@@ -31,52 +31,100 @@ namespace PortfolioManager.Model.Portfolios
             if (ownedParcels.Count == 0)
                 return transactions;
 
-            int totalUnits = ownedParcels.Sum(x => x.Units);
             decimal totalCostBase = ownedParcels.Sum(x => x.CostBase);
 
-            /* create parcels for resulting stock */
-            foreach (ResultingStock resultingStock in transformation.ResultingStocks)
+            if (transformation.RolloverRefliefApplies)
             {
-                int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
-                decimal costBase = totalCostBase * resultingStock.CostBase;
-                var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
-                transactions.Add(new OpeningBalance()
+                foreach (var parcel in ownedParcels)
                 {
-                    TransactionDate = transformation.ImplementationDate,
-                    ASXCode = stock.ASXCode,
-                    Units = units,
-                    CostBase = costBase,
-                    AquisitionDate = transformation.ImplementationDate,
-                    Comment = transformation.Description
-                });
+                    /* create parcels for resulting stock */
+                    foreach (ResultingStock resultingStock in transformation.ResultingStocks)
+                    {
+                        int units = (int)Math.Round(parcel.Units * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
+                        decimal costBase = parcel.CostBase * resultingStock.CostBase;
+                        var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
+
+                        transactions.Add(new OpeningBalance()
+                        {
+                            TransactionDate = transformation.ImplementationDate,
+                            ASXCode = stock.ASXCode,
+                            Units = units,
+                            CostBase = costBase,
+                            AquisitionDate = parcel.AquisitionDate,
+                            Comment = transformation.Description
+                        });
+                    }
+                }
+
+                /* Reduce the costbase of the original parcels */
+                if (transformation.ResultingStocks.Any())
+                {
+                    decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBase);
+                    var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
+
+                    transactions.Add(new CostBaseAdjustment()
+                    {
+                        TransactionDate = transformation.ImplementationDate,
+                        ASXCode = stock.ASXCode,
+                        RecordDate = transformation.ActionDate,
+                        Percentage = originalCostBasePercentage,
+                        Comment = transformation.Description
+                    });
+                }
             }
-
-            /* Reduce the costbase of the original parcels */
-            if (transformation.ResultingStocks.Any())
+            else
             {
-                decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBase);
+                int totalUnits = ownedParcels.Sum(x => x.Units);
+                decimal capitalReturn = 0.00m;
 
-                var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
-                transactions.Add(new CostBaseAdjustment()
+                /* create parcels for resulting stock */
+                foreach (ResultingStock resultingStock in transformation.ResultingStocks)
                 {
-                    TransactionDate = transformation.ImplementationDate,
-                    ASXCode = stock.ASXCode,
-                    Percentage = originalCostBasePercentage,
-                    Comment = transformation.Description
-                });
+                    int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
+                    decimal costBase = totalCostBase * resultingStock.CostBase;
+                    capitalReturn += units * resultingStock.CostBase;
+                    var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
+
+                    transactions.Add(new Aquisition()
+                    {
+                        TransactionDate = resultingStock.AquisitionDate,
+                        ASXCode = stock.ASXCode,
+                        Units = units,
+                        AveragePrice = resultingStock.CostBase,
+                        TransactionCosts = 0.00m,
+                        Comment = transformation.Description
+                    });
+                }
+
+                /* Reduce the costbase of the original parcels */
+                if (capitalReturn != 0.00m)
+                {
+                    var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
+
+                    transactions.Add(new ReturnOfCapital()
+                    {
+                        TransactionDate = transformation.ImplementationDate,
+                        ASXCode = stock.ASXCode,
+                        RecordDate = transformation.ActionDate,
+                        Amount = capitalReturn,
+                        Comment = transformation.Description
+                    });
+                }
+
             }
 
             /* Handle disposal of original parcels */
             if (transformation.CashComponent > 0)
             {
                 var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
+
                 transactions.Add(new Disposal()
                 {
                     TransactionDate = transformation.ImplementationDate,
                     ASXCode = stock.ASXCode,
                     Units = ownedParcels.Sum(x => x.Units),
                     AveragePrice = transformation.CashComponent,
-                    TransactionCosts = 0.00M,
+                    TransactionCosts = 0.00m,
                     CGTMethod = CGTCalculationMethod.FirstInFirstOut,
                     Comment = transformation.Description
                 });
