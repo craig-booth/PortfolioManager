@@ -291,13 +291,13 @@ namespace PortfolioManager.Model.Stocks
             return dividend;
         }
 
-        public Transformation AddTransformation(DateTime actionDate, DateTime implementationDate, decimal cashComponent, string description)
+        public Transformation AddTransformation(DateTime actionDate, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, string description)
         {
             Transformation transformation;
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, Id, actionDate, implementationDate, cashComponent, true, description);
+                transformation = new Transformation(_Database, Id, actionDate, implementationDate, cashComponent, rolloverReliefApplies, description);
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
                 unitOfWork.Save();

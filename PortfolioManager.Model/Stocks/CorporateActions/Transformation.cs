@@ -59,7 +59,7 @@ namespace PortfolioManager.Model.Stocks
 
         }
 
-        public void Change(DateTime newActionDate, DateTime newImplementationDate, decimal newCashComponent, string newDescription)
+        public void Change(DateTime newActionDate, DateTime newImplementationDate, decimal newCashComponent, bool rolloverReliefApplies, string newDescription)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {

@@ -35,7 +35,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
-                transformation.Change(transformation.ActionDate, transformation.ImplementationDate, 3.00M, transformation.Description);
+                transformation.Change(transformation.ActionDate, transformation.ImplementationDate, 3.00M, true, transformation.Description);
 
                 transformation2 = unitOfWork.CorporateActionRepository.Get(transformation.Id) as Transformation;
                 Assert.AreEqual(transformation2.CashComponent, 3.00M);
