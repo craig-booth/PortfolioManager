@@ -20,7 +20,7 @@ namespace PortfolioManager.Data.Test.Stocks
         {
             Transformation transformation, result;
 
-            transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+            transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true,"Test");
             result = AddCorporateAction(transformation) as Transformation;
             Assert.That(result, Is.EqualTo(transformation).Using(new EntityComparer()));
         }
@@ -32,10 +32,10 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
-                transformation.Change(transformation.ActionDate, transformation.ImplementationDate, 3.00M, transformation.Description);
+                transformation.Change(transformation.ActionDate, transformation.ImplementationDate, 3.00M, true, transformation.Description);
 
                 transformation2 = unitOfWork.CorporateActionRepository.Get(transformation.Id) as Transformation;
                 Assert.AreEqual(transformation2.CashComponent, 3.00M);
@@ -49,7 +49,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
                 transformation.AddResultStock(_ResultStock1.Id, 1, 2, 0.40M);
@@ -69,7 +69,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 transformation.AddResultStock(_ResultStock1.Id, 1, 2, 0.40M);
                 transformation.AddResultStock(_ResultStock2.Id, 1, 5, 0.60M);
                 unitOfWork.CorporateActionRepository.Add(transformation);
@@ -88,7 +88,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 transformation.AddResultStock(_ResultStock1.Id, 1, 2, 0.40M);
                 transformation.AddResultStock(_ResultStock2.Id, 1, 5, 0.80M);
                 unitOfWork.CorporateActionRepository.Add(transformation);
@@ -110,7 +110,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
                 unitOfWork.CorporateActionRepository.Delete(transformation);
@@ -127,7 +127,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, "Test");
+                transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
                 unitOfWork.CorporateActionRepository.Add(transformation);
 
                 transformation.AddResultStock(_ResultStock1.Id, 1, 2, 0.40M);

@@ -63,6 +63,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 return CreateCapitalReturn(database, id, stock, actionDate, description);
             else if (type == CorporateActionType.Transformation)
                 return CreateTransformation(database, id, stock, actionDate, description);
+            else if (type == CorporateActionType.SplitConsolidation)
+                return CreateSplitConsolidation(database, id, stock, actionDate, description);
             else
                 return null;
         }
@@ -120,26 +122,26 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return capitalReturn;
         }
 
-        private static SplitConsolidation CreateSplitConsolidation(SQLiteStockDatabase database, SQLiteDataReader reader)
+        private static SplitConsolidation CreateSplitConsolidation(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get capital return vales */
             var command = new SQLiteCommand("SELECT * FROM [SplitConsolidations] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader spitConsolidationReader = command.ExecuteReader();
             if (!spitConsolidationReader.Read())
             {
                 spitConsolidationReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
             SplitConsolidation splitConsolidation = new SplitConsolidation(database,
-                                    new Guid(reader.GetString(0)),
-                                    new Guid(reader.GetString(1)),
-                                    reader.GetDateTime(2),
+                                    id,
+                                    stock,
+                                    actionDate,
                                     spitConsolidationReader.GetInt32(1),
                                     spitConsolidationReader.GetInt32(2),
-                                    reader.GetString(3));
+                                    description);
             spitConsolidationReader.Close();
 
             return splitConsolidation;

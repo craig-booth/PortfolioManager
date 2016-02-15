@@ -87,7 +87,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _AddResultRecordCommand.Parameters.AddWithValue("@Stock", entity.Stock.ToString());
             _AddResultRecordCommand.Parameters.AddWithValue("@OriginalUnits", entity.OriginalUnits);
             _AddResultRecordCommand.Parameters.AddWithValue("@NewUnits", entity.NewUnits);
-            _AddResultRecordCommand.Parameters.AddWithValue("@CostBasePercentage", SQLiteUtils.DecimalToDB(entity.CostBasePercentage));
+            _AddResultRecordCommand.Parameters.AddWithValue("@CostBasePercentage", SQLiteUtils.DecimalToDB(entity.CostBase));
 
             _AddResultRecordCommand.ExecuteNonQuery();
         }

@@ -56,11 +56,11 @@
     <Compile Include="Portfolio\Transactions\TransactionRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionCapitalReturnRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionCompositeRepositoryTest.cs" />
-    <Compile Include="Stocks\CorporateActionDividendRepositoryText.cs" />
+    <Compile Include="Stocks\CorporateActionDividendRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionRepositoryTest.cs" />
-    <Compile Include="Stocks\CorporateActionTransformationRepositoryText.cs" />
+    <Compile Include="Stocks\CorporateActionTransformationRepositoryTest.cs" />
     <Compile Include="Stocks\RelativeNTARepositoryTest.cs" />
-    <Compile Include="Stocks\SplitConsolidationCorporateActionRepositoryTest.cs" />
+    <Compile Include="Stocks\CorporateActionSplitConsolidationRepositoryTest.cs" />
     <Compile Include="Stocks\StockQueryTest.cs" />
     <Compile Include="Stocks\StockRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

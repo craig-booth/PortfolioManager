@@ -13,7 +13,7 @@ namespace PortfolioManager.Data.Test.Stocks
 {
 
     [TestFixture]
-    public class SplitConsolidationCorporateActionRepositoryTest : CorporateActionRepositoryTest
+    public class CorporateActionSplitConsolidationRepositoryTest : CorporateActionRepositoryTestBase
     {
         [Test, Description("Test adding a SplitConsolidation")]
         public void AddSplitConsolidation()

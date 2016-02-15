@@ -13,7 +13,7 @@ namespace PortfolioManager.Data.Test.Stocks
 {
 
     [TestFixture]
-    public class CorporateActionRepositoryTest : TestBase
+    public class CorporateActionRepositoryTestBase : TestBase
     {
         protected Stock _Stock;
         protected Stock _ResultStock1, _ResultStock2, _ResultStock3;

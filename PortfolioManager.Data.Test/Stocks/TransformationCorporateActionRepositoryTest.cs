@@ -13,7 +13,7 @@ namespace PortfolioManager.Data.Test.Stocks
 {
 
     [TestFixture]
-    public class TransformationCorporateActionRepositoryTest : CorporateActionRepositoryTest
+    public class TransformationCorporateActionRepositoryTest : CorporateActionRepositoryTestBase
     {
         [Test, Description("Test adding a Transformation")]
         public void AddTransformation()

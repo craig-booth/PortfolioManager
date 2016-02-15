@@ -81,6 +81,7 @@
     <Compile Include="Stocks\CapitalReturnDetailRepository.cs" />
     <Compile Include="Stocks\CompositeActionDetailRepository.cs" />
     <Compile Include="Stocks\DividendDetailRepository.cs" />
+    <Compile Include="Stocks\SplitConsolidtionDetailRepository.cs" />
     <Compile Include="Stocks\SQLiteCorporateActionQuery.cs" />
     <Compile Include="Stocks\CorporateActionRepository.cs" />
     <Compile Include="Stocks\SQLiteRelateNTARepository.cs" />
