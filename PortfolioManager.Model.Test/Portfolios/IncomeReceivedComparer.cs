@@ -11,13 +11,11 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Test.Portfolios
 {
-    public class IncomeReceivedComparer : IEntityComparer<IncomeReceived>
+    public class IncomeComparer : IEntityComparer<Income>
     {
-        public bool Equals(IncomeReceived income1, IncomeReceived income2)
+        public bool Equals(Income income1, Income income2)
         {
-            return ((income1.TransactionDate == income2.TransactionDate) &&
-                (income1.ASXCode == income2.ASXCode) &&
-                (income1.RecordDate == income2.RecordDate) &&
+            return ((income1.ASXCode == income2.ASXCode) &&
                 (income1.FrankedAmount == income2.FrankedAmount) &&
                 (income1.UnfrankedAmount == income2.UnfrankedAmount) &&
                 (income1.FrankingCredits == income2.FrankingCredits) &&
@@ -25,10 +23,10 @@ namespace PortfolioManager.Model.Test.Portfolios
                 (income1.TaxDeferred == income2.TaxDeferred)); 
         }
 
-        public void Write(MessageWriter writer, IncomeReceived income)
+        public void Write(MessageWriter writer, Income income)
         {
-            writer.Write("<IncomeReceived:- TransactionDate: {0:d}, ASXCode: {1}, RecordDate: {2: d}, FrankedAmount: {3}, UnfrankedAmount: {4}, FrankingCredits: {5}, Interest: {6}, TaxDeferred: {7}>",
-                        new object[] { income.TransactionDate, income.ASXCode, income.RecordDate, income.FrankedAmount, income.UnfrankedAmount, income.FrankingCredits, income.Interest, income.TaxDeferred });
+            writer.Write("<IncomeReceived:- ASXCode: {0}, FrankedAmount: {1}, UnfrankedAmount: {2}, FrankingCredits: {3}, Interest: {4}, TaxDeferred: {5}>",
+                        new object[] { income.ASXCode, income.FrankedAmount, income.UnfrankedAmount, income.FrankingCredits, income.Interest, income.TaxDeferred });
         }
     }
 

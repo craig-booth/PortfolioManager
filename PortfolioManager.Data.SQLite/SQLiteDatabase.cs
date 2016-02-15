@@ -132,14 +132,9 @@ namespace PortfolioManager.Data.SQLite
             var sqlScript = scriptFile.ReadToEnd();
             scriptFile.Close();
 
-            var sqlCommands = sqlScript.Split(';');
-            
-            foreach (var sql in sqlCommands)
-            {
-                var sqlCommand = new SQLiteCommand(sql, _Connection);
-                sqlCommand.ExecuteNonQuery();
-                sqlCommand.Dispose();
-            }
+            var sqlCommand = new SQLiteCommand(sqlScript, _Connection);
+            sqlCommand.ExecuteNonQuery();
+            sqlCommand.Dispose();
         }
     }
 

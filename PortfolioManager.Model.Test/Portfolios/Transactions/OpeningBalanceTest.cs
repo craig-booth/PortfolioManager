@@ -61,7 +61,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
      }
 
     [TestFixture, Description("Opening balance validation tests")]
-    public class OpeningBalanceValidationTests : TransactionTest
+    public class OpeningBalanceValidationTests : PortfolioTest
     {
         [Test, Description("Opening balance for child security")]
         [ExpectedException(typeof(TransctionNotSupportedForChildSecurity))]

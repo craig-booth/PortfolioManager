@@ -225,7 +225,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
 
     [TestFixture, Description("Unit Count adjustment validation tests")]
-    public class UnitCountAdjustmentValidationTests : TransactionTest
+    public class UnitCountAdjustmentValidationTests : PortfolioTest
     {
         [Test, Description("Cost base adjustment of Ordinary share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]

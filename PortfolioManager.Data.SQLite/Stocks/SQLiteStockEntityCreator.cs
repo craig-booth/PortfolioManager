@@ -120,6 +120,31 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return capitalReturn;
         }
 
+        private static SplitConsolidation CreateSplitConsolidation(SQLiteStockDatabase database, SQLiteDataReader reader)
+        {
+            /* Get capital return vales */
+            var command = new SQLiteCommand("SELECT * FROM [SplitConsolidations] WHERE [Id] = @Id", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            SQLiteDataReader spitConsolidationReader = command.ExecuteReader();
+            if (!spitConsolidationReader.Read())
+            {
+                spitConsolidationReader.Close();
+                throw new RecordNotFoundException(reader.GetString(0));
+            }
+
+            SplitConsolidation splitConsolidation = new SplitConsolidation(database,
+                                    new Guid(reader.GetString(0)),
+                                    new Guid(reader.GetString(1)),
+                                    reader.GetDateTime(2),
+                                    spitConsolidationReader.GetInt32(1),
+                                    spitConsolidationReader.GetInt32(2),
+                                    reader.GetString(3));
+            spitConsolidationReader.Close();
+
+            return splitConsolidation;
+        }
+
         private static Transformation CreateTransformation(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get transformation vales */
@@ -138,6 +163,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     actionDate,
                                     transformationReader.GetDateTime(1),
                                     DBToDecimal(transformationReader.GetInt32(2)),
+                                    transformationReader.GetString(3) == "Y"? true: false,
                                     description);
             transformationReader.Close();
 
@@ -152,7 +178,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 ResultingStock resultingStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
                                         transformationReader.GetInt32(2),
                                         transformationReader.GetInt32(3),
-                                        DBToDecimal(transformationReader.GetInt32(4)));
+                                        DBToDecimal(transformationReader.GetInt32(4)),
+                                        transformationReader.GetDateTime(5));
 
                 transformation.AddResultStockInternal(resultingStock);
             }

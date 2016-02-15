@@ -404,7 +404,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4450.00m, 3396.00m));
 
-            _ExpectedIncome.Add(taxDeferredIncome);
+            _ExpectedIncome.Add(new Income(taxDeferredIncome));
         }
     }
 
@@ -429,7 +429,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Disposal validation tests")]
-    public class DisposalValidationTests : TransactionTest
+    public class DisposalValidationTests : PortfolioTest
     {
         [Test, Description("Disposal of Ordinary Share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]

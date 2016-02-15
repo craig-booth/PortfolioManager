@@ -47,7 +47,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
 
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate, _StockManager.GetStock("AAA", _TransactionDate).Id, openingBalance.Units, 1.50m, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance));
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
     [TestFixture, Description("Income Received of Trust- single parcel tax deferred")]
@@ -88,7 +88,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
 
@@ -140,7 +140,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockManager.GetStock("AAA", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, openingBalance1.CostBase, ParcelEvent.OpeningBalance));
             _ExpectedParcels.Add(new ShareParcel(openingBalanceDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, openingBalance2.Units, 1.60m, openingBalance2.CostBase, openingBalance2.CostBase, ParcelEvent.OpeningBalance));
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
 
@@ -182,7 +182,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("CCC", _TransactionDate).Id, _TransactionDate, openingBalance.Units, openingBalance.CostBase, 30.00m));
         }
     }
@@ -246,7 +246,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
 
@@ -309,7 +309,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("CCC", _TransactionDate).Id, _TransactionDate, openingBalance2.Units, openingBalance2.CostBase, 18.18m));
         }
     }
@@ -356,12 +356,12 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
                 FromDate = _TransactionDate
             });
 
-            _ExpectedIncome.Add(incomeReceived);
+            _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
 
     [TestFixture, Description("Income Received validation tests")]
-    public class IncomeReceivedValidationTests : TransactionTest
+    public class IncomeReceivedValidationTests : PortfolioTest
     {
         [Test, Description("Income Received Ordinary share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]

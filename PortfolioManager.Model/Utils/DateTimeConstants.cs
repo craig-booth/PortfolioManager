@@ -11,6 +11,11 @@ namespace PortfolioManager.Model.Utils
         private readonly static DateTime _NoStartDate = new DateTime(0001, 01, 01);
         private readonly static DateTime _NoEndDate = new DateTime(9999, 12, 31);
 
+        public static DateTime NoDate
+        {
+            get { return _NoStartDate; }
+        }
+
         public static DateTime NoStartDate 
         {
             get { return _NoStartDate; }

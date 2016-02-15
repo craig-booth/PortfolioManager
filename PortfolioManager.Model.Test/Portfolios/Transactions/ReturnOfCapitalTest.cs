@@ -239,7 +239,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Return of Capital validation tests")]
-    public class ReturnOfCapitalValidationTests : TransactionTest
+    public class ReturnOfCapitalValidationTests : PortfolioTest
     {
         [Test, Description("Return of Capital of Ordinary share - no parcels")]
         [ExpectedException(typeof(NoParcelsForTransaction))]

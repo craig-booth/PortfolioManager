@@ -112,7 +112,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddTransformationRecordCommand == null)
             {
-                _AddTransformationRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent]) VALUES (@Id, @ImplementationDate, @CashComponent)", _Connection);
+                _AddTransformationRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent, @RolloverRelief)", _Connection);
                 _AddTransformationRecordCommand.Prepare();
             }
 
@@ -121,7 +121,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
             /* Update header record */
             base.Update(entity);
 
- private SQLiteCommand _UpdateSplitConsolidationRecordCommand;
+        
+        _DetailRepositories[entity.Type].Update(entity);
+            }
+        private SQLiteCommand _UpdateSplitConsolidationRecordCommand;
         private void UpdateSplitConsolidationRecord(SplitConsolidation entity)
         {
             if (_UpdateSplitConsolidationRecordCommand == null)
@@ -133,9 +136,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             AddSplitConsolidationParameters(_UpdateSplitConsolidationRecordCommand, entity);
             _UpdateSplitConsolidationRecordCommand.ExecuteNonQuery();
         }
-        _DetailRepositories[entity.Type].Update(entity);
-        }
-
         public override void Delete(ICorporateAction entity)
         {
             /* Delete header record */

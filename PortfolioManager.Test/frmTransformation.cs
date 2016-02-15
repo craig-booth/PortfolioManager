@@ -39,7 +39,8 @@ namespace PortfolioManager.Test
 
             grdResultingStocks.Columns["colOriginalUnits"].DataPropertyName = "OriginalUnits";
             grdResultingStocks.Columns["colNewUnits"].DataPropertyName = "NewUnits";
-            grdResultingStocks.Columns["colCostBase"].DataPropertyName = "CostBasePercentage";
+            grdResultingStocks.Columns["colCostBase"].DataPropertyName = "CostBase";
+            grdResultingStocks.Columns["colAquisitionDate"].DataPropertyName = "AquisitionDate";
 
             _ResultingStockRecords = new BindingList<ResultStockDataRecord>();
             _ResultingStockRecords.AllowEdit = true;
@@ -53,7 +54,8 @@ namespace PortfolioManager.Test
             public Guid Stock { get; set; }
             public int OriginalUnits { get; set; }
             public int NewUnits { get; set; }
-            public decimal CostBasePercentage { get; set; }
+            public decimal CostBase { get; set; }
+            public DateTime AquisitionDate { get; set; }
         }
 
         private void SetFormValues()
@@ -62,6 +64,7 @@ namespace PortfolioManager.Test
             dtpRecordDate.Value = _Transformation.ActionDate;
             txtDescription.Text = _Transformation.Description;
             txtCashComponent.Text = MathUtils.FormatCurrency(_Transformation.CashComponent, false);
+            chkRolloverRelief.Checked = _Transformation.RolloverRefliefApplies;
 
             _ResultingStockRecords.Clear();
             foreach (ResultingStock resultingStock in _Transformation.ResultingStocks)
@@ -71,8 +74,8 @@ namespace PortfolioManager.Test
                         Stock = resultingStock.Stock,
                         OriginalUnits = resultingStock.OriginalUnits,
                         NewUnits = resultingStock.NewUnits,
-                        CostBasePercentage = resultingStock.CostBasePercentage
-
+                        CostBase = resultingStock.CostBase,
+                        AquisitionDate = resultingStock.AquisitionDate 
                     });
             }
         } 
@@ -83,6 +86,7 @@ namespace PortfolioManager.Test
             _Mode = Mode.Create;
 
             lblASXCode.Text = stock.ASXCode;
+            chkRolloverRelief.Checked = true;
 
             if (ShowDialog() == DialogResult.OK)
             {
@@ -103,15 +107,16 @@ namespace PortfolioManager.Test
                 _Transformation.Change(dtpRecordDate.Value,
                                  dtpImplementationDate.Value,
                                  MathUtils.ParseDecimal(txtCashComponent.Text),
+                                 chkRolloverRelief.Checked,
                                  txtDescription.Text);
 
                 // Add/Update result stocks
                 foreach (ResultStockDataRecord resultingStockDataRecord in _ResultingStockRecords)
                 {
                     if (_Transformation.ResultingStocks.Any(x => x.Stock == resultingStockDataRecord.Stock))
-                        _Transformation.ChangeResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBasePercentage);
+                        _Transformation.ChangeResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                     else
-                        _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBasePercentage);
+                        _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                 }
 
                 // Delete result stocks
@@ -157,11 +162,12 @@ namespace PortfolioManager.Test
                 _Transformation = _Stock.AddTransformation(dtpRecordDate.Value,
                                                         dtpImplementationDate.Value,
                                                         MathUtils.ParseDecimal(txtCashComponent.Text),
+                                                        chkRolloverRelief.Checked,
                                                         txtDescription.Text);
 
                 foreach (ResultStockDataRecord resultingStockDataRecord in _ResultingStockRecords)
                 {
-                    _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBasePercentage);
+                    _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                 }
             }
         }
@@ -181,6 +187,18 @@ namespace PortfolioManager.Test
             }
         }
 
-
+        private void chkRolloverRelief_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkRolloverRelief.Checked)
+            {
+                grdResultingStocks.Columns["colCostBase"].HeaderText = "Costbase %";
+                grdResultingStocks.Columns["colAquisitionDate"].Visible = false;
+            }
+            else
+            {
+                grdResultingStocks.Columns["colCostBase"].HeaderText = "Unit Costbase";
+                grdResultingStocks.Columns["colAquisitionDate"].Visible = true;
+            }
+        }
     }
 }

@@ -99,6 +99,7 @@ CREATE TABLE [Transformations]
 	[Id] TEXT(36) NOT NULL,
 	[ImplementationDate] TEXT(10) NOT NULL,
 	[CashComponent] INTEGER NOT NULL,
+    [RolloverRelief] TEXT(1) NOT NULL DEFAULT "Y",
 
 	PRIMARY KEY ([Id])
 );
@@ -110,6 +111,7 @@ CREATE TABLE [TransformationResultingStocks]
 	[OriginalUnits] INTEGER NOT NULL,
 	[NewUnits] INTEGER NOT NULL,
 	[CostBasePercentage] INTEGER NOT NULL,
+	[AquisitionDate] CHAR(10) NOT NULL DEFAULT "0001-01-01",
 
 	PRIMARY KEY ([Id], [Stock])
 );

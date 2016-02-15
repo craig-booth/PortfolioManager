@@ -62,7 +62,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
     }
 
     [TestFixture, Description("Aquisition validation tests")]
-    public class AquisitionValidationTests : TransactionTest
+    public class AquisitionValidationTests : PortfolioTest
     {
         [Test, Description("Aquire child security")]
         [ExpectedException(typeof(TransctionNotSupportedForChildSecurity))]
