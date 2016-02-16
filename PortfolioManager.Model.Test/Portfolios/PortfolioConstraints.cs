@@ -36,9 +36,9 @@ namespace PortfolioManager.Model.Test.Portfolios
             return new EntityEqualConstraint<ITransaction>(expected, new TransactionComparer());
         }
 
-        public static EntityCollectionEqualConstraint<Income> Equals(ICollection<Income> expected)
+        public static EntityCollectionEquivalentConstraint<Income> Equals(ICollection<Income> expected)
         {
-            return new EntityCollectionEqualConstraint<Income>(expected, new IncomeComparer());
+            return new EntityCollectionEquivalentConstraint<Income>(expected, new IncomeComparer());
         }
 
         public static EntityEqualConstraint<CGTEvent> Equals(CGTEvent expected)
@@ -46,9 +46,9 @@ namespace PortfolioManager.Model.Test.Portfolios
             return new EntityEqualConstraint<CGTEvent>(expected, new CGTEventComparer());
         }
 
-        public static EntityCollectionEqualConstraint<CGTEvent> Equals(ICollection<CGTEvent> expected)
+        public static EntityCollectionEquivalentConstraint<CGTEvent> Equals(ICollection<CGTEvent> expected)
         {
-            return new EntityCollectionEqualConstraint<CGTEvent>(expected, new CGTEventComparer());
+            return new EntityCollectionEquivalentConstraint<CGTEvent>(expected, new CGTEventComparer());
         }
 
         public static EntityCollectionEqualConstraint<ITransaction> Equals(ICollection<ITransaction> expected)

@@ -55,15 +55,91 @@ namespace PortfolioManager.Model.Test.Portfolios
 
     }
 
-    public class EntityCollectionEqualConstraint<T> : Constraint
+    public abstract class EntityCollectionConstraint<T> : Constraint
     {
         protected readonly ICollection<T> _Expected;
         protected readonly IEntityComparer<T> _EntityComparer;
 
-        public EntityCollectionEqualConstraint(ICollection<T> expected, IEntityComparer<T> comparer)
+        public EntityCollectionConstraint(ICollection<T> expected, IEntityComparer<T> comparer)
         {
             _Expected = expected;
             _EntityComparer = comparer;
+        }
+
+        public override void WriteDescriptionTo(MessageWriter writer)
+        {
+            WriteValue(writer, _Expected);
+        }
+
+        public override void WriteActualValueTo(MessageWriter writer)
+        {
+            if (actual is IEnumerable<T>)
+                WriteValue(writer, actual as IEnumerable<T>);
+            else
+                writer.WriteActualValue(actual);
+        }
+
+        private void WriteValue(MessageWriter writer, IEnumerable<T> entities)
+        {
+            int count = 0;
+
+            writer.Write("<");
+            foreach (T entity in entities)
+            {
+                if (count > 0)
+                    writer.Write(",\n              ");
+
+                _EntityComparer.Write(writer, entity);
+
+                count++;
+            }
+            writer.Write(">");
+        }
+    }
+
+
+    public class EntityCollectionEqualConstraint<T> : EntityCollectionConstraint<T>
+    {
+
+        public EntityCollectionEqualConstraint(ICollection<T> expected, IEntityComparer<T> comparer)
+            : base(expected, comparer)
+        {
+        }
+
+        public override bool Matches(object actual)
+        {
+            base.actual = actual;
+
+            if (actual is IEnumerable<T>)
+            {
+                IEnumerable<T> actualEntities = actual as IEnumerable<T>;
+                var expectedEnumerator = _Expected.GetEnumerator();
+
+
+                foreach (T actualEntity in actualEntities)
+                {
+                    if (expectedEnumerator.MoveNext())
+                    {
+                        if (!_EntityComparer.Equals(expectedEnumerator.Current, actualEntity))
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+
+    public class EntityCollectionEquivalentConstraint<T> : EntityCollectionConstraint<T>
+    {
+     
+        public EntityCollectionEquivalentConstraint(ICollection<T> expected, IEntityComparer<T> comparer)
+            : base(expected, comparer)
+        {
         }
 
         public override bool Matches(object actual)
@@ -102,35 +178,7 @@ namespace PortfolioManager.Model.Test.Portfolios
             return false;
         }
 
+    }
 
-        public override void WriteDescriptionTo(MessageWriter writer)
-        {
-            WriteValue(writer, _Expected);
-        }
 
-        public override void WriteActualValueTo(MessageWriter writer)
-        {
-            if (actual is IEnumerable<T>)
-                WriteValue(writer, actual as IEnumerable<T>);
-            else
-                writer.WriteActualValue(actual);
-        }
-
-        private void WriteValue(MessageWriter writer, IEnumerable<T> entities)
-        {
-            int count = 0;
-
-            writer.Write("<");
-            foreach (T entity in entities)
-            {
-                if (count > 0)
-                    writer.Write(",\n              ");
-
-                _EntityComparer.Write(writer, entity);
-
-                count++;
-            }
-            writer.Write(">");
-        }
-    } 
 }

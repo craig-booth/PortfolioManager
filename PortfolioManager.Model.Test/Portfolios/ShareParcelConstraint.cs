@@ -12,7 +12,7 @@ using PortfolioManager.Model.Portfolios;
 namespace PortfolioManager.Model.Test.Portfolios
 {
 
-    public class ShareParcelCollectionEqualConstraint : EntityCollectionEqualConstraint<ShareParcel>
+    public class ShareParcelCollectionEqualConstraint : EntityCollectionEquivalentConstraint<ShareParcel>
     {
 
         public ShareParcelCollectionEqualConstraint(ICollection<ShareParcel> expected)

@@ -40,6 +40,18 @@ namespace PortfolioManager.Model.Portfolios
             var unFranked = MathUtils.ToCurrency(amountPaid * (1 - dividend.PercentFranked), stock.DividendRoundingRule);
             var frankingCredits = MathUtils.ToCurrency(((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked, stock.DividendRoundingRule);
 
+            transactions.Add(new IncomeReceived()
+            {
+                TransactionDate = dividend.PaymentDate,
+                ASXCode = stock.ASXCode,
+                RecordDate = dividend.ActionDate,
+                FrankedAmount = franked,
+                UnfrankedAmount = unFranked,
+                FrankingCredits = frankingCredits,
+                Comment = dividend.Description
+            });
+
+
             /* add drp shares */
             if (dividend.DRPPrice != 0.00M)
             {
@@ -56,17 +68,6 @@ namespace PortfolioManager.Model.Portfolios
                 }
                 );
             }
-
-            transactions.Add(new IncomeReceived()
-            {
-                TransactionDate = dividend.PaymentDate,
-                ASXCode = stock.ASXCode,
-                RecordDate = dividend.ActionDate,
-                FrankedAmount = franked,
-                UnfrankedAmount = unFranked,
-                FrankingCredits = frankingCredits,
-                Comment = dividend.Description
-            });
 
             return transactions;
         }

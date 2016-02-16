@@ -117,19 +117,19 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 new OpeningBalance()
                 {
                     TransactionDate = implemenationDate,
-                    ASXCode = "BBB",
-                    AquisitionDate = purchaseDate2,
-                    Units = 750,
-                    CostBase = 0.20m * (500 * 15.00m + 19.95m),
+                    ASXCode = "CCC",
+                    AquisitionDate = purchaseDate1,
+                    Units = 2000,
+                    CostBase = 0.30m * (1000 * 10.00m + 19.95m),
                     Comment = "Test"
                 },
                 new OpeningBalance()
                 {
                     TransactionDate = implemenationDate,
-                    ASXCode = "CCC",
-                    AquisitionDate = purchaseDate1,
-                    Units = 2000,
-                    CostBase = 0.30m * (1000 * 10.00m + 19.95m),
+                    ASXCode = "BBB",
+                    AquisitionDate = purchaseDate2,
+                    Units = 750,
+                    CostBase = 0.20m * (500 * 15.00m + 19.95m),
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -205,19 +205,19 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 new OpeningBalance()
                 {
                     TransactionDate = implemenationDate,
-                    ASXCode = "BBB",
-                    AquisitionDate = purchaseDate2,
-                    Units = 750,
-                    CostBase = 0.20m * (500 * 15.00m + 19.95m),
+                    ASXCode = "CCC",
+                    AquisitionDate = purchaseDate1,
+                    Units = 2000,
+                    CostBase = 0.30m * (1000 * 10.00m + 19.95m),
                     Comment = "Test"
                 },
                 new OpeningBalance()
                 {
                     TransactionDate = implemenationDate,
-                    ASXCode = "CCC",
-                    AquisitionDate = purchaseDate1,
-                    Units = 2000,
-                    CostBase = 0.30m * (1000 * 10.00m + 19.95m),
+                    ASXCode = "BBB",
+                    AquisitionDate = purchaseDate2,
+                    Units = 750,
+                    CostBase = 0.20m * (500 * 15.00m + 19.95m),
                     Comment = "Test"
                 },
                 new OpeningBalance()
