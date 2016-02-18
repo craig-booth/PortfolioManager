@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
@@ -134,7 +135,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             var actualParcels = _Portfolio.ParcelService.GetParcels(_TransactionDate);
 
-            Assert.That(actualParcels, PortfolioConstraint.Equals(_ExpectedParcels));
+            Assert.That(actualParcels, EntityConstraint.CollectionEquivalant(_ExpectedParcels));
         }
 
         [Test]
@@ -142,7 +143,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             var actualIncome = _Portfolio.IncomeService.GetIncome(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
 
-            Assert.That(actualIncome, PortfolioConstraint.Equals(_ExpectedIncome));
+            Assert.That(actualIncome, EntityConstraint.CollectionEquivalant(_ExpectedIncome));
         }
 
         [Test]
@@ -150,7 +151,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             var actualCGTEvents = _Portfolio.CGTService.GetEvents(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
 
-            Assert.That(actualCGTEvents, PortfolioConstraint.Equals(_ExpectedCGTEvents));
+            Assert.That(actualCGTEvents, EntityConstraint.CollectionEquivalant(_ExpectedCGTEvents));
         }
     }
 }

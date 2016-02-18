@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model", "PortfolioManager.Model\PortfolioManager.Model.csproj", "{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.SQLite", "PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj", "{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model.Test", "PortfolioManager.Model.Test\PortfolioManager.Model.Test.csproj", "{39DB963E-CB65-4116-A4BE-C603C9767620}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitExtension", "NUnitExtension\NUnitExtension.csproj", "{0E4423E8-50EF-467B-9211-D59137B2BF19}"
 EndProject
 Global
 	GlobalSection(Performance) = preSolution
@@ -53,6 +55,10 @@ Global
 		{39DB963E-CB65-4116-A4BE-C603C9767620}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39DB963E-CB65-4116-A4BE-C603C9767620}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39DB963E-CB65-4116-A4BE-C603C9767620}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

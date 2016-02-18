@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -23,7 +24,7 @@ namespace PortfolioManager.Data.Test.Stocks
             split = new SplitConsolidation(_Database, _Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
             result = AddCorporateAction(split) as SplitConsolidation;
 
-            Assert.That(result, Is.EqualTo(split).Using(new EntityComparer())); 
+            Assert.That(result, EntityConstraint.EqualTo((split)));
         }
 
         [Test, Description("Test Update() for a SplitConsolidation")]

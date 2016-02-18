@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -67,7 +69,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
                 stock = unitOfWork.StockRepository.Get(stock2.Id);
 
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
             }
         }
 
@@ -112,7 +114,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
                 stock = unitOfWork.StockRepository.Get(Guid.NewGuid());
 
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
             }
         }
 
@@ -193,7 +195,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.StockRepository.Add(stock);
 
                 stock2 = unitOfWork.StockRepository.Get(stock.Id);
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
 
                 unitOfWork.StockRepository.Delete(stock2);
 
@@ -231,7 +233,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.StockRepository.Add(stock);
 
                 stock2 = unitOfWork.StockRepository.Get(stock.Id);
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
 
                 unitOfWork.StockRepository.Delete(stock2.Id);
 
@@ -296,7 +298,7 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.StockRepository.Delete(stock.Id, new DateTime(2000, 01, 02));
 
                 stock1 = unitOfWork.StockRepository.Get(stock.Id, new DateTime(2000, 01, 01));
-                Assert.That(stock, Is.EqualTo(stock1).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock1)));
             }
         }
         

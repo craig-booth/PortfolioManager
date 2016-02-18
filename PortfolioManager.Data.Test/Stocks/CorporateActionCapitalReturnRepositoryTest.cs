@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -23,7 +24,7 @@ namespace PortfolioManager.Data.Test.Stocks
             capitalReturn = new CapitalReturn(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
             result = AddCorporateAction(capitalReturn) as CapitalReturn;
 
-            Assert.That(result, Is.EqualTo(capitalReturn).Using(new EntityComparer()));
+            Assert.That(result, EntityConstraint.EqualTo(capitalReturn));
         }
 
         [Test, Description("Test Update() for a capital return")]
