@@ -49,8 +49,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             // Delete the child actions and re-add
 
-            Delete(entity.Id);
-            Add(entity);
+           // Delete(entity.Id);
+           // Add(entity);
         }
 
         private SQLiteCommand _DeleteRecordCommand;

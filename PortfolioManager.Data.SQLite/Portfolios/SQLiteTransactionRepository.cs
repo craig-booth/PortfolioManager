@@ -175,16 +175,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());   
         }
-
-        public int DecimalToDB(decimal value)
-        {
-            return (int)Math.Floor(value * 100000);
-        }
-
-        public decimal DBToDecimal(int value)
-        {
-            return (decimal)value / 100000;
-        }
     }
 
 
@@ -218,8 +208,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", aquisition.Id.ToString());
             command.Parameters.AddWithValue("@Units", aquisition.Units);
-            command.Parameters.AddWithValue("@AveragePrice", DecimalToDB(aquisition.AveragePrice));
-            command.Parameters.AddWithValue("@TransactionCosts", DecimalToDB(aquisition.TransactionCosts));
+            command.Parameters.AddWithValue("@AveragePrice", SQLiteUtils.DecimalToDB(aquisition.AveragePrice));
+            command.Parameters.AddWithValue("@TransactionCosts", SQLiteUtils.DecimalToDB(aquisition.TransactionCosts));
             command.Parameters.AddWithValue("@Comment", aquisition.Comment); 
         }
     }
@@ -254,7 +244,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", costBaseAdjustment.Id.ToString());
             command.Parameters.AddWithValue("@RecordDate", costBaseAdjustment.RecordDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Percentage", DecimalToDB(costBaseAdjustment.Percentage));
+            command.Parameters.AddWithValue("@Percentage", SQLiteUtils.DecimalToDB(costBaseAdjustment.Percentage));
             command.Parameters.AddWithValue("@Comment", costBaseAdjustment.Comment); 
         }
     }
@@ -288,8 +278,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", disposal.Id.ToString());
             command.Parameters.AddWithValue("@Units", disposal.Units);
-            command.Parameters.AddWithValue("@AveragePrice", DecimalToDB(disposal.AveragePrice));
-            command.Parameters.AddWithValue("@TransactionCosts", DecimalToDB(disposal.TransactionCosts));
+            command.Parameters.AddWithValue("@AveragePrice", SQLiteUtils.DecimalToDB(disposal.AveragePrice));
+            command.Parameters.AddWithValue("@TransactionCosts", SQLiteUtils.DecimalToDB(disposal.TransactionCosts));
             command.Parameters.AddWithValue("@CGTMethod", disposal.CGTMethod);
             command.Parameters.AddWithValue("@Comment", disposal.Comment); 
         }
@@ -324,11 +314,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", incomeReceived.Id.ToString());
             command.Parameters.AddWithValue("@RecordDate", incomeReceived.RecordDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@FrankedAmount", DecimalToDB(incomeReceived.FrankedAmount));
-            command.Parameters.AddWithValue("@UnfrankedAmount", DecimalToDB(incomeReceived.UnfrankedAmount));
-            command.Parameters.AddWithValue("@FrankingCredits", DecimalToDB(incomeReceived.FrankingCredits));
-            command.Parameters.AddWithValue("@Interest", DecimalToDB(incomeReceived.Interest));
-            command.Parameters.AddWithValue("@TaxDeferred", DecimalToDB(incomeReceived.TaxDeferred));
+            command.Parameters.AddWithValue("@FrankedAmount", SQLiteUtils.DecimalToDB(incomeReceived.FrankedAmount));
+            command.Parameters.AddWithValue("@UnfrankedAmount", SQLiteUtils.DecimalToDB(incomeReceived.UnfrankedAmount));
+            command.Parameters.AddWithValue("@FrankingCredits", SQLiteUtils.DecimalToDB(incomeReceived.FrankingCredits));
+            command.Parameters.AddWithValue("@Interest", SQLiteUtils.DecimalToDB(incomeReceived.Interest));
+            command.Parameters.AddWithValue("@TaxDeferred", SQLiteUtils.DecimalToDB(incomeReceived.TaxDeferred));
             command.Parameters.AddWithValue("@Comment", incomeReceived.Comment);
 
         }
@@ -363,7 +353,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", openingBalance.Id.ToString());
             command.Parameters.AddWithValue("@Units", openingBalance.Units);
-            command.Parameters.AddWithValue("@CostBase", DecimalToDB(openingBalance.CostBase));
+            command.Parameters.AddWithValue("@CostBase", SQLiteUtils.DecimalToDB(openingBalance.CostBase));
             command.Parameters.AddWithValue("@AquisitionDate", openingBalance.AquisitionDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Comment", openingBalance.Comment); 
         }
@@ -398,7 +388,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", returnOfCapital.Id.ToString());
             command.Parameters.AddWithValue("@RecordDate", returnOfCapital.RecordDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Amount", DecimalToDB(returnOfCapital.Amount));
+            command.Parameters.AddWithValue("@Amount", SQLiteUtils.DecimalToDB(returnOfCapital.Amount));
             command.Parameters.AddWithValue("@Comment", returnOfCapital.Comment); 
         }
     }

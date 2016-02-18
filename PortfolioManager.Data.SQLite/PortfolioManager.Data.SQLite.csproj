@@ -127,6 +127,7 @@
     <Content Include="Upgrade\StockDatabaseUpgradeToVersion1.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Upgrade\StockDatabaseUpgradeToVersion3.sql" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

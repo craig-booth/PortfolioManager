@@ -40,7 +40,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                               reader.GetDateTime(1),
                                               new Guid(reader.GetString(2)),
                                               new Guid(reader.GetString(3)),
-                                              DBToDecimal(reader.GetInt32(4)));
+                                              SQLiteUtils.DBToDecimal(reader.GetInt32(4)));
             return nta;
         }
 
@@ -65,6 +65,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 return CreateTransformation(database, id, stock, actionDate, description);
             else if (type == CorporateActionType.SplitConsolidation)
                 return CreateSplitConsolidation(database, id, stock, actionDate, description);
+            else if (type == CorporateActionType.Composite)
+                return CreateCompositeAction(database, id, stock, actionDate, description);
             else
                 return null;
         }
@@ -87,10 +89,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     stock,
                                     actionDate,
                                     dividendReader.GetDateTime(1),
-                                    DBToDecimal(dividendReader.GetInt32(2)),
-                                    DBToDecimal(dividendReader.GetInt32(4)),
-                                    DBToDecimal(dividendReader.GetInt32(3)),
-                                    DBToDecimal(dividendReader.GetInt32(5)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(2)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(4)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(3)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(5)),
                                     description);
             dividendReader.Close();
 
@@ -115,7 +117,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     stock,
                                     actionDate,
                                     capitalReturnReader.GetDateTime(1),
-                                    DBToDecimal(capitalReturnReader.GetInt32(2)),
+                                    SQLiteUtils.DBToDecimal(capitalReturnReader.GetInt32(2)),
                                     description);
             capitalReturnReader.Close();
 
@@ -164,7 +166,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     stock,
                                     actionDate,
                                     transformationReader.GetDateTime(1),
-                                    DBToDecimal(transformationReader.GetInt32(2)),
+                                    SQLiteUtils.DBToDecimal(transformationReader.GetInt32(2)),
                                     transformationReader.GetString(3) == "Y"? true: false,
                                     description);
             transformationReader.Close();
@@ -180,7 +182,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 ResultingStock resultingStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
                                         transformationReader.GetInt32(2),
                                         transformationReader.GetInt32(3),
-                                        DBToDecimal(transformationReader.GetInt32(4)),
+                                        SQLiteUtils.DBToDecimal(transformationReader.GetInt32(4)),
                                         transformationReader.GetDateTime(5));
 
                 transformation.AddResultStockInternal(resultingStock);
@@ -191,14 +193,29 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return transformation;
         }
 
-        private static int DecimalToDB(decimal value)
-        {
-            return (int)Math.Floor(value * 100000);
-        }
 
-        private static decimal DBToDecimal(int value)
+        private static CompositeAction CreateCompositeAction(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
-            return (decimal)value / 100000;
+            CompositeAction compositeAction = new CompositeAction(database,
+                        id,
+                        stock,
+                        actionDate,
+                        description);
+
+            /* Get composite action children */
+            var command = new SQLiteCommand("SELECT * FROM [CompositeActions] WHERE [Id] = @Id ORDER BY [Sequence]", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", id.ToString());
+            SQLiteDataReader compositeActionReader = command.ExecuteReader();
+            while (compositeActionReader.Read())
+            {
+                
+            }
+
+
+            compositeActionReader.Close();
+
+            return compositeAction ;
         }
 
     }

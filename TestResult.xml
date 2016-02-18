@@ -1,44 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="1" errors="1" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2016-02-16" time="21:07:35">
-  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8669" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
+<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="1" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2016-02-17" time="21:15:40">
+  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8670" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
   <culture-info current-culture="en-AU" current-uiculture="en-GB" />
-  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="0.014" asserts="0">
+  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Success" success="True" time="0.010" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="0.014" asserts="0">
+      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" executed="True" result="Success" success="True" time="0.009" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="0.013" asserts="0">
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Success" success="True" time="0.009" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="0.013" asserts="0">
+              <test-suite type="Namespace" name="Data" executed="True" result="Success" success="True" time="0.008" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="0.012" asserts="0">
+                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="0.008" asserts="0">
                     <results>
-                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="0.012" asserts="0">
+                      <test-suite type="Namespace" name="Stocks" executed="True" result="Success" success="True" time="0.007" asserts="0">
                         <results>
-                          <test-suite type="Namespace" name="CorporateActionHandlers" executed="True" result="Failure" success="False" time="0.011" asserts="0">
+                          <test-suite type="TestFixture" name="CorporateActionRepositoryCompositeTest" executed="True" result="Success" success="True" time="0.007" asserts="0">
                             <results>
-                              <test-suite type="TestFixture" name="CompositeActionHandlerTest" description="Composite Action Handler Tests" executed="True" result="Failure" success="False" time="0.011" asserts="0">
-                                <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.NoParcels" description="No Parcels" executed="True" result="Error" success="False" time="0.004" asserts="0">
-                                    <failure>
-                                      <message><![CDATA[System.Data.SQLite.SQLiteException : SQL logic error or missing database
-no such table: CompositeActions]]></message>
-                                      <stack-trace><![CDATA[at System.Data.SQLite.SQLite3.Prepare(SQLiteConnection cnn, String strSql, SQLiteStatement previous, UInt32 timeoutMS, String& strRemain)
-at System.Data.SQLite.SQLiteCommand.BuildNextCommand()
-at System.Data.SQLite.SQLiteDataReader.NextResult()
-at System.Data.SQLite.SQLiteDataReader..ctor(SQLiteCommand cmd, CommandBehavior behave)
-at System.Data.SQLite.SQLiteCommand.ExecuteReader(CommandBehavior behavior)
-at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery(CommandBehavior behavior)
-at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Add(IEntity entity) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 42
-at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Update(IEntity entity) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 53
-at PortfolioManager.Data.SQLite.Stocks.SQLiteCorporateActionRepository.Update(ICorporateAction entity) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CorporateActionRepository.cs:line 72
-at PortfolioManager.Model.Stocks.CompositeAction.AddChildAction(ICorporateAction childAction) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model\Stocks\CorporateActions\CompositeAction.cs:line 54
-at PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.NoParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\CorporateActionHandlers\CompositeActionHandlerTest.cs:line 196
-]]></stack-trace>
-                                    </failure>
-                                  </test-case>
-                                </results>
-                              </test-suite>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.AddCompositeAction" description="Test adding a Composite Action" executed="True" result="Success" success="True" time="0.001" asserts="1" />
                             </results>
                           </test-suite>
                         </results>
