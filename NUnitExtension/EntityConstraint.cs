@@ -24,6 +24,11 @@ namespace NUnitExtension
             RegisterComparer(type, new EntityComparer(propertiesToIgnore));
         }
 
+        public static void RegisterComparer(Type type)
+        {
+            RegisterComparer(type, new EntityComparer(""));
+        }
+
         public static EntityComparer GetComparer(object obj)
         {
             var objectType = obj.GetType();
@@ -34,7 +39,7 @@ namespace NUnitExtension
                 throw new Exception(String.Format("Comparer not found for type {0}", objectType.Name));
         }
 
-        public static EntityEqualConstraint Equal(object expected)
+        public static EntityEqualConstraint EqualTo(object expected)
         {
             return new EntityEqualConstraint(expected);
         }

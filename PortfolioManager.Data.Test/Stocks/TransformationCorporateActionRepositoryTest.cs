@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -22,7 +23,8 @@ namespace PortfolioManager.Data.Test.Stocks
 
             transformation = new Transformation(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 2.50M, true, "Test");
             result = AddCorporateAction(transformation) as Transformation;
-            Assert.That(result, Is.EqualTo(transformation).Using(new EntityComparer()));
+
+            Assert.That(result, EntityConstraint.EqualTo((transformation)));
         }
 
         [Test, Description("Test Update() for a transformation")]

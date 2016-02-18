@@ -4,14 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using NUnit;
+using NUnitExtension;
+
+
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
+
 
 namespace PortfolioManager.Data.Test
 {
     public class TestBase
     {
+        public TestBase()
+        {
+            EntityConstraint.RegisterComparer(typeof(Stock));
+
+            EntityConstraint.RegisterComparer(typeof(CapitalReturn));
+            EntityConstraint.RegisterComparer(typeof(CompositeAction));
+            EntityConstraint.RegisterComparer(typeof(Dividend));
+            EntityConstraint.RegisterComparer(typeof(SplitConsolidation));
+            EntityConstraint.RegisterComparer(typeof(Transformation));
+        }
+
         public IStockDatabase CreateStockDatabase()
         {
             return new SQLiteStockDatabase(":memory:");

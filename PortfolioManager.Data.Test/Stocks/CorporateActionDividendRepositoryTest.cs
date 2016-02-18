@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -22,7 +23,7 @@ namespace PortfolioManager.Data.Test.Stocks
             dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
             result = AddCorporateAction(dividend) as Dividend;
 
-            Assert.That(result, Is.EqualTo(dividend).Using(new EntityComparer()));
+            Assert.That(result, EntityConstraint.EqualTo((dividend)));
         }
 
         [Test, Description("Test Update() for a dividend")]

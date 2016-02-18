@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -27,7 +28,7 @@ namespace PortfolioManager.Data.Test.Stocks
             compositeAction.AddChildAction(childAction2);
 
             var result = AddCorporateAction(compositeAction) as CompositeAction;
-            Assert.That(result, Is.EqualTo(compositeAction).Using(new EntityComparer()));
+            Assert.That(result, EntityConstraint.EqualTo((compositeAction)));
         }
 
         [Test, Description("Test Update() for a Composite Action")]

@@ -1,44 +1,866 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="1" errors="1" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2016-02-16" time="21:07:35">
-  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8669" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
-  <culture-info current-culture="en-AU" current-uiculture="en-GB" />
-  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="0.014" asserts="0">
+<test-results name="C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.nunit" total="266" errors="8" failures="11" not-run="6" inconclusive="0" ignored="6" skipped="0" invalid="0" date="2016-02-18" time="15:43:54">
+  <environment nunit-version="2.6.3.13283" clr-version="2.0.50727.5485" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files\NUnit 2.6.3\bin" machine-name="ADL-D-CST-7607" user="CraigB" user-domain="NELLER" />
+  <culture-info current-culture="en-AU" current-uiculture="en-US" />
+  <test-suite type="Project" name="C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="2.981" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="0.014" asserts="0">
+      <test-suite type="Assembly" name="C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" executed="True" result="Failure" success="False" time="1.479" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="0.013" asserts="0">
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="1.479" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="0.013" asserts="0">
+              <test-suite type="Namespace" name="Data" executed="True" result="Failure" success="False" time="1.478" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="0.012" asserts="0">
+                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="1.478" asserts="0">
                     <results>
-                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="0.012" asserts="0">
+                      <test-suite type="Namespace" name="Portfolio" executed="True" result="Success" success="True" time="0.690" asserts="0">
                         <results>
-                          <test-suite type="Namespace" name="CorporateActionHandlers" executed="True" result="Failure" success="False" time="0.011" asserts="0">
+                          <test-suite type="TestFixture" name="PortfolioQueryTest" executed="True" result="Success" success="True" time="0.014" asserts="0">
                             <results>
-                              <test-suite type="TestFixture" name="CompositeActionHandlerTest" description="Composite Action Handler Tests" executed="True" result="Failure" success="False" time="0.011" asserts="0">
+                              <test-case name="PortfolioManager.Data.Test.Portfolio.PortfolioQueryTest.GetStocksInPortfolio" description="Test get stocks in portfolio" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="Transactions" executed="True" result="Success" success="True" time="0.673" asserts="0">
+                            <results>
+                              <test-suite type="TestFixture" name="AquisitionRepositoryTest" executed="True" result="Success" success="True" time="0.475" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.NoParcels" description="No Parcels" executed="True" result="Error" success="False" time="0.004" asserts="0">
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.AquisitionRepositoryTest.Add" description="Test adding an Aquisition" executed="True" result="Success" success="True" time="0.422" asserts="1" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.AquisitionRepositoryTest.Delete" description="Test deleting an Aquisition" executed="True" result="Success" success="True" time="0.017" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.AquisitionRepositoryTest.DeleteById" description="Test deleting an Aquisition by id" executed="True" result="Success" success="True" time="0.015" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.AquisitionRepositoryTest.Update" description="Test updating an Aquisition" executed="True" result="Success" success="True" time="0.013" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentRepositoryTest" executed="True" result="Success" success="True" time="0.036" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.CostBaseAdjustmentRepositoryTest.Add" description="Test adding a CostBaseAdjustment" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.CostBaseAdjustmentRepositoryTest.Delete" description="Test deleting a CostBaseAdjustment" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.CostBaseAdjustmentRepositoryTest.DeleteById" description="Test deleting a CostBaseAdjustment by id" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.CostBaseAdjustmentRepositoryTest.Update" description="Test updating a CostBaseAdjustment" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalRepositoryTest" executed="True" result="Success" success="True" time="0.037" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.DisposalRepositoryTest.Add" description="Test adding a Disposal" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.DisposalRepositoryTest.Delete" description="Test deleting a Disposal" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.DisposalRepositoryTest.DeleteById" description="Test deleting a Disposal" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.DisposalRepositoryTest.Update" description="Test updating a Disposal" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedRepositoryTest" executed="True" result="Success" success="True" time="0.037" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.IncomeReceivedRepositoryTest.Add" description="Test adding a IncomeReceived" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.IncomeReceivedRepositoryTest.Delete" description="Test deleting a IncomeReceived" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.IncomeReceivedRepositoryTest.DeleteById" description="Test deleting a IncomeReceived" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.IncomeReceivedRepositoryTest.Update" description="Test updating a IncomeReceived" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="OpeningBalanceRepositoryTest" executed="True" result="Success" success="True" time="0.041" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.OpeningBalanceRepositoryTest.Add" description="Test adding a OpeningBalance" executed="True" result="Success" success="True" time="0.012" asserts="1" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.OpeningBalanceRepositoryTest.Delete" description="Test deleting a OpeningBalance" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.OpeningBalanceRepositoryTest.DeleteById" description="Test deleting a OpeningBalance" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.OpeningBalanceRepositoryTest.Update" description="Test updating a OpeningBalance" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalRepositoryTest" executed="True" result="Success" success="True" time="0.035" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.ReturnOfCapitalRepositoryTest.Add" description="Test adding a ReturnofCapital" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.ReturnOfCapitalRepositoryTest.Delete" description="Test deleting a ReturnofCapital" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.ReturnOfCapitalRepositoryTest.DeleteById" description="Test deleting a ReturnofCapital" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Data.Test.Portfolio.Transactions.ReturnOfCapitalRepositoryTest.Update" description="Test updating a ReturnofCapital" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite type="Namespace" name="Stocks" executed="True" result="Failure" success="False" time="0.780" asserts="0">
+                        <results>
+                          <test-suite type="TestFixture" name="CorporateActionRepositoryCapitalReturnTest" executed="True" result="Success" success="True" time="0.034" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCapitalReturnTest.AddCapitalReturn" description="Test adding a Capital Return" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCapitalReturnTest.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCapitalReturnTest.DeleteCapitalReturn" description="Test Delete() for a capital return" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCapitalReturnTest.UpdateCapitalReturn" description="Test Update() for a capital return" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="CorporateActionRepositoryCompositeTest" executed="True" result="Failure" success="False" time="0.118" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.AddCompositeAction" description="Test adding a Composite Action" executed="True" result="Error" success="False" time="0.031" asserts="0">
+                                <failure>
+                                  <message><![CDATA[System.Data.SQLite.SQLiteException : SQL logic error or missing database
+no such table: CompositeActions]]></message>
+                                  <stack-trace><![CDATA[at System.Data.SQLite.SQLite3.Prepare(SQLiteConnection cnn, String strSql, SQLiteStatement previous, UInt32 timeoutMS, String& strRemain)
+at System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+at System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
+at System.Data.SQLite.SQLiteDataReader.NextResult()
+at System.Data.SQLite.SQLiteDataReader..ctor(SQLiteCommand cmd, CommandBehavior behave)
+at System.Data.SQLite.SQLiteCommand.ExecuteReader(CommandBehavior behavior)
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery(CommandBehavior behavior)
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Add(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 42
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Update(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 53
+at PortfolioManager.Data.SQLite.Stocks.SQLiteCorporateActionRepository.Update(ICorporateAction entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CorporateActionRepository.cs:line 72
+at PortfolioManager.Model.Stocks.CompositeAction.AddChildAction(ICorporateAction childAction) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model\Stocks\CorporateActions\CompositeAction.cs:line 54
+at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.AddCompositeAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 26
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.DeleteCompositeAction" description="Test Delete() for a Composite Action" executed="True" result="Failure" success="False" time="0.002" asserts="0">
+                                <failure>
+                                  <message><![CDATA[An unexpected exception type was thrown
+Expected: PortfolioManager.Model.Data.RecordNotFoundException
+ but was: System.NotSupportedException : Specified method is not supported.]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.DeleteCompositeAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 119
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.DeleteCompositeActionWithChildAction" description="Test Delete() for a Composite Action with child actions" executed="True" result="Failure" success="False" time="0.002" asserts="0">
+                                <failure>
+                                  <message><![CDATA[An unexpected exception type was thrown
+Expected: PortfolioManager.Model.Data.RecordNotFoundException
+ but was: System.NotSupportedException : Specified method is not supported.]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.DeleteCompositeActionWithChildAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 137
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeAction" description="Test Update() for a Composite Action" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                                <failure>
+                                  <message><![CDATA[System.NotSupportedException : Specified method is not supported.]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 37
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeActionAddChildAction" description="Test Update() for a Composite Action - add child action" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                                <failure>
+                                  <message><![CDATA[System.NotSupportedException : Specified method is not supported.]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeActionAddChildAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 55
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeActionRemoveChildAction" description="Test Update() for a Composite Action - remove child action" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                                <failure>
+                                  <message><![CDATA[System.NotSupportedException : Specified method is not supported.]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeActionRemoveChildAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 96
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeActionUpdateChildAction" description="Test Update() for a Composite Action - update child action" executed="True" result="Error" success="False" time="0.002" asserts="0">
+                                <failure>
+                                  <message><![CDATA[System.NotSupportedException : Specified method is not supported.]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.UpdateCompositeActionUpdateChildAction() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionCompositeRepositoryTest.cs:line 76
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="CorporateActionRepositoryDividendTest" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryDividendTest.AddDividend" description="Test adding a Dividend" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryDividendTest.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryDividendTest.DeleteDividend" description="Test Delete() for a dividend" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryDividendTest.UpdateDividend" description="Test Update() for a dividend" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="CorporateActionRepositoryTestBase" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="CorporateActionRepositoryTransformationTest" executed="True" result="Failure" success="False" time="0.056" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.AddTransformation" description="Test adding a Transformation" executed="True" result="Failure" success="False" time="0.012" asserts="1">
+                                <failure>
+                                  <message><![CDATA[  Expected: <Transformation:- Id: 507118c0-e96b-4347-9cd7-ef1f6194cbfd, Stock: ab96d62b-89dd-467c-ac0b-6b403756c536, ActionDate: 10/10/2005 00:00:00, ImplementationDate: 10/12/2005 00:00:00, Description: Test, CashComponent: 2.50, RolloverRefliefApplies: True, ResultingStocks: System.Collections.Generic.List`1[PortfolioManager.Model.Stocks.ResultingStock], Type: Transformation, >
+
+  But was:  <Transformation:- Id: 507118c0-e96b-4347-9cd7-ef1f6194cbfd, Stock: ab96d62b-89dd-467c-ac0b-6b403756c536, ActionDate: 10/10/2005 00:00:00, ImplementationDate: 10/12/2005 00:00:00, Description: Test, CashComponent: 2.5, RolloverRefliefApplies: True, ResultingStocks: System.Collections.Generic.List`1[PortfolioManager.Model.Stocks.ResultingStock], Type: Transformation, >
+
+]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.AddTransformation() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\CorporateActionTransformationRepositoryTest.cs:line 27
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.DeleteTransformation" description="Test Delete() for a transformation" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.DeleteTransformationWithResultStocks" description="Test Delete() for a transformation with result stocks" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.UpdateTransformation" description="Test Update() for a transformation" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.UpdateTransformationAddResultStock" description="Test Update() for a transformation - add result stock" executed="True" result="Success" success="True" time="0.006" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.UpdateTransformationRemoveResultStock" description="Test Update() for a transformation - remove result stock" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryTransformationTest.UpdateTransformationUpdateResultStock" description="Test Update() for a transformation - update result stock" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="CorporateActionSplitConsolidationRepositoryTest" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionSplitConsolidationRepositoryTest.AddSplitConsolidation" description="Test adding a SplitConsolidation" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionSplitConsolidationRepositoryTest.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionSplitConsolidationRepositoryTest.DeleteSplitConsolidation" description="Test Delete() for a SplitConsolidation" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.CorporateActionSplitConsolidationRepositoryTest.UpdateSplitConsolidation" description="Test Update() for a SplitConsolidation" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="RelativeNTARepositoryTest" executed="True" result="Success" success="True" time="0.108" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Add" description="Test adding a Relative NTA" executed="True" result="Success" success="True" time="0.008" asserts="3" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.AddDuplicate" description="Test adding a relative nta with the same details as an existing entry" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Delete" description="Test Delete()" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteById" description="Test Delete() by Id" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByIdNotExists" description="Test Delete() by Id not exists" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByParent" description="Test Delete() by Parent" executed="True" result="Success" success="True" time="0.009" asserts="6" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByParentChild" description="Test Delete() by Parent,Child" executed="True" result="Success" success="True" time="0.009" asserts="6" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.DeleteByParentChildDate" description="Test Delete() by Parent,Child,Date" executed="True" result="Success" success="True" time="0.009" asserts="6" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Get" description="Test Get()" executed="True" result="Success" success="True" time="0.008" asserts="6" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.GetNotExists" description="Test Get() for a relative NTA that doesn't exist" executed="True" result="Success" success="True" time="0.009" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.RelativeNTARepositoryTest.Update" description="Test Update()" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="StockQueryTest" executed="True" result="Failure" success="False" time="0.197" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.Get" description="Test Get()" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetAfterEndDate" description="Test Get() for a stock after end date" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCode" description="Test GetASXCode()" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeAfterEndDate" description="Test GetASXCode() for a stock after end date" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeAtDate" description="Test GetASXCode() at a particular date" executed="True" result="Success" success="True" time="0.006" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeBeforeStartDate" description="Test GetASXCode() for a stock before start date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetASXCodeNotExists" description="Test GetASXCode() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetAtDate" description="Test Get() at a particular date" executed="True" result="Success" success="True" time="0.006" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetBeforeStartDate" description="Test Get() for a stock before start date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCode" description="Test GetByASXCode()" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeAfterEndDate" description="Test GetByASXCode() for a stock after end date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeAtDate" description="Test GetByASXCode() at a particular date" executed="True" result="Failure" success="False" time="0.008" asserts="2">
+                                <failure>
+                                  <message><![CDATA[  Expected: <Stock:- Id: 1bdca619-fdf1-482c-bb85-59350ff8c788, FromDate: 01/01/2000 00:00:00, ToDate: 12/31/2001 00:00:00, ASXCode: ABC, Name: Test, Type: Ordinary, ParentId: 00000000-0000-0000-0000-000000000000, DividendRoundingRule: Round, CurrentPrice: 0.00, >
+
+  But was:  <Stock:- Id: 1bdca619-fdf1-482c-bb85-59350ff8c788, FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, ASXCode: DEF, Name: Test 2, Type: Ordinary, ParentId: 00000000-0000-0000-0000-000000000000, DividendRoundingRule: Round, CurrentPrice: 0.00, >
+
+]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeAtDate() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\StockQueryTest.cs:line 185
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeBeforeStartDate" description="Test GetByASXCode() for a stock before start date" executed="True" result="Success" success="True" time="0.010" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetByASXCodeNotExists" description="Test GetByASXCode() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetChildStocks" description="Test GetChildStocks()" executed="True" result="Success" success="True" time="0.007" asserts="3" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetChildStocksNoChildren" description="Test GetChildStocks() with no children" executed="True" result="Success" success="True" time="0.005" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.GetNotExists" description="Test Get() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCost" description="Test PercentOfParentCost()" executed="True" result="Success" success="True" time="0.007" asserts="6" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCostIdInvalid" description="Test PercentOfParentCost() invalid id" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCostNoData" description="Test PercentOfParentCost() no Relative NTA Records" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockQueryTest.PercentOfParentCostNoParent" description="Test PercentOfParentCost() with no parent" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="StockRepositoryTest" executed="True" result="Success" success="True" time="0.122" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Add" description="Test adding a stock" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.AddDuplicate" description="Test adding a stock with the same ASX code as an existing stock" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Delete" description="Test Delete()" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteAllEffectiveDatedRecords" description="Test Delete() by Id for multiple effective dated records" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteById" description="Test Delete() by Id" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteByIdAtDate" description="Test Delete() by Id and date" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteByIdAtDateNotExists" description="Test Delete() by Id and date not exists" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.DeleteNotExist" description="Test Delete() for stock not existing" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Get" description="Test Get()" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetAfterEndDate" description="Test Get() for a stock after end date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetAtDate" description="Test Get() at a particular date" executed="True" result="Success" success="True" time="0.005" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetBeforeStartDate" description="Test Get() for a stock before start date" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.GetNotExists" description="Test Get() for a stock that doesn't exist" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockRepositoryTest.Update" description="Test Update()" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="StockUnitOfWorkTest" executed="True" result="Success" success="True" time="0.024" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockUnitOfWorkTest.Commit" description="Test commmit" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockUnitOfWorkTest.NestedTransactions" description="Test nested transactions" executed="True" result="Success" success="True" time="0.006" asserts="3" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.StockUnitOfWorkTest.Rollback" description="Test rollback" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="TransformationCorporateActionRepositoryTest" executed="True" result="Failure" success="False" time="0.039" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.AddTransformation" description="Test adding a Transformation" executed="True" result="Failure" success="False" time="0.003" asserts="1">
+                                <failure>
+                                  <message><![CDATA[  Expected: <Transformation:- Id: 29513a8f-d54c-4f72-af6c-7991a5a29a23, Stock: 92f25571-6931-4ae5-a344-fe2ed7dc2a72, ActionDate: 10/10/2005 00:00:00, ImplementationDate: 10/12/2005 00:00:00, Description: Test, CashComponent: 2.50, RolloverRefliefApplies: True, ResultingStocks: System.Collections.Generic.List`1[PortfolioManager.Model.Stocks.ResultingStock], Type: Transformation, >
+
+  But was:  <Transformation:- Id: 29513a8f-d54c-4f72-af6c-7991a5a29a23, Stock: 92f25571-6931-4ae5-a344-fe2ed7dc2a72, ActionDate: 10/10/2005 00:00:00, ImplementationDate: 10/12/2005 00:00:00, Description: Test, CashComponent: 2.5, RolloverRefliefApplies: True, ResultingStocks: System.Collections.Generic.List`1[PortfolioManager.Model.Stocks.ResultingStock], Type: Transformation, >
+
+]]></message>
+                                  <stack-trace><![CDATA[at PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.AddTransformation() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\Stocks\TransformationCorporateActionRepositoryTest.cs:line 27
+]]></stack-trace>
+                                </failure>
+                              </test-case>
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.CorporateActionRepositoryTestBase.GetNotExists" description="Test Get() for a corporate action that doesn't exist" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.DeleteTransformation" description="Test Delete() for a transformation" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.DeleteTransformationWithResultStocks" description="Test Delete() for a transformation with result stocks" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.UpdateTransformation" description="Test Update() for a transformation" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.UpdateTransformationAddResultStock" description="Test Update() for a transformation - add result stock" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.UpdateTransformationRemoveResultStock" description="Test Update() for a transformation - remove result stock" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                              <test-case name="PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest.UpdateTransformationUpdateResultStock" description="Test Update() for a transformation - update result stock" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="Assembly" name="C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="1.445" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="1.444" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="1.444" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="1.444" asserts="0">
+                    <results>
+                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="1.207" asserts="0">
+                        <results>
+                          <test-suite type="Namespace" name="ActualScenarios" executed="True" result="Success" success="True" time="0.067" asserts="0">
+                            <results>
+                              <test-suite type="TestFixture" name="NewsCorpDemergerAndSale" description="News corp demerger and sale" executed="True" result="Success" success="True" time="0.066" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.010" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.ActualScenarios.NewsCorpDemergerAndSale.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="CorporateActionHandlers" executed="True" result="Failure" success="False" time="0.229" asserts="0">
+                            <results>
+                              <test-suite type="TestFixture" name="CapitalReturnHandlerTest" description="Capital Return Handler Tests" executed="True" result="Success" success="True" time="0.032" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.MultipleParcels" description="Multiple Parcels" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.NoParcels" description="No Parcels" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CapitalReturnHandlerTest.SingleParcel" description="Single Parcel" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="CompositeActionHandlerTest" description="Composite Action Handler Tests" executed="True" result="Failure" success="False" time="0.050" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.MultipleParcels" description="Multiple Parcels" executed="True" result="Error" success="False" time="0.013" asserts="0">
                                     <failure>
                                       <message><![CDATA[System.Data.SQLite.SQLiteException : SQL logic error or missing database
 no such table: CompositeActions]]></message>
                                       <stack-trace><![CDATA[at System.Data.SQLite.SQLite3.Prepare(SQLiteConnection cnn, String strSql, SQLiteStatement previous, UInt32 timeoutMS, String& strRemain)
 at System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+at System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
 at System.Data.SQLite.SQLiteDataReader.NextResult()
 at System.Data.SQLite.SQLiteDataReader..ctor(SQLiteCommand cmd, CommandBehavior behave)
 at System.Data.SQLite.SQLiteCommand.ExecuteReader(CommandBehavior behavior)
 at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery(CommandBehavior behavior)
-at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Add(IEntity entity) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 42
-at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Update(IEntity entity) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 53
-at PortfolioManager.Data.SQLite.Stocks.SQLiteCorporateActionRepository.Update(ICorporateAction entity) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CorporateActionRepository.cs:line 72
-at PortfolioManager.Model.Stocks.CompositeAction.AddChildAction(ICorporateAction childAction) in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model\Stocks\CorporateActions\CompositeAction.cs:line 54
-at PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.NoParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\CorporateActionHandlers\CompositeActionHandlerTest.cs:line 196
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Add(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 42
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Update(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 53
+at PortfolioManager.Data.SQLite.Stocks.SQLiteCorporateActionRepository.Update(ICorporateAction entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CorporateActionRepository.cs:line 72
+at PortfolioManager.Model.Stocks.CompositeAction.AddChildAction(ICorporateAction childAction) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model\Stocks\CorporateActions\CompositeAction.cs:line 54
+at PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.MultipleParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\CorporateActionHandlers\CompositeActionHandlerTest.cs:line 119
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.NoParcels" description="No Parcels" executed="True" result="Error" success="False" time="0.007" asserts="0">
+                                    <failure>
+                                      <message><![CDATA[System.Data.SQLite.SQLiteException : SQL logic error or missing database
+no such table: CompositeActions]]></message>
+                                      <stack-trace><![CDATA[at System.Data.SQLite.SQLite3.Prepare(SQLiteConnection cnn, String strSql, SQLiteStatement previous, UInt32 timeoutMS, String& strRemain)
+at System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+at System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
+at System.Data.SQLite.SQLiteDataReader.NextResult()
+at System.Data.SQLite.SQLiteDataReader..ctor(SQLiteCommand cmd, CommandBehavior behave)
+at System.Data.SQLite.SQLiteCommand.ExecuteReader(CommandBehavior behavior)
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery(CommandBehavior behavior)
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Add(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 42
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Update(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 53
+at PortfolioManager.Data.SQLite.Stocks.SQLiteCorporateActionRepository.Update(ICorporateAction entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CorporateActionRepository.cs:line 72
+at PortfolioManager.Model.Stocks.CompositeAction.AddChildAction(ICorporateAction childAction) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model\Stocks\CorporateActions\CompositeAction.cs:line 54
+at PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.NoParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\CorporateActionHandlers\CompositeActionHandlerTest.cs:line 197
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.SingleParcel" description="Single Parcel" executed="True" result="Error" success="False" time="0.007" asserts="0">
+                                    <failure>
+                                      <message><![CDATA[System.Data.SQLite.SQLiteException : SQL logic error or missing database
+no such table: CompositeActions]]></message>
+                                      <stack-trace><![CDATA[at System.Data.SQLite.SQLite3.Prepare(SQLiteConnection cnn, String strSql, SQLiteStatement previous, UInt32 timeoutMS, String& strRemain)
+at System.Data.SQLite.SQLiteCommand.BuildNextCommand()
+at System.Data.SQLite.SQLiteCommand.GetStatement(Int32 index)
+at System.Data.SQLite.SQLiteDataReader.NextResult()
+at System.Data.SQLite.SQLiteDataReader..ctor(SQLiteCommand cmd, CommandBehavior behave)
+at System.Data.SQLite.SQLiteCommand.ExecuteReader(CommandBehavior behavior)
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery(CommandBehavior behavior)
+at System.Data.SQLite.SQLiteCommand.ExecuteNonQuery()
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Add(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 42
+at PortfolioManager.Data.SQLite.Stocks.CompositeActionDetailRepository.Update(IEntity entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CompositeActionDetailRepository.cs:line 53
+at PortfolioManager.Data.SQLite.Stocks.SQLiteCorporateActionRepository.Update(ICorporateAction entity) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.SQLite\Stocks\CorporateActionRepository.cs:line 72
+at PortfolioManager.Model.Stocks.CompositeAction.AddChildAction(ICorporateAction childAction) in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model\Stocks\CorporateActions\CompositeAction.cs:line 54
+at PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest.SingleParcel() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\CorporateActionHandlers\CompositeActionHandlerTest.cs:line 45
 ]]></stack-trace>
                                     </failure>
                                   </test-case>
                                 </results>
                               </test-suite>
+                              <test-suite type="TestFixture" name="DividendHandlerTest" description="Dividend Handler Tests" executed="True" result="Success" success="True" time="0.040" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.MultipleParcelsDRP" description="Multiple Parcels, DRP" executed="True" result="Success" success="True" time="0.010" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.MultipleParcelsNoDRP" description="Multiple Parcels, No DRP" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.NoParcels" description="No Parcels" executed="True" result="Success" success="True" time="0.005" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.DividendHandlerTest.SingleParcelNoDRP" description="Single Parcel, No DRP" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="SplitConsolidationHandlerTest" description="Split/Consolidation Handler Tests" executed="True" result="Success" success="True" time="0.029" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.SplitConsolidationHandlerTest.MultipleParcels" description="Multiple Parcels" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.SplitConsolidationHandlerTest.NoParcels" description="No Parcels" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.SplitConsolidationHandlerTest.SingleParcel" description="Single Parcel" executed="True" result="Success" success="True" time="0.005" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="TransformationHandlerTest" description="Transformation Handler Tests" executed="True" result="Success" success="True" time="0.063" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest.MultipleParcelsNoRolloverDisposalOfOriginalStock" description="Multiple Parcels, Rollover, Disposal of original stock" executed="True" result="Success" success="True" time="0.011" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest.MultipleParcelsNoRolloverMultipleResultStocks" description="Multiple Parcels, No Rollover, Multiple result stocks" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest.MultipleParcelsRolloverDisposalOfOriginalStock" description="Multiple Parcels, Rollover, Disposal of original stock" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest.MultipleParcelsRolloverMultipleResultStocks" description="Multiple Parcels, Rollover, multiple result stocks" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest.NoParcels" description="No Parcels" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest.SingleParcel" description="Single Parcel" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite type="Namespace" name="Transactions" executed="True" result="Failure" success="False" time="0.905" asserts="0">
+                            <results>
+                              <test-suite type="TestFixture" name="AquisitionOrdinaryShare" description="Purchase stock" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="AquisitionStapledSecurity" description="Purchase stapled security" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="AquisitionValidationTests" description="Aquisition validation tests" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionValidationTests.NotSupportedForChildSecurity" description="Aquire child security" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentChildSecuritySingleParcel" description="Cost base adjustment of Child security - single parcels" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentOrdinaryShareMultipleParcels" description="Cost base adjustment of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentOrdinaryShareSingleParcel" description="Cost base adjustment of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentValidationTests" description="Cost base adjustment validation tests" executed="True" result="Success" success="True" time="0.026" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentValidationTests.NoParcelsForTransaction" description="Cost base adjustment of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentValidationTests.TransctionNotSupportedForStapledSecurity" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareMultipleParcelsSellAll" description="Disposal of Ordinary Share - multiple parcels, sell all" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareMultipleParcelsSellPart" description="Disposal of Ordinary Share - multiple parcels, sell part" executed="True" result="Failure" success="False" time="0.020" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.003" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 293b8188-ef7c-43ba-ac11-f3fc1c006790, AquisitionDate: 01/01/2001 00:00:00, Units: 300, UnitPrice: 2.40, Amount: 720.00, CostBase: 720.00, Event: Disposal, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+  But was:  <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 293b8188-ef7c-43ba-ac11-f3fc1c006790, AquisitionDate: 01/01/2001 00:00:00, Units: 300, UnitPrice: 2.40, Amount: 1200.00, CostBase: 720.000, Event: Disposal, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Ordinary Share - single parcel, multiple dated records, sell part" executed="True" result="Failure" success="False" time="0.020" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.002" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 39c675e4-faed-4cd9-b234-14f8fbe139d5, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.50, Amount: 750.00, CostBase: 650.00, Event: Disposal, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+  But was:  <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 39c675e4-faed-4cd9-b234-14f8fbe139d5, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.50, Amount: 1500.00, CostBase: 650.000, Event: Disposal, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelSellAll" description="Disposal of Ordinary Share - single parcel, sell all" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelSellPart" description="Disposal of Ordinary Share - single parcel, sell part" executed="True" result="Failure" success="False" time="0.019" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.002" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: cccc2749-f683-4532-bb2b-c593c04f8f6c, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.50, Amount: 750.00, CostBase: 750.00, Event: Disposal, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+  But was:  <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: cccc2749-f683-4532-bb2b-c593c04f8f6c, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.50, Amount: 1500.00, CostBase: 750.000, Event: Disposal, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalStapledSecurityMultipleParcelsSellAll" description="Disposal of Stapled Security - multiple parcels, sell all" executed="False" result="Ignored">
+                                <reason>
+                                  <message><![CDATA[]]></message>
+                                </reason>
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecurityMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[]]></message>
+                                    </reason>
+                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecurityMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedIncome" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[]]></message>
+                                    </reason>
+                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecurityMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedParcels" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[]]></message>
+                                    </reason>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalStapledSecurityMultipleParcelsSellPart" description="Disposal of Stapled Security - multiple parcels, sell part" executed="False" result="Ignored">
+                                <reason>
+                                  <message><![CDATA[]]></message>
+                                </reason>
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecurityMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[]]></message>
+                                    </reason>
+                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecurityMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[]]></message>
+                                    </reason>
+                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecurityMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[]]></message>
+                                    </reason>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Stapled Security - single parcel, multiple dated records, sell part" executed="True" result="Failure" success="False" time="0.026" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.002" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 537cfcf9-93d7-4265-856b-2c0b7fd80867, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.50, Amount: 750.00, CostBase: 750.00, Event: Disposal, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: cb8eafc1-c5ee-4c6c-95dc-b25a8b7e5659, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 4.50, Amount: 2250.00, CostBase: 2250.00, Event: Disposal, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: b21637d4-820f-43ea-b41e-14a183ce638e, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 9.00, Amount: 4500.00, CostBase: 4450.00, Event: Disposal, PurchaseId: 9bda83f8-d2fc-4685-b0b7-e131a32439ae, >
+>
+
+  But was:  <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 537cfcf9-93d7-4265-856b-2c0b7fd80867, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.5, Amount: 1500.0, CostBase: 750.00, Event: Disposal, PurchaseId: 9613a51a-44e2-4fc8-9ee7-4becac2c1d80, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: cb8eafc1-c5ee-4c6c-95dc-b25a8b7e5659, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 4.50, Amount: 4500.00, CostBase: 2250.000, Event: Disposal, PurchaseId: 9613a51a-44e2-4fc8-9ee7-4becac2c1d80, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: b21637d4-820f-43ea-b41e-14a183ce638e, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 9.00, Amount: 9000.00, CostBase: 4450.000, Event: Disposal, PurchaseId: 9613a51a-44e2-4fc8-9ee7-4becac2c1d80, >
+>
+
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalStapledSecuritySingleParcelSellAll" description="Disposal of Stapled Security - single parcel, sell all" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalStapledSecuritySingleParcelSellPart" description="Disposal of Stapled Security - single parcel, sell part" executed="True" result="Failure" success="False" time="0.020" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.002" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 326232b7-bfb5-42e5-9c6b-58824f2fb2e1, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.50, Amount: 750.00, CostBase: 750.00, Event: Disposal, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 97c11f79-1318-4682-b439-e6699aeadfca, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 4.50, Amount: 2250.00, CostBase: 2250.00, Event: Disposal, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 10c1cf94-91c1-40ab-9e0a-a9c3ddc58fcd, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 9.00, Amount: 4500.00, CostBase: 4500.00, Event: Disposal, PurchaseId: 1c2be530-dcfb-4e21-8efe-65abbd06ffbe, >
+>
+
+  But was:  <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 326232b7-bfb5-42e5-9c6b-58824f2fb2e1, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 1.5, Amount: 1500.0, CostBase: 750.00, Event: Disposal, PurchaseId: 43a2c42a-72f8-4874-887f-0a8cc22ca4ba, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 97c11f79-1318-4682-b439-e6699aeadfca, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 4.50, Amount: 4500.00, CostBase: 2250.000, Event: Disposal, PurchaseId: 43a2c42a-72f8-4874-887f-0a8cc22ca4ba, >
+<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: 10c1cf94-91c1-40ab-9e0a-a9c3ddc58fcd, AquisitionDate: 01/01/2000 00:00:00, Units: 500, UnitPrice: 9.00, Amount: 9000.00, CostBase: 4500.000, Event: Disposal, PurchaseId: 43a2c42a-72f8-4874-887f-0a8cc22ca4ba, >
+>
+
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="DisposalValidationTests" description="Disposal validation tests" executed="True" result="Success" success="True" time="0.044" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.MultipleParcelsNotEnoughShares" description="Disposal of Ordinary Share - multiple parcels, not enough shares" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.NoParcelsForTransaction" description="Disposal of Ordinary Share - no parcels" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.NotSupportedForChildSecurity" description="Disposal of child security" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.SingleParcelNotEnoughShares" description="Disposal of Ordinary Share - single parcel, not enough shares" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="GeneralTransactionTests" description="General transaction tests" executed="True" result="Success" success="True" time="0.019" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.GeneralTransactionTests.MultipleTransactionsOnTheSameDay" description="Multiple transactions on the same date" executed="True" result="Success" success="True" time="0.010" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedOrdinaryShareMultipleParcels" description="Income Received of Ordinary share - mulitple parcels" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedOrdinaryShareSingleParcel" description="Income Received of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustMultipleParcelsTaxDeferred" description="Income Received of Trust - multiple parcels tax deferred" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferred.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferred.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferred.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase" description="Income Received of Trust - multiple parcels tax deferred greater than cost base for one parcel" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustSingleParcelTaxDeferred" description="Income Received of Trust- single parcel tax deferred" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase" description="Income Received of Trust - single parcel tax deferred greater than cost base" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceivedValidationTests" description="Income Received validation tests" executed="True" result="Success" success="True" time="0.025" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedValidationTests.NoParcelsForTransaction" description="Income Received Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedValidationTests.TransctionNotSupportedForStapledSecurity" description="Income Received of Stapled Security" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="IncomeReceviedChildTrustSingleParcelTaxDeferred" description="Income Received of Child trust - single parcel tax deferred" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceviedChildTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceviedChildTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceviedChildTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="OpeningBalanceOrdinaryShare" description="Opening balance for ordinary share" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceOrdinaryShare.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceOrdinaryShare.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceOrdinaryShare.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="OpeningBalanceStapledSecurity" description="Opening balance for stapled security" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceStapledSecurity.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceStapledSecurity.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceStapledSecurity.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="OpeningBalanceValidationTests" description="Opening balance validation tests" executed="True" result="Success" success="True" time="0.016" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceValidationTests.NotSupportedForChildSecurity" description="Opening balance for child security" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalChildSecuritySingleParcels" description="Return of Capital of  Child security - single parcels" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalChildSecuritySingleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalChildSecuritySingleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalChildSecuritySingleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareGreaterThanCostBase" description="Return of Capital of Ordinary share - greater than cost base" executed="True" result="Failure" success="False" time="0.019" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.002" asserts="1">
+                                    <failure>
+                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: e0888ab3-63aa-489a-b231-5d8bb3714993, AquisitionDate: 01/01/2000 00:00:00, Units: 1000, UnitPrice: 1.50, Amount: 1000.00, CostBase: 0.00, Event: CostBaseReduction, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+  But was:  <<ShareParcel:- FromDate: 01/01/2002 00:00:00, ToDate: 12/31/9999 00:00:00, Stock: e0888ab3-63aa-489a-b231-5d8bb3714993, AquisitionDate: 01/01/2000 00:00:00, Units: 1000, UnitPrice: 1.50, Amount: 1500.00, CostBase: 0.00, Event: CostBaseReduction, PurchaseId: 00000000-0000-0000-0000-000000000000, >
+>
+
+]]></message>
+                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
+]]></stack-trace>
+                                    </failure>
+                                  </test-case>
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareMultipleParcels" description="Return of Capital of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase" description="Return of Capital of Ordinary share - multiple parcels greater than cost base" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareSingleParcel" description="Return of Capital of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="ReturnOfCapitalValidationTests" description="Return of Capital validation tests" executed="True" result="Success" success="True" time="0.025" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalValidationTests.NoParcelsForTransaction" description="Return of Capital of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalValidationTests.TransctionNotSupportedForStapledSecurity" description="Return of Capital of  of Stapled Security" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentChildSecuritySingleParcel" description="Unit Count adjustment of Child security - single parcels" executed="True" result="Success" success="True" time="0.024" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareMultipleParcels" description="Unit count adjustment of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount" description="Unit count adjustment of Ordinary share - multiple parcels, uneven amount" executed="True" result="Success" success="True" time="0.023" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareSingleParcel" description="Unit count adjustment of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                </results>
+                              </test-suite>
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentValidationTests" description="Unit Count adjustment validation tests" executed="True" result="Success" success="True" time="0.025" asserts="0">
+                                <results>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentValidationTests.NoParcelsForTransaction" description="Cost base adjustment of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentValidationTests.TransctionNotSupportedForStapledSecurity" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite type="Namespace" name="Stocks" executed="True" result="Success" success="True" time="0.201" asserts="0">
+                        <results>
+                          <test-suite type="TestFixture" name="StockManagerTest" executed="True" result="Success" success="True" time="0.046" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock1" description="Add Stock(string asxCode, string name)" executed="True" result="Success" success="True" time="0.006" asserts="5" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock2" description="Add Stock(string asxCode, string name, DateTime fromDate)" executed="True" result="Success" success="True" time="0.005" asserts="5" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock3" description="(string asxCode, string name, StockType type)" executed="True" result="Success" success="True" time="0.005" asserts="5" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.AddStock4" description="Add Stock(string asxCode, string name, DateTime fromDate, StockType type)" executed="True" result="Success" success="True" time="0.005" asserts="5" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockManagerTest.GetStock" description="Get Stock" executed="True" result="Success" success="True" time="0.006" asserts="5" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="StockTest" executed="True" result="Success" success="True" time="0.152" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddChildStock" description="Add Child Stock" executed="True" result="Success" success="True" time="0.006" asserts="3" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddChildStockNonStapled" description="Add Child Stock for a non stapled security" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddRelativeNTA" description="Add Relative NTA" executed="True" result="Success" success="True" time="0.006" asserts="4" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.AddRelativeNTANonStapled" description="Add Relative NTA to a non stapled secuity" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.ChangeASXCode" description="Change ASX Code" executed="True" result="Success" success="True" time="0.006" asserts="7" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.DeleteRelativeNTA" description="Delete Relative NTA" executed="True" result="Success" success="True" time="0.006" asserts="5" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.DeleteRelativeNTANonStapled" description="Delete Relative NTA from a non stapled secuity" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.DeleteRelativeNTANotExists" description="Delete Relative NTA that doesn't exist" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.Delist" description="Delist" executed="True" result="Success" success="True" time="0.008" asserts="2" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.GetChildStocksNonStapled" description="Get Child stocks for a non stapled security" executed="True" result="Success" success="True" time="0.005" asserts="1" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.GetRelativeNTANonStapled" description="Get Relative NTA for a non stapled secuity" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.RemoveChildStock" description="Remove Child stock" executed="True" result="Success" success="True" time="0.006" asserts="3" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.RemoveChildStockNonStapled" description="Remove Child stock for a non stapled security" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.RemoveChildStockNotExists" description="Remove Child stock not exists" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.UpdateRelativeNTA" description="Update a Relative NTA" executed="True" result="Success" success="True" time="0.006" asserts="4" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.UpdateRelativeNTANonStapled" description="Update a Relative NTA from a non stapled secuity" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                              <test-case name="PortfolioManager.Model.Test.Stocks.StockTest.UpdateRelativeNTANotExists" description="Update a Relative NTA that doesn't exist" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite type="Namespace" name="Utils" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                        <results>
+                          <test-suite type="TestFixture" name="MathUtilsTest" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                            <results>
+                              <test-case name="PortfolioManager.Model.Test.Utils.MathUtilsTest.ApportionAmountComplex" description="ApportionAmmount different values" executed="True" result="Success" success="True" time="0.001" asserts="5" />
+                              <test-case name="PortfolioManager.Model.Test.Utils.MathUtilsTest.ApportionAmountSingle" description="ApportionAmmount single value" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                              <test-case name="PortfolioManager.Model.Test.Utils.MathUtilsTest.ApportionAmountThirds" description="ApportionAmmount into thirds" executed="True" result="Success" success="True" time="0.000" asserts="3" />
                             </results>
                           </test-suite>
                         </results>

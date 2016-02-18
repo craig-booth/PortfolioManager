@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
@@ -35,7 +37,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             stock = database.StockQuery.Get(stock2.Id, new DateTime(2002, 01, 01));
 
-            Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+            Assert.That(stock, EntityConstraint.EqualTo((stock2)));
         }
 
         [Test, Description("Test Get() at a particular date")]
@@ -157,7 +159,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2002, 01, 01));
 
-            Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+            Assert.That(stock, EntityConstraint.EqualTo((stock2)));
         }
 
         [Test, Description("Test GetByASXCode() at a particular date")]
@@ -177,10 +179,10 @@ namespace PortfolioManager.Data.Test.Stocks
             }
 
             stock = database.StockQuery.GetByASXCode("ABC", new DateTime(2001, 01, 01));
-            Assert.That(stock, Is.EqualTo(stock1).Using(new EntityComparer()));
+            Assert.That(stock, EntityConstraint.EqualTo((stock1)));
 
             stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2003, 01, 01));
-            Assert.That(stock, Is.EqualTo(stock1).Using(new EntityComparer()));
+            Assert.That(stock, EntityConstraint.EqualTo((stock1)));
         }
 
         [Test, Description("Test GetByASXCode() for a stock that doesn't exist")]
