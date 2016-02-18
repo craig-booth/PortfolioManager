@@ -50,6 +50,7 @@
     <Compile Include="Portfolios\CorporateActionHandlers\SplitConsolidationHandlerTest.cs" />
     <Compile Include="Portfolios\CorporateActionHandlers\TransformationHandlerTest.cs" />
     <Compile Include="Portfolios\PortfolioTest.cs" />
+    <Compile Include="Portfolios\ShareParcelComparer.cs" />
     <Compile Include="Portfolios\Transactions\ActualScenarios.cs" />
     <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
     <Compile Include="Portfolios\Transactions\CostbaseAdjustmentTest.cs" />

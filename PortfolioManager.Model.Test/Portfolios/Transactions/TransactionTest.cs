@@ -135,7 +135,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             var actualParcels = _Portfolio.ParcelService.GetParcels(_TransactionDate);
 
-            Assert.That(actualParcels, EntityConstraint.CollectionEquals(_ExpectedParcels));
+            Assert.That(actualParcels, EntityConstraint.CollectionEquivalant(_ExpectedParcels));
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             var actualIncome = _Portfolio.IncomeService.GetIncome(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
 
-            Assert.That(actualIncome, EntityConstraint.CollectionEquals(_ExpectedIncome));
+            Assert.That(actualIncome, EntityConstraint.CollectionEquivalant(_ExpectedIncome));
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
         {
             var actualCGTEvents = _Portfolio.CGTService.GetEvents(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
 
-            Assert.That(actualCGTEvents, EntityConstraint.CollectionEquals(_ExpectedCGTEvents));
+            Assert.That(actualCGTEvents, EntityConstraint.CollectionEquivalant(_ExpectedCGTEvents));
         }
     }
 }

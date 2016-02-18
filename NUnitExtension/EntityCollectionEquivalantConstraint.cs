@@ -38,7 +38,7 @@ namespace NUnitExtension
                 {
                     var comparer = EntityConstraint.GetComparer(expectedEntity);
 
-                    if (comparer.Equals(expectedEntity, actualEntity))
+                    if (comparer.Equal(expectedEntity, actualEntity))
                     {
                         expectedEntities.Remove(expectedEntity);
                         found = true;

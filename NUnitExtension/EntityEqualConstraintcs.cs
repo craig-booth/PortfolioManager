@@ -29,7 +29,7 @@ namespace NUnitExtension
         {
             base.actual = actual;
 
-            return _EntityComparer.Equals(_Expected, actual);
+            return _EntityComparer.Equal(_Expected, actual);
         }
 
         public override void WriteActualValueTo(MessageWriter writer)

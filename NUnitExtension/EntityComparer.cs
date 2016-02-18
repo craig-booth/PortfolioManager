@@ -10,7 +10,7 @@ namespace NUnitExtension
 {
     public class EntityComparer
     {
-        private List<string> Ignore;
+        protected List<string> Ignore;
 
         public EntityComparer()
         {
@@ -23,7 +23,7 @@ namespace NUnitExtension
             Ignore.AddRange(propertiesToIgnore.Split(','));
         }
 
-        public new bool Equals(object expected, object actual)
+        public virtual bool Equal(object expected, object actual)
         {
             if (actual == null)
                 return false;
@@ -44,7 +44,7 @@ namespace NUnitExtension
             return true;
         }
 
-        public void Write(MessageWriter writer, object entity)
+        public virtual void Write(MessageWriter writer, object entity)
         {
             if (entity == null)
                 return;

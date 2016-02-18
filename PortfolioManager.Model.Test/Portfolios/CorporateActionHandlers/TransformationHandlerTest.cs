@@ -64,7 +64,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
 
             };
 
-            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEqual(expectedTransactions));
         }
 
         [Test, Description("Multiple Parcels, Rollover, multiple result stocks")]
@@ -152,7 +152,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 }
             };
 
-            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEqual(expectedTransactions));
         }
 
         [Test, Description("Multiple Parcels, Rollover, Disposal of original stock")]
@@ -250,7 +250,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 }
             };
 
-            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEqual(expectedTransactions));
 
         }
 
@@ -323,7 +323,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 }
             };
 
-            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEqual(expectedTransactions));
 
         }
 
@@ -406,7 +406,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 }
             };
 
-            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEqual(expectedTransactions));
         }
 
         [Test, Description("No Parcels")]
@@ -424,7 +424,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             {
             };
 
-            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEqual(expectedTransactions));
         }
 
     }

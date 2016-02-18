@@ -36,7 +36,7 @@ namespace NUnitExtension
 
                 var comparer = EntityConstraint.GetComparer(expectedEnumerator.Current);
 
-                if (!comparer.Equals(expectedEnumerator.Current, actualEnumerator.Current))
+                if (!comparer.Equal(expectedEnumerator.Current, actualEnumerator.Current))
                     return false;
             }
 

@@ -39,7 +39,7 @@ namespace NUnitExtension
             return new EntityEqualConstraint(expected);
         }
 
-        public static EntityCollectionEqualConstraint CollectionEquals(IEnumerable expected)
+        public static EntityCollectionEqualConstraint CollectionEqual(IEnumerable expected)
         {
             return new EntityCollectionEqualConstraint(expected);
         }
