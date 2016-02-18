@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,33 +37,21 @@ namespace NUnitExtension
             {
                 if (!Ignore.Contains(property.Name))
                 {
-                    if (!property.GetValue(expected).Equals(property.GetValue(actual)))
-                        return false;
+                    if ((property.PropertyType != typeof(string) && (property.PropertyType.GetInterface("IEnumerable") != null)))
+                    {
+                        var collectionConstraint = EntityConstraint.CollectionEqual(property.GetValue(expected) as IEnumerable);
+                        if (!collectionConstraint.Matches(property.GetValue(actual)))
+                            return false;
+                    } 
+                    else  
+                    {
+                        if (!property.GetValue(expected).Equals(property.GetValue(actual)))
+                            return false;
+                    }
                 }
             }
 
             return true;
-        }
-
-        public virtual void Write(MessageWriter writer, object entity)
-        {
-            if (entity == null)
-                return;
-
-            var entityType = entity.GetType();
-
-            writer.Write("<{0}:- ", entityType.Name);
-
-            foreach (var property in entityType.GetProperties())
-            {
-                if (!Ignore.Contains(property.Name))
-                {
-                    writer.Write("{0}: {1}, ", property.Name, property.GetValue(entity));
-                }
-            }
-
-            writer.Write(">");
-            writer.Write(writer.NewLine);
         }
     }
 }

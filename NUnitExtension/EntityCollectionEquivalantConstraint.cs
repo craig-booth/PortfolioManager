@@ -20,6 +20,11 @@ namespace NUnitExtension
 
         public override bool Matches(object actual)
         {
+            /* // lists should have same count of items, and set difference must be empty
+var areEquivalent = (list1.Count == list2.Count) && !list1.Except(list2).Any(); 
+
+    */
+
             base.actual = actual;
 
             var actualEntities = actual as IEnumerable;
@@ -79,9 +84,9 @@ namespace NUnitExtension
 
             foreach (var obj in collection)
             {
-                var comparer = EntityConstraint.GetComparer(obj);
+                var entityWriter = EntityConstraint.GetWriter(obj);
 
-                comparer.Write(writer, obj);
+                entityWriter.Write(writer, obj);
             }
 
             writer.Write(">");

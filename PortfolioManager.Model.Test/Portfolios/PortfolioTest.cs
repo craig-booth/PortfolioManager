@@ -25,7 +25,7 @@ namespace PortfolioManager.Model.Test.Portfolios
 
         public PortfolioTest()
         {
-            EntityConstraint.RegisterComparer(typeof(ShareParcel), new ShareParcelComparer());
+            EntityConstraint.RegisterComparer(typeof(ShareParcel), new ShareParcelComparer(), new EntityWriter("Id"));
             EntityConstraint.RegisterComparer(typeof(CGTEvent), "Id");
             EntityConstraint.RegisterComparer(typeof(Income), "Id");
 

@@ -9,6 +9,7 @@ using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Data.Test.Stocks
 {
@@ -165,7 +166,7 @@ namespace PortfolioManager.Data.Test.Stocks
         [Test, Description("Test GetByASXCode() at a particular date")]
         public void GetByASXCodeAtDate()
         {
-            Stock stock1, stock;
+            Stock stock1, stock, expectedStock;
 
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
@@ -178,11 +179,13 @@ namespace PortfolioManager.Data.Test.Stocks
                 unitOfWork.Save();
             }
 
-            stock = database.StockQuery.GetByASXCode("ABC", new DateTime(2001, 01, 01));
-            Assert.That(stock, EntityConstraint.EqualTo((stock1)));
+            expectedStock = new Stock(database, stock1.Id, new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+            stock = database.StockQuery.GetByASXCode("ABC", new DateTime(2001, 01, 01));            
+            Assert.That(stock, EntityConstraint.EqualTo((expectedStock)));
 
+            expectedStock = new Stock(database, stock1.Id, new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
             stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2003, 01, 01));
-            Assert.That(stock, EntityConstraint.EqualTo((stock1)));
+            Assert.That(stock, EntityConstraint.EqualTo((expectedStock)));
         }
 
         [Test, Description("Test GetByASXCode() for a stock that doesn't exist")]

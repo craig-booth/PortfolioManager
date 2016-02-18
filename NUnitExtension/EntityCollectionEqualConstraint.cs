@@ -20,6 +20,11 @@ namespace NUnitExtension
 
         public override bool Matches(object actual)
         {
+
+            /* Enumerable.SequenceEqual(list1.OrderBy(t => t), list2.OrderBy(t => t))
+
+    */
+
             base.actual = actual;
 
             var actualCollection = actual as IEnumerable;
@@ -59,7 +64,7 @@ namespace NUnitExtension
 
         private void WriteValue(MessageWriter writer, object entity)
         {
-            var collection = entity as ICollection;
+            var collection = entity as IEnumerable;
 
             if (collection == null)
                 return;
@@ -68,9 +73,9 @@ namespace NUnitExtension
 
             foreach (var obj in collection)
             {
-                var comparer = EntityConstraint.GetComparer(obj);
+                var entityWriter = EntityConstraint.GetWriter(obj);
 
-                comparer.Write(writer, obj);
+                entityWriter.Write(writer, obj);
             }
 
             writer.Write(">");

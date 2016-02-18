@@ -12,16 +12,18 @@ namespace NUnitExtension
     {
         protected readonly object _Expected;
         protected readonly EntityComparer _EntityComparer;
+        protected readonly EntityWriter _EntityWriter;
 
         public EntityEqualConstraint(object expected)
-            : this(expected, EntityConstraint.GetComparer(expected))
+            : this(expected, EntityConstraint.GetComparer(expected), EntityConstraint.GetWriter(expected))
         {
         }
 
-        public EntityEqualConstraint(object expected, EntityComparer comparer)
+        public EntityEqualConstraint(object expected, EntityComparer comparer, EntityWriter writer)
         {
             _Expected = expected;
             _EntityComparer = comparer;
+            _EntityWriter = writer;
         }
 
 
@@ -34,14 +36,13 @@ namespace NUnitExtension
 
         public override void WriteActualValueTo(MessageWriter writer)
         {
-            _EntityComparer.Write(writer, actual);
-           
+            _EntityWriter.Write(writer, actual);            
         }
 
         public override void WriteDescriptionTo(MessageWriter writer)
         {
-            _EntityComparer.Write(writer, _Expected);
-        } 
+            _EntityWriter.Write(writer, _Expected);
+        }
 
     }
 }

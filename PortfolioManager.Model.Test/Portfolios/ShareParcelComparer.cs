@@ -16,16 +16,13 @@ namespace PortfolioManager.Model.Test.Portfolios
     {
 
         public ShareParcelComparer()
-            : base("Id")
+            : base("Id, PurchaseId")
         {
 
         }
 
         public override bool Equal(object expected, object actual)
         {
-            // Also ignore PurchaseId
-            Ignore.Add("PurchaseId");
-
             if (base.Equal(expected, actual))
             {
                 var expectedParcel = expected as ShareParcel;
@@ -40,14 +37,6 @@ namespace PortfolioManager.Model.Test.Portfolios
             }
             else
                 return false;
-        }
-
-        public override void Write(MessageWriter writer, object entity)
-        {
-            // Make sure that PurchaseId is written out
-            Ignore.Remove("PurchaseId");
-
-            base.Write(writer, entity);
         }
     }
 }
