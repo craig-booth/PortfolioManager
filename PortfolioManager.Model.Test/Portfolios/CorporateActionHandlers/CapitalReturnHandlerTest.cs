@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
@@ -54,7 +55,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 }
             };
 
-            Assert.That(actualTransactions, PortfolioConstraint.Equals(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
         }
 
         [Test, Description("Multiple Parcels")]
@@ -105,7 +106,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 }
             };
 
-            Assert.That(actualTransactions, PortfolioConstraint.Equals(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
         }
 
         [Test, Description("No Parcels")]
@@ -123,7 +124,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             {
             };
 
-            Assert.That(actualTransactions, PortfolioConstraint.Equals(expectedTransactions));
+            Assert.That(actualTransactions, EntityConstraint.CollectionEquivalant(expectedTransactions));
         }
 
     }

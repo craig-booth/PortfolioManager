@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
@@ -21,6 +22,21 @@ namespace PortfolioManager.Model.Test.Portfolios
         protected StockManager _StockManager;
         protected PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
         protected Portfolio _Portfolio;
+
+        public PortfolioTest()
+        {
+            EntityConstraint.RegisterComparer(typeof(ShareParcel), "Id");
+            EntityConstraint.RegisterComparer(typeof(CGTEvent), "Id");
+            EntityConstraint.RegisterComparer(typeof(Income), "Id");
+
+            EntityConstraint.RegisterComparer(typeof(Aquisition), "Id");
+            EntityConstraint.RegisterComparer(typeof(CostBaseAdjustment), "Id");
+            EntityConstraint.RegisterComparer(typeof(Disposal), "Id");
+            EntityConstraint.RegisterComparer(typeof(IncomeReceived), "Id");
+            EntityConstraint.RegisterComparer(typeof(OpeningBalance), "Id");
+            EntityConstraint.RegisterComparer(typeof(ReturnOfCapital), "Id");
+            EntityConstraint.RegisterComparer(typeof(UnitCountAdjustment), "Id");
+        }
 
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
