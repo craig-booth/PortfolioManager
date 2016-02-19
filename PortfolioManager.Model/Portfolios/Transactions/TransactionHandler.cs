@@ -63,9 +63,8 @@ namespace PortfolioManager.Model.Portfolios
             }
         }
 
-        protected void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, int newUnits, decimal newCostBase)
+        protected void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, Action<ShareParcel> change)
         {
-
             // Check that this is the latest version of this parcel
             if (parcel.ToDate != DateTimeConstants.NoEndDate)
                 throw new AttemptToModifyPreviousParcelVersion(parcel.Id, "");
@@ -73,8 +72,7 @@ namespace PortfolioManager.Model.Portfolios
             if (parcel.FromDate == changeDate)
             {
                 parcel.Event = parcelEvent;
-                parcel.Units = newUnits;
-                parcel.CostBase = newCostBase;
+                change(parcel);
                 unitOfWork.ParcelRepository.Update(parcel);
             }
             else
@@ -83,37 +81,28 @@ namespace PortfolioManager.Model.Portfolios
                 parcel.ToDate = changeDate.AddDays(-1);
                 unitOfWork.ParcelRepository.Update(parcel);
 
-                /* Add new record */
-                if (newUnits > 0)
-                {
-                    var newParcel = parcel.Clone();
-                    newParcel.FromDate = changeDate;
-                    newParcel.ToDate = DateTimeConstants.NoEndDate;
-                    newParcel.Event = parcelEvent;
-                    newParcel.Units = newUnits;
-                    newParcel.Amount = parcel.Amount * ((decimal)newUnits / (decimal)parcel.Units);
-                    newParcel.CostBase = newCostBase;
-                    unitOfWork.ParcelRepository.Add(newParcel);
-                }
-            }
-        }
+                var newParcel = parcel.Clone();
+                newParcel.FromDate = changeDate;
+                newParcel.ToDate = DateTimeConstants.NoEndDate;
+                newParcel.Event = parcelEvent;
+                change(newParcel);
 
-        protected void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, Action<ShareParcel> change)
-        {
+                /* Add new record */
+                if (newParcel.Units > 0)
+                    unitOfWork.ParcelRepository.Add(newParcel);
+            }
 
         }
 
         protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int units, decimal amountReceived, string description)
         {
-            decimal costBase;
-            CGTEvent cgtEvent;
-
             /* Modify Parcel */
-            costBase = parcel.CostBase * ((decimal)units / parcel.Units);
-            ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, parcel.Units - units, parcel.CostBase - costBase);
+            var costBase = parcel.CostBase * ((decimal)units / parcel.Units);
+            var amount = parcel.Amount * ((decimal)units / parcel.Units);
+            ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= units; x.CostBase -= costBase; x.Amount -= amount; });
 
             /* Record CGT Event */
-            cgtEvent = new CGTEvent(parcel.Stock, disposalDate, units, costBase, amountReceived);
+            var cgtEvent = new CGTEvent(parcel.Stock, disposalDate, units, costBase, amountReceived);
             unitOfWork.CGTEventRepository.Add(cgtEvent);
         }
 

@@ -59,10 +59,10 @@ namespace PortfolioManager.Model.Portfolios
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
                     if (costBaseReduction <= parcelAtPaymentDate.CostBase)
-                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction);
+                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
                     else
                     {
-                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m);
+                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
 
                         var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, incomeReceived.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                         unitOfWork.CGTEventRepository.Add(cgtEvent);

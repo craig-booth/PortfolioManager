@@ -1,49 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="108" errors="0" failures="3" not-run="6" inconclusive="0" ignored="6" skipped="0" invalid="0" date="2016-02-18" time="20:30:56">
+<test-results name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" total="108" errors="0" failures="0" not-run="6" inconclusive="0" ignored="6" skipped="0" invalid="0" date="2016-02-19" time="20:42:39">
   <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8670" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.4\bin" machine-name="DESKTOP-BD1JTTV" user="Craig" user-domain="DESKTOP-BD1JTTV" />
   <culture-info current-culture="en-AU" current-uiculture="en-GB" />
-  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Failure" success="False" time="1.605" asserts="0">
+  <test-suite type="Project" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" executed="True" result="Success" success="True" time="1.129" asserts="0">
     <results>
-      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Failure" success="False" time="1.594" asserts="0">
+      <test-suite type="Assembly" name="C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" executed="True" result="Success" success="True" time="1.128" asserts="0">
         <results>
-          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Failure" success="False" time="1.594" asserts="0">
+          <test-suite type="Namespace" name="PortfolioManager" executed="True" result="Success" success="True" time="1.127" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Model" executed="True" result="Failure" success="False" time="1.593" asserts="0">
+              <test-suite type="Namespace" name="Model" executed="True" result="Success" success="True" time="1.127" asserts="0">
                 <results>
-                  <test-suite type="Namespace" name="Test" executed="True" result="Failure" success="False" time="1.593" asserts="0">
+                  <test-suite type="Namespace" name="Test" executed="True" result="Success" success="True" time="1.126" asserts="0">
                     <results>
-                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Failure" success="False" time="1.592" asserts="0">
+                      <test-suite type="Namespace" name="Portfolios" executed="True" result="Success" success="True" time="1.126" asserts="0">
                         <results>
-                          <test-suite type="Namespace" name="Transactions" executed="True" result="Failure" success="False" time="1.592" asserts="0">
+                          <test-suite type="Namespace" name="Transactions" executed="True" result="Success" success="True" time="1.125" asserts="0">
                             <results>
-                              <test-suite type="TestFixture" name="AquisitionOrdinaryShare" description="Purchase stock" executed="True" result="Success" success="True" time="0.435" asserts="0">
+                              <test-suite type="TestFixture" name="AquisitionOrdinaryShare" description="Purchase stock" executed="True" result="Success" success="True" time="0.037" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.040" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.010" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.011" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.011" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionOrdinaryShare.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="AquisitionStapledSecurity" description="Purchase stapled security" executed="True" result="Success" success="True" time="0.032" asserts="0">
+                              <test-suite type="TestFixture" name="AquisitionStapledSecurity" description="Purchase stapled security" executed="True" result="Success" success="True" time="0.022" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="AquisitionValidationTests" description="Aquisition validation tests" executed="True" result="Success" success="True" time="0.089" asserts="0">
+                              <test-suite type="TestFixture" name="AquisitionValidationTests" description="Aquisition validation tests" executed="True" result="Success" success="True" time="0.093" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionValidationTests.NotSupportedForChildSecurity" description="Aquire child security" executed="True" result="Success" success="True" time="0.082" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionValidationTests.NotSupportedForChildSecurity" description="Aquire child security" executed="True" result="Success" success="True" time="0.085" asserts="0" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="CostBaseAdjustmentChildSecuritySingleParcel" description="Cost base adjustment of Child security - single parcels" executed="True" result="Success" success="True" time="0.029" asserts="0">
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentChildSecuritySingleParcel" description="Cost base adjustment of Child security - single parcels" executed="True" result="Success" success="True" time="0.022" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="CostBaseAdjustmentOrdinaryShareMultipleParcels" description="Cost base adjustment of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentOrdinaryShareMultipleParcels" description="Cost base adjustment of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.019" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -57,41 +57,41 @@
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="CostBaseAdjustmentValidationTests" description="Cost base adjustment validation tests" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="CostBaseAdjustmentValidationTests" description="Cost base adjustment validation tests" executed="True" result="Success" success="True" time="0.026" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentValidationTests.NoParcelsForTransaction" description="Cost base adjustment of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentValidationTests.TransctionNotSupportedForStapledSecurity" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentValidationTests.NoParcelsForTransaction" description="Cost base adjustment of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.009" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.CostBaseAdjustmentValidationTests.TransctionNotSupportedForStapledSecurity" executed="True" result="Success" success="True" time="0.006" asserts="0" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="DisposalOrdinaryShareMultipleParcelsSellAll" description="Disposal of Ordinary Share - multiple parcels, sell all" executed="True" result="Success" success="True" time="0.036" asserts="0">
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareMultipleParcelsSellAll" description="Disposal of Ordinary Share - multiple parcels, sell all" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.002" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellAll.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="DisposalOrdinaryShareMultipleParcelsSellPart" description="Disposal of Ordinary Share - multiple parcels, sell part" executed="True" result="Success" success="True" time="0.024" asserts="0">
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareMultipleParcelsSellPart" description="Disposal of Ordinary Share - multiple parcels, sell part" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Ordinary Share - single parcel, multiple dated records, sell part" executed="True" result="Success" success="True" time="0.026" asserts="0">
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Ordinary Share - single parcel, multiple dated records, sell part" executed="True" result="Success" success="True" time="0.023" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelSellAll" description="Disposal of Ordinary Share - single parcel, sell all" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelSellAll" description="Disposal of Ordinary Share - single parcel, sell all" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellAll.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelSellPart" description="Disposal of Ordinary Share - single parcel, sell part" executed="True" result="Success" success="True" time="0.019" asserts="0">
+                              <test-suite type="TestFixture" name="DisposalOrdinaryShareSingleParcelSellPart" description="Disposal of Ordinary Share - single parcel, sell part" executed="True" result="Success" success="True" time="0.021" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareSingleParcelSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -142,7 +142,7 @@
                                   </test-case>
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Stapled Security - single parcel, multiple dated records, sell part" executed="True" result="Success" success="True" time="0.037" asserts="0">
+                              <test-suite type="TestFixture" name="DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart" description="Disposal of Stapled Security - single parcel, multiple dated records, sell part" executed="True" result="Success" success="True" time="0.039" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelMultipleEffectiveDatesSellPart.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.008" asserts="1" />
@@ -166,38 +166,38 @@
                               <test-suite type="TestFixture" name="DisposalValidationTests" description="Disposal validation tests" executed="True" result="Success" success="True" time="0.035" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.MultipleParcelsNotEnoughShares" description="Disposal of Ordinary Share - multiple parcels, not enough shares" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.NoParcelsForTransaction" description="Disposal of Ordinary Share - no parcels" executed="True" result="Success" success="True" time="0.004" asserts="0" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.NotSupportedForChildSecurity" description="Disposal of child security" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.NoParcelsForTransaction" description="Disposal of Ordinary Share - no parcels" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.NotSupportedForChildSecurity" description="Disposal of child security" executed="True" result="Success" success="True" time="0.004" asserts="0" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.DisposalValidationTests.SingleParcelNotEnoughShares" description="Disposal of Ordinary Share - single parcel, not enough shares" executed="True" result="Success" success="True" time="0.005" asserts="0" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="GeneralTransactionTests" description="General transaction tests" executed="True" result="Success" success="True" time="0.037" asserts="0">
+                              <test-suite type="TestFixture" name="GeneralTransactionTests" description="General transaction tests" executed="True" result="Success" success="True" time="0.038" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.GeneralTransactionTests.MultipleTransactionsOnTheSameDay" description="Multiple transactions on the same date" executed="True" result="Success" success="True" time="0.030" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.GeneralTransactionTests.MultipleTransactionsOnTheSameDay" description="Multiple transactions on the same date" executed="True" result="Success" success="True" time="0.031" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="IncomeReceivedOrdinaryShareMultipleParcels" description="Income Received of Ordinary share - mulitple parcels" executed="True" result="Success" success="True" time="0.019" asserts="0">
+                              <test-suite type="TestFixture" name="IncomeReceivedOrdinaryShareMultipleParcels" description="Income Received of Ordinary share - mulitple parcels" executed="True" result="Success" success="True" time="0.021" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.001" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
                               <test-suite type="TestFixture" name="IncomeReceivedOrdinaryShareSingleParcel" description="Income Received of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.018" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.001" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="IncomeReceivedTrustMultipleParcelsTaxDeferred" description="Income Received of Trust - multiple parcels tax deferred" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustMultipleParcelsTaxDeferred" description="Income Received of Trust - multiple parcels tax deferred" executed="True" result="Success" success="True" time="0.021" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferred.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferred.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferred.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase" description="Income Received of Trust - multiple parcels tax deferred greater than cost base for one parcel" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase" description="Income Received of Trust - multiple parcels tax deferred greater than cost base for one parcel" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustMultipleParcelsTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -208,23 +208,23 @@
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase" description="Income Received of Trust - single parcel tax deferred greater than cost base" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase" description="Income Received of Trust - single parcel tax deferred greater than cost base" executed="True" result="Success" success="True" time="0.018" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.001" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedTrustSingleParcelTaxDeferredGreaterThanCostbase.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="IncomeReceivedValidationTests" description="Income Received validation tests" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="IncomeReceivedValidationTests" description="Income Received validation tests" executed="True" result="Success" success="True" time="0.023" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedValidationTests.NoParcelsForTransaction" description="Income Received Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.004" asserts="0" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedValidationTests.TransctionNotSupportedForStapledSecurity" description="Income Received of Stapled Security" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceivedValidationTests.TransctionNotSupportedForStapledSecurity" description="Income Received of Stapled Security" executed="True" result="Success" success="True" time="0.006" asserts="0" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="IncomeReceviedChildTrustSingleParcelTaxDeferred" description="Income Received of Child trust - single parcel tax deferred" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="IncomeReceviedChildTrustSingleParcelTaxDeferred" description="Income Received of Child trust - single parcel tax deferred" executed="True" result="Success" success="True" time="0.021" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceviedChildTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.IncomeReceviedChildTrustSingleParcelTaxDeferred.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -238,40 +238,40 @@
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceOrdinaryShare.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="OpeningBalanceStapledSecurity" description="Opening balance for stapled security" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                              <test-suite type="TestFixture" name="OpeningBalanceStapledSecurity" description="Opening balance for stapled security" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceStapledSecurity.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceStapledSecurity.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceStapledSecurity.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="OpeningBalanceValidationTests" description="Opening balance validation tests" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                              <test-suite type="TestFixture" name="OpeningBalanceValidationTests" description="Opening balance validation tests" executed="True" result="Success" success="True" time="0.011" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.OpeningBalanceValidationTests.NotSupportedForChildSecurity" description="Opening balance for child security" executed="True" result="Success" success="True" time="0.004" asserts="0" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="ReturnOfCapitalChildSecuritySingleParcels" description="Return of Capital of  Child security - single parcels" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                              <test-suite type="TestFixture" name="ReturnOfCapitalChildSecuritySingleParcels" description="Return of Capital of  Child security - single parcels" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalChildSecuritySingleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalChildSecuritySingleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalChildSecuritySingleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareGreaterThanCostBase" description="Return of Capital of Ordinary share - greater than cost base" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareGreaterThanCostBase" description="Return of Capital of Ordinary share - greater than cost base" executed="True" result="Success" success="True" time="0.018" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareMultipleParcels" description="Return of Capital of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareMultipleParcels" description="Return of Capital of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.019" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase" description="Return of Capital of Ordinary share - multiple parcels greater than cost base" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase" description="Return of Capital of Ordinary share - multiple parcels greater than cost base" executed="True" result="Success" success="True" time="0.019" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareMultipleParcelsGreaterThanCostBase.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -285,92 +285,44 @@
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="ReturnOfCapitalValidationTests" description="Return of Capital validation tests" executed="True" result="Success" success="True" time="0.021" asserts="0">
+                              <test-suite type="TestFixture" name="ReturnOfCapitalValidationTests" description="Return of Capital validation tests" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalValidationTests.NoParcelsForTransaction" description="Return of Capital of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.004" asserts="0" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalValidationTests.TransctionNotSupportedForStapledSecurity" description="Return of Capital of  of Stapled Security" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalValidationTests.NoParcelsForTransaction" description="Return of Capital of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalValidationTests.TransctionNotSupportedForStapledSecurity" description="Return of Capital of  of Stapled Security" executed="True" result="Success" success="True" time="0.006" asserts="0" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="UnitCountAdjustmentChildSecuritySingleParcel" description="Unit Count adjustment of Child security - single parcels" executed="True" result="Failure" success="False" time="0.066" asserts="0">
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentChildSecuritySingleParcel" description="Unit Count adjustment of Child security - single parcels" executed="True" result="Success" success="True" time="0.029" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.038" asserts="1">
-                                    <failure>
-                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: f23508cc-ad48-4cfa-a23c-3703df4d4f0f, AquisitionDate: 01/01/2000, Units: 2000, UnitPrice: 1.50, Amount: 1500.00, CostBase: 1500.00, Event: UnitCountChange, PurchaseId: 3fd448ef-5db1-4da5-850a-763627f417d6, >
-<ShareParcel:- FromDate: 01/01/2000, ToDate: 12/31/9999, Stock: 95c9ae60-0123-42db-aa59-e30b58499fa0, AquisitionDate: 01/01/2000, Units: 1000, UnitPrice: 4.50, Amount: 4500.00, CostBase: 4500.00, Event: OpeningBalance, PurchaseId: 3fd448ef-5db1-4da5-850a-763627f417d6, >
-<ShareParcel:- FromDate: 01/01/2000, ToDate: 12/31/9999, Stock: 4cd4f45f-11e5-4a54-9775-14cc6395d103, AquisitionDate: 01/01/2000, Units: 1000, UnitPrice: 9.00, Amount: 9000.00, CostBase: 9000.00, Event: OpeningBalance, PurchaseId: 3fd448ef-5db1-4da5-850a-763627f417d6, >
->
-
-  But was:  <<ShareParcel:- FromDate: 01/01/2000, ToDate: 12/31/9999, Stock: 95c9ae60-0123-42db-aa59-e30b58499fa0, AquisitionDate: 01/01/2000, Units: 1000, UnitPrice: 4.50, Amount: 4500.00, CostBase: 4500.00, Event: OpeningBalance, PurchaseId: 50aaf971-76a9-43d0-9536-8b9820075c8a, >
-<ShareParcel:- FromDate: 01/01/2000, ToDate: 12/31/9999, Stock: 4cd4f45f-11e5-4a54-9775-14cc6395d103, AquisitionDate: 01/01/2000, Units: 1000, UnitPrice: 9.00, Amount: 9000.00, CostBase: 9000.00, Event: OpeningBalance, PurchaseId: 50aaf971-76a9-43d0-9536-8b9820075c8a, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: f23508cc-ad48-4cfa-a23c-3703df4d4f0f, AquisitionDate: 01/01/2000, Units: 2000, UnitPrice: 1.5, Amount: 3000.0, CostBase: 1500.0, Event: UnitCountChange, PurchaseId: 50aaf971-76a9-43d0-9536-8b9820075c8a, >
->
-
-]]></message>
-                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
-]]></stack-trace>
-                                    </failure>
-                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareMultipleParcels" description="Unit count adjustment of Ordinary share - multiple parcels" executed="True" result="Failure" success="False" time="0.019" asserts="0">
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareMultipleParcels" description="Unit count adjustment of Ordinary share - multiple parcels" executed="True" result="Success" success="True" time="0.022" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.001" asserts="1">
-                                    <failure>
-                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: ce0adb7d-66ab-4773-a2c0-e39560e01759, AquisitionDate: 01/01/2000, Units: 2000, UnitPrice: 1.50, Amount: 1500.00, CostBase: 1500.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: ce0adb7d-66ab-4773-a2c0-e39560e01759, AquisitionDate: 01/01/2001, Units: 1000, UnitPrice: 2.40, Amount: 1200.00, CostBase: 1200.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
->
-
-  But was:  <<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: ce0adb7d-66ab-4773-a2c0-e39560e01759, AquisitionDate: 01/01/2000, Units: 2000, UnitPrice: 1.50, Amount: 3000.00, CostBase: 1500.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: ce0adb7d-66ab-4773-a2c0-e39560e01759, AquisitionDate: 01/01/2001, Units: 1000, UnitPrice: 2.40, Amount: 2400.00, CostBase: 1200.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
->
-
-]]></message>
-                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
-]]></stack-trace>
-                                    </failure>
-                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcels.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount" description="Unit count adjustment of Ordinary share - multiple parcels, uneven amount" executed="True" result="Failure" success="False" time="0.023" asserts="0">
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount" description="Unit count adjustment of Ordinary share - multiple parcels, uneven amount" executed="True" result="Success" success="True" time="0.019" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Failure" success="False" time="0.001" asserts="1">
-                                    <failure>
-                                      <message><![CDATA[  Expected: <<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2000, Units: 33, UnitPrice: 15.00, Amount: 1500.00, CostBase: 1500.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2001, Units: 67, UnitPrice: 6.00, Amount: 1200.00, CostBase: 1200.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2001, Units: 37, UnitPrice: 10.00, Amount: 1100.00, CostBase: 1100.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2001, Units: 43, UnitPrice: 10.00, Amount: 1310.00, CostBase: 1310.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
->
-
-  But was:  <<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2000, Units: 33, UnitPrice: 15.00, Amount: 495.0000, CostBase: 1500.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2001, Units: 67, UnitPrice: 6.00, Amount: 402.00000, CostBase: 1200.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2001, Units: 37, UnitPrice: 10.00, Amount: 370.00000000000000000000000004, CostBase: 1100.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
-<ShareParcel:- FromDate: 01/01/2002, ToDate: 12/31/9999, Stock: 160db04a-3f11-40e5-9043-182172ac3fde, AquisitionDate: 01/01/2001, Units: 43, UnitPrice: 10.00, Amount: 430.00000000000000000000000002, CostBase: 1310.00, Event: UnitCountChange, PurchaseId: 00000000-0000-0000-0000-000000000000, >
->
-
-]]></message>
-                                      <stack-trace><![CDATA[at PortfolioManager.Model.Test.Portfolios.Transactions.TransactionTestWithExpectedTests.ExpectedParcels() in C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Model.Test\Portfolios\Transactions\TransactionTest.cs:line 138
-]]></stack-trace>
-                                    </failure>
-                                  </test-case>
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareMultipleParcelsUnevenAmount.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareSingleParcel" description="Unit count adjustment of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentOrdinaryShareSingleParcel" description="Unit count adjustment of Ordinary share - single parcel" executed="True" result="Success" success="True" time="0.020" asserts="0">
                                 <results>
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedCGTEvents" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedIncome" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                   <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel.TransactionTestWithExpectedTests.ExpectedParcels" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                                 </results>
                               </test-suite>
-                              <test-suite type="TestFixture" name="UnitCountAdjustmentValidationTests" description="Unit Count adjustment validation tests" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                              <test-suite type="TestFixture" name="UnitCountAdjustmentValidationTests" description="Unit Count adjustment validation tests" executed="True" result="Success" success="True" time="0.021" asserts="0">
                                 <results>
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentValidationTests.NoParcelsForTransaction" description="Cost base adjustment of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.004" asserts="0" />
-                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentValidationTests.TransctionNotSupportedForStapledSecurity" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentValidationTests.NoParcelsForTransaction" description="Cost base adjustment of Ordinary share - no parcels" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                                  <test-case name="PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentValidationTests.TransctionNotSupportedForStapledSecurity" executed="True" result="Success" success="True" time="0.006" asserts="0" />
                                 </results>
                               </test-suite>
                             </results>
