@@ -45,7 +45,7 @@ namespace PortfolioManager.Model.Portfolios
                     parcelAtPaymentDate = _ParcelService.GetParcel(parcelAtRecordDate.Id, costBaseAdjustment.TransactionDate);
 
                 var costBaseReduction = parcelAtPaymentDate.CostBase * (1 - costBaseAdjustment.Percentage);
-                ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction);
             }
 
         }

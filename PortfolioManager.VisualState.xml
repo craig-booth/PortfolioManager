@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit</TopNode>
-  <SelectedNode>[0-1007]PortfolioManager.Data.Test.Stocks.CorporateActionRepositoryCompositeTest.AddCompositeAction</SelectedNode>
+  <TopNode>[0-1214]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalStapledSecuritySingleParcelSellPart</TopNode>
+  <SelectedNode>[0-1355]PortfolioManager.Model.Test.Portfolios.Transactions</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
@@ -24,6 +24,11 @@
     <Node UniqueName="[0-1328]PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.CompositeActionHandlerTest" Expanded="true" />
     <Node UniqueName="[0-1341]PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers.TransformationHandlerTest" Expanded="true" />
     <Node UniqueName="[0-1355]PortfolioManager.Model.Test.Portfolios.Transactions" Expanded="true" />
+    <Node UniqueName="[0-1169]PortfolioManager.Model.Test.Portfolios.Transactions.AquisitionStapledSecurity" Expanded="true" />
+    <Node UniqueName="[0-1206]PortfolioManager.Model.Test.Portfolios.Transactions.DisposalOrdinaryShareMultipleParcelsSellPart" Expanded="true" />
+    <Node UniqueName="[0-1280]PortfolioManager.Model.Test.Portfolios.Transactions.ReturnOfCapitalOrdinaryShareGreaterThanCostBase" Expanded="true" />
+    <Node UniqueName="[0-1313]PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentChildSecuritySingleParcel" Expanded="true" />
+    <Node UniqueName="[0-1301]PortfolioManager.Model.Test.Portfolios.Transactions.UnitCountAdjustmentOrdinaryShareSingleParcel" Expanded="true" />
     <Node UniqueName="[0-1353]PortfolioManager.Model.Test.Stocks" Expanded="true" />
     <Node UniqueName="[0-1352]PortfolioManager.Model.Test.Utils" Expanded="true" />
   </Nodes>

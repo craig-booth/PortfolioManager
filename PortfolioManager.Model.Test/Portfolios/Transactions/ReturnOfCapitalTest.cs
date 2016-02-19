@@ -81,7 +81,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1000.00m, 0.00m, ParcelEvent.CostBaseReduction)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 0.00m, ParcelEvent.CostBaseReduction)
             {
                 FromDate = _TransactionDate
             });

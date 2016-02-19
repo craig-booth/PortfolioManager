@@ -47,7 +47,7 @@ namespace PortfolioManager.Model.Portfolios
             /* Reduce cost base of parcels */
             int i = 0;
             foreach (ShareParcel parcel in parcels)
-                ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, newUnitCounts[i++].Amount, parcel.CostBase, "");
+                ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, newUnitCounts[i++].Amount, parcel.CostBase);
 
         }
 

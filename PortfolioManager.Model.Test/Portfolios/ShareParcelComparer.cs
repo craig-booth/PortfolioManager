@@ -16,7 +16,7 @@ namespace PortfolioManager.Model.Test.Portfolios
     {
 
         public ShareParcelComparer()
-            : base("Id, PurchaseId")
+            : base("Id,PurchaseId")
         {
 
         }
