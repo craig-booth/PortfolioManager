@@ -34,6 +34,7 @@ namespace PortfolioManager.Model.Portfolios
             _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(_StockService, _ParcelService));
             _CorporateActionHandlers.Add(CorporateActionType.Transformation, new TransformationHandler(_StockService, _ParcelService));
             _CorporateActionHandlers.Add(CorporateActionType.SplitConsolidation, new SplitConsolidationHandler(_StockService, _ParcelService));
+            _CorporateActionHandlers.Add(CorporateActionType.Composite, new CompositeActionHandler(_StockService, _ParcelService, this));
         }
 
         public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
@@ -45,7 +46,7 @@ namespace PortfolioManager.Model.Portfolios
             return handler.CreateTransactionList(corporateAction);
         }
 
-        public IReadOnlyCollection<ICorporateAction> GetUnappliedCorparateActions(Stock stock, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ICorporateAction> GetUnappliedCorporateActions(Stock stock, DateTime fromDate, DateTime toDate)
         {    
             var allCorporateActions = new List<ICorporateAction>();
 
@@ -58,7 +59,7 @@ namespace PortfolioManager.Model.Portfolios
             return allCorporateActions.AsReadOnly(); 
         }
 
-        public IReadOnlyCollection<ICorporateAction> GetUnappliedCorparateActions()
+        public IReadOnlyCollection<ICorporateAction> GetUnappliedCorporateActions()
         {
             // Get a list of all stocks held
             var allOwnedStocks = GetStocksInPortfolio(DateTime.Today);
@@ -74,6 +75,15 @@ namespace PortfolioManager.Model.Portfolios
             allCorporateActions.Sort(new CorporateActionComparer());
 
             return allCorporateActions.AsReadOnly(); 
+        }
+
+        public bool HasBeenApplied(ICorporateAction corporateAction)
+        {
+            var handler = _CorporateActionHandlers[corporateAction.Type];
+            if (handler == null)
+                return false;
+
+            return (handler.HasBeenApplied(corporateAction, _TransactionService));
         }
 
         private IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(DateTime date)
@@ -110,11 +120,7 @@ namespace PortfolioManager.Model.Portfolios
 
             foreach (ICorporateAction corporateAction in fromList)
             {
-                var handler = _CorporateActionHandlers[corporateAction.Type];
-                if (handler == null)
-                    continue;
-
-                if (! handler.HasBeenApplied(corporateAction, _TransactionService))
+                if (!HasBeenApplied(corporateAction))
                     toList.Add(corporateAction);
             }
         }

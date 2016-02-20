@@ -24,7 +24,7 @@ namespace PortfolioManager.Test
         private StockManager _StockManager;
 
         //events
-        public CorporateActionAdded CorparateActionAdded;
+        public CorporateActionAdded CorporateActionAdded;
 
         private frmStockManager()
         {
@@ -95,8 +95,8 @@ namespace PortfolioManager.Test
             {
                 DisplayCorporateActions(stock);
 
-                if (CorparateActionAdded != null)
-                    CorparateActionAdded(corporateAction);
+                if (CorporateActionAdded != null)
+                    CorporateActionAdded(corporateAction);
             }
                        
         }
