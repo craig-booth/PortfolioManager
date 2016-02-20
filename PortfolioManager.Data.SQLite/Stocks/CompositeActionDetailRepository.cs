@@ -28,7 +28,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SQLiteCommand("INSERT INTO [CompositeActions] ([Id], [Sequence], [ChildAction]) VALUES (@Id, @Sequence, @ChildAction)", _Connection);
+                _AddRecordCommand = new SQLiteCommand("INSERT INTO [CompositeActions] ([Id], [Sequence], [ChildAction], [ChildType]) VALUES (@Id, @Sequence, @ChildAction, @ChildType)", _Connection);
                 _AddRecordCommand.Prepare();
             }
 
@@ -38,7 +38,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 sequence += 10;
                 _AddRecordCommand.Parameters.AddWithValue("@Id", compositeAction.Id.ToString());
                 _AddRecordCommand.Parameters.AddWithValue("@Sequence", sequence);
-                _AddRecordCommand.Parameters.AddWithValue("@ChildAction", childAction.Id);
+                _AddRecordCommand.Parameters.AddWithValue("@ChildAction", childAction.Id.ToString());
+                _AddRecordCommand.Parameters.AddWithValue("@ChildType", childAction.Type);
                 _AddRecordCommand.ExecuteNonQuery();
 
                 _DetailRepositories[childAction.Type].Add(childAction);
@@ -48,15 +49,33 @@ namespace PortfolioManager.Data.SQLite.Stocks
         public void Update(IEntity entity)
         {
             // Delete the child actions and re-add
-
-           // Delete(entity.Id);
-           // Add(entity);
+            Delete(entity.Id);
+            Add(entity);
         }
 
         private SQLiteCommand _DeleteRecordCommand;
+        private SQLiteCommand _GetChildrenCommand;
         public void Delete(Guid id)
         {
-      /*      if (_DeleteRecordCommand == null)
+            if (_GetChildrenCommand == null)
+            {
+                _GetChildrenCommand = new SQLiteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
+                _GetChildrenCommand.Prepare();
+            }
+
+            _GetChildrenCommand.Parameters.AddWithValue("@Id", id.ToString());
+            SQLiteDataReader compositeActionReader = _GetChildrenCommand.ExecuteReader();
+            while (compositeActionReader.Read())
+            {
+                var childId = new Guid(compositeActionReader.GetString(0));
+                var childType = (CorporateActionType)compositeActionReader.GetInt32(1);
+
+                _DetailRepositories[childType].Delete(childId);
+            }
+            compositeActionReader.Close();
+
+
+            if (_DeleteRecordCommand == null)
             {
                 _DeleteRecordCommand = new SQLiteCommand("DELETE FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
                 _DeleteRecordCommand.Prepare();
@@ -64,16 +83,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             _DeleteRecordCommand.Parameters.AddWithValue("@Id", id.ToString());
             _DeleteRecordCommand.ExecuteNonQuery();
-
-            foreach (var childAction in compositeAction.Children)
-            {
-                _AddRecordCommand.Parameters.AddWithValue("@Id", compositeAction.Id.ToString());
-                _AddRecordCommand.Parameters.AddWithValue("@Sequence", sequence);
-                _AddRecordCommand.Parameters.AddWithValue("@ChildAction", childAction.Id);
-                _AddRecordCommand.ExecuteNonQuery();
-
-                _DetailRepositories[childAction.Type].Add(childAction);
-            } */
         }
+
     }
 }

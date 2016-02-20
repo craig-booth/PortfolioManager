@@ -203,13 +203,18 @@ namespace PortfolioManager.Data.SQLite.Stocks
                         description);
 
             /* Get composite action children */
-            var command = new SQLiteCommand("SELECT * FROM [CompositeActions] WHERE [Id] = @Id ORDER BY [Sequence]", database._Connection);
+            var command = new SQLiteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id ORDER BY [Sequence]", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader compositeActionReader = command.ExecuteReader();
             while (compositeActionReader.Read())
             {
-                
+                var childId = new Guid(compositeActionReader.GetString(0));
+                var childType = (CorporateActionType)compositeActionReader.GetInt32(1);
+
+                var childAction = CreateCorporateAction(database, childId, childType, stock, actionDate, description);
+
+                compositeAction._Children.Add(childAction);
             }
 
 
