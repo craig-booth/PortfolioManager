@@ -34,11 +34,9 @@ namespace PortfolioManager.Test
 
         private void SetFormValues()
         {
-           // lblASXCode.Text = _StockManager.GetASXCode(_CapitalReturn.Stock);
-           // dtpRecordDate.Value = _CapitalReturn.ActionDate;
-           // dtpPaymentDate.Value = _CapitalReturn.PaymentDate;
-           // txtAmount.Text = MathUtils.FormatCurrency(_CapitalReturn.Amount, false);
-           // txtDescription.Text = _CapitalReturn.Description;
+           lblASXCode.Text = _StockManager.GetASXCode(_CompositeAction.Stock);
+           dtpActionDate.Value = _CompositeAction.ActionDate;
+           txtDescription.Text = _CompositeAction.Description;
         }
 
         public ICorporateAction CreateCorporateAction(Stock stock)
@@ -46,7 +44,7 @@ namespace PortfolioManager.Test
             _Stock = stock;
             _Mode = Mode.Create;
 
-          //  lblASXCode.Text = stock.ASXCode;
+            lblASXCode.Text = stock.ASXCode;
 
             if (ShowDialog() == DialogResult.OK)
             {
@@ -64,11 +62,9 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-             /*   _CapitalReturn.Change(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
+                _CompositeAction.Change(dtpActionDate.Value,
                                     txtDescription.Text);
-                                    */
+                                    
                 return true;
             }
             else
@@ -102,13 +98,36 @@ namespace PortfolioManager.Test
         {
             if (_Mode == Mode.Create)
             {
-             /*   _CapitalReturn = _Stock.AddCapitalReturn(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text); */
+                _CompositeAction = _Stock.AddCompositeAction(dtpActionDate.Value,
+                                    txtDescription.Text);
+                
+
             }
         }
 
+        private void btnAddCapitalReturn_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void btnAddSplitConsolidation_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddTransformation_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddDividend_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDeleteChildAction_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
