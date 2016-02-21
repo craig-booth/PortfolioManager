@@ -68,10 +68,12 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _SplitConsolidation.Change(dtpActionDate.Value,
-                                    MathUtils.ParseInt(txtOriginalUnits.Text),
-                                    MathUtils.ParseInt(txtNewUnits.Text),
-                                    txtDescription.Text);
+                _SplitConsolidation.ActionDate = dtpActionDate.Value;
+                _SplitConsolidation.OldUnits = MathUtils.ParseInt(txtOriginalUnits.Text);
+                _SplitConsolidation.NewUnits = MathUtils.ParseInt(txtNewUnits.Text);
+                _SplitConsolidation.Description = txtDescription.Text;
+
+                _StockManager.CorporateActionService.UpdateCorporateAction(_SplitConsolidation);
 
                 return true;
             }
@@ -95,7 +97,7 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Stock.DeleteCorporateAction(_SplitConsolidation);
+                _StockManager.CorporateActionService.DeleteCorporateAction(_SplitConsolidation);
                 return true;
             }
             return
@@ -106,10 +108,11 @@ namespace PortfolioManager.Test
         {
             if (_Mode == Mode.Create)
             {
-                _SplitConsolidation = _Stock.AddSplitConsolidation(dtpActionDate.Value,
+                _SplitConsolidation = new SplitConsolidation(_Stock.Id, dtpActionDate.Value,
                                     MathUtils.ParseInt(txtOriginalUnits.Text),
                                     MathUtils.ParseInt(txtNewUnits.Text),
                                     txtDescription.Text);
+                _StockManager.CorporateActionService.AddCorporateAction(_SplitConsolidation);
             }
         }
 

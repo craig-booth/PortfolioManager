@@ -87,7 +87,7 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Stock.DeleteCorporateAction(_CompositeAction);
+                _StockManager.CorporateActionService.DeleteCorporateAction(_CompositeAction);
                 return true;
             }
             return

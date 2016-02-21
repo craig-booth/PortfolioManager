@@ -84,8 +84,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 throw new RecordNotFoundException(id);
             }
 
-            Dividend dividend = new Dividend(database,
-                                    id,
+            Dividend dividend = new Dividend(id,
                                     stock,
                                     actionDate,
                                     dividendReader.GetDateTime(1),
@@ -112,8 +111,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 throw new RecordNotFoundException(id);
             }
 
-            CapitalReturn capitalReturn = new CapitalReturn(database,
-                                    id,
+            CapitalReturn capitalReturn = new CapitalReturn(id,
                                     stock,
                                     actionDate,
                                     capitalReturnReader.GetDateTime(1),
@@ -137,8 +135,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 throw new RecordNotFoundException(id);
             }
 
-            SplitConsolidation splitConsolidation = new SplitConsolidation(database,
-                                    id,
+            var splitConsolidation = new SplitConsolidation(id,
                                     stock,
                                     actionDate,
                                     spitConsolidationReader.GetInt32(1),
@@ -161,8 +158,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 throw new RecordNotFoundException(id);
             }
 
-            Transformation transformation = new Transformation(database,
-                                    id,
+            Transformation transformation = new Transformation(id,
                                     stock,
                                     actionDate,
                                     transformationReader.GetDateTime(1),
@@ -185,7 +181,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                         SQLiteUtils.DBToDecimal(transformationReader.GetInt32(4)),
                                         transformationReader.GetDateTime(5));
 
-                transformation.AddResultStockInternal(resultingStock);
+                transformation.AddResultStock(resultingStock);
             }
 
             transformationReader.Close();

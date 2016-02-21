@@ -21,7 +21,7 @@ namespace PortfolioManager.Data.Test.Stocks
         {
             CapitalReturn capitalReturn, result;
 
-            capitalReturn = new CapitalReturn(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
+            capitalReturn = new CapitalReturn(_Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
             result = AddCorporateAction(capitalReturn) as CapitalReturn;
 
             Assert.That(result, EntityConstraint.EqualTo(capitalReturn));
@@ -34,11 +34,12 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                capitalReturn = new CapitalReturn(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
+                capitalReturn = new CapitalReturn(_Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
                 unitOfWork.CorporateActionRepository.Add(capitalReturn);
 
-                capitalReturn.Change(capitalReturn.ActionDate, capitalReturn.PaymentDate, 1.20M, capitalReturn.Description);
-
+                capitalReturn.Amount = 1.20m;
+                unitOfWork.CorporateActionRepository.Update(capitalReturn);
+     
                 capitalReturn2 = unitOfWork.CorporateActionRepository.Get(capitalReturn.Id) as CapitalReturn;
                 Assert.AreEqual(capitalReturn2.Amount, 1.20M);
             }
@@ -52,7 +53,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                capitalReturn = new CapitalReturn(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
+                capitalReturn = new CapitalReturn(_Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.50M, "");
                 unitOfWork.CorporateActionRepository.Add(capitalReturn);
 
                 unitOfWork.CorporateActionRepository.Delete(capitalReturn);

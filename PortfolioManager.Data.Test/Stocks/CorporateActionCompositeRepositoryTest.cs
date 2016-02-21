@@ -55,9 +55,9 @@ namespace PortfolioManager.Data.Test.Stocks
             var compositeAction = new CompositeAction(_Database, _Stock.Id, actionDate, "Test");
             AddCorporateAction(compositeAction);
 
-            var childAction1 = new CapitalReturn(_Database, _Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
+            var childAction1 = new CapitalReturn(_Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
             compositeAction.AddChildAction(childAction1);
-            var childAction2 = new Dividend(_Database, _Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
+            var childAction2 = new Dividend(_Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
             compositeAction.AddChildAction(childAction2);
 
             var result = GetCorporateAction(compositeAction.Id) as CompositeAction;
@@ -97,9 +97,9 @@ namespace PortfolioManager.Data.Test.Stocks
             var compositeAction = new CompositeAction(_Database, _Stock.Id, actionDate, "Test");
             AddCorporateAction(compositeAction);
 
-            var childAction1 = new CapitalReturn(_Database, _Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
+            var childAction1 = new CapitalReturn(_Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
             compositeAction.AddChildAction(childAction1);
-            var childAction2 = new Dividend(_Database, _Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
+            var childAction2 = new Dividend( _Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
             compositeAction.AddChildAction(childAction2);
 
             var compositeAction2 = GetCorporateAction(compositeAction.Id) as CompositeAction;
@@ -122,9 +122,9 @@ namespace PortfolioManager.Data.Test.Stocks
             var compositeAction = new CompositeAction(_Database, _Stock.Id, actionDate, "Test");
             AddCorporateAction(compositeAction);
 
-            var childAction1 = new CapitalReturn(_Database, _Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
+            var childAction1 = new CapitalReturn(_Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
             compositeAction.AddChildAction(childAction1);
-            var childAction2 = new Dividend(_Database, _Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
+            var childAction2 = new Dividend(_Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
             compositeAction.AddChildAction(childAction2);
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())

@@ -20,7 +20,7 @@ namespace PortfolioManager.Data.Test.Stocks
         {
             Dividend dividend, result;
 
-            dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
+            dividend = new Dividend(_Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
             result = AddCorporateAction(dividend) as Dividend;
 
             Assert.That(result, EntityConstraint.EqualTo((dividend)));
@@ -33,10 +33,11 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
+                dividend = new Dividend(_Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
                 unitOfWork.CorporateActionRepository.Add(dividend);
 
-                dividend.Change(dividend.ActionDate, dividend.PaymentDate, 1.20M, "");
+                dividend.DividendAmount = 1.20m;
+                unitOfWork.CorporateActionRepository.Update(dividend);
 
                 dividend2 = unitOfWork.CorporateActionRepository.Get(dividend.Id) as Dividend;
                 Assert.AreEqual(dividend2.DividendAmount, 1.20M);
@@ -51,7 +52,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                dividend = new Dividend(_Database, _Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
+                dividend = new Dividend(_Stock.Id, new DateTime(2005, 10, 10), new DateTime(2005, 10, 12), 1.00M, 1.00M, 0.30M, 0.00M, "");
                 unitOfWork.CorporateActionRepository.Add(dividend);
 
                 unitOfWork.CorporateActionRepository.Delete(dividend);

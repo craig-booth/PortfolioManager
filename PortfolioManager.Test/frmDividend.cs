@@ -67,13 +67,15 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Dividend.Change(dtpRecordDate.Value, 
-                                 dtpPaymentDate.Value,
-                                 MathUtils.ParseDecimal(txtDividendAmount.Text),
-                                 MathUtils.ParseDecimal(txtPercentFranked.Text) / 100,
-                                 MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100,
-                                 MathUtils.ParseDecimal(txtDRPPrice.Text),
-                                 txtDescription.Text); 
+                _Dividend.ActionDate = dtpRecordDate.Value;
+                _Dividend.PaymentDate = dtpPaymentDate.Value;
+                _Dividend.DividendAmount = MathUtils.ParseDecimal(txtDividendAmount.Text);
+                _Dividend.PercentFranked = MathUtils.ParseDecimal(txtPercentFranked.Text) / 100;
+                _Dividend.CompanyTaxRate = MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100;
+                _Dividend.DRPPrice = MathUtils.ParseDecimal(txtDRPPrice.Text);
+                _Dividend.Description = txtDescription.Text;
+
+                _StockManager.CorporateActionService.UpdateCorporateAction(_Dividend);
 
                 return true;
             }
@@ -97,7 +99,7 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Stock.DeleteCorporateAction(_Dividend);
+                _StockManager.CorporateActionService.DeleteCorporateAction(_Dividend);
                 return true;
             }
             return
@@ -108,13 +110,14 @@ namespace PortfolioManager.Test
         {
             if (_Mode == Mode.Create)
             {
-                _Dividend = _Stock.AddDividend(dtpRecordDate.Value, 
+                _Dividend = new Dividend(_Stock.Id, dtpRecordDate.Value, 
                                                dtpPaymentDate.Value,
                                                MathUtils.ParseDecimal(txtDividendAmount.Text), 
                                                MathUtils.ParseDecimal(txtPercentFranked.Text) / 100, 
                                                MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100, 
                                                MathUtils.ParseDecimal(txtDRPPrice.Text), 
                                                txtDescription.Text);
+                _StockManager.CorporateActionService.AddCorporateAction(_Dividend);
             }
         }
 

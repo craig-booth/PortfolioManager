@@ -12,11 +12,15 @@ namespace PortfolioManager.Model.Stocks
 
     public class StockManager
     {
-        internal IStockDatabase _Database;
+        private readonly IStockDatabase _Database;
+
+        public CorporateActionService CorporateActionService { get; private set; }
 
         public StockManager(IStockDatabase database)
         {
             _Database = database;
+
+            CorporateActionService = new CorporateActionService(_Database);
         }
 
         public Stock Add(string asxCode, string name)

@@ -104,27 +104,20 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Transformation.Change(dtpRecordDate.Value,
-                                 dtpImplementationDate.Value,
-                                 MathUtils.ParseDecimal(txtCashComponent.Text),
-                                 chkRolloverRelief.Checked,
-                                 txtDescription.Text);
+                _Transformation.ActionDate = dtpRecordDate.Value;
+                _Transformation.ImplementationDate = dtpImplementationDate.Value;
+                _Transformation.CashComponent = MathUtils.ParseDecimal(txtCashComponent.Text);
+                _Transformation.RolloverRefliefApplies = chkRolloverRelief.Checked;
+                _Transformation.Description = txtDescription.Text;
 
-                // Add/Update result stocks
+                // Delete are re-add result stocks
+                _Transformation.ResultingStocks.RemoveAll(x => true);
                 foreach (ResultStockDataRecord resultingStockDataRecord in _ResultingStockRecords)
                 {
-                    if (_Transformation.ResultingStocks.Any(x => x.Stock == resultingStockDataRecord.Stock))
-                        _Transformation.ChangeResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
-                    else
-                        _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
+                   _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                 }
 
-                // Delete result stocks
-                foreach (ResultingStock resultStock in _Transformation.ResultingStocks.ToList())
-                {
-                    if (! _ResultingStockRecords.Any(x => x.Stock == resultStock.Stock))
-                        _Transformation.DeleteResultStock(resultStock.Stock);
-                }
+                _StockManager.CorporateActionService.UpdateCorporateAction(_Transformation);
 
                 return true;
             }
@@ -148,7 +141,7 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Stock.DeleteCorporateAction(_Transformation);
+                _StockManager.CorporateActionService.DeleteCorporateAction(_Transformation);
                 return true;
             }
             return
@@ -159,16 +152,19 @@ namespace PortfolioManager.Test
         {
             if (_Mode == Mode.Create)
             {
-                _Transformation = _Stock.AddTransformation(dtpRecordDate.Value,
+                _Transformation = new Transformation(_Stock.Id, dtpRecordDate.Value,
                                                         dtpImplementationDate.Value,
                                                         MathUtils.ParseDecimal(txtCashComponent.Text),
                                                         chkRolloverRelief.Checked,
                                                         txtDescription.Text);
 
+
                 foreach (ResultStockDataRecord resultingStockDataRecord in _ResultingStockRecords)
                 {
                     _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                 }
+
+                _StockManager.CorporateActionService.AddCorporateAction(_Transformation);
             }
         }
 

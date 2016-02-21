@@ -21,7 +21,7 @@ namespace PortfolioManager.Data.Test.Stocks
         {
             SplitConsolidation split, result;
 
-            split = new SplitConsolidation(_Database, _Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
+            split = new SplitConsolidation(_Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
             result = AddCorporateAction(split) as SplitConsolidation;
 
             Assert.That(result, EntityConstraint.EqualTo((split)));
@@ -34,10 +34,12 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                split = new SplitConsolidation(_Database, _Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
+                split = new SplitConsolidation(_Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
                 unitOfWork.CorporateActionRepository.Add(split);
 
-                split.Change(split.ActionDate, 2, 3, "");
+                split.OldUnits = 2;
+                split.NewUnits = 3;
+                unitOfWork.CorporateActionRepository.Update(split);
 
                 split2 = unitOfWork.CorporateActionRepository.Get(split.Id) as SplitConsolidation;
                 Assert.AreEqual(split2.OldUnits, 2);
@@ -53,7 +55,7 @@ namespace PortfolioManager.Data.Test.Stocks
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                split = new SplitConsolidation(_Database, _Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
+                split = new SplitConsolidation(_Stock.Id, new DateTime(2005, 10, 10), 1, 2, "");
                 unitOfWork.CorporateActionRepository.Add(split);
 
                 unitOfWork.CorporateActionRepository.Delete(split);

@@ -105,7 +105,7 @@ namespace PortfolioManager.Test
         {
             lsvCorporateActions.Items.Clear();
 
-            IEnumerable<ICorporateAction> corporateActions = stock.GetCorporateActions();
+            IEnumerable<ICorporateAction> corporateActions = _StockManager.CorporateActionService.GetCorporateActions(stock);
             foreach (ICorporateAction corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
@@ -196,7 +196,7 @@ namespace PortfolioManager.Test
                 {
                     ICorporateAction corporateAction = (ICorporateAction)item.Tag;
 
-                    stock.DeleteCorporateAction(corporateAction);
+                    _StockManager.CorporateActionService.DeleteCorporateAction(corporateAction);
                 }
 
                 DisplayCorporateActions(stock);
@@ -229,11 +229,14 @@ namespace PortfolioManager.Test
 
                 DownloadService downloadService = new DownloadService();
 
-                IEnumerable<DownloadedDividendRecord> dividends = downloadService.DownloadDividendHistory(stock.ASXCode);
-                foreach (DownloadedDividendRecord dividend in dividends)
+                IEnumerable<DownloadedDividendRecord> dividendRecords = downloadService.DownloadDividendHistory(stock.ASXCode);
+                foreach (DownloadedDividendRecord dividendRecord in dividendRecords)
                 {
-                    if (! DividendExists(dividend.RecordDate))
-                        stock.AddDividend(dividend.RecordDate, dividend.PaymentDate, dividend.Amount, dividend.PercentFranked, 0.30m, "");
+                    if (! DividendExists(dividendRecord.RecordDate))
+                    {
+                       var dividend = new Dividend(stock.Id, dividendRecord.RecordDate, dividendRecord.PaymentDate, dividendRecord.Amount, dividendRecord.PercentFranked, 0.30m, "");
+                       _StockManager.CorporateActionService.AddCorporateAction(dividend);
+                    }
                 }
 
                 DisplayCorporateActions(stock);

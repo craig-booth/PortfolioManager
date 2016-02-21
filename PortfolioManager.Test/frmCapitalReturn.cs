@@ -65,10 +65,12 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _CapitalReturn.Change(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text);
+                _CapitalReturn.ActionDate = dtpRecordDate.Value;
+                _CapitalReturn.PaymentDate = dtpPaymentDate.Value;
+                _CapitalReturn.Amount = MathUtils.ParseDecimal(txtAmount.Text);
+                _CapitalReturn.Description = txtDescription.Text;
+
+                _StockManager.CorporateActionService.UpdateCorporateAction(_CapitalReturn);
 
                 return true;
             }
@@ -92,7 +94,7 @@ namespace PortfolioManager.Test
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _Stock.DeleteCorporateAction(_CapitalReturn);
+                _StockManager.CorporateActionService.DeleteCorporateAction(_CapitalReturn);
                 return true;
             }
             return
@@ -103,10 +105,8 @@ namespace PortfolioManager.Test
         {
             if (_Mode == Mode.Create)
             {
-                _CapitalReturn = _Stock.AddCapitalReturn(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text);
+                _CapitalReturn = new CapitalReturn(_Stock.Id, dtpRecordDate.Value, dtpPaymentDate.Value, MathUtils.ParseDecimal(txtAmount.Text), txtDescription.Text);
+                _StockManager.CorporateActionService.AddCorporateAction(_CapitalReturn);
             }
         }
 

@@ -237,38 +237,6 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public CapitalReturn AddCapitalReturn(DateTime actionDate, DateTime paymentDate, decimal amount, string description)
-        {
-            CapitalReturn captitalReturn;
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                captitalReturn = new CapitalReturn(_Database, Id, actionDate, paymentDate, amount, description);
-                unitOfWork.CorporateActionRepository.Add(captitalReturn);
-
-                unitOfWork.Save();
-
-            }
-
-            return captitalReturn;
-        }
-
-        public SplitConsolidation AddSplitConsolidation(DateTime actionDate, int oldUnits, int newUnits, string description)
-        {
-            SplitConsolidation splitConsolidation;
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                splitConsolidation = new SplitConsolidation(_Database, Id, actionDate, oldUnits, newUnits, description);
-                unitOfWork.CorporateActionRepository.Add(splitConsolidation);
-
-                unitOfWork.Save();
-
-            }
-
-            return splitConsolidation;
-        }
-
         public CompositeAction AddCompositeAction(DateTime actionDate, string description)
         {
             CompositeAction compositeAction;
@@ -283,73 +251,6 @@ namespace PortfolioManager.Model.Stocks
             }
 
             return compositeAction;
-        }
-
-        public Dividend AddDividend(DateTime actionDate, DateTime paymentDate, decimal amount, decimal percentFranked, decimal companyTaxRate, string description)
-        {
-            return AddDividend(actionDate, paymentDate, amount, percentFranked, companyTaxRate, 0.00M, description);
-        }
-
-        public Dividend AddDividend(DateTime actionDate, DateTime paymentDate, decimal amount, decimal percentFranked, decimal companyTaxRate, decimal drpPrice, string description)
-        {
-            Dividend dividend;
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                dividend = new Dividend(_Database, Id, actionDate, paymentDate, amount, percentFranked, companyTaxRate, drpPrice, description);
-                unitOfWork.CorporateActionRepository.Add(dividend);
-
-                unitOfWork.Save();
-
-            }
-
-
-            return dividend;
-        }
-
-        public Transformation AddTransformation(DateTime actionDate, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, string description)
-        {
-            Transformation transformation;
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                transformation = new Transformation(_Database, Id, actionDate, implementationDate, cashComponent, rolloverReliefApplies, description);
-                unitOfWork.CorporateActionRepository.Add(transformation);
-
-                unitOfWork.Save();
-
-            }
-
-
-            return transformation;
-        }
-
-        public IReadOnlyCollection<ICorporateAction> GetCorporateActions()
-        {
-            return _Database.CorporateActionQuery.Find(Id, DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
-        }
-
-        public IReadOnlyCollection<ICorporateAction> GetCorporateActions(DateTime fromDate, DateTime toDate)
-        {
-            return _Database.CorporateActionQuery.Find(Id, fromDate, toDate);
-        }
-
-        public void DeleteCorporateAction(ICorporateAction corporateAction)
-        {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.CorporateActionRepository.Delete(corporateAction);
-                unitOfWork.Save();
-            }
-        }
-
-        public void DeleteCorporateAction(Guid id)
-        {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.CorporateActionRepository.Delete(id);
-                unitOfWork.Save();
-            }
         }
 
     }
