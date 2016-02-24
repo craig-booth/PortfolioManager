@@ -39,14 +39,14 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            var compositeAction = new CompositeAction(_StockDatabase, _StockManager.GetStock("AAA", recordDate).Id, recordDate, "Test");
+            var compositeAction = new CompositeAction(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, "Test");
 
-            var capitalReturn = new CapitalReturn(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.50m, "Test");
-            compositeAction.AddChildAction(capitalReturn);
+            var capitalReturn = new CapitalReturn(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.50m, "Test");
+            compositeAction.Children.Add(capitalReturn);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
-            compositeAction.AddChildAction(transformation);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            compositeAction.Children.Add(transformation);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(compositeAction);
 
@@ -113,15 +113,15 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var compositeAction = new CompositeAction(_StockDatabase, _StockManager.GetStock("AAA", recordDate).Id, recordDate, "Test");
+            var compositeAction = new CompositeAction(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, "Test");
 
-            var capitalReturn = new CapitalReturn(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.50m, "Test");
-            compositeAction.AddChildAction(capitalReturn);
+            var capitalReturn = new CapitalReturn(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.50m, "Test");
+            compositeAction.Children.Add(capitalReturn);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
-            transformation.AddResultStock(_StockManager.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
-            compositeAction.AddChildAction(transformation);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            transformation.AddResultStock(_StockManager.StockService.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
+            compositeAction.Children.Add(transformation);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(compositeAction);
 
@@ -192,14 +192,14 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             var paymentDate = new DateTime(2010, 02, 01);
             var implementationDate = new DateTime(2010, 02, 01);
 
-            var compositeAction = new CompositeAction(_StockDatabase, _StockManager.GetStock("AAA", recordDate).Id, recordDate, "Test");
+            var compositeAction = new CompositeAction(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, "Test");
 
-            var capitalReturn = new CapitalReturn(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.50m, "Test");
-            compositeAction.AddChildAction(capitalReturn);
+            var capitalReturn = new CapitalReturn(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.50m, "Test");
+            compositeAction.Children.Add(capitalReturn);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
-            compositeAction.AddChildAction(transformation);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            compositeAction.Children.Add(transformation);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(compositeAction);
 

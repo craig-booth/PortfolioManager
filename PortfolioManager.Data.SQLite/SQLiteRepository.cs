@@ -122,7 +122,8 @@ namespace PortfolioManager.Data.SQLite
             var command = GetUpdateRecordCommand();
             AddParameters(command, entity);
 
-            command.ExecuteNonQuery();
+            if (command.ExecuteNonQuery() == 0)
+                throw new RecordNotFoundException(entity.Id);
         }
 
         public virtual void Delete(T entity)
@@ -135,7 +136,8 @@ namespace PortfolioManager.Data.SQLite
             var command = GetDeleteRecordCommand();
             command.Parameters.AddWithValue("@Id", id.ToString());
 
-            command.ExecuteNonQuery();
+            if (command.ExecuteNonQuery() == 0)
+                throw new RecordNotFoundException(id);
         }
     }
 }

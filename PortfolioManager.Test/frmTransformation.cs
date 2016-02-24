@@ -35,7 +35,7 @@ namespace PortfolioManager.Test
             resultingStockColumn.DataPropertyName = "Stock";
             resultingStockColumn.DisplayMember = "Name";
             resultingStockColumn.ValueMember = "Id";           
-            resultingStockColumn.Items.AddRange(_StockManager.GetStocks().ToArray());
+            resultingStockColumn.Items.AddRange(_StockManager.StockService.GetStocks().ToArray());
 
             grdResultingStocks.Columns["colOriginalUnits"].DataPropertyName = "OriginalUnits";
             grdResultingStocks.Columns["colNewUnits"].DataPropertyName = "NewUnits";
@@ -60,7 +60,7 @@ namespace PortfolioManager.Test
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.GetASXCode(_Transformation.Stock);
+            lblASXCode.Text = _StockManager.StockService.GetASXCode(_Transformation.Stock);
             dtpRecordDate.Value = _Transformation.ActionDate;
             txtDescription.Text = _Transformation.Description;
             txtCashComponent.Text = MathUtils.FormatCurrency(_Transformation.CashComponent, false);
@@ -98,7 +98,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _Transformation = corporateAction as Transformation;
             SetFormValues();
@@ -135,7 +135,7 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _Transformation = corporateAction as Transformation;
             SetFormValues();

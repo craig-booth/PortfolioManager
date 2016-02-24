@@ -58,62 +58,62 @@ namespace PortfolioManager.Model.Test
 
         public void AddTestStocks(StockManager stockManager)
         {
-            var aaa = stockManager.Add("AAA", "Stock AAA", StockType.Ordinary);
+            var aaa = stockManager.StockService.Add("AAA", "Stock AAA", StockType.Ordinary);
             _AAAId = aaa.Id;
 
-            var bbb = stockManager.Add("BBB", "Stock BBB", StockType.Ordinary);
+            var bbb = stockManager.StockService.Add("BBB", "Stock BBB", StockType.Ordinary);
             _BBBId = bbb.Id;
 
-            var ccc = stockManager.Add("CCC", "Trust CCC", StockType.Trust);
+            var ccc = stockManager.StockService.Add("CCC", "Trust CCC", StockType.Trust);
             _CCCId = ccc.Id;
 
-            var sss = stockManager.Add("SSS", "Stapled Security SSS", StockType.StapledSecurity);
+            var sss = stockManager.StockService.Add("SSS", "Stapled Security SSS", StockType.StapledSecurity);
             _SSSId = sss.Id;
 
-            var sss1 = stockManager.Add("SSS1", "Stapled stock 1", StockType.Ordinary, sss);
+            var sss1 = stockManager.StockService.Add("SSS1", "Stapled stock 1", StockType.Ordinary, sss);
             _SSS1Id = sss1.Id;
 
-            var sss2 = stockManager.Add("SSS2", "Stapled stock 2", StockType.Ordinary, sss);
+            var sss2 = stockManager.StockService.Add("SSS2", "Stapled stock 2", StockType.Ordinary, sss);
             _SSS2Id = sss2.Id;
 
-            var sss3 = stockManager.Add("SSS3", "Stapled trust 3", StockType.Trust, sss);
+            var sss3 = stockManager.StockService.Add("SSS3", "Stapled trust 3", StockType.Trust, sss);
             _SSS3Id = sss3.Id;
 
-            sss1.AddRelativeNTA(new DateTime(2000, 01, 01), 0.10m);
-            sss2.AddRelativeNTA(new DateTime(2000, 01, 01), 0.30m);
-            sss3.AddRelativeNTA(new DateTime(2000, 01, 01), 0.60m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2000, 01, 01), 0.10m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2000, 01, 01), 0.30m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2000, 01, 01), 0.60m);
 
-            sss1.AddRelativeNTA(new DateTime(2001, 01, 01), 0.15m);
-            sss2.AddRelativeNTA(new DateTime(2001, 01, 01), 0.35m);
-            sss3.AddRelativeNTA(new DateTime(2001, 01, 01), 0.50m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2001, 01, 01), 0.15m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2001, 01, 01), 0.35m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2001, 01, 01), 0.50m);
 
-            sss1.AddRelativeNTA(new DateTime(2002, 01, 01), 0.20m);
-            sss2.AddRelativeNTA(new DateTime(2002, 01, 01), 0.40m);
-            sss3.AddRelativeNTA(new DateTime(2002, 01, 01), 0.40m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2002, 01, 01), 0.20m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2002, 01, 01), 0.40m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2002, 01, 01), 0.40m);
 
-            sss1.AddRelativeNTA(new DateTime(2003, 01, 01), 0.25m);
-            sss2.AddRelativeNTA(new DateTime(2003, 01, 01), 0.45m);
-            sss3.AddRelativeNTA(new DateTime(2003, 01, 01), 0.30m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2003, 01, 01), 0.25m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2003, 01, 01), 0.45m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2003, 01, 01), 0.30m);
 
-            sss1.AddRelativeNTA(new DateTime(2004, 01, 01), 0.30m);
-            sss2.AddRelativeNTA(new DateTime(2004, 01, 01), 0.50m);
-            sss3.AddRelativeNTA(new DateTime(2004, 01, 01), 0.20m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2004, 01, 01), 0.30m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2004, 01, 01), 0.50m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2004, 01, 01), 0.20m);
 
-            sss1.AddRelativeNTA(new DateTime(2005, 01, 01), 0.35m);
-            sss2.AddRelativeNTA(new DateTime(2005, 01, 01), 0.55m);
-            sss3.AddRelativeNTA(new DateTime(2005, 01, 01), 0.10m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2005, 01, 01), 0.35m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2005, 01, 01), 0.55m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2005, 01, 01), 0.10m);
 
-            sss1.AddRelativeNTA(new DateTime(2006, 01, 01), 0.40m);
-            sss2.AddRelativeNTA(new DateTime(2006, 01, 01), 0.40m);
-            sss3.AddRelativeNTA(new DateTime(2006, 01, 01), 0.20m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2006, 01, 01), 0.40m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2006, 01, 01), 0.40m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2006, 01, 01), 0.20m);
 
-            sss1.AddRelativeNTA(new DateTime(2007, 01, 01), 0.50m);
-            sss2.AddRelativeNTA(new DateTime(2007, 01, 01), 0.20m);
-            sss3.AddRelativeNTA(new DateTime(2007, 01, 01), 0.30m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2007, 01, 01), 0.50m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2007, 01, 01), 0.20m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2007, 01, 01), 0.30m);
 
-            sss1.AddRelativeNTA(new DateTime(2008, 01, 01), 0.60m);
-            sss2.AddRelativeNTA(new DateTime(2008, 01, 01), 0.05m);
-            sss3.AddRelativeNTA(new DateTime(2008, 01, 01), 0.35m);
+            stockManager.StockService.AddRelativeNTA(sss1,  new DateTime(2008, 01, 01), 0.60m);
+            stockManager.StockService.AddRelativeNTA(sss2,  new DateTime(2008, 01, 01), 0.05m);
+            stockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2008, 01, 01), 0.35m);
         }
 
     }

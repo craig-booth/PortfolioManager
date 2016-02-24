@@ -56,6 +56,14 @@ namespace PortfolioManager.Model.Portfolios
         {
             return _StockQuery.GetChildStocks(stock.Id, date);
         }
+
+        public decimal PercentageOfParentCostBase(Stock stock, DateTime atDate)
+        {
+            if (stock.ParentId == Guid.Empty)
+                throw new NotStapledSecurityComponentException(stock.ASXCode);
+
+            return _StockQuery.PercentOfParentCost(stock.ParentId, stock.Id, atDate);
+        }
     }
 
 

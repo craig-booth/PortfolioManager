@@ -33,76 +33,28 @@ namespace PortfolioManager.Model.Stocks
 
     public class Stock: IEffectiveDatedEntity 
     {
-        private IStockDatabase _Database;
-
         public Guid Id { get; private set; }
-        public DateTime FromDate { get; private set; }
-        public DateTime ToDate { get; private set; }
-        public string ASXCode { get; private set; }
-        public string Name { get; private set; }
-        public StockType Type { get; private set; }
-        public Guid ParentId { get; private set; }
-        public RoundingRule DividendRoundingRule { get; private set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string ASXCode { get; set; }
+        public string Name { get; set; }
+        public StockType Type { get; set; }
+        public Guid ParentId { get; set; }
+        public RoundingRule DividendRoundingRule { get; set; }
 
-        private decimal _CurrentPrice;
-        public decimal CurrentPrice
-        {
-            get
-            {
-                if (_CurrentPrice == 0.00m)
-                {
-                    _CurrentPrice = _Database.StockQuery.GetClosingPrice(Id, DateTime.Today);
-                }
-
-                return _CurrentPrice;
-            }
-        }
-
-        public decimal GetPrice(DateTime atDate)
-        {
-            return _Database.StockQuery.GetClosingPrice(Id, atDate);
-        }
-
-        public void AddPrice(DateTime atDate, decimal price)
-        {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.StockPriceRepository.Add(Id, atDate, price);
-                unitOfWork.Save();
-            }
-        }
-
-        public void ChangePrice(DateTime atDate, decimal price)
-        {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.StockPriceRepository.Update(Id, atDate, price);
-                unitOfWork.Save();
-            }
-        }
-
-        public decimal PercentageOfParentCostBase(DateTime atDate)
-        {
-            if (ParentId == Guid.Empty)
-                throw new NotStapledSecurityComponentException(ASXCode);
-           
-            return _Database.StockQuery.PercentOfParentCost(this.ParentId, this.Id, atDate);
-        }
-
-        public Stock(IStockDatabase database, DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
-            : this(database, Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate, asxCode, name, type, parent)
+        public Stock(DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
+            : this(Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate, asxCode, name, type, parent)
 
         {
         }
 
-        public Stock(IStockDatabase database, Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent)
-            : this(database, id, fromDate, toDate, asxCode, name, type, parent, RoundingRule.Round)
+        public Stock(Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent)
+            : this(id, fromDate, toDate, asxCode, name, type, parent, RoundingRule.Round)
         {
         }
 
-        public Stock(IStockDatabase database, Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent, RoundingRule dividendRoundingRule)
+        public Stock(Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent, RoundingRule dividendRoundingRule)
         {
-            _Database = database;
             Id = id;
             FromDate = fromDate;
             ToDate = toDate;
@@ -117,140 +69,6 @@ namespace PortfolioManager.Model.Stocks
         public override string ToString()
         {
             return ASXCode + " - " + Name;
-        }
-
-        public void ChangeASXCode(DateTime atDate, string newAsxCode, string newName)
-        {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                /* Update old effective dated record */
-                ToDate = atDate.AddDays(-1);
-                unitOfWork.StockRepository.Update(this);
-
-                /* Add new record */
-                var newStock = new Stock(_Database, Id, atDate, DateTimeConstants.NoEndDate, newAsxCode, newName, Type, ParentId);
-                unitOfWork.StockRepository.Add(newStock);
-
-                unitOfWork.Save();
-            }
-        }
-
-        public void Delist(DateTime atDate)
-        {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {               
-                ToDate = atDate.AddDays(-1);
-                unitOfWork.StockRepository.Update(this);
-
-                unitOfWork.Save();
-            }
-        }
-
-        public void AddChildStock(Stock child)
-        {
-            if (Type != StockType.StapledSecurity)
-                throw new NotStapledSecurityException(ASXCode); 
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                child.ParentId = this.Id;
-                unitOfWork.StockRepository.Update(child);
-
-                unitOfWork.Save();
-            }
-        }
-
-        public IReadOnlyCollection<Stock> GetChildStocks()
-        {
-            return _Database.StockQuery.GetChildStocks(this.Id, DateTime.Today);
-        }
-
-        public IReadOnlyCollection<Stock> GetChildStocks(DateTime atDate)
-        {
-            return _Database.StockQuery.GetChildStocks(this.Id, atDate);
-        }
-
-        public void RemoveChildStock(Stock child)
-        {
-            if (Type != StockType.StapledSecurity)
-                throw new NotStapledSecurityException(ASXCode);
-
-            if (child.ParentId != Id)
-                throw new RecordNotFoundException(child.Id);
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                child.ParentId = Guid.Empty;
-                unitOfWork.StockRepository.Update(child);
-
-                unitOfWork.Save();
-            }
-        }
-
-        public IReadOnlyCollection<RelativeNTA> GetRelativeNTAs()
-        {
-            return _Database.StockQuery.GetRelativeNTAs(ParentId, Id);
-        }
-
-        public RelativeNTA AddRelativeNTA(DateTime atDate, decimal percentage)
-        {
-            RelativeNTA nta;
-
-            if (ParentId == Guid.Empty)
-                throw new NotStapledSecurityComponentException(ASXCode);
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                nta = new RelativeNTA(_Database, atDate, ParentId, Id, percentage);
-                unitOfWork.RelativeNTARepository.Add(nta);
-
-                unitOfWork.Save();
-
-            }
-
-            return nta;
-
-        }
-
-        public void ChangeRelativeNTA(DateTime atDate, decimal newPercentage)
-        {
-            RelativeNTA nta;
-
-            if (ParentId == Guid.Empty)
-                throw new NotStapledSecurityComponentException(ASXCode);
-
-            nta = _Database.StockQuery.GetRelativeNTA(ParentId, Id, atDate);
-            nta.ChangePercentage(newPercentage);
-        }
-
-        public void DeleteRelativeNTA(DateTime atDate)
-        {
-
-            if (ParentId == Guid.Empty)
-                throw new NotStapledSecurityComponentException(ASXCode);
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.RelativeNTARepository.Delete(ParentId, Id, atDate);
-
-                unitOfWork.Save();
-            }
-        }
-
-        public CompositeAction AddCompositeAction(DateTime actionDate, string description)
-        {
-            CompositeAction compositeAction;
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                compositeAction = new CompositeAction(_Database, Id, actionDate, description);
-                unitOfWork.CorporateActionRepository.Add(compositeAction);
-
-                unitOfWork.Save();
-
-            }
-
-            return compositeAction;
         }
 
     }

@@ -19,9 +19,9 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            manager.Add("ABC", "Test");
+            manager.StockService.Add("ABC", "Test");
 
-            var stock = manager.GetStock("ABC");
+            var stock = manager.StockService.GetStock("ABC");
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Ordinary));
@@ -36,9 +36,9 @@ namespace PortfolioManager.Model.Test.Stocks
             var manager = CreateStockManager();
 
             var fromDate = new DateTime(2001, 06, 01);
-            manager.Add("ABC", "Test", fromDate);
+            manager.StockService.Add("ABC", "Test", fromDate);
 
-            var stock = manager.GetStock("ABC");
+            var stock = manager.StockService.GetStock("ABC");
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Ordinary));
@@ -52,9 +52,9 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            manager.Add("ABC", "Test", StockType.Trust);
+            manager.StockService.Add("ABC", "Test", StockType.Trust);
 
-            var stock = manager.GetStock("ABC");
+            var stock = manager.StockService.GetStock("ABC");
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Trust));
@@ -69,9 +69,9 @@ namespace PortfolioManager.Model.Test.Stocks
             var manager = CreateStockManager();
 
             var fromDate = new DateTime(2001, 06, 01);
-            manager.Add("ABC", "Test", fromDate, StockType.Trust);
+            manager.StockService.Add("ABC", "Test", fromDate, StockType.Trust);
 
-            var stock = manager.GetStock("ABC");
+            var stock = manager.StockService.GetStock("ABC");
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Trust));
@@ -86,9 +86,9 @@ namespace PortfolioManager.Model.Test.Stocks
             var manager = CreateStockManager();
 
             var fromDate = new DateTime(2001, 06, 01);
-            manager.Add("ABC", "Test", fromDate);
+            manager.StockService.Add("ABC", "Test", fromDate);
 
-            var stock = manager.GetStock("ABC");
+            var stock = manager.StockService.GetStock("ABC");
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Ordinary));

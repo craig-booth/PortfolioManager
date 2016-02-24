@@ -19,14 +19,14 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var stock = manager.Add("ABC", "Old Name");
-            stock.ChangeASXCode(new DateTime(2010, 10, 15), "DEF", "New Name");
+            var stock = manager.StockService.Add("ABC", "Old Name");
+            manager.StockService.ChangeASXCode(stock, new DateTime(2010, 10, 15), "DEF", "New Name");
 
-            var stock1 = manager.GetStock("ABC", new DateTime(2010, 01, 01));
+            var stock1 = manager.StockService.GetStock("ABC", new DateTime(2010, 01, 01));
             Assert.That(stock1.ASXCode, Is.EqualTo("ABC"), "Stock 1 ASX code wrong");
             Assert.That(stock1.Name, Is.EqualTo("Old Name"), "Stock 1 name wrong");
 
-            var stock2 = manager.GetStock("DEF", new DateTime(2010, 10, 20));
+            var stock2 = manager.StockService.GetStock("DEF", new DateTime(2010, 10, 20));
             Assert.That(stock2.ASXCode, Is.EqualTo("DEF"), "Stock 2 ASX code wrong");
             Assert.That(stock2.Name, Is.EqualTo("New Name"), "Stock 2 name wrong");
 
@@ -40,10 +40,10 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var stock = manager.Add("ABC", "Stapled Security");
-            stock.Delist(new DateTime(2010, 06, 15));
+            var stock = manager.StockService.Add("ABC", "Stapled Security");
+            manager.StockService.Delist(stock, new DateTime(2010, 06, 15));
 
-            var stock1 = manager.GetStock("ABC", new DateTime(2010, 01, 01));
+            var stock1 = manager.StockService.GetStock("ABC", new DateTime(2010, 01, 01));
             Assert.That(stock1.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock1.ToDate, Is.EqualTo(new DateTime(2010, 06, 14)));
         }
@@ -53,15 +53,15 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);
 
-            var childStock2 = manager.Add("CH2", "Child 2", StockType.Trust);
-            parentStock.AddChildStock(childStock2);
+            var childStock2 = manager.StockService.Add("CH2", "Child 2", StockType.Trust);
+            manager.StockService.AddChildStock(parentStock, childStock2);
 
-            var stock1 = manager.GetStock("ABC");
-            var children = stock1.GetChildStocks();
+            var stock1 = manager.StockService.GetStock("ABC");
+            var children = manager.StockService.GetChildStocks(stock1);
 
             Assert.That(children.Count, Is.EqualTo(2));
             Assert.That(children.First().ASXCode, Is.EqualTo("CH1"));
@@ -74,9 +74,9 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.Ordinary);
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
         }
 
         [Test, Description("Get Child stocks for a non stapled security")]
@@ -84,10 +84,10 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Ordinary Security", StockType.Ordinary);
+            var parentStock = manager.StockService.Add("ABC", "Ordinary Security", StockType.Ordinary);
 
-            var stock1 = manager.GetStock("ABC");
-            var children = stock1.GetChildStocks();
+            var stock1 = manager.StockService.GetStock("ABC");
+            var children = manager.StockService.GetChildStocks(stock1);
 
             Assert.That(children.Count, Is.EqualTo(0));
         }
@@ -97,19 +97,19 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
 
-            var childStock2 = manager.Add("CH2", "Child 2", StockType.Trust);
-            parentStock.AddChildStock(childStock2);
+            var childStock2 = manager.StockService.Add("CH2", "Child 2", StockType.Trust);
+            manager.StockService.AddChildStock(parentStock, childStock2);;
 
-            var stock1 = manager.GetStock("ABC");
-            var children = stock1.GetChildStocks();
+            var stock1 = manager.StockService.GetStock("ABC");
+            var children = manager.StockService.GetChildStocks(stock1);
             Assert.That(children.Count, Is.EqualTo(2));
 
-            stock1.RemoveChildStock(childStock1);
-            var children2 = stock1.GetChildStocks();
+            manager.StockService.RemoveChildStock(stock1, childStock1);
+            var children2 = manager.StockService.GetChildStocks(stock1);
             Assert.That(children2.Count, Is.EqualTo(1));
             Assert.That(children2.First().ASXCode, Is.EqualTo("CH2"));
 
@@ -121,20 +121,20 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
 
-            var childStock2 = manager.Add("CH2", "Child 2", StockType.Trust);
-            parentStock.AddChildStock(childStock2);
+            var childStock2 = manager.StockService.Add("CH2", "Child 2", StockType.Trust);
+            manager.StockService.AddChildStock(parentStock, childStock2);;
 
-            var stock1 = manager.GetStock("ABC");
-            var children = stock1.GetChildStocks();
+            var stock1 = manager.StockService.GetStock("ABC");
+            var children = manager.StockService.GetChildStocks(stock1);
             Assert.That(children.Count, Is.EqualTo(2));
 
 
-            var childStock3 = manager.Add("CH3", "Child 3", StockType.Trust);
-            stock1.RemoveChildStock(childStock3);
+            var childStock3 = manager.StockService.Add("CH3", "Child 3", StockType.Trust);
+            manager.StockService.RemoveChildStock(stock1, childStock3);
         }
 
         [Test, Description("Remove Child stock for a non stapled security")]
@@ -143,9 +143,9 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.Ordinary);
-            var childStock = manager.Add("CH3", "Child 3", StockType.Trust);
-            parentStock.RemoveChildStock(childStock);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
+            var childStock = manager.StockService.Add("CH3", "Child 3", StockType.Trust);
+            manager.StockService.RemoveChildStock(parentStock, childStock);
         }
 
         [Test, Description("Add Relative NTA")]
@@ -156,29 +156,29 @@ namespace PortfolioManager.Model.Test.Stocks
 
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
-            childStock1.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
-            childStock1.AddRelativeNTA(new DateTime(2006, 12, 31), 0.60M);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
 
-            var childStock2 = manager.Add("CH2", "Child 2", StockType.Trust);
-            parentStock.AddChildStock(childStock2);
-            childStock2.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
-            childStock2.AddRelativeNTA(new DateTime(2006, 12, 31), 0.40M);
+            var childStock2 = manager.StockService.Add("CH2", "Child 2", StockType.Trust);
+            manager.StockService.AddChildStock(parentStock, childStock2);;
+            manager.StockService.AddRelativeNTA(childStock2, new DateTime(2005, 12, 31), 0.50M);
+            manager.StockService.AddRelativeNTA(childStock2, new DateTime(2006, 12, 31), 0.40M);
 
 
-            stock = manager.GetStock("CH1");
-            percent = stock.PercentageOfParentCostBase(new DateTime(2006, 06, 30));
+            stock = manager.StockService.GetStock("CH1");
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2006, 06, 30));
             Assert.That(percent, Is.EqualTo(0.50M));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2008, 06, 30));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2008, 06, 30));
             Assert.That(percent, Is.EqualTo(0.60M));
 
-            stock = manager.GetStock("CH2");
-            percent = stock.PercentageOfParentCostBase(new DateTime(2006, 06, 30));
+            stock = manager.StockService.GetStock("CH2");
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2006, 06, 30));
             Assert.That(percent, Is.EqualTo(0.50M));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2008, 06, 30));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2008, 06, 30));
             Assert.That(percent, Is.EqualTo(0.40M));
         }
 
@@ -188,10 +188,10 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.Ordinary);
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
 
-            childStock1.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
         }
 
         [Test, Description("Get Relative NTA for a non stapled secuity")]
@@ -200,9 +200,9 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.Ordinary);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
 
-            parentStock.PercentageOfParentCostBase(new DateTime(2005, 12, 31));
+            manager.StockService.PercentageOfParentCostBase(parentStock, new DateTime(2005, 12, 31));
         }
 
         [Test, Description("Update a Relative NTA")]
@@ -213,25 +213,26 @@ namespace PortfolioManager.Model.Test.Stocks
 
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
-            childStock1.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
-            childStock1.AddRelativeNTA(new DateTime(2006, 12, 31), 0.60M);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
+            var nta = manager.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
        
-            stock = manager.GetStock("CH1");
-            percent = stock.PercentageOfParentCostBase(new DateTime(2006, 06, 30));
+            stock = manager.StockService.GetStock("CH1");
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2006, 06, 30));
             Assert.That(percent, Is.EqualTo(0.50M));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2008, 06, 30));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2008, 06, 30));
             Assert.That(percent, Is.EqualTo(0.60M));
 
-            childStock1.ChangeRelativeNTA(new DateTime(2006, 12, 31), 0.70M);
+            nta.Percentage = 0.70m;
+            manager.StockService.UpdateRelativeNTA(nta);
 
-            stock = manager.GetStock("CH1");
-            percent = stock.PercentageOfParentCostBase(new DateTime(2006, 06, 30));
+            stock = manager.StockService.GetStock("CH1");
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2006, 06, 30));
             Assert.That(percent, Is.EqualTo(0.50M));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2008, 06, 30));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2008, 06, 30));
             Assert.That(percent, Is.EqualTo(0.70M));
         }
 
@@ -241,15 +242,16 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
-            childStock1.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
-            childStock1.AddRelativeNTA(new DateTime(2006, 12, 31), 0.60M);
-            childStock1.AddRelativeNTA(new DateTime(2007, 12, 31), 0.70M);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2007, 12, 31), 0.70M);
 
-            childStock1.ChangeRelativeNTA(new DateTime(2006, 12, 20), 0.80M); 
+            var nta = new RelativeNTA(new DateTime(2006, 12, 20), parentStock.Id, childStock1.Id, 0.80m);
+            manager.StockService.UpdateRelativeNTA(nta); 
         }
 
         [Test, Description("Update a Relative NTA from a non stapled secuity")]
@@ -258,9 +260,10 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var stock = manager.Add("ABC", "Stapled Security", StockType.Ordinary);
+            var stock = manager.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
 
-            stock.ChangeRelativeNTA(new DateTime(2006, 12, 20), 0.75M);
+            manager.StockService.UpdateRelativeNTA(stock, new DateTime(2006, 12, 20), 0.75M);
+
         }
 
         [Test, Description("Delete Relative NTA")]
@@ -271,29 +274,29 @@ namespace PortfolioManager.Model.Test.Stocks
 
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
-            childStock1.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
-            childStock1.AddRelativeNTA(new DateTime(2006, 12, 31), 0.60M);
-            childStock1.AddRelativeNTA(new DateTime(2007, 12, 31), 0.70M);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2007, 12, 31), 0.70M);
 
             /* Test that NTAs added correctly */
-            stock = manager.GetStock("CH1");
-            percent = stock.PercentageOfParentCostBase(new DateTime(2007, 06, 30));
+            stock = manager.StockService.GetStock("CH1");
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2007, 06, 30));
             Assert.That(percent, Is.EqualTo(0.60M));
-            stock = manager.GetStock("CH1");
-            percent = stock.PercentageOfParentCostBase(new DateTime(2006, 06, 30));
+            stock = manager.StockService.GetStock("CH1");
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2006, 06, 30));
             Assert.That(percent, Is.EqualTo(0.50M));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2007, 06, 30));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2007, 06, 30));
             Assert.That(percent, Is.EqualTo(0.60M));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2008, 06, 30));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2008, 06, 30));
             Assert.That(percent, Is.EqualTo(0.70M));
 
             /* Remove middle NTA */
-            childStock1.DeleteRelativeNTA(new DateTime(2006, 12, 31));
-            percent = stock.PercentageOfParentCostBase(new DateTime(2007, 06, 30));
+            manager.StockService.DeleteRelativeNTA(childStock1, new DateTime(2006, 12, 31));
+            percent = manager.StockService.PercentageOfParentCostBase(stock, new DateTime(2007, 06, 30));
             Assert.That(percent, Is.EqualTo(0.50M));          
         }
 
@@ -302,15 +305,15 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var parentStock = manager.Add("ABC", "Stapled Security", StockType.StapledSecurity);
+            var parentStock = manager.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
-            var childStock1 = manager.Add("CH1", "Child 1", StockType.Ordinary);
-            parentStock.AddChildStock(childStock1);
-            childStock1.AddRelativeNTA(new DateTime(2005, 12, 31), 0.50M);
-            childStock1.AddRelativeNTA(new DateTime(2006, 12, 31), 0.60M);
-            childStock1.AddRelativeNTA(new DateTime(2007, 12, 31), 0.70M);
+            var childStock1 = manager.StockService.Add("CH1", "Child 1", StockType.Ordinary);
+            manager.StockService.AddChildStock(parentStock, childStock1);;
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
+            manager.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
+            manager.StockService.AddRelativeNTA(childStock1,  new DateTime(2007, 12, 31), 0.70M);
 
-            childStock1.DeleteRelativeNTA(new DateTime(2006, 12, 20)); 
+            manager.StockService.DeleteRelativeNTA(childStock1, new DateTime(2006, 12, 20));
         }
 
         [Test, Description("Delete Relative NTA from a non stapled secuity")]
@@ -319,9 +322,9 @@ namespace PortfolioManager.Model.Test.Stocks
         {
             var manager = CreateStockManager();
 
-            var stock = manager.Add("ABC", "Stapled Security", StockType.Ordinary);
+            var stock = manager.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
 
-            stock.DeleteRelativeNTA(new DateTime(2006, 12, 20)); 
+            manager.StockService.DeleteRelativeNTA(stock, new DateTime(2006, 12, 20)); 
         }
     }
 }

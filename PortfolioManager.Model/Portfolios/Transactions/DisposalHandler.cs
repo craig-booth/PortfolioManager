@@ -12,14 +12,12 @@ namespace PortfolioManager.Model.Portfolios
 {
     class DisposalHandler : TransacactionHandler, ITransactionHandler
     {
-        public readonly ParcelService _ParcelService;
-        public readonly StockService _StockService;
-
         public DisposalHandler(ParcelService parcelService, StockService stockService)
+            : base (parcelService, stockService)
         {
-            _ParcelService = parcelService;
-            _StockService = stockService;
+
         }
+
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
         {
             var disposal = transaction as Disposal;
@@ -54,7 +52,7 @@ namespace PortfolioManager.Model.Portfolios
                     var childStocks = _StockService.GetChildStocks(stock, disposal.TransactionDate);
 
                     // Apportion amount based on NTA of child stocks
-                    var amountsReceived = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, disposal.TransactionDate, parcelSold.AmountReceived);
+                    var amountsReceived = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, disposal.TransactionDate, parcelSold.AmountReceived, _StockService);
 
                     int i = 0;
                     foreach (var childStock in childStocks)

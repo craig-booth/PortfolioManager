@@ -34,7 +34,7 @@ namespace PortfolioManager.Test
 
         private void SetFormValues()
         {
-           lblASXCode.Text = _StockManager.GetASXCode(_CompositeAction.Stock);
+           lblASXCode.Text = _StockManager.StockService.GetASXCode(_CompositeAction.Stock);
            dtpActionDate.Value = _CompositeAction.ActionDate;
            txtDescription.Text = _CompositeAction.Description;
         }
@@ -56,14 +56,16 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _CompositeAction.Change(dtpActionDate.Value,
-                                    txtDescription.Text);
+                _CompositeAction.ActionDate = dtpActionDate.Value;
+                _CompositeAction.Description = txtDescription.Text;
+
+                _StockManager.CorporateActionService.UpdateCorporateAction(_CompositeAction);
                                     
                 return true;
             }
@@ -81,7 +83,7 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
@@ -98,8 +100,10 @@ namespace PortfolioManager.Test
         {
             if (_Mode == Mode.Create)
             {
-                _CompositeAction = _Stock.AddCompositeAction(dtpActionDate.Value,
+                _CompositeAction = new CompositeAction(_Stock.Id, dtpActionDate.Value,
                                     txtDescription.Text);
+
+                _StockManager.CorporateActionService.AddCorporateAction(_CompositeAction);
                 
 
             }

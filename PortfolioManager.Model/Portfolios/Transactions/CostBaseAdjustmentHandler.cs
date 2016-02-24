@@ -12,14 +12,12 @@ namespace PortfolioManager.Model.Portfolios
 {
     class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public readonly ParcelService _ParcelService;
-        public readonly StockService _StockService;
-
         public CostBaseAdjustmentHandler(ParcelService parcelService, StockService stockService)
+            : base (parcelService, stockService)
         {
-            _ParcelService = parcelService;
-            _StockService = stockService;
+
         }
+
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
         {
             var costBaseAdjustment = transaction as CostBaseAdjustment;

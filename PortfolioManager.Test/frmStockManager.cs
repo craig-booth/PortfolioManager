@@ -51,7 +51,7 @@ namespace PortfolioManager.Test
         private void LoadStockList()
         {
             lsvStocks.Items.Clear();
-            foreach (Stock stock in _StockManager.GetStocks())
+            foreach (Stock stock in _StockManager.StockService.GetStocks())
             {
                 ListViewItem item = lsvStocks.Items.Add(stock.ASXCode);
                 item.Tag = stock;
@@ -143,7 +143,7 @@ namespace PortfolioManager.Test
                 {
                     Stock stock = (Stock)item.Tag;
 
-                    _StockManager.Delete(stock);
+                    _StockManager.StockService.Delete(stock);
                     lsvStocks.Items.Remove(item);
                 }
             }

@@ -169,7 +169,7 @@ namespace PortfolioManager.Test
             foreach (ShareParcel parcel in parcels)
             {
                 var stock = _PortfolioManager.StockService.Get(parcel.Stock, endDate);
-                var closingPrice = stock.GetPrice(endDate);
+                var closingPrice = _PortfolioManager.StockPriceService.GetClosingPrice(stock, endDate);
                 var marketValue = parcel.Units * closingPrice;
                 var capitalGain = marketValue - parcel.CostBase;
                 decimal capitalGainPercentage = 0.00m;

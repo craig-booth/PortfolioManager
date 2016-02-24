@@ -25,13 +25,13 @@ namespace PortfolioManager.Data.Test.Stocks
             _Database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                _Stock = new Stock(_Database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.StapledSecurity, Guid.Empty);
+                _Stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(_Stock);
-                _ResultStock1 = new Stock(_Database, new DateTime(2000, 01, 01), "DEF", "Result 1", StockType.StapledSecurity, Guid.Empty);
+                _ResultStock1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Result 1", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(_ResultStock1);
-                _ResultStock2 = new Stock(_Database, new DateTime(2000, 01, 01), "GHI", "Result 2", StockType.StapledSecurity, Guid.Empty);
+                _ResultStock2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Result 2", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(_ResultStock2);
-                _ResultStock3 = new Stock(_Database, new DateTime(2000, 01, 01), "JKL", "Result 3", StockType.StapledSecurity, Guid.Empty);
+                _ResultStock3 = new Stock(new DateTime(2000, 01, 01), "JKL", "Result 3", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(_ResultStock3);
                 unitOfWork.Save();
             }

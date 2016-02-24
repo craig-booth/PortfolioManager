@@ -99,6 +99,8 @@
     <Compile Include="Stocks\CorporateActions\Transformation.cs" />
     <Compile Include="Stocks\StockPrice.cs" />
     <Compile Include="Stocks\StockPriceImporter.cs" />
+    <Compile Include="Stocks\StockPriceService.cs" />
+    <Compile Include="Stocks\StockService2.cs" />
     <Compile Include="Utils\DateTimeConstants.cs" />
     <Compile Include="Utils\MathUtils.cs" />
     <Compile Include="Utils\PortfolioUtils.cs" />

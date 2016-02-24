@@ -20,8 +20,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             if (! reader.IsDBNull(7))
                 dividendRoundingRule = (RoundingRule)reader.GetInt32(7);
              
-            Stock stock = new Stock(database,
-                                    new Guid(reader.GetString(0)),
+            Stock stock = new Stock(new Guid(reader.GetString(0)),
                                     reader.GetDateTime(1),
                                     reader.GetDateTime(2),
                                     reader.GetString(3),
@@ -35,8 +34,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public static RelativeNTA CreateRelativeNTA(SQLiteStockDatabase database, SQLiteDataReader reader)
         {
-            RelativeNTA nta = new RelativeNTA(database,
-                                              new Guid(reader.GetString(0)),
+            RelativeNTA nta = new RelativeNTA(new Guid(reader.GetString(0)),
                                               reader.GetDateTime(1),
                                               new Guid(reader.GetString(2)),
                                               new Guid(reader.GetString(3)),
@@ -192,8 +190,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         private static CompositeAction CreateCompositeAction(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
-            CompositeAction compositeAction = new CompositeAction(database,
-                        id,
+            CompositeAction compositeAction = new CompositeAction(id,
                         stock,
                         actionDate,
                         description);
@@ -210,7 +207,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
                 var childAction = CreateCorporateAction(database, childId, childType, stock, actionDate, description);
 
-                compositeAction._Children.Add(childAction);
+                compositeAction.Children.Add(childAction);
             }
 
 

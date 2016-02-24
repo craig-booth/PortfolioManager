@@ -22,7 +22,7 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);       
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);       
                 unitOfWork.StockRepository.Add(stock);
 
                 unitOfWork.Save();
@@ -42,7 +42,7 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);
 
                 /* no save done */
@@ -57,14 +57,15 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock;
 
             var database = CreateStockDatabase();
+            var stockService = new StockService2(database);
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock1 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock1.ChangeASXCode(new DateTime(2002, 01, 01), "DEF", "New Name");
+                stockService.ChangeASXCode(stock1, new DateTime(2002, 01, 01), "DEF", "New Name");
 
-                stock2 = new Stock(database, new DateTime(2000, 01, 01), "GHI", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock2);
 
                 unitOfWork.Save();

@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
+using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Test.TransactionControls
 {

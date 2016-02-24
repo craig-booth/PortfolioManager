@@ -33,7 +33,7 @@ namespace PortfolioManager.Test
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.GetASXCode(_Dividend.Stock);
+            lblASXCode.Text = _StockManager.StockService.GetASXCode(_Dividend.Stock);
             dtpRecordDate.Value = _Dividend.ActionDate;
             dtpPaymentDate.Value = _Dividend.PaymentDate;
             txtDividendAmount.Text =  MathUtils.FormatCurrency(_Dividend.DividendAmount, false);
@@ -61,7 +61,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _Dividend = corporateAction as Dividend;
             SetFormValues();
@@ -93,7 +93,7 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _Dividend = corporateAction as Dividend;
             SetFormValues();

@@ -21,11 +21,11 @@ namespace PortfolioManager.Model.Portfolios
             _TransactionHandlers = new Dictionary<TransactionType, ITransactionHandler>();
 
             /* Add transaction handlers */
-            _TransactionHandlers.Add(TransactionType.Aquisition, new AquisitionHandler(stockService));
+            _TransactionHandlers.Add(TransactionType.Aquisition, new AquisitionHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.CostBaseAdjustment, new CostBaseAdjustmentHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.Disposal, new DisposalHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.Income, new IncomeReceivedHandler(parcelService, stockService));
-            _TransactionHandlers.Add(TransactionType.OpeningBalance, new OpeningBalanceHandler(stockService));
+            _TransactionHandlers.Add(TransactionType.OpeningBalance, new OpeningBalanceHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.ReturnOfCapital, new ReturnOfCapitalHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.UnitCountAdjustment, new UnitCountAdjustmentHandler(parcelService, stockService));
             var cashTransactionHandler = new CashTransactionHandler();

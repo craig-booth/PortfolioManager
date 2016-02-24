@@ -35,13 +35,13 @@ namespace PortfolioManager.Model.Utils
             return result;
         }
 
-        public static ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount)
+        public static ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount, StockService stockService)
         {
             ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[childStocks.Count];
             int i = 0;
             foreach (Stock childStock in childStocks)
             {
-                decimal percentageOfParent = childStock.PercentageOfParentCostBase(atDate);
+                decimal percentageOfParent = stockService.PercentageOfParentCostBase(childStock, atDate);
                 int relativeValue = (int)(percentageOfParent * 10000);
 
                 result[i].Units = relativeValue;

@@ -59,7 +59,7 @@ namespace PortfolioManager.Test
                     fromDate = DateTimeConstants.NoStartDate;
                 else
                     fromDate = dtpFromDate.Value;
-                _StockManager.Add(txtASXCode.Text, txtName.Text, fromDate, stockType);
+                _StockManager.StockService.Add(txtASXCode.Text, txtName.Text, fromDate, stockType);
             }
         }
 

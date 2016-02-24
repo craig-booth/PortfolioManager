@@ -37,8 +37,8 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
@@ -98,9 +98,9 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
-            transformation.AddResultStock(_StockManager.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            transformation.AddResultStock(_StockManager.StockService.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
@@ -186,9 +186,9 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 12.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
-            transformation.AddResultStock(_StockManager.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 12.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            transformation.AddResultStock(_StockManager.StockService.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
@@ -287,9 +287,9 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, false, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 1.00m, bbbAquistionDate);
-            transformation.AddResultStock(_StockManager.GetStock("CCC", recordDate).Id, 1, 2, 2.30m, cccAquistionDate);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, false, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 1.00m, bbbAquistionDate);
+            transformation.AddResultStock(_StockManager.StockService.GetStock("CCC", recordDate).Id, 1, 2, 2.30m, cccAquistionDate);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
@@ -360,9 +360,9 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 4.00m, false, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 1.00m, bbbAquistionDate);
-            transformation.AddResultStock(_StockManager.GetStock("CCC", recordDate).Id, 1, 2, 2.30m, cccAquistionDate);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 4.00m, false, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 1.00m, bbbAquistionDate);
+            transformation.AddResultStock(_StockManager.StockService.GetStock("CCC", recordDate).Id, 1, 2, 2.30m, cccAquistionDate);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
@@ -415,8 +415,8 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var implemenationDate = new DateTime(2010, 02, 05);
 
-            var transformation = new Transformation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, true, "Test");
-            transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            var transformation = new Transformation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, implemenationDate, 0.00m, true, "Test");
+            transformation.AddResultStock(_StockManager.StockService.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 

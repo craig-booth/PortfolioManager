@@ -18,13 +18,22 @@ namespace PortfolioManager.Model.Portfolios
     public abstract class TransacactionHandler
     {
 
+        protected readonly ParcelService _ParcelService;
+        protected readonly StockService _StockService;
+
+        public TransacactionHandler(ParcelService parcelService, StockService stockService)
+        {
+            _ParcelService = parcelService;
+            _StockService = stockService;
+        }
+
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
         {
             /* Handle Stapled Securities */
             if (stock.Type == StockType.StapledSecurity)
             {
                 /* Get child stocks */
-                var childStocks = stock.GetChildStocks(aquisitionDate);
+                var childStocks = _StockService.GetChildStocks(stock, aquisitionDate);
 
                 /* Apportion amount and cost base */
                 ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[childStocks.Count];
@@ -33,7 +42,7 @@ namespace PortfolioManager.Model.Portfolios
                 int i = 0;
                 foreach (Stock childStock in childStocks)
                 {
-                    decimal percentageOfParent = childStock.PercentageOfParentCostBase(aquisitionDate);
+                    decimal percentageOfParent = _StockService.PercentageOfParentCostBase(childStock, aquisitionDate);
                     int relativeValue = (int)(percentageOfParent * 10000);
 
                     apportionedAmounts[i].Units = relativeValue;

@@ -12,14 +12,10 @@ namespace PortfolioManager.Model.Portfolios
 {
     class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-
-        public readonly ParcelService _ParcelService;
-        public readonly StockService _StockService;
-
         public UnitCountAdjustmentHandler(ParcelService parcelService, StockService stockService)
+            : base (parcelService, stockService)
         {
-            _ParcelService = parcelService;
-            _StockService = stockService;
+
         }
 
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)

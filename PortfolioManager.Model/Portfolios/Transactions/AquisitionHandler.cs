@@ -9,12 +9,11 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Model.Portfolios
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler
-    {
-        public readonly StockService _StockService;
-
-        public AquisitionHandler(StockService stockService)
+    { 
+        public AquisitionHandler(ParcelService parcelService, StockService stockService)
+            : base (parcelService, stockService)
         {
-            _StockService = stockService;
+
         }
 
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)

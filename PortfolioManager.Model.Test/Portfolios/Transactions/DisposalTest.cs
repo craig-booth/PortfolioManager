@@ -44,7 +44,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedCGTEvents.Add(new CGTEvent( _StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1690.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent( _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1690.00m));
         }
     }
 
@@ -80,11 +80,11 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, ParcelEvent.Disposal)
                 {
                     FromDate = _TransactionDate
                 });
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 840.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 840.00m));
 
         }
     }
@@ -132,11 +132,11 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             // costbase prior to sale = (1500 - (1000 * 0.20)) = (1500 - 200) = 1300
             // costbase of sold shares = (1300 / 2) = 650
             // costbase of remainging shares = 1300 - 650 = 650
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 650.00m, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 500, 1.50m, 750.00m, 650.00m, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 650.00m, 590.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 650.00m, 590.00m));
 
         }
     }
@@ -183,8 +183,8 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1693.33m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 1200.00m, 846.67m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1693.33m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 500, 1200.00m, 846.67m));
         }
     }
 
@@ -230,13 +230,13 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.GetStock("AAA", _TransactionDate).Id, 300, 2.40m, 720.00m, 720.00m, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 300, 2.40m, 720.00m, 720.00m, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
 
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1691.67m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 200, 480.00m, 338.33m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 1691.67m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("AAA", _TransactionDate).Id, _TransactionDate, 200, 480.00m, 338.33m));
 
         }
     }
@@ -275,9 +275,9 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 3398.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 1000, 4500.00m, 6796.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 1000, 9000.00m, 6796.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 1000, 1500.00m, 3398.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 1000, 4500.00m, 6796.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 1000, 9000.00m, 6796.00m));
         }
     }
 
@@ -315,24 +315,24 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4500.00m, 3396.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4500.00m, 3396.00m));
         }
     }
 
@@ -385,24 +385,24 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS1", _TransactionDate).Id, 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS2", _TransactionDate).Id, 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4450.00m, purchaseId, ParcelEvent.Disposal)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS3", _TransactionDate).Id, 500, 9.00m, 4500.00m, 4450.00m, purchaseId, ParcelEvent.Disposal)
             {
                 FromDate = _TransactionDate
             });
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4450.00m, 3396.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS1", _TransactionDate).Id, _TransactionDate, 500, 750.00m, 1698.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS2", _TransactionDate).Id, _TransactionDate, 500, 2250.00m, 3396.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("SSS3", _TransactionDate).Id, _TransactionDate, 500, 4450.00m, 3396.00m));
 
             _ExpectedIncome.Add(new Income(taxDeferredIncome));
         }

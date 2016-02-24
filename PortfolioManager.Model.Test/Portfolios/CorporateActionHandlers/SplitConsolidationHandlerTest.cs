@@ -38,7 +38,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            var splitConsolidation = new SplitConsolidation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, 2, 3, "Test");
+            var splitConsolidation = new SplitConsolidation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, 2, 3, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(splitConsolidation);
 
@@ -87,7 +87,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var splitConsolidation = new SplitConsolidation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, 2, 3, "Test");
+            var splitConsolidation = new SplitConsolidation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, 2, 3, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(splitConsolidation);
 
@@ -111,7 +111,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
         {
             var recordDate = new DateTime(2010, 01, 01);
 
-            var splitConsolidation = new SplitConsolidation(_StockManager.GetStock("AAA", recordDate).Id, recordDate, 2, 3, "Test");
+            var splitConsolidation = new SplitConsolidation(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, 2, 3, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(splitConsolidation);
 

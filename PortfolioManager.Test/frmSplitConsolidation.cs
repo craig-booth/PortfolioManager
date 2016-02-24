@@ -38,7 +38,7 @@ namespace PortfolioManager.Test
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.GetASXCode(_SplitConsolidation.Stock);
+            lblASXCode.Text = _StockManager.StockService.GetASXCode(_SplitConsolidation.Stock);
             dtpActionDate.Value = _SplitConsolidation.ActionDate;
             txtOriginalUnits.Text = _SplitConsolidation.OldUnits.ToString();
             txtNewUnits.Text = _SplitConsolidation.NewUnits.ToString();
@@ -62,7 +62,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _SplitConsolidation = corporateAction as SplitConsolidation;
             SetFormValues();
@@ -91,7 +91,7 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _SplitConsolidation = corporateAction as SplitConsolidation;
             SetFormValues();

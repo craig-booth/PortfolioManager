@@ -19,11 +19,11 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
         protected override void AddStocks()
         {
 
-            var NWSLV = _StockManager.Add("NWSLV", "News Corporation");
-            var NNCLV = _StockManager.Add("NNCLV", "New News Corp");
+            var NWSLV = _StockManager.StockService.Add("NWSLV", "News Corporation");
+            var NNCLV = _StockManager.StockService.Add("NNCLV", "New News Corp");
 
-            NWSLV.ChangeASXCode(new DateTime(2013, 07, 02), "FOXLV", "21st century fox");
-            NNCLV.ChangeASXCode(new DateTime(2013, 09, 02), "NWSLV", "News Corporation post demerger");
+            _StockManager.StockService.ChangeASXCode(NWSLV, new DateTime(2013, 07, 02), "FOXLV", "21st century fox");
+            _StockManager.StockService.ChangeASXCode(NNCLV, new DateTime(2013, 09, 02), "NWSLV", "News Corporation post demerger");
 
         }
 
@@ -101,21 +101,21 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
 
             _TransactionDate = new DateTime(2015, 02, 10);
 
-            //  _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), _StockManager.GetStock("NNCLV", _TransactionDate).Id, 68, 16.60m, 68 * 16.60m, 68 * 16.60m, ParcelEvent.Aquisition));
-            //  _ExpectedParcels.Add(new ShareParcel(new DateTime(2004, 11, 24), _StockManager.GetStock("FOXLV", _TransactionDate).Id, 235, 23.06m, 235 * 23.06m, 4453.37m, ParcelEvent.CostBaseReduction)
+            //  _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), _StockManager.StockService.GetStock("NNCLV", _TransactionDate).Id, 68, 16.60m, 68 * 16.60m, 68 * 16.60m, ParcelEvent.Aquisition));
+            //  _ExpectedParcels.Add(new ShareParcel(new DateTime(2004, 11, 24), _StockManager.StockService.GetStock("FOXLV", _TransactionDate).Id, 235, 23.06m, 235 * 23.06m, 4453.37m, ParcelEvent.CostBaseReduction)
             //  {
             //      FromDate = new DateTime(2013, 06, 28)
             //  });
-            //  _ExpectedParcels.Add(new ShareParcel(new DateTime(2007, 07, 27), _StockManager.GetStock("FOXLV", _TransactionDate).Id, 40, 21.76m, 40 * 21.76m, 722.58m, ParcelEvent.CostBaseReduction)
+            //  _ExpectedParcels.Add(new ShareParcel(new DateTime(2007, 07, 27), _StockManager.StockService.GetStock("FOXLV", _TransactionDate).Id, 40, 21.76m, 40 * 21.76m, 722.58m, ParcelEvent.CostBaseReduction)
             //  {
             //      FromDate = new DateTime(2013, 06, 28)
             //  });
 
             _ExpectedIncome.Add(new Income("NWSLV", 0.00m, 0.00m, 0.00m, 0.00m, 12.20m));
 
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("NNCLV", new DateTime(2013, 07, 22)).Id, new DateTime(2013, 07, 22), 68, 68 * 16.60m, (68 * 17.32m) - 19.95m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 235, 4453.37m, (235 * 35.79m) - 17.05m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 40, 722.58m, (40 * 35.79m) - 2.90m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("NNCLV", new DateTime(2013, 07, 22)).Id, new DateTime(2013, 07, 22), 68, 68 * 16.60m, (68 * 17.32m) - 19.95m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 235, 4453.37m, (235 * 35.79m) - 17.05m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 40, 722.58m, (40 * 35.79m) - 2.90m));
         }
     }
 }
