@@ -96,7 +96,7 @@ namespace PortfolioManager.Test
         private void DisplayCorporateActions()
         {
 
-            var corporateActions = _MyPortfolio.CorporateActionService.GetUnappliedCorparateActions();
+            var corporateActions = _MyPortfolio.CorporateActionService.GetUnappliedCorporateActions();
             lsvCorporateActions.Items.Clear();
             foreach (ICorporateAction corporateAction in corporateActions)
             {
@@ -260,7 +260,7 @@ namespace PortfolioManager.Test
         private void btnStockManager_Click(object sender, EventArgs e)
         {
             var stockManagerForm = new frmStockManager(_StockDatabase);
-            stockManagerForm.CorparateActionAdded += CorporateActionAdded;
+            stockManagerForm.CorporateActionAdded += CorporateActionAdded;
             stockManagerForm.ShowDialog();
         }
 

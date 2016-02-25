@@ -120,6 +120,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
 
             var transformation = new Transformation(_StockDatabase, _StockManager.GetStock("AAA", recordDate).Id, recordDate, implementationDate, 0.00m, true, "Test");
             transformation.AddResultStock(_StockManager.GetStock("BBB", recordDate).Id, 2, 3, 0.20m);
+            transformation.AddResultStock(_StockManager.GetStock("CCC", recordDate).Id, 1, 2, 0.30m);
             compositeAction.AddChildAction(transformation);
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(compositeAction);
@@ -146,19 +147,19 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
                 new OpeningBalance()
                 {
                     TransactionDate = implementationDate,
-                    ASXCode = "BBB",
-                    AquisitionDate = purchaseDate2,
-                    Units = 750,
-                    CostBase = 0.20m * (500 * 15.00m + 19.95m),
+                    ASXCode = "CCC",
+                    AquisitionDate = purchaseDate1,
+                    Units = 2000,
+                    CostBase = 0.30m * (1000 * 10.00m + 19.95m),
                     Comment = "Test"
                 },
                 new OpeningBalance()
                 {
                     TransactionDate = implementationDate,
-                    ASXCode = "CCC",
-                    AquisitionDate = purchaseDate1,
-                    Units = 2000,
-                    CostBase = 0.30m * (1000 * 10.00m + 19.95m),
+                    ASXCode = "BBB",
+                    AquisitionDate = purchaseDate2,
+                    Units = 750,
+                    CostBase = 0.20m * (500 * 15.00m + 19.95m),
                     Comment = "Test"
                 },
                 new OpeningBalance()

@@ -269,6 +269,22 @@ namespace PortfolioManager.Model.Stocks
             return splitConsolidation;
         }
 
+        public CompositeAction AddCompositeAction(DateTime actionDate, string description)
+        {
+            CompositeAction compositeAction;
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                compositeAction = new CompositeAction(_Database, Id, actionDate, description);
+                unitOfWork.CorporateActionRepository.Add(compositeAction);
+
+                unitOfWork.Save();
+
+            }
+
+            return compositeAction;
+        }
+
         public Dividend AddDividend(DateTime actionDate, DateTime paymentDate, decimal amount, decimal percentFranked, decimal companyTaxRate, string description)
         {
             return AddDividend(actionDate, paymentDate, amount, percentFranked, companyTaxRate, 0.00M, description);

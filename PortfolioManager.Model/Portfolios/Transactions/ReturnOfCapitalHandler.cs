@@ -48,10 +48,10 @@ namespace PortfolioManager.Model.Portfolios
                 var costBaseReduction = parcelAtPaymentDate.Units * returnOfCapital.Amount;
 
                 if (costBaseReduction <= parcelAtPaymentDate.CostBase)
-                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase - costBaseReduction, "");
+                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
                 else
                 {
-                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, parcelAtPaymentDate.Units, 0.00m, "");
+                    ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
 
                     var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, returnOfCapital.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
                     unitOfWork.CGTEventRepository.Add(cgtEvent);

@@ -50,6 +50,7 @@
     <Compile Include="Portfolios\CGTService.cs" />
     <Compile Include="Portfolios\CorporateActionService.cs" />
     <Compile Include="Portfolios\CorporateActions\CapitalReturnHandler.cs" />
+    <Compile Include="Portfolios\CorporateActions\CompositeActionHandler.cs" />
     <Compile Include="Portfolios\CorporateActions\CorporateActionHandler.cs" />
     <Compile Include="Portfolios\CorporateActions\DividendHandler.cs" />
     <Compile Include="Portfolios\CorporateActions\SplitConsolidationHandler.cs" />

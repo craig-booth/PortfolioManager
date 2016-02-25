@@ -13,7 +13,7 @@ namespace PortfolioManager.Model.Stocks
     {
 
         private IStockDatabase _Database;
-        private List<ICorporateAction> _Children; 
+        public List<ICorporateAction> _Children; 
 
         public Guid Id { get; private set; }
         public Guid Stock { get; private set; }
@@ -43,6 +43,19 @@ namespace PortfolioManager.Model.Stocks
             Description = description;
 
             _Children = new List<ICorporateAction>();
+        }
+
+        public void Change(DateTime actionDate, string description)
+        {
+            ActionDate = actionDate;
+            Description = description;
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                unitOfWork.CorporateActionRepository.Update(this);
+
+                unitOfWork.Save();
+            }
         }
 
         public void AddChildAction(ICorporateAction childAction)

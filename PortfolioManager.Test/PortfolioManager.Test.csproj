@@ -177,6 +177,9 @@
     <EmbeddedResource Include="frmCapitalReturn.resx">
       <DependentUpon>frmCapitalReturn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCompositeAction.resx">
+      <DependentUpon>frmCompositeAction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMultipleTransactions.resx">
       <DependentUpon>frmMultipleTransactions.cs</DependentUpon>
     </EmbeddedResource>

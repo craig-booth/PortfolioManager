@@ -56,6 +56,18 @@ namespace PortfolioManager.Data.Test.Stocks
             return result;
         }
 
+        protected ICorporateAction GetCorporateAction(Guid id)
+        {
+            ICorporateAction result;
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                result = unitOfWork.CorporateActionRepository.Get(id);
+            }
+
+            return result;
+        }
+
         [Test, Description("Test Get() for a corporate action that doesn't exist")]
         [ExpectedException(typeof(RecordNotFoundException))]
         public void GetNotExists()

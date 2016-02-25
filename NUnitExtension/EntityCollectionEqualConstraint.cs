@@ -37,11 +37,15 @@ namespace NUnitExtension
 
             while (expectedEnumerator.MoveNext())
             {
-                actualEnumerator.MoveNext();
+                if (actualEnumerator.MoveNext())
+                {
 
-                var comparer = EntityConstraint.GetComparer(expectedEnumerator.Current);
+                    var comparer = EntityConstraint.GetComparer(expectedEnumerator.Current);
 
-                if (!comparer.Equal(expectedEnumerator.Current, actualEnumerator.Current))
+                    if (!comparer.Equal(expectedEnumerator.Current, actualEnumerator.Current))
+                        return false;
+                }
+                else
                     return false;
             }
 
