@@ -10,13 +10,15 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
     public partial class frmCompositeAction : Form, ICorporateActionForm
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
+        private CorporateActionService _CorporateActionService;
         private CompositeAction _CompositeAction;
         private Stock _Stock;
 
@@ -25,16 +27,17 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmCompositeAction(StockManager stockManager)
+        public frmCompositeAction(StockService stockService, CorporateActionService corporateActionService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
+            _CorporateActionService = corporateActionService;
         }
 
 
         private void SetFormValues()
         {
-           lblASXCode.Text = _StockManager.StockService.GetASXCode(_CompositeAction.Stock);
+           lblASXCode.Text = _StockService.GetASXCode(_CompositeAction.Stock);
            dtpActionDate.Value = _CompositeAction.ActionDate;
            txtDescription.Text = _CompositeAction.Description;
         }
@@ -56,7 +59,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
@@ -65,7 +68,7 @@ namespace PortfolioManager.Test
                 _CompositeAction.ActionDate = dtpActionDate.Value;
                 _CompositeAction.Description = txtDescription.Text;
 
-                _StockManager.CorporateActionService.UpdateCorporateAction(_CompositeAction);
+                _CorporateActionService.UpdateCorporateAction(_CompositeAction);
                                     
                 return true;
             }
@@ -83,13 +86,13 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _StockManager.CorporateActionService.DeleteCorporateAction(_CompositeAction);
+                _CorporateActionService.DeleteCorporateAction(_CompositeAction);
                 return true;
             }
             return
@@ -103,7 +106,7 @@ namespace PortfolioManager.Test
                 _CompositeAction = new CompositeAction(_Stock.Id, dtpActionDate.Value,
                                     txtDescription.Text);
 
-                _StockManager.CorporateActionService.AddCorporateAction(_CompositeAction);
+                _CorporateActionService.AddCorporateAction(_CompositeAction);
                 
 
             }

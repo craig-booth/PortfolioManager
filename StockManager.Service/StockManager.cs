@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Utils;
 
-namespace PortfolioManager.Model.Stocks
+namespace StockManager.Service
 {
 
     public class StockManager
@@ -15,14 +14,14 @@ namespace PortfolioManager.Model.Stocks
         private readonly IStockDatabase _Database;
 
         public CorporateActionService CorporateActionService { get; private set; }
-        public StockService2 StockService { get; private set; }
+        public StockService StockService { get; private set; }
 
         public StockManager(IStockDatabase database)
         {
             _Database = database;
 
             CorporateActionService = new CorporateActionService(_Database);
-            StockService = new StockService2(_Database);
+            StockService = new StockService(_Database);
         }
 
         public void ImportStockPrices(string fileName)

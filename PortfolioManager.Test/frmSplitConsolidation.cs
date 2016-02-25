@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 
 namespace PortfolioManager.Test
@@ -19,7 +20,8 @@ namespace PortfolioManager.Test
     public partial class frmSplitConsolidation : Form, ICorporateActionForm
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
+        private CorporateActionService _CorporateActionService;
         private SplitConsolidation _SplitConsolidation;
         private Stock _Stock;
 
@@ -29,16 +31,17 @@ namespace PortfolioManager.Test
         }
 
 
-        public frmSplitConsolidation(StockManager stockManager)
+        public frmSplitConsolidation(StockService stockService, CorporateActionService corporateActionService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
+            _CorporateActionService = corporateActionService;
         }
 
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.StockService.GetASXCode(_SplitConsolidation.Stock);
+            lblASXCode.Text = _StockService.GetASXCode(_SplitConsolidation.Stock);
             dtpActionDate.Value = _SplitConsolidation.ActionDate;
             txtOriginalUnits.Text = _SplitConsolidation.OldUnits.ToString();
             txtNewUnits.Text = _SplitConsolidation.NewUnits.ToString();
@@ -62,7 +65,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _SplitConsolidation = corporateAction as SplitConsolidation;
             SetFormValues();
@@ -73,7 +76,7 @@ namespace PortfolioManager.Test
                 _SplitConsolidation.NewUnits = MathUtils.ParseInt(txtNewUnits.Text);
                 _SplitConsolidation.Description = txtDescription.Text;
 
-                _StockManager.CorporateActionService.UpdateCorporateAction(_SplitConsolidation);
+                _CorporateActionService.UpdateCorporateAction(_SplitConsolidation);
 
                 return true;
             }
@@ -91,13 +94,13 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _SplitConsolidation = corporateAction as SplitConsolidation;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _StockManager.CorporateActionService.DeleteCorporateAction(_SplitConsolidation);
+                _CorporateActionService.DeleteCorporateAction(_SplitConsolidation);
                 return true;
             }
             return
@@ -112,7 +115,7 @@ namespace PortfolioManager.Test
                                     MathUtils.ParseInt(txtOriginalUnits.Text),
                                     MathUtils.ParseInt(txtNewUnits.Text),
                                     txtDescription.Text);
-                _StockManager.CorporateActionService.AddCorporateAction(_SplitConsolidation);
+                _CorporateActionService.AddCorporateAction(_SplitConsolidation);
             }
         }
 

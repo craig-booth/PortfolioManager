@@ -11,6 +11,7 @@ using PortfolioManager.Data.Memory.Stocks;
 using PortfolioManager.Data.Memory.Portfolios;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
+using StockManager.Service;
 
 namespace PortfolioManager.Model.Test
 {
@@ -29,16 +30,16 @@ namespace PortfolioManager.Model.Test
         public PortfolioTestBase()
         {
             _StockDatabase = new SQLiteStockDatabase(":memory:");
-            var stockManager = new StockManager(_StockDatabase);
+            var stockManager = new StockManager.Service.StockManager(_StockDatabase);
             AddTestStocks(stockManager);
         }
 
 
-        public StockManager CreateStockManager()
+        public StockManager.Service.StockManager CreateStockManager()
         {
             var stockDatabase = new SQLiteStockDatabase(":memory:");
 
-            return new StockManager(stockDatabase);
+            return new StockManager.Service.StockManager(stockDatabase);
         }
 
         public PortfolioManager.Model.Portfolios.PortfolioManager CreatePortfolioManager()
@@ -56,7 +57,7 @@ namespace PortfolioManager.Model.Test
             return portfolioManager.CreatePortfolio("Test portfolio");
         }
 
-        public void AddTestStocks(StockManager stockManager)
+        public void AddTestStocks(StockManager.Service.StockManager stockManager)
         {
             var aaa = stockManager.StockService.Add("AAA", "Stock AAA", StockType.Ordinary);
             _AAAId = aaa.Id;

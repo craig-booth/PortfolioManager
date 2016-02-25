@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
@@ -21,7 +22,7 @@ namespace PortfolioManager.Test
     public partial class frmStockManager : Form
     {
         private CorporateActionFormFactory _CorporateActionFormFactory;
-        private StockManager _StockManager;
+        private StockManager.Service.StockManager _StockManager;
 
         //events
         public CorporateActionAdded CorporateActionAdded;
@@ -33,13 +34,13 @@ namespace PortfolioManager.Test
 
         public frmStockManager(IStockDatabase stockDatabase) : this()
         {
-            _StockManager = new StockManager(stockDatabase);
-            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockManager);
+            _StockManager = new StockManager.Service.StockManager(stockDatabase);
+            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockManager.StockService, _StockManager.CorporateActionService);
         }
 
         private void btnAddStock_Click(object sender, EventArgs e)
         {
-            if (frmStock.AddStock(_StockManager) == DialogResult.OK)
+            if (frmStock.AddStock(_StockManager.StockService) == DialogResult.OK)
                 LoadStockList();               
         }
 

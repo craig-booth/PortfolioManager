@@ -22,16 +22,20 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
-            
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
+
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.Get(stock2.Id, new DateTime(2002, 01, 01));
 
@@ -41,15 +45,20 @@ namespace PortfolioManager.Data.Test.Stocks
         [Test, Description("Test Get() at a particular date")]
         public void GetAtDate()
         {
-            Stock stock1, stock;
+            Stock stock, stock1, stock2;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stockService.ChangeASXCode(stock1, new DateTime(2002, 01, 01), "DEF", "Test 2");
+                stock2 = new Stock(Guid.NewGuid(), new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
+
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.Get(stock1.Id, new DateTime(2001, 01, 01));
             Assert.AreEqual(stock.ASXCode, "ABC");
@@ -65,17 +74,21 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
-            
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
+
             stock = database.StockQuery.Get(Guid.NewGuid(), new DateTime(2000, 01, 01));
         }
 
@@ -86,16 +99,20 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.Get(stock2.Id, new DateTime(2000, 01, 01));
         }
@@ -107,18 +124,20 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(Guid.NewGuid(), new DateTime(2002, 01, 01), new DateTime(2005, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stockService.Delist(stock2, new DateTime(2005, 01, 01));
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.Get(stock2.Id, new DateTime(2006, 01, 01));
         }
@@ -129,16 +148,20 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2002, 01, 01));
 
@@ -148,15 +171,20 @@ namespace PortfolioManager.Data.Test.Stocks
         [Test, Description("Test GetByASXCode() at a particular date")]
         public void GetByASXCodeAtDate()
         {
-            Stock stock1, stock, expectedStock;
+            Stock stock1, stock2, stock, expectedStock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stockService.ChangeASXCode(stock1, new DateTime(2002, 01, 01), "DEF", "Test 2");
+                stock2 = new Stock(stock1.Id, new DateTime(2000, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
+               
+                unitOfWork.Save();
+            }
 
             expectedStock = new Stock(stock1.Id, new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
             stock = database.StockQuery.GetByASXCode("ABC", new DateTime(2001, 01, 01));            
@@ -174,16 +202,20 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.GetByASXCode("XXX", new DateTime(2000, 01, 01));
         }
@@ -195,17 +227,21 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
-            
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
+
             stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2000, 01, 01));
         }
 
@@ -216,18 +252,20 @@ namespace PortfolioManager.Data.Test.Stocks
             Stock stock1, stock2, stock3, stock;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
-            
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stockService.Delist(stock2, new DateTime(2005, 01, 01));
+                stock2 = new Stock(Guid.NewGuid(), new DateTime(2002, 01, 01), new DateTime(2005, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             stock = database.StockQuery.GetByASXCode("DEF", new DateTime(2006, 01, 01));
         }
@@ -239,16 +277,20 @@ namespace PortfolioManager.Data.Test.Stocks
             string asxCode;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             asxCode = database.StockQuery.GetASXCode(stock1.Id, new DateTime(2000, 01, 01));
 
@@ -258,16 +300,21 @@ namespace PortfolioManager.Data.Test.Stocks
         [Test, Description("Test GetASXCode() at a particular date")]
         public void GetASXCodeAtDate()
         {
-            Stock stock1;
+            Stock stock1, stock2;
             string asxCode;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stockService.ChangeASXCode(stock1, new DateTime(2002, 01, 01), "DEF", "Test 2");
+                stock2 = new Stock(stock1.Id, new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "New Name", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
+
+                unitOfWork.Save();
+            }
 
             asxCode = database.StockQuery.GetASXCode(stock1.Id, new DateTime(2001, 01, 01));
             Assert.AreEqual(asxCode, "ABC");
@@ -284,17 +331,21 @@ namespace PortfolioManager.Data.Test.Stocks
             string asxCode;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
-            
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
-            
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
+
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
+
             asxCode = database.StockQuery.GetASXCode(Guid.NewGuid(), new DateTime(2000, 01, 01));
         }
 
@@ -306,16 +357,20 @@ namespace PortfolioManager.Data.Test.Stocks
             string asxCode;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
-            
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
+
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
+
+                unitOfWork.Save();
+            }
 
             asxCode = database.StockQuery.GetASXCode(stock2.Id, new DateTime(2000, 01, 01));
         }
@@ -328,18 +383,20 @@ namespace PortfolioManager.Data.Test.Stocks
             string asxCode;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-            stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock2);
+                stock2 = new Stock(Guid.NewGuid(), new DateTime(2002, 01, 01), new DateTime(2005, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-            stockService.Delist(stock2, new DateTime(2005, 01, 01));
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock3);
 
-            stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
-            stockService.Add(stock3);
+                unitOfWork.Save();
+            }
 
             asxCode = database.StockQuery.GetASXCode(stock2.Id, new DateTime(2006, 01, 01));
         }
@@ -351,16 +408,20 @@ namespace PortfolioManager.Data.Test.Stocks
             IReadOnlyCollection<Stock> children;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
-            stockService.Add(parent);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                unitOfWork.StockRepository.Add(parent);
 
-            child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
-            stockService.Add(child1);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                unitOfWork.StockRepository.Add(child1);
 
-            child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
-            stockService.Add(child2);
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                unitOfWork.StockRepository.Add(child2);
+
+                unitOfWork.Save();
+            }
 
             children = database.StockQuery.GetChildStocks(parent.Id, new DateTime(2000, 01, 01));
             Assert.AreEqual(children.Count, 2);
@@ -380,10 +441,14 @@ namespace PortfolioManager.Data.Test.Stocks
             IReadOnlyCollection<Stock> children;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.Ordinary, Guid.Empty);
-            stockService.Add(parent);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(parent);
+
+                unitOfWork.Save();
+            }
 
             children = database.StockQuery.GetChildStocks(parent.Id, new DateTime(2000, 01, 01));
             Assert.AreEqual(children.Count, 0);   
@@ -396,29 +461,34 @@ namespace PortfolioManager.Data.Test.Stocks
             decimal percent;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
 
-            parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
-            stockService.Add(parent);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                unitOfWork.StockRepository.Add(parent);
 
-            child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
-            stockService.Add(child1);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                unitOfWork.StockRepository.Add(child1);
 
-            stockService.AddRelativeNTA(child1, new DateTime(2000, 01, 01), 0.10M);
-            stockService.AddRelativeNTA(child1, new DateTime(2001, 01, 01), 0.20M);
-            stockService.AddRelativeNTA(child1, new DateTime(2002, 01, 01), 0.30M);
-            stockService.AddRelativeNTA(child1, new DateTime(2003, 01, 01), 0.40M);
-            stockService.AddRelativeNTA(child1, new DateTime(2004, 01, 01), 0.50M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
 
 
-            child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
-            stockService.Add(child2);
-            stockService.AddRelativeNTA(child2, new DateTime(2000, 01, 01), 0.80M);
-            stockService.AddRelativeNTA(child2, new DateTime(2001, 01, 01), 0.70M);
-            stockService.AddRelativeNTA(child2, new DateTime(2002, 01, 01), 0.60M);
-            stockService.AddRelativeNTA(child2, new DateTime(2003, 01, 01), 0.50M);
-            stockService.AddRelativeNTA(child2, new DateTime(2004, 01, 01), 0.40M);
-            
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                unitOfWork.StockRepository.Add(child2);
+
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M));
+
+                unitOfWork.Save();
+            }
+
             percent = database.StockQuery.PercentOfParentCost(parent.Id, child1.Id, new DateTime(2000, 06, 30));
             Assert.AreEqual(percent, 0.10M);
             percent = database.StockQuery.PercentOfParentCost(parent.Id, child1.Id, new DateTime(2002, 06, 30));
@@ -443,10 +513,14 @@ namespace PortfolioManager.Data.Test.Stocks
             decimal percent;
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
-            
-            child = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.Ordinary, Guid.Empty);
-            stockService.Add(child);
+
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                child = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(child);
+
+                unitOfWork.Save();
+            }
 
             percent = database.StockQuery.PercentOfParentCost(child.ParentId, child.Id, new DateTime(2000, 06, 30));
         }
@@ -469,19 +543,23 @@ namespace PortfolioManager.Data.Test.Stocks
 
 
             var database = CreateStockDatabase();
-            var stockService = new StockService2(database);
-            
-            parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
-            stockService.Add(parent);
 
-            child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
-            stockService.Add(child1);
+            using (var unitOfWork = database.CreateUnitOfWork())
+            {
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                unitOfWork.StockRepository.Add(parent);
 
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                unitOfWork.StockRepository.Add(child1);
 
-            child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
-            stockService.Add(child2);
-            
-            percent = database.StockQuery.PercentOfParentCost(parent.Id, child1.Id, new DateTime(2000, 06, 30));
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                unitOfWork.StockRepository.Add(child2);
+
+                unitOfWork.Save();
+            }
+        
+
+        percent = database.StockQuery.PercentOfParentCost(parent.Id, child1.Id, new DateTime(2000, 06, 30));
         }
     }
 }

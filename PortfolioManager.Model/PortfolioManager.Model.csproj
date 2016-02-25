@@ -80,12 +80,10 @@
     <Compile Include="Portfolios\Transactions\UnitCountAdjustment.cs" />
     <Compile Include="Portfolios\Transactions\UnitCountAdjustmentHandler.cs" />
     <Compile Include="Portfolios\Transactions\TransactionHandler.cs" />
-    <Compile Include="Stocks\CorporateActionService.cs" />
     <Compile Include="Stocks\CorporateActions\CapitalReturn.cs" />
     <Compile Include="Stocks\CorporateActions\CompositeAction.cs" />
     <Compile Include="Stocks\CorporateActions\Dividend.cs" />
     <Compile Include="Stocks\CorporateActions\SplitConsolidation.cs" />
-    <Compile Include="Stocks\StockManager.cs" />
     <Compile Include="Stocks\CorporateActions\CorporateAction.cs" />
     <Compile Include="Portfolios\Transactions\IncomeReceived.cs" />
     <Compile Include="Portfolios\Portfolio.cs" />
@@ -98,9 +96,6 @@
     <Compile Include="Portfolios\Transactions\Transaction.cs" />
     <Compile Include="Stocks\CorporateActions\Transformation.cs" />
     <Compile Include="Stocks\StockPrice.cs" />
-    <Compile Include="Stocks\StockPriceImporter.cs" />
-    <Compile Include="Stocks\StockPriceService.cs" />
-    <Compile Include="Stocks\StockService2.cs" />
     <Compile Include="Utils\DateTimeConstants.cs" />
     <Compile Include="Utils\MathUtils.cs" />
     <Compile Include="Utils\PortfolioUtils.cs" />

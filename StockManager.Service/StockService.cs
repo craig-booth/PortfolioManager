@@ -8,14 +8,14 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Data;
 
-namespace PortfolioManager.Model.Stocks
+namespace StockManager.Service
 {
-    public class StockService2
+    public class StockService
     {
 
         private IStockDatabase _Database;
 
-        public StockService2(IStockDatabase database)
+        public StockService(IStockDatabase database)
         {
             _Database = database;
         }

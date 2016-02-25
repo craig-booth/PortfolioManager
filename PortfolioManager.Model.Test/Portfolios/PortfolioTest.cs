@@ -12,6 +12,7 @@ using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
+using StockManager.Service;
 
 namespace PortfolioManager.Model.Test.Portfolios
 {
@@ -19,7 +20,7 @@ namespace PortfolioManager.Model.Test.Portfolios
     public abstract class PortfolioTest
     {
         protected SQLiteStockDatabase _StockDatabase;
-        protected StockManager _StockManager;
+        protected StockManager.Service.StockManager _StockManager;
         protected PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
         protected Portfolio _Portfolio;
 
@@ -42,7 +43,7 @@ namespace PortfolioManager.Model.Test.Portfolios
         public virtual void FixtureSetup()
         {
             _StockDatabase = new SQLiteStockDatabase(":memory:");
-            _StockManager = new StockManager(_StockDatabase);
+            _StockManager = new StockManager.Service.StockManager(_StockDatabase);
             AddStocks();
         }
 

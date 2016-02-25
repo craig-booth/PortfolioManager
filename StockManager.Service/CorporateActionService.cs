@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Utils;
+using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 
-namespace PortfolioManager.Model.Stocks
+namespace StockManager.Service
 {
     public class CorporateActionService
     {

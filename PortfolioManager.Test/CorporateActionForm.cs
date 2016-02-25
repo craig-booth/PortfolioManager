@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
@@ -20,25 +19,27 @@ namespace PortfolioManager.Test
 
     public class CorporateActionFormFactory
     {
-        private StockManager _StockManager;
+        private StockService _StockService;
+        private CorporateActionService _CorporateActionService;
 
-        public CorporateActionFormFactory(StockManager stockManager)
+        public CorporateActionFormFactory(StockService stockService, CorporateActionService corporateActionService)
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
+            _CorporateActionService = corporateActionService;
         }
 
         public ICorporateActionForm CreateCorporateActionForm(CorporateActionType type)
         {
             if (type == CorporateActionType.Dividend)
-                return new frmDividend(_StockManager);
+                return new frmDividend(_StockService, _CorporateActionService);
             else if (type == CorporateActionType.CapitalReturn)
-                return new frmCapitalReturn(_StockManager);
+                return new frmCapitalReturn(_StockService, _CorporateActionService);
             else if (type == CorporateActionType.Transformation)
-                return new frmTransformation(_StockManager);
+                return new frmTransformation(_StockService, _CorporateActionService);
             else if (type == CorporateActionType.SplitConsolidation)
-                return new frmSplitConsolidation(_StockManager);
+                return new frmSplitConsolidation(_StockService, _CorporateActionService);
             else if (type == CorporateActionType.Composite)
-                return new frmCompositeAction(_StockManager);
+                return new frmCompositeAction(_StockService, _CorporateActionService);
             else
                 throw new NotSupportedException();
         }

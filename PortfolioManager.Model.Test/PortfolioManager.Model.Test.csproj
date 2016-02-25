@@ -83,6 +83,10 @@
       <Project>{befae5c7-fdc4-41a6-ba2b-785fd54fb805}</Project>
       <Name>PortfolioManager.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StockManager.Service\StockManager.Service.csproj">
+      <Project>{7171f628-22a3-4f8e-80ac-e4a29993eb62}</Project>
+      <Name>StockManager.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

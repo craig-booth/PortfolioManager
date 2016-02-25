@@ -10,13 +10,15 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
     public partial class frmTransformation : Form, ICorporateActionForm
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
+        private CorporateActionService _CorporateActionService;
         private Transformation _Transformation;
         private BindingList<ResultStockDataRecord> _ResultingStockRecords;
         private Stock _Stock;
@@ -26,16 +28,17 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmTransformation(StockManager stockManager)
+        public frmTransformation(StockService stockService, CorporateActionService corporateActionService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
+            _CorporateActionService = corporateActionService;
 
             DataGridViewComboBoxColumn resultingStockColumn = grdResultingStocks.Columns["colResultingStock"] as DataGridViewComboBoxColumn;
             resultingStockColumn.DataPropertyName = "Stock";
             resultingStockColumn.DisplayMember = "Name";
             resultingStockColumn.ValueMember = "Id";           
-            resultingStockColumn.Items.AddRange(_StockManager.StockService.GetStocks().ToArray());
+            resultingStockColumn.Items.AddRange(_StockService.GetStocks().ToArray());
 
             grdResultingStocks.Columns["colOriginalUnits"].DataPropertyName = "OriginalUnits";
             grdResultingStocks.Columns["colNewUnits"].DataPropertyName = "NewUnits";
@@ -60,7 +63,7 @@ namespace PortfolioManager.Test
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.StockService.GetASXCode(_Transformation.Stock);
+            lblASXCode.Text = _StockService.GetASXCode(_Transformation.Stock);
             dtpRecordDate.Value = _Transformation.ActionDate;
             txtDescription.Text = _Transformation.Description;
             txtCashComponent.Text = MathUtils.FormatCurrency(_Transformation.CashComponent, false);
@@ -98,7 +101,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _Transformation = corporateAction as Transformation;
             SetFormValues();
@@ -117,7 +120,7 @@ namespace PortfolioManager.Test
                    _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                 }
 
-                _StockManager.CorporateActionService.UpdateCorporateAction(_Transformation);
+                _CorporateActionService.UpdateCorporateAction(_Transformation);
 
                 return true;
             }
@@ -135,13 +138,13 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _Transformation = corporateAction as Transformation;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _StockManager.CorporateActionService.DeleteCorporateAction(_Transformation);
+                _CorporateActionService.DeleteCorporateAction(_Transformation);
                 return true;
             }
             return
@@ -164,7 +167,7 @@ namespace PortfolioManager.Test
                     _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
                 }
 
-                _StockManager.CorporateActionService.AddCorporateAction(_Transformation);
+                _CorporateActionService.AddCorporateAction(_Transformation);
             }
         }
 

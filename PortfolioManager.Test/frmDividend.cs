@@ -10,13 +10,15 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
     public partial class frmDividend : Form, ICorporateActionForm 
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
+        private CorporateActionService _CorporateActionService;
         private Dividend _Dividend;
         private Stock _Stock;
 
@@ -25,15 +27,16 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmDividend(StockManager stockManager)
+        public frmDividend(StockService stockService, CorporateActionService corporateActionService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
+            _CorporateActionService = corporateActionService;
         }
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.StockService.GetASXCode(_Dividend.Stock);
+            lblASXCode.Text = _StockService.GetASXCode(_Dividend.Stock);
             dtpRecordDate.Value = _Dividend.ActionDate;
             dtpPaymentDate.Value = _Dividend.PaymentDate;
             txtDividendAmount.Text =  MathUtils.FormatCurrency(_Dividend.DividendAmount, false);
@@ -61,7 +64,7 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _Dividend = corporateAction as Dividend;
             SetFormValues();
@@ -75,7 +78,7 @@ namespace PortfolioManager.Test
                 _Dividend.DRPPrice = MathUtils.ParseDecimal(txtDRPPrice.Text);
                 _Dividend.Description = txtDescription.Text;
 
-                _StockManager.CorporateActionService.UpdateCorporateAction(_Dividend);
+                _CorporateActionService.UpdateCorporateAction(_Dividend);
 
                 return true;
             }
@@ -93,13 +96,13 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.StockService.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _Dividend = corporateAction as Dividend;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _StockManager.CorporateActionService.DeleteCorporateAction(_Dividend);
+                _CorporateActionService.DeleteCorporateAction(_Dividend);
                 return true;
             }
             return
@@ -117,7 +120,7 @@ namespace PortfolioManager.Test
                                                MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100, 
                                                MathUtils.ParseDecimal(txtDRPPrice.Text), 
                                                txtDescription.Text);
-                _StockManager.CorporateActionService.AddCorporateAction(_Dividend);
+                _CorporateActionService.AddCorporateAction(_Dividend);
             }
         }
 

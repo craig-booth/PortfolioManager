@@ -11,9 +11,9 @@ using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Utils;
+using PortfolioManager.Model.Stocks;
 
-namespace PortfolioManager.Model.Stocks
+namespace StockManager.Service
 {
 
     class StockPriceRecord

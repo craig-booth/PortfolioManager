@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Stocks

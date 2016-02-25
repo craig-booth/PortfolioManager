@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
@@ -17,30 +18,30 @@ namespace PortfolioManager.Test
     public partial class frmStock : Form
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
 
         public frmStock()
         {
             InitializeComponent();
         }
 
-        public frmStock(StockManager stockManager, Stock stock, Mode mode)
+        public frmStock(StockService stockService, Stock stock, Mode mode)
             : this()
         {
             _Mode = mode;
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
 
-        public static DialogResult EditStock(StockManager stockManager, Stock stock)
+        public static DialogResult EditStock(StockService stockService, Stock stock)
         {
-            frmStock form = new frmStock(stockManager, stock, Mode.Edit);
+            frmStock form = new frmStock(stockService, stock, Mode.Edit);
 
             return form.ShowDialog();
         }
 
-        public static DialogResult AddStock(StockManager stockManager)
+        public static DialogResult AddStock(StockService stockService)
         {
-            frmStock form = new frmStock(stockManager, null, Mode.Create);
+            frmStock form = new frmStock(stockService, null, Mode.Create);
 
             form.cboType.SelectedIndex = 0;
             form.chkNoStartDate.Checked = true;
@@ -59,7 +60,7 @@ namespace PortfolioManager.Test
                     fromDate = DateTimeConstants.NoStartDate;
                 else
                     fromDate = dtpFromDate.Value;
-                _StockManager.StockService.Add(txtASXCode.Text, txtName.Text, fromDate, stockType);
+                _StockService.Add(txtASXCode.Text, txtName.Text, fromDate, stockType);
             }
         }
 
