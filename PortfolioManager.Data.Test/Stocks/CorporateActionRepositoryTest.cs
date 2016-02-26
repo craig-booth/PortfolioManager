@@ -58,8 +58,6 @@ namespace PortfolioManager.Data.Test.Stocks
 
         protected void UpdateCorporateAction(ICorporateAction corporateAction)
         {
-            ICorporateAction result;
-
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
                 unitOfWork.CorporateActionRepository.Update(corporateAction);;
