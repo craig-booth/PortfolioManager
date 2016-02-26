@@ -22,7 +22,7 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<CGTEvent> GetEvents(DateTime fromDate, DateTime toDate)
         {
-            return _PortfolioQuery.GetCGTEvents(Guid.Empty, fromDate, toDate);
+            return _PortfolioQuery.GetCGTEvents(fromDate, toDate);
         }
 
     }

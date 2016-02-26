@@ -82,7 +82,7 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<Income> GetIncome(DateTime fromDate, DateTime toDate)
         {
-            var incomeTransactions = _PortfolioQuery.GetTransactions(Guid.Empty, TransactionType.Income, fromDate, toDate).Cast<IncomeReceived>();
+            var incomeTransactions = _PortfolioQuery.GetTransactions(TransactionType.Income, fromDate, toDate).Cast<IncomeReceived>();
 
             var transactionsByASXCode = from incomeReceived in incomeTransactions 
                               group incomeReceived by incomeReceived.ASXCode into g

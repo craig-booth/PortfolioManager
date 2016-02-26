@@ -27,7 +27,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return parcelsQuery.First();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime atDate)
+        public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
                                where atDate >= parcel.FromDate && atDate <= parcel.ToDate
@@ -36,7 +36,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate)
+        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
                                where (parcel.Stock == stock) && ((atDate >= parcel.FromDate && atDate <= parcel.ToDate))
@@ -45,7 +45,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<CGTEvent> GetCGTEvents(Guid portfolio, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
         {
             var cgtQuery = from cgt in _Database._CGTEvents 
                            where cgt.EventDate >= fromDate && cgt.EventDate <= toDate
@@ -55,7 +55,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate 
@@ -64,7 +64,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
@@ -73,7 +73,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.ASXCode == asxCode && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
@@ -82,7 +82,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.ASXCode == asxCode && transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate

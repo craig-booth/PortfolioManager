@@ -24,12 +24,12 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<ShareParcel> GetParcels(DateTime date)
         {
-            return _PortfolioQuery.GetAllParcels(Guid.Empty, date);
+            return _PortfolioQuery.GetAllParcels(date);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime date)
         {
-            return _PortfolioQuery.GetParcelsForStock(Guid.Empty, stock.Id, date);
+            return _PortfolioQuery.GetParcelsForStock(stock.Id, date);
         }
 
         public IReadOnlyCollection<ShareParcel> GetStapledSecurityParcels(Stock stock, DateTime date)

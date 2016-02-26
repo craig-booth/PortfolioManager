@@ -82,17 +82,17 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
-            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Guid.Empty, fromDate, toDate);
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(fromDate, toDate);
         }
 
         public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
-            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Guid.Empty, asxCode, fromDate, toDate);
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(asxCode, fromDate, toDate);
         }
 
         public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType type, DateTime fromDate, DateTime toDate)
         {
-            return _PortfolioDatabase.PortfolioQuery.GetTransactions(Guid.Empty, asxCode, type, fromDate, toDate);
+            return _PortfolioDatabase.PortfolioQuery.GetTransactions(asxCode, type, fromDate, toDate);
         }
 
         public void UpdateTransaction(ITransaction transaction)

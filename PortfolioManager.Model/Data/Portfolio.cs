@@ -42,12 +42,12 @@ namespace PortfolioManager.Model.Data
     public interface IPortfolioQuery
     {
         ShareParcel GetParcel(Guid id, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate);
-        IReadOnlyCollection<CGTEvent> GetCGTEvents(Guid portfolio, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, TransactionType transactionType, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate);
+        IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime atDate);
+        IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
     }
 }
