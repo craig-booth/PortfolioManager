@@ -219,6 +219,7 @@ namespace PortfolioManager.Data.Test.Stocks
         }
 
         [Test, Description("Test Delete() by Id not exists")]
+        [ExpectedException(typeof(RecordNotFoundException))]
         public void DeleteByIdNotExists()
         {
             Stock parent, child;

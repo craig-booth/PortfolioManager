@@ -69,25 +69,21 @@ namespace PortfolioManager.Data.Test.Stocks
         [Test, Description("Test Update() updating child action")]
         public void UpdateCompositeActionUpdateChildAction()
         {
-            throw new NotSupportedException();
-            /*
             var actionDate = new DateTime(2005, 10, 10);
 
-            var compositeAction = new CompositeAction(_Database, _Stock.Id, actionDate, "Test");
+            var compositeAction = new CompositeAction(_Stock.Id, actionDate, "Test");
+            var childAction1 = new CapitalReturn(_Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
+            compositeAction.Children.Add(childAction1);
+            var childAction2 = new Dividend(_Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
+            compositeAction.Children.Add(childAction2);
             AddCorporateAction(compositeAction);
 
-            var childAction1 = new CapitalReturn(_Database, _Stock.Id, actionDate, new DateTime(2005, 10, 15), 5.00m, "Test");
-            compositeAction.AddChildAction(childAction1);
-            var childAction2 = new Dividend(_Database, _Stock.Id, actionDate, new DateTime(2005, 11, 12), 0.45m, 100.00m, 30.00m, 0.00m, "Test");
-            compositeAction.AddChildAction(childAction2);
+            childAction2.DividendAmount = 50.00m;
+            UpdateCorporateAction(compositeAction);
 
-            var compositeAction2 = GetCorporateAction(compositeAction.Id) as CompositeAction;
+            var result = GetCorporateAction(compositeAction.Id) as CompositeAction;
 
-            var capitalReturn = compositeAction2.Children[0] as CapitalReturn;
-            capitalReturn.Change()
-
-
-            Assert.That(result, EntityConstraint.EqualTo((compositeAction))); */
+            Assert.That(result, EntityConstraint.EqualTo((compositeAction)));
         }
 
         [Test, Description("Test Update() for a Composite Action - remove child action")]
