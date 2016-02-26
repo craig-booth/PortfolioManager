@@ -33,7 +33,7 @@ namespace PortfolioManager.Model.Portfolios
             PurchaseId = Guid.Empty;
         }
 
-        protected internal ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
+        public ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
             : this()
         {
             FromDate = aquisitionDate;
@@ -47,7 +47,7 @@ namespace PortfolioManager.Model.Portfolios
             Event = parcelEvent;
         }
 
-        protected internal ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
+        public ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
             : this()
         {
             FromDate = aquisitionDate;

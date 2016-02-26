@@ -22,16 +22,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _Connection = database._Connection;
         }
 
-        public Portfolio Get(Guid id)
-        {
-            return null;
-        }
-
-        public IReadOnlyCollection<Portfolio> GetAllPortfolios()
-        {
-            return _Database._Portfolios.AsReadOnly();
-        }
-
         public ShareParcel GetParcel(Guid id, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels

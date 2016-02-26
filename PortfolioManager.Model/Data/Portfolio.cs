@@ -17,17 +17,11 @@ namespace PortfolioManager.Model.Data
 
     public interface IPortfolioUnitOfWork : IDisposable
     {
-        IPortfolioRepository PortfolioRepository { get; }
         IParcelRepository ParcelRepository { get; }
         ITransactionRepository TransactionRepository { get; }
         ICGTEventRepository CGTEventRepository { get; }
 
         void Save();
-    }
-
-    public interface IPortfolioRepository : IRepository<Portfolio>
-    {
-        
     }
 
     public interface IParcelRepository : IEffectiveDatedRepository<ShareParcel>
@@ -47,10 +41,6 @@ namespace PortfolioManager.Model.Data
 
     public interface IPortfolioQuery
     {
-        Portfolio Get(Guid id);
-
-        IReadOnlyCollection<Portfolio> GetAllPortfolios();
-
         ShareParcel GetParcel(Guid id, DateTime atDate);
         IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime atDate);
         IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate);

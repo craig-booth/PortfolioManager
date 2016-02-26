@@ -9,6 +9,9 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
+
+    public enum CGTCalculationMethod { MinimizeGain, MaximizeGain, FirstInFirstOut, LastInFirstOut }
+
     public class Disposal : ITransaction
     {
         public Guid Id { get; private set; }

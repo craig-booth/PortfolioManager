@@ -44,27 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Portfolios\CorporateActionHandlers\CapitalReturnHandlerTest.cs" />
-    <Compile Include="Portfolios\CorporateActionHandlers\CompositeActionHandlerTest.cs" />
-    <Compile Include="Portfolios\CorporateActionHandlers\DividendHandlerTest.cs" />
-    <Compile Include="Portfolios\CorporateActionHandlers\SplitConsolidationHandlerTest.cs" />
-    <Compile Include="Portfolios\CorporateActionHandlers\TransformationHandlerTest.cs" />
-    <Compile Include="Portfolios\PortfolioTest.cs" />
-    <Compile Include="Portfolios\ShareParcelComparer.cs" />
-    <Compile Include="Portfolios\Transactions\ActualScenarios.cs" />
-    <Compile Include="Portfolios\Transactions\AquisitionTest.cs" />
-    <Compile Include="Portfolios\Transactions\CostbaseAdjustmentTest.cs" />
-    <Compile Include="Portfolios\Transactions\DisposalTest.cs" />
-    <Compile Include="Portfolios\Transactions\IncomeReceivedTest.cs" />
-    <Compile Include="Portfolios\Transactions\OpeningBalanceTest.cs" />
-    <Compile Include="Portfolios\Transactions\ReturnOfCapitalTest.cs" />
-    <Compile Include="Portfolios\Transactions\TransactionTest.cs" />
-    <Compile Include="Portfolios\Transactions\UnitCountAdjustmentTest.cs" />
-    <Compile Include="PortfolioTestBase.cs" />
+    <Compile Include="MathUtilsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stocks\StockManagerTest.cs" />
-    <Compile Include="Stocks\StockTest.cs" />
-    <Compile Include="Utils\MathUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NUnitExtension\NUnitExtension.csproj">

@@ -11,21 +11,9 @@ namespace PortfolioManager.Data.Memory.Portfolios
     public class MemoryPortfolioUnitOfWork : IPortfolioUnitOfWork 
     {
         private MemoryPortfolioDatabase _Database;
-        private MemoryPortfolioRepository _PortfolioRepository;
         private MemoryParcelRepository _ParcelRepository;
         private MemoryTransactionRepository _TransactionRepository;
         private MemoryCGTEventRepository _CGTEventRepository;
-
-        public IPortfolioRepository PortfolioRepository
-        {
-            get
-            {
-                if (_PortfolioRepository == null)
-                    _PortfolioRepository = new MemoryPortfolioRepository(_Database);
-
-                return _PortfolioRepository;
-            }
-        }
 
         public ITransactionRepository TransactionRepository
         {

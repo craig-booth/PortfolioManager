@@ -18,7 +18,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
         /* TODO: Priority Low, move this to the database */
-        internal List<Portfolio> _Portfolios { get; private set; }
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
@@ -29,7 +28,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             PortfolioQuery = new SQLitePortfolioQuery(this);
 
-            _Portfolios = new List<Portfolio>();
             _Parcels = new List<ShareParcel>();
             _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();

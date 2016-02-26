@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    class CashTransaction : ITransaction
+    public class CashTransaction : ITransaction
     {
         public Guid Id { get; private set; }
         public DateTime TransactionDate { get; set; }

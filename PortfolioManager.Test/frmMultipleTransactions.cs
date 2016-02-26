@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Test.TransactionControls;
+using PortfolioManager.Service;
 
 namespace PortfolioManager.Test
 {
