@@ -20,7 +20,7 @@ namespace PortfolioManager.Model.Test.Portfolios
     public abstract class PortfolioTest
     {
         protected SQLiteStockDatabase _StockDatabase;
-        protected StockManager.Service.StockManager _StockManager;
+        protected StockServiceRepository _StockServiceRepository;
         protected PortfolioManager.Model.Portfolios.PortfolioManager _PortfolioManager;
         protected Portfolio _Portfolio;
 
@@ -43,7 +43,7 @@ namespace PortfolioManager.Model.Test.Portfolios
         public virtual void FixtureSetup()
         {
             _StockDatabase = new SQLiteStockDatabase(":memory:");
-            _StockManager = new StockManager.Service.StockManager(_StockDatabase);
+            _StockServiceRepository = new StockServiceRepository(_StockDatabase);
             AddStocks();
         }
 
@@ -58,50 +58,50 @@ namespace PortfolioManager.Model.Test.Portfolios
 
         protected virtual void AddStocks()
         {
-            _StockManager.StockService.Add("AAA", "Stock AAA", StockType.Ordinary);
-            _StockManager.StockService.Add("BBB", "Stock BBB", StockType.Ordinary);
-            _StockManager.StockService.Add("CCC", "Trust CCC", StockType.Trust);
+            _StockServiceRepository.StockService.Add("AAA", "Stock AAA", StockType.Ordinary);
+            _StockServiceRepository.StockService.Add("BBB", "Stock BBB", StockType.Ordinary);
+            _StockServiceRepository.StockService.Add("CCC", "Trust CCC", StockType.Trust);
 
-            var sss = _StockManager.StockService.Add("SSS", "Stapled Security SSS", StockType.StapledSecurity);
-            var sss1 = _StockManager.StockService.Add("SSS1", "Stapled stock 1", StockType.Ordinary, sss);
-            var sss2 = _StockManager.StockService.Add("SSS2", "Stapled stock 2", StockType.Ordinary, sss);
-            var sss3 = _StockManager.StockService.Add("SSS3", "Stapled trust 3", StockType.Trust, sss);
+            var sss = _StockServiceRepository.StockService.Add("SSS", "Stapled Security SSS", StockType.StapledSecurity);
+            var sss1 = _StockServiceRepository.StockService.Add("SSS1", "Stapled stock 1", StockType.Ordinary, sss);
+            var sss2 = _StockServiceRepository.StockService.Add("SSS2", "Stapled stock 2", StockType.Ordinary, sss);
+            var sss3 = _StockServiceRepository.StockService.Add("SSS3", "Stapled trust 3", StockType.Trust, sss);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2000, 01, 01), 0.10m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2000, 01, 01), 0.30m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2000, 01, 01), 0.60m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2000, 01, 01), 0.10m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2000, 01, 01), 0.30m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2000, 01, 01), 0.60m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2001, 01, 01), 0.15m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2001, 01, 01), 0.35m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2001, 01, 01), 0.50m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2001, 01, 01), 0.15m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2001, 01, 01), 0.35m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2001, 01, 01), 0.50m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2002, 01, 01), 0.20m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2002, 01, 01), 0.40m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2002, 01, 01), 0.40m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2002, 01, 01), 0.20m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2002, 01, 01), 0.40m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2002, 01, 01), 0.40m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2003, 01, 01), 0.25m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2003, 01, 01), 0.45m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2003, 01, 01), 0.30m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2003, 01, 01), 0.25m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2003, 01, 01), 0.45m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2003, 01, 01), 0.30m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2004, 01, 01), 0.30m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2004, 01, 01), 0.50m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2004, 01, 01), 0.20m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2004, 01, 01), 0.30m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2004, 01, 01), 0.50m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2004, 01, 01), 0.20m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2005, 01, 01), 0.35m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2005, 01, 01), 0.55m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2005, 01, 01), 0.10m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2005, 01, 01), 0.35m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2005, 01, 01), 0.55m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2005, 01, 01), 0.10m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2006, 01, 01), 0.40m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2006, 01, 01), 0.40m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2006, 01, 01), 0.20m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2006, 01, 01), 0.40m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2006, 01, 01), 0.40m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2006, 01, 01), 0.20m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2007, 01, 01), 0.50m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2007, 01, 01), 0.20m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2007, 01, 01), 0.30m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2007, 01, 01), 0.50m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2007, 01, 01), 0.20m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2007, 01, 01), 0.30m);
 
-            _StockManager.StockService.AddRelativeNTA(sss1, new DateTime(2008, 01, 01), 0.60m);
-            _StockManager.StockService.AddRelativeNTA(sss2, new DateTime(2008, 01, 01), 0.05m);
-            _StockManager.StockService.AddRelativeNTA(sss3,  new DateTime(2008, 01, 01), 0.35m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss1, new DateTime(2008, 01, 01), 0.60m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss2, new DateTime(2008, 01, 01), 0.05m);
+            _StockServiceRepository.StockService.AddRelativeNTA(sss3,  new DateTime(2008, 01, 01), 0.35m);
 
         }
     }

@@ -9,14 +9,14 @@ using PortfolioManager.Model.Data;
 namespace StockManager.Service
 {
 
-    public class StockManager
+    public class StockServiceRepository
     {
         private readonly IStockDatabase _Database;
 
         public CorporateActionService CorporateActionService { get; private set; }
         public StockService StockService { get; private set; }
 
-        public StockManager(IStockDatabase database)
+        public StockServiceRepository(IStockDatabase database)
         {
             _Database = database;
 

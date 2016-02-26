@@ -19,11 +19,11 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
         protected override void AddStocks()
         {
 
-            var NWSLV = _StockManager.StockService.Add("NWSLV", "News Corporation");
-            var NNCLV = _StockManager.StockService.Add("NNCLV", "New News Corp");
+            var NWSLV = _StockServiceRepository.StockService.Add("NWSLV", "News Corporation");
+            var NNCLV = _StockServiceRepository.StockService.Add("NNCLV", "New News Corp");
 
-            _StockManager.StockService.ChangeASXCode(NWSLV, new DateTime(2013, 07, 02), "FOXLV", "21st century fox");
-            _StockManager.StockService.ChangeASXCode(NNCLV, new DateTime(2013, 09, 02), "NWSLV", "News Corporation post demerger");
+            _StockServiceRepository.StockService.ChangeASXCode(NWSLV, new DateTime(2013, 07, 02), "FOXLV", "21st century fox");
+            _StockServiceRepository.StockService.ChangeASXCode(NNCLV, new DateTime(2013, 09, 02), "NWSLV", "News Corporation post demerger");
 
         }
 
@@ -113,9 +113,9 @@ namespace PortfolioManager.Model.Test.Portfolios.ActualScenarios
 
             _ExpectedIncome.Add(new Income("NWSLV", 0.00m, 0.00m, 0.00m, 0.00m, 12.20m));
 
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("NNCLV", new DateTime(2013, 07, 22)).Id, new DateTime(2013, 07, 22), 68, 68 * 16.60m, (68 * 17.32m) - 19.95m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 235, 4453.37m, (235 * 35.79m) - 17.05m));
-            _ExpectedCGTEvents.Add(new CGTEvent(_StockManager.StockService.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 40, 722.58m, (40 * 35.79m) - 2.90m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockServiceRepository.StockService.GetStock("NNCLV", new DateTime(2013, 07, 22)).Id, new DateTime(2013, 07, 22), 68, 68 * 16.60m, (68 * 17.32m) - 19.95m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockServiceRepository.StockService.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 235, 4453.37m, (235 * 35.79m) - 17.05m));
+            _ExpectedCGTEvents.Add(new CGTEvent(_StockServiceRepository.StockService.GetStock("FOXLV", new DateTime(2015, 02, 10)).Id, new DateTime(2015, 02, 10), 40, 722.58m, (40 * 35.79m) - 2.90m));
         }
     }
 }

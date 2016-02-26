@@ -39,7 +39,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            var dividend = new Dividend(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 0.50m, 0.300m, 0.00m, "Test");
+            var dividend = new Dividend(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 0.50m, 0.300m, 0.00m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
@@ -93,7 +93,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            var dividend = new Dividend(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 0.80m, 0.30m, 0.00m, "Test");
+            var dividend = new Dividend(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 0.80m, 0.30m, 0.00m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
@@ -148,7 +148,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             _Portfolio.TransactionService.ProcessTransactions(transactions);
             _Portfolio.StockSetting.Add("AAA", new StockSetting("AAA") { DRPActive = true });
 
-            var dividend = new Dividend(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 1.00m, 0.30m, 20.00m, "Test");
+            var dividend = new Dividend(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 1.00m, 0.30m, 20.00m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
@@ -186,7 +186,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var paymentDate = new DateTime(2010, 02, 01);
 
-            var dividend = new Dividend(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 0.50m, 0.30m, 0.00m, "Test");
+            var dividend = new Dividend(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 0.50m, 0.30m, 0.00m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 

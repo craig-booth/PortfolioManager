@@ -42,7 +42,7 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 2000, 1.50m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 2000, 1.50m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             }); 
@@ -90,11 +90,11 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 2000, 1.50m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 2000, 1.50m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 1000, 2.40m, 1200.00m, 1200.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 1000, 2.40m, 1200.00m, 1200.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
@@ -162,19 +162,19 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 33, 15.00m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 33, 15.00m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 67, 6.00m, 1200.00m, 1200.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 67, 6.00m, 1200.00m, 1200.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 37, 10.00m, 1100.00m, 1100.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 37, 10.00m, 1100.00m, 1100.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockManager.StockService.GetStock("AAA", _TransactionDate).Id, 43, 10.00m, 1310.00m, 1310.00m, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 43, 10.00m, 1310.00m, 1310.00m, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
@@ -213,12 +213,12 @@ namespace PortfolioManager.Model.Test.Portfolios.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS1", _TransactionDate).Id, 2000, 1.50m, 1500.00m, 1500.00m, purchaseId, ParcelEvent.UnitCountChange)
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS1", _TransactionDate).Id, 2000, 1.50m, 1500.00m, 1500.00m, purchaseId, ParcelEvent.UnitCountChange)
             {
                 FromDate = _TransactionDate
             });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS2", _TransactionDate).Id, 1000, 4.50m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.OpeningBalance));
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockManager.StockService.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 9000.00m, purchaseId, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS2", _TransactionDate).Id, 1000, 4.50m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 9000.00m, purchaseId, ParcelEvent.OpeningBalance));
 
         }
     }

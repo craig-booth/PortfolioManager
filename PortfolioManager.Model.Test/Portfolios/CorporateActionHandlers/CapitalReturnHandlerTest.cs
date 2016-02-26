@@ -39,7 +39,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            var capitalReturn = new CapitalReturn(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, "Test");
+            var capitalReturn = new CapitalReturn(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(capitalReturn);
 
@@ -90,7 +90,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            var capitalReturn = new CapitalReturn(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, "Test");
+            var capitalReturn = new CapitalReturn(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(capitalReturn);
 
@@ -116,7 +116,7 @@ namespace PortfolioManager.Model.Test.Portfolios.CorporateActionHandlers
             var paymentDate = new DateTime(2010, 02, 01);
 
 
-            var capitalReturn = new CapitalReturn(_StockManager.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, "Test");
+            var capitalReturn = new CapitalReturn(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, "Test");
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(capitalReturn);
 

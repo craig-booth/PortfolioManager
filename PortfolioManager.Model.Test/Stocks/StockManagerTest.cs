@@ -17,7 +17,7 @@ namespace PortfolioManager.Model.Test.Stocks
         [Test, Description("Add Stock(string asxCode, string name)")]
         public void AddStock1()
         {
-            var manager = CreateStockManager();
+            var manager = CreateStockServiceRepository();
 
             manager.StockService.Add("ABC", "Test");
 
@@ -33,7 +33,7 @@ namespace PortfolioManager.Model.Test.Stocks
         [Test, Description("Add Stock(string asxCode, string name, DateTime fromDate)")]
         public void AddStock2()
         {
-            var manager = CreateStockManager();
+            var manager = CreateStockServiceRepository();
 
             var fromDate = new DateTime(2001, 06, 01);
             manager.StockService.Add("ABC", "Test", fromDate);
@@ -50,7 +50,7 @@ namespace PortfolioManager.Model.Test.Stocks
         [Test, Description("(string asxCode, string name, StockType type)")]
         public void AddStock3()
         {
-            var manager = CreateStockManager();
+            var manager = CreateStockServiceRepository();
 
             manager.StockService.Add("ABC", "Test", StockType.Trust);
 
@@ -66,7 +66,7 @@ namespace PortfolioManager.Model.Test.Stocks
         [Test, Description("Add Stock(string asxCode, string name, DateTime fromDate, StockType type)")]
         public void AddStock4()
         {
-            var manager = CreateStockManager();
+            var manager = CreateStockServiceRepository();
 
             var fromDate = new DateTime(2001, 06, 01);
             manager.StockService.Add("ABC", "Test", fromDate, StockType.Trust);
@@ -83,7 +83,7 @@ namespace PortfolioManager.Model.Test.Stocks
         [Test, Description("Get Stock")]
         public void GetStock()
         {
-            var manager = CreateStockManager();
+            var manager = CreateStockServiceRepository();
 
             var fromDate = new DateTime(2001, 06, 01);
             manager.StockService.Add("ABC", "Test", fromDate);

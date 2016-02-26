@@ -22,7 +22,7 @@ namespace PortfolioManager.Test
     public partial class frmStockManager : Form
     {
         private CorporateActionFormFactory _CorporateActionFormFactory;
-        private StockManager.Service.StockManager _StockManager;
+        private StockServiceRepository _StockServiceRepository;
 
         //events
         public CorporateActionAdded CorporateActionAdded;
@@ -34,13 +34,13 @@ namespace PortfolioManager.Test
 
         public frmStockManager(IStockDatabase stockDatabase) : this()
         {
-            _StockManager = new StockManager.Service.StockManager(stockDatabase);
-            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockManager.StockService, _StockManager.CorporateActionService);
+            _StockServiceRepository = new StockServiceRepository(stockDatabase);
+            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockServiceRepository.StockService, _StockServiceRepository.CorporateActionService);
         }
 
         private void btnAddStock_Click(object sender, EventArgs e)
         {
-            if (frmStock.AddStock(_StockManager.StockService) == DialogResult.OK)
+            if (frmStock.AddStock(_StockServiceRepository.StockService) == DialogResult.OK)
                 LoadStockList();               
         }
 
@@ -52,7 +52,7 @@ namespace PortfolioManager.Test
         private void LoadStockList()
         {
             lsvStocks.Items.Clear();
-            foreach (Stock stock in _StockManager.StockService.GetStocks())
+            foreach (Stock stock in _StockServiceRepository.StockService.GetStocks())
             {
                 ListViewItem item = lsvStocks.Items.Add(stock.ASXCode);
                 item.Tag = stock;
@@ -106,7 +106,7 @@ namespace PortfolioManager.Test
         {
             lsvCorporateActions.Items.Clear();
 
-            IEnumerable<ICorporateAction> corporateActions = _StockManager.CorporateActionService.GetCorporateActions(stock);
+            IEnumerable<ICorporateAction> corporateActions = _StockServiceRepository.CorporateActionService.GetCorporateActions(stock);
             foreach (ICorporateAction corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
@@ -144,7 +144,7 @@ namespace PortfolioManager.Test
                 {
                     Stock stock = (Stock)item.Tag;
 
-                    _StockManager.StockService.Delete(stock);
+                    _StockServiceRepository.StockService.Delete(stock);
                     lsvStocks.Items.Remove(item);
                 }
             }
@@ -197,7 +197,7 @@ namespace PortfolioManager.Test
                 {
                     ICorporateAction corporateAction = (ICorporateAction)item.Tag;
 
-                    _StockManager.CorporateActionService.DeleteCorporateAction(corporateAction);
+                    _StockServiceRepository.CorporateActionService.DeleteCorporateAction(corporateAction);
                 }
 
                 DisplayCorporateActions(stock);
@@ -236,7 +236,7 @@ namespace PortfolioManager.Test
                     if (! DividendExists(dividendRecord.RecordDate))
                     {
                        var dividend = new Dividend(stock.Id, dividendRecord.RecordDate, dividendRecord.PaymentDate, dividendRecord.Amount, dividendRecord.PercentFranked, 0.30m, "");
-                       _StockManager.CorporateActionService.AddCorporateAction(dividend);
+                       _StockServiceRepository.CorporateActionService.AddCorporateAction(dividend);
                     }
                 }
 
@@ -267,7 +267,7 @@ namespace PortfolioManager.Test
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
                 foreach (var fileName in openDialog.FileNames)
-                    _StockManager.ImportStockPrices(fileName);
+                    _StockServiceRepository.ImportStockPrices(fileName);
             }
         }
 
