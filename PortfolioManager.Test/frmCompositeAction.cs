@@ -18,7 +18,6 @@ namespace PortfolioManager.Test
     {
         private Mode _Mode;
         private StockService _StockService;
-        private CorporateActionService _CorporateActionService;
         private CompositeAction _CompositeAction;
         private CorporateActionFormFactory _CorporateActionFormFactory;
         private Stock _Stock;
@@ -28,13 +27,12 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmCompositeAction(StockService stockService, CorporateActionService corporateActionService)
+        public frmCompositeAction(StockService stockService)
             : this()
         {
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
 
-            _CorporateActionFormFactory = new CorporateActionFormFactory(stockService, corporateActionService);
+            _CorporateActionFormFactory = new CorporateActionFormFactory(stockService);
         }
 
 
@@ -51,7 +49,8 @@ namespace PortfolioManager.Test
 
         private void AddChildAction(ICorporateAction childAction)
         {
-            var item = lsvChildActions.Items.Add(childAction.Description);
+            var item = lsvChildActions.Items.Add(childAction.Type.ToString());
+            item.SubItems.Add(childAction.Description);
             item.Tag = childAction;
         }
 
@@ -91,10 +90,13 @@ namespace PortfolioManager.Test
                 _CompositeAction.ActionDate = dtpActionDate.Value;
                 _CompositeAction.Description = txtDescription.Text;
 
-                throw new Exception("Child Actions not supported");
-
-                _CorporateActionService.UpdateCorporateAction(_CompositeAction);
-                                    
+                _CompositeAction.Children.Clear();
+                foreach (ListViewItem item in lsvChildActions.Items)
+                {
+                    ICorporateAction childAction = item.Tag as ICorporateAction;
+                    _CompositeAction.Children.Add(childAction);
+                }
+                                                    
                 return true;
             }
             else
@@ -115,13 +117,7 @@ namespace PortfolioManager.Test
             _Mode = Mode.Delete;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _CorporateActionService.DeleteCorporateAction(_CompositeAction);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -131,11 +127,11 @@ namespace PortfolioManager.Test
                 _CompositeAction = new CompositeAction(_Stock.Id, dtpActionDate.Value,
                                     txtDescription.Text);
 
-                throw new Exception("Child Actions not supported");
-
-                _CorporateActionService.AddCorporateAction(_CompositeAction);
-                
-
+                foreach (ListViewItem item in lsvChildActions.Items)
+                {
+                    ICorporateAction childAction = item.Tag as ICorporateAction;
+                    _CompositeAction.Children.Add(childAction);
+                }
             }
         }
 

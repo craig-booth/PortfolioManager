@@ -18,7 +18,6 @@ namespace PortfolioManager.Test
     {
         private Mode _Mode;
         private StockService _StockService;
-        private CorporateActionService _CorporateActionService;
         private Transformation _Transformation;
         private BindingList<ResultStockDataRecord> _ResultingStockRecords;
         private Stock _Stock;
@@ -28,11 +27,10 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmTransformation(StockService stockService, CorporateActionService corporateActionService)
+        public frmTransformation(StockService stockService)
             : this()
         {
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
 
             DataGridViewComboBoxColumn resultingStockColumn = grdResultingStocks.Columns["colResultingStock"] as DataGridViewComboBoxColumn;
             resultingStockColumn.DataPropertyName = "Stock";
@@ -116,11 +114,7 @@ namespace PortfolioManager.Test
                 // Delete are re-add result stocks
                 _Transformation.ResultingStocks.RemoveAll(x => true);
                 foreach (ResultStockDataRecord resultingStockDataRecord in _ResultingStockRecords)
-                {
-                   _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
-                }
-
-                _CorporateActionService.UpdateCorporateAction(_Transformation);
+                   _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);               
 
                 return true;
             }
@@ -142,13 +136,7 @@ namespace PortfolioManager.Test
             _Mode = Mode.Delete;
             _Transformation = corporateAction as Transformation;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _CorporateActionService.DeleteCorporateAction(_Transformation);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         } 
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -163,11 +151,8 @@ namespace PortfolioManager.Test
 
 
                 foreach (ResultStockDataRecord resultingStockDataRecord in _ResultingStockRecords)
-                {
                     _Transformation.AddResultStock(resultingStockDataRecord.Stock, resultingStockDataRecord.OriginalUnits, resultingStockDataRecord.NewUnits, resultingStockDataRecord.CostBase, resultingStockDataRecord.AquisitionDate);
-                }
-
-                _CorporateActionService.AddCorporateAction(_Transformation);
+                
             }
         }
 

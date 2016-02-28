@@ -18,7 +18,6 @@ namespace PortfolioManager.Test
     {
         private Mode _Mode;
         private StockService _StockService;
-        private CorporateActionService _CorporateActionService;
         private Dividend _Dividend;
         private Stock _Stock;
 
@@ -27,11 +26,10 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmDividend(StockService stockService, CorporateActionService corporateActionService)
+        public frmDividend(StockService stockService)
             : this()
         {
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
         }
 
         private void SetFormValues()
@@ -78,8 +76,6 @@ namespace PortfolioManager.Test
                 _Dividend.DRPPrice = MathUtils.ParseDecimal(txtDRPPrice.Text);
                 _Dividend.Description = txtDescription.Text;
 
-                _CorporateActionService.UpdateCorporateAction(_Dividend);
-
                 return true;
             }
             else
@@ -100,13 +96,7 @@ namespace PortfolioManager.Test
             _Mode = Mode.Delete;
             _Dividend = corporateAction as Dividend;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _CorporateActionService.DeleteCorporateAction(_Dividend);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -120,7 +110,6 @@ namespace PortfolioManager.Test
                                                MathUtils.ParseDecimal(txtCompanyTaxRate.Text, 3.0m) / 100, 
                                                MathUtils.ParseDecimal(txtDRPPrice.Text), 
                                                txtDescription.Text);
-                _CorporateActionService.AddCorporateAction(_Dividend);
             }
         }
 

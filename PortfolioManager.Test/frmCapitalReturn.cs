@@ -18,7 +18,6 @@ namespace PortfolioManager.Test
     {
         private Mode _Mode;
         private StockService _StockService;
-        private CorporateActionService _CorporateActionService;
         private CapitalReturn _CapitalReturn;
         private Stock _Stock;
 
@@ -28,11 +27,10 @@ namespace PortfolioManager.Test
         }
 
 
-        public frmCapitalReturn(StockService stockService, CorporateActionService corporateActionService)
+        public frmCapitalReturn(StockService stockService)
             : this()
         {
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
         }
         
 
@@ -73,8 +71,6 @@ namespace PortfolioManager.Test
                 _CapitalReturn.Amount = MathUtils.ParseDecimal(txtAmount.Text);
                 _CapitalReturn.Description = txtDescription.Text;
 
-                _CorporateActionService.UpdateCorporateAction(_CapitalReturn);
-
                 return true;
             }
             else
@@ -95,13 +91,7 @@ namespace PortfolioManager.Test
             _Mode = Mode.Delete;
             _CapitalReturn = corporateAction as CapitalReturn;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _CorporateActionService.DeleteCorporateAction(_CapitalReturn);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         } 
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -109,7 +99,6 @@ namespace PortfolioManager.Test
             if (_Mode == Mode.Create)
             {
                 _CapitalReturn = new CapitalReturn(_Stock.Id, dtpRecordDate.Value, dtpPaymentDate.Value, MathUtils.ParseDecimal(txtAmount.Text), txtDescription.Text);
-                _CorporateActionService.AddCorporateAction(_CapitalReturn);
             }
         }
 

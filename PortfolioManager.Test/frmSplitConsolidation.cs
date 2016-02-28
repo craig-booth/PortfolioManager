@@ -21,7 +21,6 @@ namespace PortfolioManager.Test
     {
         private Mode _Mode;
         private StockService _StockService;
-        private CorporateActionService _CorporateActionService;
         private SplitConsolidation _SplitConsolidation;
         private Stock _Stock;
 
@@ -31,11 +30,10 @@ namespace PortfolioManager.Test
         }
 
 
-        public frmSplitConsolidation(StockService stockService, CorporateActionService corporateActionService)
+        public frmSplitConsolidation(StockService stockService)
             : this()
         {
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
         }
 
 
@@ -76,8 +74,6 @@ namespace PortfolioManager.Test
                 _SplitConsolidation.NewUnits = MathUtils.ParseInt(txtNewUnits.Text);
                 _SplitConsolidation.Description = txtDescription.Text;
 
-                _CorporateActionService.UpdateCorporateAction(_SplitConsolidation);
-
                 return true;
             }
             else
@@ -98,13 +94,7 @@ namespace PortfolioManager.Test
             _Mode = Mode.Delete;
             _SplitConsolidation = corporateAction as SplitConsolidation;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _CorporateActionService.DeleteCorporateAction(_SplitConsolidation);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -115,7 +105,6 @@ namespace PortfolioManager.Test
                                     MathUtils.ParseInt(txtOriginalUnits.Text),
                                     MathUtils.ParseInt(txtNewUnits.Text),
                                     txtDescription.Text);
-                _CorporateActionService.AddCorporateAction(_SplitConsolidation);
             }
         }
 

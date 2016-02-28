@@ -20,26 +20,24 @@ namespace PortfolioManager.Test
     public class CorporateActionFormFactory
     {
         private StockService _StockService;
-        private CorporateActionService _CorporateActionService;
 
-        public CorporateActionFormFactory(StockService stockService, CorporateActionService corporateActionService)
+        public CorporateActionFormFactory(StockService stockService)
         {
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
         }
 
         public ICorporateActionForm CreateCorporateActionForm(CorporateActionType type)
         {
             if (type == CorporateActionType.Dividend)
-                return new frmDividend(_StockService, _CorporateActionService);
+                return new frmDividend(_StockService);
             else if (type == CorporateActionType.CapitalReturn)
-                return new frmCapitalReturn(_StockService, _CorporateActionService);
+                return new frmCapitalReturn(_StockService);
             else if (type == CorporateActionType.Transformation)
-                return new frmTransformation(_StockService, _CorporateActionService);
+                return new frmTransformation(_StockService);
             else if (type == CorporateActionType.SplitConsolidation)
-                return new frmSplitConsolidation(_StockService, _CorporateActionService);
+                return new frmSplitConsolidation(_StockService);
             else if (type == CorporateActionType.Composite)
-                return new frmCompositeAction(_StockService, _CorporateActionService);
+                return new frmCompositeAction(_StockService);
             else
                 throw new NotSupportedException();
         }

@@ -35,7 +35,7 @@ namespace PortfolioManager.Test
         public frmStockManager(IStockDatabase stockDatabase) : this()
         {
             _StockServiceRepository = new StockServiceRepository(stockDatabase);
-            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockServiceRepository.StockService, _StockServiceRepository.CorporateActionService);
+            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockServiceRepository.StockService);
         }
 
         private void btnAddStock_Click(object sender, EventArgs e)
@@ -64,11 +64,7 @@ namespace PortfolioManager.Test
                 else
                 {
                     item.SubItems.Add(stock.Name);
-                }
-                
-                
-
-                
+                }              
             }
         }
 
@@ -94,6 +90,8 @@ namespace PortfolioManager.Test
 
             if (corporateAction != null)
             {
+                _StockServiceRepository.CorporateActionService.AddCorporateAction(corporateAction); 
+
                 DisplayCorporateActions(stock);
 
                 if (CorporateActionAdded != null)
@@ -174,6 +172,7 @@ namespace PortfolioManager.Test
                 ICorporateActionForm form = _CorporateActionFormFactory.CreateCorporateActionForm(corporateAction.Type);
                 if (form.EditCorporateAction(corporateAction))
                 {
+                    _StockServiceRepository.CorporateActionService.UpdateCorporateAction(corporateAction);
                     lsvCorporateActions.FocusedItem.Text = corporateAction.ActionDate.ToShortDateString();
                     lsvCorporateActions.FocusedItem.SubItems[1].Text = corporateAction.Description;
                 }

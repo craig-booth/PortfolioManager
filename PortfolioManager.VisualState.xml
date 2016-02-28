@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.nunit</TopNode>
-  <SelectedNode>[0-1000]C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.nunit</SelectedNode>
+  <TopNode>[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit</TopNode>
+  <SelectedNode>[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
-    <Node UniqueName="[0-1000]C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
-    <Node UniqueName="[0-1129]C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" Expanded="true" />
+    <Node UniqueName="[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
     <Node UniqueName="[0-1130]PortfolioManager" Expanded="true" />
     <Node UniqueName="[0-1131]PortfolioManager.Data" Expanded="true" />
     <Node UniqueName="[0-1132]PortfolioManager.Data.Test" Expanded="true" />
@@ -18,17 +17,14 @@
     <Node UniqueName="[0-1047]PortfolioManager.Data.Test.Stocks.StockQueryTest" Expanded="true" />
     <Node UniqueName="[0-1069]PortfolioManager.Data.Test.Stocks.StockRepositoryTest" Expanded="true" />
     <Node UniqueName="[0-1088]PortfolioManager.Data.Test.Stocks.TransformationCorporateActionRepositoryTest" Expanded="true" />
-    <Node UniqueName="[0-1140]C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Model.Test\bin\Debug\PortfolioManager.Model.Test.dll" Expanded="true" />
     <Node UniqueName="[0-1141]PortfolioManager" Expanded="true" />
     <Node UniqueName="[0-1142]PortfolioManager.Model" Expanded="true" />
     <Node UniqueName="[0-1143]PortfolioManager.Model.Test" Expanded="true" />
-    <Node UniqueName="[0-1327]C:\Users\craigb\Documents\GitHub\PortfolioManager\PortfolioManager.Service.Test\bin\Debug\PortfolioManager.Service.Test.dll" Expanded="true" />
     <Node UniqueName="[0-1328]PortfolioManager" Expanded="true" />
     <Node UniqueName="[0-1329]PortfolioManager.Service" Expanded="true" />
     <Node UniqueName="[0-1330]PortfolioManager.Service.Test" Expanded="true" />
     <Node UniqueName="[0-1332]PortfolioManager.Service.Test.CorporateActionHandlers" Expanded="true" />
     <Node UniqueName="[0-1331]PortfolioManager.Service.Test.Transactions" Expanded="true" />
-    <Node UniqueName="[0-1357]C:\Users\craigb\Documents\GitHub\PortfolioManager\StockManager.Service.Test\bin\Debug\StockManager.Service.Test.dll" Expanded="true" />
     <Node UniqueName="[0-1358]StockManager" Expanded="true" />
     <Node UniqueName="[0-1359]StockManager.Service" Expanded="true" />
     <Node UniqueName="[0-1360]StockManager.Service.Test" Expanded="true" />
