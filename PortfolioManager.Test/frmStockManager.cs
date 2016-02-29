@@ -287,5 +287,53 @@ namespace PortfolioManager.Test
                 AddCorporateAction(stock, CorporateActionType.Composite);
             }
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            var actionDate = new DateTime(2014, 06, 30);
+                 
+            var WFA = _StockServiceRepository.StockService.GetStock("WFA", actionDate);
+            var WFT = _StockServiceRepository.StockService.GetStock("WFT", actionDate);
+            var WSF = _StockServiceRepository.StockService.GetStock("WSF", actionDate);
+            var WDC = _StockServiceRepository.StockService.GetStock("WDC", actionDate);
+
+            // Rename stocks
+            _StockServiceRepository.StockService.ChangeASXCode(WFA, WFA.FromDate, "WAT", "Westfield America Trust");
+            _StockServiceRepository.StockService.ChangeASXCode(WFT, WFT.FromDate, "WT", "Westfield Trust");
+            _StockServiceRepository.StockService.ChangeASXCode(WSF, WSF.FromDate, "WHL", "Westfield Holdings Limited");
+
+            // Destable from WDC 
+            _StockServiceRepository.StockService.RemoveChildStocks(WDC, actionDate, new Stock[] { WFA, WFT, WSF });
+
+            // Delist WDC
+            _StockServiceRepository.StockService.Delist(WDC, actionDate);
+
+            var WFD = _StockServiceRepository.StockService.GetStock("WFD", actionDate);
+            var WFDT = _StockServiceRepository.StockService.Add("WFDT", "WFD Trust", actionDate, StockType.Trust);
+            var WCL = _StockServiceRepository.StockService.Add("WCL", "Westfield Corporation Limited", actionDate, StockType.Ordinary);
+            var WAT = _StockServiceRepository.StockService.GetStock("WAT", actionDate); 
+
+            // Staple stocks
+            _StockServiceRepository.StockService.AddChildStocks(WFD, actionDate, new Stock[] { WAT, WFDT, WCL });
+
+            var SCG = _StockServiceRepository.StockService.GetStock("SCG", actionDate);
+            var WT = _StockServiceRepository.StockService.GetStock("WT", actionDate); 
+            var WRT1 = _StockServiceRepository.StockService.GetStock("WRT1", actionDate);
+            var WRT2 = _StockServiceRepository.StockService.GetStock("WRT2", actionDate);
+            var WHL = _StockServiceRepository.StockService.GetStock("WHL", actionDate); 
+
+            // Rename stocks
+            _StockServiceRepository.StockService.ChangeASXCode(WHL, actionDate, "WHL", "Scentre Group Limited");
+            _StockServiceRepository.StockService.ChangeASXCode(WT, actionDate, "WT", "Scentre Group Trust 1");
+            _StockServiceRepository.StockService.ChangeASXCode(WRT1, actionDate, "WRT1", "Scentre Group Trust 2");
+            _StockServiceRepository.StockService.ChangeASXCode(WRT2, actionDate, "WRT2", "Scentre Group Trust 3");
+
+            // Staple stocks
+            WT = _StockServiceRepository.StockService.GetStock("WT", actionDate);
+            WRT1 = _StockServiceRepository.StockService.GetStock("WRT1", actionDate);
+            WRT2 = _StockServiceRepository.StockService.GetStock("WRT2", actionDate);
+            WHL = _StockServiceRepository.StockService.GetStock("WHL", actionDate);
+            _StockServiceRepository.StockService.AddChildStocks(SCG, actionDate, new Stock[] { WT, WRT1, WRT2, WHL });
+        }
     }
 }

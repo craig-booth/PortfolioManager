@@ -63,6 +63,7 @@ namespace PortfolioManager.Test
         {
             lblASXCode.Text = _StockService.GetASXCode(_Transformation.Stock);
             dtpRecordDate.Value = _Transformation.ActionDate;
+            dtpImplementationDate.Value = _Transformation.ImplementationDate;
             txtDescription.Text = _Transformation.Description;
             txtCashComponent.Text = MathUtils.FormatCurrency(_Transformation.CashComponent, false);
             chkRolloverRelief.Checked = _Transformation.RolloverRefliefApplies;

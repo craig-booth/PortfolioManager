@@ -38,6 +38,7 @@
             this.btnAddDividend = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddTransformation = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddSplitConsolidation = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddCompositeAction = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDownloadDividends = new System.Windows.Forms.ToolStripButton();
             this.btnImportPrices = new System.Windows.Forms.ToolStripButton();
             this.lsvStocks = new System.Windows.Forms.ListView();
@@ -54,8 +55,7 @@
             this.ctxCorporateActions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuEditCorporateAction = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDeleteCorporateAction = new System.Windows.Forms.ToolStripMenuItem();
-
-            this.btnAddCompositeAction = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.ctxStocks.SuspendLayout();
             this.ctxCorporateActions.SuspendLayout();
@@ -69,7 +69,8 @@
             this.btnAddStock,
             this.btnAddCorporateAction,
             this.btnDownloadDividends,
-            this.btnImportPrices});
+            this.btnImportPrices,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1349, 27);
@@ -103,10 +104,8 @@
             this.btnAddCapitalReturn,
             this.btnAddDividend,
             this.btnAddTransformation,
-
             this.btnAddSplitConsolidation,
             this.btnAddCompositeAction});
-
             this.btnAddCorporateAction.Image = ((System.Drawing.Image)(resources.GetObject("btnAddCorporateAction.Image")));
             this.btnAddCorporateAction.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddCorporateAction.Name = "btnAddCorporateAction";
@@ -116,21 +115,21 @@
             // btnAddCapitalReturn
             // 
             this.btnAddCapitalReturn.Name = "btnAddCapitalReturn";
-            this.btnAddCapitalReturn.Size = new System.Drawing.Size(156, 22);
+            this.btnAddCapitalReturn.Size = new System.Drawing.Size(204, 26);
             this.btnAddCapitalReturn.Text = "Capital Return";
             this.btnAddCapitalReturn.Click += new System.EventHandler(this.btnAddCapitalReturn_Click);
             // 
             // btnAddDividend
             // 
             this.btnAddDividend.Name = "btnAddDividend";
-            this.btnAddDividend.Size = new System.Drawing.Size(156, 22);
+            this.btnAddDividend.Size = new System.Drawing.Size(204, 26);
             this.btnAddDividend.Text = "Dividend";
             this.btnAddDividend.Click += new System.EventHandler(this.btnAddDividend_Click);
             // 
             // btnAddTransformation
             // 
             this.btnAddTransformation.Name = "btnAddTransformation";
-            this.btnAddTransformation.Size = new System.Drawing.Size(156, 22);
+            this.btnAddTransformation.Size = new System.Drawing.Size(204, 26);
             this.btnAddTransformation.Text = "Transformation";
             this.btnAddTransformation.Click += new System.EventHandler(this.btnAddTransformation_Click);
             // 
@@ -140,6 +139,13 @@
             this.btnAddSplitConsolidation.Size = new System.Drawing.Size(204, 26);
             this.btnAddSplitConsolidation.Text = "Split/Cosolidation";
             this.btnAddSplitConsolidation.Click += new System.EventHandler(this.btnAddSplitConsolidation_Click);
+            // 
+            // btnAddCompositeAction
+            // 
+            this.btnAddCompositeAction.Name = "btnAddCompositeAction";
+            this.btnAddCompositeAction.Size = new System.Drawing.Size(204, 26);
+            this.btnAddCompositeAction.Text = "Composite Action";
+            this.btnAddCompositeAction.Click += new System.EventHandler(this.btnAddCompositeAction_Click);
             // 
             // btnDownloadDividends
             // 
@@ -281,14 +287,16 @@
             this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(128, 26);
             this.mnuDeleteCorporateAction.Text = "Delete";
             this.mnuDeleteCorporateAction.Click += new System.EventHandler(this.mnuDeleteCorporateAction_Click);
-
             // 
-            // btnAddCompositeAction
+            // toolStripButton1
             // 
-            this.btnAddCompositeAction.Name = "btnAddCompositeAction";
-            this.btnAddCompositeAction.Size = new System.Drawing.Size(170, 22);
-            this.btnAddCompositeAction.Text = "Composite Action";
-            this.btnAddCompositeAction.Click += new System.EventHandler(this.btnAddCompositeAction_Click);
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // frmStockManager
             // 
@@ -338,6 +346,6 @@
         private System.Windows.Forms.ToolStripButton btnImportPrices;
         private System.Windows.Forms.ToolStripMenuItem btnAddSplitConsolidation;
         private System.Windows.Forms.ToolStripMenuItem btnAddCompositeAction;
-
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }

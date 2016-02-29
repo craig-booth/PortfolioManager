@@ -71,6 +71,11 @@ namespace PortfolioManager.Model.Stocks
             return ASXCode + " - " + Name;
         }
 
+        public Stock Clone()
+        {
+            return new Stock(this.Id, this.FromDate, this.ToDate, this.ASXCode, this.Name, this.Type, this.ParentId, this.DividendRoundingRule);
+        }
+
     }
  
 }

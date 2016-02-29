@@ -138,41 +138,49 @@ namespace StockManager.Service
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                /* Update old effective dated record */
-                stock.ToDate = atDate.AddDays(-1);
-                unitOfWork.StockRepository.Update(stock);
-
-                /* Add new record */
-                var newStock = new Stock(stock.Id, atDate, DateTimeConstants.NoEndDate, newAsxCode, newName, stock.Type, stock.ParentId);
-                unitOfWork.StockRepository.Add(newStock);
-
+                ModifyStock(unitOfWork, stock, atDate, x => { x.ASXCode = newAsxCode; x.Name = newName; });
                 unitOfWork.Save();
             }
+            
         }
 
         public void Delist(Stock stock, DateTime atDate)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                stock.ToDate = atDate.AddDays(-1);
+                stock.ToDate = atDate;
                 unitOfWork.StockRepository.Update(stock);
 
                 unitOfWork.Save();
             }
         }
 
-        public void AddChildStock(Stock stock, Stock child)
+        public void AddChildStock(Stock stock, DateTime atDate, Stock child)
         {
             if (stock.Type != StockType.StapledSecurity)
                 throw new NotStapledSecurityException(stock.ASXCode);
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                child.ParentId = stock.Id;
-                unitOfWork.StockRepository.Update(child);
+                ModifyStock(_Database.CreateUnitOfWork(), child, atDate, x => { x.ParentId = stock.Id; });
+                unitOfWork.Save();
+            }
+        }
+
+        public void AddChildStocks(Stock stock, DateTime atDate, IEnumerable<Stock> children)
+        {
+            if (stock.Type != StockType.StapledSecurity)
+                throw new NotStapledSecurityException(stock.ASXCode);
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                foreach (var child in children)
+                    ModifyStock(unitOfWork, child, atDate, x => { x.ParentId = stock.Id; });
 
                 unitOfWork.Save();
             }
+
+            
         }
 
         public IReadOnlyCollection<Stock> GetChildStocks(Stock stock)
@@ -185,7 +193,7 @@ namespace StockManager.Service
             return _Database.StockQuery.GetChildStocks(stock.Id, atDate);
         }
 
-        public void RemoveChildStock(Stock stock, Stock child)
+        public void RemoveChildStock(Stock stock, DateTime atDate, Stock child)
         {
             if (stock.Type != StockType.StapledSecurity)
                 throw new NotStapledSecurityException(stock.ASXCode);
@@ -195,11 +203,32 @@ namespace StockManager.Service
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                child.ParentId = Guid.Empty;
-                unitOfWork.StockRepository.Update(child);
+                ModifyStock(_Database.CreateUnitOfWork(), child, atDate, x => { x.ParentId = Guid.Empty; });
+                unitOfWork.Save();
+            }
+            
+        }
+
+        public void RemoveChildStocks(Stock stock, DateTime atDate, IEnumerable<Stock> children)
+        {
+            if (stock.Type != StockType.StapledSecurity)
+                throw new NotStapledSecurityException(stock.ASXCode);
+
+            // Check children 
+            foreach (var child in children)
+            {
+                if (child.ParentId != stock.Id)
+                    throw new RecordNotFoundException(child.Id);
+            }
+
+            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
+            {
+                foreach (var child in children)
+                    ModifyStock(unitOfWork, child, atDate, x => { x.ParentId = Guid.Empty; });
 
                 unitOfWork.Save();
             }
+
         }
 
         public decimal PercentageOfParentCostBase(Stock stock, DateTime atDate)
@@ -277,6 +306,28 @@ namespace StockManager.Service
             }
         }
 
+        private void ModifyStock(IStockUnitOfWork unitOfWork, Stock stock, DateTime changeDate, Action<Stock> change)
+        {
+            if (stock.FromDate == changeDate)
+            {
+                change(stock);
+                unitOfWork.StockRepository.Update(stock);
+            }
+            else
+            {
+                /* Update old effective dated record */
+                stock.ToDate = changeDate.AddDays(-1);
+                unitOfWork.StockRepository.Update(stock);
 
+                var newStock = stock.Clone();
+                newStock.FromDate = changeDate;
+                newStock.ToDate = DateTimeConstants.NoEndDate;
+                change(newStock);
+
+                /* Add new record */
+                unitOfWork.StockRepository.Add(newStock);
+            }
+
+        }
     }
 }
