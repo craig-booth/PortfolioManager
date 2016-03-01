@@ -23,9 +23,6 @@ namespace PortfolioManager.Service.Transactions
             var openingBalance = transaction as OpeningBalance;
 
             var stock = _StockService.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
-
-            if (stock.ParentId != Guid.Empty)
-                throw new TransctionNotSupportedForChildSecurity(openingBalance, "Cannot aquire child securities. Aquire stapled security instead");
             
             AddParcel(unitOfWork, openingBalance.AquisitionDate, stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
         }

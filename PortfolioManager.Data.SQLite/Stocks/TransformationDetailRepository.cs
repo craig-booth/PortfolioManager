@@ -26,7 +26,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent]) VALUES (@Id, @ImplementationDate, @CashComponent)", _Connection);
+                _AddRecordCommand = new SQLiteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent, @RolloverRelief)", _Connection);
                 _AddRecordCommand.Prepare();
             }
 
@@ -46,7 +46,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SQLiteCommand("UPDATE [Transformations] SET [ImplementationDate] = @ImplementationDate, [CashComponent] = @CashComponent WHERE [Id] = @Id", _Connection);
+                _UpdateRecordCommand = new SQLiteCommand("UPDATE [Transformations] SET [ImplementationDate] = @ImplementationDate, [CashComponent] = @CashComponent, [RolloverRelief] = @RolloverRelief WHERE [Id] = @Id", _Connection);
                 _UpdateRecordCommand.Prepare();
             }
 
@@ -81,6 +81,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@ImplementationDate", entity.ImplementationDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@CashComponent", SQLiteUtils.DecimalToDB(entity.CashComponent));
+            command.Parameters.AddWithValue("@RolloverRelief", entity.RolloverRefliefApplies? "Y": "N");
         }
 
         private SQLiteCommand _AddResultRecordCommand;
@@ -88,7 +89,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddResultRecordCommand == null)
             {
-                _AddResultRecordCommand = new SQLiteCommand("INSERT INTO [TransformationResultingStocks] ([Id], [Stock], [OriginalUnits], [NewUnits], [CostBasePercentage]) VALUES (@Id, @Stock, @OriginalUnits, @NewUnits, @CostBasePercentage)", _Connection);
+                _AddResultRecordCommand = new SQLiteCommand("INSERT INTO [TransformationResultingStocks] ([Id], [Stock], [OriginalUnits], [NewUnits], [CostBasePercentage], [AquisitionDate]) VALUES (@Id, @Stock, @OriginalUnits, @NewUnits, @CostBasePercentage, @AquisitionDate)", _Connection);
                 _AddResultRecordCommand.Prepare();
             }
             _AddResultRecordCommand.Parameters.AddWithValue("@Id", transformationId.ToString());
@@ -96,6 +97,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _AddResultRecordCommand.Parameters.AddWithValue("@OriginalUnits", entity.OriginalUnits);
             _AddResultRecordCommand.Parameters.AddWithValue("@NewUnits", entity.NewUnits);
             _AddResultRecordCommand.Parameters.AddWithValue("@CostBasePercentage", SQLiteUtils.DecimalToDB(entity.CostBase));
+            _AddResultRecordCommand.Parameters.AddWithValue("@AquisitionDate", entity.AquisitionDate.ToString("yyyy-MM-dd"));
 
             _AddResultRecordCommand.ExecuteNonQuery();
         }

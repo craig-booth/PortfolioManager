@@ -60,29 +60,4 @@ namespace PortfolioManager.Service.Test.Transactions
         }
      }
 
-    [TestFixture, Description("Opening balance validation tests")]
-    public class OpeningBalanceValidationTests : PortfolioTest
-    {
-        [Test, Description("Opening balance for child security")]
-        [ExpectedException(typeof(TransctionNotSupportedForChildSecurity))]
-        public void NotSupportedForChildSecurity()
-        {
-            var transactionDate = new DateTime(2002, 01, 01);
-
-            var transactions = new ITransaction[]
-            {
-                new OpeningBalance()
-                {
-                    TransactionDate = transactionDate,
-                    ASXCode = "SSS1",
-                    Units = 1000,
-                    CostBase = 15000.00m,
-                    AquisitionDate = transactionDate,
-                    Comment = "Test Opening Balance"
-                }
-            };
-            _Portfolio.TransactionService.ProcessTransactions(transactions);
-        }
-    }
-
 }
