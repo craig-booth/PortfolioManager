@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using PortfolioManager.Service;
 
 namespace PortfolioManager.Test.TransactionControls
 {
@@ -18,6 +19,7 @@ namespace PortfolioManager.Test.TransactionControls
     {
 
         private StockService _StockService;
+        private bool _AquisitionDateSet;
 
         public OpeningBalanceControl()
         {
@@ -28,11 +30,14 @@ namespace PortfolioManager.Test.TransactionControls
             : this()
         {
             _StockService = stockService;
+
+            dtpBalanceDate_ValueChanged(this, null);
         }
 
         public ITransaction CreateTransaction()
         {
             var transaction = new OpeningBalance();
+            _AquisitionDateSet = false;
             UpdateTransaction(transaction);
 
             return transaction;
@@ -55,7 +60,10 @@ namespace PortfolioManager.Test.TransactionControls
 
             txtUnits.Text = openingBalance.Units.ToString();
             txtCostBase.Text = openingBalance.CostBase.ToString("n");
+            dtpAquisitionDate.Value = openingBalance.AquisitionDate;
             txtComment.Text = openingBalance.Comment;
+
+            _AquisitionDateSet = true;
         }
 
         public void UpdateTransaction(ITransaction transaction)
@@ -67,15 +75,19 @@ namespace PortfolioManager.Test.TransactionControls
             openingBalance.TransactionDate = dtpBalanceDate.Value;
             openingBalance.Units = MathUtils.ParseInt(txtUnits.Text);
             openingBalance.CostBase = MathUtils.ParseDecimal(txtCostBase.Text);
+            openingBalance.AquisitionDate = dtpAquisitionDate.Value;
             openingBalance.Comment = txtComment.Text;
         }
 
         private void dtpBalanceDate_ValueChanged(object sender, EventArgs e)
         {
-            var stockList = _StockService.GetAll(dtpBalanceDate.Value).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.ASXCode);
+            var stockList = _StockService.GetAll(dtpBalanceDate.Value).OrderBy(x => x.ASXCode);
 
             cboASXCode.Items.Clear();
             cboASXCode.Items.AddRange(stockList.ToArray());
+
+            if (!_AquisitionDateSet)
+                dtpAquisitionDate.Value = dtpBalanceDate.Value;
         }
     }
 }

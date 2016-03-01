@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
+using NUnitExtension;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Data.Test.Stocks
 {
@@ -22,7 +25,7 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);       
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);       
                 unitOfWork.StockRepository.Add(stock);
 
                 stock2 = unitOfWork.StockRepository.Get(stock.Id);
@@ -40,10 +43,10 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);
 
-                stock2 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);               
             }
         }
@@ -56,18 +59,18 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock1 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock2 = new Stock(database, new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock2);
 
-                stock3 = new Stock(database, new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock3);
 
                 stock = unitOfWork.StockRepository.Get(stock2.Id);
 
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
             }
         }
 
@@ -79,10 +82,11 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock1 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock1.ChangeASXCode(new DateTime(2002, 01, 01), "DEF", "Test 2");
+                var stock2 = new Stock(stock1.Id, new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
               
                 stock = unitOfWork.StockRepository.Get(stock1.Id, new DateTime(2001, 01, 01));
                 Assert.AreEqual(stock.ASXCode, "ABC");
@@ -101,18 +105,18 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock1 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock2 = new Stock(database, new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock2);
 
-                stock3 = new Stock(database, new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock3);
 
                 stock = unitOfWork.StockRepository.Get(Guid.NewGuid());
 
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
             }
         }
 
@@ -125,13 +129,13 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock1 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock2 = new Stock(database, new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock2);
 
-                stock3 = new Stock(database, new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock3);
 
                 stock = unitOfWork.StockRepository.Get(stock2.Id, new DateTime(2000, 01, 01));
@@ -147,15 +151,16 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock1 = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock2 = new Stock(database, new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock2);
 
-                stock2.Delist(new DateTime(2005, 01, 01));
+                stock2.ToDate = new DateTime(2005, 01, 01);
+                unitOfWork.StockRepository.Update(stock2);
 
-                stock3 = new Stock(database, new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
+                stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock3);
 
                 stock = unitOfWork.StockRepository.Get(stock2.Id, new DateTime(2006, 01, 01));
@@ -165,18 +170,20 @@ namespace PortfolioManager.Data.Test.Stocks
         [Test, Description("Test Update()")]
         public void Update()
         {
-            Stock stock, stock2;
+            Stock stock1, stock2, stock3;
 
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-                unitOfWork.StockRepository.Add(stock);
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-                stock.ChangeASXCode(new DateTime(2002, 01, 01), "DEF", "Changed!!");
+                stock2 = new Stock(stock1.Id, new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Changed!!", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-                stock2 = unitOfWork.StockRepository.Get(stock.Id);
-                Assert.AreEqual(stock2.Name, "Changed!!");
+
+                stock3 = unitOfWork.StockRepository.Get(stock1.Id);
+                Assert.AreEqual(stock3.Name, "Changed!!");
             }         
         }
 
@@ -189,11 +196,11 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);
 
                 stock2 = unitOfWork.StockRepository.Get(stock.Id);
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
 
                 unitOfWork.StockRepository.Delete(stock2);
 
@@ -209,10 +216,10 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);
 
-                stock2 = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(new DateTime(2000, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
                
                 unitOfWork.StockRepository.Delete(stock2);
             }
@@ -227,11 +234,11 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);
 
                 stock2 = unitOfWork.StockRepository.Get(stock.Id);
-                Assert.That(stock, Is.EqualTo(stock2).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock2)));
 
                 unitOfWork.StockRepository.Delete(stock2.Id);
 
@@ -243,19 +250,20 @@ namespace PortfolioManager.Data.Test.Stocks
         [ExpectedException(typeof(RecordNotFoundException))]
         public void DeleteAllEffectiveDatedRecords()
         {
-            Stock stock;
+            Stock stock1, stock2;
 
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-                unitOfWork.StockRepository.Add(stock);
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-                stock.ChangeASXCode(new DateTime(2002, 01, 01), "DEF", "Test 2");
+                stock2 = new Stock(stock1.Id, new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-                unitOfWork.StockRepository.Delete(stock.Id);
+                unitOfWork.StockRepository.Delete(stock1.Id);
 
-                unitOfWork.StockRepository.Get(stock.Id);
+                unitOfWork.StockRepository.Get(stock1.Id);
             }
         }
 
@@ -263,22 +271,23 @@ namespace PortfolioManager.Data.Test.Stocks
         [ExpectedException(typeof(RecordNotFoundException))]
         public void DeleteByIdAtDate()
         {
-            Stock stock, stock1;
+            Stock stock1, stock2, stock3;
 
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
-                unitOfWork.StockRepository.Add(stock);
+                stock1 = new Stock(Guid.NewGuid(), new DateTime(2000, 01, 01), new DateTime(2001, 12, 31), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock1);
 
-                stock.ChangeASXCode(new DateTime(2002, 01, 01), "DEF", "Test 2");
+                stock2 = new Stock(stock1.Id, new DateTime(2002, 01, 01), DateTimeConstants.NoEndDate, "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                unitOfWork.StockRepository.Add(stock2);
 
-                stock1 = unitOfWork.StockRepository.Get(stock.Id, new DateTime(2002, 01, 01));
-                Assert.That(stock1.ASXCode, Is.EqualTo("DEF"));
+                stock3 = unitOfWork.StockRepository.Get(stock1.Id, new DateTime(2002, 01, 01));
+                Assert.That(stock3.ASXCode, Is.EqualTo("DEF"));
 
-                unitOfWork.StockRepository.Delete(stock.Id, new DateTime(2002, 01, 01));      
+                unitOfWork.StockRepository.Delete(stock1.Id, new DateTime(2002, 01, 01));      
 
-                unitOfWork.StockRepository.Get(stock.Id, new DateTime(2002, 01, 01));
+                unitOfWork.StockRepository.Get(stock1.Id, new DateTime(2002, 01, 01));
             }
         }
 
@@ -290,13 +299,13 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                stock = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
+                stock = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock);
 
                 unitOfWork.StockRepository.Delete(stock.Id, new DateTime(2000, 01, 02));
 
                 stock1 = unitOfWork.StockRepository.Get(stock.Id, new DateTime(2000, 01, 01));
-                Assert.That(stock, Is.EqualTo(stock1).Using(new EffectiveDatedEntityComparer()));
+                Assert.That(stock, EntityConstraint.EqualTo((stock1)));
             }
         }
         

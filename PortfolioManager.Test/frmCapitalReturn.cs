@@ -10,13 +10,14 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
     public partial class frmCapitalReturn : Form, ICorporateActionForm 
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
         private CapitalReturn _CapitalReturn;
         private Stock _Stock;
 
@@ -26,16 +27,16 @@ namespace PortfolioManager.Test
         }
 
 
-        public frmCapitalReturn(StockManager stockManager)
+        public frmCapitalReturn(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
         }
         
 
         private void SetFormValues()
         {
-            lblASXCode.Text = _StockManager.GetASXCode(_CapitalReturn.Stock);
+            lblASXCode.Text = _StockService.GetASXCode(_CapitalReturn.Stock);
             dtpRecordDate.Value = _CapitalReturn.ActionDate;
             dtpPaymentDate.Value = _CapitalReturn.PaymentDate;
             txtAmount.Text = MathUtils.FormatCurrency(_CapitalReturn.Amount, false);
@@ -59,16 +60,16 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _CapitalReturn = corporateAction as CapitalReturn;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-                _CapitalReturn.Change(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text);
+                _CapitalReturn.ActionDate = dtpRecordDate.Value;
+                _CapitalReturn.PaymentDate = dtpPaymentDate.Value;
+                _CapitalReturn.Amount = MathUtils.ParseDecimal(txtAmount.Text);
+                _CapitalReturn.Description = txtDescription.Text;
 
                 return true;
             }
@@ -86,27 +87,18 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _CapitalReturn = corporateAction as CapitalReturn;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _Stock.DeleteCorporateAction(_CapitalReturn);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         } 
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (_Mode == Mode.Create)
             {
-                _CapitalReturn = _Stock.AddCapitalReturn(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text);
+                _CapitalReturn = new CapitalReturn(_Stock.Id, dtpRecordDate.Value, dtpPaymentDate.Value, MathUtils.ParseDecimal(txtAmount.Text), txtDescription.Text);
             }
         }
 

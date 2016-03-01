@@ -20,8 +20,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             if (! reader.IsDBNull(7))
                 dividendRoundingRule = (RoundingRule)reader.GetInt32(7);
              
-            Stock stock = new Stock(database,
-                                    new Guid(reader.GetString(0)),
+            Stock stock = new Stock(new Guid(reader.GetString(0)),
                                     reader.GetDateTime(1),
                                     reader.GetDateTime(2),
                                     reader.GetString(3),
@@ -35,107 +34,141 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public static RelativeNTA CreateRelativeNTA(SQLiteStockDatabase database, SQLiteDataReader reader)
         {
-            RelativeNTA nta = new RelativeNTA(database,
-                                              new Guid(reader.GetString(0)),
+            RelativeNTA nta = new RelativeNTA(new Guid(reader.GetString(0)),
                                               reader.GetDateTime(1),
                                               new Guid(reader.GetString(2)),
                                               new Guid(reader.GetString(3)),
-                                              DBToDecimal(reader.GetInt32(4)));
+                                              SQLiteUtils.DBToDecimal(reader.GetInt32(4)));
             return nta;
         }
 
         public static ICorporateAction CreateCorporateAction(SQLiteStockDatabase database, SQLiteDataReader reader)
         {
+            Guid id = new Guid(reader.GetString(0));
+            Guid stock = new Guid(reader.GetString(1));
+            DateTime actionDate = reader.GetDateTime(2);
+            string description = reader.GetString(3);
             CorporateActionType type = (CorporateActionType)reader.GetInt32(4);
 
+            return CreateCorporateAction(database, id, type, stock, actionDate, description);
+        }
+
+        public static ICorporateAction CreateCorporateAction(SQLiteStockDatabase database, Guid id, CorporateActionType type, Guid stock, DateTime actionDate, string description)
+        {
             if (type == CorporateActionType.Dividend)
-                return CreateDividend(database, reader);
+                return CreateDividend(database, id, stock, actionDate, description);
             else if (type == CorporateActionType.CapitalReturn)
-                return CreateCapitalReturn(database, reader);
+                return CreateCapitalReturn(database, id, stock, actionDate, description);
             else if (type == CorporateActionType.Transformation)
-                return CreateTransformation(database, reader);
+                return CreateTransformation(database, id, stock, actionDate, description);
+            else if (type == CorporateActionType.SplitConsolidation)
+                return CreateSplitConsolidation(database, id, stock, actionDate, description);
+            else if (type == CorporateActionType.Composite)
+                return CreateCompositeAction(database, id, stock, actionDate, description);
             else
                 return null;
         }
 
-        private static Dividend CreateDividend(SQLiteStockDatabase database, SQLiteDataReader reader)
+        private static Dividend CreateDividend(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get dividend vales */
             var command = new SQLiteCommand("SELECT * FROM [Dividends] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader dividendReader = command.ExecuteReader();
             if (!dividendReader.Read())
             {
                 dividendReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            Dividend dividend = new Dividend(database,
-                                    new Guid(reader.GetString(0)),
-                                    new Guid(reader.GetString(1)),
-                                    reader.GetDateTime(2),
+            Dividend dividend = new Dividend(id,
+                                    stock,
+                                    actionDate,
                                     dividendReader.GetDateTime(1),
-                                    DBToDecimal(dividendReader.GetInt32(2)),
-                                    DBToDecimal(dividendReader.GetInt32(4)),
-                                    DBToDecimal(dividendReader.GetInt32(3)),
-                                    DBToDecimal(dividendReader.GetInt32(5)),
-                                    reader.GetString(3));
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(2)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(4)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(3)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(5)),
+                                    description);
             dividendReader.Close();
 
             return dividend;
         }
 
-        private static CapitalReturn CreateCapitalReturn(SQLiteStockDatabase database, SQLiteDataReader reader)
+        private static CapitalReturn CreateCapitalReturn(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get capital return vales */
             var command = new SQLiteCommand("SELECT * FROM [CapitalReturns] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader capitalReturnReader = command.ExecuteReader();
             if (!capitalReturnReader.Read())
             {
                 capitalReturnReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            CapitalReturn capitalReturn = new CapitalReturn(database,
-                                    new Guid(reader.GetString(0)),
-                                    new Guid(reader.GetString(1)),
-                                    reader.GetDateTime(2),
+            CapitalReturn capitalReturn = new CapitalReturn(id,
+                                    stock,
+                                    actionDate,
                                     capitalReturnReader.GetDateTime(1),
-                                    DBToDecimal(capitalReturnReader.GetInt32(2)),
-                                    reader.GetString(3));
+                                    SQLiteUtils.DBToDecimal(capitalReturnReader.GetInt32(2)),
+                                    description);
             capitalReturnReader.Close();
 
             return capitalReturn;
         }
 
-        private static Transformation CreateTransformation(SQLiteStockDatabase database, SQLiteDataReader reader)
+        private static SplitConsolidation CreateSplitConsolidation(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
+        {
+            /* Get capital return vales */
+            var command = new SQLiteCommand("SELECT * FROM [SplitConsolidations] WHERE [Id] = @Id", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", id.ToString());
+            SQLiteDataReader spitConsolidationReader = command.ExecuteReader();
+            if (!spitConsolidationReader.Read())
+            {
+                spitConsolidationReader.Close();
+                throw new RecordNotFoundException(id);
+            }
+
+            var splitConsolidation = new SplitConsolidation(id,
+                                    stock,
+                                    actionDate,
+                                    spitConsolidationReader.GetInt32(1),
+                                    spitConsolidationReader.GetInt32(2),
+                                    description);
+            spitConsolidationReader.Close();
+
+            return splitConsolidation;
+        }
+
+        private static Transformation CreateTransformation(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get transformation vales */
             var command = new SQLiteCommand("SELECT * FROM [Transformations] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader transformationReader = command.ExecuteReader();
             if (!transformationReader.Read())
             {
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            Transformation transformation = new Transformation(database,
-                                    new Guid(reader.GetString(0)),
-                                    new Guid(reader.GetString(1)),
-                                    reader.GetDateTime(2),
+            Transformation transformation = new Transformation(id,
+                                    stock,
+                                    actionDate,
                                     transformationReader.GetDateTime(1),
-                                    DBToDecimal(transformationReader.GetInt32(2)),
-                                    reader.GetString(3));
+                                    SQLiteUtils.DBToDecimal(transformationReader.GetInt32(2)),
+                                    transformationReader.GetString(3) == "Y"? true: false,
+                                    description);
             transformationReader.Close();
 
             /* Get result stocks */
             command = new SQLiteCommand("SELECT * FROM [TransformationResultingStocks] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             transformationReader = command.ExecuteReader();
 
             while (transformationReader.Read())
@@ -143,9 +176,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 ResultingStock resultingStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
                                         transformationReader.GetInt32(2),
                                         transformationReader.GetInt32(3),
-                                        DBToDecimal(transformationReader.GetInt32(4)));
+                                        SQLiteUtils.DBToDecimal(transformationReader.GetInt32(4)),
+                                        transformationReader.GetDateTime(5));
 
-                transformation.AddResultStockInternal(resultingStock);
+                transformation.AddResultStock(resultingStock);
             }
 
             transformationReader.Close();
@@ -153,14 +187,33 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return transformation;
         }
 
-        private static int DecimalToDB(decimal value)
-        {
-            return (int)Math.Floor(value * 100000);
-        }
 
-        private static decimal DBToDecimal(int value)
+        private static CompositeAction CreateCompositeAction(SQLiteStockDatabase database, Guid id, Guid stock, DateTime actionDate, string description)
         {
-            return (decimal)value / 100000;
+            CompositeAction compositeAction = new CompositeAction(id,
+                        stock,
+                        actionDate,
+                        description);
+
+            /* Get composite action children */
+            var command = new SQLiteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id ORDER BY [Sequence]", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", id.ToString());
+            SQLiteDataReader compositeActionReader = command.ExecuteReader();
+            while (compositeActionReader.Read())
+            {
+                var childId = new Guid(compositeActionReader.GetString(0));
+                var childType = (CorporateActionType)compositeActionReader.GetInt32(1);
+
+                var childAction = CreateCorporateAction(database, childId, childType, stock, actionDate, description);
+
+                compositeAction.Children.Add(childAction);
+            }
+
+
+            compositeActionReader.Close();
+
+            return compositeAction ;
         }
 
     }

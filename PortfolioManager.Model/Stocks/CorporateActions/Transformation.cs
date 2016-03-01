@@ -4,30 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Model.Stocks
 {
 
     public class Transformation : ICorporateAction
     {
-        private IStockDatabase _Database;
-        private List<ResultingStock> _ResultingStocks;
-
         public Guid Id { get; private set; }
         public Guid Stock { get; private set; }
         public DateTime ActionDate { get; set; }
         public DateTime ImplementationDate { get; set; }
-        public string Description { get; private set; }
-        public decimal CashComponent { get; private set; }
-        public IEnumerable<ResultingStock> ResultingStocks 
-        { 
-            get 
-            { 
-                return _ResultingStocks.AsEnumerable(); 
-            } 
-        }
+        public string Description { get; set; }
+        public decimal CashComponent { get; set; }
+        public bool RolloverRefliefApplies { get; set; }
+        public List<ResultingStock> ResultingStocks { get; private set; }
 
         public CorporateActionType Type
         {
@@ -37,113 +29,83 @@ namespace PortfolioManager.Model.Stocks
             }
         }
 
-        public Transformation(IStockDatabase stockDatabase, Guid id, Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, string description)
+        public Transformation(Guid id, Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, string description)
         {
-            _Database = stockDatabase;
             Id = id;
             ActionDate = actionDate;
             Stock = stock;
             ImplementationDate = implementationDate;
             CashComponent = cashComponent;
+            RolloverRefliefApplies = rolloverReliefApplies;
             Description = description;
 
-            _ResultingStocks = new List<ResultingStock>();
+            ResultingStocks = new List<ResultingStock>();
         }
 
-        public Transformation(IStockDatabase stockDatabase, Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, string description)
-            : this(stockDatabase, Guid.NewGuid(), stock, actionDate, implementationDate, cashComponent, description)
+        public Transformation(Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, string description)
+            : this(Guid.NewGuid(), stock, actionDate, implementationDate, cashComponent, rolloverReliefApplies, description)
         {
 
         }
 
-        public void Change(DateTime newActionDate, DateTime newImplementationDate, decimal newCashComponent, string newDescription)
+        public ResultingStock GetResultStock(Guid id)
         {
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                ActionDate = newActionDate;
-                ImplementationDate = newImplementationDate;
-                CashComponent = newCashComponent;
-                Description = newDescription;
-
-                unitOfWork.CorporateActionRepository.Update(this);
-
-                unitOfWork.Save();
-            }
+            return ResultingStocks.Find(x => x.Stock == id);
         }
 
-        public void AddResultStockInternal(ResultingStock resultingStock)
+        public void AddResultStock(ResultingStock resultingStock)
         {
-            _ResultingStocks.Add(resultingStock);
+            ResultingStocks.Add(resultingStock);
         }
 
         public void AddResultStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage)
         {
             var resultStock = new ResultingStock(stock, originalUnits, newUnits, costBasePercentage);
 
-            AddResultStockInternal(resultStock);
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.CorporateActionRepository.Update(this);
-                unitOfWork.Save();
-            }
+            ResultingStocks.Add(resultStock);
         }
 
-        public void ChangeResultStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage)
+        public void AddResultStock(Guid stock, int originalUnits, int newUnits, decimal unitCostBase, DateTime aquisitionDate)
         {
-            var resultStock = _ResultingStocks.Find(x => x.Stock == stock);
+            var resultStock = new ResultingStock(stock, originalUnits, newUnits, unitCostBase, aquisitionDate);
 
-            if (resultStock == null)
-                throw new RecordNotFoundException(stock);
-
-            resultStock.Change(originalUnits, newUnits ,costBasePercentage);
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.CorporateActionRepository.Update(this);
-                unitOfWork.Save();
-            }
+            ResultingStocks.Add(resultStock);
         }
-
+        
         public void DeleteResultStock(Guid stock)
         {
-            var resultStock = _ResultingStocks.Find(x => x.Stock == stock);
+            var resultStock = GetResultStock(stock);
 
             if (resultStock == null)
                 throw new RecordNotFoundException(stock);
 
-            _ResultingStocks.Remove(resultStock);
-
-            using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
-            {
-                unitOfWork.CorporateActionRepository.Update(this);
-                unitOfWork.Save();
-            }
+            ResultingStocks.Remove(resultStock);
         }
     }
 
     public class ResultingStock
     {
         public Guid Stock { get; private set; }
-        public int OriginalUnits { get; private set; }
-        public int NewUnits { get; private set; }
-        public decimal CostBasePercentage { get; private set; }
+        public int OriginalUnits { get; set; }
+        public int NewUnits { get; set; }
+        public decimal CostBase { get; set; }
+        public DateTime AquisitionDate { get; set; }
 
-        public ResultingStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage)
+        public ResultingStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage) :
+            this(stock, originalUnits, newUnits, costBasePercentage, DateTimeConstants.NoDate)
+        {
+        }
+
+        public ResultingStock(Guid stock, int originalUnits, int newUnits, decimal costBase, DateTime aquisitionDate)
         {
             Stock = stock;
             OriginalUnits = originalUnits;
             NewUnits = newUnits;
-            CostBasePercentage = costBasePercentage;
-        }
-
-        protected internal void Change(int originalUnits, int newUnits, decimal costBasePercentage)
-        {
-            OriginalUnits = originalUnits;
-            NewUnits = newUnits;
-            CostBasePercentage = costBasePercentage;
+            CostBase = costBase;
+            AquisitionDate = aquisitionDate;
         }
 
     }
+
 
 }

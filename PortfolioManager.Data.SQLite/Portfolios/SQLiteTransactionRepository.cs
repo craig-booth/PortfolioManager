@@ -12,10 +12,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLiteTransactionRepository : SQLiteRepository<ITransaction>, ITransactionRepository
     {
+        private Dictionary<TransactionType, TransactionDetailRepository> _DetailRepositories;
+
         protected internal SQLiteTransactionRepository(SQLitePortfolioDatabase database)
             : base(database, "Transactions")
         {
             _Database = database;
+
+            _DetailRepositories = new Dictionary<TransactionType, TransactionDetailRepository>();
+            _DetailRepositories.Add(TransactionType.Aquisition, new AquisitionRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.CostBaseAdjustment, new CostBaseAdjustmentRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.Disposal, new DisposalRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.Income, new IncomeReceivedRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.OpeningBalance, new OpeningBalanceRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.ReturnOfCapital, new ReturnOfCapitalRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.UnitCountAdjustment, new UnitCountAdjustmentRepository(_Connection));
         }
 
         private SQLiteCommand _GetAddRecordCommand;
@@ -42,52 +53,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return _GetUpdateRecordCommand;
         }
 
-        private TransactionDetailRepository _AquisitionRepository;
-        private TransactionDetailRepository _CostBaseAdjustmentRepository;
-        private TransactionDetailRepository _DisposalRepository;
-        private TransactionDetailRepository _IncomeReceivedRepository;
-        private TransactionDetailRepository _OpeningBalanceRepository;
-        private TransactionDetailRepository _ReturnOfCapitalRepository;
         private TransactionDetailRepository GetDetailRepository(TransactionType type)
         {
-            if (type == TransactionType.Aquisition)
-            {
-                if (_AquisitionRepository == null)
-                    _AquisitionRepository = new AquisitionRepository(_Connection);
-                return _AquisitionRepository;
-            }
-           else if (type == TransactionType.CostBaseAdjustment)
-            {
-                if (_CostBaseAdjustmentRepository == null)
-                    _CostBaseAdjustmentRepository = new CostBaseAdjustmentRepository(_Connection);
-                return _CostBaseAdjustmentRepository;
-            }
-            else if (type == TransactionType.Disposal)
-            {
-                if (_DisposalRepository == null)
-                    _DisposalRepository = new DisposalRepository(_Connection);
-                return _DisposalRepository;
-            }
-            else if (type == TransactionType.Income)
-            {
-                if (_IncomeReceivedRepository == null)
-                    _IncomeReceivedRepository = new IncomeReceivedRepository(_Connection);
-                return _IncomeReceivedRepository;
-            }
-            else if (type == TransactionType.OpeningBalance)
-            {
-                if (_OpeningBalanceRepository == null)
-                    _OpeningBalanceRepository = new OpeningBalanceRepository(_Connection);
-                return _OpeningBalanceRepository;
-            }
-            else if (type == TransactionType.ReturnOfCapital)
-            {
-                if (_ReturnOfCapitalRepository == null)
-                    _ReturnOfCapitalRepository = new ReturnOfCapitalRepository(_Connection);
-                return _ReturnOfCapitalRepository;
-            }  
+            TransactionDetailRepository detailRepository;
+            if (_DetailRepositories.TryGetValue(type, out detailRepository))
+                return detailRepository;
             else
-                return null;
+                throw new NotSupportedException();
             
         }
 
@@ -203,16 +175,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());   
         }
-
-        public int DecimalToDB(decimal value)
-        {
-            return (int)Math.Floor(value * 100000);
-        }
-
-        public decimal DBToDecimal(int value)
-        {
-            return (decimal)value / 100000;
-        }
     }
 
 
@@ -246,8 +208,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", aquisition.Id.ToString());
             command.Parameters.AddWithValue("@Units", aquisition.Units);
-            command.Parameters.AddWithValue("@AveragePrice", DecimalToDB(aquisition.AveragePrice));
-            command.Parameters.AddWithValue("@TransactionCosts", DecimalToDB(aquisition.TransactionCosts));
+            command.Parameters.AddWithValue("@AveragePrice", SQLiteUtils.DecimalToDB(aquisition.AveragePrice));
+            command.Parameters.AddWithValue("@TransactionCosts", SQLiteUtils.DecimalToDB(aquisition.TransactionCosts));
             command.Parameters.AddWithValue("@Comment", aquisition.Comment); 
         }
     }
@@ -282,7 +244,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", costBaseAdjustment.Id.ToString());
             command.Parameters.AddWithValue("@RecordDate", costBaseAdjustment.RecordDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Percentage", DecimalToDB(costBaseAdjustment.Percentage));
+            command.Parameters.AddWithValue("@Percentage", SQLiteUtils.DecimalToDB(costBaseAdjustment.Percentage));
             command.Parameters.AddWithValue("@Comment", costBaseAdjustment.Comment); 
         }
     }
@@ -316,8 +278,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", disposal.Id.ToString());
             command.Parameters.AddWithValue("@Units", disposal.Units);
-            command.Parameters.AddWithValue("@AveragePrice", DecimalToDB(disposal.AveragePrice));
-            command.Parameters.AddWithValue("@TransactionCosts", DecimalToDB(disposal.TransactionCosts));
+            command.Parameters.AddWithValue("@AveragePrice", SQLiteUtils.DecimalToDB(disposal.AveragePrice));
+            command.Parameters.AddWithValue("@TransactionCosts", SQLiteUtils.DecimalToDB(disposal.TransactionCosts));
             command.Parameters.AddWithValue("@CGTMethod", disposal.CGTMethod);
             command.Parameters.AddWithValue("@Comment", disposal.Comment); 
         }
@@ -352,11 +314,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", incomeReceived.Id.ToString());
             command.Parameters.AddWithValue("@RecordDate", incomeReceived.RecordDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@FrankedAmount", DecimalToDB(incomeReceived.FrankedAmount));
-            command.Parameters.AddWithValue("@UnfrankedAmount", DecimalToDB(incomeReceived.UnfrankedAmount));
-            command.Parameters.AddWithValue("@FrankingCredits", DecimalToDB(incomeReceived.FrankingCredits));
-            command.Parameters.AddWithValue("@Interest", DecimalToDB(incomeReceived.Interest));
-            command.Parameters.AddWithValue("@TaxDeferred", DecimalToDB(incomeReceived.TaxDeferred));
+            command.Parameters.AddWithValue("@FrankedAmount", SQLiteUtils.DecimalToDB(incomeReceived.FrankedAmount));
+            command.Parameters.AddWithValue("@UnfrankedAmount", SQLiteUtils.DecimalToDB(incomeReceived.UnfrankedAmount));
+            command.Parameters.AddWithValue("@FrankingCredits", SQLiteUtils.DecimalToDB(incomeReceived.FrankingCredits));
+            command.Parameters.AddWithValue("@Interest", SQLiteUtils.DecimalToDB(incomeReceived.Interest));
+            command.Parameters.AddWithValue("@TaxDeferred", SQLiteUtils.DecimalToDB(incomeReceived.TaxDeferred));
             command.Parameters.AddWithValue("@Comment", incomeReceived.Comment);
 
         }
@@ -372,12 +334,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [Comment]) VALUES (@Id, @Units, @CostBase, @Comment)";
+            return "INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [AquisitionDate], [Comment]) VALUES (@Id, @Units, @CostBase, @AquisitionDate, @Comment)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[OpeningBalances] SET [Units] = @Units, [CostBase] = @CostBase, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[OpeningBalances] SET [Units] = @Units, [CostBase] = @CostBase, [AquisitionDate] = @AquisitionDate, [Comment] = @Comment WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -391,7 +353,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", openingBalance.Id.ToString());
             command.Parameters.AddWithValue("@Units", openingBalance.Units);
-            command.Parameters.AddWithValue("@CostBase", DecimalToDB(openingBalance.CostBase));
+            command.Parameters.AddWithValue("@CostBase", SQLiteUtils.DecimalToDB(openingBalance.CostBase));
+            command.Parameters.AddWithValue("@AquisitionDate", openingBalance.AquisitionDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Comment", openingBalance.Comment); 
         }
     }
@@ -425,8 +388,42 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             command.Parameters.AddWithValue("@Id", returnOfCapital.Id.ToString());
             command.Parameters.AddWithValue("@RecordDate", returnOfCapital.RecordDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Amount", DecimalToDB(returnOfCapital.Amount));
+            command.Parameters.AddWithValue("@Amount", SQLiteUtils.DecimalToDB(returnOfCapital.Amount));
             command.Parameters.AddWithValue("@Comment", returnOfCapital.Comment); 
+        }
+    }
+
+    public class UnitCountAdjustmentRepository : TransactionDetailRepository
+    {
+
+        public UnitCountAdjustmentRepository(SQLiteConnection connection)
+            : base(connection)
+        {
+        }
+
+        protected override string GetAddSQL()
+        {
+            return "INSERT INTO [UnitCountAdjustments] ([Id], [OriginalUnits], [NewUnits], [Comment]) VALUES (@Id, @OriginalUnits, @NewUnits, @Comment)";
+        }
+
+        protected override string GetUpdateSQL()
+        {
+            return "UPDATE[UnitCountAdjustments] SET [OriginalUnits] = @OriginalUnits, [NewUnits] = @NewUnits, [Comment] = @Comment WHERE [Id] = @Id";
+        }
+
+        protected override string GetDeleteSQL()
+        {
+            return "DELETE FROM [UnitCountAdjustments] WHERE [Id] = @Id";
+        }
+
+        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        {
+            UnitCountAdjustment unitCountAdjustment = entity as UnitCountAdjustment;
+
+            command.Parameters.AddWithValue("@Id", unitCountAdjustment.Id.ToString());
+            command.Parameters.AddWithValue("@OriginalUnits", unitCountAdjustment.OriginalUnits);
+            command.Parameters.AddWithValue("@NewUnits", unitCountAdjustment.NewUnits);
+            command.Parameters.AddWithValue("@Comment", unitCountAdjustment.Comment);
         }
     }
 

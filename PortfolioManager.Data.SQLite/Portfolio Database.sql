@@ -89,6 +89,7 @@ CREATE TABLE [OpeningBalances]
 	[Units] INTEGER NOT NULL,
 	[CostBase] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
+	[AquisitionDate] TEXT(10) NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
@@ -99,6 +100,17 @@ CREATE TABLE [ReturnsOfCapital]
 	[Id] TEXT(36) NOT NULL,
 	[RecordDate] TEXT(10) NOT NULL,
 	[Amount] INTEGER NOT NULL,
+	[Comment] TEXT(200)  NOT NULL,
+	
+	PRIMARY KEY ([Id])
+);
+
+
+CREATE TABLE [UnitCountAdjustments]
+(
+	[Id] TEXT(36) NOT NULL,
+	[OriginalUnits] INTEGER NOT NULL,
+	[NewUnits] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])

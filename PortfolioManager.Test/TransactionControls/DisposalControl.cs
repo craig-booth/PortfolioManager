@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using PortfolioManager.Service;
 
 namespace PortfolioManager.Test.TransactionControls
 {
@@ -26,6 +27,8 @@ namespace PortfolioManager.Test.TransactionControls
             : this()
         {
             _StockService = stockService;
+
+            dtpDisposalDate_ValueChanged(this, null);
         }
 
         public ITransaction CreateTransaction()

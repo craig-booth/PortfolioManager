@@ -68,7 +68,6 @@
     <Compile Include="Portfolios\SQLitePortfolioDatabase.cs" />
     <Compile Include="Portfolios\SQLitePortfolioEntityCreator.cs" />
     <Compile Include="Portfolios\SQLitePortfolioQuery.cs" />
-    <Compile Include="Portfolios\SQLitePortfolioRepository.cs" />
     <Compile Include="Portfolios\SQLitePortfolioUnitOfWork.cs" />
     <Compile Include="Portfolios\SQLiteTransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +76,11 @@
     <Compile Include="SQLiteRepository.cs" />
     <Compile Include="SQLiteRepositoryTransaction.cs" />
     <Compile Include="SQLiteStockPriceRepository.cs" />
+    <Compile Include="SQLiteUtils.cs" />
+    <Compile Include="Stocks\CapitalReturnDetailRepository.cs" />
+    <Compile Include="Stocks\CompositeActionDetailRepository.cs" />
+    <Compile Include="Stocks\DividendDetailRepository.cs" />
+    <Compile Include="Stocks\SplitConsolidtionDetailRepository.cs" />
     <Compile Include="Stocks\SQLiteCorporateActionQuery.cs" />
     <Compile Include="Stocks\CorporateActionRepository.cs" />
     <Compile Include="Stocks\SQLiteRelateNTARepository.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="Stocks\SQLiteStockQuery.cs" />
     <Compile Include="Stocks\SQLiteStockRepository.cs" />
     <Compile Include="Stocks\SQLiteStockUnitOfWork.cs" />
+    <Compile Include="Stocks\TransformationDetailRepository.cs" />
     <Compile Include="Upgrade\SQLiteDatabaseUpgrade.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +112,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion1.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion2.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion3.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\StockDatabaseUpgradeToVersion2.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\StockDatabaseUpgradeToVersion1.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\StockDatabaseUpgradeToVersion3.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

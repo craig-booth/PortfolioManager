@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
@@ -21,10 +22,10 @@ namespace PortfolioManager.Test
     public partial class frmStockManager : Form
     {
         private CorporateActionFormFactory _CorporateActionFormFactory;
-        private StockManager _StockManager;
+        private StockServiceRepository _StockServiceRepository;
 
         //events
-        public CorporateActionAdded CorparateActionAdded;
+        public CorporateActionAdded CorporateActionAdded;
 
         private frmStockManager()
         {
@@ -33,13 +34,13 @@ namespace PortfolioManager.Test
 
         public frmStockManager(IStockDatabase stockDatabase) : this()
         {
-            _StockManager = new StockManager(stockDatabase);
-            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockManager);
+            _StockServiceRepository = new StockServiceRepository(stockDatabase);
+            _CorporateActionFormFactory = new CorporateActionFormFactory(_StockServiceRepository.StockService);
         }
 
         private void btnAddStock_Click(object sender, EventArgs e)
         {
-            if (frmStock.AddStock(_StockManager) == DialogResult.OK)
+            if (frmStock.AddStock(_StockServiceRepository.StockService) == DialogResult.OK)
                 LoadStockList();               
         }
 
@@ -51,7 +52,7 @@ namespace PortfolioManager.Test
         private void LoadStockList()
         {
             lsvStocks.Items.Clear();
-            foreach (Stock stock in _StockManager.GetStocks())
+            foreach (Stock stock in _StockServiceRepository.StockService.GetStocks())
             {
                 ListViewItem item = lsvStocks.Items.Add(stock.ASXCode);
                 item.Tag = stock;
@@ -63,11 +64,7 @@ namespace PortfolioManager.Test
                 else
                 {
                     item.SubItems.Add(stock.Name);
-                }
-                
-                
-
-                
+                }              
             }
         }
 
@@ -93,10 +90,12 @@ namespace PortfolioManager.Test
 
             if (corporateAction != null)
             {
+                _StockServiceRepository.CorporateActionService.AddCorporateAction(corporateAction); 
+
                 DisplayCorporateActions(stock);
 
-                if (CorparateActionAdded != null)
-                    CorparateActionAdded(corporateAction);
+                if (CorporateActionAdded != null)
+                    CorporateActionAdded(corporateAction);
             }
                        
         }
@@ -105,7 +104,7 @@ namespace PortfolioManager.Test
         {
             lsvCorporateActions.Items.Clear();
 
-            IEnumerable<ICorporateAction> corporateActions = stock.GetCorporateActions();
+            IEnumerable<ICorporateAction> corporateActions = _StockServiceRepository.CorporateActionService.GetCorporateActions(stock);
             foreach (ICorporateAction corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
@@ -143,7 +142,7 @@ namespace PortfolioManager.Test
                 {
                     Stock stock = (Stock)item.Tag;
 
-                    _StockManager.Delete(stock);
+                    _StockServiceRepository.StockService.Delete(stock);
                     lsvStocks.Items.Remove(item);
                 }
             }
@@ -173,6 +172,7 @@ namespace PortfolioManager.Test
                 ICorporateActionForm form = _CorporateActionFormFactory.CreateCorporateActionForm(corporateAction.Type);
                 if (form.EditCorporateAction(corporateAction))
                 {
+                    _StockServiceRepository.CorporateActionService.UpdateCorporateAction(corporateAction);
                     lsvCorporateActions.FocusedItem.Text = corporateAction.ActionDate.ToShortDateString();
                     lsvCorporateActions.FocusedItem.SubItems[1].Text = corporateAction.Description;
                 }
@@ -196,7 +196,7 @@ namespace PortfolioManager.Test
                 {
                     ICorporateAction corporateAction = (ICorporateAction)item.Tag;
 
-                    stock.DeleteCorporateAction(corporateAction);
+                    _StockServiceRepository.CorporateActionService.DeleteCorporateAction(corporateAction);
                 }
 
                 DisplayCorporateActions(stock);
@@ -229,11 +229,14 @@ namespace PortfolioManager.Test
 
                 DownloadService downloadService = new DownloadService();
 
-                IEnumerable<DownloadedDividendRecord> dividends = downloadService.DownloadDividendHistory(stock.ASXCode);
-                foreach (DownloadedDividendRecord dividend in dividends)
+                IEnumerable<DownloadedDividendRecord> dividendRecords = downloadService.DownloadDividendHistory(stock.ASXCode);
+                foreach (DownloadedDividendRecord dividendRecord in dividendRecords)
                 {
-                    if (! DividendExists(dividend.RecordDate))
-                        stock.AddDividend(dividend.RecordDate, dividend.PaymentDate, dividend.Amount, dividend.PercentFranked, 0.30m, "");
+                    if (! DividendExists(dividendRecord.RecordDate))
+                    {
+                       var dividend = new Dividend(stock.Id, dividendRecord.RecordDate, dividendRecord.PaymentDate, dividendRecord.Amount, dividendRecord.PercentFranked, 0.30m, "");
+                       _StockServiceRepository.CorporateActionService.AddCorporateAction(dividend);
+                    }
                 }
 
                 DisplayCorporateActions(stock);
@@ -263,7 +266,25 @@ namespace PortfolioManager.Test
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
                 foreach (var fileName in openDialog.FileNames)
-                    _StockManager.ImportStockPrices(fileName);
+                    _StockServiceRepository.ImportStockPrices(fileName);
+            }
+        }
+
+        private void btnAddSplitConsolidation_Click(object sender, EventArgs e)
+        {
+            if (lsvStocks.FocusedItem != null)
+            {
+                Stock stock = (Stock)lsvStocks.FocusedItem.Tag;
+                AddCorporateAction(stock, CorporateActionType.SplitConsolidation);
+            }
+        }
+
+        private void btnAddCompositeAction_Click(object sender, EventArgs e)
+        {
+            if (lsvStocks.FocusedItem != null)
+            {
+                Stock stock = (Stock)lsvStocks.FocusedItem.Tag;
+                AddCorporateAction(stock, CorporateActionType.Composite);
             }
         }
 

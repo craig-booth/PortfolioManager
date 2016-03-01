@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Test.TransactionControls;
+using PortfolioManager.Service;
 
 namespace PortfolioManager.Test
 {
@@ -44,6 +45,8 @@ namespace PortfolioManager.Test
                 control = new OpeningBalanceControl(_StockService);
             else if (type == TransactionType.ReturnOfCapital)
                 control = new ReturnOfCapitalControl(_StockService);
+            else if (type == TransactionType.UnitCountAdjustment)
+                control = new UnitAdjustmentControl(_StockService);
             else
                 throw new NotSupportedException();
 

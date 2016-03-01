@@ -37,6 +37,8 @@
             this.btnAddCapitalReturn = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddDividend = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAddTransformation = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddSplitConsolidation = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddCompositeAction = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDownloadDividends = new System.Windows.Forms.ToolStripButton();
             this.btnImportPrices = new System.Windows.Forms.ToolStripButton();
             this.lsvStocks = new System.Windows.Forms.ListView();
@@ -53,7 +55,6 @@
             this.ctxCorporateActions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuEditCorporateAction = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDeleteCorporateAction = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnAddCompositeAction = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.ctxStocks.SuspendLayout();
             this.ctxCorporateActions.SuspendLayout();
@@ -61,6 +62,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnRefresh,
             this.btnAddStock,
@@ -100,6 +102,7 @@
             this.btnAddCapitalReturn,
             this.btnAddDividend,
             this.btnAddTransformation,
+            this.btnAddSplitConsolidation,
             this.btnAddCompositeAction});
             this.btnAddCorporateAction.Image = ((System.Drawing.Image)(resources.GetObject("btnAddCorporateAction.Image")));
             this.btnAddCorporateAction.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -127,6 +130,20 @@
             this.btnAddTransformation.Size = new System.Drawing.Size(170, 22);
             this.btnAddTransformation.Text = "Transformation";
             this.btnAddTransformation.Click += new System.EventHandler(this.btnAddTransformation_Click);
+            // 
+            // btnAddSplitConsolidation
+            // 
+            this.btnAddSplitConsolidation.Name = "btnAddSplitConsolidation";
+            this.btnAddSplitConsolidation.Size = new System.Drawing.Size(170, 22);
+            this.btnAddSplitConsolidation.Text = "Split/Cosolidation";
+            this.btnAddSplitConsolidation.Click += new System.EventHandler(this.btnAddSplitConsolidation_Click);
+            // 
+            // btnAddCompositeAction
+            // 
+            this.btnAddCompositeAction.Name = "btnAddCompositeAction";
+            this.btnAddCompositeAction.Size = new System.Drawing.Size(170, 22);
+            this.btnAddCompositeAction.Text = "Composite Action";
+            this.btnAddCompositeAction.Click += new System.EventHandler(this.btnAddCompositeAction_Click);
             // 
             // btnDownloadDividends
             // 
@@ -179,6 +196,7 @@
             // 
             // ctxStocks
             // 
+            this.ctxStocks.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ctxStocks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuDeleteStock,
             this.mnuRenameStock,
@@ -245,6 +263,7 @@
             // 
             // ctxCorporateActions
             // 
+            this.ctxCorporateActions.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.ctxCorporateActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuEditCorporateAction,
             this.mnuDeleteCorporateAction});
@@ -264,13 +283,6 @@
             this.mnuDeleteCorporateAction.Size = new System.Drawing.Size(107, 22);
             this.mnuDeleteCorporateAction.Text = "Delete";
             this.mnuDeleteCorporateAction.Click += new System.EventHandler(this.mnuDeleteCorporateAction_Click);
-            // 
-            // btnAddCompositeAction
-            // 
-            this.btnAddCompositeAction.Name = "btnAddCompositeAction";
-            this.btnAddCompositeAction.Size = new System.Drawing.Size(170, 22);
-            this.btnAddCompositeAction.Text = "Composite Action";
-            this.btnAddCompositeAction.Click += new System.EventHandler(this.btnAddCompositeAction_Click);
             // 
             // frmStockManager
             // 
@@ -317,6 +329,7 @@
         private System.Windows.Forms.ToolStripMenuItem btnAddTransformation;
         private System.Windows.Forms.ToolStripButton btnDownloadDividends;
         private System.Windows.Forms.ToolStripButton btnImportPrices;
+        private System.Windows.Forms.ToolStripMenuItem btnAddSplitConsolidation;
         private System.Windows.Forms.ToolStripMenuItem btnAddCompositeAction;
     }
 }

@@ -14,11 +14,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         protected override int RepositoryVersion
         {
-            get { return 1; }
+            get { return 3; }
         }
 
         /* TODO: Priority Low, move this to the database */
-        internal List<Portfolio> _Portfolios { get; private set; }
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
@@ -29,7 +28,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             PortfolioQuery = new SQLitePortfolioQuery(this);
 
-            _Portfolios = new List<Portfolio>();
             _Parcels = new List<ShareParcel>();
             _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();
@@ -39,8 +37,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (forVersion == 0)
                 return new SQLiteSimpleDatabaseUpgrade(1, "Upgrade\\PortfolioDatabaseUpgradeToVersion1.sql");
-
-            throw new NotSupportedException();
+            else if (forVersion == 1)
+                return new SQLiteSimpleDatabaseUpgrade(2, "Upgrade\\PortfolioDatabaseUpgradeToVersion2.sql");
+            else if (forVersion == 2)
+                return new SQLiteSimpleDatabaseUpgrade(3, "Upgrade\\PortfolioDatabaseUpgradeToVersion3.sql");
+            else
+                throw new NotSupportedException();
         }
 
         public IPortfolioUnitOfWork CreateUnitOfWork()

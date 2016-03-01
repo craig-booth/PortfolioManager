@@ -11,21 +11,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class SQLitePortfolioUnitOfWork : IPortfolioUnitOfWork
     {
         private SQLitePortfolioDatabase _Database;
-        private SQLitePortfolioRepository _PortfolioRepository;
         private SQLiteParcelRepository _ParcelRepository;
         private SQLiteTransactionRepository _TransactionRepository;
         private SQLiteCGTEventRepository _CGTEventRepository;
-
-        public IPortfolioRepository PortfolioRepository
-        {
-            get
-            {
-                if (_PortfolioRepository == null)
-                    _PortfolioRepository = new SQLitePortfolioRepository(_Database);
-
-                return _PortfolioRepository;
-            }
-        }
 
         public ITransactionRepository TransactionRepository
         {

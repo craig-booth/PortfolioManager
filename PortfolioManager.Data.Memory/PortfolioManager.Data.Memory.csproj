@@ -43,7 +43,6 @@
     <Compile Include="Portfolios\ParcelRepository.cs" />
     <Compile Include="Portfolios\PortfolioDatabase.cs" />
     <Compile Include="Portfolios\PortfolioQuery.cs" />
-    <Compile Include="Portfolios\PortfolioRepository.cs" />
     <Compile Include="Portfolios\PortfolioUnitOfWork.cs" />
     <Compile Include="Portfolios\TransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,10 +8,16 @@ namespace PortfolioManager.Model.Utils
 {
     public enum RoundingRule {Round, Truncate}
 
-    public struct ApportionedValue
+    public struct ApportionedCurrencyValue
     {
         public int Units;
         public decimal Amount;
+    }
+
+    public struct ApportionedIntegerValue
+    {
+        public int Units;
+        public int Amount;
     }
 
     public class MathUtils
@@ -30,7 +36,7 @@ namespace PortfolioManager.Model.Utils
                 return Math.Round(value, 2);
         }
 
-        public static void ApportionAmount(decimal amount, ApportionedValue[] values)
+        public static void ApportionAmount(decimal amount, ApportionedCurrencyValue[] values)
         {
             /* Calculate total */
             decimal totalUnits = values.Sum(x => x.Units);
@@ -42,6 +48,24 @@ namespace PortfolioManager.Model.Utils
                     values[i].Amount = MathUtils.ToCurrency(totalAmount * (values[i].Units / totalUnits), RoundingRule.Round);
                 else
                     values[i].Amount = 0.00m;
+
+                totalUnits -= values[i].Units;
+                totalAmount -= values[i].Amount;
+            }
+        }
+
+        public static void ApportionAmount(int amount, ApportionedIntegerValue[] values)
+        {
+            /* Calculate total */
+            int totalUnits = values.Sum(x => x.Units);
+
+            int totalAmount = amount;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (totalUnits > 0)
+                    values[i].Amount = (int)Math.Round(totalAmount * ((decimal)values[i].Units / totalUnits));
+                else
+                    values[i].Amount = 0;
 
                 totalUnits -= values[i].Units;
                 totalAmount -= values[i].Amount;

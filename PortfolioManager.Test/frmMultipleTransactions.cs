@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.Test.TransactionControls;
+using PortfolioManager.Service;
 
 namespace PortfolioManager.Test
 {
@@ -64,6 +63,11 @@ namespace PortfolioManager.Test
                 control = new ReturnOfCapitalControl(_StockService);
                 label = "Return Of Capital";
             }
+            else if (transaction.Type == TransactionType.UnitCountAdjustment)
+            {
+                control = new UnitAdjustmentControl(_StockService);
+                label = "Unit Count Adjustment";
+            }
             else
                 throw new NotSupportedException();
 
@@ -95,6 +99,11 @@ namespace PortfolioManager.Test
             }
             else
                 return false;
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

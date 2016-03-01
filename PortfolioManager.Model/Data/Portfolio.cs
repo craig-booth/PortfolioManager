@@ -17,17 +17,11 @@ namespace PortfolioManager.Model.Data
 
     public interface IPortfolioUnitOfWork : IDisposable
     {
-        IPortfolioRepository PortfolioRepository { get; }
         IParcelRepository ParcelRepository { get; }
         ITransactionRepository TransactionRepository { get; }
         ICGTEventRepository CGTEventRepository { get; }
 
         void Save();
-    }
-
-    public interface IPortfolioRepository : IRepository<Portfolio>
-    {
-        
     }
 
     public interface IParcelRepository : IEffectiveDatedRepository<ShareParcel>
@@ -47,18 +41,13 @@ namespace PortfolioManager.Model.Data
 
     public interface IPortfolioQuery
     {
-        Portfolio Get(Guid id);
-
-        IReadOnlyCollection<Portfolio> GetAllPortfolios();
-
         ShareParcel GetParcel(Guid id, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate);
-        IReadOnlyCollection<CGTEvent> GetCGTEvents(Guid portfolio, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<IncomeReceived> GetIncome(Guid portfolio, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, TransactionType transactionType, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate);
+        IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime atDate);
+        IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
     }
 }

@@ -107,7 +107,8 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
             if (base.Equals(openingBalance1, openingBalance2) &&
                 (openingBalance1.CostBase == openingBalance2.CostBase) &&
-                (openingBalance1.Units == openingBalance2.Units))
+                (openingBalance1.Units == openingBalance2.Units) &&
+                (openingBalance1.AquisitionDate == openingBalance2.AquisitionDate))
                 return true;
             else
                 return false;

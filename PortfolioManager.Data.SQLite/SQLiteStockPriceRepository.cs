@@ -38,7 +38,7 @@ namespace PortfolioManager.Data.SQLite
                 reader.Close();
                 throw new RecordNotFoundException(stockId);
             }
-            var price = DBToDecimal(reader.GetInt32(0));
+            var price = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
 
             reader.Close();
 
@@ -74,7 +74,7 @@ namespace PortfolioManager.Data.SQLite
 
             _AddCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
             _AddCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            _AddCommand.Parameters.AddWithValue("@Price", DecimalToDB(price));
+            _AddCommand.Parameters.AddWithValue("@Price", SQLiteUtils.DecimalToDB(price));
             _AddCommand.ExecuteNonQuery(); 
         }
 
@@ -89,7 +89,7 @@ namespace PortfolioManager.Data.SQLite
 
             _UpdateCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
             _UpdateCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            _UpdateCommand.Parameters.AddWithValue("@Price", DecimalToDB(price));
+            _UpdateCommand.Parameters.AddWithValue("@Price", SQLiteUtils.DecimalToDB(price));
             _UpdateCommand.ExecuteNonQuery(); 
         }
 
@@ -106,15 +106,6 @@ namespace PortfolioManager.Data.SQLite
             _DeleteCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
             _UpdateCommand.ExecuteNonQuery(); 
         }
-
-        public int DecimalToDB(decimal value)
-        {
-            return (int)Math.Floor(value * 100000);
-        }
-
-        public decimal DBToDecimal(int value)
-        {
-            return (decimal)value / 100000;
-        }
+       
     }
 }

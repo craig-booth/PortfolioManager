@@ -65,7 +65,7 @@ CREATE INDEX [Index_CorporateActions_ByStock] ON [CorporateActions]
 
 CREATE TABLE [Dividends]
 (
-	[Id] TEXT(36) NOT NULL ,
+	[Id] TEXT(36) NOT NULL,
 	[PaymentDate] TEXT(10) NOT NULL,
 	[DividendAmount] INTEGER NOT NULL,
 	[CompanyTaxRate] INTEGER NOT NULL,
@@ -84,11 +84,32 @@ CREATE TABLE [CapitalReturns]
 	PRIMARY KEY ([Id])
 );
 
+CREATE TABLE [SplitConsolidations]
+(
+	[Id] TEXT(36) NOT NULL,
+	[OldUnits] INTEGER NOT NULL,
+	[NewUnits] INTEGER NOT NULL,
+
+	PRIMARY KEY ([Id])
+);
+
+
+CREATE TABLE [CompositeActions]
+(
+	[Id] TEXT(36) NOT NULL,
+	[Sequence] INTEGER NOT NULL,
+	[ChildAction] TEXT(36) NOT NULL,
+	[ChildType] INTEGER NOT NULL,
+
+	PRIMARY KEY ([Id], [Sequence])
+);
+
 CREATE TABLE [Transformations]
 (
 	[Id] TEXT(36) NOT NULL,
 	[ImplementationDate] TEXT(10) NOT NULL,
 	[CashComponent] INTEGER NOT NULL,
+    [RolloverRelief] TEXT(1) NOT NULL DEFAULT "Y",
 
 	PRIMARY KEY ([Id])
 );
@@ -100,6 +121,7 @@ CREATE TABLE [TransformationResultingStocks]
 	[OriginalUnits] INTEGER NOT NULL,
 	[NewUnits] INTEGER NOT NULL,
 	[CostBasePercentage] INTEGER NOT NULL,
+	[AquisitionDate] CHAR(10) NOT NULL DEFAULT "0001-01-01",
 
 	PRIMARY KEY ([Id], [Stock])
 );

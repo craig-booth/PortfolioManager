@@ -80,6 +80,12 @@
     <Compile Include="frmMultipleTransactions.Designer.cs">
       <DependentUpon>frmMultipleTransactions.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSplitConsolidation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitConsolidation.Designer.cs">
+      <DependentUpon>frmSplitConsolidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTransaction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,11 +168,23 @@
     <Compile Include="TransactionControls\ReturnOfCapitalControl.Designer.cs">
       <DependentUpon>ReturnOfCapitalControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TransactionControls\UnitAdjustmentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TransactionControls\UnitAdjustmentControl.Designer.cs">
+      <DependentUpon>UnitAdjustmentControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmCapitalReturn.resx">
       <DependentUpon>frmCapitalReturn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCompositeAction.resx">
+      <DependentUpon>frmCompositeAction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMultipleTransactions.resx">
       <DependentUpon>frmMultipleTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitConsolidation.resx">
+      <DependentUpon>frmSplitConsolidation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTransaction.resx">
       <DependentUpon>frmTransaction.cs</DependentUpon>
@@ -216,6 +234,9 @@
     <EmbeddedResource Include="TransactionControls\ReturnOfCapitalControl.resx">
       <DependentUpon>ReturnOfCapitalControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TransactionControls\UnitAdjustmentControl.resx">
+      <DependentUpon>UnitAdjustmentControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -230,10 +251,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortfolioManager.Data.Memory\PortfolioManager.Data.Memory.csproj">
-      <Project>{7336f40c-ecd4-4a94-a1d9-c629823fe5b3}</Project>
-      <Name>PortfolioManager.Data.Memory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj">
       <Project>{4dcb5a16-15d6-41ae-9d48-46b9c6e45edb}</Project>
       <Name>PortfolioManager.Data.SQLite</Name>
@@ -241,6 +258,14 @@
     <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">
       <Project>{befae5c7-fdc4-41a6-ba2b-785fd54fb805}</Project>
       <Name>PortfolioManager.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj">
+      <Project>{5c1f0fca-84b1-4910-934c-99e79c84052e}</Project>
+      <Name>PortfolioManager.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StockManager.Service\StockManager.Service.csproj">
+      <Project>{7171f628-22a3-4f8e-80ac-e4a29993eb62}</Project>
+      <Name>StockManager.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

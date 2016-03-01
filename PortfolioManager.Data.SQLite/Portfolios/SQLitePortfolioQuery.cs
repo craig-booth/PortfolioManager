@@ -22,16 +22,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _Connection = database._Connection;
         }
 
-        public Portfolio Get(Guid id)
-        {
-            return null;
-        }
-
-        public IReadOnlyCollection<Portfolio> GetAllPortfolios()
-        {
-            return _Database._Portfolios.AsReadOnly();
-        }
-
         public ShareParcel GetParcel(Guid id, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
@@ -41,7 +31,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.First();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetAllParcels(Guid portfolio, DateTime atDate)
+        public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
                                where atDate >= parcel.FromDate && atDate <= parcel.ToDate
@@ -50,7 +40,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid portfolio, Guid stock, DateTime atDate)
+        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime atDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
                                where (parcel.Stock == stock) && ((atDate >= parcel.FromDate && atDate <= parcel.ToDate))
@@ -59,7 +49,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<CGTEvent> GetCGTEvents(Guid portfolio, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
         {
             var cgtQuery = from cgt in _Database._CGTEvents
                            where cgt.EventDate >= fromDate && cgt.EventDate <= toDate
@@ -69,30 +59,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<IncomeReceived> GetIncome(Guid portfolio, DateTime fromDate, DateTime toDate)
-        {
-            var list = new List<IncomeReceived>();
-
-            var query = new SQLiteCommand("SELECT [Transactions].* FROM [Transactions] LEFT OUTER JOIN [IncomeReceived] ON [IncomeReceived].[Id] = [Transactions].[Id] WHERE [Type] = @Type and [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
-            query.Prepare();
-
-            query.Parameters.AddWithValue("@Type", TransactionType.Income);
-            query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = query.ExecuteReader();
-
-            while (reader.Read())
-            {
-                IncomeReceived transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader) as IncomeReceived;
-                list.Add(transaction);
-            }
-            reader.Close();
-
-            return list;
-        }
-
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var list = new List<ITransaction>();
 
@@ -114,7 +81,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var list = new List<ITransaction>();
 
@@ -137,7 +104,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
             var list = new List<ITransaction>();
 
@@ -160,7 +127,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(Guid portfolio, string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var list = new List<ITransaction>();
 

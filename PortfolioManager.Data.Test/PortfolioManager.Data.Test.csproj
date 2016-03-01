@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparers.cs" />
     <Compile Include="Portfolio\PortfolioQueryTest.cs" />
     <Compile Include="Portfolio\Transactions\AquisitionRepositoryTest.cs" />
     <Compile Include="Portfolio\Transactions\CompareTransaction.cs" />
@@ -54,19 +53,25 @@
     <Compile Include="Portfolio\Transactions\OpeningBalanceRepositoryTest.cs" />
     <Compile Include="Portfolio\Transactions\ReturnOfCapitalRepositoryTest.cs" />
     <Compile Include="Portfolio\Transactions\TransactionRepositoryTest.cs" />
-    <Compile Include="Stocks\CorporateActionCapitalReturnRepositoryText.cs" />
-    <Compile Include="Stocks\CorporateActionCompositeRepositoryText.cs" />
-    <Compile Include="Stocks\CorporateActionDividendRepositoryText.cs" />
+    <Compile Include="Stocks\CorporateActionCapitalReturnRepositoryTest.cs" />
+    <Compile Include="Stocks\CorporateActionCompositeRepositoryTest.cs" />
+    <Compile Include="Stocks\CorporateActionDividendRepositoryTest.cs" />
     <Compile Include="Stocks\CorporateActionRepositoryTest.cs" />
-    <Compile Include="Stocks\CorporateActionTransformationRepositoryText.cs" />
+    <Compile Include="Stocks\CorporateActionTransformationRepositoryTest.cs" />
     <Compile Include="Stocks\RelativeNTARepositoryTest.cs" />
+    <Compile Include="Stocks\CorporateActionSplitConsolidationRepositoryTest.cs" />
     <Compile Include="Stocks\StockQueryTest.cs" />
     <Compile Include="Stocks\StockRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stocks\StockUnitOfWorkTest.cs" />
+    <Compile Include="Stocks\TransformationCorporateActionRepositoryTest.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NUnitExtension\NUnitExtension.csproj">
+      <Project>{0e4423e8-50ef-467b-9211-d59137b2bf19}</Project>
+      <Name>NUnitExtension</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Data.Memory\PortfolioManager.Data.Memory.csproj">
       <Project>{7336f40c-ecd4-4a94-a1d9-c629823fe5b3}</Project>
       <Name>PortfolioManager.Data.Memory</Name>

@@ -10,14 +10,16 @@ using System.Windows.Forms;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+using StockManager.Service;
 
 namespace PortfolioManager.Test
 {
     public partial class frmCompositeAction : Form, ICorporateActionForm
     {
         private Mode _Mode;
-        private StockManager _StockManager;
+        private StockService _StockService;
         private CompositeAction _CompositeAction;
+        private CorporateActionFormFactory _CorporateActionFormFactory;
         private Stock _Stock;
 
         public frmCompositeAction()
@@ -25,20 +27,41 @@ namespace PortfolioManager.Test
             InitializeComponent();
         }
 
-        public frmCompositeAction(StockManager stockManager)
+        public frmCompositeAction(StockService stockService)
             : this()
         {
-            _StockManager = stockManager;
+            _StockService = stockService;
+
+            _CorporateActionFormFactory = new CorporateActionFormFactory(stockService);
         }
 
 
         private void SetFormValues()
         {
-           // lblASXCode.Text = _StockManager.GetASXCode(_CapitalReturn.Stock);
-           // dtpRecordDate.Value = _CapitalReturn.ActionDate;
-           // dtpPaymentDate.Value = _CapitalReturn.PaymentDate;
-           // txtAmount.Text = MathUtils.FormatCurrency(_CapitalReturn.Amount, false);
-           // txtDescription.Text = _CapitalReturn.Description;
+            lblASXCode.Text = _StockService.GetASXCode(_CompositeAction.Stock);
+            dtpActionDate.Value = _CompositeAction.ActionDate;
+            txtDescription.Text = _CompositeAction.Description;
+
+            lsvChildActions.Items.Clear();
+            foreach (var childAction in _CompositeAction.Children)
+                AddChildAction(childAction);
+        }
+
+        private void AddChildAction(ICorporateAction childAction)
+        {
+            var item = lsvChildActions.Items.Add(childAction.Type.ToString());
+            item.SubItems.Add(childAction.Description);
+            item.Tag = childAction;
+        }
+
+        private void UpdateChildAction(ICorporateAction childAction)
+        {
+            foreach (ListViewItem item in lsvChildActions.Items)
+            {
+                var itemAction = item.Tag as ICorporateAction; 
+                if (childAction.Id == itemAction.Id)
+                    item.Name = childAction.Description;
+            }
         }
 
         public ICorporateAction CreateCorporateAction(Stock stock)
@@ -46,7 +69,7 @@ namespace PortfolioManager.Test
             _Stock = stock;
             _Mode = Mode.Create;
 
-          //  lblASXCode.Text = stock.ASXCode;
+            lblASXCode.Text = stock.ASXCode;
 
             if (ShowDialog() == DialogResult.OK)
             {
@@ -58,17 +81,22 @@ namespace PortfolioManager.Test
 
         public bool EditCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
             if (ShowDialog() == DialogResult.OK)
             {
-             /*   _CapitalReturn.Change(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text);
-                                    */
+                _CompositeAction.ActionDate = dtpActionDate.Value;
+                _CompositeAction.Description = txtDescription.Text;
+
+                _CompositeAction.Children.Clear();
+                foreach (ListViewItem item in lsvChildActions.Items)
+                {
+                    ICorporateAction childAction = item.Tag as ICorporateAction;
+                    _CompositeAction.Children.Add(childAction);
+                }
+                                                    
                 return true;
             }
             else
@@ -85,30 +113,79 @@ namespace PortfolioManager.Test
 
         public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
         {
-            _Stock = _StockManager.GetStock(corporateAction.Stock);
+            _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
             _CompositeAction = corporateAction as CompositeAction;
             SetFormValues();
-            if (ShowDialog() == DialogResult.OK)
-            {
-                _Stock.DeleteCorporateAction(_CompositeAction);
-                return true;
-            }
-            return
-                false;
+            return (ShowDialog() == DialogResult.OK);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (_Mode == Mode.Create)
             {
-             /*   _CapitalReturn = _Stock.AddCapitalReturn(dtpRecordDate.Value,
-                                    dtpPaymentDate.Value,
-                                    MathUtils.ParseDecimal(txtAmount.Text),
-                                    txtDescription.Text); */
+                _CompositeAction = new CompositeAction(_Stock.Id, dtpActionDate.Value,
+                                    txtDescription.Text);
+
+                foreach (ListViewItem item in lsvChildActions.Items)
+                {
+                    ICorporateAction childAction = item.Tag as ICorporateAction;
+                    _CompositeAction.Children.Add(childAction);
+                }
             }
         }
 
+        private void btnAddCapitalReturn_Click(object sender, EventArgs e)
+        {
+            var form = _CorporateActionFormFactory.CreateCorporateActionForm(CorporateActionType.CapitalReturn);
+            var childAction = form.CreateCorporateAction(_Stock);
 
+            if (childAction != null)
+                AddChildAction(childAction);
+        }
+    
+        private void btnAddSplitConsolidation_Click(object sender, EventArgs e)
+        {
+            var form = _CorporateActionFormFactory.CreateCorporateActionForm(CorporateActionType.SplitConsolidation);
+            var childAction = form.CreateCorporateAction(_Stock);
+
+            if (childAction != null)
+                AddChildAction(childAction);
+        }
+
+        private void btnAddTransformation_Click(object sender, EventArgs e)
+        {
+            var form = _CorporateActionFormFactory.CreateCorporateActionForm(CorporateActionType.Transformation);
+            var childAction = form.CreateCorporateAction(_Stock);
+
+            if (childAction != null)
+                AddChildAction(childAction);
+        }
+
+        private void btnAddDividend_Click(object sender, EventArgs e)
+        {
+            var form = _CorporateActionFormFactory.CreateCorporateActionForm(CorporateActionType.Dividend);
+            var childAction = form.CreateCorporateAction(_Stock);
+
+            if (childAction != null)
+                AddChildAction(childAction);
+        }
+
+        private void btnDeleteChildAction_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lsvChildActions.SelectedItems)
+                lsvChildActions.Items.Remove(item);
+        }
+
+        private void lsvChildActions_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ICorporateAction childAction = lsvChildActions.FocusedItem.Tag as ICorporateAction;
+
+            var form = _CorporateActionFormFactory.CreateCorporateActionForm(childAction.Type);
+            if (form.EditCorporateAction(childAction))
+            {
+                UpdateChildAction(childAction);
+            }
+        }
     }
 }

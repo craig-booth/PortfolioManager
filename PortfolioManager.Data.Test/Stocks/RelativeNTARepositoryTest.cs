@@ -25,12 +25,12 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child", StockType.Ordinary, parent.Id);
+                child = new Stock(new DateTime(2000, 01, 01), "DEF", "Child", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child);
-                nta = new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
+                nta = new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
                 unitOfWork.RelativeNTARepository.Add(nta);
 
                 nta1 =  unitOfWork.RelativeNTARepository.Get(nta.Id);
@@ -50,15 +50,15 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child", StockType.Ordinary, parent.Id);
+                child = new Stock(new DateTime(2000, 01, 01), "DEF", "Child", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child);
 
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M));
 
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.30M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.30M));
             }
         }
 
@@ -71,26 +71,26 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child1 = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
-                nta1 = new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
+                nta1 = new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
                 unitOfWork.RelativeNTARepository.Add(nta1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
 
 
-                child2 = new Stock(database, new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
                 unitOfWork.StockRepository.Add(child2);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
-                nta2 = new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
+                nta2 = new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
                 unitOfWork.RelativeNTARepository.Add(nta2);
 
 
@@ -117,25 +117,25 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child1 = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
 
 
-                child2 = new Stock(database, new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
                 unitOfWork.StockRepository.Add(child2);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M));
 
 
                 unitOfWork.RelativeNTARepository.Get(Guid.NewGuid());
@@ -152,15 +152,16 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child);
-                nta = new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
+                nta = new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
                 unitOfWork.RelativeNTARepository.Add(nta);
 
-                child.ChangeRelativeNTA(new DateTime(2000, 01, 01), 0.40M);
+                nta.Percentage = 0.40m;
+                unitOfWork.RelativeNTARepository.Update(nta);
 
                 nta1 = unitOfWork.RelativeNTARepository.Get(nta.Id);
 
@@ -178,12 +179,12 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child);
-                nta = new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
+                nta = new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
                 unitOfWork.RelativeNTARepository.Add(nta);
 
                 unitOfWork.RelativeNTARepository.Delete(nta);
@@ -203,12 +204,12 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child);
-                nta = new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
+                nta = new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
                 unitOfWork.RelativeNTARepository.Add(nta);
 
                 unitOfWork.RelativeNTARepository.Delete(nta.Id);
@@ -218,6 +219,7 @@ namespace PortfolioManager.Data.Test.Stocks
         }
 
         [Test, Description("Test Delete() by Id not exists")]
+        [ExpectedException(typeof(RecordNotFoundException))]
         public void DeleteByIdNotExists()
         {
             Stock parent, child;
@@ -226,12 +228,12 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child);
-                nta = new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
+                nta = new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child.Id, 0.10M);
                 unitOfWork.RelativeNTARepository.Add(nta);
 
                 unitOfWork.RelativeNTARepository.Delete(Guid.NewGuid());
@@ -248,26 +250,26 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child1 = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
-                nta1 = new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
+                nta1 = new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
                 unitOfWork.RelativeNTARepository.Add(nta1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
 
 
-                child2 = new Stock(database, new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
                 unitOfWork.StockRepository.Add(child2);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
-                nta2 = new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
+                nta2 = new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
                 unitOfWork.RelativeNTARepository.Add(nta2);
 
 
@@ -299,26 +301,26 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child1 = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
-                nta1 = new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
+                nta1 = new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
                 unitOfWork.RelativeNTARepository.Add(nta1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
 
 
-                child2 = new Stock(database, new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
                 unitOfWork.StockRepository.Add(child2);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
-                nta2 = new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
+                nta2 = new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
                 unitOfWork.RelativeNTARepository.Add(nta2);
 
 
@@ -349,26 +351,26 @@ namespace PortfolioManager.Data.Test.Stocks
             var database = CreateStockDatabase();
             using (IStockUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
-                parent = new Stock(database, new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
+                parent = new Stock(new DateTime(2000, 01, 01), "ABC", "Parent", StockType.StapledSecurity, Guid.Empty);
                 unitOfWork.StockRepository.Add(parent);
 
-                child1 = new Stock(database, new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
+                child1 = new Stock(new DateTime(2000, 01, 01), "DEF", "Child 1", StockType.Ordinary, parent.Id);
                 unitOfWork.StockRepository.Add(child1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
-                nta1 = new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child1.Id, 0.10M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child1.Id, 0.20M));
+                nta1 = new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child1.Id, 0.30M);
                 unitOfWork.RelativeNTARepository.Add(nta1);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child1.Id, 0.40M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child1.Id, 0.50M));
 
 
-                child2 = new Stock(database, new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
+                child2 = new Stock(new DateTime(2000, 01, 01), "GHI", "Child 2", StockType.Trust, parent.Id);
                 unitOfWork.StockRepository.Add(child2);
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
-                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(database, new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
-                nta2 = new RelativeNTA(database, new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2000, 01, 01), parent.Id, child2.Id, 0.80M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2001, 01, 01), parent.Id, child2.Id, 0.70M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2002, 01, 01), parent.Id, child2.Id, 0.60M));
+                unitOfWork.RelativeNTARepository.Add(new RelativeNTA(new DateTime(2003, 01, 01), parent.Id, child2.Id, 0.50M));
+                nta2 = new RelativeNTA(new DateTime(2004, 01, 01), parent.Id, child2.Id, 0.40M);
                 unitOfWork.RelativeNTARepository.Add(nta2);
 
 

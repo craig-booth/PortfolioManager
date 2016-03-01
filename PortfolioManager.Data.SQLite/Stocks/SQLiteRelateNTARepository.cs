@@ -52,7 +52,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Date", entity.Date.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Parent", entity.Parent.ToString());
             command.Parameters.AddWithValue("@Child", entity.Child.ToString());
-            command.Parameters.AddWithValue("@Percentage", DecimalToDB(entity.Percentage));
+            command.Parameters.AddWithValue("@Percentage", SQLiteUtils.DecimalToDB(entity.Percentage));
         }
 
         private SQLiteCommand _GetDeleteByDetailsCommand;
