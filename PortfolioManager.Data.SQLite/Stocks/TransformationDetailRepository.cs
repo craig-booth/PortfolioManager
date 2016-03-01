@@ -32,6 +32,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             AddParameters(_AddRecordCommand, transformation);
             _AddRecordCommand.ExecuteNonQuery();
+
+            /* Add result stocks */
+            DeleteTransformationResultRecordRecords(entity.Id);
+            foreach (ResultingStock resultStock in transformation.ResultingStocks)
+                AddResultRecord(entity.Id, resultStock);
         }
 
         private SQLiteCommand _UpdateRecordCommand;
@@ -66,6 +71,9 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             _DeleteRecordCommand.Parameters.AddWithValue("@Id", id.ToString());
             _DeleteRecordCommand.ExecuteNonQuery();
+
+            /* Delete result stocks */
+            DeleteTransformationResultRecordRecords(id);
         }
 
         private void AddParameters(SQLiteCommand command, Transformation entity)
