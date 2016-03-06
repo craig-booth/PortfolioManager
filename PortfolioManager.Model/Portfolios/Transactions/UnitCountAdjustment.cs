@@ -17,6 +17,7 @@ namespace PortfolioManager.Model.Portfolios
         public int OriginalUnits { get; set; }
         public int NewUnits { get; set; }
         public string Comment { get; set; }
+        public Guid Attachment { get; set; }
 
         public string Description
         {

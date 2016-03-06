@@ -10,7 +10,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Service
 {
-    class AttachmentService
+    public class AttachmentService
     {
         private Dictionary<Guid, Attachment> _Attachments;
 
@@ -26,6 +26,17 @@ namespace PortfolioManager.Service
             stream.CopyTo(attachment.Data);
             
             return attachment;
+        }
+
+        public Attachment CreateAttachment(string fileName)
+        {
+            var file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+
+            var attachement = CreateAttachment(file);
+
+            file.Close();
+
+            return attachement;
         }
 
         public void DeleteAttachment(Guid id)

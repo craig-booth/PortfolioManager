@@ -17,6 +17,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal CostBase { get; set; }
         public DateTime AquisitionDate { get; set; }
         public string Comment { get; set; }
+        public Guid Attachment { get; set; }
 
         public string Description
         {

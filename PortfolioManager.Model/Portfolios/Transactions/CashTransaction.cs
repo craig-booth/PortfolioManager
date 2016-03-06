@@ -13,6 +13,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Description { get; set; }
         public string ASXCode { get; private set; }
         public decimal Amount { get; set; }
+        public Guid Attachment { get; set; }
 
         public TransactionType Type
         {

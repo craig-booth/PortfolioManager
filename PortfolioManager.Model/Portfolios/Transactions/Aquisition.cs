@@ -19,6 +19,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal AveragePrice { get; set; }
         public decimal TransactionCosts { get; set; }
         public string Comment { get; set; }
+        public Guid Attachment { get; set; }
 
         public string Description
         {

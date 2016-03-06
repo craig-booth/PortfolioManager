@@ -16,6 +16,7 @@ namespace PortfolioManager.Model.Portfolios
         public DateTime RecordDate { get; set; }
         public decimal Percentage { get; set; }
         public string Comment { get; set; }
+        public Guid Attachment { get; set; }
 
         public string Description
         {

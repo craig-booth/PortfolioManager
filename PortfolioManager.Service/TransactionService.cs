@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using PortfolioManager.Service;
 
@@ -16,11 +17,13 @@ namespace PortfolioManager.Service
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly Dictionary<TransactionType, ITransactionHandler> _TransactionHandlers;
+        private readonly AttachmentService _AttachmentService;
 
 
-        internal TransactionService(IPortfolioDatabase portfolioDatabase, ParcelService parcelService, StockService stockService)
+        internal TransactionService(IPortfolioDatabase portfolioDatabase, ParcelService parcelService, StockService stockService, AttachmentService attachmentService)
         {
             _PortfolioDatabase = portfolioDatabase;
+            _AttachmentService = attachmentService;
 
             _TransactionHandlers = new Dictionary<TransactionType, ITransactionHandler>();
 
@@ -118,5 +121,6 @@ namespace PortfolioManager.Service
             // Need to work out how to reapply
             // _Portfolio.ApplyTransaction(transaction);
         }
+
     }
 }

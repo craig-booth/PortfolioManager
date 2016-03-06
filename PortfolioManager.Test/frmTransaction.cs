@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Test.TransactionControls;
@@ -18,16 +19,20 @@ namespace PortfolioManager.Test
     {
         private readonly StockService _StockService;
         private ITransactionControl _TransactionControl;
+        private AttachmentService _AttachmentService;
+
+        private Guid _Attachment;
 
         public frmTransaction()
         {
             InitializeComponent();
         }
 
-        public frmTransaction(StockService stockService)
+        public frmTransaction(StockService stockService, AttachmentService attachmentService)
             : this()
         {
             _StockService = stockService;
+            _AttachmentService = attachmentService;
         }
 
         private void ShowControl(TransactionType type)
@@ -94,6 +99,33 @@ namespace PortfolioManager.Test
 
             _TransactionControl.DisplayTransaction(transaction);
             return (ShowDialog() == DialogResult.OK); 
+        }
+
+        private void btnAddAttachment_Click(object sender, EventArgs e)
+        {
+            var fileDialog = new OpenFileDialog();
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var attachment = _AttachmentService.CreateAttachment(fileDialog.FileName);
+                _Attachment = attachment.Id;
+            }
+
+        }
+
+        private void btnViewAttachment_Click(object sender, EventArgs e)
+        {
+            var attachmentFileName = Path.GetTempFileName();
+            var attachmentFile = new FileStream(attachmentFileName, FileMode.CreateNew);
+
+            var attachment = _AttachmentService.GetAttachment(_Attachment);
+
+            attachment.Data.CopyTo(attachmentFile);
+
+            attachmentFile.Close();
+            
+
+
         }
     }
 

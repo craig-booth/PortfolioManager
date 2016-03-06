@@ -22,6 +22,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal Interest { get;  set; }
         public decimal TaxDeferred { get; set; }
         public string Comment { get; set; }
+        public Guid Attachment { get; set; }
 
         public string Description
         { 

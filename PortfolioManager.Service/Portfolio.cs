@@ -38,6 +38,7 @@ namespace PortfolioManager.Service
         public IncomeService IncomeService { get; private set; }
         public CGTService CGTService { get; private set; }
         public CorporateActionService CorporateActionService { get; private set; }
+        public AttachmentService AttachmentService { get; private set; }
 
         protected internal Portfolio(string name, IPortfolioDatabase database, StockService stockService, StockPriceService stockPriceService, ICorporateActionQuery corporateActionQuery)
         {
@@ -49,7 +50,8 @@ namespace PortfolioManager.Service
 
             ParcelService = new ParcelService(database.PortfolioQuery, stockService);
             ShareHoldingService = new ShareHoldingService(ParcelService, stockService, stockPriceService);
-            TransactionService = new TransactionService(database, ParcelService, stockService);
+            AttachmentService = new AttachmentService();
+            TransactionService = new TransactionService(database, ParcelService, stockService, AttachmentService);
             IncomeService = new IncomeService(database.PortfolioQuery);
             CGTService = new CGTService(database.PortfolioQuery);
             CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, stockService, TransactionService);

@@ -17,6 +17,7 @@ namespace PortfolioManager.Model.Portfolios
         DateTime TransactionDate { get; }
         string ASXCode { get; }
         string Description { get; }
+        Guid Attachment { get; }
     }
 
 }
