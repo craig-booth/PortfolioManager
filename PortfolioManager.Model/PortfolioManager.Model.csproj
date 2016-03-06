@@ -46,6 +46,7 @@
     <Compile Include="Data\Generic.cs" />
     <Compile Include="Data\Portfolio.cs" />
     <Compile Include="Data\Stock.cs" />
+    <Compile Include="Portfolios\Attachment.cs" />
     <Compile Include="Portfolios\CashAccount.cs" />
     <Compile Include="Portfolios\Transactions\Aquisition.cs" />
     <Compile Include="Portfolios\CGTEvent.cs" />
