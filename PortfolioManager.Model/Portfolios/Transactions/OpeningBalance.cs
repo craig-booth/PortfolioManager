@@ -8,42 +8,33 @@ using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public class OpeningBalance : ITransaction
+    public class OpeningBalance : Transaction
     {
-        public Guid Id { get; private set; }
-        public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
         public int Units { get; set; }
         public decimal CostBase { get; set; }
         public DateTime AquisitionDate { get; set; }
         public string Comment { get; set; }
-        public Guid Attachment { get; set; }
-
-        public string Description
-        {
-            get
-            {
-                return "Opening balance of " + Units.ToString("n0") + " shares";
-            }
-        }
-
-        public TransactionType Type
-        {
-            get
-            {
-                return TransactionType.OpeningBalance;
-            }
-        }
 
         public OpeningBalance()
-            : this (Guid.NewGuid())
+            : base(Guid.NewGuid())
         {
 
         }
 
         public OpeningBalance(Guid id)
+            : base(id)
         {
-            Id = id;
+
+        }
+
+        protected override string GetDescription()
+        {
+            return "Opening balance of " + Units.ToString("n0") + " shares";
+        }
+
+        protected override TransactionType GetTransactionType()
+        {
+            return TransactionType.OpeningBalance;
         }
     }
 }

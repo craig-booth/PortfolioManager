@@ -19,23 +19,23 @@ namespace PortfolioManager.Data.Memory.Portfolios
             _Database = database;
         }
 
-        public ITransaction Get(Guid id)
+        public Transaction Get(Guid id)
         {
             return null;
         }      
         
 
-        public void Add(ITransaction entity)
+        public void Add(Transaction entity)
         {
             _Database._Transactions.Add(entity);
         }
 
-        public void Update(ITransaction entity)
+        public void Update(Transaction entity)
         {
 
         }
 
-        public void Delete(ITransaction entity)
+        public void Delete(Transaction entity)
         {
 
         }

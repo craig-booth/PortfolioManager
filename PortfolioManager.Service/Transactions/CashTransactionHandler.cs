@@ -19,7 +19,7 @@ namespace PortfolioManager.Service
 
         }
 
-        public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
+        public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
         {
             var cashTransaction = transaction as CashTransaction;
 

@@ -10,11 +10,8 @@ using PortfolioManager.Model.Utils;
 namespace PortfolioManager.Model.Portfolios
 {
 
-    public class IncomeReceived: ITransaction  
+    public class IncomeReceived: Transaction
     {
-        public Guid Id { get; private set; }
-        public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
         public DateTime RecordDate { get; set; }
         public decimal FrankedAmount { get;  set; }
         public decimal UnfrankedAmount { get; set; }
@@ -22,23 +19,28 @@ namespace PortfolioManager.Model.Portfolios
         public decimal Interest { get;  set; }
         public decimal TaxDeferred { get; set; }
         public string Comment { get; set; }
-        public Guid Attachment { get; set; }
 
-        public string Description
-        { 
-            get 
-            {
-                return "Income received " + MathUtils.FormatCurrency(CashIncome, false, true);
-            } 
+        public IncomeReceived()
+            : base(Guid.NewGuid())
+        {
+
         }
 
-        public TransactionType Type
+        public IncomeReceived(Guid id)
+            : base(id)
         {
-            get
-            {
-                return TransactionType.Income;
-            }
-        } 
+
+        }
+
+        protected override string GetDescription()
+        {
+            return "Income received " + MathUtils.FormatCurrency(CashIncome, false, true);
+        }
+
+        protected override TransactionType GetTransactionType()
+        {
+            return TransactionType.Income;
+        }
 
         public decimal CashIncome
         {
@@ -53,17 +55,6 @@ namespace PortfolioManager.Model.Portfolios
         public decimal TotalIncome
         {
             get { return CashIncome + NonCashIncome; }
-        }
-
-        public IncomeReceived()
-            : this (Guid.NewGuid())
-        {
-
-        }
-
-        public IncomeReceived(Guid id)
-        {
-            Id = id;
         }
 
     }

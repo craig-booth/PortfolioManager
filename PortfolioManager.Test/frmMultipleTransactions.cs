@@ -29,7 +29,7 @@ namespace PortfolioManager.Test
             _StockService = stockService;
         }
 
-        private void AddTransactionTab(ITransaction transaction)
+        private void AddTransactionTab(Transaction transaction)
         {
             UserControl control;
             string label;
@@ -80,9 +80,9 @@ namespace PortfolioManager.Test
             (control as ITransactionControl).DisplayTransaction(transaction);
         }
 
-        public bool EditTransactions(IEnumerable<ITransaction> transactions)
+        public bool EditTransactions(IEnumerable<Transaction> transactions)
         {
-            foreach (ITransaction transaction in transactions)
+            foreach (Transaction transaction in transactions)
                 AddTransactionTab(transaction);
 
             if (ShowDialog() == DialogResult.OK)
@@ -90,7 +90,7 @@ namespace PortfolioManager.Test
                 foreach (TabPage tabPage in tabTransactions.TabPages)
                 {
                     ITransactionControl transactionControl = tabPage.Controls[0] as ITransactionControl;
-                    ITransaction transaction = tabPage.Tag as ITransaction;
+                    Transaction transaction = tabPage.Tag as Transaction;
 
                     transactionControl.UpdateTransaction(transaction);
                 }

@@ -55,7 +55,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate 
@@ -64,7 +64,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
@@ -73,7 +73,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.ASXCode == asxCode && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate
@@ -82,7 +82,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return transactionQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
                                    where transaction.ASXCode == asxCode && transaction.Type == transactionType && transaction.TransactionDate >= fromDate && transaction.TransactionDate <= toDate

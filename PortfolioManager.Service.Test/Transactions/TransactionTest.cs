@@ -23,7 +23,7 @@ namespace PortfolioManager.Service.Test.Transactions
         public void MultipleTransactionsOnTheSameDay()
         {
             var transactionDate = new DateTime(2010, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -90,8 +90,8 @@ namespace PortfolioManager.Service.Test.Transactions
             // Check that transactions are stored in the correct order
             var actualTransactions = _Portfolio.TransactionService.GetTransactions(transactionDate, transactionDate);
 
-            var expectedTransactionIds = transactions.Select<ITransaction, Guid>(x => x.Id).ToList();
-            var actualTransactionIds = actualTransactions.Select<ITransaction, Guid>(x => x.Id).ToList();
+            var expectedTransactionIds = transactions.Select<Transaction, Guid>(x => x.Id).ToList();
+            var actualTransactionIds = actualTransactions.Select<Transaction, Guid>(x => x.Id).ToList();
 
             Assert.That(actualTransactionIds, Is.EqualTo(expectedTransactionIds));
         }

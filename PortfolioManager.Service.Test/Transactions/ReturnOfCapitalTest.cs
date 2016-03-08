@@ -20,7 +20,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {           
                 new OpeningBalance()
                 {
@@ -59,7 +59,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -100,7 +100,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             DateTime aquisitionDate1 = new DateTime(2000, 01, 01);
             DateTime aquisitionDate2 = new DateTime(2001, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -152,7 +152,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             DateTime aquisitionDate1 = new DateTime(2000, 01, 01);
             DateTime aquisitionDate2 = new DateTime(2001, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -204,7 +204,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {           
                 new OpeningBalance()
                 {
@@ -245,7 +245,7 @@ namespace PortfolioManager.Service.Test.Transactions
         [ExpectedException(typeof(NoParcelsForTransaction))]
         public void NoParcelsForTransaction()
         {
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {           
                 new ReturnOfCapital()
                 {
@@ -263,7 +263,7 @@ namespace PortfolioManager.Service.Test.Transactions
         [ExpectedException(typeof(TransctionNotSupportedForStapledSecurity))]
         public void TransctionNotSupportedForStapledSecurity()
         {
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {

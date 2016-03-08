@@ -34,7 +34,7 @@ namespace PortfolioManager.Test.TransactionControls
             dtpBalanceDate_ValueChanged(this, null);
         }
 
-        public ITransaction CreateTransaction()
+        public Transaction CreateTransaction()
         {
             var transaction = new OpeningBalance();
             _AquisitionDateSet = false;
@@ -43,7 +43,7 @@ namespace PortfolioManager.Test.TransactionControls
             return transaction;
         }
 
-        public void DisplayTransaction(ITransaction transaction)
+        public void DisplayTransaction(Transaction transaction)
         {
             OpeningBalance openingBalance = transaction as OpeningBalance;
 
@@ -66,7 +66,7 @@ namespace PortfolioManager.Test.TransactionControls
             _AquisitionDateSet = true;
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             OpeningBalance openingBalance = transaction as OpeningBalance;
 

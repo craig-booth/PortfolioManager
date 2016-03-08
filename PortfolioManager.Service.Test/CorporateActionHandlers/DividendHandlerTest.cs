@@ -24,7 +24,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var paymentDate = new DateTime(2010, 02, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -43,7 +43,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new IncomeReceived()
                 {
@@ -70,7 +70,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var paymentDate = new DateTime(2010, 02, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -97,7 +97,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new IncomeReceived()
                 {
@@ -124,7 +124,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var paymentDate = new DateTime(2010, 02, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -152,7 +152,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new IncomeReceived()
                 {
@@ -190,7 +190,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(dividend);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
             };
 

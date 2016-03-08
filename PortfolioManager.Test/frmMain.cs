@@ -34,8 +34,8 @@ namespace PortfolioManager.Test
         {
             public int Compare(object x, object y)
             {
-                ITransaction transactionX = (ITransaction)((ListViewItem)x).Tag;
-                ITransaction transactionY = (ITransaction)((ListViewItem)y).Tag;
+                Transaction transactionX = (Transaction)((ListViewItem)x).Tag;
+                Transaction transactionY = (Transaction)((ListViewItem)y).Tag;
 
                 return DateTime.Compare(transactionX.TransactionDate, transactionY.TransactionDate);
             }
@@ -84,7 +84,7 @@ namespace PortfolioManager.Test
             
         }
 
-        private void AddTransaction(ITransaction transaction)
+        private void AddTransaction(Transaction transaction)
         {
             ListViewItem item;
 
@@ -217,7 +217,7 @@ namespace PortfolioManager.Test
             /* Transactions */
             lsvTransactions.Items.Clear();
             var allTransactions = _MyPortfolio.TransactionService.GetTransactions(startDate, endDate);
-            foreach (ITransaction transaction in allTransactions)
+            foreach (Transaction transaction in allTransactions)
             {
                 var item = lsvTransactions.Items.Add(transaction.TransactionDate.ToShortDateString());
                 item.SubItems.Add(transaction.ASXCode);
@@ -233,7 +233,7 @@ namespace PortfolioManager.Test
         private void lsvTransactions_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
-            ITransaction transaction = lsvTransactions2.FocusedItem.Tag as ITransaction;
+            var transaction = lsvTransactions2.FocusedItem.Tag as Transaction;
             lsvTransactions2.FocusedItem.Remove();
 
             _MyPortfolio.TransactionService.ProcessTransaction(transaction);
@@ -282,9 +282,9 @@ namespace PortfolioManager.Test
 
         private void AddTransaction(TransactionType type)
         {
-            var form = new frmTransaction(_PortfolioServiceRepository.StockService);
+            var form = new frmTransaction(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
 
-            ITransaction transaction = form.CreateTransaction(type);
+            var transaction = form.CreateTransaction(type);
             if (transaction != null)
             {
                 _MyPortfolio.TransactionService.ProcessTransaction(transaction);
@@ -349,9 +349,9 @@ namespace PortfolioManager.Test
 
         private void mnuEditTransaction_Click(object sender, EventArgs e)
         {          
-            var form = new frmTransaction(_PortfolioServiceRepository.StockService);
+            var form = new frmTransaction(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
 
-            ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
+            var transaction = (Transaction)lsvTransactions.FocusedItem.Tag;
             if (form.EditTransaction(transaction))
             {
                 _MyPortfolio.TransactionService.UpdateTransaction(transaction);
@@ -363,9 +363,9 @@ namespace PortfolioManager.Test
 
         private void mnuDeleteTransaction_Click(object sender, EventArgs e)
         {
-            var form = new frmTransaction(_PortfolioServiceRepository.StockService);
+            var form = new frmTransaction(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
 
-            ITransaction transaction = (ITransaction)lsvTransactions.FocusedItem.Tag;
+            var transaction = (Transaction)lsvTransactions.FocusedItem.Tag;
             if (form.DeleteTransaction(transaction))
             {
                 _MyPortfolio.TransactionService.DeleteTransaction(transaction);

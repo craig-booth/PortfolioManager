@@ -8,9 +8,9 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Data.Test.Portfolio.Transactions
 {
-    public class TransactionComparer : IEqualityComparer<ITransaction> 
+    public class TransactionComparer : IEqualityComparer<Transaction> 
     {
-        public virtual bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public virtual bool Equals(Transaction transaction1, Transaction transaction2)
         {
             if ((transaction1.Id == transaction2.Id) &&
                 (transaction1.Type == transaction2.Type) &&
@@ -22,7 +22,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 return false;
         }
 
-        public int GetHashCode(ITransaction transaction)
+        public int GetHashCode(Transaction transaction)
         {
             return transaction.Id.GetHashCode();
         }
@@ -30,7 +30,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class AquisitionComparer : TransactionComparer
     {
-        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public override bool Equals(Transaction transaction1, Transaction transaction2)
         {
             var aquisition1 = transaction1 as Aquisition;
             var aquisition2 = transaction2 as Aquisition;
@@ -47,7 +47,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class CostBaseAdjustmentComparer : TransactionComparer
     {
-        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public override bool Equals(Transaction transaction1, Transaction transaction2)
         {
             var costbaseAdjustment1 = transaction1 as CostBaseAdjustment;
             var costbaseAdjustment2 = transaction2 as CostBaseAdjustment;
@@ -62,7 +62,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class DisposalComparer : TransactionComparer
     {
-        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public override bool Equals(Transaction transaction1, Transaction transaction2)
         {
             var disposal1 = transaction1 as Disposal;
             var disposal2 = transaction2 as Disposal;
@@ -80,7 +80,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class IncomeReceivedComparer : TransactionComparer
     {
-        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public override bool Equals(Transaction transaction1, Transaction transaction2)
         {
             var incomeReceived1 = transaction1 as IncomeReceived;
             var incomeReceived2 = transaction2 as IncomeReceived;
@@ -100,7 +100,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class OpeningBalanceComparer : TransactionComparer
     {
-        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public override bool Equals(Transaction transaction1, Transaction transaction2)
         {
             var openingBalance1 = transaction1 as OpeningBalance;
             var openingBalance2 = transaction2 as OpeningBalance;
@@ -117,7 +117,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
     public class ReturnOfCapitalComparer : TransactionComparer
     {
-        public override bool Equals(ITransaction transaction1, ITransaction transaction2)
+        public override bool Equals(Transaction transaction1, Transaction transaction2)
         {
             var returnOfCapital1 = transaction1 as ReturnOfCapital;
             var returnOfCapital2 = transaction2 as ReturnOfCapital;

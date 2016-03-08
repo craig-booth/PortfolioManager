@@ -76,7 +76,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             TestDeleteById(aquisition); 
         }
 
-        protected override void UpdateTransaction(ITransaction transaction)
+        protected override void UpdateTransaction(Transaction transaction)
         {
             Aquisition aquisition = transaction as Aquisition;
 

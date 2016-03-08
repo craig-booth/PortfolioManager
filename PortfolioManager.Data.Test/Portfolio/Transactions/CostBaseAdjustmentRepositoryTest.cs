@@ -68,7 +68,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             TestDeleteById(costbaseAdjustment);
         }
 
-        protected override void UpdateTransaction(ITransaction transaction)
+        protected override void UpdateTransaction(Transaction transaction)
         {
             CostBaseAdjustment costbaseAdjustment = transaction as CostBaseAdjustment;
 

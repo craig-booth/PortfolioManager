@@ -61,7 +61,7 @@ namespace PortfolioManager.Test
             pnlTransaction.Controls.Add(control);
         }
 
-        public ITransaction CreateTransaction(TransactionType type)
+        public Transaction CreateTransaction(TransactionType type)
         {
             ShowControl(type);
 
@@ -71,7 +71,7 @@ namespace PortfolioManager.Test
                 return null;
         }
 
-        public bool EditTransaction(ITransaction transaction)
+        public bool EditTransaction(Transaction transaction)
         {
             ShowControl(transaction.Type);
 
@@ -85,7 +85,7 @@ namespace PortfolioManager.Test
                 return false;
         }
 
-        public void ViewTransaction(ITransaction transaction)
+        public void ViewTransaction(Transaction transaction)
         {
             ShowControl(transaction.Type);
 
@@ -93,7 +93,7 @@ namespace PortfolioManager.Test
             ShowDialog(); 
         }
 
-        public bool DeleteTransaction(ITransaction transaction)
+        public bool DeleteTransaction(Transaction transaction)
         {
             ShowControl(transaction.Type);
 

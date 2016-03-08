@@ -20,7 +20,7 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
+        public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
         {
             var unitCountAdjustment = transaction as UnitCountAdjustment;
 

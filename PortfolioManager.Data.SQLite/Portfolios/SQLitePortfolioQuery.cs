@@ -59,9 +59,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
-            var list = new List<ITransaction>();
+            var list = new List<Transaction>();
 
             var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
             query.Prepare();
@@ -73,7 +73,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                ITransaction transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -81,9 +81,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
-            var list = new List<ITransaction>();
+            var list = new List<Transaction>();
 
             var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
             query.Prepare();
@@ -96,7 +96,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                ITransaction transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -104,9 +104,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
-            var list = new List<ITransaction>();
+            var list = new List<Transaction>();
 
             var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
             query.Prepare();
@@ -119,7 +119,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                ITransaction transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -127,9 +127,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
-            var list = new List<ITransaction>();
+            var list = new List<Transaction>();
 
             var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
             query.Prepare();
@@ -143,7 +143,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                ITransaction transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
                 list.Add(transaction);
             }
             reader.Close();

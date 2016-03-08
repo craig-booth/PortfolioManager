@@ -32,7 +32,7 @@ namespace PortfolioManager.Test.TransactionControls
             dtpPaymentDate_ValueChanged(this, null);
         }
 
-        public ITransaction CreateTransaction()
+        public Transaction CreateTransaction()
         {
             var transaction = new ReturnOfCapital();
             UpdateTransaction(transaction);
@@ -40,7 +40,7 @@ namespace PortfolioManager.Test.TransactionControls
             return transaction;
         }
 
-        public void DisplayTransaction(ITransaction transaction)
+        public void DisplayTransaction(Transaction transaction)
         {
             ReturnOfCapital returnOfCapital = transaction as ReturnOfCapital;
 
@@ -59,7 +59,7 @@ namespace PortfolioManager.Test.TransactionControls
             txtComment.Text = returnOfCapital.Comment;
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             ReturnOfCapital returnOfCapital = transaction as ReturnOfCapital;
 

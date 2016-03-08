@@ -42,7 +42,7 @@ namespace PortfolioManager.Service
             _TransactionHandlers.Add(TransactionType.Interest, cashTransactionHandler);
         }
 
-        public void ProcessTransaction(ITransaction transaction)
+        public void ProcessTransaction(Transaction transaction)
         {
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -53,11 +53,11 @@ namespace PortfolioManager.Service
             }
         }
 
-        public void ProcessTransactions(IEnumerable<ITransaction> transactions)
+        public void ProcessTransactions(IEnumerable<Transaction> transactions)
         {
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                foreach (ITransaction transaction in transactions)
+                foreach (var transaction in transactions)
                 {
                     ApplyTransaction(unitOfWork, transaction);                
                     AddTransaction(unitOfWork, transaction);
@@ -67,12 +67,12 @@ namespace PortfolioManager.Service
             }
         }
 
-        private void AddTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
+        private void AddTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
         {
             unitOfWork.TransactionRepository.Add(transaction);
         }
 
-        internal void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction)
+        internal void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
         {
             var handler = _TransactionHandlers[transaction.Type];
             if (handler != null)
@@ -83,22 +83,22 @@ namespace PortfolioManager.Service
                 throw new NotSupportedException("Transaction type not supported");
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             return _PortfolioDatabase.PortfolioQuery.GetTransactions(fromDate, toDate);
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
             return _PortfolioDatabase.PortfolioQuery.GetTransactions(asxCode, fromDate, toDate);
         }
 
-        public IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType type, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType type, DateTime fromDate, DateTime toDate)
         {
             return _PortfolioDatabase.PortfolioQuery.GetTransactions(asxCode, type, fromDate, toDate);
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -110,7 +110,7 @@ namespace PortfolioManager.Service
             // _Portfolio.ApplyTransaction(transaction);
         }
 
-        public void DeleteTransaction(ITransaction transaction)
+        public void DeleteTransaction(Transaction transaction)
         {
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {

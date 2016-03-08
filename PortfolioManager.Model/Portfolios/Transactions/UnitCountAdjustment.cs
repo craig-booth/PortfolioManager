@@ -9,41 +9,32 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public class UnitCountAdjustment : ITransaction 
+    public class UnitCountAdjustment : Transaction 
     {
-        public Guid Id { get; private set; }
-        public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
         public int OriginalUnits { get; set; }
         public int NewUnits { get; set; }
         public string Comment { get; set; }
-        public Guid Attachment { get; set; }
-
-        public string Description
-        {
-            get
-            {
-                return "Adjust unit count using ratio " + OriginalUnits.ToString("n0") + ":" + NewUnits.ToString("n0");
-            }
-        }
         
         public UnitCountAdjustment()
-            : this (Guid.NewGuid())
+            : base(Guid.NewGuid())
         {
 
         }
 
         public UnitCountAdjustment(Guid id)
+            : base(id)
         {
-            Id = id;
+
         }
 
-        public TransactionType Type
+        protected override string GetDescription()
         {
-            get
-            {
-                return TransactionType.UnitCountAdjustment;
-            }
+            return "Adjust unit count using ratio " + OriginalUnits.ToString("n0") + ":" + NewUnits.ToString("n0");
+        }
+
+        protected override TransactionType GetTransactionType()
+        {
+            return TransactionType.UnitCountAdjustment;
         }
 
 

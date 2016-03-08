@@ -32,7 +32,7 @@ namespace PortfolioManager.Test.TransactionControls
             dtpRecordDate_ValueChanged(this, null);
         }
 
-        public ITransaction CreateTransaction()
+        public Transaction CreateTransaction()
         {
             var transaction = new IncomeReceived();
             UpdateTransaction(transaction);
@@ -40,7 +40,7 @@ namespace PortfolioManager.Test.TransactionControls
             return transaction;
         }
 
-        public void DisplayTransaction(ITransaction transaction)
+        public void DisplayTransaction(Transaction transaction)
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
             
@@ -65,7 +65,7 @@ namespace PortfolioManager.Test.TransactionControls
             txtComment.Text = incomeReceived.Comment;
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
 

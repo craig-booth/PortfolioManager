@@ -10,8 +10,8 @@ namespace PortfolioManager.Test.TransactionControls
 {
     public interface ITransactionControl
     {
-        ITransaction CreateTransaction();
-        void UpdateTransaction(ITransaction transaction);
-        void DisplayTransaction(ITransaction transaction);
+        Transaction CreateTransaction();
+        void UpdateTransaction(Transaction transaction);
+        void DisplayTransaction(Transaction transaction);
     }
 }

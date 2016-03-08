@@ -10,7 +10,7 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
-    class SQLiteTransactionRepository : SQLiteRepository<ITransaction>, ITransactionRepository
+    class SQLiteTransactionRepository : SQLiteRepository<Transaction>, ITransactionRepository
     {
         private Dictionary<TransactionType, TransactionDetailRepository> _DetailRepositories;
 
@@ -63,7 +63,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             
         }
 
-        public override void Add(ITransaction entity)
+        public override void Add(Transaction entity)
         {
             /* Add header record */
             base.Add(entity);
@@ -72,7 +72,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             detailRepository.AddRecord(entity);
         }
 
-        public override void Update(ITransaction entity)
+        public override void Update(Transaction entity)
         {
             /* Update header record */
             base.Update(entity);
@@ -83,7 +83,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         public override void Delete(Guid id)
         {
-            ITransaction entity = Get(id);
+            var entity = Get(id);
 
             /* Delete header record */
             base.Delete(id);
@@ -92,7 +92,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             detailRepository.DeleteRecord(entity.Id);
         }
         
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@TransactionDate", entity.TransactionDate.ToString("yyyy-MM-dd"));
@@ -101,7 +101,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Description", entity.Description);
         }
 
-        protected override ITransaction CreateEntity(SQLiteDataReader reader)
+        protected override Transaction CreateEntity(SQLiteDataReader reader)
         {
             return SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);             
         }
@@ -118,7 +118,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
         private SQLiteCommand _AddRecordCommand;
-        public void AddRecord(ITransaction entity)
+        public void AddRecord(Transaction entity)
         {
             if (_AddRecordCommand == null)
             {
@@ -131,7 +131,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
         private SQLiteCommand _UpdateRecordCommand;
-        public void UpdateRecord(ITransaction entity)
+        public void UpdateRecord(Transaction entity)
         {
             if (_UpdateRecordCommand == null)
             {
@@ -171,7 +171,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             throw new NotSupportedException("");
         }
 
-        protected virtual void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected virtual void AddParameters(SQLiteCommand command, Transaction entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());   
         }
@@ -202,7 +202,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [Aquisitions] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             Aquisition aquisition = entity as Aquisition;
 
@@ -238,7 +238,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [CostBaseAdjustments] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             CostBaseAdjustment costBaseAdjustment = entity as CostBaseAdjustment;
 
@@ -272,7 +272,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [Disposals] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             Disposal disposal = entity as Disposal;
 
@@ -308,7 +308,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [IncomeReceived] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             IncomeReceived incomeReceived = entity as IncomeReceived;
 
@@ -347,7 +347,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [OpeningBalances] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             OpeningBalance openingBalance = entity as OpeningBalance;
 
@@ -382,7 +382,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [ReturnsOfCapital] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             ReturnOfCapital returnOfCapital = entity as ReturnOfCapital;
 
@@ -416,7 +416,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [UnitCountAdjustments] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, ITransaction entity)
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
         {
             UnitCountAdjustment unitCountAdjustment = entity as UnitCountAdjustment;
 

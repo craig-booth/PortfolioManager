@@ -39,7 +39,7 @@ namespace PortfolioManager.Service
             _CorporateActionHandlers.Add(CorporateActionType.Composite, new CompositeActionHandler(_StockService, _ParcelService, this));
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
         {
             var handler = _CorporateActionHandlers[corporateAction.Type];
             if (handler == null)

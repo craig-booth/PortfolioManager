@@ -21,11 +21,11 @@ namespace PortfolioManager.Service.CorporateActions
             _ParcelService = parcelService;
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
         {
             var dividend = corporateAction as Dividend;
 
-            var transactions = new List<ITransaction>();
+            var transactions = new List<Transaction>();
 
             /* locate parcels that the dividend applies to */
             var dividendStock = _StockService.Get(dividend.Stock, dividend.ActionDate);

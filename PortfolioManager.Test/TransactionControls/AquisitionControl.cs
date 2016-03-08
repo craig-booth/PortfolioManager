@@ -32,7 +32,7 @@ namespace PortfolioManager.Test.TransactionControls
             dtpAquisitionDate_ValueChanged(this, null);
         }
 
-        public ITransaction CreateTransaction()
+        public Transaction CreateTransaction()
         {
             var transaction = new Aquisition();
             UpdateTransaction(transaction);
@@ -40,7 +40,7 @@ namespace PortfolioManager.Test.TransactionControls
             return transaction;
         }
 
-        public void DisplayTransaction(ITransaction transaction)
+        public void DisplayTransaction(Transaction transaction)
         {
             Aquisition aquisition = transaction as Aquisition;
 
@@ -61,7 +61,7 @@ namespace PortfolioManager.Test.TransactionControls
             txtComment.Text = aquisition.Comment;
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             Aquisition aquisition = transaction as Aquisition;
 

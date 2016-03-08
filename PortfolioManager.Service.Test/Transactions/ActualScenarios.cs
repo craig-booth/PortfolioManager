@@ -27,7 +27,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
         public override void PerformTest()
         {
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {

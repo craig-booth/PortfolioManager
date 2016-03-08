@@ -23,7 +23,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var implemenationDate = new DateTime(2010, 02, 05);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -42,7 +42,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -75,7 +75,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var implemenationDate = new DateTime(2010, 02, 05);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -104,7 +104,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -163,7 +163,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var recordDate = new DateTime(2010, 01, 01);
             var implemenationDate = new DateTime(2010, 02, 05);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -192,7 +192,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -264,7 +264,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var bbbAquistionDate = new DateTime(2010, 02, 01);
             var cccAquistionDate = new DateTime(2010, 02, 07);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -293,7 +293,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -337,7 +337,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var bbbAquistionDate = new DateTime(2010, 02, 01);
             var cccAquistionDate = new DateTime(2010, 02, 07);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -366,7 +366,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -420,7 +420,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(transformation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
             };
 

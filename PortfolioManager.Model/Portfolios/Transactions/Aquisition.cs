@@ -10,43 +10,33 @@ using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public class Aquisition : ITransaction
+    public class Aquisition : Transaction 
     {
-        public Guid Id { get; private set; }
-        public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
         public int Units { get; set; }
         public decimal AveragePrice { get; set; }
         public decimal TransactionCosts { get; set; }
         public string Comment { get; set; }
-        public Guid Attachment { get; set; }
-
-        public string Description
-        {
-            get
-            {
-                return "Aquired " + Units.ToString("n0") + " shares @ " + MathUtils.FormatCurrency(AveragePrice, false, true);
-            }
-        }
 
         public Aquisition()
-            : this (Guid.NewGuid())
+            : base ()
         {
 
         }
 
         public Aquisition(Guid id)
+            : base(id)
         {
-            Id = id;
         }
 
-        public TransactionType Type
+        protected override string GetDescription()
         {
-            get
-            {
-                return TransactionType.Aquisition;
-            }
+            return "Aquired " + Units.ToString("n0") + " shares @ " + MathUtils.FormatCurrency(AveragePrice, false, true);
         }
+
+        protected override TransactionType GetTransactionType()
+        {
+            return TransactionType.Aquisition;
+        } 
 
     }
 }

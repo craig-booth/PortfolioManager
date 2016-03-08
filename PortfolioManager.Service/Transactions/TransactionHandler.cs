@@ -13,7 +13,7 @@ namespace PortfolioManager.Service.Transactions
 {
     interface ITransactionHandler
     {
-        void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, ITransaction transaction);
+        void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction);
     }
 
     public abstract class TransacactionHandler

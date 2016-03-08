@@ -12,9 +12,9 @@ namespace PortfolioManager.Service
     [Serializable]
     public abstract class TransactionException : Exception
     {
-        public ITransaction Transacation { get; private set; }
+        public Transaction Transacation { get; private set; }
 
-        public TransactionException(ITransaction transcation, string message)
+        public TransactionException(Transaction transcation, string message)
             : base(message)
         {
             Transacation = transcation;
@@ -24,7 +24,7 @@ namespace PortfolioManager.Service
     [Serializable]
     public class TransctionNotSupportedForStapledSecurity: TransactionException 
     {   
-        public TransctionNotSupportedForStapledSecurity(ITransaction transcation, string message)
+        public TransctionNotSupportedForStapledSecurity(Transaction transcation, string message)
             : base(transcation, message)
         {
         }
@@ -33,7 +33,7 @@ namespace PortfolioManager.Service
     [Serializable]
     public class TransctionNotSupportedForChildSecurity : TransactionException
     {
-        public TransctionNotSupportedForChildSecurity(ITransaction transcation, string message)
+        public TransctionNotSupportedForChildSecurity(Transaction transcation, string message)
             : base(transcation, message)
         {
         }
@@ -42,7 +42,7 @@ namespace PortfolioManager.Service
     [Serializable]
     public class NoParcelsForTransaction : TransactionException 
     {
-        public NoParcelsForTransaction(ITransaction transcation, string message)
+        public NoParcelsForTransaction(Transaction transcation, string message)
             : base(transcation, message)
         {
 
@@ -52,7 +52,7 @@ namespace PortfolioManager.Service
     [Serializable]
     public class NotEnoughSharesForDisposal : TransactionException
     {
-        public NotEnoughSharesForDisposal(ITransaction transcation, string message)
+        public NotEnoughSharesForDisposal(Transaction transcation, string message)
             : base(transcation, message)
         {
         }

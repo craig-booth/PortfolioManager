@@ -20,7 +20,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -56,7 +56,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -97,7 +97,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -150,7 +150,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             var aquisitionDate1 = new DateTime(2000, 01, 01);
             var aquisitionDate2 = new DateTime(2001, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -197,7 +197,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             var aquisitionDate1 = new DateTime(2000, 01, 01);
             var aquisitionDate2 = new DateTime(2001, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -249,7 +249,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -289,7 +289,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -358,7 +358,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Comment = "Income test"
                 };
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -437,7 +437,7 @@ namespace PortfolioManager.Service.Test.Transactions
         {
             var  transactionDate = new DateTime(2002, 01, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Disposal()
                 {
@@ -459,7 +459,7 @@ namespace PortfolioManager.Service.Test.Transactions
         {
             var transactionDate = new DateTime(2002, 01, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Disposal()
                 {
@@ -483,7 +483,7 @@ namespace PortfolioManager.Service.Test.Transactions
             var transactionDate = new DateTime(2002, 01, 01);
 
             var aquisitionDate = new DateTime(2000, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {
@@ -516,7 +516,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             var aquisitionDate1 = new DateTime(2000, 01, 01);
             var aquisitionDate2 = new DateTime(2001, 01, 01);
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new OpeningBalance()
                 {

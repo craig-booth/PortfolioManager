@@ -67,7 +67,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             TestDeleteById(returnOfCapital);
         }
 
-        protected override void UpdateTransaction(ITransaction transaction)
+        protected override void UpdateTransaction(Transaction transaction)
         {
             ReturnOfCapital returnOfCapital = transaction as ReturnOfCapital;
 

@@ -29,7 +29,7 @@ namespace PortfolioManager.Model.Data
 
     }
 
-    public interface ITransactionRepository : IRepository<ITransaction>
+    public interface ITransactionRepository : IRepository<Transaction>
     {
 
     }
@@ -45,9 +45,9 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate);
         IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime atDate);
         IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ITransaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
     }
 }

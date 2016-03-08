@@ -87,7 +87,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             TestDeleteById(incomeReceived);
         }
 
-        protected override void UpdateTransaction(ITransaction transaction)
+        protected override void UpdateTransaction(Transaction transaction)
         {
             IncomeReceived incomeReceived = transaction as IncomeReceived;
 

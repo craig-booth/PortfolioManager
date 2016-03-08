@@ -79,7 +79,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             TestDeleteById(disposal);
         }
 
-        protected override void UpdateTransaction(ITransaction transaction)
+        protected override void UpdateTransaction(Transaction transaction)
         {
             Disposal disposal = transaction as Disposal;
 

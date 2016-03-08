@@ -75,7 +75,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             TestDeleteById(openingBalance);
         }
 
-        protected override void UpdateTransaction(ITransaction transaction)
+        protected override void UpdateTransaction(Transaction transaction)
         {
             OpeningBalance openingBalance = transaction as OpeningBalance;
 

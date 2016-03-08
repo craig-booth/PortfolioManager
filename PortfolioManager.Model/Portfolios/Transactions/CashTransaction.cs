@@ -6,21 +6,18 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public class CashTransaction : ITransaction
+    public class CashTransaction : Transaction
     {
-        public Guid Id { get; private set; }
-        public DateTime TransactionDate { get; set; }
-        public string Description { get; set; }
-        public string ASXCode { get; private set; }
         public decimal Amount { get; set; }
-        public Guid Attachment { get; set; }
 
-        public TransactionType Type
+        protected override string GetDescription()
         {
-            get
-            {
-                return TransactionType.Deposit;
-            }
+            return "";
+        }
+
+        protected override TransactionType GetTransactionType()
+        {
+            return TransactionType.Deposit;
         }
     }
 }

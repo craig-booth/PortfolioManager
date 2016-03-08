@@ -21,11 +21,11 @@ namespace PortfolioManager.Service.CorporateActions
             _ParcelService = parcelService;
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
         {
             var capitalReturn = corporateAction as CapitalReturn;
 
-            var transactions = new List<ITransaction>();
+            var transactions = new List<Transaction>();
 
             var stock = _StockService.Get(capitalReturn.Stock, capitalReturn.ActionDate);
 

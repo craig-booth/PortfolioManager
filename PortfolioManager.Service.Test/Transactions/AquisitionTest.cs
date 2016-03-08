@@ -70,7 +70,7 @@ namespace PortfolioManager.Service.Test.Transactions
         {
             var transactionDate = new DateTime(2002, 01, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {

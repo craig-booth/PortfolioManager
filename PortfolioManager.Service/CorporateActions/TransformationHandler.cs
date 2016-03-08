@@ -20,11 +20,11 @@ namespace PortfolioManager.Service.CorporateActions
             _ParcelService = parcelService;
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
         {
             var transformation = corporateAction as Transformation;
 
-            var transactions = new List<ITransaction>();
+            var transactions = new List<Transaction>();
 
             /* locate parcels that the transformation applies to */
             var transfomationStock = _StockService.Get(transformation.Stock, transformation.ActionDate);
@@ -138,7 +138,7 @@ namespace PortfolioManager.Service.CorporateActions
         {
             Transformation transformation = corporateAction as Transformation;
 
-            IReadOnlyCollection<ITransaction> transactions;
+            IReadOnlyCollection<Transaction> transactions;
             string asxCode;
 
             if (transformation.ResultingStocks.Any())

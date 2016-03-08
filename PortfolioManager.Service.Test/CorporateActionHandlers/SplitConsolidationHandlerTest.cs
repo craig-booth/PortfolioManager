@@ -23,7 +23,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var purchaseDate = new DateTime(2000, 01, 01);
             var recordDate = new DateTime(2010, 01, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -42,7 +42,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(splitConsolidation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new UnitCountAdjustment()
                 {
@@ -64,7 +64,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
             var purchaseDate2 = new DateTime(2005, 06, 01);
             var recordDate = new DateTime(2010, 01, 01);
 
-            var transactions = new ITransaction[]
+            var transactions = new Transaction[]
             {
                 new Aquisition()
                 {
@@ -91,7 +91,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(splitConsolidation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
                 new UnitCountAdjustment()
                 {
@@ -115,7 +115,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
 
             var actualTransactions = _Portfolio.CorporateActionService.CreateTransactionList(splitConsolidation);
 
-            var expectedTransactions = new ITransaction[]
+            var expectedTransactions = new Transaction[]
             {
             };
 

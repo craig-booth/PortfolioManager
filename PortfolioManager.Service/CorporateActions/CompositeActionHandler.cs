@@ -23,11 +23,11 @@ namespace PortfolioManager.Service.CorporateActions
             _CorporateActionService = corporateActionService;
         }
 
-        public IReadOnlyCollection<ITransaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
         {
             CompositeAction compositeAction = corporateAction as CompositeAction;
 
-            var transactions = new List<ITransaction>();
+            var transactions = new List<Transaction>();
 
             var stock = _StockService.Get(compositeAction.Stock, compositeAction.ActionDate);
 

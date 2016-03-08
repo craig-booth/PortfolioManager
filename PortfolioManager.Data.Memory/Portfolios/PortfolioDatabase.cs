@@ -12,7 +12,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
     public class MemoryPortfolioDatabase : IPortfolioDatabase 
     {
         internal List<ShareParcel> _Parcels { get; private set; }
-        internal List<ITransaction> _Transactions { get; private set; }
+        internal List<Transaction> _Transactions { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
 
@@ -29,7 +29,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             PortfolioQuery = new MemoryPortfolioQuery(this);
 
             _Parcels = new List<ShareParcel>();
-            _Transactions = new List<ITransaction>();
+            _Transactions = new List<Transaction>();
             _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();
 

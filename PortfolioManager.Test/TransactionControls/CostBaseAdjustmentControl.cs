@@ -32,7 +32,7 @@ namespace PortfolioManager.Test.TransactionControls
             dtpAdjustmentDate_ValueChanged(this, null);
         }
 
-        public ITransaction CreateTransaction()
+        public Transaction CreateTransaction()
         {
             var transaction = new CostBaseAdjustment();
             UpdateTransaction(transaction);
@@ -40,7 +40,7 @@ namespace PortfolioManager.Test.TransactionControls
             return transaction;
         }
 
-        public void DisplayTransaction(ITransaction transaction)
+        public void DisplayTransaction(Transaction transaction)
         {
             CostBaseAdjustment costbaseAdjustment = transaction as CostBaseAdjustment;
 
@@ -59,7 +59,7 @@ namespace PortfolioManager.Test.TransactionControls
             txtComment.Text = costbaseAdjustment.Comment;
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             CostBaseAdjustment costbaseAdjustment = transaction as CostBaseAdjustment;
 

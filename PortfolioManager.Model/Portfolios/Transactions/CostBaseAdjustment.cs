@@ -8,41 +8,32 @@ using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public class CostBaseAdjustment : ITransaction
+    public class CostBaseAdjustment : Transaction
     {
-        public Guid Id { get; private set; }
-        public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
         public DateTime RecordDate { get; set; }
         public decimal Percentage { get; set; }
         public string Comment { get; set; }
-        public Guid Attachment { get; set; }
-
-        public string Description
-        {
-            get
-            {
-                return "Adjust cost base by " + Percentage.ToString("P");
-            }
-        }
-
-        public TransactionType Type
-        {
-            get
-            {
-                return TransactionType.CostBaseAdjustment;
-            }
-        }
 
         public CostBaseAdjustment()
-            : this (Guid.NewGuid())
+            : base(Guid.NewGuid())
         {
 
         }
 
         public CostBaseAdjustment(Guid id)
+            : base(id)
         {
-            Id = id;
+
+        }
+
+        protected override string GetDescription()
+        {
+            return "Adjust cost base by " + Percentage.ToString("P");
+        }
+
+        protected override TransactionType GetTransactionType()
+        {
+            return TransactionType.CostBaseAdjustment;
         }
     }
 }

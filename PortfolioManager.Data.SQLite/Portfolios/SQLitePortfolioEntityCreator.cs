@@ -13,7 +13,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLitePortfolioEntityCreator
     {
-        public static ITransaction CreateTransaction(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        public static Transaction CreateTransaction(SQLitePortfolioDatabase database, SQLiteDataReader reader)
         {
             TransactionType type = (TransactionType)reader.GetInt32(3);
 

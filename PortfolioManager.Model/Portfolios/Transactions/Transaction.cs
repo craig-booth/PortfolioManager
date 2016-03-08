@@ -11,13 +11,43 @@ namespace PortfolioManager.Model.Portfolios
 {
     public enum TransactionType { Aquisition, Disposal, CostBaseAdjustment, OpeningBalance, ReturnOfCapital, Income, UnitCountAdjustment, Deposit, Withdrawl, Interest, Fee }
 
-    public interface ITransaction: IEntity 
+    public abstract class Transaction : IEntity
     {
-        TransactionType Type { get; }
-        DateTime TransactionDate { get; }
-        string ASXCode { get; }
-        string Description { get; }
-        Guid Attachment { get; }
+        public Guid Id { get; private set; }
+        public DateTime TransactionDate { get; set; }
+        public string ASXCode { get; set; }
+        public Guid Attachment { get; set; }
+
+        public string Description
+        {
+            get
+            {
+                return GetDescription();
+            }
+        }
+
+        public TransactionType Type
+        {
+            get
+            {
+                return GetTransactionType();
+            }
+        }     
+
+        public Transaction()
+            : this (Guid.NewGuid())
+        {
+
+        }
+
+        public Transaction(Guid id)
+        {
+            Id = id;
+        }
+
+        protected abstract string GetDescription();
+        protected abstract TransactionType GetTransactionType();
+
     }
 
 }

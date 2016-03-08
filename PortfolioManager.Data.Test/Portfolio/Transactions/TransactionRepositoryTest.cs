@@ -12,9 +12,9 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 {
     public class TransactionRepositoryTest : TestBase 
     {
-        public void TestAdd(ITransaction transaction, TransactionComparer comparer)
+        public void TestAdd(Transaction transaction, TransactionComparer comparer)
         {
-            ITransaction transaction2;
+            Transaction transaction2;
 
             var database = CreatePortfolioDatabase();
             using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
@@ -26,14 +26,14 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             }
         }
 
-        protected virtual void UpdateTransaction(ITransaction transaction)
+        protected virtual void UpdateTransaction(Transaction transaction)
         {
 
         }
 
-        public void TestUpdate(ITransaction transaction, TransactionComparer comparer)
+        public void TestUpdate(Transaction transaction, TransactionComparer comparer)
         {
-            ITransaction transaction2, transaction3;
+            Transaction transaction2, transaction3;
       
             var database = CreatePortfolioDatabase();
             using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
@@ -49,9 +49,9 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             }
         }
 
-        public void TestDelete(ITransaction transaction)
+        public void TestDelete(Transaction transaction)
         {
-            ITransaction transaction2, transaction3;
+            Transaction transaction2, transaction3;
 
             var database = CreatePortfolioDatabase();
             using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
@@ -67,9 +67,9 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
         }
 
 
-        public void TestDeleteById(ITransaction transaction)
+        public void TestDeleteById(Transaction transaction)
         {
-            ITransaction transaction2, transaction3;
+            Transaction transaction2, transaction3;
 
             var database = CreatePortfolioDatabase();
             using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())

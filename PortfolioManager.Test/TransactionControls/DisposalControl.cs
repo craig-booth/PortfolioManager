@@ -31,7 +31,7 @@ namespace PortfolioManager.Test.TransactionControls
             dtpDisposalDate_ValueChanged(this, null);
         }
 
-        public ITransaction CreateTransaction()
+        public Transaction CreateTransaction()
         {
             var transaction = new Disposal();
             UpdateTransaction(transaction);
@@ -39,7 +39,7 @@ namespace PortfolioManager.Test.TransactionControls
             return transaction;
         }
 
-        public void DisplayTransaction(ITransaction transaction)
+        public void DisplayTransaction(Transaction transaction)
         {
             Disposal disposal = transaction as Disposal;
 
@@ -60,7 +60,7 @@ namespace PortfolioManager.Test.TransactionControls
             txtComment.Text = disposal.Comment;
         }
 
-        public void UpdateTransaction(ITransaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             Disposal disposal = transaction as Disposal;
 
