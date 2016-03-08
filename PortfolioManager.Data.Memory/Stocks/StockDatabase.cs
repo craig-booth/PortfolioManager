@@ -12,7 +12,7 @@ namespace PortfolioManager.Data.Memory.Stocks
     public class MemoryStockDatabase: IStockDatabase
     {
         internal List<Stock> _Stocks;
-        internal List<ICorporateAction> _CorporateActions;
+        internal List<CorporateAction> _CorporateActions;
         internal List<RelativeNTA> _RelativeNTAs;
 
         public IStockUnitOfWork CreateUnitOfWork()
@@ -29,7 +29,7 @@ namespace PortfolioManager.Data.Memory.Stocks
             CorporateActionQuery = new MemoryCorporateActionQuery(this);
 
             _Stocks = new List<Stock>();
-            _CorporateActions = new List<ICorporateAction>();
+            _CorporateActions = new List<CorporateAction>();
             _RelativeNTAs = new List<RelativeNTA>();
         }
     }

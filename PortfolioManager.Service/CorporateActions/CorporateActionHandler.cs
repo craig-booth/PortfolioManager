@@ -11,7 +11,7 @@ namespace PortfolioManager.Service.CorporateActions
 {
     interface ICorporateActionHandler
     {
-        IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction);
-        bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService);
+        IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction);
+        bool HasBeenApplied(CorporateAction corporateAction, TransactionService transactionService);
     }
 }

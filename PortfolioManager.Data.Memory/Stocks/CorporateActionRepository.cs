@@ -18,22 +18,22 @@ namespace PortfolioManager.Data.Memory.Stocks
             _Database = database;
         }
 
-        public ICorporateAction Get(Guid id)
+        public CorporateAction Get(Guid id)
         {
             return _Database._CorporateActions.Find(x => x.Id == id);
         }
 
-        public void Add(ICorporateAction entity) 
+        public void Add(CorporateAction entity) 
         {
             _Database._CorporateActions.Add(entity);
         }
 
-        public void Update(ICorporateAction entity)
+        public void Update(CorporateAction entity)
         {
 
         }
 
-        public void Delete(ICorporateAction entity)
+        public void Delete(CorporateAction entity)
         {
 
         }

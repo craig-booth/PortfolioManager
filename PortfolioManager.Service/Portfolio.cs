@@ -24,9 +24,8 @@ namespace PortfolioManager.Service
         }
     }
 
-    public class Portfolio: IEntity
+    public class Portfolio
     {
-        public Guid Id { get; private set; }
         public string Name { get; set; }
         public CashAccount CashAccount { get; private set; }
 
@@ -42,7 +41,6 @@ namespace PortfolioManager.Service
 
         protected internal Portfolio(string name, IPortfolioDatabase database, StockService stockService, StockPriceService stockPriceService, ICorporateActionQuery corporateActionQuery)
         {
-            Id = Guid.NewGuid();
             Name = name;
 
             StockSetting = new Dictionary<string, StockSetting>();

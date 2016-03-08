@@ -9,9 +9,8 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Model.Portfolios
 {
 
-    public class CGTEvent: IEntity
+    public class CGTEvent: Entity
     {
-        public Guid Id { get; private set; }
         public Guid Stock { get; set; }
         public int Units { get; set; }
         public DateTime EventDate { get; set; }
@@ -20,8 +19,15 @@ namespace PortfolioManager.Model.Portfolios
         public decimal CapitalGain { get; set; }
 
         public CGTEvent() 
+            : this(Guid.NewGuid())
         {
-            Id = Guid.NewGuid();
+
+        }
+
+        public CGTEvent(Guid id)
+            : base(id)
+        {
+ 
         }
 
         public CGTEvent(Guid stock, DateTime eventDate, int units, decimal costBase, decimal amountReceived)

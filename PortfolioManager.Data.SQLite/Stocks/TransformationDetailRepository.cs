@@ -20,7 +20,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _AddRecordCommand;
-        public void Add(IEntity entity)
+        public void Add(Entity entity)
         {
             var transformation = entity as Transformation;
 
@@ -40,7 +40,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _UpdateRecordCommand;
-        public void Update(IEntity entity)
+        public void Update(Entity entity)
         {
             var transformation = entity as Transformation;
 

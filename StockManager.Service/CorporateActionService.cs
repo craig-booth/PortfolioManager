@@ -19,17 +19,17 @@ namespace StockManager.Service
             _Database = database;
         }
 
-        public IReadOnlyCollection<ICorporateAction> GetCorporateActions(Stock stock)
+        public IReadOnlyCollection<CorporateAction> GetCorporateActions(Stock stock)
         {
             return _Database.CorporateActionQuery.Find(stock.Id, DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
         }
 
-        public IReadOnlyCollection<ICorporateAction> GetCorporateActions(Stock stock, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<CorporateAction> GetCorporateActions(Stock stock, DateTime fromDate, DateTime toDate)
         {
             return _Database.CorporateActionQuery.Find(stock.Id, fromDate, toDate);
         }
 
-        public void AddCorporateAction(ICorporateAction corporateAction)
+        public void AddCorporateAction(CorporateAction corporateAction)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -38,7 +38,7 @@ namespace StockManager.Service
             }
         }
 
-        public void UpdateCorporateAction(ICorporateAction corporateAction)
+        public void UpdateCorporateAction(CorporateAction corporateAction)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -47,7 +47,7 @@ namespace StockManager.Service
             }
         }
 
-        public void DeleteCorporateAction(ICorporateAction corporateAction)
+        public void DeleteCorporateAction(CorporateAction corporateAction)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {

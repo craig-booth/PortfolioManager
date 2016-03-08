@@ -22,7 +22,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _AddRecordCommand;
-        public void Add(IEntity entity)
+        public void Add(Entity entity)
         {
             var compositeAction = entity as CompositeAction;
 
@@ -46,7 +46,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             }
         }
 
-        public void Update(IEntity entity)
+        public void Update(Entity entity)
         {
             // Delete the child actions and re-add
             Delete(entity.Id);

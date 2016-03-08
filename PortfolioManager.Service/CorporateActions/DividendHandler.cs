@@ -21,7 +21,7 @@ namespace PortfolioManager.Service.CorporateActions
             _ParcelService = parcelService;
         }
 
-        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
         {
             var dividend = corporateAction as Dividend;
 
@@ -73,7 +73,7 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions;
         }
 
-        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        public bool HasBeenApplied(CorporateAction corporateAction, TransactionService transactionService)
         {
             Dividend dividend = corporateAction as Dividend;
             string asxCode = _StockService.Get(dividend.Stock, dividend.PaymentDate).ASXCode;

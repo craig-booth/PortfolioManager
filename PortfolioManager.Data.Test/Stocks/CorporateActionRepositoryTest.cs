@@ -42,9 +42,9 @@ namespace PortfolioManager.Data.Test.Stocks
         {
         }
 
-        protected ICorporateAction AddCorporateAction(ICorporateAction corporateAction)
+        protected CorporateAction AddCorporateAction(CorporateAction corporateAction)
         {
-            ICorporateAction result;
+            CorporateAction result;
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -56,7 +56,7 @@ namespace PortfolioManager.Data.Test.Stocks
             return result;
         }
 
-        protected void UpdateCorporateAction(ICorporateAction corporateAction)
+        protected void UpdateCorporateAction(CorporateAction corporateAction)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -64,9 +64,9 @@ namespace PortfolioManager.Data.Test.Stocks
             }
         }
 
-        protected ICorporateAction GetCorporateAction(Guid id)
+        protected CorporateAction GetCorporateAction(Guid id)
         {
-            ICorporateAction result;
+            CorporateAction result;
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -80,7 +80,7 @@ namespace PortfolioManager.Data.Test.Stocks
         [ExpectedException(typeof(RecordNotFoundException))]
         public void GetNotExists()
         {
-            ICorporateAction corporateAction;
+            CorporateAction corporateAction;
 
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {

@@ -9,7 +9,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
-    public class SQLiteRepository<T> where T : IEntity
+    public class SQLiteRepository<T> where T : Entity
     {
         protected SQLiteDatabase _Database;
         protected SQLiteConnection _Connection;

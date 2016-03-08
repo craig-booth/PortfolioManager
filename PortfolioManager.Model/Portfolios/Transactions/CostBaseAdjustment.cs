@@ -15,7 +15,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public CostBaseAdjustment()
-            : base(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
 
         }
@@ -23,7 +23,7 @@ namespace PortfolioManager.Model.Portfolios
         public CostBaseAdjustment(Guid id)
             : base(id)
         {
-
+            Type = TransactionType.CostBaseAdjustment;
         }
 
         protected override string GetDescription()
@@ -31,9 +31,5 @@ namespace PortfolioManager.Model.Portfolios
             return "Adjust cost base by " + Percentage.ToString("P");
         }
 
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.CostBaseAdjustment;
-        }
     }
 }

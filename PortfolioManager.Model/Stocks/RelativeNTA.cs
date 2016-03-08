@@ -12,9 +12,8 @@ using PortfolioManager.Model.Utils;
 namespace PortfolioManager.Model.Stocks
 {
 
-    public class RelativeNTA: IEntity
+    public class RelativeNTA: Entity
     {
-        public Guid Id { get; private set;}
         public DateTime Date { get; private set; }
         public Guid Parent { get; private set; }
         public Guid Child { get; private set; }
@@ -26,8 +25,8 @@ namespace PortfolioManager.Model.Stocks
         }
 
         public RelativeNTA(Guid id, DateTime date, Guid parent, Guid child, decimal percentage)
+            : base(id)
         {
-            Id = id;
             Date = date;
             Parent = parent;
             Child = child;

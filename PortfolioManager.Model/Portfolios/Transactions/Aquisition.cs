@@ -18,25 +18,21 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public Aquisition()
-            : base ()
+            : this (Guid.NewGuid())
         {
-
+            
         }
 
         public Aquisition(Guid id)
             : base(id)
         {
+            Type = TransactionType.Aquisition;
         }
 
         protected override string GetDescription()
         {
             return "Aquired " + Units.ToString("n0") + " shares @ " + MathUtils.FormatCurrency(AveragePrice, false, true);
         }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.Aquisition;
-        } 
 
     }
 }

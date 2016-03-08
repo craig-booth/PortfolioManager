@@ -87,13 +87,12 @@ namespace PortfolioManager.Service.Transactions
             }
             else
             {
-                /* Update old effective dated record */
-                parcel.ToDate = changeDate.AddDays(-1);
+               /* End existing effective dated entity */
+                parcel.EndEntity(changeDate.AddDays(-1));
                 unitOfWork.ParcelRepository.Update(parcel);
 
-                var newParcel = parcel.Clone();
-                newParcel.FromDate = changeDate;
-                newParcel.ToDate = DateTimeConstants.NoEndDate;
+                /* Create new effective dated entity */
+                var newParcel = parcel.CreateNewEffectiveEntity(changeDate);
                 newParcel.Event = parcelEvent;
                 change(newParcel);
 

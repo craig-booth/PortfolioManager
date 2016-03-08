@@ -10,30 +10,17 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Model.Stocks
 {
 
-    public class Transformation : ICorporateAction
+    public class Transformation : CorporateAction
     {
-        public Guid Id { get; private set; }
-        public Guid Stock { get; private set; }
-        public DateTime ActionDate { get; set; }
         public DateTime ImplementationDate { get; set; }
-        public string Description { get; set; }
         public decimal CashComponent { get; set; }
         public bool RolloverRefliefApplies { get; set; }
         public List<ResultingStock> ResultingStocks { get; private set; }
 
-        public CorporateActionType Type
-        {
-            get
-            {
-                return CorporateActionType.Transformation;
-            }
-        }
 
         public Transformation(Guid id, Guid stock, DateTime actionDate, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, string description)
+            : base(id, CorporateActionType.Transformation, stock, actionDate)
         {
-            Id = id;
-            ActionDate = actionDate;
-            Stock = stock;
             ImplementationDate = implementationDate;
             CashComponent = cashComponent;
             RolloverRefliefApplies = rolloverReliefApplies;

@@ -154,11 +154,9 @@ namespace PortfolioManager.Data.Test.Stocks
                 stock1 = new Stock(new DateTime(2000, 01, 01), "ABC", "Test", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock1);
 
-                stock2 = new Stock(new DateTime(2002, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
+                stock2 = new Stock(Guid.NewGuid(), new DateTime(2002, 01, 01), new DateTime(2005, 01, 01), "DEF", "Test 2", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock2);
 
-                stock2.ToDate = new DateTime(2005, 01, 01);
-                unitOfWork.StockRepository.Update(stock2);
 
                 stock3 = new Stock(new DateTime(2003, 01, 01), "GHI", "Test 3", StockType.Ordinary, Guid.Empty);
                 unitOfWork.StockRepository.Add(stock3);

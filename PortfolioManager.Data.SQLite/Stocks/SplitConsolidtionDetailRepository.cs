@@ -21,7 +21,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _AddRecordCommand;
-        public void Add(IEntity entity)
+        public void Add(Entity entity)
         {
             var splitConsolidation = entity as SplitConsolidation;
 
@@ -36,7 +36,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
         private SQLiteCommand _UpdateRecordCommand;
-        public void Update(IEntity entity)
+        public void Update(Entity entity)
         {
             var splitConsolidation = entity as SplitConsolidation;
 

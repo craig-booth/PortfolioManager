@@ -21,7 +21,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public Disposal()
-            : base(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
 
         }
@@ -29,18 +29,12 @@ namespace PortfolioManager.Model.Portfolios
         public Disposal(Guid id)
             : base(id)
         {
-
+            Type = TransactionType.Disposal;
         }
 
         protected override string GetDescription()
         {
             return "Disposed of " + Units.ToString("n0") + " shares @ " + MathUtils.FormatCurrency(AveragePrice, false, true);
         }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.Disposal;
-        }
-
     }
 }

@@ -148,7 +148,7 @@ namespace StockManager.Service
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                stock.ToDate = atDate;
+                stock.EndEntity(atDate);
                 unitOfWork.StockRepository.Update(stock);
 
                 unitOfWork.Save();
@@ -315,16 +315,13 @@ namespace StockManager.Service
             }
             else
             {
-                /* Update old effective dated record */
-                stock.ToDate = changeDate.AddDays(-1);
+                /* End existing effective dated entity */
+                stock.EndEntity(changeDate.AddDays(-1));
                 unitOfWork.StockRepository.Update(stock);
 
-                var newStock = stock.Clone();
-                newStock.FromDate = changeDate;
-                newStock.ToDate = DateTimeConstants.NoEndDate;
+                /* Create new effective dated entity */
+                var newStock = stock.CreateNewEffectiveEntity(changeDate);
                 change(newStock);
-
-                /* Add new record */
                 unitOfWork.StockRepository.Add(newStock);
             }
 

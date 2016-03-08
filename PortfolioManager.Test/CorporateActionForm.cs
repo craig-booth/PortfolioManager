@@ -11,10 +11,10 @@ namespace PortfolioManager.Test
 {
     public interface ICorporateActionForm
     {
-        ICorporateAction CreateCorporateAction(Stock stock);
-        bool EditCorporateAction(ICorporateAction corporateAction);
-        void ViewCorporateAction(ICorporateAction corporateAction);
-        Boolean DeleteCorporateAction(ICorporateAction corporateAction);
+        CorporateAction CreateCorporateAction(Stock stock);
+        bool EditCorporateAction(CorporateAction corporateAction);
+        void ViewCorporateAction(CorporateAction corporateAction);
+        Boolean DeleteCorporateAction(CorporateAction corporateAction);
     }
 
     public class CorporateActionFormFactory

@@ -6,22 +6,10 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Stocks
 {
-    public class CapitalReturn : ICorporateAction
+    public class CapitalReturn : CorporateAction
     {
-        public Guid Id { get; private set; }
-        public Guid Stock { get; private set; }
-        public DateTime ActionDate { get; set; }
         public DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }
-        public string Description { get; set; }
-
-        public CorporateActionType Type
-        {
-            get
-            {
-                return CorporateActionType.CapitalReturn;
-            }
-        }
 
         public CapitalReturn(Guid stock, DateTime actionDate, DateTime paymentDate, decimal amount, string description)
             : this(Guid.NewGuid(), stock, actionDate, paymentDate, amount, description)
@@ -29,10 +17,8 @@ namespace PortfolioManager.Model.Stocks
         }
 
         public CapitalReturn(Guid id, Guid stock, DateTime actionDate, DateTime paymentDate, decimal amount, string description)
+            : base(id, CorporateActionType.CapitalReturn, stock, actionDate)
         {
-            Id = id;
-            ActionDate = actionDate;
-            Stock = stock;
             PaymentDate = paymentDate;
             Amount = amount;
             if (description != "")

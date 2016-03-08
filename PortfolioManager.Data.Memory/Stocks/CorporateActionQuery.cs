@@ -18,12 +18,12 @@ namespace PortfolioManager.Data.Memory.Stocks
             _Database = database;
         }
 
-        public ICorporateAction Get(Guid id)
+        public CorporateAction Get(Guid id)
         {
             return _Database._CorporateActions.Find(x => x.Id == id);
         }
 
-        public IReadOnlyCollection<ICorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<CorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var corporateActions = from action in _Database._CorporateActions 
                                    where action.Stock == stock && action.ActionDate >= fromDate && action.ActionDate <= toDate

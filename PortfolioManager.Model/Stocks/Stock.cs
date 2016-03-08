@@ -31,11 +31,8 @@ namespace PortfolioManager.Model.Stocks
     }
 
 
-    public class Stock: IEffectiveDatedEntity 
+    public class Stock: EffectiveDatedEntity, IEditableEffectiveDatedEntity<Stock>  
     {
-        public Guid Id { get; private set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
         public string ASXCode { get; set; }
         public string Name { get; set; }
         public StockType Type { get; set; }
@@ -54,13 +51,10 @@ namespace PortfolioManager.Model.Stocks
         }
 
         public Stock(Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent, RoundingRule dividendRoundingRule)
+            : base(id, fromDate, toDate)
         {
-            Id = id;
-            FromDate = fromDate;
-            ToDate = toDate;
             ASXCode = asxCode;
             Name = name;
-            FromDate = fromDate;
             Type = type;
             ParentId = parent;
             DividendRoundingRule = dividendRoundingRule;
@@ -71,9 +65,9 @@ namespace PortfolioManager.Model.Stocks
             return ASXCode + " - " + Name;
         }
 
-        public Stock Clone()
+        public Stock CreateNewEffectiveEntity(DateTime atDate)
         {
-            return new Stock(this.Id, this.FromDate, this.ToDate, this.ASXCode, this.Name, this.Type, this.ParentId, this.DividendRoundingRule);
+            return new Stock(this.Id, atDate, this.ToDate, this.ASXCode, this.Name, this.Type, this.ParentId, this.DividendRoundingRule);
         }
 
     }

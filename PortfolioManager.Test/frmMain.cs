@@ -99,7 +99,7 @@ namespace PortfolioManager.Test
 
             var corporateActions = _MyPortfolio.CorporateActionService.GetUnappliedCorporateActions();
             lsvCorporateActions.Items.Clear();
-            foreach (ICorporateAction corporateAction in corporateActions)
+            foreach (CorporateAction corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
                 item.SubItems.Add(_PortfolioServiceRepository.StockService.Get(corporateAction.Stock, corporateAction.ActionDate).ASXCode);
@@ -244,7 +244,7 @@ namespace PortfolioManager.Test
 
         private void lsvCorporateActions_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            ICorporateAction corporateAction = lsvCorporateActions.FocusedItem.Tag as ICorporateAction;
+            var corporateAction = lsvCorporateActions.FocusedItem.Tag as CorporateAction;
             
             var transactions = _MyPortfolio.CorporateActionService.CreateTransactionList(corporateAction);
 
@@ -266,7 +266,7 @@ namespace PortfolioManager.Test
         }
 
 
-        private void CorporateActionAdded(ICorporateAction corporateAction)
+        private void CorporateActionAdded(CorporateAction corporateAction)
         {
             DisplayCorporateActions();
         }

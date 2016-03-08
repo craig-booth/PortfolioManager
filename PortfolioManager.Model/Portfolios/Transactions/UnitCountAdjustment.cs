@@ -16,7 +16,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
         
         public UnitCountAdjustment()
-            : base(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
 
         }
@@ -24,19 +24,12 @@ namespace PortfolioManager.Model.Portfolios
         public UnitCountAdjustment(Guid id)
             : base(id)
         {
-
+            Type = TransactionType.UnitCountAdjustment;
         }
 
         protected override string GetDescription()
         {
             return "Adjust unit count using ratio " + OriginalUnits.ToString("n0") + ":" + NewUnits.ToString("n0");
         }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.UnitCountAdjustment;
-        }
-
-
     }
 }

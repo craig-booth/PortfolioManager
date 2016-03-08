@@ -42,7 +42,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return nta;
         }
 
-        public static ICorporateAction CreateCorporateAction(SQLiteStockDatabase database, SQLiteDataReader reader)
+        public static CorporateAction CreateCorporateAction(SQLiteStockDatabase database, SQLiteDataReader reader)
         {
             Guid id = new Guid(reader.GetString(0));
             Guid stock = new Guid(reader.GetString(1));
@@ -53,7 +53,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return CreateCorporateAction(database, id, type, stock, actionDate, description);
         }
 
-        public static ICorporateAction CreateCorporateAction(SQLiteStockDatabase database, Guid id, CorporateActionType type, Guid stock, DateTime actionDate, string description)
+        public static CorporateAction CreateCorporateAction(SQLiteStockDatabase database, Guid id, CorporateActionType type, Guid stock, DateTime actionDate, string description)
         {
             if (type == CorporateActionType.Dividend)
                 return CreateDividend(database, id, stock, actionDate, description);

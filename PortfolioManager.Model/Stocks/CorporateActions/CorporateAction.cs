@@ -10,17 +10,27 @@ namespace PortfolioManager.Model.Stocks
 {
     public enum CorporateActionType { Dividend, CapitalReturn, Transformation, SplitConsolidation, Composite}
 
-    public interface ICorporateAction : IEntity
+    public abstract class CorporateAction : Entity
     {
-        CorporateActionType Type { get; }
-        Guid Stock { get; }
-        DateTime ActionDate { get; }
-        string Description { get; }
+        public CorporateActionType Type { get; private set; }
+        public Guid Stock { get; private set; }
+        public DateTime ActionDate { get; set; }
+        public string Description { get; set; }
+
+        public CorporateAction(Guid id, CorporateActionType type, Guid stock, DateTime actionDate)
+            : base(id)
+        {
+            Stock = stock;
+            Type = type;
+            Stock = stock;
+            ActionDate = actionDate;
+            Description = "";          
+        }
     }
 
-    public class CorporateActionComparer : IComparer<ICorporateAction>
+    public class CorporateActionComparer : IComparer<CorporateAction>
     {
-       public int Compare(ICorporateAction x, ICorporateAction y) 
+       public int Compare(CorporateAction x, CorporateAction y) 
        {
            return DateTime.Compare(x.ActionDate, y.ActionDate);
        }

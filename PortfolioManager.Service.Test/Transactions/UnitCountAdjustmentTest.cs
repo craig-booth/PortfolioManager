@@ -162,22 +162,10 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate1, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 33, 15.00m, 1500.00m, 1500.00m, ParcelEvent.UnitCountChange)
-            {
-                FromDate = _TransactionDate
-            });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 67, 6.00m, 1200.00m, 1200.00m, ParcelEvent.UnitCountChange)
-            {
-                FromDate = _TransactionDate
-            });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 37, 10.00m, 1100.00m, 1100.00m, ParcelEvent.UnitCountChange)
-            {
-                FromDate = _TransactionDate
-            });
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 43, 10.00m, 1310.00m, 1310.00m, ParcelEvent.UnitCountChange)
-            {
-                FromDate = _TransactionDate
-            });
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate1, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 33, 15.00m, 1500.00m, 1500.00m, Guid.Empty, ParcelEvent.UnitCountChange));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 67, 6.00m, 1200.00m, 1200.00m, Guid.Empty, ParcelEvent.UnitCountChange));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 37, 10.00m, 1100.00m, 1100.00m, Guid.Empty, ParcelEvent.UnitCountChange));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate2, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, 43, 10.00m, 1310.00m, 1310.00m, Guid.Empty, ParcelEvent.UnitCountChange));
         }
     }
 

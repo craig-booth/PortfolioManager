@@ -20,7 +20,7 @@ namespace PortfolioManager.Service.CorporateActions
             _ParcelService = parcelService;
         }
 
-        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
         {
             var transformation = corporateAction as Transformation;
 
@@ -134,7 +134,7 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions.AsReadOnly();
         }
 
-        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        public bool HasBeenApplied(CorporateAction corporateAction, TransactionService transactionService)
         {
             Transformation transformation = corporateAction as Transformation;
 

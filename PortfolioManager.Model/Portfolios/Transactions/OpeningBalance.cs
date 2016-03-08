@@ -16,7 +16,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public OpeningBalance()
-            : base(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
 
         }
@@ -24,17 +24,12 @@ namespace PortfolioManager.Model.Portfolios
         public OpeningBalance(Guid id)
             : base(id)
         {
-
+            Type = TransactionType.OpeningBalance;
         }
 
         protected override string GetDescription()
         {
             return "Opening balance of " + Units.ToString("n0") + " shares";
-        }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.OpeningBalance;
         }
     }
 }

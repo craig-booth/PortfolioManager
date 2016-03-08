@@ -12,12 +12,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     interface ICorporateActionDetailRepository
     {
-        void Add(IEntity entity);
-        void Update(IEntity entity);
+        void Add(Entity entity);
+        void Update(Entity entity);
         void Delete(Guid id);
     }
 
-    class SQLiteCorporateActionRepository : SQLiteRepository<ICorporateAction>, ICorporateActionRepository 
+    class SQLiteCorporateActionRepository : SQLiteRepository<CorporateAction>, ICorporateActionRepository 
     {
         private Dictionary<CorporateActionType, ICorporateActionDetailRepository> _DetailRepositories;
 
@@ -56,7 +56,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return _GetUpdateRecordCommand;
         }
 
-        public override void Add(ICorporateAction entity) 
+        public override void Add(CorporateAction entity) 
         {
             /* Add header record */
             base.Add(entity);
@@ -64,7 +64,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _DetailRepositories[entity.Type].Add(entity);
        }      	
 
-        public override void Update(ICorporateAction entity)
+        public override void Update(CorporateAction entity)
         {
             /* Update header record */
             base.Update(entity);
@@ -72,7 +72,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _DetailRepositories[entity.Type].Update(entity);
         }
 
-        public override void Delete(ICorporateAction entity)
+        public override void Delete(CorporateAction entity)
         {
             /* Delete header record */
             base.Delete(entity);
@@ -90,7 +90,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 detailRepository.Delete(id);
         }
 
-        protected override void AddParameters(SQLiteCommand command, ICorporateAction entity)
+        protected override void AddParameters(SQLiteCommand command, CorporateAction entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@Stock", entity.Stock.ToString());
@@ -99,7 +99,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Type", entity.Type);
         }
 
-        protected override ICorporateAction CreateEntity(SQLiteDataReader reader)
+        protected override CorporateAction CreateEntity(SQLiteDataReader reader)
         {
             return SQLiteStockEntityCreator.CreateCorporateAction(_Database as SQLiteStockDatabase, reader);
         }

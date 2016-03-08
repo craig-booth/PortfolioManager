@@ -9,21 +9,18 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Portfolios
 {
-    public class Attachment : IEntity
+    public class Attachment : Entity
     {
-        public Guid Id { get; private set; }
         public Stream Data { get; private set; }
 
         public Attachment()
-            :this(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
-            
         }
 
         public Attachment(Guid id)
+            :base(id)
         {
-            Id = id;
-
             Data = new MemoryStream();
         }
 

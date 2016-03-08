@@ -17,7 +17,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public ReturnOfCapital()
-            : base (Guid.NewGuid())
+            : this (Guid.Empty)
         {
 
         }
@@ -25,17 +25,12 @@ namespace PortfolioManager.Model.Portfolios
         public ReturnOfCapital(Guid id)
             : base(id)
         {
+            Type = TransactionType.ReturnOfCapital;
         }
 
         protected override string GetDescription()
         {
             return "Return of Capital of " + MathUtils.FormatCurrency(Amount, false, true);
         }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.ReturnOfCapital;
-        }
-
     }
 }

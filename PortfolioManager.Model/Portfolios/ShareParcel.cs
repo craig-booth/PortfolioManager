@@ -12,11 +12,8 @@ namespace PortfolioManager.Model.Portfolios
 {
     public enum ParcelEvent { Aquisition, Disposal, OpeningBalance, CostBaseReduction, UnitCountChange};
 
-    public class ShareParcel: IEffectiveDatedEntity 
+    public class ShareParcel: EffectiveDatedEntity, IEditableEffectiveDatedEntity<ShareParcel> 
     {
-        public Guid Id { get; private set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
         public Guid Stock { get; set; }
         public DateTime AquisitionDate { get; set; }
         public int Units { get; set; }
@@ -26,32 +23,27 @@ namespace PortfolioManager.Model.Portfolios
         public ParcelEvent Event { get; set; }
         public Guid PurchaseId { get; set; }
 
-        private ShareParcel() 
+        private ShareParcel(Guid id, DateTime fromDate, DateTime toDate)
+            : base(id, fromDate, toDate)
         {
 
-            Id = Guid.NewGuid();
-            PurchaseId = Guid.Empty;
         }
 
         public ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
-            : this()
+            : this(aquisitionDate, DateTimeConstants.NoEndDate, aquisitionDate, stock, units, unitPrice, amount, costBase, Guid.Empty, parcelEvent)
         {
-            FromDate = aquisitionDate;
-            ToDate = DateTimeConstants.NoEndDate;
-            Stock = stock;
-            AquisitionDate = aquisitionDate;
-            Amount = amount;
-            Units = units;
-            UnitPrice = unitPrice;
-            CostBase = costBase;
-            Event = parcelEvent;
+      
         }
 
         public ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
-            : this()
+            : this(aquisitionDate, DateTimeConstants.NoEndDate, aquisitionDate, stock, units, unitPrice, amount, costBase, purchaseId, parcelEvent)
         {
-            FromDate = aquisitionDate;
-            ToDate = DateTimeConstants.NoEndDate;
+
+        }
+
+        public ShareParcel(DateTime fromDate, DateTime toDate, DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
+            : this(Guid.NewGuid(), fromDate, toDate)
+        {
             Stock = stock;
             AquisitionDate = aquisitionDate;
             Amount = amount;
@@ -62,13 +54,10 @@ namespace PortfolioManager.Model.Portfolios
             Event = parcelEvent;
         }
 
-        public ShareParcel Clone()
+        public ShareParcel CreateNewEffectiveEntity(DateTime atDate)
         {
-            return new ShareParcel()
+            return new ShareParcel(Id, atDate, ToDate)
             {
-                Id = Id,
-                FromDate = FromDate,
-                ToDate = ToDate,
                 Stock = Stock,
                 AquisitionDate = AquisitionDate,
                 Amount = Amount,
@@ -76,7 +65,7 @@ namespace PortfolioManager.Model.Portfolios
                 UnitPrice = UnitPrice,
                 CostBase = CostBase,
                 Event = Event,
-                PurchaseId = PurchaseId 
+                PurchaseId = PurchaseId
             };
         }
 

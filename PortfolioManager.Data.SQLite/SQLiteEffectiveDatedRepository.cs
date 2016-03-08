@@ -9,7 +9,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
-    public class SQLiteEffectiveDatedRepository<T>: SQLiteRepository<T> where T : IEffectiveDatedEntity
+    public class SQLiteEffectiveDatedRepository<T>: SQLiteRepository<T> where T : EffectiveDatedEntity
     {
 
         protected internal SQLiteEffectiveDatedRepository(SQLiteDatabase database, string tableName) : base(database, tableName)

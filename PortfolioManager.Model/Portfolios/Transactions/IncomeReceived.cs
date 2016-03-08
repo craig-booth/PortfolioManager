@@ -21,7 +21,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public IncomeReceived()
-            : base(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
 
         }
@@ -29,17 +29,12 @@ namespace PortfolioManager.Model.Portfolios
         public IncomeReceived(Guid id)
             : base(id)
         {
-
+            Type = TransactionType.Income;
         }
 
         protected override string GetDescription()
         {
             return "Income received " + MathUtils.FormatCurrency(CashIncome, false, true);
-        }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.Income;
         }
 
         public decimal CashIncome

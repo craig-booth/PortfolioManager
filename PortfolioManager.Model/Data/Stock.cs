@@ -49,15 +49,15 @@ namespace PortfolioManager.Model.Data
         Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate);
     }
 
-    public interface ICorporateActionRepository : IRepository<ICorporateAction>
+    public interface ICorporateActionRepository : IRepository<CorporateAction>
     {
         
     }
 
     public interface ICorporateActionQuery
     {
-        ICorporateAction Get(Guid id);
-        IReadOnlyCollection<ICorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate);
+        CorporateAction Get(Guid id);
+        IReadOnlyCollection<CorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate);
     }
 
     public interface IRelativeNTARepository : IRepository<RelativeNTA>

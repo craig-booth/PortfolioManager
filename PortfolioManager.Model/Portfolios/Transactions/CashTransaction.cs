@@ -10,14 +10,21 @@ namespace PortfolioManager.Model.Portfolios
     {
         public decimal Amount { get; set; }
 
+        public CashTransaction()
+            : this(Guid.NewGuid())
+        {
+
+        }
+
+        public CashTransaction(Guid id)
+            : base(id)
+        {
+            Type = TransactionType.Deposit;
+        }
+
         protected override string GetDescription()
         {
             return "";
-        }
-
-        protected override TransactionType GetTransactionType()
-        {
-            return TransactionType.Deposit;
         }
     }
 }

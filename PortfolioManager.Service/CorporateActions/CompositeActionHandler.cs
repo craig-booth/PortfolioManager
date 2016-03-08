@@ -23,7 +23,7 @@ namespace PortfolioManager.Service.CorporateActions
             _CorporateActionService = corporateActionService;
         }
 
-        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
         {
             CompositeAction compositeAction = corporateAction as CompositeAction;
 
@@ -42,7 +42,7 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions.AsReadOnly();
         }
 
-        public bool HasBeenApplied(ICorporateAction corporateAction, TransactionService transactionService)
+        public bool HasBeenApplied(CorporateAction corporateAction, TransactionService transactionService)
         {
             CompositeAction compositeAction = corporateAction as CompositeAction;
 

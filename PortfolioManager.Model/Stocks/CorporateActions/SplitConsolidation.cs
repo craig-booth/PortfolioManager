@@ -6,22 +6,10 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Model.Stocks
 {
-    public class SplitConsolidation : ICorporateAction
+    public class SplitConsolidation : CorporateAction
     {
-        public Guid Id { get; private set; }
-        public Guid Stock { get; private set; }
-        public DateTime ActionDate { get; set; }
         public int OldUnits { get; set; }
         public int NewUnits { get; set; }
-        public string Description { get; set; }
-
-        public CorporateActionType Type
-        {
-            get
-            {
-                return CorporateActionType.SplitConsolidation;
-            }
-        }
 
         public SplitConsolidation(Guid stock, DateTime actionDate, int oldUnits, int newUnits, string description)
             : this(Guid.NewGuid(), stock, actionDate, oldUnits, newUnits, description)
@@ -29,10 +17,8 @@ namespace PortfolioManager.Model.Stocks
         }
 
         public SplitConsolidation(Guid id, Guid stock, DateTime actionDate, int oldUnits, int newUnits, string description)
+            : base(id, CorporateActionType.SplitConsolidation, stock, actionDate)
         {
-            Id = id;
-            ActionDate = actionDate;
-            Stock = stock;
             OldUnits = oldUnits;
             NewUnits = newUnits;
             if (description != "")

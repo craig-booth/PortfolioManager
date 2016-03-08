@@ -16,7 +16,7 @@ using StockManager.Service;
 namespace PortfolioManager.Test
 {
 
-    public delegate void CorporateActionAdded(ICorporateAction corporateAction);
+    public delegate void CorporateActionAdded(CorporateAction corporateAction);
 
 
     public partial class frmStockManager : Form
@@ -86,7 +86,7 @@ namespace PortfolioManager.Test
         private void AddCorporateAction(Stock stock, CorporateActionType type)
         {
             ICorporateActionForm form = _CorporateActionFormFactory.CreateCorporateActionForm(type);
-            ICorporateAction corporateAction = form.CreateCorporateAction(stock);
+            var corporateAction = form.CreateCorporateAction(stock);
 
             if (corporateAction != null)
             {
@@ -104,8 +104,8 @@ namespace PortfolioManager.Test
         {
             lsvCorporateActions.Items.Clear();
 
-            IEnumerable<ICorporateAction> corporateActions = _StockServiceRepository.CorporateActionService.GetCorporateActions(stock);
-            foreach (ICorporateAction corporateAction in corporateActions)
+            IEnumerable<CorporateAction> corporateActions = _StockServiceRepository.CorporateActionService.GetCorporateActions(stock);
+            foreach (var corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
                 item.SubItems.Add(corporateAction.Description);
@@ -167,7 +167,7 @@ namespace PortfolioManager.Test
         {
             if (lsvCorporateActions.FocusedItem != null)
             {
-                ICorporateAction corporateAction = (ICorporateAction)lsvCorporateActions.FocusedItem.Tag;
+                var corporateAction = (CorporateAction)lsvCorporateActions.FocusedItem.Tag;
 
                 ICorporateActionForm form = _CorporateActionFormFactory.CreateCorporateActionForm(corporateAction.Type);
                 if (form.EditCorporateAction(corporateAction))
@@ -194,7 +194,7 @@ namespace PortfolioManager.Test
 
                 foreach (ListViewItem item in lsvCorporateActions.SelectedItems)
                 {
-                    ICorporateAction corporateAction = (ICorporateAction)item.Tag;
+                    var corporateAction = (CorporateAction)item.Tag;
 
                     _StockServiceRepository.CorporateActionService.DeleteCorporateAction(corporateAction);
                 }
@@ -247,7 +247,7 @@ namespace PortfolioManager.Test
         {
             foreach (ListViewItem item in lsvCorporateActions.Items)
             {
-                ICorporateAction corporateAction = (ICorporateAction)item.Tag;
+                var corporateAction = (CorporateAction)item.Tag;
 
                 if ((corporateAction.Type == CorporateActionType.Dividend) && (corporateAction.ActionDate == recordDate))
                 {

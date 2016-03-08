@@ -50,12 +50,47 @@ namespace PortfolioManager.Model.Data
         }
     }
 
-    public interface IEntity
+    public abstract class Entity
     {
-        Guid Id { get; }
+        public Guid Id { get; private set; }
+
+        private Entity()
+        {
+
+        }
+
+        public Entity(Guid id)
+        {
+            Id = id;
+        }
     }
 
-    public interface IRepository<T> where  T: IEntity
+    public abstract class EffectiveDatedEntity : Entity
+    {
+        public DateTime FromDate { get; private set; }
+        public DateTime ToDate { get; private set; }
+
+        public EffectiveDatedEntity(Guid id, DateTime fromDate, DateTime toDate)
+            : base(id)
+        {
+            FromDate = fromDate;
+            ToDate = toDate;
+        }
+
+        public void EndEntity(DateTime atDate)
+        {
+            ToDate = atDate;
+        }
+
+    }
+
+    public interface IEditableEffectiveDatedEntity<T> where T : EffectiveDatedEntity
+    {
+        void EndEntity(DateTime atDate);
+        T CreateNewEffectiveEntity(DateTime atDate);
+    }
+
+    public interface IRepository<T> where  T: Entity
     {
         T Get(Guid id);
         void Add(T entity);
@@ -64,13 +99,7 @@ namespace PortfolioManager.Model.Data
         void Delete(Guid id);
     }
 
-    public interface IEffectiveDatedEntity: IEntity 
-    {
-        DateTime FromDate { get; }
-        DateTime ToDate { get; }
-    }
-
-    public interface IEffectiveDatedRepository<T> : IRepository<T> where T: IEffectiveDatedEntity
+    public interface IEffectiveDatedRepository<T> : IRepository<T> where T: EffectiveDatedEntity
     {
         T Get(Guid id, DateTime atDate);
         void Delete(Guid id, DateTime atDate);

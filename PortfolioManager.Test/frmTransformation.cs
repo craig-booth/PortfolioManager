@@ -82,7 +82,7 @@ namespace PortfolioManager.Test
             }
         } 
 
-        public ICorporateAction CreateCorporateAction(Stock stock)
+        public CorporateAction CreateCorporateAction(Stock stock)
         {
             _Stock = stock;
             _Mode = Mode.Create;
@@ -98,7 +98,7 @@ namespace PortfolioManager.Test
                 return null;
         }
 
-        public bool EditCorporateAction(ICorporateAction corporateAction)
+        public bool EditCorporateAction(CorporateAction corporateAction)
         {
             _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Edit;
@@ -123,7 +123,7 @@ namespace PortfolioManager.Test
                 return false;
         } 
 
-        public void ViewCorporateAction(ICorporateAction corporateAction)
+        public void ViewCorporateAction(CorporateAction corporateAction)
         {
             _Mode = Mode.View;
             _Transformation = corporateAction as Transformation;
@@ -131,7 +131,7 @@ namespace PortfolioManager.Test
             ShowDialog();
         } 
 
-        public Boolean DeleteCorporateAction(ICorporateAction corporateAction)
+        public Boolean DeleteCorporateAction(CorporateAction corporateAction)
         {
             _Stock = _StockService.GetStock(corporateAction.Stock);
             _Mode = Mode.Delete;
