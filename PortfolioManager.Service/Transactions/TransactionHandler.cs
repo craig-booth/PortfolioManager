@@ -87,10 +87,6 @@ namespace PortfolioManager.Service.Transactions
             }
             else
             {
-               /* End existing effective dated entity */
-                parcel.EndEntity(changeDate.AddDays(-1));
-                unitOfWork.ParcelRepository.Update(parcel);
-
                 /* Create new effective dated entity */
                 var newParcel = parcel.CreateNewEffectiveEntity(changeDate);
                 newParcel.Event = parcelEvent;
@@ -99,6 +95,10 @@ namespace PortfolioManager.Service.Transactions
                 /* Add new record */
                 if (newParcel.Units > 0)
                     unitOfWork.ParcelRepository.Add(newParcel);
+
+                /* End existing effective dated entity */
+                parcel.EndEntity(changeDate.AddDays(-1));
+                unitOfWork.ParcelRepository.Update(parcel);
             }
 
         }

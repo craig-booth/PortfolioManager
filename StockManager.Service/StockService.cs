@@ -315,14 +315,14 @@ namespace StockManager.Service
             }
             else
             {
-                /* End existing effective dated entity */
-                stock.EndEntity(changeDate.AddDays(-1));
-                unitOfWork.StockRepository.Update(stock);
-
                 /* Create new effective dated entity */
                 var newStock = stock.CreateNewEffectiveEntity(changeDate);
                 change(newStock);
                 unitOfWork.StockRepository.Add(newStock);
+
+                /* End existing effective dated entity */
+                stock.EndEntity(changeDate.AddDays(-1));
+                unitOfWork.StockRepository.Update(stock);
             }
 
         }

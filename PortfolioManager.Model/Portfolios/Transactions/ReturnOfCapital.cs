@@ -17,7 +17,7 @@ namespace PortfolioManager.Model.Portfolios
         public string Comment { get; set; }
 
         public ReturnOfCapital()
-            : this (Guid.Empty)
+            : this (Guid.NewGuid())
         {
 
         }

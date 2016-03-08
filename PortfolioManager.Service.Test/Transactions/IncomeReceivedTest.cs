@@ -84,10 +84,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransaction(incomeReceived);
 
 
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance.Units, 1.50m, openingBalance.CostBase, openingBalance.CostBase - 30.00m, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance.Units, 1.50m, openingBalance.CostBase, openingBalance.CostBase - 30.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
@@ -178,10 +175,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransaction(incomeReceived);
 
 
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance.Units, 1.00m, openingBalance.CostBase, 0.00m, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance.Units, 1.00m, openingBalance.CostBase, 0.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedIncome.Add(new Income(incomeReceived));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, _TransactionDate, openingBalance.Units, openingBalance.CostBase, 30.00m));
         }
@@ -238,14 +232,8 @@ namespace PortfolioManager.Service.Test.Transactions
              * parcel1 = 100 - (300 * (100 / 1100)) = 100 - 27.27 = 72.73
              * 
             */
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 1227.27m, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate2, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance2.Units, 1.00m, openingBalance2.CostBase, 72.73m, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate1, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 1227.27m, Guid.Empty, ParcelEvent.CostBaseReduction));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate2, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance2.Units, 1.00m, openingBalance2.CostBase, 72.73m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedIncome.Add(new Income(incomeReceived));
         }
     }
@@ -301,14 +289,8 @@ namespace PortfolioManager.Service.Test.Transactions
              * parcel1 = 100 - (1300 * (100 / 1100)) = 100 - 118.18 = -18.18
              * 
             */
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate1, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 318.18m, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
-            _ExpectedParcels.Add(new ShareParcel(openingBalanceDate2, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance2.Units, 1.00m, openingBalance2.CostBase, 0.00m, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate1, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance1.Units, 1.50m, openingBalance1.CostBase, 318.18m, Guid.Empty, ParcelEvent.CostBaseReduction));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate2, _StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, openingBalance2.Units, 1.00m, openingBalance2.CostBase, 0.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedIncome.Add(new Income(incomeReceived));
             _ExpectedCGTEvents.Add(new CGTEvent(_StockServiceRepository.StockService.GetStock("CCC", _TransactionDate).Id, _TransactionDate, openingBalance2.Units, openingBalance2.CostBase, 18.18m));
         }
@@ -351,10 +333,7 @@ namespace PortfolioManager.Service.Test.Transactions
             var purchaseId = Guid.NewGuid();
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS1", _TransactionDate).Id, 1000, 1.50m, 1500.00m, 1500.00m, purchaseId, ParcelEvent.OpeningBalance));
             _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS2", _TransactionDate).Id, 1000, 4.50m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.OpeningBalance));
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 8700.00m, purchaseId, ParcelEvent.CostBaseReduction)
-            {
-                FromDate = _TransactionDate
-            });
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, _StockServiceRepository.StockService.GetStock("SSS3", _TransactionDate).Id, 1000, 9.00m, 9000.00m, 8700.00m, purchaseId, ParcelEvent.CostBaseReduction));
 
             _ExpectedIncome.Add(new Income(incomeReceived));
         }
