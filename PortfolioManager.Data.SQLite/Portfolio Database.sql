@@ -1,3 +1,4 @@
+
 CREATE TABLE [DbVersion]
 (
 	[Version] INTEGER NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE [Transactions]
 	[Type] INTEGER NOT NULL,
 	[ASXCode] TEXT(6) NOT NULL,
 	[Description] TEXT(200)  NOT NULL,
-	[Attachment] TEXT(36) NOT NULL,
+	[Attachment] TEXT(36) NOT NULL
 );
 
 CREATE UNIQUE INDEX [Index_Transactions_Id] ON[Transactions]
