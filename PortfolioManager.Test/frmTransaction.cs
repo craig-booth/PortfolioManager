@@ -175,9 +175,16 @@ namespace PortfolioManager.Test
         {
             _AttachmentService.DeleteAttachment(_Attachment);
 
+            _Attachment = Guid.Empty;
+
             btnAddAttachment.Enabled = true;
             btnDeleteAttachment.Enabled = false;
             btnViewAttachment.Enabled = false;
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

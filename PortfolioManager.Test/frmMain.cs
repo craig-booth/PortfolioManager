@@ -248,7 +248,7 @@ namespace PortfolioManager.Test
             
             var transactions = _MyPortfolio.CorporateActionService.CreateTransactionList(corporateAction);
 
-            var form = new frmMultipleTransactions(_PortfolioServiceRepository.StockService);
+            var form = new frmMultipleTransactions(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
             if (form.EditTransactions(transactions))
             {
                 _MyPortfolio.TransactionService.ProcessTransactions(transactions);

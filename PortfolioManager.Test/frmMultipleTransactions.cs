@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Test.TransactionControls;
@@ -17,16 +19,21 @@ namespace PortfolioManager.Test
     public partial class frmMultipleTransactions : Form
     {
         private readonly StockService _StockService;
+        private AttachmentService _AttachmentService;
+
+        private IEnumerable<Transaction> _Transactions;
+        private Guid _Attachment;
 
         public frmMultipleTransactions()
         {
             InitializeComponent();
         }
 
-        public frmMultipleTransactions(StockService stockService)
+        public frmMultipleTransactions(StockService stockService, AttachmentService attachmentService)
             : this()
         {
             _StockService = stockService;
+            _AttachmentService = attachmentService;
         }
 
         private void AddTransactionTab(Transaction transaction)
@@ -82,6 +89,14 @@ namespace PortfolioManager.Test
 
         public bool EditTransactions(IEnumerable<Transaction> transactions)
         {
+
+            _Transactions = transactions;
+            _Attachment = Guid.Empty;
+
+            btnAddAttachment.Enabled = true;
+            btnDeleteAttachment.Enabled = false;
+            btnViewAttachment.Enabled = false;
+
             foreach (Transaction transaction in transactions)
                 AddTransactionTab(transaction);
 
@@ -103,7 +118,55 @@ namespace PortfolioManager.Test
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            foreach (var transaction in _Transactions)
+            {
+                transaction.Attachment = _Attachment;
+            }
+        }
 
+        private void btnAddAttachment_Click(object sender, EventArgs e)
+        {
+            var fileDialog = new OpenFileDialog();
+
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var attachment = _AttachmentService.CreateAttachment(fileDialog.FileName);
+                _Attachment = attachment.Id;
+
+                btnAddAttachment.Enabled = false;
+                btnDeleteAttachment.Enabled = true;
+                btnViewAttachment.Enabled = true;
+            }
+
+        }
+
+        private void btnViewAttachment_Click(object sender, EventArgs e)
+        {
+            var attachment = _AttachmentService.GetAttachment(_Attachment);
+
+            // Create a temporary file to store the attachment
+            var tempPath = Path.Combine(Path.GetTempPath(), "PortfolioManger");
+            Directory.CreateDirectory(tempPath);
+            var attachmentFileName = Path.ChangeExtension(Path.Combine(tempPath, attachment.Id.ToString()), attachment.Extension);
+            var attachmentFile = new FileStream(attachmentFileName, FileMode.Create);
+
+            attachment.Data.CopyTo(attachmentFile);
+
+            attachmentFile.Close();
+
+            var startInfo = new ProcessStartInfo(attachmentFileName);
+            Process.Start(startInfo);
+        }
+
+        private void btnDeleteAttachment_Click(object sender, EventArgs e)
+        {
+            _AttachmentService.DeleteAttachment(_Attachment);
+
+            _Attachment = Guid.Empty;
+
+            btnAddAttachment.Enabled = true;
+            btnDeleteAttachment.Enabled = false;
+            btnViewAttachment.Enabled = false;
         }
     }
 }
