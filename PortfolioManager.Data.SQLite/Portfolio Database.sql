@@ -12,7 +12,8 @@ CREATE TABLE [Transactions]
 	[Sequence] INTEGER PRIMARY KEY AUTOINCREMENT,
 	[Type] INTEGER NOT NULL,
 	[ASXCode] TEXT(6) NOT NULL,
-	[Description] TEXT(200)  NOT NULL
+	[Description] TEXT(200)  NOT NULL,
+	[Attachment] TEXT(36) NOT NULL,
 );
 
 CREATE UNIQUE INDEX [Index_Transactions_Id] ON[Transactions]
@@ -112,6 +113,15 @@ CREATE TABLE [UnitCountAdjustments]
 	[OriginalUnits] INTEGER NOT NULL,
 	[NewUnits] INTEGER NOT NULL,
 	[Comment] TEXT(200)  NOT NULL,
+	
+	PRIMARY KEY ([Id])
+);
+
+CREATE TABLE [Attachments]
+(
+	[Id] TEXT(36) NOT NULL,
+	[Extension] TEXT(10) NOT NULL,
+	[Data] BLOB,
 	
 	PRIMARY KEY ([Id])
 );

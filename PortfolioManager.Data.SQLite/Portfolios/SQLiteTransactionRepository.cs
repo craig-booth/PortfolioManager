@@ -34,7 +34,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description)", _Connection);
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description], [Attachment]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description, @Attachment)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -46,7 +46,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description, [Attachment] = @Attachment WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -99,6 +99,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Type", entity.Type);
             command.Parameters.AddWithValue("@ASXCode", entity.ASXCode);
             command.Parameters.AddWithValue("@Description", entity.Description);
+            command.Parameters.AddWithValue("@Attachment", entity.Attachment.ToString());
         }
 
         protected override Transaction CreateEntity(SQLiteDataReader reader)

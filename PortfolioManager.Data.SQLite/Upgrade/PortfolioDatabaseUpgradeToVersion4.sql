@@ -1,0 +1,11 @@
+﻿CREATE TABLE [Attachments]
+(
+	[Id] TEXT(36) NOT NULL,
+	[Extension] TEXT(10) NOT NULL,
+	[Data] BLOB,
+	
+	PRIMARY KEY ([Id])
+);
+
+ALTER TABLE [Transactions]
+	ADD COLUMN [Attachment] TEXT(36) NOT NULL DEFAULT "00000000-0000-0000-0000-000000000000";

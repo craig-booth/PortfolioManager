@@ -12,19 +12,30 @@ namespace PortfolioManager.Service
 {
     public class AttachmentService
     {
-        private Dictionary<Guid, Attachment> _Attachments;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
 
-        internal AttachmentService()
+        internal AttachmentService(IPortfolioDatabase portfolioDatabase)
         {
-            _Attachments = new Dictionary<Guid, Attachment>();
+            _PortfolioDatabase = portfolioDatabase;
         }
 
-        public Attachment CreateAttachment(Stream stream)
+        public Attachment CreateAttachment(string extension, Stream stream)
         {
-            var attachment = new Attachment();
+            var attachment = new Attachment()
+            {
+                Extension = extension
+            };            
 
             stream.CopyTo(attachment.Data);
-            
+            attachment.Data.Seek(0, SeekOrigin.Begin);
+
+            using (var unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.AttachmentRepository.Add(attachment);
+
+                unitOfWork.Save();
+            }
+
             return attachment;
         }
 
@@ -32,7 +43,7 @@ namespace PortfolioManager.Service
         {
             var file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 
-            var attachement = CreateAttachment(file);
+            var attachement = CreateAttachment(Path.GetExtension(fileName), file);
 
             file.Close();
 
@@ -41,15 +52,24 @@ namespace PortfolioManager.Service
 
         public void DeleteAttachment(Guid id)
         {
-            _Attachments.Remove(id);
+            using (var unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.AttachmentRepository.Delete(id);
+
+                unitOfWork.Save();
+            }
         }
 
         public Attachment GetAttachment(Guid id)
         {
-            if (_Attachments.ContainsKey(id))
-                return _Attachments[id];
-            else
-                throw new RecordNotFoundException(id);
+            Attachment attachment;
+
+            using (var unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                attachment = unitOfWork.AttachmentRepository.Get(id);
+            }
+
+            return attachment;
         }
     }
 }

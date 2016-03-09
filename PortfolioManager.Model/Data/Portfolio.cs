@@ -20,6 +20,7 @@ namespace PortfolioManager.Model.Data
         IParcelRepository ParcelRepository { get; }
         ITransactionRepository TransactionRepository { get; }
         ICGTEventRepository CGTEventRepository { get; }
+        IAttachmentRepository AttachmentRepository { get; }
 
         void Save();
     }
@@ -35,6 +36,11 @@ namespace PortfolioManager.Model.Data
     }
 
     public interface ICGTEventRepository : IRepository<CGTEvent>
+    {
+
+    }
+
+    public interface IAttachmentRepository : IRepository<Attachment>
     {
 
     }

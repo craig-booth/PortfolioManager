@@ -11,7 +11,8 @@ namespace PortfolioManager.Model.Portfolios
 {
     public class Attachment : Entity
     {
-        public Stream Data { get; private set; }
+        public string Extension { get; set; }
+        public MemoryStream Data { get; private set; }
 
         public Attachment()
             : this(Guid.NewGuid())

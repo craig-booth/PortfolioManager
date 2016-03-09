@@ -48,6 +48,14 @@ namespace PortfolioManager.Data.Memory.Portfolios
             }
         }
 
+        public IAttachmentRepository AttachmentRepository
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         protected internal MemoryPortfolioUnitOfWork(MemoryPortfolioDatabase database)
         {
             _Database = database;
@@ -63,4 +71,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
 
         }
     }
+
+    
+
 }

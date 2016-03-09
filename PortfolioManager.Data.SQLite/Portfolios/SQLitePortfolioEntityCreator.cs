@@ -15,43 +15,50 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         public static Transaction CreateTransaction(SQLitePortfolioDatabase database, SQLiteDataReader reader)
         {
+            Transaction transaction;
+
+            Guid id = new Guid(reader.GetString(0));
             TransactionType type = (TransactionType)reader.GetInt32(3);
 
             if (type == TransactionType.Aquisition)
-                return CreateAquisition(database, reader);
+                transaction = CreateAquisition(database, id);
             else if (type == TransactionType.CostBaseAdjustment)
-                return CreateCostBaseAdjustment(database, reader);
+                transaction = CreateCostBaseAdjustment(database, id);
             else if (type == TransactionType.Disposal)
-                return CreateDisposal(database, reader);
+                transaction = CreateDisposal(database, id);
             else if (type == TransactionType.Income)
-                return CreateIncomeReceived(database, reader);
+                transaction = CreateIncomeReceived(database, id);
             else if (type == TransactionType.OpeningBalance)
-                return CreateOpeningBalance(database, reader);
+                transaction = CreateOpeningBalance(database, id);
             else if (type == TransactionType.ReturnOfCapital)
-                return CreateReturnOfCapital(database, reader);
+                transaction = CreateReturnOfCapital(database, id);
             else if (type == TransactionType.UnitCountAdjustment)
-                return CreateUnitCountAdjustment(database, reader);
+                transaction = CreateUnitCountAdjustment(database, id);
             else
                 return null;
+
+            transaction.TransactionDate = reader.GetDateTime(1);
+            transaction.ASXCode = reader.GetString(4);
+            transaction.Attachment = new Guid(reader.GetString(6));
+
+            return transaction;
         }
 
-        private static Aquisition CreateAquisition(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static Aquisition CreateAquisition(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get aquisition values */
             var command = new SQLiteCommand("SELECT [Units],[AveragePrice], [TransactionCosts], [Comment] FROM [Aquisitions] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader aquisitionReader = command.ExecuteReader();
             if (!aquisitionReader.Read())
             {
                 aquisitionReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            Aquisition aquisition = new Aquisition(new Guid(reader.GetString(0)))
+            Aquisition aquisition = new Aquisition(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 Units = aquisitionReader.GetInt32(0),
                 AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(1)),
                 TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(2)),
@@ -62,23 +69,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return aquisition;
         }
 
-        private static CostBaseAdjustment CreateCostBaseAdjustment(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static CostBaseAdjustment CreateCostBaseAdjustment(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get cost base adjsutment values */
             var command = new SQLiteCommand("SELECT [RecordDate], [Percentage], [Comment] FROM [CostBaseAdjustments] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader costBaseAdjustmentReader = command.ExecuteReader();
             if (!costBaseAdjustmentReader.Read())
             {
                 costBaseAdjustmentReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            CostBaseAdjustment costBaseAdjustment = new CostBaseAdjustment(new Guid(reader.GetString(0)))
+            CostBaseAdjustment costBaseAdjustment = new CostBaseAdjustment(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 RecordDate = costBaseAdjustmentReader.GetDateTime(0),
                 Percentage = SQLiteUtils.DBToDecimal(costBaseAdjustmentReader.GetInt32(1)),
                 Comment = costBaseAdjustmentReader.GetString(2)
@@ -88,23 +93,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return costBaseAdjustment;
         }
 
-        private static Disposal CreateDisposal(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static Disposal CreateDisposal(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get disposal values */
             var command = new SQLiteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CGTMethod], [Comment] FROM [Disposals] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader disposalReader = command.ExecuteReader();
             if (!disposalReader.Read())
             {
                 disposalReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            Disposal disposal = new Disposal(new Guid(reader.GetString(0)))
+            Disposal disposal = new Disposal(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 Units = disposalReader.GetInt32(0),
                 AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(1)),
                 TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(2)),
@@ -116,23 +119,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return disposal;
         }
 
-        private static IncomeReceived CreateIncomeReceived(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static IncomeReceived CreateIncomeReceived(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get income received values */
             var command = new SQLiteCommand("SELECT [RecordDate], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [Comment] FROM [IncomeReceived] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader incomeReceivedReader = command.ExecuteReader();
             if (!incomeReceivedReader.Read())
             {
                 incomeReceivedReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            IncomeReceived incomeReceived = new IncomeReceived(new Guid(reader.GetString(0)))
+            IncomeReceived incomeReceived = new IncomeReceived(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 RecordDate = incomeReceivedReader.GetDateTime(0),
                 FrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(1)),
                 UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(2)),
@@ -146,23 +147,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return incomeReceived;
         }
 
-        private static OpeningBalance CreateOpeningBalance(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static OpeningBalance CreateOpeningBalance(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get opening balance values */
             var command = new SQLiteCommand("SELECT [Units], [CostBase], [AquisitionDate], [Comment] FROM [OpeningBalances] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader openingBalanceReader = command.ExecuteReader();
             if (!openingBalanceReader.Read())
             {
                 openingBalanceReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            OpeningBalance openingBalance = new OpeningBalance(new Guid(reader.GetString(0)))
+            OpeningBalance openingBalance = new OpeningBalance(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 Units = openingBalanceReader.GetInt32(0),
                 CostBase = SQLiteUtils.DBToDecimal(openingBalanceReader.GetInt32(1)),
                 AquisitionDate = openingBalanceReader.GetDateTime(2),
@@ -174,23 +173,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return openingBalance;
         }
 
-        private static ReturnOfCapital CreateReturnOfCapital(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static ReturnOfCapital CreateReturnOfCapital(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get opening balance values */
             var command = new SQLiteCommand("SELECT [RecordDate], [Amount], [Comment] FROM [ReturnsOfCapital] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader returnOfCapitalReader = command.ExecuteReader();
             if (!returnOfCapitalReader.Read())
             {
                 returnOfCapitalReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            ReturnOfCapital returnOfCapital = new ReturnOfCapital(new Guid(reader.GetString(0)))
+            ReturnOfCapital returnOfCapital = new ReturnOfCapital(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 RecordDate = returnOfCapitalReader.GetDateTime(0),
                 Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt32(1)),
                 Comment = returnOfCapitalReader.GetString(2)
@@ -200,23 +197,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return returnOfCapital;
         }
 
-        private static UnitCountAdjustment CreateUnitCountAdjustment(SQLitePortfolioDatabase database, SQLiteDataReader reader)
+        private static UnitCountAdjustment CreateUnitCountAdjustment(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get opening balance values */
             var command = new SQLiteCommand("SELECT [OriginalUnits], [NewUnits], [Comment] FROM [UnitCountAdjustments] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
-            command.Parameters.AddWithValue("@Id", reader.GetString(0));
+            command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader unitCountAdjustmentReader = command.ExecuteReader();
             if (!unitCountAdjustmentReader.Read())
             {
                 unitCountAdjustmentReader.Close();
-                throw new RecordNotFoundException(reader.GetString(0));
+                throw new RecordNotFoundException(id);
             }
 
-            UnitCountAdjustment unitCountAdjustmnet = new UnitCountAdjustment(new Guid(reader.GetString(0)))
+            UnitCountAdjustment unitCountAdjustmnet = new UnitCountAdjustment(id)
             {
-                TransactionDate = reader.GetDateTime(1),
-                ASXCode = reader.GetString(4),
                 OriginalUnits = unitCountAdjustmentReader.GetInt32(0),
                 NewUnits = unitCountAdjustmentReader.GetInt32(1),
                 Comment = unitCountAdjustmentReader.GetString(2)
