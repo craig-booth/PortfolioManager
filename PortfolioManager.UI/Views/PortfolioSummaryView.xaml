@@ -7,19 +7,98 @@
 
     <DataTemplate DataType="{x:Type viewmodels:PortfolioSummaryViewModel}">
 
+        <DataTemplate.Resources>
+
+            <Style x:Key="ListText" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+         <!--   <local:DecimalToBrushConverter x:Key="decimalColor" />
+            <local:AmountIncreased x:Key="amountIncreased" />
+
+                <Style x:Key="positiveValue" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="Green" />
+    </Style>
+
+    <Style x:Key="negativeValue" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="Red" />
+    </Style>
+            
+            <Style x:Key="TextValueChangeStyle" TargetType="TextBlock">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Amount, Converter={StaticResource amountIncreased}}" Value="True">
+                        <Setter Property="Foreground" Value="Green"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=Amount, Converter={StaticResource amountIncreased}}" Value="False">
+                        <Setter Property="Foreground" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="ArrowValueChangeStyle" TargetType="Path">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Amount, Converter={StaticResource amountIncreased}}" Value="True" >
+                        <Setter Property="Fill" Value="Green"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=Amount, Converter={StaticResource amountIncreased}}" Value="False">
+                        <Setter Property="Fill" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Geometry x:Key="DownArrow">
+                M0,0 L1, 0 0.5, 1Z
+            </Geometry>
+
+            <Geometry x:Key="UpArrow">
+                M0,1 L1, 1 0.5, 0Z
+            </Geometry>
+
+            <Geometry x:Key="DownArrow2">
+                F1 M 42,19.0002L 34,19.0002L 34,43.7502L 24,33.7502L 24,44.2502L 38,58.2502L 52,44.2502L 52,33.7502L 42,43.7502L 42,19.0002 Z
+            </Geometry>
+
+            <Geometry x:Key="UpArrow2">
+                M 34,57L 42,57L 42,32.25L 52,42.25L 52,31.75L 38,17.75L 24,31.75L 24,42.25L 34,32.25L 34,57 Z
+            </Geometry>
+
+            <DataTemplate DataType="{x:Type local:ChangeInValue}" >
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding Path=Period}" FontSize="12"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0" >
+                        <Path Data="{StaticResource UpArrow2}" Margin="0,0,0,0" Width="20" Height="22" Stretch="Fill" Style="{StaticResource ArrowValueChangeStyle}" />
+                        <TextBlock Text="{Binding Path=Amount, StringFormat={}{0:c0}}" Margin="10,0,0,0" FontSize="16" Style="{StaticResource TextValueChangeStyle}" VerticalAlignment="Bottom" />
+                        <TextBlock Text="{Binding Path=Percentage, StringFormat={}{0:p}}" Margin="10,0,0,0" FontSize="12" Style="{StaticResource TextValueChangeStyle}" VerticalAlignment="Bottom" />
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate> -->
+        </DataTemplate.Resources>
+        
+        
+        
         <StackPanel Orientation="Vertical">
             <TextBlock>Portfolio</TextBlock>
             <TextBlock Text="{Binding Path=MarketValue}"/>
             <ListView ItemsSource="{Binding Path=Holdings}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding ASXCode}" Margin="10,0,0,10" />
-                            <TextBlock Text="{Binding CurrentValue}" Margin="10,0,0,10" />
-                            <TextBlock Text="{Binding CapitalGain}" Margin="10,0,0,10" />
-                            <TextBlock Text="{Binding CapitalGainPercentage}" Margin="10,0,0,10" />
-                            <Button Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding HoldingSummaryView,Mode=OneWay}">Summary</Button>
+                        <StackPanel Orientation="Horizontal" Margin="0,2,2,0">
+
+                            <TextBlock Text="{Binding ASXCode}" Style="{StaticResource ListText}" />
+                            <TextBlock Text="{Binding CompanyName}" Style="{StaticResource ListText}" />
+                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}}" TextAlignment="Right"/>
+                            <StackPanel HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding CapitalGain, StringFormat={}{0:c0}}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding CapitalGainPercentage, StringFormat={}{0:p}}" TextAlignment="Right"/>
+                            </StackPanel>
                         </StackPanel>
+                       <!-- <StackPanel Orientation="Horizontal" Margin="0,2,2,0">
+                            <TextBlock Text="{Binding ASXCode}" Margin="10,0,0,0" Style="{StaticResource ListText}"/>
+                            <TextBlock Text="{Binding CompanyName}" Margin="10,0,0,0" Style="{StaticResource ListText}" Width="100"/>
+                            <TextBlock Text="{Binding CurrentValue}" Margin="10,0,0,0" />
+                            <TextBlock Text="{Binding CapitalGain}" Margin="10,0,0,0" />
+                            <TextBlock Text="{Binding CapitalGainPercentage}" Margin="10,0,0,0" />
+                            <Button Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding HoldingSummaryView,Mode=OneWay}">Summary</Button>
+                        </StackPanel> -->
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
