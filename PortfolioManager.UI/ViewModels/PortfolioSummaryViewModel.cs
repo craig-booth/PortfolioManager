@@ -51,7 +51,7 @@ namespace PortfolioManager.UI.ViewModels
         public HoldingItemViewModel(ShareHolding holding)
         {
             ASXCode = holding.Stock.ASXCode;
-            CompanyName = holding.Stock.Name;
+            CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode);
             CurrentValue = holding.MarketValue;
             CapitalGain = holding.MarketValue - holding.TotalCostBase;
             if (holding.TotalCostBase != 0)

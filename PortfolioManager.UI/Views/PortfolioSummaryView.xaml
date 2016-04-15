@@ -9,9 +9,6 @@
 
         <DataTemplate.Resources>
 
-            <Style x:Key="ListText" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="14" />
-            </Style>
          <!--   <local:DecimalToBrushConverter x:Key="decimalColor" />
             <local:AmountIncreased x:Key="amountIncreased" />
 
@@ -71,6 +68,20 @@
                     </StackPanel>
                 </StackPanel>
             </DataTemplate> -->
+
+            <viewmodels:AmountIncreased x:Key="amountIncreased" />
+            
+            <Style x:Key="ChangeValue2" TargetType="Label">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=/, Converter={StaticResource amountIncreased}}" Value="True">
+                        <Setter Property="Foreground" Value="Green"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=/, Converter={StaticResource amountIncreased}}" Value="False">
+                        <Setter Property="Foreground" Value="Red"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
         </DataTemplate.Resources>
         
         
@@ -83,27 +94,19 @@
                     <DataTemplate>
                         <Grid Margin="2,0,0,2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition Width="70"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding ASXCode}" Grid.Column="0" Style="{StaticResource ListText}" />
-                            <TextBlock Text="{Binding CompanyName}" Grid.Column="1" Style="{StaticResource ListText}" />
-                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}}" Grid.Column="2" Style="{StaticResource ListText}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding CapitalGain, StringFormat={}{0:c0}}" Grid.Column="3" Style="{StaticResource ListText}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding CapitalGainPercentage, StringFormat={}{0:p}}" Grid.Column="4" Style="{StaticResource ListText}" TextAlignment="Right"/>
+                            <Button Content="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Style="{StaticResource LinkButton}" Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding HoldingSummaryView,Mode=OneWay}" />
+                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right"/>
+                            <Label Content="{Binding CapitalGain, Mode=OneWay}" Grid.Column="2" Style="{StaticResource ChangeValue2}" />
+                            <!--"<TextBlock Text="{Binding CapitalGain, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="2" Style="{StaticResource ChangeValue}" TextAlignment="Right"/> -->
+                            <TextBlock Text="{Binding CapitalGainPercentage, StringFormat={}{0:p}, Mode=OneWay}" Grid.Column="3" Style="{StaticResource ChangeValue}" TextAlignment="Right"/>
                         </Grid>
-                       <!-- <StackPanel Orientation="Horizontal" Margin="0,2,2,0">
-                            <TextBlock Text="{Binding ASXCode}" Margin="10,0,0,0" Style="{StaticResource ListText}"/>
-                            <TextBlock Text="{Binding CompanyName}" Margin="10,0,0,0" Style="{StaticResource ListText}" Width="100"/>
-                            <TextBlock Text="{Binding CurrentValue}" Margin="10,0,0,0" />
-                            <TextBlock Text="{Binding CapitalGain}" Margin="10,0,0,0" />
-                            <TextBlock Text="{Binding CapitalGainPercentage}" Margin="10,0,0,0" />
-                            <Button Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding HoldingSummaryView,Mode=OneWay}">Summary</Button>
-                        </StackPanel> -->
+
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

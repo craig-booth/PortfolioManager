@@ -15,6 +15,10 @@
                     <utilities:ViewNavigator x:Key="ViewNavigator" />
                 </ResourceDictionary>
 
+
+                <!-- Style -->
+                <ResourceDictionary Source="Style/Style.xaml"/>
+
                 <!-- Views -->
                 <ResourceDictionary Source="Views/PortfolioSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionSummaryView.xaml"/>
