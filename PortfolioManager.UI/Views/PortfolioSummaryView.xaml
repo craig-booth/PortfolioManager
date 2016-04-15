@@ -78,19 +78,24 @@
         <StackPanel Orientation="Vertical">
             <TextBlock>Portfolio</TextBlock>
             <TextBlock Text="{Binding Path=MarketValue}"/>
-            <ListView ItemsSource="{Binding Path=Holdings}">
-                <ListView.ItemTemplate>
+            <ListBox ItemsSource="{Binding Path=Holdings}" HorizontalContentAlignment="Stretch" Padding="10,0,10,0">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="0,2,2,0">
+                        <Grid Margin="2,0,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="70"/>
+                            </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding ASXCode}" Style="{StaticResource ListText}" />
-                            <TextBlock Text="{Binding CompanyName}" Style="{StaticResource ListText}" />
-                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}}" TextAlignment="Right"/>
-                            <StackPanel HorizontalAlignment="Right">
-                                <TextBlock Text="{Binding CapitalGain, StringFormat={}{0:c0}}" TextAlignment="Right"/>
-                                <TextBlock Text="{Binding CapitalGainPercentage, StringFormat={}{0:p}}" TextAlignment="Right"/>
-                            </StackPanel>
-                        </StackPanel>
+                            <TextBlock Text="{Binding ASXCode}" Grid.Column="0" Style="{StaticResource ListText}" />
+                            <TextBlock Text="{Binding CompanyName}" Grid.Column="1" Style="{StaticResource ListText}" />
+                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}}" Grid.Column="2" Style="{StaticResource ListText}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding CapitalGain, StringFormat={}{0:c0}}" Grid.Column="3" Style="{StaticResource ListText}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding CapitalGainPercentage, StringFormat={}{0:p}}" Grid.Column="4" Style="{StaticResource ListText}" TextAlignment="Right"/>
+                        </Grid>
                        <!-- <StackPanel Orientation="Horizontal" Margin="0,2,2,0">
                             <TextBlock Text="{Binding ASXCode}" Margin="10,0,0,0" Style="{StaticResource ListText}"/>
                             <TextBlock Text="{Binding CompanyName}" Margin="10,0,0,0" Style="{StaticResource ListText}" Width="100"/>
@@ -100,8 +105,8 @@
                             <Button Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding HoldingSummaryView,Mode=OneWay}">Summary</Button>
                         </StackPanel> -->
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
 
     </DataTemplate>
