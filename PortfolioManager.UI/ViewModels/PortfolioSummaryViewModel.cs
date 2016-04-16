@@ -43,8 +43,7 @@ namespace PortfolioManager.UI.ViewModels
         public string ASXCode { get; private set; }
         public string CompanyName { get; private set; }
         public decimal CurrentValue { get; private set;  }
-        public decimal CapitalGain { get;  private set; }
-        public decimal CapitalGainPercentage { get; private set; }
+        public ChangeInValue ChangeInValue { get; private set; }
 
         public ViewWithData HoldingSummaryView { get; private set; }
 
@@ -53,45 +52,35 @@ namespace PortfolioManager.UI.ViewModels
             ASXCode = holding.Stock.ASXCode;
             CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode);
             CurrentValue = holding.MarketValue;
-            CapitalGain = holding.MarketValue - holding.TotalCostBase;
-            if (holding.TotalCostBase != 0)
-                CapitalGainPercentage = CapitalGain / holding.TotalCostBase;
-            else
-                CapitalGainPercentage = 0.00m;
-
+            ChangeInValue = new ChangeInValue(holding.TotalCostBase, holding.MarketValue);
 
             HoldingSummaryView = new ViewWithData("HoldingSummary", holding);
         }
 
     }
 
-    [ValueConversion(typeof(decimal), typeof(Brush))]
-    class DecimalToBrushConverter : IValueConverter
+    enum ChangeDirection { Increase, Decrease, Nuetral };
+    struct ChangeInValue
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public decimal Value { get; private set; }
+        public decimal Percentage { get; private set; }
+        public ChangeDirection Direction { get; private set; }
+
+        public ChangeInValue(decimal originalValue, decimal currentValue)
         {
-            if ((decimal)value >= 0)
-                return Brushes.Green;
+            Value = currentValue - originalValue;
+            if (originalValue == 0)
+                Percentage = 0;
             else
-                return Brushes.Red;
+                Percentage = Value / originalValue;
 
-        }
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
+            if (Value < 0)
+                Direction = ChangeDirection.Decrease;
+            else if (Value > 0)
+                Direction = ChangeDirection.Increase;
+            else
+                Direction = ChangeDirection.Nuetral;
         }
     }
 
-    [ValueConversion(typeof(decimal), typeof(bool))]
-    class AmountIncreased : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ((decimal)value >= 0);
-        }
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
 }
