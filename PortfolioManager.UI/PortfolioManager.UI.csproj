@@ -59,11 +59,13 @@
     <Compile Include="Style\ValueConverters.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\ReportParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="Utilities\ViewNavigator.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
+    <Compile Include="ViewModels\TaxableIncomeViewModel.cs" />
     <Compile Include="ViewModels\TransactionSummaryViewModel.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
@@ -87,6 +89,10 @@
     <Page Include="Views\PortfolioSummaryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TaxableIncomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TransactionSummaryView.xaml">
       <Generator>MSBuild:Compile</Generator>

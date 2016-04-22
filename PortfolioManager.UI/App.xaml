@@ -23,6 +23,7 @@
                 <ResourceDictionary Source="Views/PortfolioSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/HoldingSummaryView.xaml"/>
+                <ResourceDictionary Source="Views/TaxableIncomeView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

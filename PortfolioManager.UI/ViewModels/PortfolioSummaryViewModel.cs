@@ -17,12 +17,13 @@ namespace PortfolioManager.UI.ViewModels
     {
 
         public decimal MarketValue { get; private set; }
+        public ChangeInValue ChangeInValue { get; private set; }
 
         public List<HoldingItemViewModel> Holdings { get; private set; }
 
         public PortfolioSummaryViewModel()
         {
-            Heading = "Portfolio";
+            Heading = "Portfolio Summary";
             Holdings = new List<HoldingItemViewModel>();
         }
 
@@ -30,10 +31,13 @@ namespace PortfolioManager.UI.ViewModels
         {
             base.SetPortfolio(portfolio);
 
-            MarketValue = 125.00m; //portfolio.MarketValue;
+            var holdings = portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
+
+            MarketValue = holdings.Sum(x => x.MarketValue);
+            ChangeInValue = new ChangeInValue(holdings.Sum(x => x.TotalCostBase), MarketValue);
 
             Holdings.Clear();
-            foreach (var holding in portfolio.ShareHoldingService.GetHoldings(DateTime.Today))
+            foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
         }
     }

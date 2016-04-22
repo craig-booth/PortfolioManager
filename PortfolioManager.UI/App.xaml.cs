@@ -23,6 +23,7 @@ namespace PortfolioManager.UI
             navigator.RegisterViewModel("PortfolioSummary", new PortfolioSummaryViewModel());
             navigator.RegisterViewModel("TransactionSummary", new TransactionSummaryViewModel());
             navigator.RegisterViewModel("HoldingSummary", new HoldingSummaryViewModel());
+            navigator.RegisterViewModel("TaxableIncome", new TaxableIncomeViewModel());
         }
     }
 }
