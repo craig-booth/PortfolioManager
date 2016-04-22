@@ -78,8 +78,8 @@ namespace PortfolioManager.UI.ViewModels
 
         public IncomeItemViewModel(Service.Income income)
         {
-            ASXCode = income.ASXCode;
-            CompanyName = string.Format("{0} ({1})", income.ASXCode, "xxx");
+            ASXCode = income.Stock.ASXCode;
+            CompanyName = string.Format("{0} ({1})", income.Stock.ASXCode, income.Stock.Name);
 
             UnfrankedAmount = income.UnfrankedAmount;
             FrankedAmount = income.FrankedAmount;

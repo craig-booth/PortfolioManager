@@ -153,5 +153,22 @@ namespace PortfolioManager.Service.Test.Transactions
 
             Assert.That(actualCGTEvents, EntityConstraint.CollectionEquivalant(_ExpectedCGTEvents));
         }
+
+        public Stock GetStock(string asxCode)
+        {
+            return _StockServiceRepository.StockService.GetStock(asxCode);
+        }
+
+        public Guid GetStockId(string asxCode)
+        {
+            return GetStock(asxCode).Id;
+        }
+
+        public Income IncomeFromTransacation(IncomeReceived transaction)
+        {
+            return new Income(GetStock(transaction.ASXCode), transaction.FrankedAmount, transaction.UnfrankedAmount, transaction.FrankingCredits, transaction.Interest, transaction.TaxDeferred);
+        }
+
+
     }
 }

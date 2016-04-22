@@ -55,7 +55,6 @@ namespace PortfolioManager.Service.Test
 
             _Portfolio = _PortfolioServiceRepository.CreatePortfolio("Test portfolio");
         }
-
         protected virtual void AddStocks()
         {
             _StockServiceRepository.StockService.Add("AAA", "Stock AAA", StockType.Ordinary);

@@ -5,10 +5,10 @@
 
     <DataTemplate DataType="{x:Type viewmodels:TaxableIncomeViewModel}">
 
-   
-        <StackPanel Orientation="Vertical">
-   
-            <ItemsControl ItemsSource="{Binding Path=Income}" HorizontalContentAlignment="Stretch" Padding="10,30,10,0">
+
+        <StackPanel Orientation="Vertical" Margin="10,30,10,0">
+
+            <ItemsControl ItemsSource="{Binding Path=Income}" HorizontalContentAlignment="Stretch" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="2,0,0,2">
@@ -18,16 +18,35 @@
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="70"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Text="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Style="{StaticResource ListText}"  VerticalAlignment="Center" />
-               
+                            <TextBlock Text="{Binding UnfrankedAmount, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding FrankedAmount, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="2" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding FrankingCredits, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="3" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding TotalAmount, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="4" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
                         </Grid>
 
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+            <Grid Margin="2,0,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Total" Grid.Column="0" Style="{StaticResource ListText}"  VerticalAlignment="Center" />
+                <TextBlock Text="{Binding UnfrankedAmount, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding FrankedAmount, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="2" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
+                <TextBlock Text="{Binding FrankingCredits, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="3" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
+                <TextBlock Text="{Binding TotalAmount, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="4" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
+            </Grid>
+
         </StackPanel>
 
     </DataTemplate>

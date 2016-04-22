@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
@@ -11,46 +12,27 @@ namespace PortfolioManager.Service
 {
     public class Income
     {
-        public string ASXCode { get; set; }
+        public Stock Stock { get; set; }
         public decimal FrankedAmount { get; set; }
         public decimal UnfrankedAmount { get; set; }
         public decimal FrankingCredits { get; set; }
         public decimal Interest { get; set; }
         public decimal TaxDeferred { get; set; }
 
-        public Income(string asxCode, decimal frankedAmount, decimal unfrankedAmount, decimal frankingCredits)
-            :this(asxCode, frankedAmount, unfrankedAmount, frankingCredits, 0.00m, 0.00m)
+        public Income(Stock stock, decimal frankedAmount, decimal unfrankedAmount, decimal frankingCredits)
+            :this(stock, frankedAmount, unfrankedAmount, frankingCredits, 0.00m, 0.00m)
         {
             
         }
 
-        public Income(string asxCode, decimal frankedAmount, decimal unfrankedAmount, decimal frankingCredits, decimal interest, decimal taxDeferred)
+        public Income(Stock stock, decimal frankedAmount, decimal unfrankedAmount, decimal frankingCredits, decimal interest, decimal taxDeferred)
         {
-            ASXCode = asxCode;
+            Stock = stock;
             FrankedAmount = frankedAmount;
             UnfrankedAmount = unfrankedAmount;
             FrankingCredits = frankingCredits;
             Interest = interest;
             TaxDeferred = taxDeferred;
-        }
-
-        public Income(IncomeReceived incomeReceived)
-            : this(incomeReceived.ASXCode, incomeReceived.FrankedAmount, incomeReceived.UnfrankedAmount, incomeReceived.FrankingCredits, incomeReceived.Interest, incomeReceived.TaxDeferred)
-        {
-
-        }
-
-        public Income(IEnumerable<IncomeReceived> incomeReceivedTransactions)
-            : this(incomeReceivedTransactions.First().ASXCode, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m)
-        {
-            foreach (var incomeReceived in incomeReceivedTransactions)
-            {
-                FrankedAmount += incomeReceived.FrankedAmount;
-                UnfrankedAmount += incomeReceived.UnfrankedAmount;
-                FrankingCredits += incomeReceived.FrankingCredits;
-                Interest += incomeReceived.Interest;
-                TaxDeferred += incomeReceived.TaxDeferred;
-            }                   
         }
 
         public decimal CashIncome
@@ -73,10 +55,12 @@ namespace PortfolioManager.Service
     {
 
         private readonly IPortfolioQuery _PortfolioQuery;
+        private readonly StockService _StockService;
 
-        internal IncomeService(IPortfolioQuery portfolioQuery)
+        internal IncomeService(IPortfolioQuery portfolioQuery, StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
+            _StockService = stockService;
         }
 
 
@@ -92,7 +76,14 @@ namespace PortfolioManager.Service
             var result = new List<Income>();
             foreach (var incomeReceivedTransactions in transactionsByASXCode)
             {
-                result.Add(new Income(incomeReceivedTransactions));
+                var stock = _StockService.Get(incomeReceivedTransactions.Key, toDate);
+                var frankedAmount = incomeReceivedTransactions.Sum(x => x.FrankedAmount);
+                var unfrankedAmount = incomeReceivedTransactions.Sum(x => x.UnfrankedAmount);
+                var frankingCredits = incomeReceivedTransactions.Sum(x => x.FrankingCredits);
+                var interest = incomeReceivedTransactions.Sum(x => x.Interest);
+                var taxDeferred = incomeReceivedTransactions.Sum(x => x.TaxDeferred);
+
+                result.Add(new Income(stock, frankedAmount, unfrankedAmount, frankingCredits, interest, taxDeferred));
             }
 
             return result;

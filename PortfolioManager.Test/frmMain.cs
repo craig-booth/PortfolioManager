@@ -209,7 +209,7 @@ namespace PortfolioManager.Test
             var allIncome = _MyPortfolio.IncomeService.GetIncome(startDate, endDate);
             foreach (Income income in allIncome)
             {
-                var item = lsvIncome.Items.Add(income.ASXCode);
+                var item = lsvIncome.Items.Add(income.Stock.ASXCode);
                 item.SubItems.Add(MathUtils.FormatCurrency(income.CashIncome, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(income.FrankingCredits, true));
             }

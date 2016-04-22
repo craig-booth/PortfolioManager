@@ -31,7 +31,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransaction(aquisition);
 
             decimal costBase = 10019.95m; // (1000 * 10) + 19.95
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockServiceRepository.StockService.GetStock("AAA", _TransactionDate).Id, aquisition.Units, aquisition.AveragePrice, costBase, costBase, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("AAA"), aquisition.Units, aquisition.AveragePrice, costBase, costBase, ParcelEvent.Aquisition));
         }
     }
 
@@ -55,9 +55,9 @@ namespace PortfolioManager.Service.Test.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockServiceRepository.StockService.GetStock("SSS1", _TransactionDate).Id, aquisition.Units, 1.00m, 1002.00m, 1002.00m, purchaseId, ParcelEvent.Aquisition));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockServiceRepository.StockService.GetStock("SSS2", _TransactionDate).Id, aquisition.Units, 3.00m, 3005.98m, 3005.98m, purchaseId, ParcelEvent.Aquisition));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, _StockServiceRepository.StockService.GetStock("SSS3", _TransactionDate).Id, aquisition.Units, 6.00m, 6011.97m, 6011.97m, purchaseId, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS1"), aquisition.Units, 1.00m, 1002.00m, 1002.00m, purchaseId, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS2"), aquisition.Units, 3.00m, 3005.98m, 3005.98m, purchaseId, ParcelEvent.Aquisition));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS3"), aquisition.Units, 6.00m, 6011.97m, 6011.97m, purchaseId, ParcelEvent.Aquisition));
         }
     }
 
