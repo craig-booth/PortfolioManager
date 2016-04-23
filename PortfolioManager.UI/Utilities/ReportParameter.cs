@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.UI.Utilities
 {
-    enum ParameterType { SingleDate, DateRange }
-    class ReportParmeter
+    public enum ParameterType { SingleDate, DateRange, FinancialYear }
+    public class ReportParmeter
     {
         public ParameterType Type { get; private set; }
 
@@ -21,19 +21,32 @@ namespace PortfolioManager.UI.Utilities
             ToDate = toDate;
         }
 
-        public static ReportParmeter Today()
+        public override string ToString()
         {
-            return new ReportParmeter(ParameterType.SingleDate, DateTime.Today, DateTime.Today);
+            return String.Format("From {0:d} To {1:d}", FromDate, ToDate);
         }
 
+        // Single Date
         public static ReportParmeter Date(DateTime date)
         {
             return new ReportParmeter(ParameterType.SingleDate, date, date);
         }
 
+        public static ReportParmeter Today()
+        {
+            return new ReportParmeter(ParameterType.SingleDate, DateTime.Today, DateTime.Today);
+        }
+
+        // Date Range
         public static ReportParmeter DateRange(DateTime fromDate, DateTime toDate)
         {
             return new ReportParmeter(ParameterType.DateRange, fromDate, toDate);
+        }
+
+        // Financial Year
+        public static ReportParmeter FinancialYear(int year)
+        {
+            return new ReportParmeter(ParameterType.FinancialYear, new DateTime(year - 1, 7, 1), new DateTime(year, 6, 30));
         }
 
         public static ReportParmeter CurrentFinancialYear()
@@ -44,9 +57,13 @@ namespace PortfolioManager.UI.Utilities
                 return FinancialYear(DateTime.Today.Year + 1);
         }
 
-        public static ReportParmeter FinancialYear(int year)
+
+        public static ReportParmeter PreviousFinancialYear()
         {
-            return new ReportParmeter(ParameterType.DateRange, new DateTime(year - 1, 7, 1), new DateTime(year, 6, 30));
+            if (DateTime.Today.Month > 6)
+                return FinancialYear(DateTime.Today.Year);
+            else
+                return FinancialYear(DateTime.Today.Year - 1);
         }
     }
 }

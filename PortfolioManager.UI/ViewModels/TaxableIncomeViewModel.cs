@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
 
@@ -12,8 +13,26 @@ namespace PortfolioManager.UI.ViewModels
     class TaxableIncomeViewModel : PortfolioViewModel, IViewModelWithData
     {
         private ReportParmeter _Parameter;
+        public ReportParmeter Parameter
+        {
+            get
+            {
+                return _Parameter;
+            }
 
-        public List<IncomeItemViewModel> Income { get; private set; }
+            set
+            {
+                if (value != _Parameter)
+                {
+                    _Parameter = value;
+                    OnPropertyChanged();
+
+                    ShowReport();
+                }
+            }
+        }
+
+        public ObservableCollection<IncomeItemViewModel> Income { get; private set; }
         public decimal UnfrankedAmount { get; private set; }
         public decimal FrankedAmount { get; private set; }
         public decimal FrankingCredits { get; private set; }
@@ -35,13 +54,11 @@ namespace PortfolioManager.UI.ViewModels
 
         public TaxableIncomeViewModel()
         {
-            Income = new List<IncomeItemViewModel>();
+            Income = new ObservableCollection<IncomeItemViewModel>();
         }
 
-        public void SetData(object data)
+        public void ShowReport()
         {
-            _Parameter = data as ReportParmeter;
-
             Heading = string.Format("Taxable Income Repoort for {0}/{1} financial year", _Parameter.FromDate.Year, _Parameter.ToDate.Year);
 
             // Get  a list of all the income for the year
@@ -62,6 +79,12 @@ namespace PortfolioManager.UI.ViewModels
                 TotalAmount += incomeItem.TotalIncome;
             }
 
+            OnPropertyChanged("");
+        }
+
+        public void SetData(object data)
+        {
+            Parameter = data as ReportParmeter;
         }
 
     }
@@ -79,7 +102,7 @@ namespace PortfolioManager.UI.ViewModels
         public IncomeItemViewModel(Service.Income income)
         {
             ASXCode = income.Stock.ASXCode;
-            CompanyName = string.Format("{0} ({1})", income.Stock.ASXCode, income.Stock.Name);
+            CompanyName = string.Format("{0} ({1})", income.Stock.Name, income.Stock.ASXCode);
 
             UnfrankedAmount = income.UnfrankedAmount;
             FrankedAmount = income.FrankedAmount;
