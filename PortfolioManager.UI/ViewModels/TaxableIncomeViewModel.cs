@@ -33,10 +33,6 @@ namespace PortfolioManager.UI.ViewModels
         }
 
         public ObservableCollection<IncomeItemViewModel> Income { get; private set; }
-        public decimal UnfrankedAmount { get; private set; }
-        public decimal FrankedAmount { get; private set; }
-        public decimal FrankingCredits { get; private set; }
-        public decimal TotalAmount { get; private set; }
 
         private string _Heading;
         new public string Heading
@@ -65,19 +61,8 @@ namespace PortfolioManager.UI.ViewModels
             var income = _Portfolio.IncomeService.GetIncome(_Parameter.FromDate, _Parameter.ToDate);
 
             Income.Clear();
-            UnfrankedAmount = 0.00m;
-            FrankedAmount = 0.00m;
-            FrankingCredits = 0.00m;
-            TotalAmount = 0.00m;
             foreach (var incomeItem in income)
-            {
                 Income.Add(new IncomeItemViewModel(incomeItem));
-
-                UnfrankedAmount += incomeItem.UnfrankedAmount;
-                FrankedAmount += incomeItem.FrankedAmount;
-                FrankingCredits += incomeItem.FrankingCredits;
-                TotalAmount += incomeItem.TotalIncome;
-            }
 
             OnPropertyChanged("");
         }

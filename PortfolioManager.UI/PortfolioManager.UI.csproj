@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\DataTable.xaml.cs">
+      <DependentUpon>DataTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ReportParameterControl.xaml.cs">
       <DependentUpon>ReportParameterControl.xaml</DependentUpon>
     </Compile>
@@ -66,6 +69,7 @@
     <Compile Include="Utilities\ReportParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="Utilities\ViewNavigator.cs" />
+    <Compile Include="ViewModels\CGTViewModel.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
@@ -78,6 +82,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Controls\DataTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ReportParameterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

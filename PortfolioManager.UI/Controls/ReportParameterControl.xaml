@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PortfolioManager.UI.Controls"
+             xmlns:ui="clr-namespace:PortfolioManager.UI.Controls"
              mc:Ignorable="d" Width="567.273" Height="114.545">
     <StackPanel Orientation="Vertical" >
         <Button x:Name="button" Content="Current Financial Year" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="175" Click="button_Click"/>
