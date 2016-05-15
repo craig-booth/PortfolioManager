@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Stocks;
 
 using PortfolioManager.UI.Utilities;
 
@@ -63,7 +64,7 @@ namespace PortfolioManager.UI.ViewModels
 
             CGTEvents.Clear();
             foreach (var cgtEvent in cgtEvents)
-                CGTEvents.Add(new CGTEventViewModel(cgtEvent));
+                CGTEvents.Add(new CGTEventViewModel(_Portfolio. cgtEvent));
 
             OnPropertyChanged("");
         }
@@ -77,13 +78,13 @@ namespace PortfolioManager.UI.ViewModels
 
     class CGTEventViewModel
     {
-        public string ASXCode { get; private set; }
+        public Stock Stock { get; private set; }
         public string CompanyName { get; private set; }
 
-        public CGTEventViewModel(CGTEvent cgtEvent)
+        public CGTEventViewModel(Stock stock, CGTEvent cgtEvent)
         {
-            ASXCode = "";
-            CompanyName = string.Format("{0} ({1})", cgtEvent.Stock.Name, cgtEvent.Stock.ASXCode);
+            Stock = stock;
+            CompanyName = string.Format("{0} ({1})", Stock.Name, Stock.ASXCode);
           
         }
     }
