@@ -21,7 +21,6 @@ namespace PortfolioManager.Service.Test
     {
         protected SQLiteStockDatabase _StockDatabase;
         protected StockServiceRepository _StockServiceRepository;
-        protected PortfolioServiceRepository _PortfolioServiceRepository;
         protected Portfolio _Portfolio;
 
         public PortfolioTest()
@@ -51,9 +50,7 @@ namespace PortfolioManager.Service.Test
         public virtual void Setup()
         {
             var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
-            _PortfolioServiceRepository = new PortfolioServiceRepository(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
-
-            _Portfolio = _PortfolioServiceRepository.CreatePortfolio("Test portfolio");
+            _Portfolio = new Portfolio(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
         }
 
         protected virtual void AddStocks()

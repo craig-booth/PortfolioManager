@@ -29,8 +29,7 @@ namespace PortfolioManager.UI.ViewModels
             IStockDatabase stockDatabase = new SQLiteStockDatabase(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Stocks.db"));
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "portfolio.db"));
 
-            var portfolioServiceRepository = new PortfolioServiceRepository(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
-            _Portfolio = portfolioServiceRepository.CreatePortfolio("Craig's Shares");
+            _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
 
 
             _Menu = new List<MenuItem>();

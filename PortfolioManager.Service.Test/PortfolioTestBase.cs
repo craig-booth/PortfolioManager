@@ -40,18 +40,11 @@ namespace PortfolioManager.Service.Test
             return new StockServiceRepository(stockDatabase);
         }
 
-        public PortfolioServiceRepository CreatePortfolioServiceRepository()
+        public Portfolio CreateTestPortfolio()
         {
             var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
 
-            return new PortfolioServiceRepository(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
-        }
-
-        public Portfolio CreateTestPortfolio()
-        {
-            var postfolioRepositoryService = CreatePortfolioServiceRepository();
-
-            return postfolioRepositoryService.CreatePortfolio("Test portfolio");
+            return new Portfolio(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
         }
 
         public void AddTestStocks(StockServiceRepository stockServiceRepository)
