@@ -116,9 +116,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
             //var portfolioDatabase = new SQLitePortfolioDatabase("C:\\Users\\CraigB\\Desktop\\test.db");
-            _PortfolioServiceRepository = new PortfolioServiceRepository(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
-
-            _Portfolio = _PortfolioServiceRepository.CreatePortfolio("Test portfolio");
+            _Portfolio = new Portfolio(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
         }
 
 

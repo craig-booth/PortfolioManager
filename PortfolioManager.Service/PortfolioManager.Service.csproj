@@ -54,7 +54,6 @@
     <Compile Include="IncomeService.cs" />
     <Compile Include="ParcelService.cs" />
     <Compile Include="Portfolio.cs" />
-    <Compile Include="PortfolioServiceRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShareHolding.cs" />
     <Compile Include="ShareHoldingService.cs" />

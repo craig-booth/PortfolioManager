@@ -26,9 +26,6 @@ namespace PortfolioManager.Service
 
     public class Portfolio
     {
-        public string Name { get; set; }
-        public CashAccount CashAccount { get; private set; }
-
         public Dictionary<string, StockSetting> StockSetting { get; private set; }
 
         public ParcelService ParcelService { get; private set; }
@@ -39,20 +36,32 @@ namespace PortfolioManager.Service
         public CorporateActionService CorporateActionService { get; private set; }
         public AttachmentService AttachmentService { get; private set; }
 
-        protected internal Portfolio(string name, IPortfolioDatabase database, StockService stockService, StockPriceService stockPriceService, ICorporateActionQuery corporateActionQuery)
+        public StockService StockService { get; private set; }
+        public StockPriceService StockPriceService { get; private set; }
+
+        public Portfolio(IPortfolioDatabase database, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
-            Name = name;
-
             StockSetting = new Dictionary<string, StockSetting>();
-            CashAccount = new CashAccount();
 
-            ParcelService = new ParcelService(database.PortfolioQuery, stockService);
-            ShareHoldingService = new ShareHoldingService(ParcelService, stockService, stockPriceService);
+            StockService = new StockService(stockQuery);
+            StockPriceService = new StockPriceService(stockQuery);
+
+            ParcelService = new ParcelService(database.PortfolioQuery, StockService);
+            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);
             AttachmentService = new AttachmentService(database);
-            TransactionService = new TransactionService(database, ParcelService, stockService, AttachmentService);
-            IncomeService = new IncomeService(database.PortfolioQuery, stockService);
+            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
+            IncomeService = new IncomeService(database.PortfolioQuery);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, stockService, TransactionService);
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService);
+
+            /* Load transactions */
+            var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
+            {
+                foreach (var transaction in allTransactions)
+                    TransactionService.ApplyTransaction(unitOfWork, transaction);
+                unitOfWork.Save();
+            }
         }
     }
 }

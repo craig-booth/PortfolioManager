@@ -24,7 +24,6 @@ namespace PortfolioManager.Test
     public partial class frmMain : Form
     {
         private PortfolioManagerSettings _Settings;
-        private PortfolioServiceRepository _PortfolioServiceRepository;
         private IStockDatabase _StockDatabase;
         private Portfolio _MyPortfolio;
 
@@ -69,8 +68,7 @@ namespace PortfolioManager.Test
 
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(_Settings.PortfolioDatabaseFile);
 
-            _PortfolioServiceRepository = new PortfolioServiceRepository(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);         
-            _MyPortfolio = _PortfolioServiceRepository.CreatePortfolio("Craig's Shares");
+            _MyPortfolio = new Portfolio(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);         
 
             /* TODO: Priority Low, should add this when purchasing */
             var stockSetting = new StockSetting("ARG")
@@ -102,7 +100,7 @@ namespace PortfolioManager.Test
             foreach (CorporateAction corporateAction in corporateActions)
             {
                 ListViewItem item = lsvCorporateActions.Items.Add(corporateAction.ActionDate.ToShortDateString());
-                item.SubItems.Add(_PortfolioServiceRepository.StockService.Get(corporateAction.Stock, corporateAction.ActionDate).ASXCode);
+                item.SubItems.Add(_MyPortfolio.StockService.Get(corporateAction.Stock, corporateAction.ActionDate).ASXCode);
                 item.SubItems.Add(corporateAction.Description);
                 item.Tag = corporateAction;
             }         
@@ -169,8 +167,8 @@ namespace PortfolioManager.Test
             var parcels = _MyPortfolio.ParcelService.GetParcels(endDate).OrderBy(x => x.Stock).ThenBy(x => x.AquisitionDate);
             foreach (ShareParcel parcel in parcels)
             {
-                var stock = _PortfolioServiceRepository.StockService.Get(parcel.Stock, endDate);
-                var closingPrice = _PortfolioServiceRepository.StockPriceService.GetClosingPrice(stock, endDate);
+                var stock = _MyPortfolio.StockService.Get(parcel.Stock, endDate);
+                var closingPrice = _MyPortfolio.StockPriceService.GetClosingPrice(stock, endDate);
                 var marketValue = parcel.Units * closingPrice;
                 var capitalGain = marketValue - parcel.CostBase;
                 decimal capitalGainPercentage = 0.00m;
@@ -198,7 +196,7 @@ namespace PortfolioManager.Test
             foreach (CGTEvent cgtEvent in cgtEvents)
             {
                 var item = lsvCGT.Items.Add(cgtEvent.EventDate.ToShortDateString());
-                item.SubItems.Add(_PortfolioServiceRepository.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate).ASXCode);
+                item.SubItems.Add(_MyPortfolio.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate).ASXCode);
                 item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.CostBase, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.AmountReceived, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(cgtEvent.CapitalGain, true, true));
@@ -248,7 +246,7 @@ namespace PortfolioManager.Test
             
             var transactions = _MyPortfolio.CorporateActionService.CreateTransactionList(corporateAction);
 
-            var form = new frmMultipleTransactions(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
+            var form = new frmMultipleTransactions(_MyPortfolio.StockService, _MyPortfolio.AttachmentService);
             if (form.EditTransactions(transactions))
             {
                 _MyPortfolio.TransactionService.ProcessTransactions(transactions);
@@ -282,7 +280,7 @@ namespace PortfolioManager.Test
 
         private void AddTransaction(TransactionType type)
         {
-            var form = new frmTransaction(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
+            var form = new frmTransaction(_MyPortfolio.StockService, _MyPortfolio.AttachmentService);
 
             var transaction = form.CreateTransaction(type);
             if (transaction != null)
@@ -349,7 +347,7 @@ namespace PortfolioManager.Test
 
         private void mnuEditTransaction_Click(object sender, EventArgs e)
         {          
-            var form = new frmTransaction(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
+            var form = new frmTransaction(_MyPortfolio.StockService, _MyPortfolio.AttachmentService);
 
             var transaction = (Transaction)lsvTransactions.FocusedItem.Tag;
             if (form.EditTransaction(transaction))
@@ -363,7 +361,7 @@ namespace PortfolioManager.Test
 
         private void mnuDeleteTransaction_Click(object sender, EventArgs e)
         {
-            var form = new frmTransaction(_PortfolioServiceRepository.StockService, _MyPortfolio.AttachmentService);
+            var form = new frmTransaction(_MyPortfolio.StockService, _MyPortfolio.AttachmentService);
 
             var transaction = (Transaction)lsvTransactions.FocusedItem.Tag;
             if (form.DeleteTransaction(transaction))
