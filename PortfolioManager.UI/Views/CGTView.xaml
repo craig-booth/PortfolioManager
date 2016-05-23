@@ -1,0 +1,75 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:views="clr-namespace:PortfolioManager.UI.Views"
+                    xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels"
+                    xmlns:controls="clr-namespace:PortfolioManager.UI.Controls">
+
+
+    <DataTemplate DataType="{x:Type viewmodels:CGTViewModel}">
+
+        <StackPanel Orientation="Vertical" Margin="10,30,10,0">
+
+            <controls:ReportParameterControl SelectionType="FinancialYear" Value="{Binding Parameter, Mode=TwoWay}" />
+
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Non-Discounted Capital Gains" Grid.Row="0" Grid.Column="0" />
+                <TextBlock Text="{Binding NonDiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="0" Grid.Column="1"/>
+           
+                <TextBlock Text="less Offset Capital Losses" Margin="5,0,0,0" FontStyle="Italic" Grid.Row="1" Grid.Column="0" />
+                <TextBlock Text="{Binding NonDiscountedOffsetLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="1" Grid.Column="1"/>
+
+                <TextBlock Text="{Binding TotalNonDiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="2" Grid.Column="2"/>
+
+                <TextBlock Text="Discounted Capital Gains" Grid.Row="3" Grid.Column="0" />
+                <TextBlock Text="{Binding DiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="1"/>
+                
+                <TextBlock Text="less Offset Capital Gains"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="4" Grid.Column="0" />
+                <TextBlock Text="{Binding DiscountedOffsetLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="4" Grid.Column="1"/>
+                
+                <TextBlock Text="less Prior Year Losses"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="5" Grid.Column="0" />
+                <TextBlock Text="{Binding PriorYearLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="1"/>
+                
+                <TextBlock Text="less Discount"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="6" Grid.Column="0" />
+                <TextBlock Text="{Binding Discount, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="6" Grid.Column="1"/>
+
+                <TextBlock Text="{Binding TotalDiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="7" Grid.Column="2"/>
+
+                <TextBlock Text="Capital Gain/Loss" FontWeight="Bold" Grid.Row="8" Grid.Column="0" />
+                <TextBlock Text="{Binding TotalCapitalGain, StringFormat={}{0:c0}, Mode=OneWay}" FontWeight="Bold" TextAlignment="Right" Grid.Row="8" Grid.Column="1"/>
+            </Grid>
+
+
+            <controls:DataTable Data="{Binding CGTEvents}" DataType="{x:Type viewmodels:CGTEventViewModel}" Margin="0,10,0,0">
+                <controls:DataTable.Columns>
+                    <controls:DataTableColumn Heading="Date" Width="70" MemberBinding="{Binding EventDate, StringFormat={}{0:d}, Mode=OneWay}" SummaryType="Fixed" SummaryValue="Total"/>
+                    <controls:DataTableColumn Heading="Company" Width="*" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
+                    <controls:DataTableColumn Heading="Cost Base" Width="80" MemberBinding="{Binding CostBase, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Amount Received" Width="80" MemberBinding="{Binding AmountReceived, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Capital Gain" Width="80" MemberBinding="{Binding CapitalGain, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Method" Width="80" MemberBinding="{Binding Method, Mode=OneWay}" />
+                </controls:DataTable.Columns>
+            </controls:DataTable>
+
+        </StackPanel>
+
+    </DataTemplate>
+
+
+</ResourceDictionary>

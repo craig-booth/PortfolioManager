@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
+using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
 

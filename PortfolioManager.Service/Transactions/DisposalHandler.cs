@@ -29,9 +29,6 @@ namespace PortfolioManager.Service.Transactions
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
 
-            /* Create CGT calculator */
-            var CGTCalculator = new CGTCalculator();
-
             /* Determine which parcels to sell based on CGT method */
             IReadOnlyCollection<ShareParcel> ownedParcels;
             if (stock.Type == StockType.StapledSecurity)
@@ -39,17 +36,17 @@ namespace PortfolioManager.Service.Transactions
             else
                 ownedParcels = _ParcelService.GetParcels(stock, disposal.TransactionDate);
             decimal amountReceived = (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
-            var CGTCalculation = CGTCalculator.CalculateCapitalGain(ownedParcels, disposal.TransactionDate, disposal.Units, amountReceived, disposal.CGTMethod);
+            var cgtCalculation = CGTCalculator.CalculateCapitalGain(ownedParcels, disposal.TransactionDate, disposal.Units, amountReceived, disposal.CGTMethod);
 
-            if (CGTCalculation.UnitsSold == 0)
+            if (cgtCalculation.UnitsSold == 0)
                 throw new NoParcelsForTransaction(disposal, "No parcels found for transaction");
-            else if (CGTCalculation.UnitsSold < disposal.Units)
+            else if (cgtCalculation.UnitsSold < disposal.Units)
                 throw new NotEnoughSharesForDisposal(disposal, "Not enough shares for disposal");
             
             /* dispose of select parcels */
             if (stock.Type == StockType.StapledSecurity)
             {
-                foreach (ParcelSold parcelSold in CGTCalculation.ParcelsSold)
+                foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
                 {
                     var childStocks = _StockService.GetChildStocks(stock, disposal.TransactionDate);
 
@@ -64,6 +61,8 @@ namespace PortfolioManager.Service.Transactions
                         var childParcel = childParcels.First(x => x.PurchaseId == parcelSold.Parcel.PurchaseId);
                         DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, disposal.Description);
 
+                        AddCGTEvent(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount);
+
                         i++;
                     }
 
@@ -71,8 +70,12 @@ namespace PortfolioManager.Service.Transactions
             }
             else
             {
-                foreach (ParcelSold parcelSold in CGTCalculation.ParcelsSold)
+                foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
+                {
                     DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived, disposal.Description);
+
+                    AddCGTEvent(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived);
+                }
             }
 
             //CashAccount.AddTransaction(CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), amountReceived + disposal.TransactionCosts);

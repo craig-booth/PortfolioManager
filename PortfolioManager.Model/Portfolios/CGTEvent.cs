@@ -9,6 +9,8 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Model.Portfolios
 {
 
+    public enum CGTMethod { Other, Discount, Indexation }
+
     public class CGTEvent: Entity
     {
         public Guid Stock { get; set; }
@@ -17,6 +19,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal CostBase { get; set; }
         public decimal AmountReceived { get; set; }
         public decimal CapitalGain { get; set; }
+        public CGTMethod CGTMethod { get; set; }
 
         public CGTEvent() 
             : this(Guid.NewGuid())
@@ -30,7 +33,7 @@ namespace PortfolioManager.Model.Portfolios
  
         }
 
-        public CGTEvent(Guid stock, DateTime eventDate, int units, decimal costBase, decimal amountReceived)
+        public CGTEvent(Guid stock, DateTime eventDate, int units, decimal costBase, decimal amountReceived, decimal capitalGain, CGTMethod cgtMethod)
             : this()
         {      
             Stock = stock;
@@ -38,7 +41,10 @@ namespace PortfolioManager.Model.Portfolios
             EventDate = eventDate;
             CostBase = costBase;
             AmountReceived = amountReceived;
-            CapitalGain = AmountReceived - CostBase;
+            CapitalGain = capitalGain;
+            CGTMethod = cgtMethod;
         }
+
+
     }
 }

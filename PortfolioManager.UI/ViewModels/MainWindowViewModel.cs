@@ -35,7 +35,8 @@ namespace PortfolioManager.UI.ViewModels
             _Menu = new List<MenuItem>();
             _Menu.Add(new MenuItem("Portfolio Summary", "PortfolioSummary", _Portfolio));
             _Menu.Add(new MenuItem("Transactions", "TransactionSummary", _Portfolio));
-            _Menu.Add(new MenuItem("Taxable Income", "TaxableIncome", ReportParmeter.FinancialYear(2012)));
+            _Menu.Add(new MenuItem("Taxable Income", "TaxableIncome", ReportParmeter.FinancialYear(2016)));
+            _Menu.Add(new MenuItem("CGT", "CGT", ReportParmeter.FinancialYear(2016)));
 
             var navigator = Application.Current.FindResource("ViewNavigator") as ViewNavigator;
             navigator.SetPortfolio(_Portfolio);

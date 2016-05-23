@@ -51,6 +51,18 @@ namespace PortfolioManager.Service.Utils
 
             return result;
         }
+
+        public static CGTEvent CreateCGTEvent(ShareParcel parcel, DateTime eventDate, decimal amount)
+        {
+            return CreateCGTEvent(parcel, eventDate, parcel.Units, amount);
+        }
+
+        public static CGTEvent CreateCGTEvent(ShareParcel parcel, DateTime eventDate, int units, decimal amount)
+        {
+            var costBase = parcel.CostBase * ((decimal)units / parcel.Units);
+
+            return new CGTEvent(parcel.Stock, eventDate, units, costBase, amount, amount - costBase, CGTCalculator.CGTMethodForParcel(parcel, eventDate));
+        }
     }
 
 

@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="Views/TransactionSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/HoldingSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TaxableIncomeView.xaml"/>
+                <ResourceDictionary Source="Views/CGTView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

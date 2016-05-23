@@ -50,7 +50,7 @@ namespace PortfolioManager.Service
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);
             AttachmentService = new AttachmentService(database);
             TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
-            IncomeService = new IncomeService(database.PortfolioQuery);
+            IncomeService = new IncomeService(database.PortfolioQuery, StockService);
             CGTService = new CGTService(database.PortfolioQuery);
             CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService);
 

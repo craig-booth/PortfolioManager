@@ -51,8 +51,7 @@ namespace PortfolioManager.Service.Transactions
                 {
                     ModifyParcel(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
 
-                    var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, returnOfCapital.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
-                    unitOfWork.CGTEventRepository.Add(cgtEvent);
+                    AddCGTEvent(unitOfWork, parcelAtPaymentDate, returnOfCapital.TransactionDate, costBaseReduction - parcelAtPaymentDate.CostBase);
                 }
 
                 totalAmount += costBaseReduction;

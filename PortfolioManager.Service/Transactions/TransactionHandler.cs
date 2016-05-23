@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
@@ -109,12 +110,18 @@ namespace PortfolioManager.Service.Transactions
             var costBase = parcel.CostBase * ((decimal)units / parcel.Units);
             var amount = parcel.Amount * ((decimal)units / parcel.Units);
             ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= units; x.CostBase -= costBase; x.Amount -= amount; });
-
-            /* Record CGT Event */
-            var cgtEvent = new CGTEvent(parcel.Stock, disposalDate, units, costBase, amountReceived);
-            unitOfWork.CGTEventRepository.Add(cgtEvent);
         }
 
+        protected void AddCGTEvent(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime eventDate, decimal amount)
+        {
+            unitOfWork.CGTEventRepository.Add(PortfolioUtils.CreateCGTEvent(parcel, eventDate, amount));
+        }
+
+        protected void AddCGTEvent(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime eventDate, int units, decimal amount)
+        {
+            unitOfWork.CGTEventRepository.Add(PortfolioUtils.CreateCGTEvent(parcel, eventDate, units, amount));
+        }
+ 
     }
 
 }

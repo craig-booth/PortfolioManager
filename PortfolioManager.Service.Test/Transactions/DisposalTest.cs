@@ -44,7 +44,7 @@ namespace PortfolioManager.Service.Test.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedCGTEvents.Add(new CGTEvent( GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 1690.00m));
+            _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 1690.00m));
         }
     }
 

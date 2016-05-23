@@ -16,6 +16,8 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
+using PortfolioManager.UI.Utilities;
+
 namespace PortfolioManager.UI.Controls
 {
     /// <summary>
@@ -35,7 +37,7 @@ namespace PortfolioManager.UI.Controls
         public Type DataType { get; set; }
 
         public static DependencyProperty DataProperty = DependencyProperty.Register(
-                      "Data", typeof(IEnumerable), typeof(DataTable));
+                      "Data", typeof(IEnumerable), typeof(DataTable), new PropertyMetadata(new PropertyChangedCallback(OnDataChanged)));
         public IEnumerable Data
         {
             get { return (IEnumerable)GetValue(DataProperty); }
@@ -64,7 +66,21 @@ namespace PortfolioManager.UI.Controls
             CreateSummaryFields(Columns);
         }
 
-        public void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private static void OnDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var dataTable = (DataTable)d;
+
+            var collectionChangedInterface = e.NewValue as INotifyCollectionChanged;
+            if (collectionChangedInterface != null)
+                collectionChangedInterface.CollectionChanged += dataTable.DataChanged;
+        }
+
+        public void DataChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            CalculateSummary();
+        }
+
+        private void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var columns = sender as IList<DataTableColumn>;
 
@@ -89,7 +105,7 @@ namespace PortfolioManager.UI.Controls
 
             // Summary   
             CreateSummaryFields(columns);
-            CalculateSummary(columns);
+            CalculateSummary();
 
             summary.ContentTemplate = CreateSummaryTemplate(columns);
         }
@@ -109,6 +125,7 @@ namespace PortfolioManager.UI.Controls
                 textBlockFactory.SetValue(Grid.ColumnProperty, columnNumber);
                 textBlockFactory.SetValue(TextBlock.TextProperty, column.MemberBinding);
                 textBlockFactory.SetValue(TextBlock.TextAlignmentProperty, column.TextAlignment);
+                textBlockFactory.SetValue(TextBlock.PaddingProperty, new Thickness(5, 0, 0, 5));
 
                 gridFactory.AppendChild(textBlockFactory);
 
@@ -140,8 +157,10 @@ namespace PortfolioManager.UI.Controls
                 var binding = new Binding(String.Format("SummaryFields[{0}].Value", columnNumber));
                 binding.ElementName = "dataTable";
                 binding.StringFormat = column.MemberBinding.StringFormat;
+                binding.Mode = BindingMode.OneWay;
                 textBlockFactory.SetValue(TextBlock.TextProperty, binding);
                 textBlockFactory.SetValue(TextBlock.TextAlignmentProperty, column.TextAlignment);
+                textBlockFactory.SetValue(TextBlock.PaddingProperty, new Thickness(5, 0, 0, 5));
 
                 gridFactory.AppendChild(textBlockFactory);
 
@@ -173,11 +192,14 @@ namespace PortfolioManager.UI.Controls
             }
         }
 
-        private void CalculateSummary(IList<DataTableColumn> columns)
+        public void CalculateSummary()
         {
+            if (Data == null)
+                return;
+
             int i = 0;
 
-            foreach (var column in columns)
+            foreach (var column in Columns)
                 SummaryFields[i++].CalculateValue(Data);
             i++;
         }
@@ -202,23 +224,37 @@ namespace PortfolioManager.UI.Controls
         public object SummaryValue { get; set; }
     }
 
-    public class SummaryField
+    public class SummaryField : NotifyClass 
     {
         public SummaryType Type { get; }
-        public object Value { get; set; }
+
+        private object _Value;
+        public object Value
+        {
+            get
+            {
+                return _Value;
+            }
+         
+            set
+            {
+                _Value = value;
+                OnPropertyChanged();
+            }
+        }
 
         public System.Reflection.PropertyInfo PropertyInfo { get; }
 
         public SummaryField(object value)
         {
             Type = SummaryType.Fixed;
-            Value = value;
+            _Value = value;
         }
         public SummaryField(SummaryType type, System.Reflection.PropertyInfo propertyInfo)
         {
             Type = type;
             PropertyInfo = propertyInfo;
-            Value = Activator.CreateInstance(PropertyInfo.PropertyType);
+            _Value = Activator.CreateInstance(PropertyInfo.PropertyType);
         }
 
         private void ClearValue()
@@ -242,6 +278,8 @@ namespace PortfolioManager.UI.Controls
             }
             else if (Type == SummaryType.Min)
             {
+                decimal minValue = 0.00m;
+                                
                 bool first = true;
                 foreach (var item in data)
                 {
@@ -249,18 +287,21 @@ namespace PortfolioManager.UI.Controls
 
                     if (first)
                     {
-                        Value = itemValue;
+                        minValue = itemValue;
                         first = false;
                     }
                     else
                     {
-                        if ((Value as IComparable).CompareTo(itemValue) > 0)
-                            Value = itemValue;
+                        if ((minValue as IComparable).CompareTo(itemValue) > 0)
+                            minValue = itemValue;
                     }
                 }
+
+                Value = minValue;
             }
             else if (Type == SummaryType.Max)
             {
+                decimal maxValue = 0.00m;
                 bool first = true;
                 foreach (var item in data)
                 {
@@ -268,15 +309,17 @@ namespace PortfolioManager.UI.Controls
 
                     if (first)
                     {
-                        Value = itemValue;
+                        maxValue = itemValue;
                         first = false;
                     }
                     else
                     {
-                        if ((Value as IComparable).CompareTo(itemValue) < 0)
-                            Value = itemValue;
+                        if ((maxValue as IComparable).CompareTo(itemValue) < 0)
+                            maxValue = itemValue;
                     }
                 }
+
+                Value = maxValue;
             }
             else if (Type == SummaryType.Average)
             {

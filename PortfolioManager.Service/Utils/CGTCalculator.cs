@@ -9,7 +9,7 @@ using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 
-namespace PortfolioManager.Service
+namespace PortfolioManager.Service.Utils
 {  
 
     public class ParcelSold
@@ -76,7 +76,7 @@ namespace PortfolioManager.Service
 
     }
 
-    public class CGTCalculator
+    public static class CGTCalculator
     {
         private class CGTComparer : Comparer<ShareParcel>
         {
@@ -91,8 +91,8 @@ namespace PortfolioManager.Service
                     return b.AquisitionDate.CompareTo(a.AquisitionDate);
                 else
                 {
-                    var discountAppliesA = (DisposalDate - a.AquisitionDate).Days > 365;
-                    var discountAppliesB = (DisposalDate - b.AquisitionDate).Days > 365;
+                    var discountAppliesA = (CGTMethodForParcel(a, DisposalDate) == CGTMethod.Discount);
+                    var discountAppliesB = (CGTMethodForParcel(b, DisposalDate) == CGTMethod.Discount);
 
                     if (discountAppliesA && !discountAppliesB)
                         return -1;
@@ -134,7 +134,24 @@ namespace PortfolioManager.Service
             }
         }
 
-        public CGTCalculation CalculateCapitalGain(IReadOnlyCollection<ShareParcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
+        public static DateTime IndexationendDate = new DateTime(1999, 09, 21);
+
+        public static CGTMethod CGTMethodForParcel(ShareParcel parcel, DateTime eventDate)
+        {
+            if (parcel.AquisitionDate < IndexationendDate)
+                return CGTMethod.Indexation;
+            else if ((eventDate - parcel.AquisitionDate).Days > 365)
+                return CGTMethod.Discount;
+            else
+                return CGTMethod.Other;
+        }
+
+        public static decimal CGTDiscount(decimal cgtAmount)
+        {
+            return 0.50m * cgtAmount; 
+        }
+
+        public static CGTCalculation CalculateCapitalGain(IReadOnlyCollection<ShareParcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
         {
             /* Sort in prefered sell order */
             var sortedParcels = parcelsOwned.Where(x => x.ToDate == DateTimeConstants.NoEndDate).OrderBy(x => x, new CGTComparer(saleDate, method));

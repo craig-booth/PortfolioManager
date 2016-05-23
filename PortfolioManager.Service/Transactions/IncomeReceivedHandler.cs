@@ -62,8 +62,7 @@ namespace PortfolioManager.Service.Transactions
                     {
                         ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
 
-                        var cgtEvent = new CGTEvent(parcelAtPaymentDate.Stock, incomeReceived.TransactionDate, parcelAtPaymentDate.Units, parcelAtPaymentDate.CostBase, costBaseReduction - parcelAtPaymentDate.CostBase);
-                        unitOfWork.CGTEventRepository.Add(cgtEvent);
+                        AddCGTEvent(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, costBaseReduction - parcelAtPaymentDate.CostBase);
                     }
                 }
               //  CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
