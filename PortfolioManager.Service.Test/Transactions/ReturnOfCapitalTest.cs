@@ -80,7 +80,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("AAA"), 1000, 1.50m, 1500.00m, 0.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
 
-            _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 500.00m));
+           // _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 500.00m));
         }
     }
 
@@ -174,7 +174,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate1, GetStockId("AAA"), 1000, 1.50m, 1500.00m, 0.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate2, GetStockId("AAA"), 500, 2.40m, 1200.00m, 300.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
 
-            _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 300.00m));
+           // _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 300.00m));
         }
     }
 

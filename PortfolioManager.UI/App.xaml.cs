@@ -20,21 +20,11 @@ namespace PortfolioManager.UI
     {
         void App_Startup(object sender, StartupEventArgs e)
         {
-
-
             // Ensure the current culture passed into bindings is the OS culture.
             // By default, WPF uses en-US as the culture, regardless of the system settings.
             FrameworkElement.LanguageProperty.OverrideMetadata(
                     typeof(FrameworkElement),
                     new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-
-            var navigator = Application.Current.FindResource("ViewNavigator") as ViewNavigator;
-
-            navigator.RegisterViewModel("PortfolioSummary", new PortfolioSummaryViewModel());
-            navigator.RegisterViewModel("TransactionSummary", new TransactionSummaryViewModel());
-            navigator.RegisterViewModel("HoldingSummary", new HoldingSummaryViewModel());
-            navigator.RegisterViewModel("TaxableIncome", new TaxableIncomeViewModel());
-            navigator.RegisterViewModel("CGT", new CGTViewModel());
         }
     }
 }

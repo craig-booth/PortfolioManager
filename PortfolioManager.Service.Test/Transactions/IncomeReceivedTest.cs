@@ -178,7 +178,7 @@ namespace PortfolioManager.Service.Test.Transactions
 
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate, GetStockId("CCC"), openingBalance.Units, 1.00m, openingBalance.CostBase, 0.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedIncome.Add(IncomeFromTransacation(incomeReceived));
-            _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("CCC"), _TransactionDate, openingBalance.Units, openingBalance.CostBase, 30.00m));
+          //  _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("CCC"), _TransactionDate, openingBalance.Units, openingBalance.CostBase, 30.00m));
         }
     }
 
@@ -293,7 +293,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate1, GetStockId("CCC"), openingBalance1.Units, 1.50m, openingBalance1.CostBase, 318.18m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, openingBalanceDate2, GetStockId("CCC"), openingBalance2.Units, 1.00m, openingBalance2.CostBase, 0.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
             _ExpectedIncome.Add(IncomeFromTransacation(incomeReceived));
-            _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("CCC"), _TransactionDate, openingBalance2.Units, openingBalance2.CostBase, 18.18m));
+           // _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("CCC"), _TransactionDate, openingBalance2.Units, openingBalance2.CostBase, 18.18m));
         }
     }
 

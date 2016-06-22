@@ -49,7 +49,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal CurrentValue { get; private set;  }
         public ChangeInValue ChangeInValue { get; private set; }
 
-        public ViewWithData HoldingSummaryView { get; private set; }
+     //   public ViewWithData HoldingSummaryView { get; private set; }
 
         public HoldingItemViewModel(ShareHolding holding)
         {
@@ -58,7 +58,7 @@ namespace PortfolioManager.UI.ViewModels
             CurrentValue = holding.MarketValue;
             ChangeInValue = new ChangeInValue(holding.TotalCostBase, holding.MarketValue);
 
-            HoldingSummaryView = new ViewWithData("HoldingSummary", holding);
+       //     HoldingSummaryView = new ViewWithData("HoldingSummary", holding);
         }
 
     }

@@ -11,10 +11,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary>
-                    <utilities:ViewNavigator x:Key="ViewNavigator" />
-                </ResourceDictionary>
-
 
                 <!-- Style -->
                 <ResourceDictionary Source="Style/Style.xaml"/>

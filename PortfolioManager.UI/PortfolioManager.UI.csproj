@@ -64,11 +64,11 @@
       <DependentUpon>ReportParameterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Style\ValueConverters.cs" />
+    <Compile Include="Utilities\Module.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ReportParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
-    <Compile Include="Utilities\ViewNavigator.cs" />
     <Compile Include="ViewModels\CGTViewModel.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

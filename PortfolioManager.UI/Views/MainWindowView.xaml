@@ -19,7 +19,7 @@
 
     <DockPanel LastChildFill="True">
 
-        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Menu}" Width="150" BorderThickness="1,1,0,1" Foreground="White">
+        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule, Mode=TwoWay}" Width="150" BorderThickness="1,1,0,1" Foreground="White">
             <ListView.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -28,10 +28,10 @@
             </ListView.Background>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding View,Mode=OneWay}">
+                    <Button>
                         <Button.Template>
                             <ControlTemplate>
-                                <TextBlock Text="{Binding Heading, Mode=OneWay}"/>
+                                <TextBlock Text="{Binding Label, Mode=OneWay}"/>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
@@ -39,18 +39,14 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="30">
-            <Button Command="{Binding NavigateBackCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding View,Mode=OneWay}">
-                <Button.Template>
-                    <ControlTemplate>
-                        <TextBlock Margin="10,0" VerticalAlignment="Center" FontWeight="Bold" FontSize="16"><![CDATA[<]]></TextBlock>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            <TextBlock FontWeight="Bold" VerticalAlignment="Center" Padding="5,0,0,0" FontSize="16" Text="{Binding CurrentViewModel.Heading, Source={StaticResource ViewNavigator}, Mode=OneWay}" />
-        </StackPanel>
 
-        <ContentControl Content="{Binding CurrentViewModel, Source={StaticResource ViewNavigator}, Mode=OneWay}" />
+        <ContentControl Content="{Binding SelectedModule, Mode=OneWay}" >
+            <ContentControl.Template>
+                <ControlTemplate>
+                    <TextBlock Text="{Binding SelectedModule.Label}"/>
+                </ControlTemplate>
+            </ContentControl.Template>
+        </ContentControl>
 
     </DockPanel>
 

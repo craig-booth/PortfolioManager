@@ -18,10 +18,24 @@ namespace PortfolioManager.UI.ViewModels
     {
         private Portfolio _Portfolio;
 
-        private List<MenuItem> _Menu;
-        public IReadOnlyList<MenuItem> Menu
+        private Module _SelectedModule;
+        public Module SelectedModule
         {
-            get { return _Menu; }
+            get
+            {
+                return _SelectedModule;
+            }
+            set
+            {
+                _SelectedModule = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<Module> _Modules;
+        public IReadOnlyList<Module> Modules
+        {
+            get { return _Modules; }
         }
 
         public MainWindowViewModel()
@@ -31,30 +45,22 @@ namespace PortfolioManager.UI.ViewModels
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
 
+            _Modules = new List<Module>();
 
-            _Menu = new List<MenuItem>();
-            _Menu.Add(new MenuItem("Portfolio Summary", "PortfolioSummary", _Portfolio));
-            _Menu.Add(new MenuItem("Transactions", "TransactionSummary", _Portfolio));
-            _Menu.Add(new MenuItem("Taxable Income", "TaxableIncome", ReportParmeter.FinancialYear(2016)));
-            _Menu.Add(new MenuItem("CGT", "CGT", ReportParmeter.FinancialYear(2016)));
+            var homeModule = new Module("Home");
+            _Modules.Add(homeModule);
 
-            var navigator = Application.Current.FindResource("ViewNavigator") as ViewNavigator;
-            navigator.SetPortfolio(_Portfolio);
-            navigator.NavigateTo(new ViewWithData("PortfolioSummary", _Portfolio));
+            var reportsModule = new Module("Reports");
+            _Modules.Add(reportsModule);
+
+            var taxModule = new Module("Tax");
+            taxModule.Views.Add(new DummyView("Taxable Income"));
+            taxModule.Views.Add(new DummyView("CGT"));
+            _Modules.Add(taxModule);
+
+            SelectedModule = taxModule;     
         }
 
     }   
-
-    class MenuItem
-    {
-        public string Heading { get; private set; }
-        public ViewWithData View { get; private set; }
-
-        public MenuItem(string heading, string viewName, object data)
-        {
-            Heading = heading;
-            View = new ViewWithData(viewName, data);
-        }
-    }
 
 }
