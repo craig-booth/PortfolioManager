@@ -7,13 +7,14 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Service;
 using PortfolioManager.Service.Utils;
 
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class CGTViewModel : PortfolioViewModel, IViewModelWithData
+    class CGTViewModel : PortfolioViewModel
     {
         private ReportParmeter _Parameter;
         public ReportParmeter Parameter
@@ -61,7 +62,8 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public CGTViewModel()
+        public CGTViewModel(string label, Portfolio portfolio)
+            : base(label, portfolio)
         {
             CGTEvents = new ObservableCollection<CGTEventViewModel>();
         }
@@ -71,20 +73,20 @@ namespace PortfolioManager.UI.ViewModels
             Heading = string.Format("CGT Repoort for {0}/{1} financial year", _Parameter.FromDate.Year, _Parameter.ToDate.Year);
 
             // Get a list of all the cgt events for the year
-            var cgtEvents = _Portfolio.CGTService.GetEvents(_Parameter.FromDate, _Parameter.ToDate);
+            var cgtEvents = Portfolio.CGTService.GetEvents(_Parameter.FromDate, _Parameter.ToDate);
 
             CGTEvents.Clear();
             foreach (var cgtEvent in cgtEvents)
-                CGTEvents.Add(new CGTEventViewModel(_Portfolio.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate), cgtEvent));
+                CGTEvents.Add(new CGTEventViewModel(Portfolio.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate), cgtEvent));
 
             CalculateCGT(cgtEvents);
 
             OnPropertyChanged("");
         }
 
-        public void SetData(object data)
+        public override void SetData(object data)
         {
-            Parameter = data as ReportParmeter;
+         //   Parameter = data as ReportParmeter;
         }
 
         private void CalculateCGT(IEnumerable<CGTEvent> cgtEvents)

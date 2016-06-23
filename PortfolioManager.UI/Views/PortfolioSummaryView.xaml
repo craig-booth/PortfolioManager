@@ -8,7 +8,7 @@
     <DataTemplate DataType="{x:Type viewmodels:PortfolioSummaryViewModel}">
 
         <DataTemplate.Resources>
-            
+
             <DataTemplate DataType="{x:Type viewmodels:ChangeInValue}" >
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
@@ -30,13 +30,50 @@
                                 </Style.Triggers>
                             </Style>
                         </Path.Style>
-                    </Path> 
+                    </Path>
                 </StackPanel>
             </DataTemplate>
         </DataTemplate.Resources>
-        
-        
-        
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Background="Green" BorderThickness="0,0,5,10"/>
+            <Border Grid.Row="0" Grid.Column="1" Background="Green" BorderThickness="5,0,0,5"/>
+            <Border Grid.Row="1" Grid.Column="1" Background="Green" BorderThickness="5,5,0,5"/>
+            <Border Grid.Row="2" Grid.Column="1" Background="Green" BorderThickness="5,5,0,10"/>
+
+            <ItemsControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Holdings}" HorizontalContentAlignment="Stretch" Padding="10,30,10,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="2,0,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Style="{StaticResource LinkButton}"  VerticalAlignment="Center"  />
+                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
+                            <ContentControl Content="{Binding ChangeInValue, Mode=OneWay}" Grid.Column="2" HorizontalAlignment="Right"  VerticalAlignment="Center" />
+
+                        </Grid>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+        </Grid>
+        <!--
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding Path=MarketValue, StringFormat={}{0:c0}, Mode=OneWay}" FontSize="30" Padding="0,0,30,0"/>
@@ -53,7 +90,7 @@
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Content="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Style="{StaticResource LinkButton}"  VerticalAlignment="Center" Command="{Binding NavigateToCommand, Mode=OneWay, Source={StaticResource ViewNavigator}}" CommandParameter="{Binding HoldingSummaryView,Mode=OneWay}" />
+                            <Button Content="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Style="{StaticResource LinkButton}"  VerticalAlignment="Center"  />
                             <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right"  VerticalAlignment="Center" />
                             <ContentControl Content="{Binding ChangeInValue, Mode=OneWay}" Grid.Column="2" HorizontalAlignment="Right"  VerticalAlignment="Center" />
 
@@ -62,7 +99,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </StackPanel>
+        </StackPanel> -->
 
     </DataTemplate>
 

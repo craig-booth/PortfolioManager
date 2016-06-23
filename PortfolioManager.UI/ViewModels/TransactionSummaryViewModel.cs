@@ -8,12 +8,17 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class TransactionSummaryViewModel : PortfolioViewModel
+    class TransactionSummaryViewModel : ViewModel
     {
 
-        public TransactionSummaryViewModel()
+        public TransactionSummaryViewModel(string label)
+            : base(label)
         {
-            Heading = "Transactions";
+        }
+
+        public override void SetData(object data)
+        {
+
         }
     }
 }

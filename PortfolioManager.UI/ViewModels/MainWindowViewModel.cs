@@ -28,6 +28,32 @@ namespace PortfolioManager.UI.ViewModels
             set
             {
                 _SelectedModule = value;
+
+                OnPropertyChanged();
+
+                if (_SelectedModule != null)
+                {
+                    if (_SelectedModule.Views.Count > 0)
+                        SelectedView = _SelectedModule.Views[0];
+                    else
+                        SelectedView = null;
+                }
+
+            }
+        }
+
+        private IViewModel _SelectedView;
+        public IViewModel SelectedView
+        {
+            get
+            {
+                return _SelectedView;
+            }
+            set
+            {
+                _SelectedView = value;
+                if (_SelectedView != null)
+                    _SelectedView.SetData(null);
                 OnPropertyChanged();
             }
         }
@@ -48,17 +74,18 @@ namespace PortfolioManager.UI.ViewModels
             _Modules = new List<Module>();
 
             var homeModule = new Module("Home");
+            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
             _Modules.Add(homeModule);
 
             var reportsModule = new Module("Reports");
             _Modules.Add(reportsModule);
 
             var taxModule = new Module("Tax");
-            taxModule.Views.Add(new DummyView("Taxable Income"));
-            taxModule.Views.Add(new DummyView("CGT"));
+            taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
+            taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
             _Modules.Add(taxModule);
 
-            SelectedModule = taxModule;     
+            SelectedModule = homeModule;
         }
 
     }   

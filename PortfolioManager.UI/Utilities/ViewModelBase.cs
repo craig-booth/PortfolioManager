@@ -10,41 +10,37 @@ using PortfolioManager.Service;
 
 namespace PortfolioManager.UI.Utilities
 {
-    public interface IDataViewModel
-    {
-        string Heading { get; }
-        void SetData(Portfolio portfolio, object data);
-    }
-
+ 
     public interface IViewModel
     {
+        string Label { get; }
         string Heading { get; }
-    }
-
-    public interface IPortfolioViewModel : IViewModel
-    {
-        Portfolio Portfolio { get; }
-        void SetPortfolio(Portfolio portfolio);
-    }
-
-    public interface IViewModelWithData
-    {
         void SetData(object data);
     }
 
+
     public abstract class ViewModel : NotifyClass, IViewModel 
     {
+        public string Label { get; protected set; }
         public string Heading { get; protected set; }
+
+        public abstract void SetData(object data);
+
+        public ViewModel(string label)
+        {
+            Label = label;
+            Heading = label;
+        }
     }
 
-    public abstract class PortfolioViewModel : ViewModel, IPortfolioViewModel
+    public abstract class PortfolioViewModel : ViewModel, IViewModel
     {
-        protected Portfolio _Portfolio;
-        public Portfolio Portfolio { get; }
+        public Portfolio Portfolio { get; private set; }
 
-        public virtual void SetPortfolio(Portfolio portfolio)
+        public PortfolioViewModel(string label, Portfolio portfolio)
+            : base(label)
         {
-            _Portfolio = portfolio;
+            Portfolio = portfolio;
         }
     }
 

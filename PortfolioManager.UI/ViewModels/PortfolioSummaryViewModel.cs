@@ -21,17 +21,15 @@ namespace PortfolioManager.UI.ViewModels
 
         public List<HoldingItemViewModel> Holdings { get; private set; }
 
-        public PortfolioSummaryViewModel()
+        public PortfolioSummaryViewModel(string label, Portfolio portfolio)
+            : base(label, portfolio)
         {
-            Heading = "Portfolio Summary";
             Holdings = new List<HoldingItemViewModel>();
         }
 
-        public override void SetPortfolio(Portfolio portfolio)
+        public override void SetData(object data)
         {
-            base.SetPortfolio(portfolio);
-
-            var holdings = portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
+            var holdings = Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
 
             MarketValue = holdings.Sum(x => x.MarketValue);
             ChangeInValue = new ChangeInValue(holdings.Sum(x => x.TotalCostBase), MarketValue);

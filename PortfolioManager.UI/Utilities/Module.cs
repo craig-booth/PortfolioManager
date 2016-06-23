@@ -18,15 +18,5 @@ namespace PortfolioManager.UI.Utilities
             Label = label;
         }
     }
-
-    class DummyView : IViewModel
-    {
-        public string Heading { get; private set; }
-
-        public DummyView(string heading)
-        {
-            Heading = heading;
-        }
-    }
     
 }

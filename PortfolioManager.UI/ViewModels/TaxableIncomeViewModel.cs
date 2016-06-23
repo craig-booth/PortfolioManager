@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
+using PortfolioManager.Service;
 
 namespace PortfolioManager.UI.ViewModels
 {
 
-    class TaxableIncomeViewModel : PortfolioViewModel, IViewModelWithData
+    class TaxableIncomeViewModel : PortfolioViewModel
     {
         private ReportParmeter _Parameter;
         public ReportParmeter Parameter
@@ -48,17 +49,18 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public TaxableIncomeViewModel()
+        public TaxableIncomeViewModel(string label, Portfolio portfolio)
+            : base(label, portfolio)
         {
             Income = new ObservableCollection<IncomeItemViewModel>();
         }
 
         public void ShowReport()
         {
-            Heading = string.Format("Taxable Income Repoort for {0}/{1} financial year", _Parameter.FromDate.Year, _Parameter.ToDate.Year);
+            Heading = string.Format("Taxable Income Report for {0}/{1} financial year", _Parameter.FromDate.Year, _Parameter.ToDate.Year);
 
             // Get  a list of all the income for the year
-            var income = _Portfolio.IncomeService.GetIncome(_Parameter.FromDate, _Parameter.ToDate);
+            var income = Portfolio.IncomeService.GetIncome(_Parameter.FromDate, _Parameter.ToDate);
 
             Income.Clear();
             foreach (var incomeItem in income)
@@ -67,9 +69,9 @@ namespace PortfolioManager.UI.ViewModels
             OnPropertyChanged("");
         }
 
-        public void SetData(object data)
+        public override void SetData(object data)
         {
-            Parameter = data as ReportParmeter;
+          //  Parameter = data as ReportParmeter;
         }
 
     }

@@ -10,7 +10,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class HoldingSummaryViewModel : PortfolioViewModel,  IViewModelWithData
+    class HoldingSummaryViewModel : ViewModel
     {
 
         public string ASXCode { get; private set; }
@@ -29,12 +29,13 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public HoldingSummaryViewModel()
+        public HoldingSummaryViewModel(string label)
+            : base(label)
         {
         }
 
 
-        public void SetData(object data)
+        public override void SetData(object data)
         {
             var holding = data as ShareHolding;
 

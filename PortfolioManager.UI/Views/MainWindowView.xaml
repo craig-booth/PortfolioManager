@@ -39,14 +39,20 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedView, Mode=TwoWay}" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Label}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-        <ContentControl Content="{Binding SelectedModule, Mode=OneWay}" >
-            <ContentControl.Template>
-                <ControlTemplate>
-                    <TextBlock Text="{Binding SelectedModule.Label}"/>
-                </ControlTemplate>
-            </ContentControl.Template>
-        </ContentControl>
+        <ContentControl Content="{Binding SelectedView, Mode=OneWay}" Margin="10"/>
 
     </DockPanel>
 
