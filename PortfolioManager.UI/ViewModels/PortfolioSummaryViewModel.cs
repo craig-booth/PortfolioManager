@@ -17,7 +17,13 @@ namespace PortfolioManager.UI.ViewModels
     {
 
         public decimal MarketValue { get; private set; }
-        public ChangeInValue ChangeInValue { get; private set; }
+        public decimal DollarChangeInValue { get; private set; }
+        public decimal PercentChangeInValue { get; private set; }
+
+        public decimal? Return1Year { get; private set; }
+        public decimal? Return3Year { get; private set; }
+        public decimal? Return5Year { get; private set; }
+        public decimal ReturnAll { get; private set; }
 
         public List<HoldingItemViewModel> Holdings { get; private set; }
 
@@ -32,7 +38,17 @@ namespace PortfolioManager.UI.ViewModels
             var holdings = Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
 
             MarketValue = holdings.Sum(x => x.MarketValue);
-            ChangeInValue = new ChangeInValue(holdings.Sum(x => x.TotalCostBase), MarketValue);
+            var totalCost = holdings.Sum(x => x.TotalCostBase);
+            DollarChangeInValue = MarketValue - totalCost;
+            if (totalCost == 0)
+                PercentChangeInValue = 0;
+            else
+                PercentChangeInValue = DollarChangeInValue / totalCost;
+
+            Return1Year = 0.0560m;
+            Return3Year = 0.0483m;
+            Return5Year = null;
+            ReturnAll = 0.0503m;
 
             Holdings.Clear();
             foreach (var holding in holdings)
