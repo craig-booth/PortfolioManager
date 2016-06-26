@@ -12,9 +12,40 @@
     <Window.Resources>
         <viewmodels:MainWindowViewModel x:Key="ViewModel" />
 
-        <Style x:Key="MenuListItemStyle" TargetType="ListBoxItem">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Black"/>
+        <Style x:Key="ModuleListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="{StaticResource MenuBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource MenuForeground}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid Background="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Data="{Binding Image}" Stretch="Uniform" Width="28" Height="28" Fill="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=Foreground}" />
+                            <StackPanel Grid.Column="1" Margin="5">
+                                <TextBlock Text="{Binding Label}" FontFamily="Segoe UI Light" FontSize="20" Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=Foreground}" />
+                            </StackPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource MenuItemMouseOverBackground}"/>
+                    <Setter Property="Foreground" Value="{StaticResource MenuItemMouseOverForeground}" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource MenuItemSelectedBackground}"/>
+                    <Setter Property="Foreground" Value="{StaticResource MenuItemSelectedForground}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ViewListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="{StaticResource MenuBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource MenuForeground}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
@@ -26,120 +57,43 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightBlue"/>
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="{StaticResource MenuItemMouseOverBackground}"/>
+                    <Setter Property="Foreground" Value="{StaticResource MenuItemMouseOverForeground}" />
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="Blue"/>
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="{StaticResource MenuItemSelectedBackground}"/>
+                    <Setter Property="Foreground" Value="{StaticResource MenuItemSelectedForground}" />
                 </Trigger>
-            </Style.Triggers>
+            </Style.Triggers> 
         </Style>
 
-
-<!--
-        <Geometry x:Key="HomeIcon">
-            M16.200012,6.9000092L27.899994,14.699997 27.899994,26.5 20.200012,26.5 20.200012,18.699997 11.700012,18.699997 11.700012,26.5 4.1000061,26.5 4.1000061,14.699997z M16.200012,0L32,10.800003 32,14.400009 16.200012,3.6000061 0,14.699997 0,11.100006z
-        </Geometry>
--->
-        <Style x:Key="ModuleListItemStyle" TargetType="ListBoxItem">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid Background="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=Background}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="200"/>
-                            </Grid.ColumnDefinitions>
-                            <Path Data="{StaticResource HomeIcon}" Stretch="Uniform" Width="28" Height="28" Fill="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=Foreground}" />
-                            <StackPanel Grid.Column="1" Margin="5">
-                                <TextBlock Text="{Binding Label}" FontFamily="Segoe UI Light" FontSize="20" Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}, Path=Foreground}" />
-                            </StackPanel>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightBlue"/>
-                    <Setter Property="Foreground" Value="White" />
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="Blue"/>
-                    <Setter Property="Foreground" Value="White" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
 
     </Window.Resources>
 
     <Window.DataContext>
         <Binding Source="{StaticResource ViewModel}"/>
-    </Window.DataContext>    
-    
+    </Window.DataContext>
+
     <DockPanel>
 
-        <ListBox DockPanel.Dock="Left" Padding="0,0" ItemsSource="{Binding Modules}" ItemContainerStyle="{StaticResource ModuleListItemStyle}" BorderThickness="0" >
+        <ListBox DockPanel.Dock="Left" Padding="0,0" ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule, Mode=TwoWay}" ItemContainerStyle="{StaticResource ModuleListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" Background="Red" />
+                    <StackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
 
-    <!--    <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding Menu}" ItemContainerStyle="{StaticResource MenuListItemStyle}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
+        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedView, Mode=TwoWay}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" Background="Green" />
+                    <StackPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-        </ListBox> -->
-
-        <Grid Background="White">
-
-        </Grid>
-    </DockPanel>
-
-
-<!--    <DockPanel LastChildFill="True">
-
-        <ListView DockPanel.Dock="Left" ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule, Mode=TwoWay}" Width="150" BorderThickness="1,1,0,1" Foreground="White">
-            <ListView.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF040DC0"/>
-                </LinearGradientBrush>
-            </ListView.Background>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Button>
-                        <Button.Template>
-                            <ControlTemplate>
-                                <TextBlock Text="{Binding Label, Mode=OneWay}"/>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <ListView DockPanel.Dock="Top" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedView, Mode=TwoWay}" >
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Label}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        </ListBox>
 
         <ContentControl Content="{Binding SelectedView, Mode=OneWay}" Margin="10"/>
 
-    </DockPanel> -->
+    </DockPanel>
 
 </Window>

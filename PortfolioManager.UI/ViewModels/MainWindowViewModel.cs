@@ -73,14 +73,14 @@ namespace PortfolioManager.UI.ViewModels
 
             _Modules = new List<Module>();
 
-            var homeModule = new Module("Home");
+            var homeModule = new Module("Home", "HomeIcon");
             homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
             _Modules.Add(homeModule);
 
-            var reportsModule = new Module("Reports");
+            var reportsModule = new Module("Reports", "ReportsIcon");
             _Modules.Add(reportsModule);
 
-            var taxModule = new Module("Tax");
+            var taxModule = new Module("Tax", "TaxIcon");
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
             _Modules.Add(taxModule);
