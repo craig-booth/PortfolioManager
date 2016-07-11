@@ -34,27 +34,9 @@ namespace PortfolioManager.UI.ViewModels
                 if (_SelectedModule != null)
                 {
                     if (_SelectedModule.Views.Count > 0)
-                        SelectedView = _SelectedModule.Views[0];
-                    else
-                        SelectedView = null;
+                        _SelectedModule.SelectedView = _SelectedModule.Views[0];
                 }
 
-            }
-        }
-
-        private IViewModel _SelectedView;
-        public IViewModel SelectedView
-        {
-            get
-            {
-                return _SelectedView;
-            }
-            set
-            {
-                _SelectedView = value;
-                if (_SelectedView != null)
-                    _SelectedView.SetData(null);
-                OnPropertyChanged();
             }
         }
 
@@ -74,15 +56,22 @@ namespace PortfolioManager.UI.ViewModels
             _Modules = new List<Module>();
 
             var homeModule = new Module("Home", "HomeIcon");
-            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
+            homeModule.SelectedView = new PortfolioSummaryViewModel("Summary", _Portfolio);
             _Modules.Add(homeModule);
 
             var reportsModule = new Module("Reports", "ReportsIcon");
+            reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
+            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio));
+            reportsModule.ViewParameterAreaVisible = Visibility.Visible;
+            reportsModule.ViewParameter = new DateRangeParameter();
             _Modules.Add(reportsModule);
 
             var taxModule = new Module("Tax", "TaxIcon");
+            taxModule.ViewSelectionAreaVisible = Visibility.Visible;
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
+            taxModule.ViewParameterAreaVisible = Visibility.Visible;
+            taxModule.ViewParameter = new FinancialYearParameter();
             _Modules.Add(taxModule);
 
             SelectedModule = homeModule;

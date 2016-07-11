@@ -28,6 +28,13 @@ namespace PortfolioManager.UI.Controls
         {
             InitializeComponent();
 
+            FinancialYears = new Dictionary<int, string>();
+            FinancialYears.Add(2012, "2011/2012");
+            FinancialYears.Add(2013, "2012/2013");
+            FinancialYears.Add(2014, "2013/2014");
+            FinancialYears.Add(2015, "2014/2015");
+            FinancialYears.Add(2016, "2015/2016");
+
             _SelectionType = ParameterType.SingleDate;
         }
 
@@ -69,6 +76,9 @@ namespace PortfolioManager.UI.Controls
                     Value = DefaultValue(_SelectionType);
             } 
         }
+
+        public Dictionary<int, string> FinancialYears;
+        public static readonly DependencyProperty FinancialYearsProperty = DependencyProperty.Register("FinancialYears", typeof(Dictionary<int,string>), typeof(ReportParameterControl), null);
 
         private bool AllowableValue(ReportParmeter value)
         {

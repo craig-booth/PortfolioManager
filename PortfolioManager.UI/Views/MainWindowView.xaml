@@ -7,7 +7,7 @@
         xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels"
         xmlns:utilities="clr-namespace:PortfolioManager.UI.Utilities"
         mc:Ignorable="d"
-        Title="Portfolio Manager" Height="519.833" Width="804.878">
+        Title="Portfolio Manager" Height="600" Width="1000">
 
     <Window.Resources>
         <viewmodels:MainWindowViewModel x:Key="ViewModel" />
@@ -76,6 +76,7 @@
 
     <DockPanel>
 
+        <!-- Menu Area -->
         <ListBox DockPanel.Dock="Left" Padding="0,0" ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule, Mode=TwoWay}" ItemContainerStyle="{StaticResource ModuleListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -84,7 +85,13 @@
             </ListBox.ItemsPanel>
         </ListBox>
 
-        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedView, Mode=TwoWay}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
+        <!-- View Parameter Area -->
+        <Border DockPanel.Dock="Top" Background="Green" Height="50" Visibility="{Binding SelectedModule.ViewParameterAreaVisible}">
+            <TextBlock Text="ViewParameterArea"/>
+        </Border>
+
+        <!-- View Selection Area-->
+        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedModule.SelectedView, Mode=TwoWay}" Visibility="{Binding SelectedModule.ViewSelectionAreaVisible}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
@@ -92,7 +99,9 @@
             </ListBox.ItemsPanel>
         </ListBox>
 
-        <ContentControl Content="{Binding SelectedView, Mode=OneWay}" Margin="10"/>
+        
+        <!-- View Area -->
+        <ContentControl Content="{Binding SelectedModule.SelectedView, Mode=OneWay}" Margin="10"/>
 
     </DockPanel>
 
