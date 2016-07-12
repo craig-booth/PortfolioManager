@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
@@ -16,24 +17,28 @@ namespace PortfolioManager.UI.ViewModels
 {
     class CGTViewModel : PortfolioViewModel
     {
-        private ReportParmeter _Parameter;
-        public ReportParmeter Parameter
+        private FinancialYearParameter _Parameter;
+        public FinancialYearParameter Parameter
         {
+            set
+            {
+                _Parameter = value;
+
+                if (_Parameter != null)
+                    _Parameter.PropertyChanged += ParameterChange;
+
+                ShowReport();
+            }
+
             get
             {
                 return _Parameter;
             }
+        }
 
-            set
-            {
-                if (value != _Parameter)
-                {
-                    _Parameter = value;
-                    OnPropertyChanged();
-
-                    ShowReport();
-                }
-            }
+        public void ParameterChange(object sender, PropertyChangedEventArgs e)
+        {
+            ShowReport();
         }
 
         public ObservableCollection<CGTEventViewModel> CGTEvents { get; private set; }
@@ -70,10 +75,10 @@ namespace PortfolioManager.UI.ViewModels
 
         public void ShowReport()
         {
-            Heading = string.Format("CGT Repoort for {0}/{1} financial year", _Parameter.FromDate.Year, _Parameter.ToDate.Year);
+            Heading = "CGT Report for " + _Parameter.Description;
 
             // Get a list of all the cgt events for the year
-            var cgtEvents = Portfolio.CGTService.GetEvents(_Parameter.FromDate, _Parameter.ToDate);
+            var cgtEvents = Portfolio.CGTService.GetEvents(_Parameter.StartDate, _Parameter.EndDate);
 
             CGTEvents.Clear();
             foreach (var cgtEvent in cgtEvents)
@@ -86,7 +91,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public override void SetData(object data)
         {
-         //   Parameter = data as ReportParmeter;
+            Parameter = data as FinancialYearParameter;
         }
 
         private void CalculateCGT(IEnumerable<CGTEvent> cgtEvents)

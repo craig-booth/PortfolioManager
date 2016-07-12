@@ -73,6 +73,8 @@ namespace PortfolioManager.UI.Controls
             var collectionChangedInterface = e.NewValue as INotifyCollectionChanged;
             if (collectionChangedInterface != null)
                 collectionChangedInterface.CollectionChanged += dataTable.DataChanged;
+
+            dataTable.CalculateSummary();
         }
 
         public void DataChanged(object sender, NotifyCollectionChangedEventArgs e)

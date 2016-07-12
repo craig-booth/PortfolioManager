@@ -7,15 +7,23 @@
 
     <DataTemplate DataType="{x:Type viewmodels:UnrealisedGainsViewModel}">
 
-        <controls:DataTable Data="{Binding UnrealisedGains}" DataType="{x:Type viewmodels:UnrealisedGainViewItem}" Margin="0,10,0,0">
-            <controls:DataTable.Columns>
-                <controls:DataTableColumn Heading="Aquisition" Width="70" MemberBinding="{Binding AquisitionDate, StringFormat={}{0:d}, Mode=OneWay}" SummaryType="Fixed" SummaryValue="Total"/>
-                <controls:DataTableColumn Heading="Company" Width="*" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
-                <controls:DataTableColumn Heading="Units" Width="80" MemberBinding="{Binding Units, StringFormat={}{0:n0}, Mode=OneWay}" TextAlignment="Right" />
-                <controls:DataTableColumn Heading="Cost Base" Width="80" MemberBinding="{Binding CostBase, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
-            </controls:DataTable.Columns>
-        </controls:DataTable>
-        
+        <ScrollViewer>
+
+            <controls:DataTable Data="{Binding UnrealisedGains}" DataType="{x:Type viewmodels:UnrealisedGainViewItem}" Margin="0,10,0,0">
+                <controls:DataTable.Columns>
+                    <controls:DataTableColumn Heading="Aquisition" Width="70" MemberBinding="{Binding AquisitionDate, StringFormat={}{0:d}, Mode=OneWay}" SummaryType="Fixed" SummaryValue="Total"/>
+                    <controls:DataTableColumn Heading="Company" Width="*" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
+                    <controls:DataTableColumn Heading="Units" Width="80" MemberBinding="{Binding Units, StringFormat={}{0:n0}, Mode=OneWay}" TextAlignment="Right" />
+                    <controls:DataTableColumn Heading="Cost Base" Width="80" MemberBinding="{Binding CostBase, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Market Value" Width="80" MemberBinding="{Binding MarketValue, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Capital Gain" Width="80" MemberBinding="{Binding CapitalGain, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Dicounted Gain" Width="80" MemberBinding="{Binding DiscoutedGain, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    <controls:DataTableColumn Heading="Discount Method" Width="80" MemberBinding="{Binding DiscountMethod, Mode=OneWay}" TextAlignment="Right" />
+                </controls:DataTable.Columns>
+            </controls:DataTable>
+
+        </ScrollViewer>
+
     </DataTemplate>
 
 </ResourceDictionary>

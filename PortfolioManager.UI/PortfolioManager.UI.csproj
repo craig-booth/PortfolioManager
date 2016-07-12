@@ -60,14 +60,11 @@
     <Compile Include="Controls\DataTable.xaml.cs">
       <DependentUpon>DataTable.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ReportParameterControl.xaml.cs">
-      <DependentUpon>ReportParameterControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Style\ValueConverters.cs" />
     <Compile Include="Utilities\Module.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
-    <Compile Include="Utilities\ReportParameter.cs" />
+    <Compile Include="Utilities\ViewParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\CGTViewModel.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
@@ -84,10 +81,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\DataTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ReportParameterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

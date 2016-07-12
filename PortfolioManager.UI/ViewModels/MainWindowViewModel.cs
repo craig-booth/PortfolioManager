@@ -63,7 +63,7 @@ namespace PortfolioManager.UI.ViewModels
             reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
             reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio));
             reportsModule.ViewParameterAreaVisible = Visibility.Visible;
-            reportsModule.ViewParameter = new DateRangeParameter();
+            reportsModule.ViewParameter = new SingleDateParameter();
             _Modules.Add(reportsModule);
 
             var taxModule = new Module("Tax", "TaxIcon");
@@ -71,7 +71,7 @@ namespace PortfolioManager.UI.ViewModels
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
             taxModule.ViewParameterAreaVisible = Visibility.Visible;
-            taxModule.ViewParameter = new FinancialYearParameter();
+            taxModule.ViewParameter = new FinancialYearParameter(2010);
             _Modules.Add(taxModule);
 
             SelectedModule = homeModule;

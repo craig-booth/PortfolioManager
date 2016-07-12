@@ -67,6 +67,30 @@
             </Style.Triggers> 
         </Style>
 
+        <DataTemplate DataType="{x:Type utilities:SingleDateParameter}">
+            <StackPanel Orientation="Horizontal">
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type utilities:DateRangeParameter}">
+            <StackPanel Orientation="Horizontal">
+                <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" />
+                <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type utilities:FinancialYearParameter}">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox ItemsSource="{Binding FinancialYears}" SelectedValue="{Binding FinancialYear, Mode=TwoWay}" SelectedValuePath="Key">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </DataTemplate>        
 
     </Window.Resources>
 
@@ -86,9 +110,7 @@
         </ListBox>
 
         <!-- View Parameter Area -->
-        <Border DockPanel.Dock="Top" Background="Green" Height="50" Visibility="{Binding SelectedModule.ViewParameterAreaVisible}">
-            <TextBlock Text="ViewParameterArea"/>
-        </Border>
+        <ContentControl DockPanel.Dock="Top" Content="{Binding SelectedModule.ViewParameter}"  Visibility="{Binding SelectedModule.ViewParameterAreaVisible}" />
 
         <!-- View Selection Area-->
         <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedModule.SelectedView, Mode=TwoWay}" Visibility="{Binding SelectedModule.ViewSelectionAreaVisible}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >

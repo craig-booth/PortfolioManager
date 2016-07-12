@@ -9,7 +9,7 @@
 
         <StackPanel Orientation="Vertical" Margin="10,30,10,0">
 
-            <controls:ReportParameterControl SelectionType="FinancialYear" Value="{Binding Parameter, Mode=TwoWay}" />
+            <TextBlock Text="{Binding Heading}" />
 
             <Grid Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
@@ -13,24 +14,28 @@ namespace PortfolioManager.UI.ViewModels
 
     class TaxableIncomeViewModel : PortfolioViewModel
     {
-        private ReportParmeter _Parameter;
-        public ReportParmeter Parameter
+        private FinancialYearParameter _Parameter;
+        public FinancialYearParameter Parameter
         {
+            set
+            {
+                _Parameter = value;
+
+                if (_Parameter != null)
+                    _Parameter.PropertyChanged += ParameterChange;
+
+                ShowReport();
+            }
+
             get
             {
                 return _Parameter;
             }
+        }
 
-            set
-            {
-                if (value != _Parameter)
-                {
-                    _Parameter = value;
-                    OnPropertyChanged();
-
-                    ShowReport();
-                }
-            }
+        public void ParameterChange(object sender, PropertyChangedEventArgs e)
+        {
+            ShowReport();
         }
 
         public ObservableCollection<IncomeItemViewModel> Income { get; private set; }
@@ -57,10 +62,10 @@ namespace PortfolioManager.UI.ViewModels
 
         public void ShowReport()
         {
-            Heading = string.Format("Taxable Income Report for {0}/{1} financial year", _Parameter.FromDate.Year, _Parameter.ToDate.Year);
+            Heading = "Taxable Income Report for " + _Parameter.Description; 
 
             // Get  a list of all the income for the year
-            var income = Portfolio.IncomeService.GetIncome(_Parameter.FromDate, _Parameter.ToDate);
+            var income = Portfolio.IncomeService.GetIncome(_Parameter.StartDate, _Parameter.EndDate);
 
             Income.Clear();
             foreach (var incomeItem in income)
@@ -71,7 +76,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public override void SetData(object data)
         {
-          //  Parameter = data as ReportParmeter;
+            Parameter = data as FinancialYearParameter;
         }
 
     }
