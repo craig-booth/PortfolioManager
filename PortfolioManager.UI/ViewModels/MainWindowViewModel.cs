@@ -29,22 +29,50 @@ namespace PortfolioManager.UI.ViewModels
             {
                 _SelectedModule = value;
 
-                OnPropertyChanged();
-
                 if (_SelectedModule != null)
                 {
                     if (_SelectedModule.Views.Count > 0)
-                        _SelectedModule.SelectedView = _SelectedModule.Views[0];
+                        SelectedView = _SelectedModule.Views[0];
                 }
 
+                OnPropertyChanged();
             }
         }
 
+
+        private IViewModel _SelectedView;
+        public IViewModel SelectedView
+        {
+            get
+            {
+                return _SelectedView;
+            }
+            set
+            {
+                _SelectedView = value;
+                if (_SelectedView != null)
+                {
+                    if (_SelectedView.Options.DateSelection == DateSelectionType.Single)
+                        _SelectedView.SetData(ReportViewParameter);
+                    else if (_SelectedView.Options.DateSelection == DateSelectionType.Range)
+                        _SelectedView.SetData(ReportViewParameter);
+                    else if (_SelectedView.Options.DateSelection == DateSelectionType.FinancialYear)
+                        _SelectedView.SetData(FinancialYearParameter);
+                    else
+                        _SelectedView.SetData(null);
+                }
+                OnPropertyChanged();
+            }
+        }
+        
         private List<Module> _Modules;
         public IReadOnlyList<Module> Modules
         {
             get { return _Modules; }
         }
+
+        public ViewParameter ReportViewParameter { get; set; }
+        public FinancialYearParameter FinancialYearParameter { get; set; }
 
         public MainWindowViewModel()
         {
@@ -53,17 +81,20 @@ namespace PortfolioManager.UI.ViewModels
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
 
+            ReportViewParameter = new ViewParameter();
+            FinancialYearParameter = new FinancialYearParameter(2010);
+             
+
             _Modules = new List<Module>();
 
             var homeModule = new Module("Home", "HomeIcon");
-            homeModule.SelectedView = new PortfolioSummaryViewModel("Summary", _Portfolio);
+            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
             _Modules.Add(homeModule);
 
             var reportsModule = new Module("Reports", "ReportsIcon");
             reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
             reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio));
             reportsModule.ViewParameterAreaVisible = Visibility.Visible;
-            reportsModule.ViewParameter = new SingleDateParameter();
             _Modules.Add(reportsModule);
 
             var taxModule = new Module("Tax", "TaxIcon");
@@ -71,7 +102,6 @@ namespace PortfolioManager.UI.ViewModels
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
             taxModule.ViewParameterAreaVisible = Visibility.Visible;
-            taxModule.ViewParameter = new FinancialYearParameter(2010);
             _Modules.Add(taxModule);
 
             SelectedModule = homeModule;

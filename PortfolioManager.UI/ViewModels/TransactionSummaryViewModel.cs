@@ -14,6 +14,8 @@ namespace PortfolioManager.UI.ViewModels
         public TransactionSummaryViewModel(string label)
             : base(label)
         {
+            Options.AllowStockSelection = true;
+            Options.DateSelection = DateSelectionType.Range;
         }
 
         public override void SetData(object data)

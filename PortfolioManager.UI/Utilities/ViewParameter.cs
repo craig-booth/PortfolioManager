@@ -22,9 +22,57 @@ namespace PortfolioManager.UI.Utilities
         int FinancialYear { get; }
     }
 
-    class ViewParameter : NotifyClass
+    class ViewParameter : NotifyClass, ISingleDateParameter, IDateRangeParameter
     {
+        protected DateTime _StartDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _StartDate;
+            }
 
+            set
+            {
+                _StartDate = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        protected DateTime _EndDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return _EndDate;
+            }
+
+            set
+            {
+                _EndDate = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public DateTime Date
+        {
+            get
+            {
+                return _EndDate;
+            }
+
+            set
+            {
+                _EndDate = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public ViewParameter()
+        {
+            _StartDate = DateTime.Now.AddYears(-1);
+            _EndDate = DateTime.Now;
+        }
     }
 
     class FinancialYearParameter : ViewParameter, IFinancialYearParameter
@@ -40,31 +88,9 @@ namespace PortfolioManager.UI.Utilities
             set
             {
                 _FinancialYear = value;
+                _StartDate = new DateTime(_FinancialYear - 1, 7, 1);
+                _EndDate = new DateTime(_FinancialYear, 6, 30);
                 OnPropertyChanged();
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get
-            {
-                return new DateTime(_FinancialYear - 1, 7, 1);
-            }
-        }
-
-        public DateTime EndDate
-        {
-            get
-            {
-                return new DateTime(_FinancialYear, 6, 30);
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return string.Format("{0}/{1} Financial Year", _FinancialYear - 1, _FinancialYear);
             }
         }
 
@@ -78,12 +104,7 @@ namespace PortfolioManager.UI.Utilities
         }
 
         public FinancialYearParameter(int oldestYear)
-            : this(oldestYear, 0)
-        {
-
-        }
-
-        public FinancialYearParameter(int oldestYear, int selectedYear)
+            : base()
         {
             _FinancialYears = new Dictionary<int, string>();
 
@@ -99,84 +120,16 @@ namespace PortfolioManager.UI.Utilities
             while (year >= oldestYear)
             {
                 if (year == currentFinancialYear)
-                    _FinancialYears.Add(year, "Current Financial Year");
+                    _FinancialYears.Add(year, "Current");
                 else if (year == currentFinancialYear - 1)
-                    _FinancialYears.Add(year, "Previous Financial Year");
+                    _FinancialYears.Add(year, "Previous");
                 else
                     _FinancialYears.Add(year, string.Format("{0} - {1}", year - 1, year));
 
                 year--;
             }
 
-            // set the parameter value
-            if (selectedYear > 0)
-                _FinancialYear = selectedYear;
-            else
-                _FinancialYear = currentFinancialYear;
-        }
-    }
-
-    class SingleDateParameter : ViewParameter, ISingleDateParameter
-    {
-        private DateTime _Date;
-        public DateTime Date
-        {
-            get
-            {
-                return _Date;
-            }
-
-            set
-            {
-                _Date = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return string.Format("{0:d}", Date);
-            }
-        }
-
-        public SingleDateParameter()
-            : this(DateTime.Now)
-        {
-
-        }
-
-        public SingleDateParameter(DateTime date)
-        {
-            Date = DateTime.Now;
-        }
-    }
-
-    class DateRangeParameter : ViewParameter, IDateRangeParameter
-    {
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-
-
-        public string Description
-        {
-            get
-            {
-                return string.Format("{0:d} - {1:d}", StartDate, EndDate);
-            }
-        }
-
-        public DateRangeParameter()
-        {
-            StartDate = DateTime.Now.AddYears(-1);
-            EndDate = DateTime.Now;
-        }
-
-        public DateRangeParameter(DateTime start, DateTime end)
-        {
-            StartDate = start;
-            EndDate = end;
+            _FinancialYear = currentFinancialYear;
         }
     }
 }

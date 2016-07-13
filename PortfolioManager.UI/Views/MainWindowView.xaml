@@ -67,19 +67,6 @@
             </Style.Triggers> 
         </Style>
 
-        <DataTemplate DataType="{x:Type utilities:SingleDateParameter}">
-            <StackPanel Orientation="Horizontal">
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type utilities:DateRangeParameter}">
-            <StackPanel Orientation="Horizontal">
-                <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" />
-                <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" />
-            </StackPanel>
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type utilities:FinancialYearParameter}">
             <StackPanel Orientation="Horizontal">
                 <ComboBox ItemsSource="{Binding FinancialYears}" SelectedValue="{Binding FinancialYear, Mode=TwoWay}" SelectedValuePath="Key">
@@ -110,10 +97,111 @@
         </ListBox>
 
         <!-- View Parameter Area -->
-        <ContentControl DockPanel.Dock="Top" Content="{Binding SelectedModule.ViewParameter}"  Visibility="{Binding SelectedModule.ViewParameterAreaVisible}" />
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Visibility="{Binding SelectedModule.ViewParameterAreaVisible}">
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedView.Options.AllowStockSelection}" Value="true">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Company" Grid.Column="0"/>
+                <ComboBox Grid.Column="1"/>
+            </Grid>
+            
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedView.Options.DateSelection}">
+                                <DataTrigger.Value>
+                                    <utilities:DateSelectionType>Single</utilities:DateSelectionType>
+                                </DataTrigger.Value>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Date" Grid.Column="0" />
+                <DatePicker SelectedDate="{Binding ReportViewParameter.Date, Mode=TwoWay}" Grid.Column="1" />
+            </Grid>
+
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedView.Options.DateSelection}">
+                                <DataTrigger.Value>
+                                    <utilities:DateSelectionType>Range</utilities:DateSelectionType>
+                                </DataTrigger.Value>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="From" Grid.Column="0" />
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" Grid.Column="1" />
+                <TextBlock Text="To" Grid.Column="2" />
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" Grid.Column="3" />
+            </Grid>
+
+
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedView.Options.DateSelection}">
+                                <DataTrigger.Value>
+                                    <utilities:DateSelectionType>FinancialYear</utilities:DateSelectionType>
+                                </DataTrigger.Value>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Financial Year" Grid.Column="0" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding FinancialYearParameter.FinancialYears}" SelectedValue="{Binding FinancialYearParameter.FinancialYear, Mode=TwoWay}" SelectedValuePath="Key">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </StackPanel>
 
         <!-- View Selection Area-->
-        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedModule.SelectedView, Mode=TwoWay}" Visibility="{Binding SelectedModule.ViewSelectionAreaVisible}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
+        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedView, Mode=TwoWay}" Visibility="{Binding SelectedModule.ViewSelectionAreaVisible}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
@@ -123,7 +211,7 @@
 
         
         <!-- View Area -->
-        <ContentControl Content="{Binding SelectedModule.SelectedView, Mode=OneWay}" Margin="10"/>
+        <ContentControl Content="{Binding SelectedView, Mode=OneWay}" Margin="10"/>
 
     </DockPanel>
 

@@ -15,14 +15,25 @@ namespace PortfolioManager.UI.Utilities
     {
         string Label { get; }
         string Heading { get; }
+        ViewOptions Options { get; }
+
         void SetData(object data);
     }
 
+
+    public enum DateSelectionType { None, Single, Range, FinancialYear }
+
+    public class ViewOptions
+    {
+        public bool AllowStockSelection { get; set; }
+        public DateSelectionType DateSelection { get; set; }
+    }
 
     public abstract class ViewModel : NotifyClass, IViewModel 
     {
         public string Label { get; protected set; }
         public string Heading { get; protected set; }
+        public ViewOptions Options { get; set; }
 
         public abstract void SetData(object data);
 
@@ -30,6 +41,12 @@ namespace PortfolioManager.UI.Utilities
         {
             Label = label;
             Heading = label;
+
+            Options = new ViewOptions()
+            {
+                AllowStockSelection = false,
+                DateSelection = DateSelectionType.None
+            };
         }
     }
 
@@ -43,5 +60,6 @@ namespace PortfolioManager.UI.Utilities
             Portfolio = portfolio;
         }
     }
+
 
 }

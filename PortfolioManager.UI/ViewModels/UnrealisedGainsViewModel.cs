@@ -16,8 +16,8 @@ namespace PortfolioManager.UI.ViewModels
 {
     class UnrealisedGainsViewModel : PortfolioViewModel
     {
-        private SingleDateParameter _Parameter;
-        public SingleDateParameter Parameter
+        private ViewParameter _Parameter;
+        public ViewParameter Parameter
         {
             set
             {
@@ -59,14 +59,24 @@ namespace PortfolioManager.UI.ViewModels
         public UnrealisedGainsViewModel(string label, Portfolio portfolio)
             : base(label, portfolio)
         {
+            Options.AllowStockSelection = false;
+            Options.DateSelection = DateSelectionType.Single;
+
             _Heading = label;
             UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>();
         }
 
         public void ShowReport()
         {
-            var parcels = Portfolio.ParcelService.GetParcels(_Parameter.Date).OrderBy(x => x.Stock);
+            if (_Parameter == null)
+            {
+                UnrealisedGains.Clear();
+                OnPropertyChanged("");
 
+                return;
+            }
+
+            var parcels = Portfolio.ParcelService.GetParcels(_Parameter.Date).OrderBy(x => x.Stock);
 
             Stock currentStock = null;
             Guid previousStock = Guid.Empty;
@@ -92,7 +102,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public override void SetData(object data)
         {
-            Parameter = data as SingleDateParameter;
+            Parameter = data as ViewParameter;
         }
     }
 

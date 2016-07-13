@@ -57,12 +57,15 @@ namespace PortfolioManager.UI.ViewModels
         public TaxableIncomeViewModel(string label, Portfolio portfolio)
             : base(label, portfolio)
         {
+            Options.AllowStockSelection = false;
+            Options.DateSelection = DateSelectionType.FinancialYear;
+
             Income = new ObservableCollection<IncomeItemViewModel>();
         }
 
         public void ShowReport()
         {
-            Heading = "Taxable Income Report for " + _Parameter.Description; 
+            Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
             // Get  a list of all the income for the year
             var income = Portfolio.IncomeService.GetIncome(_Parameter.StartDate, _Parameter.EndDate);

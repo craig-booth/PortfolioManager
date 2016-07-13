@@ -70,12 +70,15 @@ namespace PortfolioManager.UI.ViewModels
         public CGTViewModel(string label, Portfolio portfolio)
             : base(label, portfolio)
         {
+            Options.AllowStockSelection = false;
+            Options.DateSelection = DateSelectionType.FinancialYear;
+
             CGTEvents = new ObservableCollection<CGTEventViewModel>();
         }
 
         public void ShowReport()
         {
-            Heading = "CGT Report for " + _Parameter.Description;
+            Heading = string.Format("CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
             // Get a list of all the cgt events for the year
             var cgtEvents = Portfolio.CGTService.GetEvents(_Parameter.StartDate, _Parameter.EndDate);
