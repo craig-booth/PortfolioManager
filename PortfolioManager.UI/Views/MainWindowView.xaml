@@ -164,9 +164,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="From" Grid.Column="0" />
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" Grid.Column="1" />
+                <DatePicker SelectedDate="{Binding ReportViewParameter.StartDate, Mode=TwoWay}" Grid.Column="1" />
                 <TextBlock Text="To" Grid.Column="2" />
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" Grid.Column="3" />
+                <DatePicker SelectedDate="{Binding ReportViewParameter.EndDate, Mode=TwoWay}" Grid.Column="3" />
             </Grid>
 
 

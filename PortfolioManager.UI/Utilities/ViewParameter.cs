@@ -70,7 +70,7 @@ namespace PortfolioManager.UI.Utilities
 
         public ViewParameter()
         {
-            _StartDate = DateTime.Now.AddYears(-1);
+            _StartDate = DateTime.Now.AddYears(-1).AddDays(1);
             _EndDate = DateTime.Now;
         }
     }

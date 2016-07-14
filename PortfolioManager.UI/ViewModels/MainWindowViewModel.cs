@@ -93,15 +93,18 @@ namespace PortfolioManager.UI.ViewModels
 
             var reportsModule = new Module("Reports", "ReportsIcon");
             reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
-            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio));
             reportsModule.ViewParameterAreaVisible = Visibility.Visible;
+
+            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio));
+            reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio));
+           
             _Modules.Add(reportsModule);
 
             var taxModule = new Module("Tax", "TaxIcon");
             taxModule.ViewSelectionAreaVisible = Visibility.Visible;
+            taxModule.ViewParameterAreaVisible = Visibility.Visible;
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
-            taxModule.ViewParameterAreaVisible = Visibility.Visible;
             _Modules.Add(taxModule);
 
             SelectedModule = homeModule;
