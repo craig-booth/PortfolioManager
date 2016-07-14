@@ -16,24 +16,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class UnrealisedGainsViewModel : PortfolioViewModel
     {
-        private ViewParameter _Parameter;
-        public ViewParameter Parameter
-        {
-            set
-            {
-                _Parameter = value;
-
-                if (_Parameter != null)
-                    _Parameter.PropertyChanged += ParameterChange;
-
-                ShowReport();
-            }
-
-            get
-            {
-                return _Parameter;
-            }
-        }
+        private ISingleDateParameter _Parameter;
 
         public void ParameterChange(object sender, PropertyChangedEventArgs e)
         {
@@ -56,17 +39,33 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<UnrealisedGainViewItem> UnrealisedGains { get; private set; }
 
-        public UnrealisedGainsViewModel(string label, Portfolio portfolio)
+        public UnrealisedGainsViewModel(string label, Portfolio portfolio, ISingleDateParameter parameter)
             : base(label, portfolio)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.Single;
 
             _Heading = label;
+            _Parameter = parameter;
+
             UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>();
         }
 
-        public void ShowReport()
+        public override void Activate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged += ParameterChange;
+
+            ShowReport();
+        }
+
+        public override void Deactivate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged -= ParameterChange;
+        }
+
+        private void ShowReport()
         {
             if (_Parameter == null)
             {
@@ -98,11 +97,6 @@ namespace PortfolioManager.UI.ViewModels
             UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>(unrealisedGainsList.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate));
 
             OnPropertyChanged("");
-        }
-
-        public override void SetData(object data)
-        {
-            Parameter = data as ViewParameter;
         }
     }
 

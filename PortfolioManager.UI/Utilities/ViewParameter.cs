@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace PortfolioManager.UI.Utilities
 {
-    interface ISingleDateParameter
+    interface ISingleDateParameter : INotifyPropertyChanged
     {
         DateTime Date { get; }
     }
 
-    interface IDateRangeParameter
+    interface IDateRangeParameter : INotifyPropertyChanged
     {
         DateTime StartDate { get; }
         DateTime EndDate { get; }
@@ -22,7 +23,31 @@ namespace PortfolioManager.UI.Utilities
         int FinancialYear { get; }
     }
 
-    class ViewParameter : NotifyClass, ISingleDateParameter, IDateRangeParameter
+    class SingleDateParameter : NotifyClass, ISingleDateParameter
+    {
+        protected DateTime _Date;
+        public DateTime Date
+        {
+            get
+            {
+                return _Date;
+            }
+
+            set
+            {
+                _Date = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public SingleDateParameter()
+        {
+            _Date = DateTime.Now;
+        }
+    }
+
+    class DateRangeParameter : NotifyClass, IDateRangeParameter
     {
         protected DateTime _StartDate;
         public DateTime StartDate
@@ -35,7 +60,7 @@ namespace PortfolioManager.UI.Utilities
             set
             {
                 _StartDate = value;
-                OnPropertyChanged("");
+                OnPropertyChanged();
             }
         }
 
@@ -50,32 +75,18 @@ namespace PortfolioManager.UI.Utilities
             set
             {
                 _EndDate = value;
-                OnPropertyChanged("");
+                OnPropertyChanged();
             }
         }
 
-        public DateTime Date
-        {
-            get
-            {
-                return _EndDate;
-            }
-
-            set
-            {
-                _EndDate = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public ViewParameter()
+        public DateRangeParameter()
         {
             _StartDate = DateTime.Now.AddYears(-1).AddDays(1);
             _EndDate = DateTime.Now;
         }
     }
 
-    class FinancialYearParameter : ViewParameter, IFinancialYearParameter
+    class FinancialYearParameter : NotifyClass, IFinancialYearParameter
     {
         private int _FinancialYear;
         public int FinancialYear
@@ -90,7 +101,25 @@ namespace PortfolioManager.UI.Utilities
                 _FinancialYear = value;
                 _StartDate = new DateTime(_FinancialYear - 1, 7, 1);
                 _EndDate = new DateTime(_FinancialYear, 6, 30);
-                OnPropertyChanged();
+                OnPropertyChanged("");
+            }
+        }
+
+        protected DateTime _StartDate;
+        public DateTime StartDate
+        {
+            get
+            {
+                return _StartDate;
+            }
+        }
+
+        protected DateTime _EndDate;
+        public DateTime EndDate
+        {
+            get
+            {
+                return _EndDate;
             }
         }
 

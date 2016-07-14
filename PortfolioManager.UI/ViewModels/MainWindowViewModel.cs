@@ -49,18 +49,14 @@ namespace PortfolioManager.UI.ViewModels
             }
             set
             {
-                _SelectedView = value;
                 if (_SelectedView != null)
-                {
-                    if (_SelectedView.Options.DateSelection == DateSelectionType.Single)
-                        _SelectedView.SetData(ReportViewParameter);
-                    else if (_SelectedView.Options.DateSelection == DateSelectionType.Range)
-                        _SelectedView.SetData(ReportViewParameter);
-                    else if (_SelectedView.Options.DateSelection == DateSelectionType.FinancialYear)
-                        _SelectedView.SetData(FinancialYearParameter);
-                    else
-                        _SelectedView.SetData(null);
-                }
+                    _SelectedView.Deactivate();
+
+                _SelectedView = value;
+
+                if (_SelectedView != null)
+                    _SelectedView.Activate();
+
                 OnPropertyChanged();
             }
         }
@@ -71,7 +67,8 @@ namespace PortfolioManager.UI.ViewModels
             get { return _Modules; }
         }
 
-        public ViewParameter ReportViewParameter { get; set; }
+        public SingleDateParameter SingleDateParameter { get; private set; }
+        public DateRangeParameter DateRangeParameter { get; private set; }
         public FinancialYearParameter FinancialYearParameter { get; set; }
 
         public MainWindowViewModel()
@@ -81,9 +78,9 @@ namespace PortfolioManager.UI.ViewModels
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
 
-            ReportViewParameter = new ViewParameter();
-            FinancialYearParameter = new FinancialYearParameter(2010);
-             
+            SingleDateParameter = new SingleDateParameter();
+            DateRangeParameter = new DateRangeParameter();
+            FinancialYearParameter = new FinancialYearParameter(2010);             
 
             _Modules = new List<Module>();
 
@@ -95,16 +92,16 @@ namespace PortfolioManager.UI.ViewModels
             reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
             reportsModule.ViewParameterAreaVisible = Visibility.Visible;
 
-            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio));
-            reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio));
+            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio, SingleDateParameter));
+            reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio, DateRangeParameter));
            
             _Modules.Add(reportsModule);
 
             var taxModule = new Module("Tax", "TaxIcon");
             taxModule.ViewSelectionAreaVisible = Visibility.Visible;
             taxModule.ViewParameterAreaVisible = Visibility.Visible;
-            taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio));
-            taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio));
+            taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio, FinancialYearParameter));
+            taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio, FinancialYearParameter));
             _Modules.Add(taxModule);
 
             SelectedModule = homeModule;

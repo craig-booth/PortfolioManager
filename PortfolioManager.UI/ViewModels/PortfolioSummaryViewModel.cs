@@ -33,7 +33,12 @@ namespace PortfolioManager.UI.ViewModels
             Holdings = new List<HoldingItemViewModel>();
         }
 
-        public override void SetData(object data)
+        public override void Activate()
+        {
+            ShowReport();
+        }
+
+        private void ShowReport()
         {
             var holdings = Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
 

@@ -17,25 +17,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class TransactionSummaryViewModel : PortfolioViewModel
     {
-
-        private ViewParameter _Parameter;
-        public ViewParameter Parameter
-        {
-            set
-            {
-                _Parameter = value;
-
-                if (_Parameter != null)
-                    _Parameter.PropertyChanged += ParameterChange;
-
-                ShowReport();
-            }
-
-            get
-            {
-                return _Parameter;
-            }
-        }
+        private IDateRangeParameter _Parameter;
 
         public void ParameterChange(object sender, PropertyChangedEventArgs e)
         {
@@ -58,17 +40,33 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
 
-        public TransactionSummaryViewModel(string label, Portfolio portfolio)
+        public TransactionSummaryViewModel(string label, Portfolio portfolio, IDateRangeParameter parameter)
             : base(label, portfolio)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.Range;
 
             _Heading = label;
+            _Parameter = parameter;
+
             Transactions = new ObservableCollection<TransactionViewItem>();
         }
 
-        public void ShowReport()
+        public override void Activate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged += ParameterChange;
+
+            ShowReport();
+        }
+
+        public override void Deactivate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged -= ParameterChange;
+        }
+
+        private void ShowReport()
         {
             Transactions.Clear();
 
@@ -79,11 +77,6 @@ namespace PortfolioManager.UI.ViewModels
             }
 
             var transactions = Portfolio.TransactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
-
-         //   Stock currentStock = null;
-         //   Guid previousStock = Guid.Empty;
-         //   decimal unitPrice = 0.00m;
-         //   var unrealisedGainsList = new List<UnrealisedGainViewItem>();
             foreach (var transaction in transactions)
             {
                 var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.TransactionDate);
@@ -91,15 +84,10 @@ namespace PortfolioManager.UI.ViewModels
                 Transactions.Add(new TransactionViewItem(stock, transaction));
             }
 
-        //    UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>(unrealisedGainsList.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate));
-           
+         
             OnPropertyChanged("");
         }
 
-        public override void SetData(object data)
-        {
-            Parameter = data as ViewParameter;
-        }
     }
 
     class TransactionViewItem

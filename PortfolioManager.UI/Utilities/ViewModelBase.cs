@@ -17,7 +17,8 @@ namespace PortfolioManager.UI.Utilities
         string Heading { get; }
         ViewOptions Options { get; }
 
-        void SetData(object data);
+        void Activate();
+        void Deactivate();
     }
 
 
@@ -35,7 +36,13 @@ namespace PortfolioManager.UI.Utilities
         public string Heading { get; protected set; }
         public ViewOptions Options { get; set; }
 
-        public abstract void SetData(object data);
+        public virtual void Activate()
+        {
+        }
+
+        public virtual void Deactivate()
+        {
+        }
 
         public ViewModel(string label)
         {

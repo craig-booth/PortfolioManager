@@ -34,15 +34,5 @@ namespace PortfolioManager.UI.ViewModels
         {
         }
 
-
-        public override void SetData(object data)
-        {
-            var holding = data as ShareHolding;
-
-            ASXCode = holding.Stock.ASXCode;
-
-            Heading = "Holdings for " + ASXCode;
-        }
-
     }
 }

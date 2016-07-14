@@ -14,24 +14,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class TaxableIncomeViewModel : PortfolioViewModel
     {
-        private FinancialYearParameter _Parameter;
-        public FinancialYearParameter Parameter
-        {
-            set
-            {
-                _Parameter = value;
-
-                if (_Parameter != null)
-                    _Parameter.PropertyChanged += ParameterChange;
-
-                ShowReport();
-            }
-
-            get
-            {
-                return _Parameter;
-            }
-        }
+        private IFinancialYearParameter _Parameter;
 
         public void ParameterChange(object sender, PropertyChangedEventArgs e)
         {
@@ -54,16 +37,32 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public TaxableIncomeViewModel(string label, Portfolio portfolio)
+        public TaxableIncomeViewModel(string label, Portfolio portfolio, IFinancialYearParameter parameter)
             : base(label, portfolio)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.FinancialYear;
 
+            _Parameter = parameter;
+
             Income = new ObservableCollection<IncomeItemViewModel>();
         }
 
-        public void ShowReport()
+        public override void Activate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged += ParameterChange;
+
+            ShowReport();
+        }
+
+        public override void Deactivate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged -= ParameterChange;
+        }
+
+        private void ShowReport()
         {
             Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
@@ -75,11 +74,6 @@ namespace PortfolioManager.UI.ViewModels
                 Income.Add(new IncomeItemViewModel(incomeItem));
 
             OnPropertyChanged("");
-        }
-
-        public override void SetData(object data)
-        {
-            Parameter = data as FinancialYearParameter;
         }
 
     }
