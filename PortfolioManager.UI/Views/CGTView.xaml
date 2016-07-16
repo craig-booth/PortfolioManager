@@ -40,7 +40,7 @@
                 <TextBlock Text="Discounted Capital Gains" Grid.Row="3" Grid.Column="0" />
                 <TextBlock Text="{Binding DiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="1"/>
                 
-                <TextBlock Text="less Offset Capital Gains"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="4" Grid.Column="0" />
+                <TextBlock Text="less Offset Capital Losses"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="4" Grid.Column="0" />
                 <TextBlock Text="{Binding DiscountedOffsetLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="4" Grid.Column="1"/>
                 
                 <TextBlock Text="less Prior Year Losses"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="5" Grid.Column="0" />

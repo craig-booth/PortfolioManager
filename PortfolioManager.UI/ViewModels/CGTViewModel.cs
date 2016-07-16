@@ -93,22 +93,33 @@ namespace PortfolioManager.UI.ViewModels
 
         private void CalculateCGT(IEnumerable<CGTEvent> cgtEvents)
         {
-            var capitalLosses = cgtEvents.Where(x => x.CapitalGain < 0).Sum(x => x.CapitalGain);
+            DiscountedGains = 0.00m;
+            NonDiscountedGains = 0.00m;
+            decimal capitalLosses = 0.00m;
 
-            NonDiscountedGains = cgtEvents.Where(x => x.CGTMethod != CGTMethod.Discount).Sum(x => x.CapitalGain);
+            // Apportion capital gains
+            foreach (var cgtEvent in cgtEvents)
+            {
+                if (cgtEvent.CapitalGain < 0)
+                    capitalLosses += -cgtEvent.CapitalGain;
+                else if (cgtEvent.CGTMethod == CGTMethod.Discount)
+                    DiscountedGains += cgtEvent.CapitalGain;
+                else
+                    NonDiscountedGains += cgtEvent.CapitalGain;
+            }
+
             if (capitalLosses > NonDiscountedGains)
             {
                 NonDiscountedOffsetLosses = NonDiscountedGains;
-                capitalLosses = 0.00m;
+                capitalLosses -= NonDiscountedOffsetLosses;
             }
             else
             {
                 NonDiscountedOffsetLosses = capitalLosses;
-                capitalLosses -= NonDiscountedOffsetLosses;
+                capitalLosses = 0.00m;
             }
             TotalNonDiscountedGains = NonDiscountedGains - NonDiscountedOffsetLosses;
 
-            DiscountedGains = cgtEvents.Where(x => x.CGTMethod == CGTMethod.Discount).Sum(x => x.CapitalGain);
             DiscountedOffsetLosses = capitalLosses;
             var capitalGain = DiscountedGains - capitalLosses - PriorYearLosses;
             if (capitalGain > 0)

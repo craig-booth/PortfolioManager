@@ -148,7 +148,10 @@ namespace PortfolioManager.Service.Utils
 
         public static decimal CGTDiscount(decimal cgtAmount)
         {
-            return 0.50m * cgtAmount; 
+            if (cgtAmount > 0)
+                return 0.50m * cgtAmount;
+            else
+                return 0.00m; 
         }
 
         public static CGTCalculation CalculateCapitalGain(IReadOnlyCollection<ShareParcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
