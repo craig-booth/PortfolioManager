@@ -42,7 +42,7 @@ namespace PortfolioManager.UI.ViewModels
         public UnrealisedGainsViewModel(string label, Portfolio portfolio, ISingleDateParameter parameter)
             : base(label, portfolio)
         {
-            Options.AllowStockSelection = false;
+            Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.Single;
 
             _Heading = label;

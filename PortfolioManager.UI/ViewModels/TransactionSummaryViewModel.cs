@@ -43,7 +43,7 @@ namespace PortfolioManager.UI.ViewModels
         public TransactionSummaryViewModel(string label, Portfolio portfolio, IDateRangeParameter parameter)
             : base(label, portfolio)
         {
-            Options.AllowStockSelection = false;
+            Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.Range;
 
             _Heading = label;

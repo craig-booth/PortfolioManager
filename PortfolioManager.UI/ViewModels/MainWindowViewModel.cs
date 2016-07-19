@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service;
@@ -67,9 +68,28 @@ namespace PortfolioManager.UI.ViewModels
             get { return _Modules; }
         }
 
+        public StockParameter StockParameter { get; private set; }
         public SingleDateParameter SingleDateParameter { get; private set; }
         public DateRangeParameter DateRangeParameter { get; private set; }
         public FinancialYearParameter FinancialYearParameter { get; set; }
+
+        private Dictionary<int, string> _FinancialYears;
+        public IReadOnlyDictionary<int, string> FinancialYears
+        {
+            get
+            {
+                return _FinancialYears;
+            }
+        }
+
+        private Dictionary<Stock, string> _Stocks;
+        public IReadOnlyDictionary<Stock, string> Stocks
+        {
+            get
+            {
+                return _Stocks;
+            }
+        }
 
         public MainWindowViewModel()
         {
@@ -78,11 +98,18 @@ namespace PortfolioManager.UI.ViewModels
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
 
+            StockParameter = new StockParameter();
             SingleDateParameter = new SingleDateParameter();
             DateRangeParameter = new DateRangeParameter();
             FinancialYearParameter = new FinancialYearParameter(2010);             
 
             _Modules = new List<Module>();
+
+            _FinancialYears = new Dictionary<int, string>();
+            PopulateFinancialYearList();
+
+            _Stocks = new Dictionary<Stock, string>();
+            PopulateStockList();
 
             var homeModule = new Module("Home", "HomeIcon");
             homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
@@ -107,6 +134,41 @@ namespace PortfolioManager.UI.ViewModels
             SelectedModule = homeModule;
         }
 
-    }   
+        private void PopulateFinancialYearList()
+        {
+            _FinancialYears.Clear();
+
+            // Determine current financial year
+            int currentFinancialYear;
+            if (DateTime.Today.Month <= 6)
+                currentFinancialYear = DateTime.Today.Year;
+            else
+                currentFinancialYear = DateTime.Today.Year + 1;
+
+            int year = currentFinancialYear;
+            while (year >= 2010)
+            {
+                if (year == currentFinancialYear)
+                    _FinancialYears.Add(year, "Current");
+                else if (year == currentFinancialYear - 1)
+                    _FinancialYears.Add(year, "Previous");
+                else
+                    _FinancialYears.Add(year, string.Format("{0} - {1}", year - 1, year));
+
+                year--;
+            }
+        }
+
+        private void PopulateStockList()
+        {
+            _Stocks.Clear();
+
+            // Add entry to entire portfolio
+           // _Stocks.Add(null, "All Stocks");
+        }
+
+
+
+    }
 
 }

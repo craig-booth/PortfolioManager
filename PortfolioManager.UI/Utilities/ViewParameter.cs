@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
+using PortfolioManager.Model.Stocks;
+
 namespace PortfolioManager.UI.Utilities
 {
     interface ISingleDateParameter : INotifyPropertyChanged
@@ -21,6 +23,11 @@ namespace PortfolioManager.UI.Utilities
     interface IFinancialYearParameter : IDateRangeParameter
     {
         int FinancialYear { get; }
+    }
+
+    interface IStockParameter: INotifyPropertyChanged
+    {
+        Stock Stock { get; }
     }
 
     class SingleDateParameter : NotifyClass, ISingleDateParameter
@@ -49,7 +56,7 @@ namespace PortfolioManager.UI.Utilities
 
     class DateRangeParameter : NotifyClass, IDateRangeParameter
     {
-        protected DateTime _StartDate;
+        private DateTime _StartDate;
         public DateTime StartDate
         {
             get
@@ -64,7 +71,7 @@ namespace PortfolioManager.UI.Utilities
             }
         }
 
-        protected DateTime _EndDate;
+        private DateTime _EndDate;
         public DateTime EndDate
         {
             get
@@ -105,7 +112,7 @@ namespace PortfolioManager.UI.Utilities
             }
         }
 
-        protected DateTime _StartDate;
+        private DateTime _StartDate;
         public DateTime StartDate
         {
             get
@@ -114,7 +121,7 @@ namespace PortfolioManager.UI.Utilities
             }
         }
 
-        protected DateTime _EndDate;
+        private DateTime _EndDate;
         public DateTime EndDate
         {
             get
@@ -123,42 +130,32 @@ namespace PortfolioManager.UI.Utilities
             }
         }
 
-        private Dictionary<int, string> _FinancialYears;
-        public IReadOnlyDictionary<int, string> FinancialYears
-        {
-            get
-            {
-                return _FinancialYears;
-            }
-        }
-
         public FinancialYearParameter(int oldestYear)
             : base()
         {
-            _FinancialYears = new Dictionary<int, string>();
-
             // Determine current financial year
-            int currentFinancialYear;
             if (DateTime.Today.Month <= 6)
-                currentFinancialYear = DateTime.Today.Year;
+                _FinancialYear = DateTime.Today.Year;
             else
-                currentFinancialYear = DateTime.Today.Year + 1;
+                _FinancialYear = DateTime.Today.Year + 1;
+        }
+    }
 
-            // populate list of financial years
-            int year = currentFinancialYear;
-            while (year >= oldestYear)
+    class StockParameter : NotifyClass, IStockParameter
+    {
+        private Stock _Stock;
+        public Stock Stock
+        {
+            get
             {
-                if (year == currentFinancialYear)
-                    _FinancialYears.Add(year, "Current");
-                else if (year == currentFinancialYear - 1)
-                    _FinancialYears.Add(year, "Previous");
-                else
-                    _FinancialYears.Add(year, string.Format("{0} - {1}", year - 1, year));
-
-                year--;
+                return _Stock;
             }
 
-            _FinancialYear = currentFinancialYear;
+            set
+            {
+                _Stock = value;
+                OnPropertyChanged();
+            }
         }
     }
 }
