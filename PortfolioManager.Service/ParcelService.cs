@@ -24,12 +24,22 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<ShareParcel> GetParcels(DateTime date)
         {
-            return _PortfolioQuery.GetAllParcels(date);
+            return _PortfolioQuery.GetAllParcels(date, date);
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetAllParcels(fromDate, toDate);
         }
 
         public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime date)
         {
-            return _PortfolioQuery.GetParcelsForStock(stock.Id, date);
+            return _PortfolioQuery.GetParcelsForStock(stock.Id, date, date);
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(Stock stock, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetParcelsForStock(stock.Id, fromDate, toDate);
         }
 
         public IReadOnlyCollection<ShareParcel> GetStapledSecurityParcels(Stock stock, DateTime date)
@@ -62,7 +72,6 @@ namespace PortfolioManager.Service
 
             return stapledParcels;
         }
-
 
         public ShareParcel GetParcel(Guid id, DateTime date)
         {

@@ -31,19 +31,20 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.First();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime atDate)
+        public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
-                               where atDate >= parcel.FromDate && atDate <= parcel.ToDate
+                               where fromDate >= parcel.FromDate && toDate <= parcel.ToDate
                                select parcel;
 
             return parcelsQuery.ToList().AsReadOnly();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime atDate)
+
+        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Stock == stock) && ((atDate >= parcel.FromDate && atDate <= parcel.ToDate))
+                               where (parcel.Stock == stock) && ((fromDate >= parcel.FromDate && toDate <= parcel.ToDate))
                                select parcel;
 
             return parcelsQuery.ToList().AsReadOnly();

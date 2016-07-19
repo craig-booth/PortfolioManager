@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 
@@ -104,5 +105,89 @@ namespace PortfolioManager.Service
 
         }
 
+        public DateTime GetPortfolioStartDate()
+        {
+            return new DateTime(0001, 01, 01);
+        }
+
+        public IReadOnlyCollection<OwnedStockName> GetOwnedStockNames(DateTime date)
+        {
+            return GetOwnedStockNames(date, date);
+        }
+
+        public IReadOnlyCollection<OwnedStockName> GetOwnedStockNames(DateTime fromDate, DateTime toDate)
+        {
+            var ownedStocks = new List<OwnedStockName>();
+
+            var parcels = _ParcelService.GetParcels(fromDate, toDate).OrderBy(x => x.Stock);
+
+            OwnedStockName currentStock = null;
+            foreach (var shareParcel in parcels)
+            {
+                if (shareParcel.Stock != currentStock.Id)
+                {
+                    var stock =_StockService.Get(shareParcel.Id, shareParcel.FromDate);
+                    currentStock = new OwnedStockName()
+                    {
+                        Id = stock.Id,
+                        ASXCode = stock.ASXCode,
+                        Name = stock.Name
+                    };
+                    ownedStocks.Add(currentStock);
+                }
+            } 
+
+            return ownedStocks.AsReadOnly();
+        }
+
+        public IReadOnlyCollection<OwnedStockId> GetOwnedStockIds(DateTime date)
+        {
+            return GetOwnedStockIds(date, date);
+        }
+
+        public IReadOnlyCollection<OwnedStockId> GetOwnedStockIds(DateTime fromDate, DateTime toDate)
+        {
+              var ownedStocks = new List<OwnedStockId>();
+
+              var parcels = _ParcelService.GetParcels(fromDate, toDate).OrderBy(x => x.Stock).ThenBy(x => x.FromDate);
+
+              OwnedStockId currentStock = null;
+              foreach (var shareParcel in parcels)
+              {
+                  if ((currentStock != null) && (shareParcel.Stock == currentStock.Id) && (shareParcel.FromDate < currentStock.ToDate))
+                  {
+                      if (shareParcel.ToDate > currentStock.ToDate)
+                          currentStock.ToDate = shareParcel.ToDate;
+                  }
+                  else
+                  {
+                      currentStock = new OwnedStockId()
+                      {
+                          Id = shareParcel.Stock,
+                          FromDate = shareParcel.FromDate,
+                          ToDate = shareParcel.ToDate
+                      };
+                      ownedStocks.Add(currentStock);
+                  }
+              }
+
+              return ownedStocks.AsReadOnly(); 
+        }
+
     }
+
+    public class OwnedStockId
+    {
+        public Guid Id;
+        public DateTime FromDate;
+        public DateTime ToDate;
+    }
+
+    public class OwnedStockName
+    {
+        public Guid Id;
+        public string ASXCode;
+        public string Name;
+    }
+
 }
