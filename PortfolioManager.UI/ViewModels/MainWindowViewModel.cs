@@ -10,6 +10,7 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service;
+using PortfolioManager.Model.Utils;
 
 using PortfolioManager.UI.Utilities;
 
@@ -91,17 +92,15 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+        private DateTime _PortfolioStartDate;
+
         public MainWindowViewModel()
         {
             IStockDatabase stockDatabase = new SQLiteStockDatabase(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Stocks.db"));
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "portfolio.db"));
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
-
-            StockParameter = new StockParameter();
-            SingleDateParameter = new SingleDateParameter();
-            DateRangeParameter = new DateRangeParameter();
-            FinancialYearParameter = new FinancialYearParameter(2010);             
+            _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
 
             _Modules = new List<Module>();
 
@@ -111,6 +110,13 @@ namespace PortfolioManager.UI.ViewModels
             _Stocks = new Dictionary<Stock, string>();
             PopulateStockList();
 
+            StockParameter = new StockParameter();
+            StockParameter.Stock = _Stocks.First().Key;
+            SingleDateParameter = new SingleDateParameter();
+            DateRangeParameter = new DateRangeParameter();
+            FinancialYearParameter = new FinancialYearParameter();
+
+
             var homeModule = new Module("Home", "HomeIcon");
             homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
             _Modules.Add(homeModule);
@@ -119,8 +125,8 @@ namespace PortfolioManager.UI.ViewModels
             reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
             reportsModule.ViewParameterAreaVisible = Visibility.Visible;
 
-            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio, SingleDateParameter));
-            reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio, DateRangeParameter));
+            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio, StockParameter, SingleDateParameter));
+            reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
            
             _Modules.Add(reportsModule);
 
@@ -164,7 +170,15 @@ namespace PortfolioManager.UI.ViewModels
             _Stocks.Clear();
 
             // Add entry to entire portfolio
-           // _Stocks.Add(null, "All Stocks");
+            var dummyStock = new Stock(Guid.Empty, DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate, "", "All Stocks", StockType.Ordinary, Guid.Empty);
+            _Stocks.Add(dummyStock, " ");
+
+            var stocks = _Portfolio.ShareHoldingService.GetOwnedStocks(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate).OrderBy(x => x.Name);
+            foreach (var stock in stocks)
+            {
+                _Stocks.Add(stock, string.Format("{0} ({1})", stock.Name, stock.ASXCode));
+            }
+
         }
 
 

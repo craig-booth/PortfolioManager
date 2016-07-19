@@ -130,7 +130,7 @@ namespace PortfolioManager.UI.Utilities
             }
         }
 
-        public FinancialYearParameter(int oldestYear)
+        public FinancialYearParameter()
             : base()
         {
             // Determine current financial year

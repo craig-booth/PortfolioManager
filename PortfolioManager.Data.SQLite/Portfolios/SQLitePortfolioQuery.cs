@@ -34,7 +34,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
-                               where fromDate >= parcel.FromDate && toDate <= parcel.ToDate
+                               where (parcel.FromDate <= fromDate && parcel.ToDate >= fromDate) || (parcel.FromDate >= fromDate && parcel.FromDate <= toDate)
                                select parcel;
 
             return parcelsQuery.ToList().AsReadOnly();
@@ -44,7 +44,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Stock == stock) && ((fromDate >= parcel.FromDate && toDate <= parcel.ToDate))
+                               where (parcel.Stock == stock) && ((parcel.FromDate <= fromDate && parcel.ToDate >= fromDate) || (parcel.FromDate >= fromDate && parcel.FromDate <= toDate))
                                select parcel;
 
             return parcelsQuery.ToList().AsReadOnly();

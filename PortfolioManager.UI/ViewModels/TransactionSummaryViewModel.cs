@@ -17,7 +17,8 @@ namespace PortfolioManager.UI.ViewModels
 {
     class TransactionSummaryViewModel : PortfolioViewModel
     {
-        private IDateRangeParameter _Parameter;
+        private IStockParameter _StockParameter;
+        private IDateRangeParameter _DateParameter;
 
         public void ParameterChange(object sender, PropertyChangedEventArgs e)
         {
@@ -40,43 +41,54 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
 
-        public TransactionSummaryViewModel(string label, Portfolio portfolio, IDateRangeParameter parameter)
+        public TransactionSummaryViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
             : base(label, portfolio)
         {
             Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.Range;
 
             _Heading = label;
-            _Parameter = parameter;
+            _StockParameter = stockParameter;
+            _DateParameter = dateParameter;
 
             Transactions = new ObservableCollection<TransactionViewItem>();
         }
 
         public override void Activate()
         {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged += ParameterChange;
+            if (_DateParameter != null)
+                _DateParameter.PropertyChanged += ParameterChange;
+
+            if (_StockParameter != null)
+                _StockParameter.PropertyChanged += ParameterChange;
 
             ShowReport();
         }
 
         public override void Deactivate()
         {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged -= ParameterChange;
+            if (_DateParameter != null)
+                _DateParameter.PropertyChanged -= ParameterChange;
+
+            if (_StockParameter != null)
+                _StockParameter.PropertyChanged -= ParameterChange;
         }
 
         private void ShowReport()
         {
             Transactions.Clear();
 
-            if (_Parameter == null)
+            if ((_StockParameter == null) || (_DateParameter == null))
             {
                 OnPropertyChanged("");
                 return;
             }
 
-            var transactions = Portfolio.TransactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+            IReadOnlyCollection<Transaction> transactions;
+            if (_StockParameter.Stock.Id == Guid.Empty)
+                transactions = Portfolio.TransactionService.GetTransactions(_DateParameter.StartDate, _DateParameter.EndDate);
+            else
+                transactions = Portfolio.TransactionService.GetTransactions(_StockParameter.Stock.ASXCode, _DateParameter.StartDate, _DateParameter.EndDate);
             foreach (var transaction in transactions)
             {
                 var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.TransactionDate);

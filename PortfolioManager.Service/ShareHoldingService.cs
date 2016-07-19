@@ -110,30 +110,26 @@ namespace PortfolioManager.Service
             return new DateTime(0001, 01, 01);
         }
 
-        public IReadOnlyCollection<OwnedStockName> GetOwnedStockNames(DateTime date)
+        public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime date)
         {
-            return GetOwnedStockNames(date, date);
+            return GetOwnedStocks(date, date);
         }
 
-        public IReadOnlyCollection<OwnedStockName> GetOwnedStockNames(DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime fromDate, DateTime toDate)
         {
-            var ownedStocks = new List<OwnedStockName>();
+            var ownedStocks = new List<Stock>();
 
             var parcels = _ParcelService.GetParcels(fromDate, toDate).OrderBy(x => x.Stock);
 
-            OwnedStockName currentStock = null;
+            Stock currentStock = null;
             foreach (var shareParcel in parcels)
             {
-                if (shareParcel.Stock != currentStock.Id)
+                if ((currentStock == null) || (shareParcel.Stock != currentStock.Id))
                 {
-                    var stock =_StockService.Get(shareParcel.Id, shareParcel.FromDate);
-                    currentStock = new OwnedStockName()
-                    {
-                        Id = stock.Id,
-                        ASXCode = stock.ASXCode,
-                        Name = stock.Name
-                    };
-                    ownedStocks.Add(currentStock);
+                    var stock =_StockService.Get(shareParcel.Stock, shareParcel.FromDate);
+                    ownedStocks.Add(stock);
+
+                    currentStock = stock;
                 }
             } 
 
@@ -181,13 +177,6 @@ namespace PortfolioManager.Service
         public Guid Id;
         public DateTime FromDate;
         public DateTime ToDate;
-    }
-
-    public class OwnedStockName
-    {
-        public Guid Id;
-        public string ASXCode;
-        public string Name;
     }
 
 }

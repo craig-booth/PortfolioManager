@@ -16,7 +16,8 @@ namespace PortfolioManager.UI.ViewModels
 {
     class UnrealisedGainsViewModel : PortfolioViewModel
     {
-        private ISingleDateParameter _Parameter;
+        private IStockParameter _StockParameter;
+        private ISingleDateParameter _DateParameter;
 
         public void ParameterChange(object sender, PropertyChangedEventArgs e)
         {
@@ -39,35 +40,43 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<UnrealisedGainViewItem> UnrealisedGains { get; private set; }
 
-        public UnrealisedGainsViewModel(string label, Portfolio portfolio, ISingleDateParameter parameter)
+        public UnrealisedGainsViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, ISingleDateParameter dateParameter)
             : base(label, portfolio)
         {
             Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.Single;
 
             _Heading = label;
-            _Parameter = parameter;
+            _StockParameter = stockParameter;
+            _DateParameter = dateParameter;
 
             UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>();
         }
 
         public override void Activate()
         {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged += ParameterChange;
+            if (_DateParameter != null)
+                _DateParameter.PropertyChanged += ParameterChange;
+
+            if (_StockParameter != null)
+                _StockParameter.PropertyChanged += ParameterChange;
 
             ShowReport();
         }
 
         public override void Deactivate()
         {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged -= ParameterChange;
+            if (_DateParameter != null)
+                _DateParameter.PropertyChanged -= ParameterChange;
+
+            if (_StockParameter != null)
+                _StockParameter.PropertyChanged -= ParameterChange;
         }
+
 
         private void ShowReport()
         {
-            if (_Parameter == null)
+            if (_DateParameter == null)
             {
                 UnrealisedGains.Clear();
                 OnPropertyChanged("");
@@ -75,7 +84,11 @@ namespace PortfolioManager.UI.ViewModels
                 return;
             }
 
-            var parcels = Portfolio.ParcelService.GetParcels(_Parameter.Date).OrderBy(x => x.Stock);
+            IEnumerable<ShareParcel> parcels;
+            if (_StockParameter.Stock.Id == Guid.Empty)
+                parcels = Portfolio.ParcelService.GetParcels(_DateParameter.Date).OrderBy(x => x.Stock);
+            else
+                parcels = Portfolio.ParcelService.GetParcels(_StockParameter.Stock, _DateParameter.Date);
 
             Stock currentStock = null;
             Guid previousStock = Guid.Empty;
@@ -85,13 +98,13 @@ namespace PortfolioManager.UI.ViewModels
             {
                 if (parcel.Stock != previousStock)
                 {
-                    currentStock = Portfolio.StockService.Get(parcel.Stock, _Parameter.Date);
-                    unitPrice = Portfolio.StockPriceService.GetClosingPrice(currentStock, _Parameter.Date);
+                    currentStock = Portfolio.StockService.Get(parcel.Stock, _DateParameter.Date);
+                    unitPrice = Portfolio.StockPriceService.GetClosingPrice(currentStock, _DateParameter.Date);
 
                     previousStock = parcel.Stock;
                 }
 
-                unrealisedGainsList.Add(new UnrealisedGainViewItem(currentStock, parcel, _Parameter.Date, unitPrice));
+                unrealisedGainsList.Add(new UnrealisedGainViewItem(currentStock, parcel, _DateParameter.Date, unitPrice));
             }
 
             UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>(unrealisedGainsList.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate));
