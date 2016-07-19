@@ -18,16 +18,17 @@ namespace PortfolioManager.Service
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
         private readonly TransactionService _TransactionService;
+        private readonly ShareHoldingService _ShareHoldingService;
 
         private readonly Dictionary<CorporateActionType, ICorporateActionHandler> _CorporateActionHandlers;
 
-        internal CorporateActionService(ICorporateActionQuery corporateActionQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService)
+        internal CorporateActionService(ICorporateActionQuery corporateActionQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService, ShareHoldingService shareHoldingService)
         {
             _CorporateActionQuery = corporateActionQuery;
             _ParcelService = parcelService;
             _StockService = stockService;
             _TransactionService = transactionService;
-
+            _ShareHoldingService = shareHoldingService;
 
             _CorporateActionHandlers = new Dictionary<CorporateActionType, ICorporateActionHandler>();
 
@@ -64,10 +65,10 @@ namespace PortfolioManager.Service
         public IReadOnlyCollection<CorporateAction> GetUnappliedCorporateActions()
         {
             // Get a list of all stocks held
-            var allOwnedStocks = GetStocksInPortfolio(DateTime.Today);
+            var allOwnedStocks = _ShareHoldingService.GetOwnedStockIds(DateTime.Today);
 
             var allCorporateActions = new List<CorporateAction>();
-            foreach (OwnedStock ownedStock in allOwnedStocks)
+            foreach (var ownedStock in allOwnedStocks)
             {
                 var corporateActions = _CorporateActionQuery.Find(ownedStock.Id, ownedStock.FromDate, ownedStock.ToDate);
                 AddUnappliedCorporateActions(allCorporateActions, corporateActions);
@@ -88,35 +89,6 @@ namespace PortfolioManager.Service
             return (handler.HasBeenApplied(corporateAction, _TransactionService));
         }
 
-        private IReadOnlyCollection<OwnedStock> GetStocksInPortfolio(DateTime date)
-        {
-            List<OwnedStock> ownedStocks = new List<OwnedStock>();
-
-            var parcels = _ParcelService.GetParcels(date).OrderBy(x => x.Stock).ThenBy(x => x.FromDate);
-
-            OwnedStock currentStock = null;
-            foreach (var shareParcel in parcels)
-            {
-                if ((currentStock != null) && (shareParcel.Stock == currentStock.Id) && (shareParcel.FromDate < currentStock.ToDate))
-                {
-                    if (shareParcel.ToDate > currentStock.ToDate)
-                        currentStock.ToDate = shareParcel.ToDate;
-                }
-                else
-                {
-                    currentStock = new OwnedStock()
-                    {
-                        Id = shareParcel.Stock,
-                        FromDate = shareParcel.FromDate,
-                        ToDate = shareParcel.ToDate
-                    };
-                    ownedStocks.Add(currentStock);
-                }
-            }
-
-            return ownedStocks.AsReadOnly();
-        }
-
         internal void AddUnappliedCorporateActions(IList<CorporateAction> toList, IEnumerable<CorporateAction> fromList)
         {
 
@@ -127,11 +99,4 @@ namespace PortfolioManager.Service
             }
         }
     }
-
-    class OwnedStock
-    {
-        public Guid Id;
-        public DateTime FromDate;
-        public DateTime ToDate;
-    } 
 }
