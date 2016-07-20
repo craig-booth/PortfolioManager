@@ -107,7 +107,9 @@ namespace PortfolioManager.Service
 
         public DateTime GetPortfolioStartDate()
         {
-            return new DateTime(0001, 01, 01);
+            var firstParcel = _ParcelService.GetParcels(new DateTime(0001, 01, 01), DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();
+
+            return firstParcel.FromDate;
         }
 
         public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime date)
