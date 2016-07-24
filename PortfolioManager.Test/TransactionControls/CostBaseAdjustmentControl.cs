@@ -66,7 +66,8 @@ namespace PortfolioManager.Test.TransactionControls
             Stock stock = cboASXCode.SelectedItem as Stock;
             costbaseAdjustment.ASXCode = stock.ASXCode;
             costbaseAdjustment.TransactionDate = dtpAdjustmentDate.Value;
-            costbaseAdjustment.Percentage = MathUtils.ParseDecimal(txtPercentage.Text) / 100;      
+            costbaseAdjustment.Percentage = MathUtils.ParseDecimal(txtPercentage.Text) / 100;
+            costbaseAdjustment.RecordDate = dtpAdjustmentDate.Value;
             costbaseAdjustment.Comment = txtComment.Text;
         }
 

@@ -65,6 +65,7 @@ namespace PortfolioManager.Service.CorporateActions
                     Units = drpUnits,
                     CostBase = amountPaid,
                     AquisitionDate = dividend.PaymentDate,
+                    RecordDate = dividend.PaymentDate,
                     Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
                 }
                 );

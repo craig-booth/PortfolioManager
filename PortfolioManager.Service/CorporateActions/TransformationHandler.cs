@@ -52,6 +52,7 @@ namespace PortfolioManager.Service.CorporateActions
                             Units = units,
                             CostBase = costBase,
                             AquisitionDate = parcel.AquisitionDate,
+                            RecordDate = transformation.ImplementationDate,
                             Comment = transformation.Description
                         });
                     }
@@ -93,6 +94,7 @@ namespace PortfolioManager.Service.CorporateActions
                         Units = units,
                         AveragePrice = resultingStock.CostBase,
                         TransactionCosts = 0.00m,
+                        RecordDate = resultingStock.AquisitionDate,
                         Comment = transformation.Description
                     });
                 }
@@ -127,6 +129,7 @@ namespace PortfolioManager.Service.CorporateActions
                     AveragePrice = transformation.CashComponent,
                     TransactionCosts = 0.00m,
                     CGTMethod = CGTCalculationMethod.FirstInFirstOut,
+                    RecordDate = transformation.ImplementationDate,
                     Comment = transformation.Description
                 });
             }

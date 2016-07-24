@@ -15,7 +15,6 @@ namespace PortfolioManager.Model.Portfolios
         public int Units { get; set; }
         public decimal AveragePrice { get; set; }
         public decimal TransactionCosts { get; set; }
-        public string Comment { get; set; }
 
         public Aquisition()
             : this (Guid.NewGuid())

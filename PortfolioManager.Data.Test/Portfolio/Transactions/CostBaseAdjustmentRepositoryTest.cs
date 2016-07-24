@@ -22,6 +22,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Percentage = 0.40M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test cost base"
             };
             TestAdd(costbaseAdjustment, new CostBaseAdjustmentComparer());
@@ -35,6 +36,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Percentage = 0.40M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test cost base"
             };
             TestUpdate(costbaseAdjustment, new CostBaseAdjustmentComparer());
@@ -49,6 +51,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Percentage = 0.40M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test cost base"
             };
             TestDelete(costbaseAdjustment);
@@ -63,6 +66,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Percentage = 0.40M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test cost base"
             };
             TestDeleteById(costbaseAdjustment);

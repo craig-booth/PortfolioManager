@@ -24,6 +24,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
                 CGTMethod = CGTCalculationMethod.MinimizeGain,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test disposal"
             };
             TestAdd(disposal, new DisposalComparer());
@@ -40,6 +41,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
                 CGTMethod = CGTCalculationMethod.MinimizeGain,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test disposal"
             };
             TestUpdate(disposal, new DisposalComparer());
@@ -57,6 +59,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
                 CGTMethod = CGTCalculationMethod.MinimizeGain,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test disposal"
             };
             TestDelete(disposal);
@@ -74,6 +77,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
                 CGTMethod = CGTCalculationMethod.MinimizeGain,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test disposal"
             };
             TestDeleteById(disposal);

@@ -30,6 +30,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = ""
                 },
                 new Disposal()
@@ -40,6 +41,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -67,6 +69,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = ""
                 },
                 new Disposal()
@@ -77,6 +80,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -105,6 +109,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = ""
                 },
                 new ReturnOfCapital()
@@ -123,6 +128,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.20m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -155,6 +161,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate1,
+                    RecordDate = aquisitionDate1,
                     Comment = ""
                 },
                 new OpeningBalance()
@@ -164,6 +171,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 500,
                     CostBase = 1200.00m,
                     AquisitionDate = aquisitionDate2,
+                    RecordDate = aquisitionDate1,
                     Comment = ""
                 },
                 new Disposal()
@@ -174,6 +182,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -202,6 +211,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate1,
+                    RecordDate = aquisitionDate1,
                     Comment = ""
                 },
                 new OpeningBalance()
@@ -211,6 +221,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 500,
                     CostBase = 1200.00m,
                     AquisitionDate = aquisitionDate2,
+                    RecordDate = aquisitionDate2,
                     Comment = ""
                 },
                 new Disposal()
@@ -221,6 +232,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -250,6 +262,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 15000.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = "Test Opening Balance"
                 },
                 new Disposal()
@@ -260,6 +273,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 17.00m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -290,6 +304,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 15000.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = "Test Opening Balance"
                 },
                 new Disposal()
@@ -300,6 +315,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 17.00m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -350,6 +366,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 15000.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = "Test Opening Balance"
                 },
                 taxDeferredIncome,
@@ -361,6 +378,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 17.00m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = _TransactionDate,
                     Comment = ""
                 }
             };
@@ -421,6 +439,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = transactionDate,
                     Comment = ""
                 }
             };
@@ -443,6 +462,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = transactionDate,
                     Comment = ""
                 }
             };
@@ -466,6 +486,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = ""
                 },
                 new Disposal()
@@ -476,6 +497,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = transactionDate,
                     Comment = ""
                 }
             };
@@ -499,6 +521,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate1,
+                    RecordDate = aquisitionDate1,
                     Comment = ""
                 },
                 new OpeningBalance()
@@ -508,6 +531,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 500,
                     CostBase = 1200.00m,
                     AquisitionDate = aquisitionDate2,
+                    RecordDate = aquisitionDate2,
                     Comment = ""
                 },
                 new Disposal()
@@ -518,6 +542,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = transactionDate,
                     Comment = ""
                 }
             };

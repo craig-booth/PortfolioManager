@@ -76,6 +76,7 @@ namespace PortfolioManager.Test.TransactionControls
             openingBalance.Units = MathUtils.ParseInt(txtUnits.Text);
             openingBalance.CostBase = MathUtils.ParseDecimal(txtCostBase.Text);
             openingBalance.AquisitionDate = dtpAquisitionDate.Value;
+            openingBalance.RecordDate = dtpBalanceDate.Value;
             openingBalance.Comment = txtComment.Text;
         }
 

@@ -91,7 +91,7 @@ namespace PortfolioManager.UI.ViewModels
                 transactions = Portfolio.TransactionService.GetTransactions(_StockParameter.Stock.ASXCode, _DateParameter.StartDate, _DateParameter.EndDate);
             foreach (var transaction in transactions)
             {
-                var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.TransactionDate);
+                var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
 
                 Transactions.Add(new TransactionViewItem(stock, transaction));
             }

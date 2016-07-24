@@ -21,6 +21,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Amount = 100.00M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""                
             };
             TestAdd(returnOfCapital, new ReturnOfCapitalComparer());
@@ -34,6 +35,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Amount = 100.00M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestUpdate(returnOfCapital, new ReturnOfCapitalComparer());
@@ -48,6 +50,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Amount = 100.00M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestDelete(returnOfCapital);
@@ -62,6 +65,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 TransactionDate = new DateTime(2010, 10, 04),
                 ASXCode = "ABC",
                 Amount = 100.00M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestDeleteById(returnOfCapital);
@@ -73,6 +77,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
 
             returnOfCapital.TransactionDate = new DateTime(2010, 04, 30);
             returnOfCapital.Amount = 150.00M;
+            returnOfCapital.RecordDate = new DateTime(2010, 04, 30);
         }
     }
 }

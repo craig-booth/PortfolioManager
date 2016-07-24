@@ -12,9 +12,7 @@ namespace PortfolioManager.Model.Portfolios
 
     public class ReturnOfCapital : Transaction
     {
-        public DateTime RecordDate { get; set; }
         public decimal Amount { get; set; }
-        public string Comment { get; set; }
 
         public ReturnOfCapital()
             : this (Guid.NewGuid())

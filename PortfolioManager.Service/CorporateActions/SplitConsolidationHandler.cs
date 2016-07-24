@@ -40,6 +40,7 @@ namespace PortfolioManager.Service.CorporateActions
                 TransactionDate = splitConsolidation.ActionDate,
                 OriginalUnits = splitConsolidation.OldUnits,
                 NewUnits = splitConsolidation.NewUnits,
+                RecordDate = splitConsolidation.ActionDate,
                 Comment = splitConsolidation.Description
             }
             );

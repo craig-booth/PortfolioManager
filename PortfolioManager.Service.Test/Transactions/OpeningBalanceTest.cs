@@ -26,6 +26,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = _TransactionDate,
+                RecordDate = _TransactionDate,
                 Comment = "Test Opening Balance"
             };
             _Portfolio.TransactionService.ProcessTransaction(openingbalance);
@@ -48,6 +49,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 15000.00m,
                 AquisitionDate = _TransactionDate,
+                RecordDate = _TransactionDate,
                 Comment = "Test Opening Balance"
             };
             _Portfolio.TransactionService.ProcessTransaction(openingbalance);

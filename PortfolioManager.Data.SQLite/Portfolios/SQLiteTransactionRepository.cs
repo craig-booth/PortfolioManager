@@ -34,7 +34,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description], [Attachment]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description, @Attachment)", _Connection);
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description], [Attachment], [RecordDate], [Comment]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description, @Attachment, @RecordDate, @Comment)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -46,7 +46,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description, [Attachment] = @Attachment WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description, [Attachment] = @Attachment, [RecordDate] = @RecordDate, [Comment] = @Comment WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -100,6 +100,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@ASXCode", entity.ASXCode);
             command.Parameters.AddWithValue("@Description", entity.Description);
             command.Parameters.AddWithValue("@Attachment", entity.Attachment.ToString());
+            command.Parameters.AddWithValue("@RecordDate", entity.RecordDate.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@Comment", entity.Comment);
         }
 
         protected override Transaction CreateEntity(SQLiteDataReader reader)
@@ -190,12 +192,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [Aquisitions] ([Id], [Units], [AveragePrice], [TransactionCosts], [Comment]) VALUES (@Id, @Units, @AveragePrice, @TransactionCosts, @Comment)";
+            return "INSERT INTO [Aquisitions] ([Id], [Units], [AveragePrice], [TransactionCosts]) VALUES (@Id, @Units, @AveragePrice, @TransactionCosts)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[Aquisitions] SET [Units] = @Units, [AveragePrice] = @AveragePrice, [TransactionCosts] = @TransactionCosts, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE [Aquisitions] SET [Units] = @Units, [AveragePrice] = @AveragePrice, [TransactionCosts] = @TransactionCosts WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -211,7 +213,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Units", aquisition.Units);
             command.Parameters.AddWithValue("@AveragePrice", SQLiteUtils.DecimalToDB(aquisition.AveragePrice));
             command.Parameters.AddWithValue("@TransactionCosts", SQLiteUtils.DecimalToDB(aquisition.TransactionCosts));
-            command.Parameters.AddWithValue("@Comment", aquisition.Comment); 
         }
     }
 
@@ -225,13 +226,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [CostBaseAdjustments] ([Id], [RecordDate], [Percentage], [Comment]) VALUES (@Id, @RecordDate, @Percentage, @Comment)";
+            return "INSERT INTO [CostBaseAdjustments] ([Id], [Percentage]) VALUES (@Id, @Percentage)";
 
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[CostBaseAdjustments] SET [RecordDate] = @RecordDate, [Percentage] = @Percentage, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[CostBaseAdjustments] SET [Percentage] = @Percentage WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -244,9 +245,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             CostBaseAdjustment costBaseAdjustment = entity as CostBaseAdjustment;
 
             command.Parameters.AddWithValue("@Id", costBaseAdjustment.Id.ToString());
-            command.Parameters.AddWithValue("@RecordDate", costBaseAdjustment.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Percentage", SQLiteUtils.DecimalToDB(costBaseAdjustment.Percentage));
-            command.Parameters.AddWithValue("@Comment", costBaseAdjustment.Comment); 
         }
     }
 
@@ -260,12 +259,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [Disposals] ([Id], [Units], [AveragePrice], [TransactionCosts], [CGTMethod], [Comment]) VALUES (@Id, @Units, @AveragePrice, @TransactionCosts, @CGTMethod, @Comment)";
+            return "INSERT INTO [Disposals] ([Id], [Units], [AveragePrice], [TransactionCosts], [CGTMethod]) VALUES (@Id, @Units, @AveragePrice, @TransactionCosts, @CGTMethod)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[Disposals] SET [Units] = @Units, [AveragePrice] = @AveragePrice, [TransactionCosts] = @TransactionCosts, [CGTMethod] = @CGTMethod, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[Disposals] SET [Units] = @Units, [AveragePrice] = @AveragePrice, [TransactionCosts] = @TransactionCosts, [CGTMethod] = @CGTMethod WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -282,7 +281,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@AveragePrice", SQLiteUtils.DecimalToDB(disposal.AveragePrice));
             command.Parameters.AddWithValue("@TransactionCosts", SQLiteUtils.DecimalToDB(disposal.TransactionCosts));
             command.Parameters.AddWithValue("@CGTMethod", disposal.CGTMethod);
-            command.Parameters.AddWithValue("@Comment", disposal.Comment); 
         }
     }
 
@@ -296,12 +294,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [IncomeReceived] ([Id], [RecordDate], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [Comment]) VALUES (@Id, @RecordDate, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @Comment)";
+            return "INSERT INTO [IncomeReceived] ([Id], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred]) VALUES (@Id, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[IncomeReceived] SET [RecordDate] = @RecordDate, [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[IncomeReceived] SET [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -314,14 +312,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             IncomeReceived incomeReceived = entity as IncomeReceived;
 
             command.Parameters.AddWithValue("@Id", incomeReceived.Id.ToString());
-            command.Parameters.AddWithValue("@RecordDate", incomeReceived.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@FrankedAmount", SQLiteUtils.DecimalToDB(incomeReceived.FrankedAmount));
             command.Parameters.AddWithValue("@UnfrankedAmount", SQLiteUtils.DecimalToDB(incomeReceived.UnfrankedAmount));
             command.Parameters.AddWithValue("@FrankingCredits", SQLiteUtils.DecimalToDB(incomeReceived.FrankingCredits));
             command.Parameters.AddWithValue("@Interest", SQLiteUtils.DecimalToDB(incomeReceived.Interest));
             command.Parameters.AddWithValue("@TaxDeferred", SQLiteUtils.DecimalToDB(incomeReceived.TaxDeferred));
-            command.Parameters.AddWithValue("@Comment", incomeReceived.Comment);
-
         }
     }
 
@@ -335,12 +330,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [AquisitionDate], [Comment]) VALUES (@Id, @Units, @CostBase, @AquisitionDate, @Comment)";
+            return "INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [AquisitionDate]) VALUES (@Id, @Units, @CostBase, @AquisitionDate)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[OpeningBalances] SET [Units] = @Units, [CostBase] = @CostBase, [AquisitionDate] = @AquisitionDate, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[OpeningBalances] SET [Units] = @Units, [CostBase] = @CostBase, [AquisitionDate] = @AquisitionDate WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -355,8 +350,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Id", openingBalance.Id.ToString());
             command.Parameters.AddWithValue("@Units", openingBalance.Units);
             command.Parameters.AddWithValue("@CostBase", SQLiteUtils.DecimalToDB(openingBalance.CostBase));
-            command.Parameters.AddWithValue("@AquisitionDate", openingBalance.AquisitionDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Comment", openingBalance.Comment); 
+            command.Parameters.AddWithValue("@AquisitionDate", openingBalance.AquisitionDate.ToString("yyyy-MM-dd")); 
         }
     }
 
@@ -370,12 +364,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [ReturnsOfCapital] ([Id], [RecordDate], [Amount], [Comment]) VALUES (@Id, @RecordDate, @Amount, @Comment)";
+            return "INSERT INTO [ReturnsOfCapital] ([Id], [Amount]) VALUES (@Id, @Amount)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[ReturnsOfCapital] SET [RecordDate] = @RecordDate, [Amount] = @Amount, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[ReturnsOfCapital] SET [Amount] = @Amount WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -388,9 +382,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             ReturnOfCapital returnOfCapital = entity as ReturnOfCapital;
 
             command.Parameters.AddWithValue("@Id", returnOfCapital.Id.ToString());
-            command.Parameters.AddWithValue("@RecordDate", returnOfCapital.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Amount", SQLiteUtils.DecimalToDB(returnOfCapital.Amount));
-            command.Parameters.AddWithValue("@Comment", returnOfCapital.Comment); 
         }
     }
 
@@ -404,12 +396,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [UnitCountAdjustments] ([Id], [OriginalUnits], [NewUnits], [Comment]) VALUES (@Id, @OriginalUnits, @NewUnits, @Comment)";
+            return "INSERT INTO [UnitCountAdjustments] ([Id], [OriginalUnits], [NewUnits]) VALUES (@Id, @OriginalUnits, @NewUnits)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[UnitCountAdjustments] SET [OriginalUnits] = @OriginalUnits, [NewUnits] = @NewUnits, [Comment] = @Comment WHERE [Id] = @Id";
+            return "UPDATE[UnitCountAdjustments] SET [OriginalUnits] = @OriginalUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -424,7 +416,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Id", unitCountAdjustment.Id.ToString());
             command.Parameters.AddWithValue("@OriginalUnits", unitCountAdjustment.OriginalUnits);
             command.Parameters.AddWithValue("@NewUnits", unitCountAdjustment.NewUnits);
-            command.Parameters.AddWithValue("@Comment", unitCountAdjustment.Comment);
         }
     }
 

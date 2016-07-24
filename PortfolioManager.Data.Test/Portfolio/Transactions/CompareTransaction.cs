@@ -16,7 +16,9 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 (transaction1.Type == transaction2.Type) &&
                 (transaction1.TransactionDate == transaction2.TransactionDate) &&
                 (transaction1.ASXCode == transaction2.ASXCode) &&
-                (transaction1.Description == transaction2.Description))
+                (transaction1.Description == transaction2.Description) &&
+                (transaction1.RecordDate == transaction2.RecordDate) &&
+                (transaction1.Comment == transaction2.Comment))
                 return true;
             else
                 return false;
@@ -86,7 +88,6 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             var incomeReceived2 = transaction2 as IncomeReceived;
 
             if (base.Equals(transaction1, transaction2) &&
-                (incomeReceived1.RecordDate == incomeReceived2.RecordDate) &&
                 (incomeReceived1.FrankedAmount == incomeReceived2.FrankedAmount) &&
                 (incomeReceived1.UnfrankedAmount == incomeReceived2.UnfrankedAmount) &&
                 (incomeReceived1.FrankingCredits == incomeReceived2.FrankingCredits) &&

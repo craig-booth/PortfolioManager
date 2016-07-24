@@ -33,6 +33,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate,
                     Comment = "Test aquisition"
                 }
             };
@@ -75,6 +76,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate1,
                     Comment = "Test aquisition"
                 },
                 new Aquisition()
@@ -84,6 +86,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 500,
                     AveragePrice = 15.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate2,
                     Comment = "Test aquisition"
                 }
             };

@@ -70,6 +70,7 @@ namespace PortfolioManager.Test.TransactionControls
             disposal.Units = MathUtils.ParseInt(txtUnits.Text);
             disposal.AveragePrice = MathUtils.ParseDecimal(txtAveragePrice.Text);
             disposal.TransactionCosts = MathUtils.ParseDecimal(txtTransactionCosts.Text);
+            disposal.RecordDate = dtpDisposalDate.Value;
             disposal.Comment = txtComment.Text;
         }
 

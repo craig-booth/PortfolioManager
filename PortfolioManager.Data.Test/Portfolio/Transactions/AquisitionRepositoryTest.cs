@@ -24,6 +24,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test add"
             };
             TestAdd(aquisition, new AquisitionComparer());
@@ -39,6 +40,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test add"
             };
             TestUpdate(aquisition, new AquisitionComparer()); 
@@ -55,6 +57,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test add"
             };
             TestDelete(aquisition); 
@@ -71,6 +74,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 AveragePrice = 5.55M,
                 TransactionCosts = 19.95M,
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = "Test add"
             };
             TestDeleteById(aquisition); 

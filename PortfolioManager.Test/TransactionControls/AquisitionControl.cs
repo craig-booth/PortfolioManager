@@ -71,6 +71,7 @@ namespace PortfolioManager.Test.TransactionControls
             aquisition.Units = MathUtils.ParseInt(txtUnits.Text);
             aquisition.AveragePrice = MathUtils.ParseDecimal(txtAveragePrice.Text);
             aquisition.TransactionCosts = MathUtils.ParseDecimal(txtTransactionCosts.Text);
+            aquisition.RecordDate = dtpAquisitionDate.Value;
             aquisition.Comment = txtComment.Text;
         }
 

@@ -38,6 +38,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 235,
                     AveragePrice = 23.06m,
                     TransactionCosts = 19.95m,
+                    RecordDate = new DateTime(2004, 11, 24),
                     Comment = "Parcel 1"
                 },
                 new Aquisition()
@@ -47,6 +48,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 40,
                     AveragePrice = 21.76m,
                     TransactionCosts = 19.95m,
+                    RecordDate = new DateTime(2007, 07, 27),
                     Comment = "Parcel 2"
                 },
                 new IncomeReceived()
@@ -68,6 +70,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 68,
                     AveragePrice = 16.60m,
                     TransactionCosts = 0.00m,
+                    RecordDate = new DateTime(2013, 06, 28),
                     Comment = "Received from demereger"
                 },
                 new ReturnOfCapital()
@@ -85,6 +88,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 68,
                     AveragePrice = 17.32m,
                     TransactionCosts = 19.95m,
+                    RecordDate = new DateTime(2013, 07, 22),
                     Comment = "Disposal of NNCLV"
                 },
                 new Disposal()
@@ -94,6 +98,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 275,
                     AveragePrice = 35.79m,
                     TransactionCosts = 19.95m,
+                    RecordDate = new DateTime(2015, 02, 10),
                     Comment = "Disposal of FOXLV"
                 }
             };

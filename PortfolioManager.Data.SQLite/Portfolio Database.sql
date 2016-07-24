@@ -14,7 +14,9 @@ CREATE TABLE [Transactions]
 	[Type] INTEGER NOT NULL,
 	[ASXCode] TEXT(6) NOT NULL,
 	[Description] TEXT(200)  NOT NULL,
-	[Attachment] TEXT(36) NOT NULL
+	[Attachment] TEXT(36) NOT NULL,
+	[RecordDate] TEXT(10) NOT NULL,
+	[Comment] TEXT(200)  NOT NULL
 );
 
 CREATE UNIQUE INDEX [Index_Transactions_Id] ON[Transactions]
@@ -41,7 +43,6 @@ CREATE TABLE [Aquisitions]
 	[Units] INTEGER NOT NULL,
 	[AveragePrice] INTEGER NOT NULL,
 	[TransactionCosts] INTEGER NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
@@ -49,9 +50,7 @@ CREATE TABLE [Aquisitions]
 CREATE TABLE [CostBaseAdjustments]
 (
 	[Id] TEXT(36) NOT NULL,
-	[RecordDate] TEXT(10) NOT NULL,
 	[Percentage] INTEGER NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
@@ -64,7 +63,6 @@ CREATE TABLE [Disposals]
 	[AveragePrice] INTEGER NOT NULL,
 	[TransactionCosts] INTEGER NOT NULL,
 	[CGTMethod] INTEGER NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
@@ -73,13 +71,11 @@ CREATE TABLE [Disposals]
 CREATE TABLE [IncomeReceived]
 (
 	[Id] TEXT(36) NOT NULL,
-	[RecordDate] TEXT(10) NOT NULL,
 	[FrankedAmount] INTEGER NOT NULL,
 	[UnfrankedAmount] INTEGER NOT NULL,
 	[FrankingCredits] INTEGER NOT NULL,
 	[Interest] INTEGER NOT NULL,
 	[TaxDeferred] INTEGER  NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
@@ -90,7 +86,6 @@ CREATE TABLE [OpeningBalances]
 	[Id] TEXT(36) NOT NULL,
 	[Units] INTEGER NOT NULL,
 	[CostBase] INTEGER NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	[AquisitionDate] TEXT(10) NOT NULL,
 	
 	PRIMARY KEY ([Id])
@@ -100,9 +95,7 @@ CREATE TABLE [OpeningBalances]
 CREATE TABLE [ReturnsOfCapital]
 (
 	[Id] TEXT(36) NOT NULL,
-	[RecordDate] TEXT(10) NOT NULL,
 	[Amount] INTEGER NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );
@@ -113,7 +106,6 @@ CREATE TABLE [UnitCountAdjustments]
 	[Id] TEXT(36) NOT NULL,
 	[OriginalUnits] INTEGER NOT NULL,
 	[NewUnits] INTEGER NOT NULL,
-	[Comment] TEXT(200)  NOT NULL,
 	
 	PRIMARY KEY ([Id])
 );

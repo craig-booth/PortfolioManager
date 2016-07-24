@@ -10,9 +10,7 @@ namespace PortfolioManager.Model.Portfolios
 {
     public class CostBaseAdjustment : Transaction
     {
-        public DateTime RecordDate { get; set; }
         public decimal Percentage { get; set; }
-        public string Comment { get; set; }
 
         public CostBaseAdjustment()
             : this(Guid.NewGuid())

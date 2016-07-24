@@ -32,6 +32,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate,
                     Comment = "Test aquisition"
                 }
             };
@@ -51,6 +52,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate,
                     Units = 1500,
                     CostBase = 0.20m * (1000 * 10.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new CostBaseAdjustment()
@@ -84,6 +86,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate1,
                     Comment = "Test aquisition"
                 },
                 new Aquisition()
@@ -93,6 +96,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 500,
                     AveragePrice = 15.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate2,
                     Comment = "Test aquisition"
                 }
             };
@@ -113,6 +117,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate1,
                     Units = 1500,
                     CostBase = 0.20m * (1000 * 10.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -122,6 +127,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate1,
                     Units = 2000,
                     CostBase = 0.30m * (1000 * 10.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -131,6 +137,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate2,
                     Units = 750,
                     CostBase = 0.20m * (500 * 15.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -140,6 +147,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate2,
                     Units = 1000,
                     CostBase = 0.30m * (500 * 15.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new CostBaseAdjustment()
@@ -172,6 +180,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate1,
                     Comment = "Test aquisition"
                 },
                 new Aquisition()
@@ -181,6 +190,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 500,
                     AveragePrice = 15.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate2,
                     Comment = "Test aquisition"
                 }
             };
@@ -201,6 +211,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate1,
                     Units = 1500,
                     CostBase = 0.20m * (1000 * 10.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -210,6 +221,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate1,
                     Units = 2000,
                     CostBase = 0.30m * (1000 * 10.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -219,6 +231,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate2,
                     Units = 750,
                     CostBase = 0.20m * (500 * 15.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new OpeningBalance()
@@ -228,6 +241,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AquisitionDate = purchaseDate2,
                     Units = 1000,
                     CostBase = 0.30m * (500 * 15.00m + 19.95m),
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 },
                 new CostBaseAdjustment()
@@ -246,6 +260,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AveragePrice = 12.00m,
                     TransactionCosts = 0.00m,
                     CGTMethod = CGTCalculationMethod.FirstInFirstOut,
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 }
             };
@@ -273,6 +288,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate1,
                     Comment = "Test aquisition"
                 },
                 new Aquisition()
@@ -282,6 +298,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 500,
                     AveragePrice = 15.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate2,
                     Comment = "Test aquisition"
                 }
             };
@@ -302,6 +319,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 2250,
                     AveragePrice = 1.00m,
                     TransactionCosts = 0.00m,
+                    RecordDate = bbbAquistionDate,
                     Comment = "Test"
                 },
                 new Aquisition()
@@ -311,6 +329,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 3000,
                     AveragePrice = 2.30m,
                     TransactionCosts = 0.00m,
+                    RecordDate = cccAquistionDate,
                     Comment = "Test"
                 },
                 new ReturnOfCapital()
@@ -346,6 +365,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 1000,
                     AveragePrice = 10.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate1,
                     Comment = "Test aquisition"
                 },
                 new Aquisition()
@@ -355,6 +375,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 500,
                     AveragePrice = 15.00m,
                     TransactionCosts = 19.95m,
+                    RecordDate = purchaseDate2,
                     Comment = "Test aquisition"
                 }
             };
@@ -375,6 +396,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 2250,
                     AveragePrice = 1.00m,
                     TransactionCosts = 0.00m,
+                    RecordDate = bbbAquistionDate,
                     Comment = "Test"
                 },
                 new Aquisition()
@@ -384,6 +406,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     Units = 3000,
                     AveragePrice = 2.30m,
                     TransactionCosts = 0.00m,
+                    RecordDate = cccAquistionDate,
                     Comment = "Test"
                 },
                 new ReturnOfCapital()
@@ -402,6 +425,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                     AveragePrice = 4.00m,
                     TransactionCosts = 0.00m,
                     CGTMethod = CGTCalculationMethod.FirstInFirstOut,
+                    RecordDate = implemenationDate,
                     Comment = "Test"
                 }
             };

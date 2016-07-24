@@ -26,6 +26,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 AveragePrice = 10.00m,
                 TransactionCosts = 19.95m,
+                RecordDate = _TransactionDate,
                 Comment = "Test aquisition"
             };
             _Portfolio.TransactionService.ProcessTransaction(aquisition);
@@ -49,6 +50,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 AveragePrice = 10.00m,
                 TransactionCosts = 19.95m,
+                RecordDate = _TransactionDate,
                 Comment = "Test aquisition"
             };
             _Portfolio.TransactionService.ProcessTransaction(aquisition);
@@ -79,6 +81,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
+                    RecordDate = transactionDate,
                     Comment = ""
                 }
             };

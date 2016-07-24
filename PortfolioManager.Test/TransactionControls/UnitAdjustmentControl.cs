@@ -70,6 +70,7 @@ namespace PortfolioManager.Test.TransactionControls
             unitCountAdjustment.TransactionDate = dtpAdjustmentDate.Value;
             unitCountAdjustment.OriginalUnits = MathUtils.ParseInt(txtOldUnits.Text);
             unitCountAdjustment.NewUnits = MathUtils.ParseInt(txtNewUnits.Text);
+            unitCountAdjustment.RecordDate = dtpAdjustmentDate.Value;
             unitCountAdjustment.Comment = txtComment.Text;
         }
 

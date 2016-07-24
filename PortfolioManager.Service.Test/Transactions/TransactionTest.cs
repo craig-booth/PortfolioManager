@@ -32,6 +32,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
+                    RecordDate = transactionDate,
                     Comment = ""
                 },
                 new ReturnOfCapital()
@@ -82,6 +83,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     AveragePrice = 1.70m,
                     TransactionCosts = 10.00m,
                     CGTMethod = CGTCalculationMethod.MinimizeGain,
+                    RecordDate = transactionDate,
                     Comment = ""
                 }
             };

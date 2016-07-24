@@ -29,6 +29,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = "Costbase Adjustment test"
                 },
                 new CostBaseAdjustment()
@@ -65,6 +66,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = aquisitionDate1,
+                    RecordDate = aquisitionDate1,
                     Comment = "Costbase Adjustment test"
                 },
                 new OpeningBalance()
@@ -74,6 +76,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 500,
                     CostBase = 1200.00m,
                     AquisitionDate = aquisitionDate2,
+                    RecordDate = aquisitionDate2,
                     Comment = "Costbase Adjustment test"
                 },
                 new CostBaseAdjustment()
@@ -111,6 +114,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 15000.00m,
                     AquisitionDate = aquisitionDate,
+                    RecordDate = aquisitionDate,
                     Comment = ""
                 },
                 new CostBaseAdjustment()
@@ -167,6 +171,7 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 1500.00m,
                     AquisitionDate = new DateTime(2000, 01, 01),
+                    RecordDate = new DateTime(2000, 01, 01),
                     Comment = "Costbase Adjustment test"
                 },
                 new CostBaseAdjustment()

@@ -23,6 +23,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 CostBase = 1230.79M,
                 AquisitionDate = new DateTime(2010, 10, 04),
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestAdd(openingBalance, new OpeningBalanceComparer());
@@ -38,6 +39,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 CostBase = 1230.79M,
                 AquisitionDate = new DateTime(2010, 10, 04),
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestUpdate(openingBalance, new OpeningBalanceComparer());
@@ -54,6 +56,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 CostBase = 1230.79M,
                 AquisitionDate = new DateTime(2010, 10, 04),
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestDelete(openingBalance);
@@ -70,6 +73,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
                 Units = 100,
                 CostBase = 1230.79M,
                 AquisitionDate = new DateTime(2010, 10, 04),
+                RecordDate = new DateTime(2010, 10, 04),
                 Comment = ""
             };
             TestDeleteById(openingBalance);
@@ -83,6 +87,7 @@ namespace PortfolioManager.Data.Test.Portfolio.Transactions
             openingBalance.Units = 150;
             openingBalance.CostBase = 2230.49M;
             openingBalance.AquisitionDate = new DateTime(2010, 04, 15);
+            openingBalance.RecordDate = new DateTime(2010, 04, 30);
         }
     }
 }

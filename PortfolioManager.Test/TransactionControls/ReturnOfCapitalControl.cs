@@ -67,6 +67,7 @@ namespace PortfolioManager.Test.TransactionControls
             returnOfCapital.ASXCode = stock.ASXCode;
             returnOfCapital.TransactionDate = dtpPaymentDate.Value;
             returnOfCapital.Amount = MathUtils.ParseDecimal(txtAmount.Text);
+            returnOfCapital.RecordDate = dtpPaymentDate.Value;
             returnOfCapital.Comment = txtComment.Text;
         }
 

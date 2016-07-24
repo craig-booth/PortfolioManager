@@ -12,13 +12,11 @@ namespace PortfolioManager.Model.Portfolios
 
     public class IncomeReceived: Transaction
     {
-        public DateTime RecordDate { get; set; }
         public decimal FrankedAmount { get;  set; }
         public decimal UnfrankedAmount { get; set; }
         public decimal FrankingCredits { get;  set; }
         public decimal Interest { get;  set; }
         public decimal TaxDeferred { get; set; }
-        public string Comment { get; set; }
 
         public IncomeReceived()
             : this(Guid.NewGuid())

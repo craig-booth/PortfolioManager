@@ -28,6 +28,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = openingBalanceDate,
+                RecordDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
@@ -66,6 +67,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = openingBalanceDate,
+                RecordDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
@@ -105,6 +107,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = openingBalanceDate1,
+                RecordDate = openingBalanceDate1,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance1);
@@ -117,6 +120,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 500,
                 CostBase = 800.00m,
                 AquisitionDate = openingBalanceDate2,
+                RecordDate = openingBalanceDate2,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance2);
@@ -157,6 +161,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 100,
                 CostBase = 100.00m,
                 AquisitionDate = openingBalanceDate,
+                RecordDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
@@ -197,6 +202,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = openingBalanceDate1,
+                RecordDate = openingBalanceDate1,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance1);
@@ -209,6 +215,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 100,
                 CostBase = 100.00m,
                 AquisitionDate = openingBalanceDate2,
+                RecordDate = openingBalanceDate2,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance2);
@@ -254,6 +261,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = openingBalanceDate1,
+                RecordDate = openingBalanceDate1,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance1);
@@ -266,6 +274,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 100,
                 CostBase = 100.00m,
                 AquisitionDate = openingBalanceDate2,
+                RecordDate = openingBalanceDate2,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance2);
@@ -312,7 +321,8 @@ namespace PortfolioManager.Service.Test.Transactions
                     Units = 1000,
                     CostBase = 15000.00m,
                     AquisitionDate = aquisitionDate,
-                Comment = ""
+                    RecordDate = aquisitionDate,
+                    Comment = ""
                 };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);
 
@@ -374,6 +384,7 @@ namespace PortfolioManager.Service.Test.Transactions
                 Units = 1000,
                 CostBase = 1500.00m,
                 AquisitionDate = openingBalanceDate,
+                RecordDate = openingBalanceDate,
                 Comment = ""
             };
             _Portfolio.TransactionService.ProcessTransaction(openingBalance);

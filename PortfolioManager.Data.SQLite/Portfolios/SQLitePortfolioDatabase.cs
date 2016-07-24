@@ -10,17 +10,17 @@ using PortfolioManager.Data.SQLite.Upgrade;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
-    public class SQLitePortfolioDatabase: SQLiteDatabase, IPortfolioDatabase
+    public class SQLitePortfolioDatabase : SQLiteDatabase, IPortfolioDatabase
     {
         protected override int RepositoryVersion
         {
-            get { return 4; }
+            get { return 5; }
         }
 
         /* TODO: Priority Low, move this to the database */
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
-        internal List<IncomeReceived> _IncomeReceived { get; private set; }    
+        internal List<IncomeReceived> _IncomeReceived { get; private set; }
 
         public IPortfolioQuery PortfolioQuery { get; private set; }
 
@@ -43,6 +43,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 return new SQLiteSimpleDatabaseUpgrade(3, "Upgrade\\PortfolioDatabaseUpgradeToVersion3.sql");
             else if (forVersion == 3)
                 return new SQLiteSimpleDatabaseUpgrade(4, "Upgrade\\PortfolioDatabaseUpgradeToVersion4.sql");
+            else if (forVersion == 4)
+                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql");
             else
                 throw new NotSupportedException();
         }
@@ -51,7 +53,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             return new SQLitePortfolioUnitOfWork(this);
         }
-     
+
 
         protected override void CreateDatabaseTables()
         {
