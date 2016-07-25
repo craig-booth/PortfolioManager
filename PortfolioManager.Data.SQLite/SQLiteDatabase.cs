@@ -26,8 +26,7 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            _Connection = new SQLiteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
-            _Connection.Open();
+            Open();
 
             var tableCount = new SQLiteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
             if ((long)tableCount.ExecuteScalar() == 0)
@@ -47,8 +46,23 @@ namespace PortfolioManager.Data.SQLite
                 if (UpgradeRequired())
                     Upgrade();
             }
+        }
+
+        public void Open()
+        {
+            _Connection = new SQLiteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
+            _Connection.Open();
 
             _Transaction = new SQLiteRepositoryTransaction(_Connection);
+        }
+
+        public void Close()
+        {
+            _Connection.Close();
+            _Connection.Dispose();
+
+            // Required to prevent database locks
+            GC.Collect();
         }
 
         private void LoadVersion()
@@ -134,7 +148,6 @@ namespace PortfolioManager.Data.SQLite
 
             var sqlCommand = new SQLiteCommand(sqlScript, _Connection);
             sqlCommand.ExecuteNonQuery();
-            sqlCommand.Dispose();
         }
     }
 

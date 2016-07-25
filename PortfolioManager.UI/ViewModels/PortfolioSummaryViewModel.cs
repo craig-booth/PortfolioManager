@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Globalization;
 
 using PortfolioManager.Service;
-
+using PortfolioManager.Model.Portfolios;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
@@ -51,13 +51,75 @@ namespace PortfolioManager.UI.ViewModels
                 PercentChangeInValue = DollarChangeInValue / totalCost;
 
             Return1Year = 0.0560m;
-            Return3Year = 0.0483m;
+            Return3Year = CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
             Return5Year = null;
             ReturnAll = 0.0503m;
 
             Holdings.Clear();
             foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
+        }
+
+        private decimal CalculateIRR(DateTime startDate, DateTime endDate)
+        {
+            // create cashFlow array
+            int yearNumber = 1;
+            DateTime periodEnd = startDate.AddYears(1);
+            while (periodEnd < endDate)
+            {
+                yearNumber++;
+                periodEnd = periodEnd.AddYears(1);
+            }
+            var cashFlows = new decimal[yearNumber + 1];
+
+            // Get the initial portfolio value
+            var initialHoldings = Portfolio.ShareHoldingService.GetHoldings(startDate);
+            cashFlows[0] -= initialHoldings.Sum(x => x.MarketValue);
+
+            // generate list of cashFlows
+            var transactions = Portfolio.TransactionService.GetTransactions(startDate.AddDays(1), endDate);
+            foreach (var transaction in transactions)
+            {
+                yearNumber = 1;
+                periodEnd = startDate.AddYears(1);
+                while (transaction.TransactionDate >= periodEnd)
+                {
+                    yearNumber++;
+                    periodEnd = periodEnd.AddYears(1);
+                }
+                      
+
+                if (transaction.Type == TransactionType.Aquisition)
+                {
+                    var aquisition = transaction as Aquisition;
+                    cashFlows[yearNumber] -= (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
+                }
+                else if (transaction.Type == TransactionType.Disposal)
+                {
+                    var disposal = transaction as Disposal;
+                    cashFlows[yearNumber] += (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
+                }
+                else if (transaction.Type == TransactionType.Income)
+                {
+                    var income = transaction as IncomeReceived;
+                    cashFlows[yearNumber] += income.CashIncome;
+                }
+                else if (transaction.Type == TransactionType.OpeningBalance)
+                {
+
+                }
+                else if (transaction.Type == TransactionType.ReturnOfCapital)
+                {
+
+                }
+
+            }
+
+            // Get the finaltfolio value
+            var finalHoldings = Portfolio.ShareHoldingService.GetHoldings(endDate);
+            cashFlows[cashFlows.Length - 1] += finalHoldings.Sum(x => x.MarketValue);
+
+            return 0.00m;
         }
     }
 

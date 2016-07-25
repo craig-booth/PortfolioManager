@@ -44,7 +44,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             else if (forVersion == 3)
                 return new SQLiteSimpleDatabaseUpgrade(4, "Upgrade\\PortfolioDatabaseUpgradeToVersion4.sql");
             else if (forVersion == 4)
-                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql");
+                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql", "Upgrade\\PortfolioDatabaseUpgradeToVersion5c.sql");
             else
                 throw new NotSupportedException();
         }

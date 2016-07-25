@@ -31,26 +31,45 @@ namespace PortfolioManager.Data.SQLite.Upgrade
 
             SQLiteCommand sqlCommand = new SQLiteCommand(sqlCommands, connection);
             sqlCommand.ExecuteNonQuery();
+            sqlCommand.Dispose();
         }
     }
 
     public class SQLiteSimpleDatabaseUpgrade : SQLiteDatabaseUpgrade
     {
         private readonly string _ScriptFile;
+        private readonly string _CleanupScriptFile;
 
         public SQLiteSimpleDatabaseUpgrade(int version, string scriptFile)
+            : this(version, scriptFile, "")
+        {
+        }
+
+        public SQLiteSimpleDatabaseUpgrade(int version, string scriptFile, string cleanupScriptFile)
         {
             _Version = version;
             _ScriptFile = scriptFile;
+            _CleanupScriptFile = cleanupScriptFile;
         }
 
         public override void Upgrade(SQLiteDatabase database)
         {
-            var transaction = database._Connection.BeginTransaction();
+            SQLiteTransaction transaction;
 
+            transaction = database._Connection.BeginTransaction();
             database.ExecuteScript(_ScriptFile);
-
             transaction.Commit();
+
+            if (_CleanupScriptFile != "")
+            {
+                // Required to remove database locks
+                database.Close();
+                database.Open();
+
+                transaction = database._Connection.BeginTransaction();
+                database.ExecuteScript(_CleanupScriptFile);
+                transaction.Commit();
+            }
         }
 
     }
