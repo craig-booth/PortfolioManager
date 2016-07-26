@@ -60,6 +60,14 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             }
         }
 
+        public ICashAccountRepository CashTransactionRepository
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         protected internal SQLitePortfolioUnitOfWork(SQLitePortfolioDatabase database)
         {
             _Database = database;

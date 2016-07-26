@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
+    <Compile Include="CashAccountService.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
     <Compile Include="CGTService.cs" />
     <Compile Include="CorporateActionService.cs" />

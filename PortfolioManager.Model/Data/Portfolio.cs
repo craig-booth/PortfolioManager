@@ -21,6 +21,7 @@ namespace PortfolioManager.Model.Data
         ITransactionRepository TransactionRepository { get; }
         ICGTEventRepository CGTEventRepository { get; }
         IAttachmentRepository AttachmentRepository { get; }
+        ICashAccountRepository CashTransactionRepository { get; }
 
         void Save();
     }
@@ -45,6 +46,11 @@ namespace PortfolioManager.Model.Data
 
     }
 
+    public interface ICashAccountRepository : IRepository<CashAccountTransaction>
+    {
+
+    }
+
     public interface IPortfolioQuery
     {
         ShareParcel GetParcel(Guid id, DateTime atDate);
@@ -55,5 +61,6 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate);
     }
 }

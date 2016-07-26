@@ -17,6 +17,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal FrankingCredits { get;  set; }
         public decimal Interest { get;  set; }
         public decimal TaxDeferred { get; set; }
+        public bool CreateCashTransaction { get; set; }
 
         public IncomeReceived()
             : this(Guid.NewGuid())

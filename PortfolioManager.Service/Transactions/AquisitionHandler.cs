@@ -11,11 +11,10 @@ using PortfolioManager.Model.Portfolios;
 namespace PortfolioManager.Service.Transactions
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler
-    { 
+    {
         public AquisitionHandler(ParcelService parcelService, StockService stockService)
             : base (parcelService, stockService)
         {
-
         }
 
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
@@ -32,7 +31,11 @@ namespace PortfolioManager.Service.Transactions
 
             AddParcel(unitOfWork, aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, ParcelEvent.Aquisition);
 
-            //CashAccount.AddTransaction(CashAccountTransactionType.Transfer, aquisition.TransactionDate, String.Format("Purchase of {0}", aquisition.ASXCode), amountPaid);
+            if (aquisition.CreateCashTransaction)
+            {
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, aquisition.TransactionDate, String.Format("Purchase of {0}", aquisition.ASXCode), -1 * (aquisition.Units * aquisition.AveragePrice));
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Fee, aquisition.TransactionDate, String.Format("Brokerage for purchase of {0}", aquisition.ASXCode), -1 * aquisition.TransactionCosts);                
+            }
         }
     }
 }

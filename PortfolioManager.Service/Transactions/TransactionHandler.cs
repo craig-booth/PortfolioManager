@@ -121,6 +121,18 @@ namespace PortfolioManager.Service.Transactions
         {
             unitOfWork.CGTEventRepository.Add(PortfolioUtils.CreateCGTEvent(parcel, eventDate, units, amount));
         }
+
+        protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, CashAccountTransactionType type, DateTime date, string description, decimal amount)
+        {
+            var cashTransaction = new CashAccountTransaction()
+            {
+                Type = type,
+                Date = date,
+                Description = description,
+                Amount = amount
+            };
+            unitOfWork.CashTransactionRepository.Add(cashTransaction);
+        }
  
     }
 

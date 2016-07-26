@@ -56,6 +56,14 @@ namespace PortfolioManager.Data.Memory.Portfolios
             }
         }
 
+        public ICashAccountRepository CashTransactionRepository
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         protected internal MemoryPortfolioUnitOfWork(MemoryPortfolioDatabase database)
         {
             _Database = database;

@@ -18,6 +18,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal AveragePrice { get; set; }
         public decimal TransactionCosts { get; set; }
         public CGTCalculationMethod CGTMethod { get; set; }
+        public bool CreateCashTransaction { get; set; }
 
         public Disposal()
             : this(Guid.NewGuid())

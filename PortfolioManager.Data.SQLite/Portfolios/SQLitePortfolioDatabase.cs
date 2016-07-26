@@ -21,6 +21,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
+        internal List<CashAccountTransaction> _CashAccountTransactions { get; private set; }
 
         public IPortfolioQuery PortfolioQuery { get; private set; }
 
@@ -31,6 +32,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _Parcels = new List<ShareParcel>();
             _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();
+            _CashAccountTransactions = new List<CashAccountTransaction>();
         }
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)

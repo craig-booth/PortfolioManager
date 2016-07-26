@@ -90,6 +90,10 @@ namespace PortfolioManager.Data.Memory.Portfolios
 
             return transactionQuery.ToList().AsReadOnly();
         }
- 
+
+        public IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
+        {
+            return null;
+        }
     }
 }
