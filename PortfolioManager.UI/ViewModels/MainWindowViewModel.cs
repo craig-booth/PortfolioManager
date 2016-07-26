@@ -127,6 +127,7 @@ namespace PortfolioManager.UI.ViewModels
 
             reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio, StockParameter, SingleDateParameter));
             reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
+            reportsModule.Views.Add(new CashAccountViewModel("Cash Summary", _Portfolio, DateRangeParameter));
            
             _Modules.Add(reportsModule);
 

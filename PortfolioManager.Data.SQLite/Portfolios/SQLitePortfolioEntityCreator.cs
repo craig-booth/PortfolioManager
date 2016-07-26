@@ -63,7 +63,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 Units = aquisitionReader.GetInt32(0),
                 AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(1)),
-                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(2))
+                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(2)),
+                CreateCashTransaction = true
             };
             aquisitionReader.Close();
 
@@ -110,7 +111,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 Units = disposalReader.GetInt32(0),
                 AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(1)),
                 TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(2)),
-                CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3)
+                CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3),
+                CreateCashTransaction = true
             };
             disposalReader.Close();
 
@@ -136,7 +138,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(1)),
                 FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(2)),
                 Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(3)),
-                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(4))
+                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(4)),
+                CreateCashTransaction = true
             };
             incomeReceivedReader.Close();
 
@@ -183,7 +186,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             ReturnOfCapital returnOfCapital = new ReturnOfCapital(id)
             {
-                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt32(0))
+                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt32(0)),
+                CreateCashTransaction = true
             };
             returnOfCapitalReader.Close();
 

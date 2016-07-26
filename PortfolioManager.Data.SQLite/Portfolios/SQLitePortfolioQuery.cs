@@ -157,5 +157,5 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return _Database._CashAccountTransactions.Where(t => (t.Date >= fromDate) && (t.Date <= toDate)).ToList();
         }
 
-        }
+    }
 }

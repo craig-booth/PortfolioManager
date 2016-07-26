@@ -21,7 +21,7 @@ namespace PortfolioManager.Model.Data
         ITransactionRepository TransactionRepository { get; }
         ICGTEventRepository CGTEventRepository { get; }
         IAttachmentRepository AttachmentRepository { get; }
-        ICashAccountRepository CashTransactionRepository { get; }
+        ICashAccountRepository CashAccountRepository { get; }
 
         void Save();
     }

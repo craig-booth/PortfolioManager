@@ -15,6 +15,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private SQLiteTransactionRepository _TransactionRepository;
         private SQLiteCGTEventRepository _CGTEventRepository;
         private SQLiteAttachmentRepository _AttachmentRepository;
+        private SQLiteCashAccountRepository _CashAccountRepository;
 
         public ITransactionRepository TransactionRepository
         {
@@ -60,11 +61,14 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             }
         }
 
-        public ICashAccountRepository CashTransactionRepository
+        public ICashAccountRepository CashAccountRepository
         {
             get
             {
-                return null;
+                if (_CashAccountRepository == null)
+                    _CashAccountRepository = new SQLiteCashAccountRepository(_Database);
+
+                return _CashAccountRepository;
             }
         }
 

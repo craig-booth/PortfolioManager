@@ -124,14 +124,17 @@ namespace PortfolioManager.Service.Transactions
 
         protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, CashAccountTransactionType type, DateTime date, string description, decimal amount)
         {
-            var cashTransaction = new CashAccountTransaction()
+            if (amount != 0.00m)
             {
-                Type = type,
-                Date = date,
-                Description = description,
-                Amount = amount
-            };
-            unitOfWork.CashTransactionRepository.Add(cashTransaction);
+                var cashTransaction = new CashAccountTransaction()
+                {
+                    Type = type,
+                    Date = date,
+                    Description = description,
+                    Amount = amount
+                };
+                unitOfWork.CashAccountRepository.Add(cashTransaction);
+            }
         }
  
     }

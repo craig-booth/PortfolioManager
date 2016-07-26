@@ -56,7 +56,7 @@ namespace PortfolioManager.Data.Memory.Portfolios
             }
         }
 
-        public ICashAccountRepository CashTransactionRepository
+        public ICashAccountRepository CashAccountRepository
         {
             get
             {

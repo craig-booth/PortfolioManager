@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="Views/TaxableIncomeView.xaml"/>
                 <ResourceDictionary Source="Views/CGTView.xaml"/>
                 <ResourceDictionary Source="Views/UnrealisedGainsView.xaml"/>
+                <ResourceDictionary Source="Views/CashAccountView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
