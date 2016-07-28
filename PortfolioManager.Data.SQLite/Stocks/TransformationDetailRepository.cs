@@ -81,7 +81,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@ImplementationDate", entity.ImplementationDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@CashComponent", SQLiteUtils.DecimalToDB(entity.CashComponent));
-            command.Parameters.AddWithValue("@RolloverRelief", entity.RolloverRefliefApplies? "Y": "N");
+            command.Parameters.AddWithValue("@RolloverRelief", SQLiteUtils.BoolToDb(entity.RolloverRefliefApplies));
         }
 
         private SQLiteCommand _AddResultRecordCommand;

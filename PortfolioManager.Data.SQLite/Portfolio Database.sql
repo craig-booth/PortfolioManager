@@ -43,6 +43,7 @@ CREATE TABLE [Aquisitions]
 	[Units] INTEGER NOT NULL,
 	[AveragePrice] INTEGER NOT NULL,
 	[TransactionCosts] INTEGER NOT NULL,
+	[CreateCashTransaction] TEXT(1) NOT NULL DEFAULT "N",
 	
 	PRIMARY KEY ([Id])
 );
@@ -63,6 +64,7 @@ CREATE TABLE [Disposals]
 	[AveragePrice] INTEGER NOT NULL,
 	[TransactionCosts] INTEGER NOT NULL,
 	[CGTMethod] INTEGER NOT NULL,
+	[CreateCashTransaction] TEXT(1) NOT NULL DEFAULT "N",
 	
 	PRIMARY KEY ([Id])
 );
@@ -76,6 +78,7 @@ CREATE TABLE [IncomeReceived]
 	[FrankingCredits] INTEGER NOT NULL,
 	[Interest] INTEGER NOT NULL,
 	[TaxDeferred] INTEGER  NOT NULL,
+	[CreateCashTransaction] TEXT(1) NOT NULL DEFAULT "N",
 	
 	PRIMARY KEY ([Id])
 );
@@ -96,6 +99,7 @@ CREATE TABLE [ReturnsOfCapital]
 (
 	[Id] TEXT(36) NOT NULL,
 	[Amount] INTEGER NOT NULL,
+	[CreateCashTransaction] TEXT(1) NOT NULL DEFAULT "N",
 	
 	PRIMARY KEY ([Id])
 );

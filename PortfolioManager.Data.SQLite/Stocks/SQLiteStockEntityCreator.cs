@@ -161,7 +161,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     actionDate,
                                     transformationReader.GetDateTime(1),
                                     SQLiteUtils.DBToDecimal(transformationReader.GetInt32(2)),
-                                    transformationReader.GetString(3) == "Y"? true: false,
+                                    SQLiteUtils.DBToBool(transformationReader.GetString(3)),
                                     description);
             transformationReader.Close();
 

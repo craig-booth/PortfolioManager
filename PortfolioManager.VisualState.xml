@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit</TopNode>
+  <TopNode>[0-1330]PortfolioManager.Service.Test.CorporateActionHandlers</TopNode>
   <SelectedNode>[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.nunit" Expanded="true" />
     <Node UniqueName="[0-1129]C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.Test\bin\Debug\PortfolioManager.Data.Test.dll" Expanded="true" />
     <Node UniqueName="[0-1130]PortfolioManager" Expanded="true" />
+    <Node UniqueName="[0-1131]PortfolioManager.Data" Expanded="true" />
     <Node UniqueName="[0-1132]PortfolioManager.Data.Test" Expanded="true" />
     <Node UniqueName="[0-1134]PortfolioManager.Data.Test.Portfolio" Expanded="true" />
     <Node UniqueName="[0-1135]PortfolioManager.Data.Test.Portfolio.Transactions" Expanded="true" />

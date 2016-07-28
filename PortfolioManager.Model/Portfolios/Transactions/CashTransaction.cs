@@ -24,7 +24,7 @@ namespace PortfolioManager.Model.Portfolios
 
         protected override string GetDescription()
         {
-            return "";
+            return Comment;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         protected override int RepositoryVersion
         {
-            get { return 5; }
+            get { return 6; }
         }
 
         /* TODO: Priority Low, move this to the database */
@@ -47,6 +47,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 return new SQLiteSimpleDatabaseUpgrade(4, "Upgrade\\PortfolioDatabaseUpgradeToVersion4.sql");
             else if (forVersion == 4)
                 return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql", "Upgrade\\PortfolioDatabaseUpgradeToVersion5c.sql");
+            else if (forVersion == 5)
+                return new SQLiteSimpleDatabaseUpgrade(6, "Upgrade\\PortfolioDatabaseUpgradeToVersion6.sql");
             else
                 throw new NotSupportedException();
         }
