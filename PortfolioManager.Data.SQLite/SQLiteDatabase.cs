@@ -26,43 +26,29 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            Open();
-
-            var tableCount = new SQLiteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
-            if ((long)tableCount.ExecuteScalar() == 0)
-            {
-                CreateDatabaseTables();
-
-                Version.Version = RepositoryVersion;
-                Version.CreationDateTime = DateTime.Today;
-                Version.UpgradeDateTime = DateTime.Today;
-
-                SetDbVersion();
-            }
-            else
-            {
-                LoadVersion();
-
-                if (UpgradeRequired())
-                    Upgrade();
-            }
-        }
-
-        public void Open()
-        {
             _Connection = new SQLiteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
             _Connection.Open();
 
             _Transaction = new SQLiteRepositoryTransaction(_Connection);
-        }
 
-        public void Close()
-        {
-            _Connection.Close();
-            _Connection.Dispose();
+               var tableCountCommand = new SQLiteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
+               if ((long)tableCountCommand.ExecuteScalar() == 0)
+               {
+                   CreateDatabaseTables();
 
-            // Required to prevent database locks
-            GC.Collect();
+                   Version.Version = RepositoryVersion;
+                   Version.CreationDateTime = DateTime.Today;
+                   Version.UpgradeDateTime = DateTime.Today;
+
+                   SetDbVersion();
+               }
+               else
+               { 
+                   LoadVersion();
+
+                   if (UpgradeRequired())
+                       Upgrade();
+               } 
         }
 
         private void LoadVersion()
@@ -79,6 +65,8 @@ namespace PortfolioManager.Data.SQLite
                     Version.CreationDateTime = reader.GetDateTime(1);
                     Version.UpgradeDateTime = reader.GetDateTime(2);
                 }
+
+                reader.Close();
             }
             catch
             {

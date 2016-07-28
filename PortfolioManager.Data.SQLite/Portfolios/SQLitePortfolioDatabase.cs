@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
@@ -46,7 +47,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             else if (forVersion == 3)
                 return new SQLiteSimpleDatabaseUpgrade(4, "Upgrade\\PortfolioDatabaseUpgradeToVersion4.sql");
             else if (forVersion == 4)
-                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql", "Upgrade\\PortfolioDatabaseUpgradeToVersion5c.sql");
+                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql");
             else if (forVersion == 5)
                 return new SQLiteSimpleDatabaseUpgrade(6, "Upgrade\\PortfolioDatabaseUpgradeToVersion6.sql");
             else

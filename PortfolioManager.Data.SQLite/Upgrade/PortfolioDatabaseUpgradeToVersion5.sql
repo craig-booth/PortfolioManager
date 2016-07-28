@@ -4,7 +4,8 @@ ALTER TABLE [Transactions]
 
 
 ALTER TABLE [Transactions]
-	ADD COLUMN [Comment] TEXT(200)  NOT NULL DEFaULT "";
+	ADD COLUMN [Comment] TEXT(200)  NOT NULL DEFAULT "";
+
 
 UPDATE [Transactions] 
 	SET [RecordDate] = [Transactions].[TransactionDate],
@@ -41,6 +42,7 @@ UPDATE [Transactions]
 	    [Comment] = (SELECT [UnitCountAdjustments].[Comment] FROM [UnitCountAdjustments] WHERE [UnitCountAdjustments].[Id] = [Transactions].[Id]) 
 	WHERE [Transactions].[Type] = 6;
 
+
 ALTER TABLE [Aquisitions] RENAME TO [Aquisitions_Backup];
 CREATE TABLE [Aquisitions]
 (
@@ -51,8 +53,9 @@ CREATE TABLE [Aquisitions]
 	
 	PRIMARY KEY ([Id])
 );
-INSERT INTO [Aquisitions] SELECT [Id], [Units], [AveragePrice], [TransactionCosts] FROM [Aquisitions_Backup];		
-
+INSERT INTO [Aquisitions] SELECT [Id], [Units], [AveragePrice], [TransactionCosts] FROM [Aquisitions_Backup];
+DROP TABLE [Aquisitions_Backup];
+		
 ALTER TABLE [CostBaseAdjustments] RENAME TO [CostBaseAdjustments_Backup];
 CREATE TABLE [CostBaseAdjustments]
 (
@@ -62,6 +65,7 @@ CREATE TABLE [CostBaseAdjustments]
 	PRIMARY KEY ([Id])
 );
 INSERT INTO [CostBaseAdjustments] SELECT [Id], [Percentage] FROM [CostBaseAdjustments_Backup];
+DROP TABLE [CostBaseAdjustments_Backup];
 
 ALTER TABLE [Disposals] RENAME TO [Disposals_Backup];
 CREATE TABLE [Disposals]
@@ -75,7 +79,7 @@ CREATE TABLE [Disposals]
 	PRIMARY KEY ([Id])
 );
 INSERT INTO [Disposals] SELECT [Id], [Units], [AveragePrice], [TransactionCosts], [CGTMethod] FROM [Disposals_Backup];
-
+DROP TABLE [Disposals_Backup];
 
 ALTER TABLE [IncomeReceived] RENAME TO [IncomeReceived_Backup];
 CREATE TABLE [IncomeReceived]
@@ -90,6 +94,7 @@ CREATE TABLE [IncomeReceived]
 	PRIMARY KEY ([Id])
 );
 INSERT INTO [IncomeReceived] SELECT [Id], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred] FROM [IncomeReceived_Backup];
+DROP TABLE [IncomeReceived_Backup];
 
 ALTER TABLE [OpeningBalances] RENAME TO [OpeningBalances_Backup];
 CREATE TABLE [OpeningBalances]
@@ -102,6 +107,7 @@ CREATE TABLE [OpeningBalances]
 	PRIMARY KEY ([Id])
 );
 INSERT INTO [OpeningBalances] SELECT [Id], [Units], [CostBase], [AquisitionDate] FROM [OpeningBalances_Backup];
+DROP TABLE [OpeningBalances_Backup];
 
 ALTER TABLE [ReturnsOfCapital] RENAME TO [ReturnsOfCapital_Backup];
 CREATE TABLE [ReturnsOfCapital]
@@ -112,7 +118,7 @@ CREATE TABLE [ReturnsOfCapital]
 	PRIMARY KEY ([Id])
 );
 INSERT INTO [ReturnsOfCapital] SELECT [Id], [Amount] FROM [ReturnsOfCapital_Backup];
-
+DROP TABLE [ReturnsOfCapital_Backup];
 
 ALTER TABLE [UnitCountAdjustments] RENAME TO [UnitCountAdjustments_Backup];
 CREATE TABLE [UnitCountAdjustments]
@@ -124,3 +130,7 @@ CREATE TABLE [UnitCountAdjustments]
 	PRIMARY KEY ([Id])
 );
 INSERT INTO [UnitCountAdjustments] SELECT [Id], [OriginalUnits], [NewUnits] FROM [UnitCountAdjustments_Backup];
+DROP TABLE [UnitCountAdjustments_Backup];
+
+
+
