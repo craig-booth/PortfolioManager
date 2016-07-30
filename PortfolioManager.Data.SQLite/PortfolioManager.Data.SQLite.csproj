@@ -122,6 +122,9 @@
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion3.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion7.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion6.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

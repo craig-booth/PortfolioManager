@@ -80,7 +80,7 @@ namespace PortfolioManager.Service.Transactions
 
             if (disposal.CreateCashTransaction)
             {
-                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), amountReceived);
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), disposal.Units * disposal.AveragePrice);
                 CashAccountTransaction(unitOfWork, CashAccountTransactionType.Fee, disposal.TransactionDate, String.Format("Brokerage for sale of {0}", disposal.ASXCode), -1 * disposal.TransactionCosts);
             }
         }

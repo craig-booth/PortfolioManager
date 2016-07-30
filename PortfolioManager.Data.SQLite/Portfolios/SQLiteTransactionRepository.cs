@@ -27,6 +27,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _DetailRepositories.Add(TransactionType.OpeningBalance, new OpeningBalanceRepository(_Connection));
             _DetailRepositories.Add(TransactionType.ReturnOfCapital, new ReturnOfCapitalRepository(_Connection));
             _DetailRepositories.Add(TransactionType.UnitCountAdjustment, new UnitCountAdjustmentRepository(_Connection));
+            _DetailRepositories.Add(TransactionType.CashTransaction, new CashTransactionsRepository(_Connection));
         }
 
         private SQLiteCommand _GetAddRecordCommand;
@@ -405,7 +406,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[UnitCountAdjustments] SET [OriginalUnits] = @OriginalUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id";
+            return "UPDATE [UnitCountAdjustments] SET [OriginalUnits] = @OriginalUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -420,6 +421,39 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Id", unitCountAdjustment.Id.ToString());
             command.Parameters.AddWithValue("@OriginalUnits", unitCountAdjustment.OriginalUnits);
             command.Parameters.AddWithValue("@NewUnits", unitCountAdjustment.NewUnits);
+        }
+    }
+
+    public class CashTransactionsRepository : TransactionDetailRepository
+    {
+
+        public CashTransactionsRepository(SQLiteConnection connection)
+            : base(connection)
+        {
+        }
+
+        protected override string GetAddSQL()
+        {
+            return "INSERT INTO [CashTransactions] ([Id], [Type], [Amount]) VALUES (@Id, @Type, @Amount)";
+        }
+
+        protected override string GetUpdateSQL()
+        {
+            return "UPDATE [CashTransactions] SET [Type] = @Type, [Amount] = @Amount WHERE [Id] = @Id";
+        }
+
+        protected override string GetDeleteSQL()
+        {
+            return "DELETE FROM [CashTransactions] WHERE [Id] = @Id";
+        }
+
+        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        {
+            CashTransaction cashTransaction = entity as CashTransaction;
+
+            command.Parameters.AddWithValue("@Id", cashTransaction.Id.ToString());
+            command.Parameters.AddWithValue("@Type", cashTransaction.CashTransactionType);
+            command.Parameters.AddWithValue("@Amount", SQLiteUtils.DecimalToDB(cashTransaction.Amount));
         }
     }
 

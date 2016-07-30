@@ -20,6 +20,8 @@ namespace PortfolioManager.Model.Portfolios
         public CashTransaction(Guid id)
             : base(id)
         {
+            ASXCode = "";
+            Type = TransactionType.CashTransaction;
         }
 
         protected override string GetDescription()

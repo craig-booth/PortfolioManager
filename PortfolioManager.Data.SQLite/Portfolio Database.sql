@@ -114,6 +114,15 @@ CREATE TABLE [UnitCountAdjustments]
 	PRIMARY KEY ([Id])
 );
 
+CREATE TABLE [CashTransactions]
+(
+	[Id] TEXT(36) NOT NULL,
+	[Type] INTEGER NOT NULL,
+	[Amount] INTEGER NOT NULL,
+	
+	PRIMARY KEY ([Id])
+);
+
 CREATE TABLE [Attachments]
 (
 	[Id] TEXT(36) NOT NULL,

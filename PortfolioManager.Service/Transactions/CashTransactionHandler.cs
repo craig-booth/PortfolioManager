@@ -12,7 +12,7 @@ using PortfolioManager.Service.Transactions;
 namespace PortfolioManager.Service
 {
 
-    class CashTransactionHandler : ITransactionHandler
+    class CashTransactionHandler : TransacactionHandler, ITransactionHandler
     {
         public CashTransactionHandler()
         {
@@ -23,16 +23,7 @@ namespace PortfolioManager.Service
         {
             var cashTransaction = transaction as CashTransaction;
 
-            /*            if (cashTransaction.Type == TransactionType.Withdrawl)
-                            CashAccount.AddTransaction(CashAccountTransactionType.Withdrawl, cashTransaction.TransactionDate, cashTransaction.Description, cashTransaction.Amount);
-                        else if (cashTransaction.Type == TransactionType.Deposit)
-                            CashAccount.AddTransaction(CashAccountTransactionType.Deposit, cashTransaction.TransactionDate, cashTransaction.Description, cashTransaction.Amount);
-                        else if (cashTransaction.Type == TransactionType.Fee)
-                            CashAccount.AddTransaction(CashAccountTransactionType.Fee, cashTransaction.TransactionDate, cashTransaction.Description, cashTransaction.Amount);
-                        else if (cashTransaction.Type == TransactionType.Interest)
-                            CashAccount.AddTransaction(CashAccountTransactionType.Interest, cashTransaction.TransactionDate, cashTransaction.Description, cashTransaction.Amount); */
+            CashAccountTransaction(unitOfWork, cashTransaction.CashTransactionType, cashTransaction.TransactionDate, cashTransaction.Description, cashTransaction.Amount);
         }
-
-
     }
 }

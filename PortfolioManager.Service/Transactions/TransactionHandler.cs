@@ -23,6 +23,11 @@ namespace PortfolioManager.Service.Transactions
         protected readonly ParcelService _ParcelService;
         protected readonly StockService _StockService;
 
+        protected TransacactionHandler()
+        {
+
+        }
+
         public TransacactionHandler(ParcelService parcelService, StockService stockService)
         {
             _ParcelService = parcelService;

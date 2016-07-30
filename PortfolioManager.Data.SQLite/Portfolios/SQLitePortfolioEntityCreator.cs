@@ -34,6 +34,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 transaction = CreateReturnOfCapital(database, id);
             else if (type == TransactionType.UnitCountAdjustment)
                 transaction = CreateUnitCountAdjustment(database, id);
+            else if (type == TransactionType.CashTransaction)
+                transaction = CreateCashTransaction(database, id);
             else
                 return null;
 
@@ -216,6 +218,30 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             unitCountAdjustmentReader.Close();
 
             return unitCountAdjustmnet;
+        }
+
+        private static CashTransaction CreateCashTransaction(SQLitePortfolioDatabase database, Guid id)
+        {
+            /* Get opening balance values */
+            var command = new SQLiteCommand("SELECT [Type], [Amount] FROM [CashTransactions] WHERE [Id] = @Id", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", id.ToString());
+            SQLiteDataReader cashTransactionReader = command.ExecuteReader();
+            if (!cashTransactionReader.Read())
+            {
+                cashTransactionReader.Close();
+                throw new RecordNotFoundException(id);
+            }
+
+            CashTransaction cashTransaction = new CashTransaction(id)
+            {
+                CashTransactionType = (CashAccountTransactionType)cashTransactionReader.GetInt32(0),
+                Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt32(1))
+            };
+
+            cashTransactionReader.Close();
+
+            return cashTransaction;
         }
     }
 }

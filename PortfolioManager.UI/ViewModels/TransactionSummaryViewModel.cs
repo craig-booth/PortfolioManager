@@ -91,9 +91,11 @@ namespace PortfolioManager.UI.ViewModels
                 transactions = Portfolio.TransactionService.GetTransactions(_StockParameter.Stock.ASXCode, _DateParameter.StartDate, _DateParameter.EndDate);
             foreach (var transaction in transactions)
             {
-                var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
-
-                Transactions.Add(new TransactionViewItem(stock, transaction));
+                if (transaction.Type != TransactionType.CashTransaction)
+                {
+                    var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
+                    Transactions.Add(new TransactionViewItem(stock, transaction));
+                }
             }
 
          
@@ -114,7 +116,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             ASXCode = stock.ASXCode;
             CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
-
+            
             TransactionDate = transaction.TransactionDate;
 
             Description = transaction.Description;
