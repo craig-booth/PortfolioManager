@@ -99,7 +99,7 @@ namespace PortfolioManager.UI.ViewModels
                 if (parcel.Stock != previousStock)
                 {
                     currentStock = Portfolio.StockService.Get(parcel.Stock, _DateParameter.Date);
-                    unitPrice = Portfolio.StockPriceService.GetClosingPrice(currentStock, _DateParameter.Date);
+                    unitPrice = Portfolio.StockPriceService.GetPrice(currentStock, _DateParameter.Date);
 
                     previousStock = parcel.Stock;
                 }

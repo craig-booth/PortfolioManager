@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Utils;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Service.Utils;
+
 
 namespace PortfolioManager.Service
 {
@@ -44,7 +43,9 @@ namespace PortfolioManager.Service
             StockSetting = new Dictionary<string, StockSetting>();
 
             StockService = new StockService(stockQuery);
-            StockPriceService = new StockPriceService(stockQuery);
+
+            var stockPriceDownloader = new GoogleStockPriceDownloader();
+            StockPriceService = new StockPriceService(stockQuery, stockPriceDownloader);
 
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);

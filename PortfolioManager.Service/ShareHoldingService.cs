@@ -29,7 +29,7 @@ namespace PortfolioManager.Service
 
             var holding = new ShareHolding();
             holding.Stock = stock;
-            holding.UnitValue = _StockPriceService.GetClosingPrice(stock, date);
+            holding.UnitValue = _StockPriceService.GetPrice(stock, date);
 
             foreach (var parcel in parcels)
             {
@@ -77,7 +77,7 @@ namespace PortfolioManager.Service
                             holding.Units = parcel.Units;
                             holding.TotalCostBase = parcel.CostBase;
                             holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                            holding.UnitValue = _StockPriceService.GetClosingPrice(stock, date);
+                            holding.UnitValue = _StockPriceService.GetPrice(stock, date);
                         }
 
                     }
@@ -90,7 +90,7 @@ namespace PortfolioManager.Service
                         holding.Units = parcel.Units;
                         holding.TotalCostBase = parcel.CostBase;
                         holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                        holding.UnitValue = _StockPriceService.GetClosingPrice(stock, date);
+                        holding.UnitValue = _StockPriceService.GetPrice(stock, date);
                     }
                 }
                 else
