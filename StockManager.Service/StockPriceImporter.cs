@@ -51,30 +51,6 @@ namespace StockManager.Service
                 stockPriceRecord = GetRecord();
             }
         }
-
-        public List<StockPrice> Import(IStockQuery stockQuery)
-        {
-            var list = new List<StockPrice>();
-
-            var stockPriceRecord = GetRecord();
-            while (stockPriceRecord != null)
-            {
-                try
-                {
-                    var stock = stockQuery.GetByASXCode(stockPriceRecord.ASXCode, stockPriceRecord.Date);
-
-                    list.Add(new StockPrice(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price));
-                }
-                catch
-                {
-
-                }
-
-                stockPriceRecord = GetRecord();
-            }
-
-            return list;
-        }
     }
 
     class StockEasyPriceImporter: StockPriceImporter

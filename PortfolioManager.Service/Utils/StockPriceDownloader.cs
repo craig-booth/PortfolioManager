@@ -9,6 +9,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+using PortfolioManager.Model.Stocks;
+
 
 namespace PortfolioManager.Service.Utils
 {
@@ -16,15 +18,8 @@ namespace PortfolioManager.Service.Utils
     interface IStockPriceDownloader
     {
         decimal GetCurrentPrice(string asxCode);
-        StockQuote GetSingleQuote(string asxCode);
-        IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);
-    }
-
-    class StockQuote
-    {
-        public string ASXCode;
-        public decimal Price;
-        public DateTime QuoteTime;
+        StockPrice GetSingleQuote(string asxCode);
+        IList<StockPrice> GetMultipleQuotes(IEnumerable<string> asxCodes);
     }
 
     class GoogleStockPriceDownloader : IStockPriceDownloader
@@ -43,14 +38,14 @@ namespace PortfolioManager.Service.Utils
             return GetSingleQuote(asxCode).Price;
         }
 
-        public StockQuote GetSingleQuote(string asxCode)
+        public StockPrice GetSingleQuote(string asxCode)
         {
             var quotes = GetMultipleQuotes(new string[] { asxCode });
 
             return quotes.FirstOrDefault();
         }
 
-        public IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes)
+        public IList<StockPrice> GetMultipleQuotes(IEnumerable<string> asxCodes)
         {
             HttpWebRequest request;
             HttpWebResponse response;
@@ -64,7 +59,7 @@ namespace PortfolioManager.Service.Utils
                     if (url == "")
                         url += "https://www.google.com/finance/info?q=ASX:" + asxCode;
                     else
-                        url += "," + asxCode;
+                        url += ",ASX:" + asxCode;
                 }
                 request = WebRequest.Create(url) as HttpWebRequest;
                 response = request.GetResponse() as HttpWebResponse;
@@ -79,11 +74,11 @@ namespace PortfolioManager.Service.Utils
                 if (start == -1)
                     start = 0;
 
-                return JsonConvert.DeserializeObject<StockQuote[]>(responseFromServer.Substring(start), _SerializerSettings);
+                return JsonConvert.DeserializeObject<StockPrice[]>(responseFromServer.Substring(start), _SerializerSettings);
             }
             catch
             {
-                return new StockQuote[] { new StockQuote() };
+                return new StockPrice[] { new StockPrice("", new DateTime(), 0.00m) };
             }
         }
     }

@@ -42,7 +42,29 @@ namespace PortfolioManager.UI.ViewModels
         {
             var holdings = Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
 
-            MarketValue = holdings.Sum(x => x.MarketValue);
+            Holdings.Clear();
+            foreach (var holding in holdings)
+                Holdings.Add(new HoldingItemViewModel(holding));
+
+            /* Retrieve the stock price information */
+            var asxCodes = new string[Holdings.Count];
+            for (var i = 0; i < Holdings.Count; i++)
+                asxCodes[i] = Holdings[i].ASXCode;
+            var stockPrices = Portfolio.StockPriceService.GetCurrentPrice(asxCodes);        
+
+            /* Add prices to the Holdings list */
+            foreach (var holding in Holdings)
+            {
+                var stockPrice = stockPrices.FirstOrDefault(x => x.ASXCode == holding.ASXCode);
+
+                if (stockPrice != null)
+                {
+                    holding.CurrentValue = holding.Units * stockPrice.Price;
+                    holding.ChangeInValue = new ChangeInValue(holding.CostBase, holding.CurrentValue);
+                }
+            }
+
+            MarketValue = Holdings.Sum(x => x.CurrentValue);
             var totalCost = holdings.Sum(x => x.TotalCostBase);
             DollarChangeInValue = MarketValue - totalCost;
             if (totalCost == 0)
@@ -54,15 +76,11 @@ namespace PortfolioManager.UI.ViewModels
             Return3Year = CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
             Return5Year = null;
             ReturnAll = 0.0503m;
-
-            Holdings.Clear();
-            foreach (var holding in holdings)
-                Holdings.Add(new HoldingItemViewModel(holding));
         }
 
         private decimal CalculateIRR(DateTime startDate, DateTime endDate)
         {
-            // create cashFlow array
+         /*   // create cashFlow array
             int yearNumber = 1;
             DateTime periodEnd = startDate.AddYears(1);
             while (periodEnd < endDate)
@@ -118,24 +136,28 @@ namespace PortfolioManager.UI.ViewModels
             // Get the finaltfolio value
             var finalHoldings = Portfolio.ShareHoldingService.GetHoldings(endDate);
             cashFlows[cashFlows.Length - 1] += finalHoldings.Sum(x => x.MarketValue);
-
-            return 0.00m;
+            */
+            return 0.00m; 
         }
     }
 
     class HoldingItemViewModel
     {
-        public string ASXCode { get; private set; }
-        public string CompanyName { get; private set; }
-        public decimal CurrentValue { get; private set;  }
-        public ChangeInValue ChangeInValue { get; private set; }
+        public string ASXCode { get; set; }
+        public string CompanyName { get; set; }
+        public int Units { get; set; }
+        public decimal CurrentValue { get; set;  }
+        public decimal CostBase { get; set; }
+        public ChangeInValue ChangeInValue { get; set; }
 
         public HoldingItemViewModel(ShareHolding holding)
         {
             ASXCode = holding.Stock.ASXCode;
             CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode);
-            CurrentValue = holding.MarketValue;
-            ChangeInValue = new ChangeInValue(holding.TotalCostBase, holding.MarketValue);
+            Units = holding.Units;
+            CostBase = holding.TotalCostBase;
+            CurrentValue = 0.00m;
+            ChangeInValue = new ChangeInValue(CostBase, CurrentValue);
         }
 
     }

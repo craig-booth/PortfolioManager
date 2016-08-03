@@ -48,7 +48,7 @@ namespace PortfolioManager.Service
             StockPriceService = new StockPriceService(stockQuery, stockPriceDownloader);
 
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
-            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);
+            ShareHoldingService = new ShareHoldingService(ParcelService, StockService);
             AttachmentService = new AttachmentService(database);
             TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService);

@@ -26,14 +26,26 @@ namespace PortfolioManager.Service
             return _StockQuery.GetClosingPrice(stock.Id, date);
         }
 
+        public decimal GetClosingPrice(string asxCode, DateTime date)
+        {
+            var stock = _StockQuery.GetByASXCode(asxCode, date);
+
+            return _StockQuery.GetClosingPrice(stock.Id, date);
+        }
+
         public decimal GetCurrentPrice(Stock stock)
         {
-            var price = _StockPriceDownloader.GetCurrentPrice(stock.ASXCode);
+            return _StockPriceDownloader.GetCurrentPrice(stock.ASXCode);
+        }
 
-            if (price == 0.00m)
-                price = GetClosingPrice(stock, DateTime.Today.AddDays(-1));
+        public decimal GetCurrentPrice(string asxCode)
+        {
+            return _StockPriceDownloader.GetCurrentPrice(asxCode);
+        }
 
-            return price;
+        public IList<StockPrice> GetCurrentPrice(IEnumerable<string> asxCodes)
+        { 
+            return _StockPriceDownloader.GetMultipleQuotes(asxCodes);
         }
 
         public decimal GetPrice(Stock stock, DateTime date)
@@ -42,6 +54,14 @@ namespace PortfolioManager.Service
                 return GetCurrentPrice(stock);
             else
                 return _StockQuery.GetClosingPrice(stock.Id, date);
+        }
+
+        public decimal GetPrice(string asxCode, DateTime date)
+        {
+            if (date == DateTime.Today)
+                return GetCurrentPrice(asxCode);
+            else
+                return GetClosingPrice(asxCode, date);
         }
 
     }

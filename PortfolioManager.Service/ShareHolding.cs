@@ -14,7 +14,6 @@ namespace PortfolioManager.Service
         public int Units { get; set; }
         public decimal TotalCost { get; set; }
         public decimal TotalCostBase { get; set; }
-        public decimal UnitValue { get; set; }
 
         public decimal AverageUnitCost
         {
@@ -24,14 +23,6 @@ namespace PortfolioManager.Service
                     return TotalCost / Units;
                 else
                     return 0;
-            }
-        }
-
-        public decimal MarketValue
-        {
-            get
-            {
-                return Units * UnitValue;
             }
         }
         

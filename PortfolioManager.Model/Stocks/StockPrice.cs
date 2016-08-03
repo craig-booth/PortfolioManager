@@ -8,14 +8,19 @@ namespace PortfolioManager.Model.Stocks
 {
     public class StockPrice
     {
-        public Guid Stock { get; private set; }
-        public DateTime Date { get; private set; }
-        public decimal Price { get; private set; }
+        public string ASXCode { get; set; }
+        public DateTime Time { get; set; }
+        public decimal Price { get; set; }
 
-        public StockPrice(Guid stock, DateTime date, decimal price)
+        public StockPrice()
         {
-            Stock = Stock;
-            Date = date;
+
+        }
+
+        public StockPrice(string asxCode, DateTime time, decimal price)
+        {
+            ASXCode = asxCode;
+            Time = time;
             Price = price;
         }
     }

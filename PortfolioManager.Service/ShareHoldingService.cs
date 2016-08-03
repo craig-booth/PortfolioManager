@@ -14,13 +14,11 @@ namespace PortfolioManager.Service
     {
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
-        private readonly StockPriceService _StockPriceService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
-            _StockPriceService = stockPriceService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -29,7 +27,6 @@ namespace PortfolioManager.Service
 
             var holding = new ShareHolding();
             holding.Stock = stock;
-            holding.UnitValue = _StockPriceService.GetPrice(stock, date);
 
             foreach (var parcel in parcels)
             {
@@ -77,7 +74,6 @@ namespace PortfolioManager.Service
                             holding.Units = parcel.Units;
                             holding.TotalCostBase = parcel.CostBase;
                             holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                            holding.UnitValue = _StockPriceService.GetPrice(stock, date);
                         }
 
                     }
@@ -90,7 +86,7 @@ namespace PortfolioManager.Service
                         holding.Units = parcel.Units;
                         holding.TotalCostBase = parcel.CostBase;
                         holding.TotalCost = parcel.Units * parcel.UnitPrice;
-                        holding.UnitValue = _StockPriceService.GetPrice(stock, date);
+   
                     }
                 }
                 else
