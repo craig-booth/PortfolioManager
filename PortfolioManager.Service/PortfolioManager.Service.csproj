@@ -70,6 +70,7 @@
     <Compile Include="Transactions\ReturnOfCapitalHandler.cs" />
     <Compile Include="Transactions\TransactionHandler.cs" />
     <Compile Include="Transactions\UnitCountAdjustmentHandler.cs" />
+    <Compile Include="Utils\IRRCalculator.cs" />
     <Compile Include="Utils\PortfolioUtils.cs" />
   </ItemGroup>
   <ItemGroup>
