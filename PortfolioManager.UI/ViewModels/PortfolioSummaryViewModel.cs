@@ -50,9 +50,9 @@ namespace PortfolioManager.UI.ViewModels
             else
                 PercentChangeInValue = DollarChangeInValue / totalCost;
 
-            Return1Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
+            Return1Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-1), DateTime.Today);
             Return3Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
-            Return5Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
+            Return5Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-5), DateTime.Today);
             ReturnAll = Portfolio.ShareHoldingService.CalculateIRR(DateTimeConstants.NoDate, DateTime.Today);
 
             Holdings.Clear();

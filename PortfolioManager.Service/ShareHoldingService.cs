@@ -16,12 +16,14 @@ namespace PortfolioManager.Service
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
         private readonly StockPriceService _StockPriceService;
+        private readonly TransactionService _TransactionService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService, TransactionService transactionService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
             _StockPriceService = stockPriceService;
+            _TransactionService = transactionService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -173,77 +175,48 @@ namespace PortfolioManager.Service
               return ownedStocks.AsReadOnly(); 
         }
 
+        private void AddCashFlow(IList<CashFlow> cashFlows, DateTime date, decimal amount)
+        {
+            var cashFlow = cashFlows.FirstOrDefault(x => x.Date == date);
+
+            if (cashFlow != null)
+                cashFlow.Amount += amount;
+            else
+                cashFlows.Add(new CashFlow(date, amount));
+        }
+
         public decimal CalculateIRR(DateTime startDate, DateTime endDate)
         {
-            var cashFlows = new CashFlow[1];
-
-            return IRRCalculator.Calculate(cashFlows);
-        }
-
-        /*
-          private decimal CalculateIRR(DateTime startDate, DateTime endDate)
-        {
-            // create cashFlow array
-            int yearNumber = 1;
-            DateTime periodEnd = startDate.AddYears(1);
-            while (periodEnd < endDate)
-            {
-                yearNumber++;
-                periodEnd = periodEnd.AddYears(1);
-            }
-            var cashFlows = new decimal[yearNumber + 1];
+            var cashFlows = new List<CashFlow>();
 
             // Get the initial portfolio value
-            var initialHoldings = Portfolio.ShareHoldingService.GetHoldings(startDate);
-            cashFlows[0] -= initialHoldings.Sum(x => x.MarketValue);
-
-            // generate list of cashFlows
-            var transactions = Portfolio.TransactionService.GetTransactions(startDate.AddDays(1), endDate);
-            foreach (var transaction in transactions)
+            var initialHoldings = GetHoldings(startDate);
+            var initialValue = initialHoldings.Sum(x => x.MarketValue);
+            AddCashFlow(cashFlows, startDate, -initialValue);
+                     
+           // generate list of cashFlows
+           var transactions = _TransactionService.GetTransactions(startDate, endDate);
+           foreach (var transaction in transactions)
             {
-                yearNumber = 1;
-                periodEnd = startDate.AddYears(1);
-                while (transaction.TransactionDate >= periodEnd)
+                if (transaction.Type == TransactionType.CashTransaction)
                 {
-                    yearNumber++;
-                    periodEnd = periodEnd.AddYears(1);
+                    var cashTransaction = transaction as CashTransaction;
+                    if (cashTransaction.CashTransactionType == CashAccountTransactionType.Deposit)
+                        AddCashFlow(cashFlows, cashTransaction.TransactionDate, cashTransaction.Amount);
+                    else if (cashTransaction.CashTransactionType == CashAccountTransactionType.Withdrawl)
+                        AddCashFlow(cashFlows, cashTransaction.TransactionDate, -cashTransaction.Amount);
                 }
-                      
-
-                if (transaction.Type == TransactionType.Aquisition)
-                {
-                    var aquisition = transaction as Aquisition;
-                    cashFlows[yearNumber] -= (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
-                }
-                else if (transaction.Type == TransactionType.Disposal)
-                {
-                    var disposal = transaction as Disposal;
-                    cashFlows[yearNumber] += (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
-                }
-                else if (transaction.Type == TransactionType.Income)
-                {
-                    var income = transaction as IncomeReceived;
-                    cashFlows[yearNumber] += income.CashIncome;
-                }
-                else if (transaction.Type == TransactionType.OpeningBalance)
-                {
-
-                }
-                else if (transaction.Type == TransactionType.ReturnOfCapital)
-                {
-
-                }
-
             }
+            
+            // Get the final portfolio value
+            var finalHoldings = GetHoldings(endDate);
+            var finalValue = finalHoldings.Sum(x => x.MarketValue);
+            AddCashFlow(cashFlows, endDate, finalValue);
 
-            // Get the finaltfolio value
-            var finalHoldings = Portfolio.ShareHoldingService.GetHoldings(endDate);
-            cashFlows[cashFlows.Length - 1] += finalHoldings.Sum(x => x.MarketValue);
+            var irr = IRRCalculator.CalculateIRR(cashFlows);
 
-            return 0.00m;
+            return (decimal)Math.Round(irr, 5);
         }
-        */
-
     }
 
     public class OwnedStockId
