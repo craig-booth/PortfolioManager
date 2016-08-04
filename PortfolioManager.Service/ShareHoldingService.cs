@@ -197,6 +197,39 @@ namespace PortfolioManager.Service
               return ownedStocks.AsReadOnly(); 
         }
 
+        public decimal CalculateIRR(DateTime startDate, DateTime endDate)
+        {
+            var cashFlows = new List<CashFlow>();
+
+            // Get the initial portfolio value
+            var initialHoldings = GetHoldings(startDate);
+            var initialValue = initialHoldings.Sum(x => x.MarketValue);
+            AddCashFlow(cashFlows, startDate, -initialValue);
+
+            // generate list of cashFlows
+            var transactions = _TransactionService.GetTransactions(startDate, endDate);
+            foreach (var transaction in transactions)
+            {
+                if (transaction.Type == TransactionType.CashTransaction)
+                {
+                    var cashTransaction = transaction as CashTransaction;
+                    if (cashTransaction.CashTransactionType == CashAccountTransactionType.Deposit)
+                        AddCashFlow(cashFlows, cashTransaction.TransactionDate, cashTransaction.Amount);
+                    else if (cashTransaction.CashTransactionType == CashAccountTransactionType.Withdrawl)
+                        AddCashFlow(cashFlows, cashTransaction.TransactionDate, -cashTransaction.Amount);
+                }
+            }
+
+            // Get the final portfolio value
+            var finalHoldings = GetHoldings(endDate);
+            var finalValue = finalHoldings.Sum(x => x.MarketValue);
+            AddCashFlow(cashFlows, endDate, finalValue);
+
+            var irr = IRRCalculator.CalculateIRR(cashFlows);
+
+            return (decimal)Math.Round(irr, 5);
+        }
+
     }
 
     public class OwnedStockId
