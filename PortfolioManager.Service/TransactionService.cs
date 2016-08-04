@@ -35,11 +35,7 @@ namespace PortfolioManager.Service
             _TransactionHandlers.Add(TransactionType.OpeningBalance, new OpeningBalanceHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.ReturnOfCapital, new ReturnOfCapitalHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.UnitCountAdjustment, new UnitCountAdjustmentHandler(parcelService, stockService));
-            var cashTransactionHandler = new CashTransactionHandler();
-            _TransactionHandlers.Add(TransactionType.Deposit, cashTransactionHandler);
-            _TransactionHandlers.Add(TransactionType.Withdrawl, cashTransactionHandler);
-            _TransactionHandlers.Add(TransactionType.Fee, cashTransactionHandler);
-            _TransactionHandlers.Add(TransactionType.Interest, cashTransactionHandler);
+            _TransactionHandlers.Add(TransactionType.CashTransaction, new CashTransactionHandler());
         }
 
         public void ProcessTransaction(Transaction transaction)

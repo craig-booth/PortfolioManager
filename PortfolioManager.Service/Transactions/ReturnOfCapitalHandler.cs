@@ -12,6 +12,7 @@ namespace PortfolioManager.Service.Transactions
 {
     class ReturnOfCapitalHandler : TransacactionHandler, ITransactionHandler
     {
+
         public ReturnOfCapitalHandler(ParcelService parcelService, StockService stockService)
             : base (parcelService, stockService)
         {
@@ -57,7 +58,8 @@ namespace PortfolioManager.Service.Transactions
                 totalAmount += costBaseReduction;
             }
 
-          //  CashAccount.AddTransaction(CashAccountTransactionType.Transfer, returnOfCapital.TransactionDate, String.Format("Return of capital for {0}", returnOfCapital.ASXCode), totalAmount);
+            if (returnOfCapital.CreateCashTransaction)
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, returnOfCapital.TransactionDate, String.Format("Return of capital for {0}", returnOfCapital.ASXCode), totalAmount);                
         }
     }
 }

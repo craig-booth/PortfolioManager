@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Portfolios\SQLiteAttachmentRepository.cs" />
+    <Compile Include="Portfolios\SQLiteCashAccountRepository.cs" />
     <Compile Include="Portfolios\SQLiteCGTEventRepository.cs" />
     <Compile Include="Portfolios\SQLiteParcelRepository.cs" />
     <Compile Include="Portfolios\SQLitePortfolioDatabase.cs" />
@@ -121,10 +122,13 @@
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion3.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion4.sql">
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion7.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion5c.sql">
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion6.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion4.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion5.sql">

@@ -13,6 +13,7 @@ namespace PortfolioManager.Model.Portfolios
     public class ReturnOfCapital : Transaction
     {
         public decimal Amount { get; set; }
+        public bool CreateCashTransaction { get; set; } 
 
         public ReturnOfCapital()
             : this (Guid.NewGuid())

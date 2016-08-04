@@ -8,6 +8,7 @@ namespace PortfolioManager.Model.Portfolios
 {
     public class CashTransaction : Transaction
     {
+        public CashAccountTransactionType CashTransactionType { get; set; }
         public decimal Amount { get; set; }
 
         public CashTransaction()
@@ -19,12 +20,13 @@ namespace PortfolioManager.Model.Portfolios
         public CashTransaction(Guid id)
             : base(id)
         {
-            Type = TransactionType.Deposit;
+            ASXCode = "";
+            Type = TransactionType.CashTransaction;
         }
 
         protected override string GetDescription()
         {
-            return "";
+            return Comment;
         }
     }
 }

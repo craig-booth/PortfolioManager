@@ -16,7 +16,6 @@ namespace PortfolioManager.Service.Transactions
         public IncomeReceivedHandler(ParcelService parcelService, StockService stockService)
             : base (parcelService, stockService)
         {
-
         }
 
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
@@ -65,11 +64,10 @@ namespace PortfolioManager.Service.Transactions
                         AddCGTEvent(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, costBaseReduction - parcelAtPaymentDate.CostBase);
                     }
                 }
-              //  CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
             }
-          //  else
-          //      CashAccount.AddTransaction(CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
 
+            if (incomeReceived.CreateCashTransaction)
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
@@ -14,13 +15,14 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         protected override int RepositoryVersion
         {
-            get { return 5; }
+            get { return 7; }
         }
 
         /* TODO: Priority Low, move this to the database */
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
+        internal List<CashAccountTransaction> _CashAccountTransactions { get; private set; }
 
         public IPortfolioQuery PortfolioQuery { get; private set; }
 
@@ -31,6 +33,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _Parcels = new List<ShareParcel>();
             _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();
+            _CashAccountTransactions = new List<CashAccountTransaction>();
         }
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)
@@ -44,7 +47,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             else if (forVersion == 3)
                 return new SQLiteSimpleDatabaseUpgrade(4, "Upgrade\\PortfolioDatabaseUpgradeToVersion4.sql");
             else if (forVersion == 4)
-                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql", "Upgrade\\PortfolioDatabaseUpgradeToVersion5c.sql");
+                return new SQLiteSimpleDatabaseUpgrade(5, "Upgrade\\PortfolioDatabaseUpgradeToVersion5.sql");
+            else if (forVersion == 5)
+                return new SQLiteSimpleDatabaseUpgrade(6, "Upgrade\\PortfolioDatabaseUpgradeToVersion6.sql");
+            else if (forVersion == 6)
+                return new SQLiteSimpleDatabaseUpgrade(7, "Upgrade\\PortfolioDatabaseUpgradeToVersion7.sql");
             else
                 throw new NotSupportedException();
         }

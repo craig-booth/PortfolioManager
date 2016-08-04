@@ -152,5 +152,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
+        public IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
+        {
+            return _Database._CashAccountTransactions.Where(t => (t.Date >= fromDate) && (t.Date <= toDate)).OrderBy(x => x.Date).ThenByDescending(x => x.Amount).ToList();
+        }
+
     }
 }

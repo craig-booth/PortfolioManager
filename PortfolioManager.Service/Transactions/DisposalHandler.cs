@@ -78,8 +78,11 @@ namespace PortfolioManager.Service.Transactions
                 }
             }
 
-            //CashAccount.AddTransaction(CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), amountReceived + disposal.TransactionCosts);
-
+            if (disposal.CreateCashTransaction)
+            {
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, disposal.TransactionDate, String.Format("Sale of {0}", disposal.ASXCode), disposal.Units * disposal.AveragePrice);
+                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Fee, disposal.TransactionDate, String.Format("Brokerage for sale of {0}", disposal.ASXCode), -1 * disposal.TransactionCosts);
+            }
         }
     }
 }

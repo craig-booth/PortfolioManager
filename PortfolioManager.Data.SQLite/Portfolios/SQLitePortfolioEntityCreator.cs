@@ -34,6 +34,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 transaction = CreateReturnOfCapital(database, id);
             else if (type == TransactionType.UnitCountAdjustment)
                 transaction = CreateUnitCountAdjustment(database, id);
+            else if (type == TransactionType.CashTransaction)
+                transaction = CreateCashTransaction(database, id);
             else
                 return null;
 
@@ -49,7 +51,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private static Aquisition CreateAquisition(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get aquisition values */
-            var command = new SQLiteCommand("SELECT [Units],[AveragePrice], [TransactionCosts] FROM [Aquisitions] WHERE [Id] = @Id", database._Connection);
+            var command = new SQLiteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CreateCashTransaction] FROM [Aquisitions] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader aquisitionReader = command.ExecuteReader();
@@ -63,7 +65,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 Units = aquisitionReader.GetInt32(0),
                 AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(1)),
-                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(2))
+                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(2)),
+                CreateCashTransaction = SQLiteUtils.DBToBool(aquisitionReader.GetString(3))
             };
             aquisitionReader.Close();
 
@@ -95,7 +98,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private static Disposal CreateDisposal(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get disposal values */
-            var command = new SQLiteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CGTMethod] FROM [Disposals] WHERE [Id] = @Id", database._Connection);
+            var command = new SQLiteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CGTMethod], [CreateCashTransaction] FROM [Disposals] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader disposalReader = command.ExecuteReader();
@@ -110,7 +113,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 Units = disposalReader.GetInt32(0),
                 AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(1)),
                 TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(2)),
-                CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3)
+                CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3),
+                CreateCashTransaction = SQLiteUtils.DBToBool(disposalReader.GetString(4))
             };
             disposalReader.Close();
 
@@ -120,7 +124,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private static IncomeReceived CreateIncomeReceived(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get income received values */
-            var command = new SQLiteCommand("SELECT [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred] FROM [IncomeReceived] WHERE [Id] = @Id", database._Connection);
+            var command = new SQLiteCommand("SELECT [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction] FROM [IncomeReceived] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader incomeReceivedReader = command.ExecuteReader();
@@ -136,7 +140,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(1)),
                 FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(2)),
                 Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(3)),
-                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(4))
+                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(4)),
+                CreateCashTransaction = SQLiteUtils.DBToBool(incomeReceivedReader.GetString(5))
             };
             incomeReceivedReader.Close();
 
@@ -171,7 +176,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private static ReturnOfCapital CreateReturnOfCapital(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get opening balance values */
-            var command = new SQLiteCommand("SELECT [Amount] FROM [ReturnsOfCapital] WHERE [Id] = @Id", database._Connection);
+            var command = new SQLiteCommand("SELECT [Amount], [CreateCashTransaction] FROM [ReturnsOfCapital] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader returnOfCapitalReader = command.ExecuteReader();
@@ -183,7 +188,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             ReturnOfCapital returnOfCapital = new ReturnOfCapital(id)
             {
-                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt32(0))
+                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt32(0)),
+                CreateCashTransaction = SQLiteUtils.DBToBool(returnOfCapitalReader.GetString(1))
             };
             returnOfCapitalReader.Close();
 
@@ -212,6 +218,30 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             unitCountAdjustmentReader.Close();
 
             return unitCountAdjustmnet;
+        }
+
+        private static CashTransaction CreateCashTransaction(SQLitePortfolioDatabase database, Guid id)
+        {
+            /* Get opening balance values */
+            var command = new SQLiteCommand("SELECT [Type], [Amount] FROM [CashTransactions] WHERE [Id] = @Id", database._Connection);
+            command.Prepare();
+            command.Parameters.AddWithValue("@Id", id.ToString());
+            SQLiteDataReader cashTransactionReader = command.ExecuteReader();
+            if (!cashTransactionReader.Read())
+            {
+                cashTransactionReader.Close();
+                throw new RecordNotFoundException(id);
+            }
+
+            CashTransaction cashTransaction = new CashTransaction(id)
+            {
+                CashTransactionType = (CashAccountTransactionType)cashTransactionReader.GetInt32(0),
+                Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt32(1))
+            };
+
+            cashTransactionReader.Close();
+
+            return cashTransaction;
         }
     }
 }

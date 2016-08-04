@@ -34,6 +34,7 @@ namespace PortfolioManager.Service
         public CGTService CGTService { get; private set; }
         public CorporateActionService CorporateActionService { get; private set; }
         public AttachmentService AttachmentService { get; private set; }
+        public CashAccountService CashAccountService { get; private set; }
 
         public StockService StockService { get; private set; }
         public StockPriceService StockPriceService { get; private set; }
@@ -50,10 +51,11 @@ namespace PortfolioManager.Service
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService);
             AttachmentService = new AttachmentService(database);
+            CashAccountService = new CashAccountService(database);
             TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService);
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService);            
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);

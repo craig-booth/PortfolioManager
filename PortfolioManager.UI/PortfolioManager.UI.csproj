@@ -66,6 +66,7 @@
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="ViewModels\CashAccountViewModel.cs" />
     <Compile Include="ViewModels\CGTViewModel.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -85,6 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CashAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

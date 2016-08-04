@@ -23,6 +23,11 @@ namespace PortfolioManager.Service.Transactions
         protected readonly ParcelService _ParcelService;
         protected readonly StockService _StockService;
 
+        protected TransacactionHandler()
+        {
+
+        }
+
         public TransacactionHandler(ParcelService parcelService, StockService stockService)
         {
             _ParcelService = parcelService;
@@ -120,6 +125,21 @@ namespace PortfolioManager.Service.Transactions
         protected void AddCGTEvent(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime eventDate, int units, decimal amount)
         {
             unitOfWork.CGTEventRepository.Add(PortfolioUtils.CreateCGTEvent(parcel, eventDate, units, amount));
+        }
+
+        protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, CashAccountTransactionType type, DateTime date, string description, decimal amount)
+        {
+            if (amount != 0.00m)
+            {
+                var cashTransaction = new CashAccountTransaction()
+                {
+                    Type = type,
+                    Date = date,
+                    Description = description,
+                    Amount = amount
+                };
+                unitOfWork.CashAccountRepository.Add(cashTransaction);
+            }
         }
  
     }
