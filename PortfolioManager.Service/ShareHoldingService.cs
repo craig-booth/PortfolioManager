@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
@@ -16,12 +17,14 @@ namespace PortfolioManager.Service
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
         private readonly StockPriceService _StockPriceService;
+        private readonly TransactionService _TransactionService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService, TransactionService transactionService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
             _StockPriceService = stockPriceService;
+            _TransactionService = transactionService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -216,10 +219,10 @@ namespace PortfolioManager.Service
             var initialHoldings = GetHoldings(startDate);
             var initialValue = initialHoldings.Sum(x => x.MarketValue);
             AddCashFlow(cashFlows, startDate, -initialValue);
-
-            // generate list of cashFlows
-            var transactions = _TransactionService.GetTransactions(startDate, endDate);
-            foreach (var transaction in transactions)
+                     
+           // generate list of cashFlows
+           var transactions = _TransactionService.GetTransactions(startDate, endDate);
+           foreach (var transaction in transactions)
             {
                 if (transaction.Type == TransactionType.CashTransaction)
                 {
@@ -230,7 +233,7 @@ namespace PortfolioManager.Service
                         AddCashFlow(cashFlows, cashTransaction.TransactionDate, -cashTransaction.Amount);
                 }
             }
-
+            
             // Get the final portfolio value
             var finalHoldings = GetHoldings(endDate);
             var finalValue = finalHoldings.Sum(x => x.MarketValue);
@@ -240,7 +243,6 @@ namespace PortfolioManager.Service
 
             return (decimal)Math.Round(irr, 5);
         }
-
     }
 
     public class OwnedStockId

@@ -58,7 +58,7 @@ namespace PortfolioManager.UI.ViewModels
             Holdings.Clear();
             foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
-        }    
+        }
     }
 
     class HoldingItemViewModel
