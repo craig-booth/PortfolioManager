@@ -14,11 +14,13 @@ namespace PortfolioManager.Service
     {
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
+        private readonly StockPriceService _StockPriceService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
+            _StockPriceService = stockPriceService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -27,6 +29,7 @@ namespace PortfolioManager.Service
 
             var holding = new ShareHolding();
             holding.Stock = stock;
+            holding.UnitValue = _StockPriceService.GetPrice(stock, date);
 
             foreach (var parcel in parcels)
             {
@@ -97,6 +100,32 @@ namespace PortfolioManager.Service
                 }
 
             }
+
+            /* Retrieve the stock price information */
+            if (date == DateTime.Today)
+            {
+                var asxCodes = new string[holdings.Count];
+                for (var i = 0; i < holdings.Count; i++)
+                    asxCodes[i] = holdings[i].Stock.ASXCode;
+                var stockPrices = _StockPriceService.GetCurrentPrice(asxCodes);
+
+                /* Add prices to the Holdings list */
+                foreach (var shareHolding in holdings)
+                {
+                    var stockPrice = stockPrices.FirstOrDefault(x => x.ASXCode == shareHolding.Stock.ASXCode);
+
+                    if (stockPrice != null)
+                        shareHolding.UnitValue = stockPrice.Price;
+                } 
+            }
+            else
+            {
+                foreach (var shareHolding in holdings)
+                {
+                    shareHolding.UnitValue = _StockPriceService.GetClosingPrice(shareHolding.Stock, date);
+                }
+            }
+
             return holdings.AsReadOnly();
 
         }

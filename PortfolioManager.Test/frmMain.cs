@@ -134,17 +134,14 @@ namespace PortfolioManager.Test
                 decimal capitalGain;
                 decimal capitalGainPercentage;
 
-                var unitPrice = _MyPortfolio.StockPriceService.GetPrice(holding.Stock, endDate);
-                var marketValue = holding.Units * unitPrice;
-
-                capitalGain = (marketValue - holding.TotalCostBase);
+                capitalGain = (holding.MarketValue - holding.TotalCostBase);
                 if (holding.TotalCostBase > 0.00m)
                     capitalGainPercentage  = capitalGain / holding.TotalCostBase;
                 else
                     capitalGainPercentage = 0.00m;
 
                 totalCostBase += holding.TotalCostBase;
-                totalMarketValue += marketValue;
+                totalMarketValue += holding.MarketValue;
                 totalCapitalGain += capitalGain;                
 
                 var item = lsvPortfolio.Items.Add(holding.Stock.ASXCode);
@@ -152,8 +149,8 @@ namespace PortfolioManager.Test
                 item.SubItems.Add(holding.Units.ToString("n0"));
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.AverageUnitCost, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(holding.TotalCostBase, true, true));
-                item.SubItems.Add(MathUtils.FormatCurrency(unitPrice, true, true));
-                item.SubItems.Add(MathUtils.FormatCurrency(marketValue, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.UnitValue, true, true));
+                item.SubItems.Add(MathUtils.FormatCurrency(holding.MarketValue, true, true));
                 item.SubItems.Add(MathUtils.FormatCurrency(capitalGain, true, true));
                 item.SubItems.Add(capitalGainPercentage.ToString("##0.0%"));
             }

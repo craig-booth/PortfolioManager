@@ -46,25 +46,7 @@ namespace PortfolioManager.UI.ViewModels
             foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
 
-            /* Retrieve the stock price information */
-            var asxCodes = new string[Holdings.Count];
-            for (var i = 0; i < Holdings.Count; i++)
-                asxCodes[i] = Holdings[i].ASXCode;
-            var stockPrices = Portfolio.StockPriceService.GetCurrentPrice(asxCodes);        
-
-            /* Add prices to the Holdings list */
-            foreach (var holding in Holdings)
-            {
-                var stockPrice = stockPrices.FirstOrDefault(x => x.ASXCode == holding.ASXCode);
-
-                if (stockPrice != null)
-                {
-                    holding.CurrentValue = holding.Units * stockPrice.Price;
-                    holding.ChangeInValue = new ChangeInValue(holding.CostBase, holding.CurrentValue);
-                }
-            }
-
-            MarketValue = Holdings.Sum(x => x.CurrentValue);
+            MarketValue = holdings.Sum(x => x.MarketValue);
             var totalCost = holdings.Sum(x => x.TotalCostBase);
             DollarChangeInValue = MarketValue - totalCost;
             if (totalCost == 0)
@@ -156,7 +138,7 @@ namespace PortfolioManager.UI.ViewModels
             CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode);
             Units = holding.Units;
             CostBase = holding.TotalCostBase;
-            CurrentValue = 0.00m;
+            CurrentValue = holding.MarketValue;
             ChangeInValue = new ChangeInValue(CostBase, CurrentValue);
         }
 
