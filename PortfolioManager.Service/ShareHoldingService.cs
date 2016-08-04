@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Utils;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service
 {
@@ -195,6 +196,16 @@ namespace PortfolioManager.Service
               }
 
               return ownedStocks.AsReadOnly(); 
+        }
+
+        private void AddCashFlow(IList<CashFlow> cashFlows, DateTime date, decimal amount)
+        {
+            var cashFlow = cashFlows.FirstOrDefault(x => x.Date == date);
+
+            if (cashFlow != null)
+                cashFlow.Amount += amount;
+            else
+                cashFlows.Add(new CashFlow(date, amount));
         }
 
         public decimal CalculateIRR(DateTime startDate, DateTime endDate)
