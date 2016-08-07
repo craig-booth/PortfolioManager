@@ -15,11 +15,30 @@ using PortfolioManager.Model.Stocks;
 namespace PortfolioManager.Service.Utils
 {
 
+    public class StockQuote
+    {
+        public string ASXCode { get; set; }
+        public DateTime Time { get; set; }
+        public decimal Price { get; set; }
+
+        public StockQuote()
+        {
+
+        }
+
+        public StockQuote(string asxCode, DateTime time, decimal price)
+        {
+            ASXCode = asxCode;
+            Time = time;
+            Price = price;
+        }
+    }
+
+
     interface IStockPriceDownloader
     {
-        decimal GetCurrentPrice(string asxCode);
-        StockPrice GetSingleQuote(string asxCode);
-        IList<StockPrice> GetMultipleQuotes(IEnumerable<string> asxCodes);
+        StockQuote GetSingleQuote(string asxCode);
+        IList<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);
     }
 
     class GoogleStockPriceDownloader : IStockPriceDownloader
@@ -33,19 +52,14 @@ namespace PortfolioManager.Service.Utils
             _SerializerSettings.ContractResolver = new GoogleStockContractResolver();
         }
 
-        public decimal GetCurrentPrice(string asxCode)
-        {
-            return GetSingleQuote(asxCode).Price;
-        }
-
-        public StockPrice GetSingleQuote(string asxCode)
+        public StockQuote GetSingleQuote(string asxCode)
         {
             var quotes = GetMultipleQuotes(new string[] { asxCode });
 
             return quotes.FirstOrDefault();
         }
 
-        public IList<StockPrice> GetMultipleQuotes(IEnumerable<string> asxCodes)
+        public IList<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes)
         {
             HttpWebRequest request;
             HttpWebResponse response;
@@ -74,11 +88,11 @@ namespace PortfolioManager.Service.Utils
                 if (start == -1)
                     start = 0;
 
-                return JsonConvert.DeserializeObject<StockPrice[]>(responseFromServer.Substring(start), _SerializerSettings);
+                return JsonConvert.DeserializeObject<StockQuote[]>(responseFromServer.Substring(start), _SerializerSettings);
             }
             catch
             {
-                return new StockPrice[] { new StockPrice("", new DateTime(), 0.00m) };
+                return new StockQuote[0];
             }
         }
     }

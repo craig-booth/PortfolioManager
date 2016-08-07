@@ -8,7 +8,6 @@ using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
-using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service
 {
@@ -108,18 +107,14 @@ namespace PortfolioManager.Service
             /* Retrieve the stock price information */
             if (date == DateTime.Today)
             {
-                var asxCodes = new string[holdings.Count];
-                for (var i = 0; i < holdings.Count; i++)
-                    asxCodes[i] = holdings[i].Stock.ASXCode;
-                var stockPrices = _StockPriceService.GetCurrentPrice(asxCodes);
+                var stockPrices = holdings.Select(x => new StockPrice(x.Stock)).ToList();
+                _StockPriceService.GetCurrentPrices(stockPrices);
 
                 /* Add prices to the Holdings list */
                 foreach (var shareHolding in holdings)
                 {
-                    var stockPrice = stockPrices.FirstOrDefault(x => x.ASXCode == shareHolding.Stock.ASXCode);
-
-                    if (stockPrice != null)
-                        shareHolding.UnitValue = stockPrice.Price;
+                    var stockPrice = stockPrices.FirstOrDefault(x => x.Stock.ASXCode == shareHolding.Stock.ASXCode);
+                    shareHolding.UnitValue = stockPrice.Price;
                 } 
             }
             else

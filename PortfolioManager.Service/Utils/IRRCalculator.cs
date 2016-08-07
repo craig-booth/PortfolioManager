@@ -67,6 +67,10 @@ namespace PortfolioManager.Service.Utils
                 var derivativeValue = CalculateDerivative(values, periods, irr);
 
                 var newIRR = irr - (resultValue / derivativeValue);
+
+                if (double.IsNaN(newIRR))
+                    return 0;
+
                 var epsilon = Math.Abs(newIRR - irr);
                 irr = newIRR;
 

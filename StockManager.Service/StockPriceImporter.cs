@@ -28,10 +28,10 @@ namespace StockManager.Service
     {
         protected abstract StockPriceRecord GetRecord();
 
-        private StockPrice Convert(StockPriceRecord priceRecord)
+     /*   private StockPrice Convert(StockPriceRecord priceRecord)
         {
             return null;
-        }
+        } */
 
         public void ImportToDatabase(IStockQuery stockQuery, IStockUnitOfWork unitOfWork)
         {
