@@ -58,6 +58,8 @@ namespace PortfolioManager.UI.ViewModels
             Holdings.Clear();
             foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
+
+            Holdings.Sort(HoldingItemViewModel.CompareByCompanyName);
         }
     }
 
@@ -80,6 +82,10 @@ namespace PortfolioManager.UI.ViewModels
             ChangeInValue = new ChangeInValue(CostBase, CurrentValue);
         }
 
+        public static int CompareByCompanyName(HoldingItemViewModel holding1, HoldingItemViewModel holding2)
+        {
+            return String.Compare(holding1.CompanyName, holding2.CompanyName);
+        }
     }
 
     enum ChangeDirection { Increase, Decrease, Nuetral };

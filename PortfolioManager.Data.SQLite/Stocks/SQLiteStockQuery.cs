@@ -180,6 +180,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private SQLiteCommand _PercentOfParentCost;
         public decimal PercentOfParentCost(Guid parent, Guid child, DateTime atDate)
         {
+            decimal percent = 0.00m;
+
             if (_PercentOfParentCost == null)
             {
                 _PercentOfParentCost = new SQLiteCommand("SELECT [Percentage] FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child AND [Date] <= @Date ORDER BY [Date] DESC", _Connection);
@@ -191,13 +193,9 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _PercentOfParentCost.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
             SQLiteDataReader reader = _PercentOfParentCost.ExecuteReader();
-            if (!reader.Read())
-            {
-                reader.Close();
-                throw new RecordNotFoundException("");
-            }
+            if (reader.Read())
+                percent = DBToDecimal(reader.GetInt32(0));
 
-            decimal percent = DBToDecimal(reader.GetInt32(0));
             reader.Close();
 
             return percent;
