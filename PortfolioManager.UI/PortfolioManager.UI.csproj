@@ -72,7 +72,8 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
     <Compile Include="ViewModels\TaxableIncomeViewModel.cs" />
-    <Compile Include="ViewModels\TransactionSummaryViewModel.cs" />
+    <Compile Include="ViewModels\TransactionReportViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModel.cs" />
     <Compile Include="ViewModels\UnrealisedGainsViewModel.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
@@ -113,7 +114,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TransactionSummaryView.xaml">
+    <Page Include="Views\TransactionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TransactionReportView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

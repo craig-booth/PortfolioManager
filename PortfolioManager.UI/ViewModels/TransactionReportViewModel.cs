@@ -15,7 +15,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class TransactionSummaryViewModel : PortfolioViewModel
+    class TransactionReportViewModel : PortfolioViewModel
     {
         private IStockParameter _StockParameter;
         private IDateRangeParameter _DateParameter;
@@ -39,9 +39,9 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
+        public ObservableCollection<TransactionReportViewItem> Transactions { get; private set; }
 
-        public TransactionSummaryViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
+        public TransactionReportViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
             : base(label, portfolio)
         {
             Options.AllowStockSelection = true;
@@ -51,7 +51,7 @@ namespace PortfolioManager.UI.ViewModels
             _StockParameter = stockParameter;
             _DateParameter = dateParameter;
 
-            Transactions = new ObservableCollection<TransactionViewItem>();
+            Transactions = new ObservableCollection<TransactionReportViewItem>();
         }
 
         public override void Activate()
@@ -94,7 +94,7 @@ namespace PortfolioManager.UI.ViewModels
                 if (transaction.Type != TransactionType.CashTransaction)
                 {
                     var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
-                    Transactions.Add(new TransactionViewItem(stock, transaction));
+                    Transactions.Add(new TransactionReportViewItem(stock, transaction));
                 }
             }
 
@@ -104,7 +104,7 @@ namespace PortfolioManager.UI.ViewModels
 
     }
 
-    class TransactionViewItem
+    class TransactionReportViewItem
     {
         public string ASXCode { get; private set; }
         public string CompanyName { get; private set; }
@@ -112,7 +112,7 @@ namespace PortfolioManager.UI.ViewModels
         public DateTime TransactionDate { get; private set; }
         public string Description { get; private set; }
 
-        public TransactionViewItem(Stock stock, Transaction transaction)
+        public TransactionReportViewItem(Stock stock, Transaction transaction)
         {
             ASXCode = stock.ASXCode;
             CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);

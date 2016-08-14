@@ -17,12 +17,13 @@
 
                 <!-- Views -->
                 <ResourceDictionary Source="Views/PortfolioSummaryView.xaml"/>
-                <ResourceDictionary Source="Views/TransactionSummaryView.xaml"/>
+                <ResourceDictionary Source="Views/TransactionReportView.xaml"/>
                 <ResourceDictionary Source="Views/HoldingSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TaxableIncomeView.xaml"/>
                 <ResourceDictionary Source="Views/CGTView.xaml"/>
                 <ResourceDictionary Source="Views/UnrealisedGainsView.xaml"/>
                 <ResourceDictionary Source="Views/CashAccountView.xaml"/>
+                <ResourceDictionary Source="Views/TransactionsView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

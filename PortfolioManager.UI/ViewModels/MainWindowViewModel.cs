@@ -102,7 +102,7 @@ namespace PortfolioManager.UI.ViewModels
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
-                
+
             _Modules = new List<Module>();
 
             _FinancialYears = new Dictionary<int, string>();
@@ -119,25 +119,39 @@ namespace PortfolioManager.UI.ViewModels
 
 
             var homeModule = new Module("Home", "HomeIcon");
-            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
             _Modules.Add(homeModule);
+            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
+            
 
-            var reportsModule = new Module("Reports", "ReportsIcon");
-            reportsModule.ViewSelectionAreaVisible = Visibility.Visible;
-            reportsModule.ViewParameterAreaVisible = Visibility.Visible;
+            var transactionsModule = new Module("Transactions", "SettingsIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Hidden,
+                ViewParameterAreaVisible = Visibility.Visible
+            };
+            _Modules.Add(transactionsModule);
+            transactionsModule.Views.Add(new TransactionsViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
 
+
+            var reportsModule = new Module("Reports", "ReportsIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Visible,
+                ViewParameterAreaVisible = Visibility.Visible
+            };
+            _Modules.Add(reportsModule);
             reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio, StockParameter, SingleDateParameter));
-            reportsModule.Views.Add(new TransactionSummaryViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
+            reportsModule.Views.Add(new TransactionReportViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
             reportsModule.Views.Add(new CashAccountViewModel("Cash Summary", _Portfolio, DateRangeParameter));
            
-            _Modules.Add(reportsModule);
+           
+            var taxModule = new Module("Tax", "TaxIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Visible,
+                ViewParameterAreaVisible = Visibility.Visible
 
-            var taxModule = new Module("Tax", "TaxIcon");
-            taxModule.ViewSelectionAreaVisible = Visibility.Visible;
-            taxModule.ViewParameterAreaVisible = Visibility.Visible;
+            };   
+            _Modules.Add(taxModule);
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio, FinancialYearParameter));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio, FinancialYearParameter));
-            _Modules.Add(taxModule);
 
             SelectedModule = homeModule;
         }
