@@ -8,6 +8,34 @@
     <DataTemplate DataType="{x:Type viewmodels:AquisitionViewModel}">
         <TextBlock Text="Aquisition" />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:CashTransactionViewModel}">
+        <TextBlock Text="Cash Transaction" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:CostBaseAdjustmentViewModel}">
+        <TextBlock Text="Costbase Adjustment" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:DisposalViewModel}">
+        <TextBlock Text="Disposal" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:IncomeReceivedViewModel}">
+        <TextBlock Text="IncomeReceived" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:OpeningBalanceViewModel}">
+        <TextBlock Text="Opening Balance" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ReturnOfCapitalViewModel}">
+        <TextBlock Text="Return of Capital" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:UnitCountAdjustmentViewModel}">
+        <TextBlock Text="Unit Count Adjustment" />
+    </DataTemplate>
     
     <DataTemplate DataType="{x:Type viewmodels:TransactionsViewModel}">
 
@@ -19,11 +47,11 @@
             </Button>
 
 
-            <ContentControl Content="{Binding SelectedTransactionViewItem.Transaction}">
+            <ContentControl Content="{Binding SelectedTransactionViewModel}">
 
             </ContentControl>
 
-            <ListView ItemsSource="{Binding Transactions}" Margin="0,10,0,0" SelectedItem="{Binding SelectedTransactionViewItem, Mode=TwoWay}" SelectionMode="Single">
+            <ListView ItemsSource="{Binding Transactions}" Margin="0,10,0,0" SelectedItem="{Binding SelectedTransactionViewModel, Mode=TwoWay}" SelectionMode="Single">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Date" Width="70" DisplayMemberBinding="{Binding TransactionDate, StringFormat={}{0:d}, Mode=OneWay}"/>
