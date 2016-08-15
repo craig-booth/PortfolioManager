@@ -246,11 +246,18 @@ namespace PortfolioManager.UI.ViewModels
 
     class OpeningBalanceViewModel : TransactionViewModel
     {
+        public int Units { get; set; }
+        public decimal CostBase { get; set; }
+        public DateTime AquisitionDate { get; set; }
+
         public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService)
             : base(openingBalance, stockService)
         {
-
+            Units = openingBalance.Units;
+            CostBase = openingBalance.CostBase;
+            AquisitionDate = openingBalance.AquisitionDate;
         }
+
     }
 
     class ReturnOfCapitalViewModel : TransactionViewModel
