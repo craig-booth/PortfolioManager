@@ -27,41 +27,58 @@
 
     <DataTemplate DataType="{x:Type viewmodels:OpeningBalanceViewModel}">
 
+        <DataTemplate.Resources>
+            <Style x:Key="FormLabel" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="10,3"/>
+            </Style>
 
-        <Grid>
+            <Style x:Key="FormTextBox" TargetType="TextBox">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="2,3,5,3"/>
+                <Setter Property="Height" Value="28"/>
+            </Style>
+
+            <Style x:Key="FormDatePicker" TargetType="DatePicker">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="2,3,5,3"/>
+                <Setter Property="Height" Value="28"/>
+            </Style>
+            
+        </DataTemplate.Resources>
+
+        <Grid controls:MarginSetter.Margin="2" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Balance Date"/>
-            <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding TransactionDate}" />
+            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource FormLabel}" Text="Balance Date"/>
+            <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding TransactionDate}" />
 
-            <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Company"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ASXCode}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Company"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{Binding ASXCode}"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Text="Units"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Units}" />
+            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Units" />
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units}" TextAlignment="Right"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Text="Cost Base"/>
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding CostBase}" />
+            <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Cost Base" />
+            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding CostBase}" TextAlignment="Right"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Text="Aquisition Date"/>
-            <DatePicker Grid.Column="1" Grid.Row="4" SelectedDate="{Binding AquisitionDate}" />
-   
-            <!--  public DateTime RecordDate { get; set; }
-            
-            public string Comment { get; set; }      -->
+            <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource FormLabel}" Text="Aquisition Date"/>
+            <DatePicker Grid.Column="1" Grid.Row="4" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding AquisitionDate}" />
 
-
+            <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource FormLabel}" Text="Comment"/>
+            <TextBox Grid.Column="1" Grid.Row="5" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>
 
         </Grid>
 
