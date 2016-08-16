@@ -40,7 +40,7 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
+        public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
 
         private TransactionViewModel _SelectedTransactionViewModel;
         public TransactionViewModel SelectedTransactionViewModel
@@ -57,6 +57,13 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+
+        public RelayCommand<Transaction> EditTransactionCommand { get; private set; }
+        private void EditTransaction(Transaction transaction)
+        {
+            SelectedTransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(transaction);
+        }
+
         public List<string> TransactionTypes { get; private set; }
 
         public TransactionsViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
@@ -70,7 +77,9 @@ namespace PortfolioManager.UI.ViewModels
             _DateParameter = dateParameter;
             _TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(Portfolio.StockService);
 
-            Transactions = new ObservableCollection<TransactionViewModel>();
+            EditTransactionCommand = new RelayCommand<Transaction>(EditTransaction);
+
+            Transactions = new ObservableCollection<TransactionViewItem>();
             TransactionTypes = new List<string>();
 
             TransactionTypes.Add("Aquisition");
@@ -118,45 +127,85 @@ namespace PortfolioManager.UI.ViewModels
                 if (transaction.Type != TransactionType.CashTransaction)
                 {
                     var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
-                    Transactions.Add(_TransactionViewModelFactory.CreateTransactionViewModel(transaction));
+                    Transactions.Add(new TransactionViewItem(transaction, Portfolio.StockService));
                 }
             }
 
+            _SelectedTransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(Transactions.First().Transaction);
 
-            OnPropertyChanged("");
+            OnPropertyChanged("");            
         }
 
     }
 
-    abstract class TransactionViewModel
+    class TransactionViewItem
     {
-        private StockService _StockService;
-        private Stock _Stock;
-
         public Transaction Transaction { get; private set; }
-        public string CompanyName { get; private set; }
-        public string Description { get; private set; }
 
         public DateTime TransactionDate { get; set; }
+        public string CompanyName { get; set; }
+        public string Description { get; set; }
+
+        public TransactionViewItem(Transaction transaction, StockService stockService)
+        {
+            Transaction = transaction;
+
+            TransactionDate = transaction.TransactionDate;
+            Description = transaction.Description;
+
+            if (transaction.Type != TransactionType.CashTransaction)
+            {
+                var stock = stockService.Get(transaction.ASXCode, transaction.RecordDate);
+                CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
+            }
+            else
+                CompanyName = "";
+        }
+    }
+
+    abstract class TransactionViewModel : NotifyClass
+    {
+        private StockService _StockService;
+
+        public Transaction Transaction { get; private set; }
+        public string Description { get; private set; }
+
         public string ASXCode { get; set; }
+        public Stock Stock { get; set; }
+        public DateTime TransactionDate { get; set; }
         public DateTime RecordDate { get; set; }
         public string Comment { get; set; }
 
+        public List<Stock> AvailableStocks { get; private set; }
+
         public TransactionViewModel(Transaction transaction, StockService stockService)
         {
-            _StockService = stockService;
+            AvailableStocks = new List<Stock>();
 
+            _StockService = stockService;
             Transaction = transaction;
 
+            ASXCode = transaction.ASXCode;
             Description = transaction.Description;
             TransactionDate = transaction.TransactionDate;
-            ASXCode = transaction.ASXCode;
             RecordDate = transaction.RecordDate;
             Comment = transaction.Comment;
 
-            _Stock = _StockService.Get(ASXCode, RecordDate);
-            CompanyName = string.Format("{0} ({1})", _Stock.Name, ASXCode);
+            PopulateAvailableStocks(RecordDate);
+            Stock = AvailableStocks.Find(x => x.ASXCode == transaction.ASXCode);
         }
+
+        private void PopulateAvailableStocks(DateTime date)
+        {
+            var stocks = _StockService.GetAll(date).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.Name);
+
+            AvailableStocks.Clear();
+            AvailableStocks.AddRange(stocks);
+
+            OnPropertyChanged("AvailableStocks");
+        }
+
+
     }
 
     class TransactionViewModelFactory
