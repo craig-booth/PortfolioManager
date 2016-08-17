@@ -40,29 +40,54 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
+        public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
 
-        private TransactionViewModel _SelectedTransactionViewModel;
-        public TransactionViewModel SelectedTransactionViewModel
+        private TransactionViewModel _CurrentTransactionViewModel;
+        public TransactionViewModel CurrentTransactionViewModel
         {
             get
             {
-                return _SelectedTransactionViewModel;
+                return _CurrentTransactionViewModel;
             }
-            set
+            private set
             {
-                _SelectedTransactionViewModel = value;
-                
+                _CurrentTransactionViewModel = value;
                 OnPropertyChanged();
             }
         }
 
-
-        public RelayCommand<Transaction> EditTransactionCommand { get; private set; }
-        private void EditTransaction(Transaction transaction)
+        public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
+        private void EditTransaction(TransactionViewModel transactionViewModel)
         {
-            SelectedTransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(transaction);
+            CurrentTransactionViewModel = transactionViewModel;
+            CurrentTransactionViewModel.BeginEdit();
         }
+
+        public RelayCommand CancelTransactionCommand { get; private set; }
+        private void CancelTransaction()
+        { 
+            CurrentTransactionViewModel.CancelEdit();
+            CurrentTransactionViewModel = null;
+        }
+
+        public RelayCommand SaveTransactionCommand { get; private set; }
+        private void SaveTransaction()
+        {
+            CurrentTransactionViewModel.EndEdit();
+        }
+
+        public RelayCommand DeleteTransactionCommand { get; private set; }
+        private void DeleteTransaction()
+        {
+
+        }
+
+        public RelayCommand<TransactionType> AddTransactionCommand { get; private set; }
+        private void AddTransaction(TransactionType transactionType)
+        {
+            CurrentTransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(transactionType);
+            CurrentTransactionViewModel.BeginEdit();  
+        } 
 
         public List<string> TransactionTypes { get; private set; }
 
@@ -77,9 +102,13 @@ namespace PortfolioManager.UI.ViewModels
             _DateParameter = dateParameter;
             _TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(Portfolio.StockService);
 
-            EditTransactionCommand = new RelayCommand<Transaction>(EditTransaction);
+            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
+            CancelTransactionCommand = new RelayCommand(CancelTransaction);
+            SaveTransactionCommand = new RelayCommand(SaveTransaction);
+            DeleteTransactionCommand = new RelayCommand(DeleteTransaction);
+            AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
 
-            Transactions = new ObservableCollection<TransactionViewItem>();
+            Transactions = new ObservableCollection<TransactionViewModel>();
             TransactionTypes = new List<string>();
 
             TransactionTypes.Add("Aquisition");
@@ -127,45 +156,19 @@ namespace PortfolioManager.UI.ViewModels
                 if (transaction.Type != TransactionType.CashTransaction)
                 {
                     var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
-                    Transactions.Add(new TransactionViewItem(transaction, Portfolio.StockService));
+                    Transactions.Add(_TransactionViewModelFactory.CreateTransactionViewModel(transaction));
                 }
             }
-
-            _SelectedTransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(Transactions.First().Transaction);
 
             OnPropertyChanged("");            
         }
 
     }
 
-    class TransactionViewItem
-    {
-        public Transaction Transaction { get; private set; }
-
-        public DateTime TransactionDate { get; set; }
-        public string CompanyName { get; set; }
-        public string Description { get; set; }
-
-        public TransactionViewItem(Transaction transaction, StockService stockService)
-        {
-            Transaction = transaction;
-
-            TransactionDate = transaction.TransactionDate;
-            Description = transaction.Description;
-
-            if (transaction.Type != TransactionType.CashTransaction)
-            {
-                var stock = stockService.Get(transaction.ASXCode, transaction.RecordDate);
-                CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
-            }
-            else
-                CompanyName = "";
-        }
-    }
-
-    abstract class TransactionViewModel : NotifyClass
+    class TransactionViewModel : NotifyClass, IEditableObject
     {
         private StockService _StockService;
+        protected bool _BeingEdited;
 
         public Transaction Transaction { get; private set; }
         public string Description { get; private set; }
@@ -173,7 +176,33 @@ namespace PortfolioManager.UI.ViewModels
         public string ASXCode { get; set; }
         public Stock Stock { get; set; }
         public DateTime TransactionDate { get; set; }
-        public DateTime RecordDate { get; set; }
+
+        private DateTime _RecordDate;
+        public DateTime RecordDate
+        {
+            get
+            {
+                return _RecordDate;
+            }
+
+            set
+            {
+                _RecordDate = value;
+
+                if (_BeingEdited)
+                    PopulateAvailableStocks(_RecordDate);
+            }
+        }
+        public string CompanyName
+        {
+            get
+            {
+                if (Stock != null)
+                    return string.Format("{0} ({1})", Stock.Name, Stock.ASXCode);
+                else
+                    return ASXCode;
+            }
+        }
         public string Comment { get; set; }
 
         public List<Stock> AvailableStocks { get; private set; }
@@ -183,16 +212,57 @@ namespace PortfolioManager.UI.ViewModels
             AvailableStocks = new List<Stock>();
 
             _StockService = stockService;
-            Transaction = transaction;
 
-            ASXCode = transaction.ASXCode;
-            Description = transaction.Description;
-            TransactionDate = transaction.TransactionDate;
-            RecordDate = transaction.RecordDate;
-            Comment = transaction.Comment;
+            Transaction = transaction;
+            if (transaction != null)
+                Stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
+
+            CopyTransactionToFields();
+        }
+
+        public void BeginEdit()
+        {
+            _BeingEdited = true;
 
             PopulateAvailableStocks(RecordDate);
-            Stock = AvailableStocks.Find(x => x.ASXCode == transaction.ASXCode);
+            Stock = AvailableStocks.Find(x => x.ASXCode == ASXCode);
+        }
+
+        public void EndEdit()
+        {
+            _BeingEdited = false;
+        }
+
+        public void CancelEdit()
+        {
+            _BeingEdited = false;
+
+            CopyTransactionToFields();
+        }
+
+        protected virtual void CopyTransactionToFields()
+        {
+            if (Transaction != null)
+            {
+                ASXCode = Transaction.ASXCode;
+                Description = Transaction.Description;
+                TransactionDate = Transaction.TransactionDate;
+                RecordDate = Transaction.RecordDate;
+                Comment = Transaction.Comment;
+            }
+            else
+            {
+                ASXCode = "";
+                Description = "";
+                TransactionDate = DateTime.Today;
+                RecordDate = DateTime.Today;
+                Comment = "";
+            }
+        }
+
+        protected virtual void CopyFieldsToTransaction()
+        {
+
         }
 
         private void PopulateAvailableStocks(DateTime date)
@@ -217,23 +287,45 @@ namespace PortfolioManager.UI.ViewModels
             _StockService = stockService;
         }
 
+        public TransactionViewModel CreateTransactionViewModel(TransactionType type)
+        {
+            if (type == TransactionType.Aquisition)
+                return new AquisitionViewModel(null, _StockService);
+            else if (type == TransactionType.CashTransaction)
+                return new CashTransactionViewModel(null, _StockService);
+            else if (type == TransactionType.CostBaseAdjustment)
+                return new CostBaseAdjustmentViewModel(null, _StockService);
+            else if (type == TransactionType.Disposal)
+                return new DisposalViewModel(null, _StockService);
+            else if (type == TransactionType.Income)
+                return new IncomeReceivedViewModel(null, _StockService);
+            else if (type == TransactionType.OpeningBalance)
+                return new OpeningBalanceViewModel(null, _StockService);
+            else if (type == TransactionType.ReturnOfCapital)
+                return new ReturnOfCapitalViewModel(null, _StockService);
+            else if (type == TransactionType.UnitCountAdjustment)
+                return new UnitCountAdjustmentViewModel(null, _StockService);
+            else
+                throw new NotSupportedException();
+        }
+
         public TransactionViewModel CreateTransactionViewModel(Transaction transaction)
         {
-            if (transaction is Aquisition)
+            if (transaction.Type == TransactionType.Aquisition)
                 return new AquisitionViewModel(transaction as Aquisition, _StockService);
-            else if (transaction is CashTransaction)
+            else if (transaction.Type == TransactionType.CashTransaction)
                 return new CashTransactionViewModel(transaction as CashTransaction, _StockService);
-            else if (transaction is CostBaseAdjustment)
+            else if (transaction.Type == TransactionType.CostBaseAdjustment)
                 return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustment, _StockService);
-            else if (transaction is Disposal)
+            else if (transaction.Type == TransactionType.Disposal)
                 return new DisposalViewModel(transaction as Disposal, _StockService);
-            else if (transaction is IncomeReceived)
+            else if (transaction.Type == TransactionType.Income)
                 return new IncomeReceivedViewModel(transaction as IncomeReceived, _StockService);
-            else if (transaction is OpeningBalance)
+            else if (transaction.Type == TransactionType.OpeningBalance)
                 return new OpeningBalanceViewModel(transaction as OpeningBalance, _StockService);
-            else if (transaction is ReturnOfCapital)
+            else if (transaction.Type == TransactionType.ReturnOfCapital)
                 return new ReturnOfCapitalViewModel(transaction as ReturnOfCapital, _StockService);
-            else if (transaction is UnitCountAdjustment)
+            else if (transaction.Type == TransactionType.UnitCountAdjustment)
                 return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustment, _StockService);
             else
                 throw new NotSupportedException();
@@ -242,6 +334,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class AquisitionViewModel : TransactionViewModel
     {
+        public Aquisition Aquisition { get; private set; }
         public int Units { get; set; }
         public decimal AveragePrice { get; set; }
         public decimal TransactionCosts { get; set; }
@@ -250,11 +343,32 @@ namespace PortfolioManager.UI.ViewModels
         public AquisitionViewModel(Aquisition aquisition, StockService stockService)
             : base(aquisition, stockService)
         {
-            Units = aquisition.Units;
-            AveragePrice = aquisition.AveragePrice;
-            TransactionCosts = aquisition.TransactionCosts;
-            CreateCashTransaction = aquisition.CreateCashTransaction;
+            Aquisition = aquisition;
         }
+
+        protected override void CopyTransactionToFields()
+        {
+            if (Transaction != null)
+            {
+                Units = Aquisition.Units;
+                AveragePrice = Aquisition.AveragePrice;
+                TransactionCosts = Aquisition.TransactionCosts;
+                CreateCashTransaction = Aquisition.CreateCashTransaction;
+            }
+            else
+            {
+                Units = 0;
+                AveragePrice = 0.00m;
+                TransactionCosts = 0.00m;
+                CreateCashTransaction = false;
+            }
+        }
+
+        protected override void CopyFieldsToTransaction()
+        {
+
+        }
+
     }
 
     class CashTransactionViewModel : TransactionViewModel
@@ -295,6 +409,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class OpeningBalanceViewModel : TransactionViewModel
     {
+        public OpeningBalance OpeningBalance { get; private set; }
         public int Units { get; set; }
         public decimal CostBase { get; set; }
         public DateTime AquisitionDate { get; set; }
@@ -302,9 +417,28 @@ namespace PortfolioManager.UI.ViewModels
         public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService)
             : base(openingBalance, stockService)
         {
-            Units = openingBalance.Units;
-            CostBase = openingBalance.CostBase;
-            AquisitionDate = openingBalance.AquisitionDate;
+            OpeningBalance = openingBalance;
+        }
+
+        protected override void CopyTransactionToFields()
+        {
+            if (Transaction != null)
+            {
+                Units = OpeningBalance.Units;
+                CostBase = OpeningBalance.CostBase;
+                AquisitionDate = OpeningBalance.AquisitionDate;
+            }
+            else
+            {
+                Units = 0;
+                CostBase = 0.00m;
+                AquisitionDate = DateTime.Today;
+            }
+        }
+
+        protected override void CopyFieldsToTransaction()
+        {
+
         }
 
     }

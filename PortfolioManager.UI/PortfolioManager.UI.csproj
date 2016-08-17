@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="Controls\DoubleClickCommand.cs" />
     <Compile Include="Controls\MarginSetter.cs" />
+    <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Style\ValueConverters.cs" />
     <Compile Include="Utilities\Module.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />

@@ -49,7 +49,7 @@ namespace PortfolioManager.UI.Utilities
         }
     }
 
-    public class RelayCommand<T> : ICommand where T : class
+    public class RelayCommand<T> : ICommand
     {
         private Action<T> _MethodToExecute;
         private Func<bool> _CanExecuteEvaluator;
@@ -86,7 +86,7 @@ namespace PortfolioManager.UI.Utilities
 
         public void Execute(object Parameter)
         {
-            this._MethodToExecute.Invoke(Parameter as T);
+            this._MethodToExecute.Invoke((T)Parameter);
         }
     }
 }
