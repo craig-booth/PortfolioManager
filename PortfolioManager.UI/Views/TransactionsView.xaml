@@ -5,131 +5,55 @@
                     xmlns:controls="clr-namespace:PortfolioManager.UI.Controls"
                     xmlns:model="clr-namespace:PortfolioManager.Model.Portfolios;assembly=PortfolioManager.Model">
 
-
-    <DataTemplate DataType="{x:Type viewmodels:AquisitionViewModel}">
-        <TextBlock Text="Aquisition" />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:CashTransactionViewModel}">
-        <TextBlock Text="Cash Transaction" />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:CostBaseAdjustmentViewModel}">
-        <TextBlock Text="Costbase Adjustment" />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:DisposalViewModel}">
-        <TextBlock Text="Disposal" />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:IncomeReceivedViewModel}">
-        <TextBlock Text="IncomeReceived" />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:OpeningBalanceViewModel}">
-
-        <DataTemplate.Resources>
-            <Style x:Key="FormLabel" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="10,3"/>
-            </Style>
-
-            <Style x:Key="FormTextBox" TargetType="TextBox">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="2,3,5,3"/>
-                <Setter Property="Height" Value="28"/>
-            </Style>
-
-            <Style x:Key="FormDatePicker" TargetType="DatePicker">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="2,3,5,3"/>
-                <Setter Property="Height" Value="28"/>
-            </Style>
-            
-        </DataTemplate.Resources>
-
-        <Grid controls:MarginSetter.Margin="2" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource FormLabel}" Text="Balance Date"/>
-            <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding TransactionDate}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Company"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}"/>
-
-            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Units" />
-            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units}" TextAlignment="Right"/>
-
-            <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Cost Base" />
-            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding CostBase}" TextAlignment="Right"/>
-
-            <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource FormLabel}" Text="Aquisition Date"/>
-            <DatePicker Grid.Column="1" Grid.Row="4" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding AquisitionDate}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource FormLabel}" Text="Comment"/>
-            <TextBox Grid.Column="1" Grid.Row="5" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>
-
-        </Grid>
-
-
-
-
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:ReturnOfCapitalViewModel}">
-        <TextBlock Text="Return of Capital" />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type viewmodels:UnitCountAdjustmentViewModel}">
-        <TextBlock Text="Unit Count Adjustment" />
-    </DataTemplate>
-    
     <DataTemplate DataType="{x:Type viewmodels:TransactionsViewModel}">
 
-        <StackPanel>
+        <Grid>
 
-            <ComboBox ItemsSource="{Binding TransactionTypes}" SelectedIndex="0" controls:SelectionChangedCommand.Command="{Binding AddTransactionCommand}" controls:SelectionChangedCommand.CommandParameter="{x:Static model:TransactionType.OpeningBalance}"/>
-            <Button>
-                <TextBlock Text="New Transaction"/>
-            </Button>
-     
-            <ContentControl Content="{Binding CurrentTransactionViewModel}" />
+            <StackPanel  Visibility="Collapsed">
 
-            <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding CancelTransactionCommand}">
-                    <TextBlock Text="Cancel"/>
-                </Button>
-                <Button Command="{Binding SaveTransactionCommand}">
-                    <TextBlock Text="Save"/>
-                </Button>
-                <Button Command="{Binding DeleteTransactionCommand}">
-                    <TextBlock Text="Delete"/>
-                </Button>
+           <!--     <StackPanel.Triggers>
+                    <DataTrigger Binding="{Binding EditingTransaction}" Value="true">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </StackPanel.Triggers> -->
+                
+                <ContentControl Content="{Binding CurrentTransactionViewModel}" />
+
+                <StackPanel Orientation="Horizontal">
+
+                    <Button Command="{Binding CancelTransactionCommand}">
+                        <TextBlock Text="Cancel"/>
+                    </Button>
+                    <Button Command="{Binding SaveTransactionCommand}">
+                        <TextBlock Text="Save"/>
+                    </Button>
+                    <Button Command="{Binding DeleteTransactionCommand}">
+                        <TextBlock Text="Delete"/>
+                    </Button>
+                </StackPanel>
             </StackPanel>
 
-            <ListView ItemsSource="{Binding Transactions}" Margin="0,10,0,0" SelectionMode="Single" controls:DoubleClickCommand.Command="{Binding EditTransactionCommand}" controls:DoubleClickCommand.CommandParameter="{Binding SelectedValue, RelativeSource={RelativeSource Self}}">
-            <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Date" Width="70" DisplayMemberBinding="{Binding TransactionDate, StringFormat={}{0:d}, Mode=OneWay}"/>
-                        <GridViewColumn Header="Company" Width="200" DisplayMemberBinding="{Binding CompanyName, Mode=OneWay}"/>
-                        <GridViewColumn Header="Description" Width="Auto" DisplayMemberBinding="{Binding Description, Mode=OneWay}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <Grid  Visibility="Visible">
 
-        </StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <ComboBox Grid.Row="0" ItemsSource="{Binding TransactionTypes}" SelectedIndex="0" controls:SelectionChangedCommand.Command="{Binding AddTransactionCommand}" controls:SelectionChangedCommand.CommandParameter="{x:Static model:TransactionType.OpeningBalance}"/>
+
+                <ListView Grid.Row="1" ItemsSource="{Binding Transactions}" Margin="0,10,0,0" SelectionMode="Single" controls:DoubleClickCommand.Command="{Binding EditTransactionCommand}" controls:DoubleClickCommand.CommandParameter="{Binding SelectedValue, RelativeSource={RelativeSource Self}}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Date" Width="70" DisplayMemberBinding="{Binding TransactionDate, StringFormat={}{0:d}, Mode=OneWay}"/>
+                            <GridViewColumn Header="Company" Width="200" DisplayMemberBinding="{Binding CompanyName, Mode=OneWay}"/>
+                            <GridViewColumn Header="Description" Width="Auto" DisplayMemberBinding="{Binding Description, Mode=OneWay}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+        </Grid>
         
     </DataTemplate>
 

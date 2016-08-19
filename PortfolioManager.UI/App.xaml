@@ -24,6 +24,14 @@
                 <ResourceDictionary Source="Views/UnrealisedGainsView.xaml"/>
                 <ResourceDictionary Source="Views/CashAccountView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionsView.xaml"/>
+                <ResourceDictionary Source="Views/AquisitionView.xaml"/>
+                <ResourceDictionary Source="Views/CashTransactionView.xaml"/>
+                <ResourceDictionary Source="Views/CostBaseAdjustmentView.xaml"/>
+                <ResourceDictionary Source="Views/DisposalView.xaml"/>
+                <ResourceDictionary Source="Views/IncomeReceivedView.xaml"/>
+                <ResourceDictionary Source="Views/OpeningBalanceView.xaml"/>
+                <ResourceDictionary Source="Views/ReturnOfCapitalView.xaml"/>
+                <ResourceDictionary Source="Views/UnitCountAdjustmentView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
