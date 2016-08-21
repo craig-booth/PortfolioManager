@@ -15,11 +15,12 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
+    enum EditMode { None, Create, View, Update, Delete };
+
     class TransactionsViewModel : PortfolioViewModel
     {
         private IStockParameter _StockParameter;
         private IDateRangeParameter _DateParameter;
-        private TransactionViewModelFactory _TransactionViewModelFactory;
 
         public void ParameterChange(object sender, PropertyChangedEventArgs e)
         {
@@ -40,9 +41,24 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+        public TransactionViewModelFactory TransactionViewModelFactory { get; private set; }
+
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
 
-        public bool EditingTransaction { get; set; }
+        private EditMode _TransactionEditMode;
+        public EditMode TransactionEditMode
+        {
+            get
+            {
+                return _TransactionEditMode;
+            }
+
+            set
+            {
+                _TransactionEditMode = value;
+                OnPropertyChanged();
+            }
+        }
 
         private TransactionViewModel _CurrentTransactionViewModel;
         public TransactionViewModel CurrentTransactionViewModel
@@ -63,23 +79,25 @@ namespace PortfolioManager.UI.ViewModels
         {
             CurrentTransactionViewModel = transactionViewModel;
             CurrentTransactionViewModel.BeginEdit();
-            EditingTransaction = true;
+            TransactionEditMode = EditMode.Update;
         }
 
         public RelayCommand CancelTransactionCommand { get; private set; }
         private void CancelTransaction()
         { 
-            CurrentTransactionViewModel.CancelEdit();
+            if (CurrentTransactionViewModel != null)
+                CurrentTransactionViewModel.CancelEdit();
             CurrentTransactionViewModel = null;
-            EditingTransaction = false;
+            TransactionEditMode = EditMode.None;
         }
 
         public RelayCommand SaveTransactionCommand { get; private set; }
         private void SaveTransaction()
         {
-            CurrentTransactionViewModel.EndEdit();
+            if (CurrentTransactionViewModel != null)
+                CurrentTransactionViewModel.EndEdit();
             CurrentTransactionViewModel = null;
-            EditingTransaction = false;
+            TransactionEditMode = EditMode.None;
         }
 
         public RelayCommand DeleteTransactionCommand { get; private set; }
@@ -91,12 +109,10 @@ namespace PortfolioManager.UI.ViewModels
         public RelayCommand<TransactionType> AddTransactionCommand { get; private set; }
         private void AddTransaction(TransactionType transactionType)
         {
-            CurrentTransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(transactionType);
+            CurrentTransactionViewModel = TransactionViewModelFactory.CreateTransactionViewModel(transactionType);
             CurrentTransactionViewModel.BeginEdit();
-            EditingTransaction = true;
-        } 
-
-        public List<string> TransactionTypes { get; private set; }
+            TransactionEditMode = EditMode.Create;
+        }
 
         public TransactionsViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
             : base(label, portfolio)
@@ -107,21 +123,26 @@ namespace PortfolioManager.UI.ViewModels
             _Heading = label;
             _StockParameter = stockParameter;
             _DateParameter = dateParameter;
-            _TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(Portfolio.StockService);
 
-            EditingTransaction = false;
+            Transactions = new ObservableCollection<ViewModels.TransactionViewModel>();
+            TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(Portfolio.StockService);
+
+            TransactionEditMode = EditMode.None;
             EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
-            SaveTransactionCommand = new RelayCommand(SaveTransaction);
-            DeleteTransactionCommand = new RelayCommand(DeleteTransaction);
+            SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
+            DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
             AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
+        }
 
-            Transactions = new ObservableCollection<TransactionViewModel>();
-            TransactionTypes = new List<string>();
+        private bool CanSaveTransaction()
+        {
+            return (TransactionEditMode == EditMode.Create) || (TransactionEditMode == EditMode.Update);
+        }
 
-            TransactionTypes.Add("Aquisition");
-            TransactionTypes.Add("Disposal");
-            TransactionTypes.Add("Income");
+        private bool CanDeleteTransaction()
+        {
+            return (TransactionEditMode == EditMode.Delete);
         }
 
         public override void Activate()
@@ -163,8 +184,7 @@ namespace PortfolioManager.UI.ViewModels
             {
                 if (transaction.Type != TransactionType.CashTransaction)
                 {
-                    var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
-                    Transactions.Add(_TransactionViewModelFactory.CreateTransactionViewModel(transaction));
+                    Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
                 }
             }
 

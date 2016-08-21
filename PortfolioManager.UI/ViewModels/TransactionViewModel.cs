@@ -131,9 +131,21 @@ namespace PortfolioManager.UI.ViewModels
     {
         private StockService _StockService;
 
+        public Dictionary<string, TransactionType> TransactionTypes { get; private set; }
+
         public TransactionViewModelFactory(StockService stockService)
         {
             _StockService = stockService;
+
+            TransactionTypes = new Dictionary<string, TransactionType>();
+            TransactionTypes.Add("Buy", TransactionType.Aquisition);
+            TransactionTypes.Add("Cash Transaction", TransactionType.CashTransaction);
+            TransactionTypes.Add("Adjust Cost Base", TransactionType.CostBaseAdjustment);
+            TransactionTypes.Add("Sell", TransactionType.Disposal);
+            TransactionTypes.Add("Income Received", TransactionType.Income);
+            TransactionTypes.Add("Opening Balance", TransactionType.OpeningBalance);
+            TransactionTypes.Add("Return Of Capital", TransactionType.ReturnOfCapital);
+            TransactionTypes.Add("Adjust Unit Count", TransactionType.UnitCountAdjustment);
         }
 
         public TransactionViewModel CreateTransactionViewModel(TransactionType type)
