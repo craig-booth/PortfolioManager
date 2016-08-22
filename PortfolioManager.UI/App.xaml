@@ -32,6 +32,7 @@
                 <ResourceDictionary Source="Views/OpeningBalanceView.xaml"/>
                 <ResourceDictionary Source="Views/ReturnOfCapitalView.xaml"/>
                 <ResourceDictionary Source="Views/UnitCountAdjustmentView.xaml"/>
+                <ResourceDictionary Source="Views/SettingsView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

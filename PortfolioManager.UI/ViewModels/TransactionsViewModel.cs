@@ -15,8 +15,6 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    enum EditMode { None, Create, View, Update, Delete };
-
     class TransactionsViewModel : PortfolioViewModel
     {
         private IStockParameter _StockParameter;
@@ -44,22 +42,7 @@ namespace PortfolioManager.UI.ViewModels
         public TransactionViewModelFactory TransactionViewModelFactory { get; private set; }
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
-
-        private EditMode _TransactionEditMode;
-        public EditMode TransactionEditMode
-        {
-            get
-            {
-                return _TransactionEditMode;
-            }
-
-            set
-            {
-                _TransactionEditMode = value;
-                OnPropertyChanged();
-            }
-        }
-
+        
         private TransactionViewModel _CurrentTransactionViewModel;
         public TransactionViewModel CurrentTransactionViewModel
         {
@@ -74,12 +57,27 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+        private bool _NewTransaction;
+        public bool NewTransaction
+        {
+            get
+            {
+                return _NewTransaction;
+            }
+
+            set
+            {
+                _NewTransaction = value;
+                OnPropertyChanged();
+            }
+        }
+
         public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
         private void EditTransaction(TransactionViewModel transactionViewModel)
         {
             CurrentTransactionViewModel = transactionViewModel;
             CurrentTransactionViewModel.BeginEdit();
-            TransactionEditMode = EditMode.Update;
+            NewTransaction = false;
         }
 
         public RelayCommand CancelTransactionCommand { get; private set; }
@@ -87,8 +85,7 @@ namespace PortfolioManager.UI.ViewModels
         { 
             if (CurrentTransactionViewModel != null)
                 CurrentTransactionViewModel.CancelEdit();
-            CurrentTransactionViewModel = null;
-            TransactionEditMode = EditMode.None;
+            CurrentTransactionViewModel = null;;
         }
 
         public RelayCommand SaveTransactionCommand { get; private set; }
@@ -97,7 +94,6 @@ namespace PortfolioManager.UI.ViewModels
             if (CurrentTransactionViewModel != null)
                 CurrentTransactionViewModel.EndEdit();
             CurrentTransactionViewModel = null;
-            TransactionEditMode = EditMode.None;
         }
 
         public RelayCommand DeleteTransactionCommand { get; private set; }
@@ -111,7 +107,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             CurrentTransactionViewModel = TransactionViewModelFactory.CreateTransactionViewModel(transactionType);
             CurrentTransactionViewModel.BeginEdit();
-            TransactionEditMode = EditMode.Create;
+            NewTransaction = true;
         }
 
         public TransactionsViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
@@ -127,22 +123,16 @@ namespace PortfolioManager.UI.ViewModels
             Transactions = new ObservableCollection<ViewModels.TransactionViewModel>();
             TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(Portfolio.StockService);
 
-            TransactionEditMode = EditMode.None;
             EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
-            SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
+            SaveTransactionCommand = new RelayCommand(SaveTransaction);
             DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
             AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
         }
 
-        private bool CanSaveTransaction()
-        {
-            return (TransactionEditMode == EditMode.Create) || (TransactionEditMode == EditMode.Update);
-        }
-
         private bool CanDeleteTransaction()
         {
-            return (TransactionEditMode == EditMode.Delete);
+            return (NewTransaction == false);
         }
 
         public override void Activate()

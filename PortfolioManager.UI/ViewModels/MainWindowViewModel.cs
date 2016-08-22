@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 
 using PortfolioManager.Model.Data;
@@ -95,10 +96,33 @@ namespace PortfolioManager.UI.ViewModels
 
         private DateTime _PortfolioStartDate;
 
+        private ApplicationSettings _Settings;
+        public ApplicationSettings Settings
+        {
+            get
+            {
+                return _Settings;
+            }
+            set
+            {
+                _Settings = value;
+            }
+        }
+
         public MainWindowViewModel()
         {
-            IStockDatabase stockDatabase = new SQLiteStockDatabase(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Stocks.db"));
-            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "portfolio.db"));
+            _Settings = new ApplicationSettings();
+
+            var stockDataBasePath = _Settings.StockDatabase;
+            if (!Path.IsPathRooted(stockDataBasePath))
+                stockDataBasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, stockDataBasePath);
+            IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDataBasePath);
+
+            var portfolioDatabasePath = _Settings.PortfolioDatabase;
+            if (!Path.IsPathRooted(portfolioDatabasePath))
+                portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
+            _Settings.PortfolioDatabase = portfolioDatabasePath;
+            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
@@ -152,6 +176,14 @@ namespace PortfolioManager.UI.ViewModels
             _Modules.Add(taxModule);
             taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio, FinancialYearParameter));
             taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio, FinancialYearParameter));
+
+            var settingsModule = new Module("Settings", "SettingsIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Hidden,
+                ViewParameterAreaVisible = Visibility.Hidden
+            };
+            _Modules.Add(settingsModule);
+            settingsModule.Views.Add(new SettingsViewModel("Settings", _Settings));
 
             SelectedModule = homeModule;
         }

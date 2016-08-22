@@ -64,6 +64,7 @@
     <Compile Include="Controls\MarginSetter.cs" />
     <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Style\ValueConverters.cs" />
+    <Compile Include="Utilities\ApplicationSettings.cs" />
     <Compile Include="Utilities\Module.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="ViewModels\OpeningBalanceViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
     <Compile Include="ViewModels\ReturnOfCapitalViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TaxableIncomeViewModel.cs" />
     <Compile Include="ViewModels\TransactionReportViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModel.cs" />
@@ -147,6 +149,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ReturnOfCapitalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

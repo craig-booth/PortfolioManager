@@ -7,26 +7,6 @@
 
     <DataTemplate DataType="{x:Type viewmodels:OpeningBalanceViewModel}">
 
-        <DataTemplate.Resources>
-            <Style x:Key="FormLabel" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="10,3"/>
-            </Style>
-
-            <Style x:Key="FormTextBox" TargetType="TextBox">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="2,3,5,3"/>
-                <Setter Property="Height" Value="28"/>
-            </Style>
-
-            <Style x:Key="FormDatePicker" TargetType="DatePicker">
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="2,3,5,3"/>
-                <Setter Property="Height" Value="28"/>
-            </Style>
-
-        </DataTemplate.Resources>
-
         <Grid controls:MarginSetter.Margin="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
