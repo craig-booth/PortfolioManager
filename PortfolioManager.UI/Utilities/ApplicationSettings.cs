@@ -36,5 +36,14 @@ namespace PortfolioManager.UI.Utilities
                 this["StockDatabase"] = value;
             }
         }
+
+        public void OnDatabaseChanged()
+        {
+            var handler = DatabaseChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
+        public event EventHandler DatabaseChanged;
     }
 }

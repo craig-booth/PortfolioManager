@@ -133,7 +133,10 @@ namespace PortfolioManager.Service
         {
             var firstParcel = _ParcelService.GetParcels(new DateTime(0001, 01, 01), DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();
 
-            return firstParcel.FromDate;
+            if (firstParcel != null)
+                return firstParcel.FromDate;
+            else
+                return DateTime.Today;
         }
 
         public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime date)
