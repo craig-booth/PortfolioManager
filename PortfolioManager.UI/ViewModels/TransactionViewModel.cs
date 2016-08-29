@@ -42,6 +42,7 @@ namespace PortfolioManager.UI.ViewModels
                     PopulateAvailableStocks(_RecordDate);
             }
         }
+
         public string CompanyName
         {
             get
@@ -55,6 +56,14 @@ namespace PortfolioManager.UI.ViewModels
         public string Comment { get; set; }
 
         public List<Stock> AvailableStocks { get; private set; }
+
+        public bool StockReadOnly
+        {
+            get
+            {
+                return (Transaction == null);
+            }
+        }
 
         public TransactionViewModel(Transaction transaction, StockService stockService)
         {
@@ -82,6 +91,8 @@ namespace PortfolioManager.UI.ViewModels
             _BeingEdited = false;
 
             CopyFieldsToTransaction();
+
+            OnPropertyChanged("");
         }
 
         public void CancelEdit()
@@ -115,10 +126,6 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (Transaction != null)
             {
-                if (Stock != null)
-                    Transaction.ASXCode = Stock.ASXCode;
-                else
-                    Transaction.ASXCode = ASXCode;
                 Transaction.TransactionDate = TransactionDate;
                 Transaction.RecordDate = RecordDate;
                 Transaction.Comment = Comment;

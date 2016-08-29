@@ -14,7 +14,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class OpeningBalanceViewModel : TransactionViewModel
+    class OpeningBalanceViewModel : TransactionViewModel, IDataErrorInfo
     {
         public int Units { get; set; }
         public decimal CostBase { get; set; }
@@ -53,10 +53,46 @@ namespace PortfolioManager.UI.ViewModels
             base.CopyFieldsToTransaction();
 
             var openingBalance = (OpeningBalance)Transaction;
+            openingBalance.TransactionDate = RecordDate;
             openingBalance.Units = Units;
             openingBalance.CostBase = CostBase;
             openingBalance.AquisitionDate = AquisitionDate;
         }
+
+
+        string IDataErrorInfo.this[string propertyName]
+        {
+            get
+            {
+                if (propertyName == "Units")
+                {
+                    if (Units <= 0)
+                        return "Units must be greater than 0";
+                } 
+                else if (propertyName == "CostBase")
+                {
+                    if (CostBase < 0.00m)
+                        return "Cost Base must not be less than 0";
+                }
+                else if (propertyName == "AquisitionDate")
+                {
+                    if (AquisitionDate > RecordDate)
+                        return "Aquisition Date must not be after the Opening Balance date";
+                }
+
+                return null;
+            }           
+        }
+
+        string IDataErrorInfo.Error
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
 
     }
 }

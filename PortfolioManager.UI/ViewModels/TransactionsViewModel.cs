@@ -84,9 +84,12 @@ namespace PortfolioManager.UI.ViewModels
         public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
         private void EditTransaction(TransactionViewModel transactionViewModel)
         {
-            CurrentTransactionViewModel = transactionViewModel;
-            CurrentTransactionViewModel.BeginEdit();
-            NewTransaction = false;
+            if (transactionViewModel != null)
+            {
+                CurrentTransactionViewModel = transactionViewModel;
+                CurrentTransactionViewModel.BeginEdit();
+                NewTransaction = false;
+            }
         }
 
         public RelayCommand CancelTransactionCommand { get; private set; }
@@ -104,24 +107,40 @@ namespace PortfolioManager.UI.ViewModels
             {
                 CurrentTransactionViewModel.EndEdit();
 
+                var transaction = CurrentTransactionViewModel.Transaction;
+
                 if (NewTransaction)
                 {
-                    _Parameter.Portfolio.TransactionService.ProcessTransaction(CurrentTransactionViewModel.Transaction);
-                    Transactions.Add(CurrentTransactionViewModel);
+                    _Parameter.Portfolio.TransactionService.ProcessTransaction(transaction);
+
+                    if (MeetsSelectionCriteria(transaction))
+                        Transactions.Add(CurrentTransactionViewModel);
                 }
                 else
                 {
-                    _Parameter.Portfolio.TransactionService.UpdateTransaction(CurrentTransactionViewModel.Transaction);
-                }
+                    _Parameter.Portfolio.TransactionService.UpdateTransaction(transaction);
 
+                    if (!MeetsSelectionCriteria(transaction))
+                        Transactions.Remove(CurrentTransactionViewModel);
+                }
             }
+
             CurrentTransactionViewModel = null;
         }
 
         public RelayCommand DeleteTransactionCommand { get; private set; }
         private void DeleteTransaction()
         {
+            if (CurrentTransactionViewModel != null)
+            {
+                CurrentTransactionViewModel.EndEdit();
 
+                _Parameter.Portfolio.TransactionService.DeleteTransaction(CurrentTransactionViewModel.Transaction);
+
+                Transactions.Remove(CurrentTransactionViewModel);
+            }
+
+            CurrentTransactionViewModel = null;
         }
 
         public RelayCommand<TransactionType> AddTransactionCommand { get; private set; }
@@ -134,18 +153,13 @@ namespace PortfolioManager.UI.ViewModels
 
         private bool CanDeleteTransaction()
         {
-            return (NewTransaction == false);
-        }
-
-        public void ParameterChange(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Portfolio")
-                TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService);
+            return (CurrentTransactionViewModel != null) && (NewTransaction == false);
         }
 
         public override void Activate()
         {
-            TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService);
+            if (_Parameter != null)
+                TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService);
 
             base.Activate();
         }
@@ -168,6 +182,17 @@ namespace PortfolioManager.UI.ViewModels
             }
 
             OnPropertyChanged("");            
+        }
+
+        private bool MeetsSelectionCriteria(Transaction transaction)
+        {
+            if ((transaction.TransactionDate < _Parameter.StartDate) || (transaction.TransactionDate > _Parameter.EndDate))
+                return false;
+
+            if (_Parameter.Stock.Id != Guid.Empty)
+                return (transaction.ASXCode == _Parameter.Stock.ASXCode);
+
+            return true;
         }
 
     }
