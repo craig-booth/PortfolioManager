@@ -79,7 +79,7 @@ namespace PortfolioManager.Model.Stocks
         public DateTime AquisitionDate { get; set; }
 
         public ResultingStock(Guid stock, int originalUnits, int newUnits, decimal costBasePercentage) :
-            this(stock, originalUnits, newUnits, costBasePercentage, DateTimeConstants.NoDate)
+            this(stock, originalUnits, newUnits, costBasePercentage, DateUtils.NoDate)
         {
         }
 

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
@@ -71,28 +74,10 @@ namespace PortfolioManager.UI.ViewModels
             get { return _Modules; }
         }
 
-        public StockParameter StockParameter { get; private set; }
-        public SingleDateParameter SingleDateParameter { get; private set; }
-        public DateRangeParameter DateRangeParameter { get; private set; }
-        public FinancialYearParameter FinancialYearParameter { get; set; }
+        public ViewParameter ViewParameter { get; set; }
 
-        private Dictionary<int, string> _FinancialYears;
-        public IReadOnlyDictionary<int, string> FinancialYears
-        {
-            get
-            {
-                return _FinancialYears;
-            }
-        }
-
-        private Dictionary<Stock, string> _Stocks;
-        public IReadOnlyDictionary<Stock, string> Stocks
-        {
-            get
-            {
-                return _Stocks;
-            }
-        }
+        public ObservableCollection<DescribedObject<int>> FinancialYears { get; set; }
+        public ObservableCollection<DescribedObject<Stock>> OwnedStocks { get; set; }
 
         private DateTime _PortfolioStartDate;
 
@@ -103,7 +88,7 @@ namespace PortfolioManager.UI.ViewModels
             {
                 return _Settings;
             }
-            set
+            private set
             {
                 _Settings = value;
             }
@@ -112,20 +97,63 @@ namespace PortfolioManager.UI.ViewModels
         public MainWindowViewModel()
         {
             _Modules = new List<Module>();
-            _FinancialYears = new Dictionary<int, string>();
-            _Stocks = new Dictionary<Stock, string>();
 
-            StockParameter = new StockParameter();
-            SingleDateParameter = new SingleDateParameter();
-            DateRangeParameter = new DateRangeParameter();
-            FinancialYearParameter = new FinancialYearParameter();
+            FinancialYears = new ObservableCollection<DescribedObject<int>>();
+            OwnedStocks = new ObservableCollection<Utilities.DescribedObject<Stock>>();
+
+            ViewParameter = new ViewParameter();
 
             _Settings = new ApplicationSettings();
             _Settings.DatabaseChanged += LoadPortfolio;
 
+
+            _Modules.Clear();
+            var homeModule = new Module("Home", "HomeIcon");
+            _Modules.Add(homeModule);
+            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", ViewParameter));
+
+            var transactionsModule = new Module("Transactions", "SettingsIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Hidden,
+                ViewParameterAreaVisible = Visibility.Visible
+            };
+            _Modules.Add(transactionsModule);
+            transactionsModule.Views.Add(new TransactionsViewModel("Transactions", ViewParameter));
+
+            var reportsModule = new Module("Reports", "ReportsIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Visible,
+                ViewParameterAreaVisible = Visibility.Visible
+            };
+            _Modules.Add(reportsModule);
+            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", ViewParameter));
+            reportsModule.Views.Add(new TransactionReportViewModel("Transactions", ViewParameter));
+            reportsModule.Views.Add(new CashAccountViewModel("Cash Summary", ViewParameter));
+
+
+            var taxModule = new Module("Tax", "TaxIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Visible,
+                ViewParameterAreaVisible = Visibility.Visible
+
+            };
+            _Modules.Add(taxModule);
+            taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", ViewParameter));
+            taxModule.Views.Add(new CGTViewModel("CGT", ViewParameter));
+
+            var settingsModule = new Module("Settings", "SettingsIcon")
+            {
+                ViewSelectionAreaVisible = Visibility.Hidden,
+                ViewParameterAreaVisible = Visibility.Hidden
+            };
+            _Modules.Add(settingsModule);
+            settingsModule.Views.Add(new SettingsViewModel("Settings", _Settings));
+
             LoadPortfolio(_Settings, EventArgs.Empty);
+
+            SelectedModule = homeModule;
         }
-        
+
         private void LoadPortfolio(object sender, EventArgs e)
         {
             var stockDataBasePath = _Settings.StockDatabase;
@@ -139,99 +167,53 @@ namespace PortfolioManager.UI.ViewModels
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
+            ViewParameter.Portfolio = _Portfolio;
+
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
 
             PopulateFinancialYearList();
             PopulateStockList();
-
-            StockParameter.Stock = _Stocks.First().Key;
-
-            _Modules.Clear();
-            var homeModule = new Module("Home", "HomeIcon");
-            _Modules.Add(homeModule);
-            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", _Portfolio));
-
-
-            var transactionsModule = new Module("Transactions", "SettingsIcon")
-            {
-                ViewSelectionAreaVisible = Visibility.Hidden,
-                ViewParameterAreaVisible = Visibility.Visible
-            };
-            _Modules.Add(transactionsModule);
-            transactionsModule.Views.Add(new TransactionsViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
-
-
-            var reportsModule = new Module("Reports", "ReportsIcon")
-            {
-                ViewSelectionAreaVisible = Visibility.Visible,
-                ViewParameterAreaVisible = Visibility.Visible
-            };
-            _Modules.Add(reportsModule);
-            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", _Portfolio, StockParameter, SingleDateParameter));
-            reportsModule.Views.Add(new TransactionReportViewModel("Transactions", _Portfolio, StockParameter, DateRangeParameter));
-            reportsModule.Views.Add(new CashAccountViewModel("Cash Summary", _Portfolio, DateRangeParameter));
-
-
-            var taxModule = new Module("Tax", "TaxIcon")
-            {
-                ViewSelectionAreaVisible = Visibility.Visible,
-                ViewParameterAreaVisible = Visibility.Visible
-
-            };
-            _Modules.Add(taxModule);
-            taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", _Portfolio, FinancialYearParameter));
-            taxModule.Views.Add(new CGTViewModel("CGT", _Portfolio, FinancialYearParameter));
-
-            var settingsModule = new Module("Settings", "SettingsIcon")
-            {
-                ViewSelectionAreaVisible = Visibility.Hidden,
-                ViewParameterAreaVisible = Visibility.Hidden
-            };
-            _Modules.Add(settingsModule);
-            settingsModule.Views.Add(new SettingsViewModel("Settings", _Settings));
-
-            SelectedModule = homeModule;
         }
 
         private void PopulateFinancialYearList()
         {
-            _FinancialYears.Clear();
+            FinancialYears.Clear();
 
-            // Determine current financial year
-            int currentFinancialYear;
-            if (DateTime.Today.Month <= 6)
-                currentFinancialYear = DateTime.Today.Year;
-            else
-                currentFinancialYear = DateTime.Today.Year + 1;
+            // Determinefirst and last financial years
+            int currentFinancialYear = DateTime.Today.FinancialYear();
+            int oldestFinancialYear = _PortfolioStartDate.FinancialYear();
 
             int year = currentFinancialYear;
-            while (year >= 2010)
+            while (year >= oldestFinancialYear)
             {
                 if (year == currentFinancialYear)
-                    _FinancialYears.Add(year, "Current");
+                    FinancialYears.Add(new DescribedObject<int>(year, "Current"));
                 else if (year == currentFinancialYear - 1)
-                    _FinancialYears.Add(year, "Previous");
+                    FinancialYears.Add(new DescribedObject<int>(year, "Previous"));
                 else
-                    _FinancialYears.Add(year, string.Format("{0} - {1}", year - 1, year));
+                    FinancialYears.Add(new DescribedObject<int>(year, String.Format("{0} - {1}", year - 1, year)));
 
                 year--;
             }
+
+            ViewParameter.FinancialYear = currentFinancialYear;
         }
 
         private void PopulateStockList()
         {
-            _Stocks.Clear();
+            OwnedStocks.Clear();
 
             // Add entry to entire portfolio
-            var dummyStock = new Stock(Guid.Empty, DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate, "", "All Stocks", StockType.Ordinary, Guid.Empty);
-            _Stocks.Add(dummyStock, " ");
+            var allCompanies = new Stock(Guid.Empty, DateUtils.NoStartDate, DateUtils.NoEndDate, "", "All Companies", StockType.Ordinary, Guid.Empty);
+            OwnedStocks.Add(new DescribedObject<Stock>(allCompanies, "All Companies"));
 
-            var stocks = _Portfolio.ShareHoldingService.GetOwnedStocks(DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate).OrderBy(x => x.Name);
+            var stocks = _Portfolio.ShareHoldingService.GetOwnedStocks(DateUtils.NoStartDate, DateUtils.NoEndDate).OrderBy(x => x.Name);
             foreach (var stock in stocks)
             {
-                _Stocks.Add(stock, string.Format("{0} ({1})", stock.Name, stock.ASXCode));
+                OwnedStocks.Add(new DescribedObject<Stock>(stock, string.Format("{0} ({1})", stock.Name, stock.ASXCode)));
             }
 
+            ViewParameter.Stock = allCompanies;
         }
 
 

@@ -14,13 +14,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class CashAccountViewModel : PortfolioViewModel
     {
-        private IDateRangeParameter _Parameter;
-
-        public void ParameterChange(object sender, PropertyChangedEventArgs e)
-        {
-            ShowReport();
-        }
-
+     
         public decimal OpeningBalance { get; private set; }
         public decimal ClosingBalance { get; private set; }
         public ObservableCollection<CashAccountItemViewModel> Transactions { get; private set; }
@@ -39,40 +33,24 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public CashAccountViewModel(string label, Portfolio portfolio, IDateRangeParameter parameter)
-            : base(label, portfolio)
+        public CashAccountViewModel(string label, ViewParameter parameter)
+            : base(label, parameter)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.Range;
-
-            _Parameter = parameter;
-
+            
             Transactions = new ObservableCollection<CashAccountItemViewModel>();
         }
 
-        public override void Activate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged += ParameterChange;
-
-            ShowReport();
-        }
-
-        public override void Deactivate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged -= ParameterChange;
-        }
-
-        private void ShowReport()
+        public override void RefreshView()
         {
             // Get opening blance
-            OpeningBalance = Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
+            OpeningBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
 
             decimal balance = OpeningBalance;
 
             // get transactions
-            var transactions = Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+            var transactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
 
             Transactions.Clear();
             foreach (var transaction in transactions)

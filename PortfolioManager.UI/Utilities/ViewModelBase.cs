@@ -11,7 +11,7 @@ using PortfolioManager.Service;
 namespace PortfolioManager.UI.Utilities
 {
  
-    public interface IViewModel
+    interface IViewModel
     {
         string Label { get; }
         string Heading { get; }
@@ -22,15 +22,15 @@ namespace PortfolioManager.UI.Utilities
     }
 
 
-    public enum DateSelectionType { None, Single, Range, FinancialYear }
+    enum DateSelectionType { None, Single, Range, FinancialYear }
 
-    public class ViewOptions
+    class ViewOptions
     {
         public bool AllowStockSelection { get; set; }
         public DateSelectionType DateSelection { get; set; }
     }
 
-    public abstract class ViewModel : NotifyClass, IViewModel 
+    abstract class ViewModel : NotifyClass, IViewModel 
     {
         public string Label { get; protected set; }
         public string Heading { get; protected set; }
@@ -57,14 +57,38 @@ namespace PortfolioManager.UI.Utilities
         }
     }
 
-    public abstract class PortfolioViewModel : ViewModel, IViewModel
+    abstract class PortfolioViewModel : ViewModel, IViewModel
     {
-        public Portfolio Portfolio { get; private set; }
+        protected ViewParameter _Parameter;
 
-        public PortfolioViewModel(string label, Portfolio portfolio)
+        public PortfolioViewModel(string label, ViewParameter parameter)
             : base(label)
         {
-            Portfolio = portfolio;
+            _Parameter = parameter;
+        }
+
+        public void ParameterChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RefreshView();
+        }
+
+        public override void Activate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged += ParameterChanged;
+
+            RefreshView();
+        }
+
+        public override void Deactivate()
+        {
+            if (_Parameter != null)
+                _Parameter.PropertyChanged -= ParameterChanged;
+        }
+
+        public virtual void RefreshView()
+        {
+
         }
     }
 

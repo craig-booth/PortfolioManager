@@ -86,7 +86,7 @@ namespace PortfolioManager.Service.Test.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("AAA"), 500, 1.50m, 750.00m, 750.00m, Guid.Empty, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("AAA"), 500, 1.50m, 750.00m, 750.00m, Guid.Empty, ParcelEvent.Disposal));
             _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 500, 840.00m));
 
         }
@@ -137,7 +137,7 @@ namespace PortfolioManager.Service.Test.Transactions
             // costbase prior to sale = (1500 - (1000 * 0.20)) = (1500 - 200) = 1300
             // costbase of sold shares = (1300 / 2) = 650
             // costbase of remainging shares = 1300 - 650 = 650
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("AAA"), 500, 1.50m, 750.00m, 650.00m, Guid.Empty, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("AAA"), 500, 1.50m, 750.00m, 650.00m, Guid.Empty, ParcelEvent.Disposal));
             _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 500, 590.00m));
 
         }
@@ -238,7 +238,7 @@ namespace PortfolioManager.Service.Test.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate2, GetStockId("AAA"), 300, 2.40m, 720.00m, 720.00m, Guid.Empty, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate2, GetStockId("AAA"), 300, 2.40m, 720.00m, 720.00m, Guid.Empty, ParcelEvent.Disposal));
       /*      _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 1000, 1500.00m, 1691.67m));
             _ExpectedCGTEvents.Add(new CGTEvent(GetStockId("AAA"), _TransactionDate, 200, 480.00m, 338.33m)); */
 
@@ -323,9 +323,9 @@ namespace PortfolioManager.Service.Test.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("SSS1"), 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("SSS2"), 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("SSS3"), 500, 9.00m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS1"), 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS2"), 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS3"), 500, 9.00m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.Disposal));
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%
@@ -386,9 +386,9 @@ namespace PortfolioManager.Service.Test.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("SSS1"), 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("SSS2"), 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateTimeConstants.NoEndDate, aquisitionDate, GetStockId("SSS3"), 500, 9.00m, 4500.00m, 4450.00m, purchaseId, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS1"), 500, 1.50m, 750.00m, 750.00m, purchaseId, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS2"), 500, 4.50m, 2250.00m, 2250.00m, purchaseId, ParcelEvent.Disposal));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS3"), 500, 9.00m, 4500.00m, 4450.00m, purchaseId, ParcelEvent.Disposal));
 
             // Relative purchase NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             // Relative sale NTA... s1 = 20% ,s2 = 40%, s3 = 40%

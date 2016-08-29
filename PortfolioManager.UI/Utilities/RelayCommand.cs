@@ -8,7 +8,7 @@ using System.Windows.Input;
 namespace PortfolioManager.UI.Utilities
 {
 
-    public class RelayCommand : ICommand
+    class RelayCommand : ICommand
     {
         private Action _MethodToExecute;
         private Func<bool> _CanExecuteEvaluator;
@@ -49,7 +49,7 @@ namespace PortfolioManager.UI.Utilities
         }
     }
 
-    public class RelayCommand<T> : ICommand
+    class RelayCommand<T> : ICommand
     {
         private Action<T> _MethodToExecute;
         private Func<bool> _CanExecuteEvaluator;

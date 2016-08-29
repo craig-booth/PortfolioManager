@@ -17,13 +17,6 @@ namespace PortfolioManager.UI.ViewModels
 {
     class TransactionReportViewModel : PortfolioViewModel
     {
-        private IStockParameter _StockParameter;
-        private IDateRangeParameter _DateParameter;
-
-        public void ParameterChange(object sender, PropertyChangedEventArgs e)
-        {
-            ShowReport();
-        }
 
         private string _Heading;
         new public string Heading
@@ -41,59 +34,32 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<TransactionReportViewItem> Transactions { get; private set; }
 
-        public TransactionReportViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
-            : base(label, portfolio)
+        public TransactionReportViewModel(string label, ViewParameter parameter)
+            : base(label, parameter)
         {
             Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.Range;
 
             _Heading = label;
-            _StockParameter = stockParameter;
-            _DateParameter = dateParameter;
-
+          
             Transactions = new ObservableCollection<TransactionReportViewItem>();
         }
 
-        public override void Activate()
-        {
-            if (_DateParameter != null)
-                _DateParameter.PropertyChanged += ParameterChange;
-
-            if (_StockParameter != null)
-                _StockParameter.PropertyChanged += ParameterChange;
-
-            ShowReport();
-        }
-
-        public override void Deactivate()
-        {
-            if (_DateParameter != null)
-                _DateParameter.PropertyChanged -= ParameterChange;
-
-            if (_StockParameter != null)
-                _StockParameter.PropertyChanged -= ParameterChange;
-        }
-
-        private void ShowReport()
+        public override void RefreshView()
         {
             Transactions.Clear();
 
-            if ((_StockParameter == null) || (_DateParameter == null))
-            {
-                OnPropertyChanged("");
-                return;
-            }
-
+           
             IReadOnlyCollection<Transaction> transactions;
-            if (_StockParameter.Stock.Id == Guid.Empty)
-                transactions = Portfolio.TransactionService.GetTransactions(_DateParameter.StartDate, _DateParameter.EndDate);
+            if (_Parameter.Stock.Id == Guid.Empty)
+                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
             else
-                transactions = Portfolio.TransactionService.GetTransactions(_StockParameter.Stock.ASXCode, _DateParameter.StartDate, _DateParameter.EndDate);
+                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
             foreach (var transaction in transactions)
             {
                 if (transaction.Type != TransactionType.CashTransaction)
                 {
-                    var stock = Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
+                    var stock = _Parameter.Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
                     Transactions.Add(new TransactionReportViewItem(stock, transaction));
                 }
             }

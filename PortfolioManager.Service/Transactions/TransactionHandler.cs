@@ -82,7 +82,7 @@ namespace PortfolioManager.Service.Transactions
         protected void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, Action<ShareParcel> change)
         {
             // Check that this is the latest version of this parcel
-            if (parcel.ToDate != DateTimeConstants.NoEndDate)
+            if (parcel.ToDate != DateUtils.NoEndDate)
                 throw new AttemptToModifyPreviousParcelVersion(parcel.Id, "");
 
             if (parcel.FromDate == changeDate)

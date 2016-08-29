@@ -40,7 +40,7 @@ namespace PortfolioManager.Model.Stocks
         public RoundingRule DividendRoundingRule { get; set; }
 
         public Stock(DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
-            : this(Guid.NewGuid(), fromDate, DateTimeConstants.NoEndDate, asxCode, name, type, parent)
+            : this(Guid.NewGuid(), fromDate, DateUtils.NoEndDate, asxCode, name, type, parent)
 
         {
         }

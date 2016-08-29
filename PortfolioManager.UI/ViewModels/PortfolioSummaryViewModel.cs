@@ -15,7 +15,6 @@ namespace PortfolioManager.UI.ViewModels
 {
     class PortfolioSummaryViewModel: PortfolioViewModel
     {
-
         public decimal MarketValue { get; private set; }
         public decimal DollarChangeInValue { get; private set; }
         public decimal PercentChangeInValue { get; private set; }
@@ -27,20 +26,15 @@ namespace PortfolioManager.UI.ViewModels
 
         public List<HoldingItemViewModel> Holdings { get; private set; }
 
-        public PortfolioSummaryViewModel(string label, Portfolio portfolio)
-            : base(label, portfolio)
+        public PortfolioSummaryViewModel(string label, ViewParameter parameter)
+            : base(label, parameter)
         {
             Holdings = new List<HoldingItemViewModel>();
         }
 
-        public override void Activate()
+        public override void RefreshView()
         {
-            ShowReport();
-        }
-
-        private void ShowReport()
-        {
-            var holdings = Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
+            var holdings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
 
             MarketValue = holdings.Sum(x => x.MarketValue);
             var totalCost = holdings.Sum(x => x.TotalCostBase);
@@ -50,10 +44,10 @@ namespace PortfolioManager.UI.ViewModels
             else
                 PercentChangeInValue = DollarChangeInValue / totalCost;
 
-            Return1Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-1), DateTime.Today);
-            Return3Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
-            Return5Year = Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-5), DateTime.Today);
-            ReturnAll = Portfolio.ShareHoldingService.CalculateIRR(DateTimeConstants.NoDate, DateTime.Today);
+            Return1Year = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-1), DateTime.Today);
+            Return3Year = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
+            Return5Year = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-5), DateTime.Today);
+            ReturnAll = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateUtils.NoDate, DateTime.Today);
 
             Holdings.Clear();
             foreach (var holding in holdings)

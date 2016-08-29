@@ -20,9 +20,9 @@ namespace PortfolioManager.Model.Utils
         public int Amount;
     }
 
-    public class MathUtils
+    public static class MathUtils
     {
-        public static decimal ToCurrency(decimal value, RoundingRule rule)
+        public static decimal ToCurrency(this decimal value, RoundingRule rule)
         {
             if (rule == RoundingRule.Round)
                 return Math.Round(value, 2, MidpointRounding.AwayFromZero);
@@ -41,11 +41,11 @@ namespace PortfolioManager.Model.Utils
             /* Calculate total */
             decimal totalUnits = values.Sum(x => x.Units);
 
-            decimal totalAmount = MathUtils.ToCurrency(amount , RoundingRule.Truncate);
+            decimal totalAmount = amount.ToCurrency(RoundingRule.Truncate);
             for (int i = 0; i < values.Length; i++)
             {
                 if (totalUnits > 0)
-                    values[i].Amount = MathUtils.ToCurrency(totalAmount * (values[i].Units / totalUnits), RoundingRule.Round);
+                    values[i].Amount = (totalAmount * (values[i].Units / totalUnits)).ToCurrency(RoundingRule.Round);
                 else
                     values[i].Amount = 0.00m;
 

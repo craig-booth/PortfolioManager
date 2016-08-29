@@ -22,7 +22,7 @@ namespace StockManager.Service
 
         public Stock Add(string asxCode, string name)
         {
-            var stock = new Stock(DateTimeConstants.NoStartDate, asxCode, name, StockType.Ordinary, Guid.Empty);
+            var stock = new Stock(DateUtils.NoStartDate, asxCode, name, StockType.Ordinary, Guid.Empty);
             Add(stock);
             return stock;
         }
@@ -36,7 +36,7 @@ namespace StockManager.Service
 
         public Stock Add(string asxCode, string name, StockType type)
         {
-            var stock = new Stock(DateTimeConstants.NoStartDate, asxCode, name, type, Guid.Empty);
+            var stock = new Stock(DateUtils.NoStartDate, asxCode, name, type, Guid.Empty);
             Add(stock);
             return stock;
         }
@@ -50,7 +50,7 @@ namespace StockManager.Service
 
         public Stock Add(string asxCode, string name, StockType type, Stock parent)
         {
-            var stock = new Stock(DateTimeConstants.NoStartDate, asxCode, name, type, parent.Id);
+            var stock = new Stock(DateUtils.NoStartDate, asxCode, name, type, parent.Id);
             Add(stock);
             return stock;
         }

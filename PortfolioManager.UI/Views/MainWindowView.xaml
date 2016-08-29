@@ -104,10 +104,10 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Company" Grid.Column="0"/>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding Stocks}" SelectedValue="{Binding StockParameter.Stock, Mode=TwoWay}" SelectedValuePath="Key">
+                <ComboBox Grid.Column="1" ItemsSource="{Binding OwnedStocks}" SelectedValue="{Binding ViewParameter.Stock, Mode=TwoWay}" SelectedValuePath="Value">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Value}"/>
+                            <TextBlock Text="{Binding Description}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -133,7 +133,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Date" Grid.Column="0" />
-                <DatePicker SelectedDate="{Binding SingleDateParameter.Date, Mode=TwoWay}" Grid.Column="1" />
+                <DatePicker SelectedDate="{Binding ViewParameter.Date, Mode=TwoWay}" Grid.Column="1" />
             </Grid>
 
             <Grid>
@@ -158,9 +158,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="From" Grid.Column="0" />
-                <DatePicker SelectedDate="{Binding DateRangeParameter.StartDate, Mode=TwoWay}" Grid.Column="1" />
+                <DatePicker SelectedDate="{Binding ViewParameter.StartDate, Mode=TwoWay}" Grid.Column="1" />
                 <TextBlock Text="To" Grid.Column="2" />
-                <DatePicker SelectedDate="{Binding DateRangeParameter.EndDate, Mode=TwoWay}" Grid.Column="3" />
+                <DatePicker SelectedDate="{Binding ViewParameter.EndDate, Mode=TwoWay}" Grid.Column="3" />
             </Grid>
 
 
@@ -184,10 +184,10 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Financial Year" Grid.Column="0" />
-                <ComboBox Grid.Column="1" ItemsSource="{Binding FinancialYears}" SelectedValue="{Binding FinancialYearParameter.FinancialYear, Mode=TwoWay}" SelectedValuePath="Key">
+                <ComboBox Grid.Column="1" ItemsSource="{Binding FinancialYears}" SelectedValue="{Binding ViewParameter.FinancialYear, Mode=TwoWay}" SelectedValuePath="Value">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Value}"/>
+                            <TextBlock Text="{Binding Description}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

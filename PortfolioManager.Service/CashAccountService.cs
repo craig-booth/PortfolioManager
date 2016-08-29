@@ -30,7 +30,7 @@ namespace PortfolioManager.Service
         public decimal GetBalance(DateTime atDate)
         {
             // Sum up transactions prior to the request date
-            var transactons = GetTransactions(DateTimeConstants.NoStartDate, atDate.AddDays(-1));
+            var transactons = GetTransactions(DateUtils.NoStartDate, atDate.AddDays(-1));
 
             return transactons.Sum(x => x.Amount);
         }

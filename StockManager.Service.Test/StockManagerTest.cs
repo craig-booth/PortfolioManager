@@ -25,8 +25,8 @@ namespace StockManager.Service.Test
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Ordinary));
-            Assert.That(stock.FromDate, Is.EqualTo(DateTimeConstants.NoStartDate));
-            Assert.That(stock.ToDate, Is.EqualTo(DateTimeConstants.NoEndDate));
+            Assert.That(stock.FromDate, Is.EqualTo(DateUtils.NoStartDate));
+            Assert.That(stock.ToDate, Is.EqualTo(DateUtils.NoEndDate));
             Assert.That(stock.ParentId, Is.EqualTo(Guid.Empty));
         }
 
@@ -43,7 +43,7 @@ namespace StockManager.Service.Test
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Ordinary));
             Assert.That(stock.FromDate, Is.EqualTo(fromDate));
-            Assert.That(stock.ToDate, Is.EqualTo(DateTimeConstants.NoEndDate));
+            Assert.That(stock.ToDate, Is.EqualTo(DateUtils.NoEndDate));
             Assert.That(stock.ParentId, Is.EqualTo(Guid.Empty));
         }
 
@@ -58,8 +58,8 @@ namespace StockManager.Service.Test
 
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Trust));
-            Assert.That(stock.FromDate, Is.EqualTo(DateTimeConstants.NoStartDate));
-            Assert.That(stock.ToDate, Is.EqualTo(DateTimeConstants.NoEndDate));
+            Assert.That(stock.FromDate, Is.EqualTo(DateUtils.NoStartDate));
+            Assert.That(stock.ToDate, Is.EqualTo(DateUtils.NoEndDate));
             Assert.That(stock.ParentId, Is.EqualTo(Guid.Empty));
         }
 
@@ -76,7 +76,7 @@ namespace StockManager.Service.Test
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Trust));
             Assert.That(stock.FromDate, Is.EqualTo(fromDate));
-            Assert.That(stock.ToDate, Is.EqualTo(DateTimeConstants.NoEndDate));
+            Assert.That(stock.ToDate, Is.EqualTo(DateUtils.NoEndDate));
             Assert.That(stock.ParentId, Is.EqualTo(Guid.Empty));
         }
 
@@ -93,7 +93,7 @@ namespace StockManager.Service.Test
             Assert.That(stock.ASXCode, Is.EqualTo("ABC"));
             Assert.That(stock.Type, Is.EqualTo(StockType.Ordinary));
             Assert.That(stock.FromDate, Is.EqualTo(fromDate));
-            Assert.That(stock.ToDate, Is.EqualTo(DateTimeConstants.NoEndDate));
+            Assert.That(stock.ToDate, Is.EqualTo(DateUtils.NoEndDate));
             Assert.That(stock.ParentId, Is.EqualTo(Guid.Empty));
         }
 

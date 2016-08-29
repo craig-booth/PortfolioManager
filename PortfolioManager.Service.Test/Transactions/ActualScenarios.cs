@@ -107,8 +107,8 @@ namespace PortfolioManager.Service.Test.Transactions
             _TransactionDate = new DateTime(2015, 02, 10);
 
             _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), _StockServiceRepository.StockService.GetStock("NNCLV", _TransactionDate).Id, 68, 16.60m, 68 * 16.60m, 68 * 16.60m, ParcelEvent.Aquisition));
-            _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), DateTimeConstants.NoEndDate, new DateTime(2004, 11, 24), _StockServiceRepository.StockService.GetStock("FOXLV", _TransactionDate).Id, 235, 23.06m, 235 * 23.06m, 4453.37m, Guid.Empty, ParcelEvent.CostBaseReduction));
-            _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), DateTimeConstants.NoEndDate, new DateTime(2007, 07, 27), _StockServiceRepository.StockService.GetStock("FOXLV", _TransactionDate).Id, 40, 21.76m, 40 * 21.76m, 722.58m, Guid.Empty, ParcelEvent.CostBaseReduction));
+            _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), DateUtils.NoEndDate, new DateTime(2004, 11, 24), _StockServiceRepository.StockService.GetStock("FOXLV", _TransactionDate).Id, 235, 23.06m, 235 * 23.06m, 4453.37m, Guid.Empty, ParcelEvent.CostBaseReduction));
+            _ExpectedParcels.Add(new ShareParcel(new DateTime(2013, 06, 28), DateUtils.NoEndDate, new DateTime(2007, 07, 27), _StockServiceRepository.StockService.GetStock("FOXLV", _TransactionDate).Id, 40, 21.76m, 40 * 21.76m, 722.58m, Guid.Empty, ParcelEvent.CostBaseReduction));
             
             _ExpectedIncome.Add(new Income(_StockServiceRepository.StockService.GetStock("NWSLV", new DateTime(2013, 06, 21)), 0.00m, 0.00m, 0.00m, 0.00m, 12.20m));
 

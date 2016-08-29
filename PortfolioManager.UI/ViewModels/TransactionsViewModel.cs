@@ -17,12 +17,21 @@ namespace PortfolioManager.UI.ViewModels
 {
     class TransactionsViewModel : PortfolioViewModel
     {
-        private IStockParameter _StockParameter;
-        private IDateRangeParameter _DateParameter;
-
-        public void ParameterChange(object sender, PropertyChangedEventArgs e)
+        public TransactionsViewModel(string label, ViewParameter parameter)
+            : base(label, parameter)
         {
-            ShowTransactions();
+            Options.AllowStockSelection = true;
+            Options.DateSelection = DateSelectionType.Range;
+
+            _Heading = label;
+
+            Transactions = new ObservableCollection<TransactionViewModel>();
+
+            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
+            CancelTransactionCommand = new RelayCommand(CancelTransaction);
+            SaveTransactionCommand = new RelayCommand(SaveTransaction);
+            DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
+            AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
         }
 
         private string _Heading;
@@ -92,7 +101,20 @@ namespace PortfolioManager.UI.ViewModels
         private void SaveTransaction()
         {
             if (CurrentTransactionViewModel != null)
+            {
                 CurrentTransactionViewModel.EndEdit();
+
+                if (NewTransaction)
+                {
+                    _Parameter.Portfolio.TransactionService.ProcessTransaction(CurrentTransactionViewModel.Transaction);
+                    Transactions.Add(CurrentTransactionViewModel);
+                }
+                else
+                {
+                    _Parameter.Portfolio.TransactionService.UpdateTransaction(CurrentTransactionViewModel.Transaction);
+                }
+
+            }
             CurrentTransactionViewModel = null;
         }
 
@@ -110,66 +132,33 @@ namespace PortfolioManager.UI.ViewModels
             NewTransaction = true;
         }
 
-        public TransactionsViewModel(string label, Portfolio portfolio, IStockParameter stockParameter, IDateRangeParameter dateParameter)
-            : base(label, portfolio)
-        {
-            Options.AllowStockSelection = true;
-            Options.DateSelection = DateSelectionType.Range;
-
-            _Heading = label;
-            _StockParameter = stockParameter;
-            _DateParameter = dateParameter;
-
-            Transactions = new ObservableCollection<ViewModels.TransactionViewModel>();
-            TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(Portfolio.StockService);
-
-            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
-            CancelTransactionCommand = new RelayCommand(CancelTransaction);
-            SaveTransactionCommand = new RelayCommand(SaveTransaction);
-            DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
-            AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
-        }
-
         private bool CanDeleteTransaction()
         {
             return (NewTransaction == false);
         }
 
+        public void ParameterChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Portfolio")
+                TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService);
+        }
+
         public override void Activate()
         {
-            if (_DateParameter != null)
-                _DateParameter.PropertyChanged += ParameterChange;
+            TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService);
 
-            if (_StockParameter != null)
-                _StockParameter.PropertyChanged += ParameterChange;
-
-            ShowTransactions();
+            base.Activate();
         }
 
-        public override void Deactivate()
-        {
-            if (_DateParameter != null)
-                _DateParameter.PropertyChanged -= ParameterChange;
-
-            if (_StockParameter != null)
-                _StockParameter.PropertyChanged -= ParameterChange;
-        }
-
-        private void ShowTransactions()
+        public override void RefreshView()
         {
             Transactions.Clear();
 
-            if ((_StockParameter == null) || (_DateParameter == null))
-            {
-                OnPropertyChanged("");
-                return;
-            }
-
             IReadOnlyCollection<Transaction> transactions;
-            if (_StockParameter.Stock.Id == Guid.Empty)
-                transactions = Portfolio.TransactionService.GetTransactions(_DateParameter.StartDate, _DateParameter.EndDate);
+            if (_Parameter.Stock.Id == Guid.Empty)
+                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
             else
-                transactions = Portfolio.TransactionService.GetTransactions(_StockParameter.Stock.ASXCode, _DateParameter.StartDate, _DateParameter.EndDate);
+                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
             foreach (var transaction in transactions)
             {
                 if (transaction.Type != TransactionType.CashTransaction)

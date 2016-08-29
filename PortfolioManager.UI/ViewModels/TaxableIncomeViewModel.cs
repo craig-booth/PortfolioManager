@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
+using PortfolioManager.Model.Utils;
 using PortfolioManager.Service;
 
 namespace PortfolioManager.UI.ViewModels
@@ -14,12 +15,6 @@ namespace PortfolioManager.UI.ViewModels
 
     class TaxableIncomeViewModel : PortfolioViewModel
     {
-        private IFinancialYearParameter _Parameter;
-
-        public void ParameterChange(object sender, PropertyChangedEventArgs e)
-        {
-            ShowReport();
-        }
 
         public ObservableCollection<IncomeItemViewModel> Income { get; private set; }
 
@@ -37,37 +32,21 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public TaxableIncomeViewModel(string label, Portfolio portfolio, IFinancialYearParameter parameter)
-            : base(label, portfolio)
+        public TaxableIncomeViewModel(string label, ViewParameter parameter)
+            : base(label, parameter)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.FinancialYear;
 
-            _Parameter = parameter;
-
             Income = new ObservableCollection<IncomeItemViewModel>();
         }
 
-        public override void Activate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged += ParameterChange;
-
-            ShowReport();
-        }
-
-        public override void Deactivate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged -= ParameterChange;
-        }
-
-        private void ShowReport()
+        public override void RefreshView()
         {
             Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
             // Get  a list of all the income for the year
-            var income = Portfolio.IncomeService.GetIncome(_Parameter.StartDate, _Parameter.EndDate);
+            var income = _Parameter.Portfolio.IncomeService.GetIncome(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
 
             Income.Clear();
             foreach (var incomeItem in income)

@@ -5,34 +5,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
+using PortfolioManager.Service;
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.UI.Utilities
 {
-    interface ISingleDateParameter : INotifyPropertyChanged
+    class ViewParameter : NotifyClass
     {
-        DateTime Date { get; }
-    }
+        private Portfolio _Portfolio;
+        public Portfolio Portfolio
+        {
+            get
+            {
+                return _Portfolio;
+            }
 
-    interface IDateRangeParameter : INotifyPropertyChanged
-    {
-        DateTime StartDate { get; }
-        DateTime EndDate { get; }
-    }
+            set
+            {
+                _Portfolio = value;
+                OnPropertyChanged();
+            }
+        }
 
-    interface IFinancialYearParameter : IDateRangeParameter
-    {
-        int FinancialYear { get; }
-    }
 
-    interface IStockParameter: INotifyPropertyChanged
-    {
-        Stock Stock { get; }
-    }
+        private Stock _Stock;
+        public Stock Stock
+        {
+            get
+            {
+                return _Stock;
+            }
 
-    class SingleDateParameter : NotifyClass, ISingleDateParameter
-    {
-        protected DateTime _Date;
+            set
+            {
+                _Stock = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime _Date;
         public DateTime Date
         {
             get
@@ -46,16 +58,6 @@ namespace PortfolioManager.UI.Utilities
                 OnPropertyChanged();
             }
         }
-
-
-        public SingleDateParameter()
-        {
-            _Date = DateTime.Now;
-        }
-    }
-
-    class DateRangeParameter : NotifyClass, IDateRangeParameter
-    {
         private DateTime _StartDate;
         public DateTime StartDate
         {
@@ -86,15 +88,6 @@ namespace PortfolioManager.UI.Utilities
             }
         }
 
-        public DateRangeParameter()
-        {
-            _StartDate = DateTime.Now.AddYears(-1).AddDays(1);
-            _EndDate = DateTime.Now;
-        }
-    }
-
-    class FinancialYearParameter : NotifyClass, IFinancialYearParameter
-    {
         private int _FinancialYear;
         public int FinancialYear
         {
@@ -106,56 +99,19 @@ namespace PortfolioManager.UI.Utilities
             set
             {
                 _FinancialYear = value;
-                _StartDate = new DateTime(_FinancialYear - 1, 7, 1);
-                _EndDate = new DateTime(_FinancialYear, 6, 30);
-                OnPropertyChanged("");
-            }
-        }
-
-        private DateTime _StartDate;
-        public DateTime StartDate
-        {
-            get
-            {
-                return _StartDate;
-            }
-        }
-
-        private DateTime _EndDate;
-        public DateTime EndDate
-        {
-            get
-            {
-                return _EndDate;
-            }
-        }
-
-        public FinancialYearParameter()
-            : base()
-        {
-            // Determine current financial year
-            if (DateTime.Today.Month <= 6)
-                _FinancialYear = DateTime.Today.Year;
-            else
-                _FinancialYear = DateTime.Today.Year + 1;
-        }
-    }
-
-    class StockParameter : NotifyClass, IStockParameter
-    {
-        private Stock _Stock;
-        public Stock Stock
-        {
-            get
-            {
-                return _Stock;
-            }
-
-            set
-            {
-                _Stock = value;
                 OnPropertyChanged();
             }
         }
+
+        public ViewParameter()
+        {
+            _Date = DateTime.Now;
+
+            _StartDate = DateTime.Now.AddYears(-1).AddDays(1);
+            _EndDate = DateTime.Now;
+
+            _FinancialYear = DateTime.Today.FinancialYear();
+        }
+
     }
 }

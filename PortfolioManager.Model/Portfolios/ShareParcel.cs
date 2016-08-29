@@ -30,13 +30,13 @@ namespace PortfolioManager.Model.Portfolios
         }
 
         public ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
-            : this(aquisitionDate, DateTimeConstants.NoEndDate, aquisitionDate, stock, units, unitPrice, amount, costBase, Guid.Empty, parcelEvent)
+            : this(aquisitionDate, DateUtils.NoEndDate, aquisitionDate, stock, units, unitPrice, amount, costBase, Guid.Empty, parcelEvent)
         {
       
         }
 
         public ShareParcel(DateTime aquisitionDate, Guid stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
-            : this(aquisitionDate, DateTimeConstants.NoEndDate, aquisitionDate, stock, units, unitPrice, amount, costBase, purchaseId, parcelEvent)
+            : this(aquisitionDate, DateUtils.NoEndDate, aquisitionDate, stock, units, unitPrice, amount, costBase, purchaseId, parcelEvent)
         {
 
         }

@@ -31,9 +31,11 @@ namespace PortfolioManager.UI.ViewModels
 
             if (Transaction != null)
             {
-                Units = ((OpeningBalance)Transaction).Units;
-                CostBase = ((OpeningBalance)Transaction).CostBase;
-                AquisitionDate = ((OpeningBalance)Transaction).AquisitionDate;
+                var openingBalance = (OpeningBalance)Transaction;
+
+                Units = openingBalance.Units;
+                CostBase = openingBalance.CostBase;
+                AquisitionDate = openingBalance.AquisitionDate;
             }
             else
             {
@@ -45,7 +47,15 @@ namespace PortfolioManager.UI.ViewModels
 
         protected override void CopyFieldsToTransaction()
         {
+            if (Transaction == null)
+                Transaction = new OpeningBalance();
 
+            base.CopyFieldsToTransaction();
+
+            var openingBalance = (OpeningBalance)Transaction;
+            openingBalance.Units = Units;
+            openingBalance.CostBase = CostBase;
+            openingBalance.AquisitionDate = AquisitionDate;
         }
 
     }

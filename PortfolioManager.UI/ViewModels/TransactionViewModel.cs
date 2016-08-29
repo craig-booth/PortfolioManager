@@ -19,7 +19,7 @@ namespace PortfolioManager.UI.ViewModels
         private StockService _StockService;
         protected bool _BeingEdited;
 
-        public Transaction Transaction { get; private set; }
+        public Transaction Transaction { get; protected set; }
         public string Description { get; private set; }
 
         public string ASXCode { get; set; }
@@ -80,6 +80,8 @@ namespace PortfolioManager.UI.ViewModels
         public void EndEdit()
         {
             _BeingEdited = false;
+
+            CopyFieldsToTransaction();
         }
 
         public void CancelEdit()
@@ -111,7 +113,16 @@ namespace PortfolioManager.UI.ViewModels
 
         protected virtual void CopyFieldsToTransaction()
         {
-
+            if (Transaction != null)
+            {
+                if (Stock != null)
+                    Transaction.ASXCode = Stock.ASXCode;
+                else
+                    Transaction.ASXCode = ASXCode;
+                Transaction.TransactionDate = TransactionDate;
+                Transaction.RecordDate = RecordDate;
+                Transaction.Comment = Comment;
+            }
         }
 
         private void PopulateAvailableStocks(DateTime date)

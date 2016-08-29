@@ -55,10 +55,10 @@ namespace StockManager.Service.Test
 
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);
 
             var childStock2 = serviceRepository.StockService.Add("CH2", "Child 2", StockType.Trust);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock2);
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock2);
 
             var stock1 = serviceRepository.StockService.GetStock("ABC");
             var children = serviceRepository.StockService.GetChildStocks(stock1);
@@ -76,7 +76,7 @@ namespace StockManager.Service.Test
 
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
         }
 
         [Test, Description("Get Child stocks for a non stapled security")]
@@ -99,16 +99,16 @@ namespace StockManager.Service.Test
 
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
 
             var childStock2 = serviceRepository.StockService.Add("CH2", "Child 2", StockType.Trust);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock2);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock2);;
 
             var stock1 = serviceRepository.StockService.GetStock("ABC");
             var children = serviceRepository.StockService.GetChildStocks(stock1);
             Assert.That(children.Count, Is.EqualTo(2));
 
-            serviceRepository.StockService.RemoveChildStock(stock1, DateTimeConstants.NoStartDate, childStock1);
+            serviceRepository.StockService.RemoveChildStock(stock1, DateUtils.NoStartDate, childStock1);
             var children2 = serviceRepository.StockService.GetChildStocks(stock1);
             Assert.That(children2.Count, Is.EqualTo(1));
             Assert.That(children2.First().ASXCode, Is.EqualTo("CH2"));
@@ -123,10 +123,10 @@ namespace StockManager.Service.Test
 
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
 
             var childStock2 = serviceRepository.StockService.Add("CH2", "Child 2", StockType.Trust);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock2);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock2);;
 
             var stock1 = serviceRepository.StockService.GetStock("ABC");
             var children = serviceRepository.StockService.GetChildStocks(stock1);
@@ -134,7 +134,7 @@ namespace StockManager.Service.Test
 
 
             var childStock3 = serviceRepository.StockService.Add("CH3", "Child 3", StockType.Trust);
-            serviceRepository.StockService.RemoveChildStock(stock1, DateTimeConstants.NoStartDate, childStock3);
+            serviceRepository.StockService.RemoveChildStock(stock1, DateUtils.NoStartDate, childStock3);
         }
 
         [Test, Description("Remove Child stock for a non stapled security")]
@@ -145,7 +145,7 @@ namespace StockManager.Service.Test
 
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.Ordinary);
             var childStock = serviceRepository.StockService.Add("CH3", "Child 3", StockType.Trust);
-            serviceRepository.StockService.RemoveChildStock(parentStock, DateTimeConstants.NoStartDate, childStock);
+            serviceRepository.StockService.RemoveChildStock(parentStock, DateUtils.NoStartDate, childStock);
         }
 
         [Test, Description("Add Relative NTA")]
@@ -159,12 +159,12 @@ namespace StockManager.Service.Test
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
 
             var childStock2 = serviceRepository.StockService.Add("CH2", "Child 2", StockType.Trust);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock2);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock2);;
             serviceRepository.StockService.AddRelativeNTA(childStock2, new DateTime(2005, 12, 31), 0.50M);
             serviceRepository.StockService.AddRelativeNTA(childStock2, new DateTime(2006, 12, 31), 0.40M);
 
@@ -216,7 +216,7 @@ namespace StockManager.Service.Test
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
             var nta = serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
        
@@ -245,7 +245,7 @@ namespace StockManager.Service.Test
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2007, 12, 31), 0.70M);
@@ -277,7 +277,7 @@ namespace StockManager.Service.Test
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2007, 12, 31), 0.70M);
@@ -308,7 +308,7 @@ namespace StockManager.Service.Test
             var parentStock = serviceRepository.StockService.Add("ABC", "Stapled Security", StockType.StapledSecurity);
 
             var childStock1 = serviceRepository.StockService.Add("CH1", "Child 1", StockType.Ordinary);
-            serviceRepository.StockService.AddChildStock(parentStock, DateTimeConstants.NoStartDate, childStock1);;
+            serviceRepository.StockService.AddChildStock(parentStock, DateUtils.NoStartDate, childStock1);;
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2005, 12, 31), 0.50M);
             serviceRepository.StockService.AddRelativeNTA(childStock1, new DateTime(2006, 12, 31), 0.60M);
             serviceRepository.StockService.AddRelativeNTA(childStock1,  new DateTime(2007, 12, 31), 0.70M);

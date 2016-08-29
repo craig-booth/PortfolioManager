@@ -37,9 +37,9 @@ namespace PortfolioManager.Service.CorporateActions
 
             var unitsHeld = parcels.Sum(x => x.Units);
             var amountPaid = unitsHeld * dividend.DividendAmount;
-            var franked = MathUtils.ToCurrency(amountPaid * dividend.PercentFranked, stock.DividendRoundingRule);
-            var unFranked = MathUtils.ToCurrency(amountPaid * (1 - dividend.PercentFranked), stock.DividendRoundingRule);
-            var frankingCredits = MathUtils.ToCurrency(((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked, stock.DividendRoundingRule);
+            var franked = (amountPaid * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
+            var unFranked = (amountPaid * (1 - dividend.PercentFranked)).ToCurrency(stock.DividendRoundingRule);
+            var frankingCredits = (((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
 
             transactions.Add(new IncomeReceived()
             {
@@ -51,7 +51,6 @@ namespace PortfolioManager.Service.CorporateActions
                 FrankingCredits = frankingCredits,
                 Comment = dividend.Description
             });
-
 
             /* add drp shares */
             if (dividend.DRPPrice != 0.00M)

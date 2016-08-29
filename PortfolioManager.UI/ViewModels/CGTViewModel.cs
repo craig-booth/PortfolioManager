@@ -10,6 +10,7 @@ using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Service;
 using PortfolioManager.Service.Utils;
+using PortfolioManager.Model.Utils;
 
 using PortfolioManager.UI.Utilities;
 
@@ -17,13 +18,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class CGTViewModel : PortfolioViewModel
     {
-        private IFinancialYearParameter _Parameter;
-
-        public void ParameterChange(object sender, PropertyChangedEventArgs e)
-        {
-            ShowReport();
-        }
-
+  
         public ObservableCollection<CGTEventViewModel> CGTEvents { get; private set; }
 
         public decimal NonDiscountedGains { get; private set; }
@@ -50,41 +45,25 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public CGTViewModel(string label, Portfolio portfolio, IFinancialYearParameter parameter)
-            : base(label, portfolio)
+        public CGTViewModel(string label, ViewParameter parameter)
+            : base(label, parameter)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.FinancialYear;
 
-            _Parameter = parameter;
-
             CGTEvents = new ObservableCollection<CGTEventViewModel>();
         }
 
-        public override void Activate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged += ParameterChange;
-
-            ShowReport();
-        }
-
-        public override void Deactivate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged -= ParameterChange;
-        }
-
-        private void ShowReport()
+        public override void RefreshView()
         {
             Heading = string.Format("CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
             // Get a list of all the cgt events for the year
-            var cgtEvents = Portfolio.CGTService.GetEvents(_Parameter.StartDate, _Parameter.EndDate);
+            var cgtEvents = _Parameter.Portfolio.CGTService.GetEvents(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
 
             CGTEvents.Clear();
             foreach (var cgtEvent in cgtEvents)
-                CGTEvents.Add(new CGTEventViewModel(Portfolio.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate), cgtEvent));
+                CGTEvents.Add(new CGTEventViewModel(_Parameter.Portfolio.StockService.Get(cgtEvent.Stock, cgtEvent.EventDate), cgtEvent));
 
             CalculateCGT(cgtEvents);
 

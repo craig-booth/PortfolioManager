@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Data.SQLite
 {
-    class SQLiteUtils
+    static class SQLiteUtils
     {
         public static int DecimalToDB(decimal value)
         {

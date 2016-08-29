@@ -21,7 +21,7 @@ namespace StockManager.Service
 
         public IReadOnlyCollection<CorporateAction> GetCorporateActions(Stock stock)
         {
-            return _Database.CorporateActionQuery.Find(stock.Id, DateTimeConstants.NoStartDate, DateTimeConstants.NoEndDate);
+            return _Database.CorporateActionQuery.Find(stock.Id, DateUtils.NoStartDate, DateUtils.NoEndDate);
         }
 
         public IReadOnlyCollection<CorporateAction> GetCorporateActions(Stock stock, DateTime fromDate, DateTime toDate)
