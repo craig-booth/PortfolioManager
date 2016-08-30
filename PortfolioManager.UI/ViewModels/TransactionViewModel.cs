@@ -14,7 +14,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class TransactionViewModel : NotifyClass, IEditableObject
+    class TransactionViewModel : ViewModel, IEditableObject
     {
         private StockService _StockService;
         protected bool _BeingEdited;

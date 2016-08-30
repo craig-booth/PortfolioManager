@@ -29,7 +29,7 @@ namespace PortfolioManager.UI.ViewModels
 
             EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
-            SaveTransactionCommand = new RelayCommand(SaveTransaction);
+            SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
             DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
             AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
         }
@@ -154,6 +154,11 @@ namespace PortfolioManager.UI.ViewModels
         private bool CanDeleteTransaction()
         {
             return (CurrentTransactionViewModel != null) && (NewTransaction == false);
+        }
+
+        private bool CanSaveTransaction()
+        {
+            return (CurrentTransactionViewModel != null) && (! CurrentTransactionViewModel.HasErrors);
         }
 
         public override void Activate()

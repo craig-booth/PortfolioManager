@@ -38,8 +38,8 @@ namespace PortfolioManager.UI.ViewModels
 
                 if (_SelectedModule != null)
                 {
-                    if (_SelectedModule.Views.Count > 0)
-                        SelectedView = _SelectedModule.Views[0];
+                    if (_SelectedModule.Pages.Count > 0)
+                        SelectedPage = _SelectedModule.Pages[0];
                 }
 
                 OnPropertyChanged();
@@ -47,22 +47,22 @@ namespace PortfolioManager.UI.ViewModels
         }
 
 
-        private IViewModel _SelectedView;
-        public IViewModel SelectedView
+        private IPageViewModel _SelectedPage;
+        public IPageViewModel SelectedPage
         {
             get
             {
-                return _SelectedView;
+                return _SelectedPage;
             }
             set
             {
-                if (_SelectedView != null)
-                    _SelectedView.Deactivate();
+                if (_SelectedPage != null)
+                    _SelectedPage.Deactivate();
 
-                _SelectedView = value;
+                _SelectedPage = value;
 
-                if (_SelectedView != null)
-                    _SelectedView.Activate();
+                if (_SelectedPage != null)
+                    _SelectedPage.Activate();
 
                 OnPropertyChanged();
             }
@@ -110,44 +110,44 @@ namespace PortfolioManager.UI.ViewModels
             _Modules.Clear();
             var homeModule = new Module("Home", "HomeIcon");
             _Modules.Add(homeModule);
-            homeModule.Views.Add(new PortfolioSummaryViewModel("Summary", ViewParameter));
+            homeModule.Pages.Add(new PortfolioSummaryViewModel("Summary", ViewParameter));
 
             var transactionsModule = new Module("Transactions", "SettingsIcon")
             {
-                ViewSelectionAreaVisible = Visibility.Hidden,
-                ViewParameterAreaVisible = Visibility.Visible
+                PageSelectionAreaVisible = Visibility.Hidden,
+                PageParameterAreaVisible = Visibility.Visible
             };
             _Modules.Add(transactionsModule);
-            transactionsModule.Views.Add(new TransactionsViewModel("Transactions", ViewParameter));
+            transactionsModule.Pages.Add(new TransactionsViewModel("Transactions", ViewParameter));
 
             var reportsModule = new Module("Reports", "ReportsIcon")
             {
-                ViewSelectionAreaVisible = Visibility.Visible,
-                ViewParameterAreaVisible = Visibility.Visible
+                PageSelectionAreaVisible = Visibility.Visible,
+                PageParameterAreaVisible = Visibility.Visible
             };
             _Modules.Add(reportsModule);
-            reportsModule.Views.Add(new UnrealisedGainsViewModel("Unrealised Gains", ViewParameter));
-            reportsModule.Views.Add(new TransactionReportViewModel("Transactions", ViewParameter));
-            reportsModule.Views.Add(new CashAccountViewModel("Cash Summary", ViewParameter));
+            reportsModule.Pages.Add(new UnrealisedGainsViewModel("Unrealised Gains", ViewParameter));
+            reportsModule.Pages.Add(new TransactionReportViewModel("Transactions", ViewParameter));
+            reportsModule.Pages.Add(new CashAccountViewModel("Cash Summary", ViewParameter));
 
 
             var taxModule = new Module("Tax", "TaxIcon")
             {
-                ViewSelectionAreaVisible = Visibility.Visible,
-                ViewParameterAreaVisible = Visibility.Visible
+                PageSelectionAreaVisible = Visibility.Visible,
+                PageParameterAreaVisible = Visibility.Visible
 
             };
             _Modules.Add(taxModule);
-            taxModule.Views.Add(new TaxableIncomeViewModel("Taxable Income", ViewParameter));
-            taxModule.Views.Add(new CGTViewModel("CGT", ViewParameter));
+            taxModule.Pages.Add(new TaxableIncomeViewModel("Taxable Income", ViewParameter));
+            taxModule.Pages.Add(new CGTViewModel("CGT", ViewParameter));
 
             var settingsModule = new Module("Settings", "SettingsIcon")
             {
-                ViewSelectionAreaVisible = Visibility.Hidden,
-                ViewParameterAreaVisible = Visibility.Hidden
+                PageSelectionAreaVisible = Visibility.Hidden,
+                PageParameterAreaVisible = Visibility.Hidden
             };
             _Modules.Add(settingsModule);
-            settingsModule.Views.Add(new SettingsViewModel("Settings", _Settings));
+            settingsModule.Pages.Add(new SettingsViewModel("Settings", _Settings));
 
             LoadPortfolio(_Settings, EventArgs.Empty);
 

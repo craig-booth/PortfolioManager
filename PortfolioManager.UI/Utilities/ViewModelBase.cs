@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -11,86 +12,64 @@ using PortfolioManager.Service;
 namespace PortfolioManager.UI.Utilities
 {
  
-    interface IViewModel
+    class ViewModel : NotifyClass, INotifyDataErrorInfo
     {
-        string Label { get; }
-        string Heading { get; }
-        ViewOptions Options { get; }
+        private Dictionary<string, List<string>> _Errors;
 
-        void Activate();
-        void Deactivate();
-    }
-
-
-    enum DateSelectionType { None, Single, Range, FinancialYear }
-
-    class ViewOptions
-    {
-        public bool AllowStockSelection { get; set; }
-        public DateSelectionType DateSelection { get; set; }
-    }
-
-    abstract class ViewModel : NotifyClass, IViewModel 
-    {
-        public string Label { get; protected set; }
-        public string Heading { get; protected set; }
-        public ViewOptions Options { get; set; }
-
-        public virtual void Activate()
+        public ViewModel()
         {
+            _Errors = new Dictionary<string, List<string>>();
         }
 
-        public virtual void Deactivate()
+        public bool HasErrors
         {
-        }
-
-        public ViewModel(string label)
-        {
-            Label = label;
-            Heading = label;
-
-            Options = new ViewOptions()
+            get
             {
-                AllowStockSelection = false,
-                DateSelection = DateSelectionType.None
-            };
+                return (_Errors.Count > 0);
+            }
+        }
+        
+        public IEnumerable GetErrors(string propertyName)
+        {
+            List<string> errors;
+
+            if (_Errors.TryGetValue(propertyName, out errors))
+                return errors;
+
+            return null;
+        }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        
+        protected void OnErrorsChanged(string propertyName)
+        {
+            var handler = ErrorsChanged;
+            if (handler != null)
+                handler(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        protected void AddError(string error, [CallerMemberName] string propertyName = null)
+        {
+            List<string> errors;
+
+            if (!_Errors.TryGetValue(propertyName, out errors))
+            {
+                errors = new List<string>();
+                _Errors.Add(propertyName, errors);
+            }
+
+            errors.Add(error);
+
+        }
+
+        protected void ClearErrors([CallerMemberName] string propertyName = null)
+        {
+            _Errors.Remove(propertyName);
         }
     }
 
-    abstract class PortfolioViewModel : ViewModel, IViewModel
-    {
-        protected ViewParameter _Parameter;
 
-        public PortfolioViewModel(string label, ViewParameter parameter)
-            : base(label)
-        {
-            _Parameter = parameter;
-        }
 
-        public void ParameterChanged(object sender, PropertyChangedEventArgs e)
-        {
-            RefreshView();
-        }
-
-        public override void Activate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged += ParameterChanged;
-
-            RefreshView();
-        }
-
-        public override void Deactivate()
-        {
-            if (_Parameter != null)
-                _Parameter.PropertyChanged -= ParameterChanged;
-        }
-
-        public virtual void RefreshView()
-        {
-
-        }
-    }
 
 
 }

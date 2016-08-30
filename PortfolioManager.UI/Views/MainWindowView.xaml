@@ -84,14 +84,14 @@
             </ListBox.ItemsPanel>
         </ListBox>
 
-        <!-- View Parameter Area -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Visibility="{Binding SelectedModule.ViewParameterAreaVisible}">
+        <!-- PageView Parameter Area -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Visibility="{Binding SelectedModule.PageParameterAreaVisible}">
             <Grid>
                 <Grid.Style>
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedView.Options.AllowStockSelection}" Value="true">
+                            <DataTrigger Binding="{Binding SelectedPage.Options.AllowStockSelection}" Value="true">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -118,7 +118,7 @@
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedView.Options.DateSelection}">
+                            <DataTrigger Binding="{Binding SelectedPage.Options.DateSelection}">
                                 <DataTrigger.Value>
                                     <utilities:DateSelectionType>Single</utilities:DateSelectionType>
                                 </DataTrigger.Value>
@@ -141,7 +141,7 @@
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedView.Options.DateSelection}">
+                            <DataTrigger Binding="{Binding SelectedPage.Options.DateSelection}">
                                 <DataTrigger.Value>
                                     <utilities:DateSelectionType>Range</utilities:DateSelectionType>
                                 </DataTrigger.Value>
@@ -169,7 +169,7 @@
                     <Style TargetType="{x:Type Grid}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedView.Options.DateSelection}">
+                            <DataTrigger Binding="{Binding SelectedPage.Options.DateSelection}">
                                 <DataTrigger.Value>
                                     <utilities:DateSelectionType>FinancialYear</utilities:DateSelectionType>
                                 </DataTrigger.Value>
@@ -195,7 +195,7 @@
         </StackPanel>
 
         <!-- View Selection Area-->
-        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Views}" SelectedItem="{Binding SelectedView, Mode=TwoWay}" Visibility="{Binding SelectedModule.ViewSelectionAreaVisible}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
+        <ListBox DockPanel.Dock="Top" Padding="1,0" ItemsSource="{Binding SelectedModule.Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}" Visibility="{Binding SelectedModule.PageSelectionAreaVisible}" ItemContainerStyle="{StaticResource ViewListItemStyle}" BorderThickness="0" Background="{StaticResource MenuBackground}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
@@ -205,7 +205,7 @@
 
 
         <!-- View Area -->
-        <ContentControl Content="{Binding SelectedView, Mode=OneWay}" Margin="10"/>
+        <ContentControl Content="{Binding SelectedPage, Mode=OneWay}" Margin="10"/>
 
     </DockPanel>
 

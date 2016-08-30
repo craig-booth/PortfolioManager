@@ -68,6 +68,8 @@
     <Compile Include="Utilities\DescribedObject.cs" />
     <Compile Include="Utilities\Module.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />
+    <Compile Include="Utilities\PageViewModel.cs" />
+    <Compile Include="Utilities\PortfolioViewModel.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />

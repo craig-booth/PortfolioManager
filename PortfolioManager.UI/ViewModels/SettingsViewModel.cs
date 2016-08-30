@@ -8,7 +8,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class SettingsViewModel : ViewModel
+    class SettingsViewModel : PageViewModel
     {
         public ApplicationSettings _Settings;
 

@@ -123,12 +123,6 @@
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="Margin" Value="0,0,20,0"/>
-
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Visibility" Value="Collapsed"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

@@ -14,11 +14,59 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class OpeningBalanceViewModel : TransactionViewModel, IDataErrorInfo
+    class OpeningBalanceViewModel : TransactionViewModel
     {
-        public int Units { get; set; }
-        public decimal CostBase { get; set; }
-        public DateTime AquisitionDate { get; set; }
+        private int _Units;
+        public int Units
+        {
+            get
+            {
+                return _Units;
+            }
+            set
+            {
+                _Units = value;
+
+                ClearErrors();
+
+                if (_Units <= 0)
+                    AddError("Units must be greater than 0");
+            }
+        }
+        private decimal _CostBase;
+        public decimal CostBase
+        {
+            get
+            {
+                return _CostBase;
+            }
+            set
+            {
+                _CostBase = value;
+
+                ClearErrors();
+
+                if (_CostBase < 0.00m)
+                    AddError("Cost Base must not be less than 0");
+            }
+        }
+        private DateTime _AquisitionDate;
+        public DateTime AquisitionDate
+        {
+            get
+            {
+                return _AquisitionDate;
+            }
+            set
+            {
+                _AquisitionDate = value;
+
+                ClearErrors();
+
+                if (_AquisitionDate > RecordDate)
+                    AddError("Aquisition Date must not be after the Opening Balance date");
+            }
+        }
 
         public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService)
             : base(openingBalance, stockService)
@@ -58,41 +106,6 @@ namespace PortfolioManager.UI.ViewModels
             openingBalance.CostBase = CostBase;
             openingBalance.AquisitionDate = AquisitionDate;
         }
-
-
-        string IDataErrorInfo.this[string propertyName]
-        {
-            get
-            {
-                if (propertyName == "Units")
-                {
-                    if (Units <= 0)
-                        return "Units must be greater than 0";
-                } 
-                else if (propertyName == "CostBase")
-                {
-                    if (CostBase < 0.00m)
-                        return "Cost Base must not be less than 0";
-                }
-                else if (propertyName == "AquisitionDate")
-                {
-                    if (AquisitionDate > RecordDate)
-                        return "Aquisition Date must not be after the Opening Balance date";
-                }
-
-                return null;
-            }           
-        }
-
-        string IDataErrorInfo.Error
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-
 
     }
 }

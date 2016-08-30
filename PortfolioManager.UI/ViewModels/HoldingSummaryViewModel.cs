@@ -10,7 +10,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class HoldingSummaryViewModel : ViewModel
+    class HoldingSummaryViewModel : PageViewModel
     {
 
         public string ASXCode { get; private set; }

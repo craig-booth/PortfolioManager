@@ -17,20 +17,20 @@ namespace PortfolioManager.UI.Utilities
         public string Label { get; private set; }
         public Geometry Image { get; private set; }
 
-        public Visibility ViewParameterAreaVisible { get; set; }
+        public Visibility PageParameterAreaVisible { get; set; }
 
-        public Visibility ViewSelectionAreaVisible { get; set; }
-        public List<IViewModel> Views { get; private set; }
+        public Visibility PageSelectionAreaVisible { get; set; }
+        public List<IPageViewModel> Pages { get; private set; }
 
         public Module(string label, string image)
         {
             Label = label;
             Image = App.Current.FindResource(image) as Geometry;
 
-            Views = new List<IViewModel>();
+            Pages = new List<IPageViewModel>();
 
-            ViewParameterAreaVisible = Visibility.Collapsed;
-            ViewSelectionAreaVisible = Visibility.Collapsed;
+            PageParameterAreaVisible = Visibility.Collapsed;
+            PageSelectionAreaVisible = Visibility.Collapsed;
         }
     }
     
