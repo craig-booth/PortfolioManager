@@ -13,16 +13,15 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    class PortfolioSummaryViewModel: PortfolioViewModel
+    class PortfolioSummaryViewModel : PortfolioViewModel
     {
-        public decimal MarketValue { get; private set; }
-        public decimal DollarChangeInValue { get; private set; }
-        public decimal PercentChangeInValue { get; private set; }
+        private DateTime _PortfolioStartDate;
 
-        public decimal? Return1Year { get; private set; }
-        public decimal? Return3Year { get; private set; }
-        public decimal? Return5Year { get; private set; }
-        public decimal ReturnAll { get; private set; }
+        public ChangeInValue PortfolioValue { get; private set; }
+        public PortfolioReturn Return1Year { get; private set; }
+        public PortfolioReturn Return3Year { get; private set; }
+        public PortfolioReturn Return5Year { get; private set; }
+        public PortfolioReturn ReturnAll { get; private set; }
 
         public List<HoldingItemViewModel> Holdings { get; private set; }
 
@@ -30,30 +29,47 @@ namespace PortfolioManager.UI.ViewModels
             : base(label, parameter)
         {
             Holdings = new List<HoldingItemViewModel>();
+
+            PortfolioValue = new ChangeInValue();
+            Return1Year = new PortfolioReturn("1 Year");
+            Return3Year = new PortfolioReturn("3 Years");
+            Return5Year = new PortfolioReturn("5 Years");
+            ReturnAll = new PortfolioReturn("All");
         }
 
         public override void RefreshView()
-        {
+        {          
             var holdings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
+            PortfolioValue.InitialValue = holdings.Sum(x => x.MarketValue);
+            PortfolioValue.Value = holdings.Sum(x => x.TotalCostBase);
 
-            MarketValue = holdings.Sum(x => x.MarketValue);
-            var totalCost = holdings.Sum(x => x.TotalCostBase);
-            DollarChangeInValue = MarketValue - totalCost;
-            if (totalCost == 0)
-                PercentChangeInValue = 0;
-            else
-                PercentChangeInValue = DollarChangeInValue / totalCost;
+            _PortfolioStartDate = _Parameter.Portfolio.ShareHoldingService.GetPortfolioStartDate();
 
-            Return1Year = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-1), DateTime.Today);
-            Return3Year = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-3), DateTime.Today);
-            Return5Year = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateTime.Today.AddYears(-5), DateTime.Today);
-            ReturnAll = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateUtils.NoDate, DateTime.Today);
+            CalculateIRR(Return1Year, 1);
+            CalculateIRR(Return3Year, 3);
+            CalculateIRR(Return5Year, 5);
+            CalculateIRR(ReturnAll, 100);   
 
             Holdings.Clear();
             foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
 
             Holdings.Sort(HoldingItemViewModel.CompareByCompanyName);
+        }
+
+        private void CalculateIRR(PortfolioReturn portfolioReturn, int years)
+        {
+            var startDate = DateTime.Today.AddYears(-years);
+            if (startDate >= _PortfolioStartDate)
+            {
+                portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(startDate, DateTime.Today);
+                portfolioReturn.NotApplicable = false;
+            }
+            else
+            {
+                portfolioReturn.Value = 0;
+                portfolioReturn.NotApplicable = true;
+            }
         }
     }
 
@@ -62,7 +78,7 @@ namespace PortfolioManager.UI.ViewModels
         public string ASXCode { get; set; }
         public string CompanyName { get; set; }
         public int Units { get; set; }
-        public decimal CurrentValue { get; set;  }
+        public decimal CurrentValue { get; set; }
         public decimal CostBase { get; set; }
         public ChangeInValue ChangeInValue { get; set; }
 
@@ -82,27 +98,87 @@ namespace PortfolioManager.UI.ViewModels
         }
     }
 
-    enum ChangeDirection { Increase, Decrease, Nuetral };
-    struct ChangeInValue
+    enum DirectionChange { Increase, Decrease, Neutral };
+
+    class ChangeInValue
     {
-        public decimal Value { get; private set; }
-        public decimal Percentage { get; private set; }
-        public ChangeDirection Direction { get; private set; }
+        public decimal InitialValue { get; set; }
+        public decimal Value { get; set; }
 
-        public ChangeInValue(decimal originalValue, decimal currentValue)
+        public decimal Change
         {
-            Value = currentValue - originalValue;
-            if (originalValue == 0)
-                Percentage = 0;
-            else
-                Percentage = Value / originalValue;
+            get
+            {
+                return (Value - InitialValue);
+            }
+        }
 
-            if (Value < 0)
-                Direction = ChangeDirection.Decrease;
-            else if (Value > 0)
-                Direction = ChangeDirection.Increase;
-            else
-                Direction = ChangeDirection.Nuetral;
+        public decimal PercentageChange
+        {
+            get
+            {
+                if (InitialValue == 0)
+                    return 0;
+                else
+                    return Change / InitialValue;
+            }
+        }
+
+        public DirectionChange Direction
+        {
+            get
+            {
+                if (Change < 0)
+                    return DirectionChange.Decrease;
+                else if (Change > 0)
+                    return DirectionChange.Increase;
+                else
+                    return DirectionChange.Neutral;
+            }
+        }
+
+        public ChangeInValue(decimal intialValue, decimal value)
+        {
+            InitialValue = InitialValue;
+            Value = value;
+        }
+
+        public ChangeInValue(decimal value)
+            : this(0, value)
+        {
+        }
+
+        public ChangeInValue()
+            : this(0,0)
+        {
+        }
+    }
+
+    class PortfolioReturn : ChangeInValue
+    {
+        public string Period { get; private set; }
+        public bool NotApplicable { get; set; }
+
+        public string ValueText
+        {
+            get
+            {
+                if (NotApplicable)
+                    return "--%";
+                else
+                    return Value.ToString("p");
+            }
+        }       
+
+        public PortfolioReturn(string period, decimal value)
+            : base(value)
+        {
+            Period = period;
+        }
+
+        public PortfolioReturn(string period)
+            : this(period, 0)
+        {
         }
     }
 

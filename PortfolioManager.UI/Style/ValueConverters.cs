@@ -13,7 +13,7 @@ using PortfolioManager.UI.ViewModels;
 namespace PortfolioManager.UI.Style
 {
 
-    [ValueConversion(typeof(ChangeDirection), typeof(string))]
+    [ValueConversion(typeof(DirectionChange), typeof(string))]
     class AmountIncreased : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

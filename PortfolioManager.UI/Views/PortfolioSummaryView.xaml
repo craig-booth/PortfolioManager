@@ -7,6 +7,63 @@
 
     <DataTemplate DataType="{x:Type viewmodels:PortfolioSummaryViewModel}">
 
+        <DataTemplate.Resources>
+            <Style x:Key="PortfolioSummary" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource NeutralBackground}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static viewmodels:DirectionChange.Increase}">
+                        <Setter Property="Background" Value="{StaticResource PositiveBackground}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static viewmodels:DirectionChange.Decrease}">
+                        <Setter Property="Background" Value="{StaticResource NegativeBackground}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="PortfolioSummaryText" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{StaticResource NeutralForeground}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static viewmodels:DirectionChange.Increase}">
+                        <Setter Property="Foreground" Value="{StaticResource PositiveForeground}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static viewmodels:DirectionChange.Decrease}">
+                        <Setter Property="Foreground" Value="{StaticResource NegativeForeground}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <DataTemplate x:Key="PortfolioValue" DataType="{x:Type viewmodels:ChangeInValue}">
+                <Border Style="{StaticResource PortfolioSummary}" BorderThickness="2">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Value, StringFormat={}{0:c0}, Mode=OneWay}" Style="{StaticResource PortfolioSummaryText}" FontSize="40" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Change, StringFormat={}{0:c0}, Mode=OneWay}" Style="{StaticResource PortfolioSummaryText}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PercentageChange, StringFormat={}{0:p}, Mode=OneWay}" Style="{StaticResource PortfolioSummaryText}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:PortfolioReturn}">
+                <Border Style="{StaticResource PortfolioSummary}" BorderThickness="2" Padding="5">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Period}" Style="{StaticResource PortfolioSummaryText}" />
+                        <TextBlock Text="{Binding ValueText, Mode=OneWay}" Style="{StaticResource PortfolioSummaryText}" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+
+        </DataTemplate.Resources>
+
+
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"/>
@@ -18,50 +75,13 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
-            </Grid.ColumnDefinitions>            
-            
-            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="Green" BorderThickness="2">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding MarketValue, StringFormat={}{0:c0}, Mode=OneWay}" Foreground="White" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding DollarChangeInValue, StringFormat={}{0:c0}, Mode=OneWay}" Foreground="White" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PercentChangeInValue, StringFormat={}{0:p}, Mode=OneWay}" Foreground="White" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-            </Border>
+            </Grid.ColumnDefinitions>
 
-            <Border Background="Green" Grid.Row="1" Grid.Column="0" BorderThickness="2" Padding="5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="1 Year" Foreground="White"/>
-                    <TextBlock Text="{Binding Return1Year, StringFormat={}{0:p}, Mode=OneWay}" Foreground="White" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-            <Border Background="Green" Grid.Row="1" Grid.Column="1" BorderThickness="2" Padding="5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="3 Year" Foreground="White"/>
-                    <TextBlock Text="{Binding Return3Year, StringFormat={}{0:p}, Mode=OneWay}" Foreground="White" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-            <Border Background="Green" Grid.Row="1" Grid.Column="2" BorderThickness="2" Padding="5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="5 Year" Foreground="White"/>
-                    <TextBlock Text="{Binding Return5Year, StringFormat={}{0:p}, Mode=OneWay}" Foreground="White" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-            <Border Background="Green" Grid.Row="1" Grid.Column="3" BorderThickness="2" Padding="5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="All" Foreground="White"/>
-                    <TextBlock Text="{Binding ReturnAll, StringFormat={}{0:p}, Mode=OneWay}" Foreground="White" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-
+            <ContentControl  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding PortfolioValue}" ContentTemplate="{StaticResource PortfolioValue}" />
+            <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding Return1Year}" />
+            <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding Return3Year}" />
+            <ContentControl Grid.Row="1" Grid.Column="2" Content="{Binding Return5Year}" />
+            <ContentControl Grid.Row="1" Grid.Column="3" Content="{Binding ReturnAll}" />
 
             <ItemsControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Holdings}" HorizontalContentAlignment="Stretch" Padding="0,30,0,0" AlternationCount="2">
                 <ItemsControl.ItemTemplate>

@@ -23,7 +23,25 @@ namespace PortfolioManager.UI.ViewModels
         public string Description { get; private set; }
 
         public string ASXCode { get; set; }
-        public Stock Stock { get; set; }
+
+        private Stock _Stock;
+        public Stock Stock
+        {
+            get
+            {
+                return _Stock;
+            }
+            set
+            {
+                _Stock = value;
+
+                ClearErrors();
+
+                if (_Stock == null)
+                    AddError("Company is required");
+            }
+        }
+
         public DateTime TransactionDate { get; set; }
 
         private DateTime _RecordDate;
@@ -126,6 +144,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (Transaction != null)
             {
+                Transaction.ASXCode = Stock.ASXCode;
                 Transaction.TransactionDate = TransactionDate;
                 Transaction.RecordDate = RecordDate;
                 Transaction.Comment = Comment;
