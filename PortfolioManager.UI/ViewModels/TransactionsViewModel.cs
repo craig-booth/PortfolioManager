@@ -171,6 +171,8 @@ namespace PortfolioManager.UI.ViewModels
 
         public override void RefreshView()
         {
+            CurrentTransactionViewModel = null; 
+
             Transactions.Clear();
 
             IReadOnlyCollection<Transaction> transactions;
