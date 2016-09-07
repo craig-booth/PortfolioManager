@@ -59,16 +59,24 @@ namespace PortfolioManager.UI.ViewModels
 
         private void CalculateIRR(PortfolioReturn portfolioReturn, int years)
         {
-            var startDate = DateTime.Today.AddYears(-years);
-            if (startDate >= _PortfolioStartDate)
+            if (years == 0)
             {
-                portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(startDate, DateTime.Today);
+                portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(DateUtils.NoStartDate, DateTime.Today);
                 portfolioReturn.NotApplicable = false;
             }
             else
             {
-                portfolioReturn.Value = 0;
-                portfolioReturn.NotApplicable = true;
+                var startDate = DateTime.Today.AddYears(-1);
+                if (startDate >= _PortfolioStartDate)
+                {
+                    portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(startDate, DateTime.Today);
+                    portfolioReturn.NotApplicable = false;
+                }
+                else
+                {
+                    portfolioReturn.Value = 0.00m;
+                    portfolioReturn.NotApplicable = true;
+                }
             }
         }
     }

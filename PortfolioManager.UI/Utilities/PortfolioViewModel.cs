@@ -21,7 +21,18 @@ namespace PortfolioManager.UI.Utilities
 
         public void ParameterChanged(object sender, PropertyChangedEventArgs e)
         {
-            RefreshView();
+            if (e.PropertyName == "Portfolio")
+                RefreshView();
+            else if ((e.PropertyName == "Stock") && Options.AllowStockSelection)
+                RefreshView();
+            else if ((e.PropertyName == "Date") && (Options.DateSelection == DateSelectionType.Single))
+                RefreshView();
+            else if ((e.PropertyName == "StartDate") && (Options.DateSelection == DateSelectionType.Range))
+                RefreshView();
+            else if ((e.PropertyName == "EndDate") && (Options.DateSelection == DateSelectionType.Range))
+                RefreshView();
+            else if ((e.PropertyName == "FinancialYear") && (Options.DateSelection == DateSelectionType.FinancialYear))
+                RefreshView();
         }
 
         public override void Activate()
