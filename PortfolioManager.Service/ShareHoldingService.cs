@@ -227,7 +227,7 @@ namespace PortfolioManager.Service
             AddCashFlow(cashFlows, startDate, -initialValue);
                      
            // generate list of cashFlows
-           var transactions = _TransactionService.GetTransactions(startDate, endDate);
+           var transactions = _TransactionService.GetTransactions(startDate.AddDays(1), endDate);
            foreach (var transaction in transactions)
             {
                 if (transaction.Type == TransactionType.CashTransaction)

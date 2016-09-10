@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <Color x:Key="PositiveColor" A="255" R="0" G="255" B="0"/>
-    <Color x:Key="NegativeColor" A="255" R="255" G="0" B="0"/>
-    <Color x:Key="NeutralColor" A="255" R="0" G="0" B="0"/>
+    <Color x:Key="PositiveColor" A="255" R="3" G="102" B="2"/>
+    <Color x:Key="NegativeColor" A="255" R="143" G="3" B="3"/>
+    <Color x:Key="NeutralColor" A="255" R="54" G="54" B="54"/>
 
-    
+
     <SolidColorBrush x:Key="PositiveForeground" Color="White"/>
     <SolidColorBrush x:Key="PositiveBackground" Color="{StaticResource PositiveColor}"/>
 
