@@ -181,12 +181,7 @@ namespace PortfolioManager.UI.ViewModels
             else
                 transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
             foreach (var transaction in transactions)
-            {
-                if (transaction.Type != TransactionType.CashTransaction)
-                {
-                    Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
-                }
-            }
+                   Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
 
             OnPropertyChanged("");            
         }

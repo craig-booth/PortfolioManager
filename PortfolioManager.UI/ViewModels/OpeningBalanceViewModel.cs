@@ -33,6 +33,7 @@ namespace PortfolioManager.UI.ViewModels
                     AddError("Units must be greater than 0");
             }
         }
+
         private decimal _CostBase;
         public decimal CostBase
         {
@@ -50,6 +51,7 @@ namespace PortfolioManager.UI.ViewModels
                     AddError("Cost Base must not be less than 0");
             }
         }
+
         private DateTime _AquisitionDate;
         public DateTime AquisitionDate
         {
@@ -69,7 +71,7 @@ namespace PortfolioManager.UI.ViewModels
         }
 
         public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService)
-            : base(openingBalance, stockService)
+            : base(openingBalance, TransactionStockSelection.Any, stockService)
         {
         }
 

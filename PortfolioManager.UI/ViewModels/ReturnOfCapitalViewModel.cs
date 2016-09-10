@@ -17,7 +17,7 @@ namespace PortfolioManager.UI.ViewModels
     class ReturnOfCapitalViewModel : TransactionViewModel
     {
         public ReturnOfCapitalViewModel(ReturnOfCapital returnOfCapital, StockService stockService)
-            : base(returnOfCapital, stockService)
+            : base(returnOfCapital, TransactionStockSelection.Owned, stockService)
         {
 
         }

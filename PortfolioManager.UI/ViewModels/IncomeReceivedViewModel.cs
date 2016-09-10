@@ -17,7 +17,7 @@ namespace PortfolioManager.UI.ViewModels
     class IncomeReceivedViewModel : TransactionViewModel
     {
         public IncomeReceivedViewModel(IncomeReceived incomeReceived, StockService stockService)
-            : base(incomeReceived, stockService)
+            : base(incomeReceived, TransactionStockSelection.Owned, stockService)
         {
 
         }

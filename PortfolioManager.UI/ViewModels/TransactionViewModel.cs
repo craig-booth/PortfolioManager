@@ -14,10 +14,13 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
+    enum TransactionStockSelection { None, Owned, Any }
+
     class TransactionViewModel : ViewModel, IEditableObject
     {
         private StockService _StockService;
         protected bool _BeingEdited;
+        protected TransactionStockSelection _StockSelection;
 
         public Transaction Transaction { get; protected set; }
         public string Description { get; private set; }
@@ -35,10 +38,13 @@ namespace PortfolioManager.UI.ViewModels
             {
                 _Stock = value;
 
-                ClearErrors();
+                if (_StockSelection != TransactionStockSelection.None)
+                {
+                    ClearErrors();
 
-                if (_Stock == null)
-                    AddError("Company is required");
+                    if (_Stock == null)
+                        AddError("Company is required");
+                }
             }
         }
 
@@ -56,7 +62,7 @@ namespace PortfolioManager.UI.ViewModels
             {
                 _RecordDate = value;
 
-                if (_BeingEdited)
+                if (_BeingEdited && (_StockSelection != TransactionStockSelection.None))
                     PopulateAvailableStocks(_RecordDate);
             }
         }
@@ -83,15 +89,19 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public TransactionViewModel(Transaction transaction, StockService stockService)
+        public TransactionViewModel(Transaction transaction, TransactionStockSelection stockSeletion, StockService stockService)
         {
-            AvailableStocks = new ObservableCollection<Stock>();
-
+            _StockSelection = stockSeletion;
             _StockService = stockService;
-
             Transaction = transaction;
-            if (transaction != null)
-                Stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
+
+            if (_StockSelection != TransactionStockSelection.None)
+            {
+                AvailableStocks = new ObservableCollection<Stock>();
+
+                if (transaction != null)
+                    Stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
+            }
 
             CopyTransactionToFields();
         }
@@ -100,8 +110,11 @@ namespace PortfolioManager.UI.ViewModels
         {
             _BeingEdited = true;
 
-            PopulateAvailableStocks(RecordDate);
-            Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
+            if (_StockSelection != TransactionStockSelection.None)
+            {
+                PopulateAvailableStocks(RecordDate);
+                Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
+            }
         }
 
         public void EndEdit()
@@ -144,7 +157,10 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (Transaction != null)
             {
-                Transaction.ASXCode = Stock.ASXCode;
+                if (Stock != null)
+                    Transaction.ASXCode = Stock.ASXCode;
+                else
+                    Transaction.ASXCode = ASXCode;
                 Transaction.TransactionDate = TransactionDate;
                 Transaction.RecordDate = RecordDate;
                 Transaction.Comment = Comment;

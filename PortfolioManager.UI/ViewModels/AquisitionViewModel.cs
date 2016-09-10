@@ -16,13 +16,64 @@ namespace PortfolioManager.UI.ViewModels
 {
     class AquisitionViewModel : TransactionViewModel
     {
-        public int Units { get; set; }
-        public decimal AveragePrice { get; set; }
-        public decimal TransactionCosts { get; set; }
+        private int _Units;
+        public int Units
+        {
+            get
+            {
+                return _Units;
+            }
+            set
+            {
+                _Units = value;
+
+                ClearErrors();
+
+                if (_Units <= 0)
+                    AddError("Units must be greater than 0");
+            }
+        }
+
+        private decimal _AveragePrice;
+        public decimal AveragePrice
+        {
+            get
+            {
+                return _AveragePrice;
+            }
+            set
+            {
+                _AveragePrice = value;
+
+                ClearErrors();
+
+                if (_AveragePrice < 0.00m)
+                    AddError("Average Price must not be less than 0");
+            }
+        }
+
+        private decimal _TransactionCosts;
+        public decimal TransactionCosts
+        {
+            get
+            {
+                return _TransactionCosts;
+            }
+            set
+            {
+                _TransactionCosts = value;
+
+                ClearErrors();
+
+                if (_TransactionCosts < 0.00m)
+                    AddError("Transaction Costs must not be less than 0");
+            }
+        }
+
         public bool CreateCashTransaction { get; set; }
 
         public AquisitionViewModel(Aquisition aquisition, StockService stockService)
-            : base(aquisition, stockService)
+            : base(aquisition, TransactionStockSelection.Any, stockService)
         {
 
         }
@@ -49,7 +100,17 @@ namespace PortfolioManager.UI.ViewModels
 
         protected override void CopyFieldsToTransaction()
         {
+            if (Transaction == null)
+                Transaction = new Aquisition();
 
+            base.CopyFieldsToTransaction();
+
+            var aquisition = (Aquisition)Transaction;
+            aquisition.TransactionDate = RecordDate;
+            aquisition.Units = Units;
+            aquisition.AveragePrice = AveragePrice;
+            aquisition.TransactionCosts = TransactionCosts;
+            aquisition.CreateCashTransaction = CreateCashTransaction;
         }
 
     }

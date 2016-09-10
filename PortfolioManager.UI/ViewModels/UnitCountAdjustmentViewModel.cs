@@ -17,7 +17,7 @@ namespace PortfolioManager.UI.ViewModels
     class UnitCountAdjustmentViewModel : TransactionViewModel
     {
         public UnitCountAdjustmentViewModel(UnitCountAdjustment unitCostAdjustment, StockService stockService)
-            : base(unitCostAdjustment, stockService)
+            : base(unitCostAdjustment, TransactionStockSelection.Owned, stockService)
         {
 
         }

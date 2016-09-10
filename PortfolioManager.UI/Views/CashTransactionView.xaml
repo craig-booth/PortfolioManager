@@ -6,7 +6,43 @@
                     xmlns:model="clr-namespace:PortfolioManager.Model.Portfolios;assembly=PortfolioManager.Model">
 
     <DataTemplate DataType="{x:Type viewmodels:CashTransactionViewModel}">
-        <TextBlock Text="Cash Transaction" />
+
+        <DataTemplate.Resources>
+            <ObjectDataProvider x:Key="CashTransactionTypes" MethodName="GetValues" ObjectType="{x:Type model:CashAccountTransactionType}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="model:CashAccountTransactionType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+        </DataTemplate.Resources>
+        
+        <Grid controls:MarginSetter.Margin="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource FormLabel}" Text="Transaction Date"/>
+            <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding RecordDate}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Transaction Type"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding TransactionType}" ItemsSource="{Binding Source={StaticResource CashTransactionTypes}}"  />
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Amount" />
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Amount, StringFormat={}{0:c2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="6" Style="{StaticResource FormLabel}" Text="Description"/>
+            <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="6" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>
+
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

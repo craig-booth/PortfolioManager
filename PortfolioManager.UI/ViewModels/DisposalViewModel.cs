@@ -17,7 +17,7 @@ namespace PortfolioManager.UI.ViewModels
     class DisposalViewModel : TransactionViewModel
     {
         public DisposalViewModel(Disposal disposal, StockService stockService)
-            : base(disposal, stockService)
+            : base(disposal, TransactionStockSelection.Owned, stockService)
         {
 
         }
