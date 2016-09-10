@@ -46,6 +46,11 @@ namespace PortfolioManager.Service
         {
             return _StockQuery.GetClosingPrice(stock.Id, date);
         }
+
+        public bool TryGetClosingPrice(Stock stock, DateTime date, out decimal price)
+        {
+            return _StockQuery.TryGetClosingPrice(stock.Id, date, out price);
+        }
       
         public decimal GetCurrentPrice(Stock stock)
         {

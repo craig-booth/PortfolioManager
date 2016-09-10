@@ -45,7 +45,9 @@ namespace PortfolioManager.Model.Data
         string GetASXCode(Guid id, DateTime atDate);
 
         decimal GetClosingPrice(Guid stock, DateTime date);
+        decimal GetClosingPrice(Guid stock, DateTime date, bool exact);
         bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price);
+        bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price, bool exact);
         Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate);
     }
 

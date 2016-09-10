@@ -82,6 +82,11 @@ namespace PortfolioManager.Model.Data
             ToDate = atDate;
         }
 
+        public bool IsEffectiveAt(DateTime atDate)
+        {
+            return (atDate >= FromDate) && (atDate <= ToDate);
+        }
+
     }
 
     public interface IEditableEffectiveDatedEntity<T> where T : EffectiveDatedEntity

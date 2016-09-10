@@ -40,15 +40,15 @@ namespace PortfolioManager.UI.ViewModels
         public override void RefreshView()
         {          
             var holdings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
-            PortfolioValue.InitialValue = holdings.Sum(x => x.MarketValue);
-            PortfolioValue.Value = holdings.Sum(x => x.TotalCostBase);
+            PortfolioValue.InitialValue = holdings.Sum(x => x.TotalCostBase); 
+            PortfolioValue.Value = holdings.Sum(x => x.MarketValue);
 
             _PortfolioStartDate = _Parameter.Portfolio.ShareHoldingService.GetPortfolioStartDate();
 
             CalculateIRR(Return1Year, 1);
             CalculateIRR(Return3Year, 3);
             CalculateIRR(Return5Year, 5);
-            CalculateIRR(ReturnAll, 100);   
+            CalculateIRR(ReturnAll, 0);   
 
             Holdings.Clear();
             foreach (var holding in holdings)
@@ -59,11 +59,24 @@ namespace PortfolioManager.UI.ViewModels
 
         private void CalculateIRR(PortfolioReturn portfolioReturn, int years)
         {
-            var startDate = DateTime.Today.AddYears(-years);
+            DateTime startDate;
+            if (years == 0)
+                startDate = _PortfolioStartDate;
+            else
+                startDate = DateTime.Today.AddYears(-years);
+
             if (startDate >= _PortfolioStartDate)
             {
-                portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(startDate, DateTime.Today);
-                portfolioReturn.NotApplicable = false;
+                try
+                {
+                    portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(startDate, DateTime.Today);
+                    portfolioReturn.NotApplicable = false;
+                }
+                catch
+                {
+                    portfolioReturn.Value = 0;
+                    portfolioReturn.NotApplicable = true;
+                }
             }
             else
             {
@@ -78,8 +91,6 @@ namespace PortfolioManager.UI.ViewModels
         public string ASXCode { get; set; }
         public string CompanyName { get; set; }
         public int Units { get; set; }
-        public decimal CurrentValue { get; set; }
-        public decimal CostBase { get; set; }
         public ChangeInValue ChangeInValue { get; set; }
 
         public HoldingItemViewModel(ShareHolding holding)
@@ -87,9 +98,7 @@ namespace PortfolioManager.UI.ViewModels
             ASXCode = holding.Stock.ASXCode;
             CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode);
             Units = holding.Units;
-            CostBase = holding.TotalCostBase;
-            CurrentValue = holding.MarketValue;
-            ChangeInValue = new ChangeInValue(CostBase, CurrentValue);
+            ChangeInValue = new ChangeInValue(holding.TotalCostBase, holding.MarketValue);
         }
 
         public static int CompareByCompanyName(HoldingItemViewModel holding1, HoldingItemViewModel holding2)
@@ -139,7 +148,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public ChangeInValue(decimal intialValue, decimal value)
         {
-            InitialValue = InitialValue;
+            InitialValue = intialValue;
             Value = value;
         }
 

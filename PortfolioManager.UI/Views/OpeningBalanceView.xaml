@@ -27,13 +27,13 @@
             <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding RecordDate}" />
 
             <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Company"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEnabled="{Binding StockReadOnly}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEnabled="{Binding StockReadOnly}" />
 
             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Units" />
             <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />
 
             <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Cost Base" />
-            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding CostBase, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding CostBase, StringFormat={}{0:c2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
 
             <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource FormLabel}" Text="Aquisition Date"/>
             <DatePicker Grid.Column="1" Grid.Row="4" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding AquisitionDate, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" />

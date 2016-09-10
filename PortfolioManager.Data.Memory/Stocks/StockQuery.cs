@@ -98,7 +98,18 @@ namespace PortfolioManager.Data.Memory.Stocks
             return 0.00m;
         }
 
+        public decimal GetClosingPrice(Guid stock, DateTime date, bool exact)
+        {
+            return 0.00m;
+        }
+
         public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
+        {
+            price = 0.00m;
+            return false;
+        }
+
+        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price, bool exact)
         {
             price = 0.00m;
             return false;

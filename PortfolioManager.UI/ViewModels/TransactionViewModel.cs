@@ -73,7 +73,7 @@ namespace PortfolioManager.UI.ViewModels
         }
         public string Comment { get; set; }
 
-        public List<Stock> AvailableStocks { get; private set; }
+        public ObservableCollection<Stock> AvailableStocks { get; private set; }
 
         public bool StockReadOnly
         {
@@ -85,7 +85,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public TransactionViewModel(Transaction transaction, StockService stockService)
         {
-            AvailableStocks = new List<Stock>();
+            AvailableStocks = new ObservableCollection<Stock>();
 
             _StockService = stockService;
 
@@ -101,7 +101,7 @@ namespace PortfolioManager.UI.ViewModels
             _BeingEdited = true;
 
             PopulateAvailableStocks(RecordDate);
-            Stock = AvailableStocks.Find(x => x.ASXCode == ASXCode);
+            Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
         }
 
         public void EndEdit()
@@ -156,9 +156,8 @@ namespace PortfolioManager.UI.ViewModels
             var stocks = _StockService.GetAll(date).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.Name);
 
             AvailableStocks.Clear();
-            AvailableStocks.AddRange(stocks);
-
-            OnPropertyChanged("AvailableStocks");
+            foreach (var stock in stocks)
+                AvailableStocks.Add(stock);
         }
 
 

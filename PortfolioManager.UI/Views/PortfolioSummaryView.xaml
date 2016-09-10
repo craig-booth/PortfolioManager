@@ -95,9 +95,9 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Text="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Margin="2,5"/>
-                            <TextBlock Text="{Binding CurrentValue, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right"  />
-                            <TextBlock Text="{Binding ChangeInValue.Value, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="2" TextAlignment="Right" />
-                            <TextBlock Text="{Binding ChangeInValue.Percentage, StringFormat={}{0:p}, Mode=OneWay}" Grid.Column="3" Margin="2,5" HorizontalAlignment="Right" />
+                            <TextBlock Text="{Binding ChangeInValue.Value, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right"  />
+                            <TextBlock Text="{Binding ChangeInValue.Change, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="2" TextAlignment="Right" />
+                            <TextBlock Text="{Binding ChangeInValue.PercentageChange, StringFormat={}{0:p}, Mode=OneWay}" Grid.Column="3" Margin="2,5" HorizontalAlignment="Right" />
 
                         </Grid>
                         

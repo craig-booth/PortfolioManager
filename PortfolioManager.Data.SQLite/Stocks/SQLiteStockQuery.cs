@@ -269,8 +269,37 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return (decimal)value / 100000;
         }
 
-        private SQLiteCommand _GetClosingPriceCommand;
         public decimal GetClosingPrice(Guid stock, DateTime date)
+        {
+            return GetClosingPrice(stock, date, false);
+        }
+
+        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
+        {
+            return TryGetClosingPrice(stock, date, out price, false);
+        }
+
+
+        public decimal GetClosingPrice(Guid stock, DateTime date, bool exact)
+        {
+            decimal closingPrice;
+
+            if (TryGetClosingPrice(stock, date, out closingPrice, exact))
+                return closingPrice;
+            else
+                return 0.00m;
+        }
+
+        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price, bool exact)
+        {
+            if (exact)
+                return GetExactClosingPrice(stock, date, out price);
+            else
+                return GetClosingPrice(stock, date, out price);
+        }
+
+        private SQLiteCommand _GetClosingPriceCommand;
+        private bool GetClosingPrice(Guid stock, DateTime date, out decimal price)
         {
             if (_GetClosingPriceCommand == null)
             {
@@ -284,19 +313,21 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (reader.Read())
             {
-                decimal price = DBToDecimal(reader.GetInt32(0));
+                price = DBToDecimal(reader.GetInt32(0));
                 reader.Close();
-                return price;
+                return true;
             }
             else
             {
+                price = 0.00m;
                 reader.Close();
-                return 0.00m;
+                return false;
             }
         }
 
+
         private SQLiteCommand _GetExactClosingPriceCommand;
-        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
+        private bool GetExactClosingPrice(Guid stock, DateTime date, out decimal price)
         {
             if (_GetExactClosingPriceCommand == null)
             {
@@ -313,7 +344,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 price = DBToDecimal(reader.GetInt32(0));
                 reader.Close();
                 return true;
-            }               
+            }
             else
             {
                 price = 0.00m;
@@ -322,6 +353,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             }
 
         }
+
 
         public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
         {

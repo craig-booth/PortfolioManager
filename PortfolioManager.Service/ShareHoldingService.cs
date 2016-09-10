@@ -121,7 +121,15 @@ namespace PortfolioManager.Service
             {
                 foreach (var shareHolding in holdings)
                 {
-                    shareHolding.UnitValue = _StockPriceService.GetClosingPrice(shareHolding.Stock, date);
+                    decimal closingPrice;
+
+                    if (_StockPriceService.TryGetClosingPrice(shareHolding.Stock, date, out closingPrice))
+                        shareHolding.UnitValue = _StockPriceService.GetClosingPrice(shareHolding.Stock, date);
+                    else
+                    {
+                        // If no price available then use the cost base
+                        shareHolding.UnitValue = shareHolding.AverageUnitCost;
+                    }
                 }
             }
 
