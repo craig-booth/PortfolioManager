@@ -207,7 +207,7 @@ namespace PortfolioManager.UI.ViewModels
             var allCompanies = new Stock(Guid.Empty, DateUtils.NoStartDate, DateUtils.NoEndDate, "", "All Companies", StockType.Ordinary, Guid.Empty);
             OwnedStocks.Add(new DescribedObject<Stock>(allCompanies, "All Companies"));
 
-            var stocks = _Portfolio.ShareHoldingService.GetOwnedStocks(DateUtils.NoStartDate, DateUtils.NoEndDate).OrderBy(x => x.Name);
+            var stocks = _Portfolio.ShareHoldingService.GetOwnedStocks(DateUtils.NoStartDate, DateUtils.NoEndDate, false).OrderBy(x => x.Name);
             foreach (var stock in stocks)
             {
                 OwnedStocks.Add(new DescribedObject<Stock>(stock, string.Format("{0} ({1})", stock.Name, stock.ASXCode)));

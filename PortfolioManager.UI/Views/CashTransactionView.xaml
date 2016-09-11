@@ -8,6 +8,7 @@
     <DataTemplate DataType="{x:Type viewmodels:CashTransactionViewModel}">
 
         <DataTemplate.Resources>
+            
             <ObjectDataProvider x:Key="CashTransactionTypes" MethodName="GetValues" ObjectType="{x:Type model:CashAccountTransactionType}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="model:CashAccountTransactionType"/>

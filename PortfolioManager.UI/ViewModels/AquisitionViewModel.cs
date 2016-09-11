@@ -72,8 +72,8 @@ namespace PortfolioManager.UI.ViewModels
 
         public bool CreateCashTransaction { get; set; }
 
-        public AquisitionViewModel(Aquisition aquisition, StockService stockService)
-            : base(aquisition, TransactionStockSelection.Any, stockService)
+        public AquisitionViewModel(Aquisition aquisition, StockService stockService, ShareHoldingService holdingService)
+            : base(aquisition, TransactionStockSelection.Any, stockService, holdingService)
         {
 
         }
@@ -94,7 +94,7 @@ namespace PortfolioManager.UI.ViewModels
                 Units = 0;
                 AveragePrice = 0.00m;
                 TransactionCosts = 0.00m;
-                CreateCashTransaction = false;
+                CreateCashTransaction = true;
             }
         }
 

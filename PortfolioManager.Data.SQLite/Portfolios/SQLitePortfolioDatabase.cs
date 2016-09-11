@@ -18,7 +18,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get { return 7; }
         }
 
-        /* TODO: Priority Low, move this to the database */
         internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }

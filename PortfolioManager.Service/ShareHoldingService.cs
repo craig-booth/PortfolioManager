@@ -147,12 +147,12 @@ namespace PortfolioManager.Service
                 return DateTime.Today;
         }
 
-        public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime date)
+        public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime date, bool includeChildStocks)
         {
-            return GetOwnedStocks(date, date);
+            return GetOwnedStocks(date, date, includeChildStocks);
         }
 
-        public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime fromDate, DateTime toDate)
+        public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime fromDate, DateTime toDate, bool includeChildStocks)
         {
             var ownedStocks = new List<Stock>();
 
@@ -163,12 +163,19 @@ namespace PortfolioManager.Service
             {
                 if ((currentStock == null) || (shareParcel.Stock != currentStock.Id))
                 {
-                    var stock =_StockService.Get(shareParcel.Stock, shareParcel.FromDate);
-                    ownedStocks.Add(stock);
-
+                    var stock = _StockService.Get(shareParcel.Stock, shareParcel.FromDate);
                     currentStock = stock;
+
+                    if (!includeChildStocks)
+                    {
+                        if (stock.ParentId != Guid.Empty)
+                            stock = _StockService.Get(stock.ParentId, shareParcel.FromDate);
+                    }
+
+                    if (ownedStocks.FindLast(x => x.Id == stock.Id) == null)
+                        ownedStocks.Add(stock);           
                 }
-            } 
+            }
 
             return ownedStocks.AsReadOnly();
         }

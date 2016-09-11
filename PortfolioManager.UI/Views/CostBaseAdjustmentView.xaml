@@ -6,7 +6,33 @@
                     xmlns:model="clr-namespace:PortfolioManager.Model.Portfolios;assembly=PortfolioManager.Model">
 
     <DataTemplate DataType="{x:Type viewmodels:CostBaseAdjustmentViewModel}">
-        <TextBlock Text="Costbase Adjustment" />
+        <Grid controls:MarginSetter.Margin="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource FormLabel}" Text="Adjustment Date"/>
+            <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding RecordDate}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Company"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEnabled="{Binding StockReadOnly}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Percentage" />
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Percentage, StringFormat={}{0:p2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />
+
+            <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Comment"/>
+            <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>
+
+        </Grid>
     </DataTemplate>
     
 </ResourceDictionary>

@@ -164,7 +164,7 @@ namespace PortfolioManager.UI.ViewModels
         public override void Activate()
         {
             if (_Parameter != null)
-                TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService);
+                TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService, _Parameter.Portfolio.ShareHoldingService);
 
             base.Activate();
         }

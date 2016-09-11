@@ -26,7 +26,7 @@ namespace PortfolioManager.Model.Portfolios
 
         protected override string GetDescription()
         {
-            return "Adjust cost base by " + Percentage.ToString("P");
+            return "Adjust cost base by " + Percentage.ToString("P2");
         }
 
     }
