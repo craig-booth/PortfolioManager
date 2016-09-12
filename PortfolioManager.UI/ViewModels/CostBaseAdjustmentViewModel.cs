@@ -35,7 +35,7 @@ namespace PortfolioManager.UI.ViewModels
         }
 
         public CostBaseAdjustmentViewModel(CostBaseAdjustment costBaseAdjustment, StockService stockService, ShareHoldingService holdingService)
-            : base(costBaseAdjustment, TransactionStockSelection.Owned, stockService, holdingService)
+            : base(costBaseAdjustment, TransactionStockSelection.OwnedChildStocks, stockService, holdingService)
         {
 
         }

@@ -14,7 +14,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    enum TransactionStockSelection { None, Owned, Any }
+    enum TransactionStockSelection { None, Owned, OwnedChildStocks, Any }
 
     class TransactionViewModel : ViewModel, IEditableObject
     {
@@ -180,7 +180,8 @@ namespace PortfolioManager.UI.ViewModels
                 stocks = _StockService.GetAll(date).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.Name);
             else if (_StockSelection == TransactionStockSelection.Owned)
                 stocks = _HoldingService.GetOwnedStocks(date, false).OrderBy(x => x.Name);
-
+            else if (_StockSelection == TransactionStockSelection.OwnedChildStocks)
+                stocks = _HoldingService.GetOwnedStocks(date, true).OrderBy(x => x.Name);
 
             if (stocks != null)
             {
