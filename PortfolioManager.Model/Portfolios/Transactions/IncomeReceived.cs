@@ -38,12 +38,12 @@ namespace PortfolioManager.Model.Portfolios
 
         public decimal CashIncome
         {
-            get { return FrankedAmount + UnfrankedAmount + Interest; }
+            get { return FrankedAmount + UnfrankedAmount + Interest + TaxDeferred; }
         }
 
         public decimal NonCashIncome
         {
-            get { return FrankingCredits + TaxDeferred; }
+            get { return FrankingCredits; }
         }
 
         public decimal TotalIncome
