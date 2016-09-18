@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="Views/UnrealisedGainsView.xaml"/>
                 <ResourceDictionary Source="Views/CashAccountView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionsView.xaml"/>
+                <ResourceDictionary Source="Views/CorporateActionsView.xaml"/>
                 <ResourceDictionary Source="Views/AquisitionView.xaml"/>
                 <ResourceDictionary Source="Views/CashTransactionView.xaml"/>
                 <ResourceDictionary Source="Views/CostBaseAdjustmentView.xaml"/>

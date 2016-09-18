@@ -114,11 +114,12 @@ namespace PortfolioManager.UI.ViewModels
 
             var transactionsModule = new Module("Transactions", "SettingsIcon")
             {
-                PageSelectionAreaVisible = Visibility.Hidden,
+                PageSelectionAreaVisible = Visibility.Visible,
                 PageParameterAreaVisible = Visibility.Visible
             };
             _Modules.Add(transactionsModule);
             transactionsModule.Pages.Add(new TransactionsViewModel("Transactions", ViewParameter));
+            transactionsModule.Pages.Add(new CorporateActionsViewModel("CorporateActions", ViewParameter));
 
             var reportsModule = new Module("Reports", "ReportsIcon")
             {

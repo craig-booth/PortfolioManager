@@ -77,6 +77,7 @@
     <Compile Include="ViewModels\CashAccountViewModel.cs" />
     <Compile Include="ViewModels\CashTransactionViewModel.cs" />
     <Compile Include="ViewModels\CGTViewModel.cs" />
+    <Compile Include="ViewModels\CorporateActionsViewModel.cs" />
     <Compile Include="ViewModels\CostBaseAdjustmentViewModel.cs" />
     <Compile Include="ViewModels\DisposalViewModel.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
@@ -120,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CGTView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CorporateActionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
