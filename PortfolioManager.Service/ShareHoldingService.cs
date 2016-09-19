@@ -184,36 +184,46 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<OwnedStockId> GetOwnedStockIds(DateTime date)
         {
-            return GetOwnedStockIds(date, date);
+            var ownedStocks = new List<OwnedStockId>();
+
+            var parcels = _ParcelService.GetParcels(date);
+
+            foreach (var shareParcel in parcels)
+            {
+                // Make sure that we get the oldest effectve record for this parcel
+                var firstDate = _ParcelService.GetParcels(shareParcel.Id, DateUtils.NoStartDate, date).Min(x => x.FromDate);
+
+                var ownedStock = new OwnedStockId()
+                {
+                    Id = shareParcel.Stock,
+                    FromDate = firstDate,
+                    ToDate = shareParcel.ToDate
+                };
+                InsertOverlappedStockId(ownedStocks, ownedStock);
+
+            }
+
+            return ownedStocks.AsReadOnly();
         }
 
-        public IReadOnlyCollection<OwnedStockId> GetOwnedStockIds(DateTime fromDate, DateTime toDate)
+        private void InsertOverlappedStockId(List<OwnedStockId> list, OwnedStockId entry)
         {
-              var ownedStocks = new List<OwnedStockId>();
+            var overlappedEntries = list.Where(x => ((x.Id == entry.Id) &&
+                                                     (((x.FromDate <= entry.FromDate) && (x.ToDate >= entry.FromDate)) ||
+                                                       (x.FromDate <= entry.ToDate) && (x.ToDate >= entry.FromDate)))).ToList();           
 
-              var parcels = _ParcelService.GetParcels(fromDate, toDate).OrderBy(x => x.Stock).ThenBy(x => x.FromDate);
+            foreach (var overlappedEntry in overlappedEntries)
+            {
+                if (overlappedEntry.FromDate < entry.FromDate)
+                    entry.FromDate = overlappedEntry.FromDate;
 
-              OwnedStockId currentStock = null;
-              foreach (var shareParcel in parcels)
-              {
-                  if ((currentStock != null) && (shareParcel.Stock == currentStock.Id) && (shareParcel.FromDate < currentStock.ToDate))
-                  {
-                      if (shareParcel.ToDate > currentStock.ToDate)
-                          currentStock.ToDate = shareParcel.ToDate;
-                  }
-                  else
-                  {
-                      currentStock = new OwnedStockId()
-                      {
-                          Id = shareParcel.Stock,
-                          FromDate = shareParcel.FromDate,
-                          ToDate = shareParcel.ToDate
-                      };
-                      ownedStocks.Add(currentStock);
-                  }
-              }
+                if (overlappedEntry.ToDate > entry.ToDate)
+                    entry.ToDate = overlappedEntry.ToDate;
 
-              return ownedStocks.AsReadOnly(); 
+                list.Remove(overlappedEntry);
+            }
+
+            list.Add(entry);
         }
 
         private void AddCashFlow(IList<CashFlow> cashFlows, DateTime date, decimal amount)

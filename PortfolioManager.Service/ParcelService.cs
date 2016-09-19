@@ -78,5 +78,15 @@ namespace PortfolioManager.Service
             return _PortfolioQuery.GetParcel(id, date);
         }
 
+        public IReadOnlyCollection<ShareParcel> GetParcels(Guid id)
+        {
+            return _PortfolioQuery.GetParcels(id, DateUtils.NoStartDate, DateUtils.NoEndDate);
+        }
+
+        public IReadOnlyCollection<ShareParcel> GetParcels(Guid id, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetParcels(id, fromDate, toDate);
+        }
+
     }
 }

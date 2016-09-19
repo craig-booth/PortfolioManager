@@ -54,6 +54,7 @@ namespace PortfolioManager.Model.Data
     public interface IPortfolioQuery
     {
         ShareParcel GetParcel(Guid id, DateTime atDate);
+        IReadOnlyCollection<ShareParcel> GetParcels(Guid id, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
