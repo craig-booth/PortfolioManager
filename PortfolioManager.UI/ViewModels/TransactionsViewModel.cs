@@ -17,7 +17,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class TransactionsViewModel : PortfolioViewModel
     {
-        public TransactionsViewModel(string label, ViewParameter parameter)
+        public TransactionsViewModel(string label, ViewParameter parameter, EditTransactionWindow editTransactionWindow)
             : base(label, parameter)
         {
             Options.AllowStockSelection = true;
@@ -27,11 +27,7 @@ namespace PortfolioManager.UI.ViewModels
 
             Transactions = new ObservableCollection<TransactionViewModel>();
 
-            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
-            CancelTransactionCommand = new RelayCommand(CancelTransaction);
-            SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
-            DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
-            AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
+            EditTransactionWindow = editTransactionWindow;
         }
 
         private string _Heading;
@@ -52,114 +48,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
         
-        private TransactionViewModel _CurrentTransactionViewModel;
-        public TransactionViewModel CurrentTransactionViewModel
-        {
-            get
-            {
-                return _CurrentTransactionViewModel;
-            }
-            private set
-            {
-                _CurrentTransactionViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _NewTransaction;
-        public bool NewTransaction
-        {
-            get
-            {
-                return _NewTransaction;
-            }
-
-            set
-            {
-                _NewTransaction = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
-        private void EditTransaction(TransactionViewModel transactionViewModel)
-        {
-            if (transactionViewModel != null)
-            {
-                CurrentTransactionViewModel = transactionViewModel;
-                CurrentTransactionViewModel.BeginEdit();
-                NewTransaction = false;
-            }
-        }
-
-        public RelayCommand CancelTransactionCommand { get; private set; }
-        private void CancelTransaction()
-        { 
-            if (CurrentTransactionViewModel != null)
-                CurrentTransactionViewModel.CancelEdit();
-            CurrentTransactionViewModel = null;;
-        }
-
-        public RelayCommand SaveTransactionCommand { get; private set; }
-        private void SaveTransaction()
-        {
-            if (CurrentTransactionViewModel != null)
-            {
-                CurrentTransactionViewModel.EndEdit();
-
-                var transaction = CurrentTransactionViewModel.Transaction;
-
-                if (NewTransaction)
-                {
-                    _Parameter.Portfolio.TransactionService.ProcessTransaction(transaction);
-
-                    if (MeetsSelectionCriteria(transaction))
-                        Transactions.Add(CurrentTransactionViewModel);
-                }
-                else
-                {
-                    _Parameter.Portfolio.TransactionService.UpdateTransaction(transaction);
-
-                    if (!MeetsSelectionCriteria(transaction))
-                        Transactions.Remove(CurrentTransactionViewModel);
-                }
-            }
-
-            CurrentTransactionViewModel = null;
-        }
-
-        public RelayCommand DeleteTransactionCommand { get; private set; }
-        private void DeleteTransaction()
-        {
-            if (CurrentTransactionViewModel != null)
-            {
-                CurrentTransactionViewModel.EndEdit();
-
-                _Parameter.Portfolio.TransactionService.DeleteTransaction(CurrentTransactionViewModel.Transaction);
-
-                Transactions.Remove(CurrentTransactionViewModel);
-            }
-
-            CurrentTransactionViewModel = null;
-        }
-
-        public RelayCommand<TransactionType> AddTransactionCommand { get; private set; }
-        private void AddTransaction(TransactionType transactionType)
-        {
-            CurrentTransactionViewModel = TransactionViewModelFactory.CreateTransactionViewModel(transactionType);
-            CurrentTransactionViewModel.BeginEdit();
-            NewTransaction = true;
-        }
-
-        private bool CanDeleteTransaction()
-        {
-            return (CurrentTransactionViewModel != null) && (NewTransaction == false);
-        }
-
-        private bool CanSaveTransaction()
-        {
-            return (CurrentTransactionViewModel != null) && (! CurrentTransactionViewModel.HasErrors);
-        }
+        public EditTransactionWindow EditTransactionWindow { get; private set; }
 
         public override void Activate()
         {
@@ -171,8 +60,6 @@ namespace PortfolioManager.UI.ViewModels
 
         public override void RefreshView()
         {
-            CurrentTransactionViewModel = null; 
-
             Transactions.Clear();
 
             IReadOnlyCollection<Transaction> transactions;
@@ -199,4 +86,5 @@ namespace PortfolioManager.UI.ViewModels
 
     }
 
+ 
 }

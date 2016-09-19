@@ -94,6 +94,8 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+        public EditTransactionWindow EditTransactionWindow { get; private set; }
+    
         public MainWindowViewModel()
         {
             _Modules = new List<Module>();
@@ -103,9 +105,10 @@ namespace PortfolioManager.UI.ViewModels
 
             ViewParameter = new ViewParameter();
 
+            EditTransactionWindow = new EditTransactionWindow();
+
             _Settings = new ApplicationSettings();
             _Settings.DatabaseChanged += LoadPortfolio;
-
 
             _Modules.Clear();
             var homeModule = new Module("Home", "HomeIcon");
@@ -118,7 +121,7 @@ namespace PortfolioManager.UI.ViewModels
                 PageParameterAreaVisible = Visibility.Visible
             };
             _Modules.Add(transactionsModule);
-            transactionsModule.Pages.Add(new TransactionsViewModel("Transactions", ViewParameter));
+            transactionsModule.Pages.Add(new TransactionsViewModel("Transactions", ViewParameter, EditTransactionWindow));
             transactionsModule.Pages.Add(new CorporateActionsViewModel("CorporateActions", ViewParameter));
 
             var reportsModule = new Module("Reports", "ReportsIcon")
@@ -174,6 +177,8 @@ namespace PortfolioManager.UI.ViewModels
 
             PopulateFinancialYearList();
             PopulateStockList();
+
+            EditTransactionWindow.Portfolio = _Portfolio;
         }
 
         private void PopulateFinancialYearList()
@@ -217,6 +222,157 @@ namespace PortfolioManager.UI.ViewModels
             ViewParameter.Stock = allCompanies;
         }
 
+    }
+
+    class PopupWindow: NotifyClass
+    {
+        private bool _IsOpen;
+        public bool IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                _IsOpen = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    class EditTransactionWindow : PopupWindow
+    {
+        private TransactionService _TransactionService;
+        private TransactionViewModelFactory _TransactionViewModelFactory;
+
+        private Portfolio _Portfolio;
+        public Portfolio Portfolio
+        {
+            set
+            {
+                _Portfolio = value;
+
+                _TransactionService = _Portfolio.TransactionService;
+                _TransactionViewModelFactory = new TransactionViewModelFactory(_Portfolio.StockService, _Portfolio.ShareHoldingService);
+            }
+        }
+
+        private TransactionViewModel _TransactionViewModel;
+        public TransactionViewModel TransactionViewModel
+        {
+            get
+            {
+                return _TransactionViewModel;
+            }
+            private set
+            {
+                _TransactionViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private bool _NewTransaction;
+        public bool NewTransaction
+        {
+            get
+            {
+                return _NewTransaction;
+            }
+
+            set
+            {
+                _NewTransaction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public EditTransactionWindow()
+            : base()
+        {
+            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
+            CancelTransactionCommand = new RelayCommand(CancelTransaction);
+            SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
+            DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
+            AddTransactionCommand = new RelayCommand<TransactionType>(AddTransaction);
+        }
+
+        public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
+        private void EditTransaction(TransactionViewModel transactionViewModel)
+        {
+            if (transactionViewModel != null)
+            {
+                TransactionViewModel = transactionViewModel;
+                TransactionViewModel.BeginEdit();
+                NewTransaction = false;
+
+                IsOpen = true;
+            }
+        }
+
+        public RelayCommand CancelTransactionCommand { get; private set; }
+        private void CancelTransaction()
+        {
+            if (TransactionViewModel != null)
+                TransactionViewModel.CancelEdit();
+
+            TransactionViewModel = null;
+            IsOpen = false;
+        }
+
+        public RelayCommand SaveTransactionCommand { get; private set; }
+        private void SaveTransaction()
+        {
+            if (TransactionViewModel != null)
+            {
+                TransactionViewModel.EndEdit();
+
+                var transaction = TransactionViewModel.Transaction;
+
+                if (NewTransaction)
+                    _TransactionService.ProcessTransaction(transaction);
+                else
+                    _TransactionService.UpdateTransaction(transaction);
+            }
+
+            TransactionViewModel = null;
+            IsOpen = false;
+        }
+
+        public RelayCommand DeleteTransactionCommand { get; private set; }
+        private void DeleteTransaction()
+        {
+            if (TransactionViewModel != null)
+            {
+                _TransactionViewModel.EndEdit();
+
+                _TransactionService.DeleteTransaction(TransactionViewModel.Transaction);
+            }
+
+            TransactionViewModel = null;
+            IsOpen = false;
+        }
+
+        public RelayCommand<TransactionType> AddTransactionCommand { get; private set; }
+        private void AddTransaction(TransactionType transactionType)
+        {
+            TransactionViewModel = _TransactionViewModelFactory.CreateTransactionViewModel(transactionType);
+            TransactionViewModel.BeginEdit();
+            NewTransaction = true;
+
+            IsOpen = true;
+        }
+
+        private bool CanDeleteTransaction()
+        {
+            return (TransactionViewModel != null) && (NewTransaction == false);
+        }
+
+        private bool CanSaveTransaction()
+        {
+            return (TransactionViewModel != null) && (!TransactionViewModel.HasErrors);
+        }
 
 
     }
