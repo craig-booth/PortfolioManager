@@ -17,13 +17,15 @@ namespace PortfolioManager.Service
         private readonly StockService _StockService;
         private readonly StockPriceService _StockPriceService;
         private readonly TransactionService _TransactionService;
+        private readonly CashAccountService _CashAccountService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService, TransactionService transactionService)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService, TransactionService transactionService, CashAccountService cashAccountService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
             _StockPriceService = stockPriceService;
             _TransactionService = transactionService;
+            _CashAccountService = cashAccountService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -230,7 +232,13 @@ namespace PortfolioManager.Service
 
             // Get the initial portfolio value
             var initialHoldings = GetHoldings(startDate);
-            var initialValue = initialHoldings.Sum(x => x.MarketValue);
+            var initialHoldingsValue = initialHoldings.Sum(x => x.MarketValue);
+
+            // Get initial Cash Account Balance
+            var initialCashBalance = _CashAccountService.GetBalance(startDate);
+
+            // Add the initial portfolio value
+            var initialValue = initialHoldingsValue + initialCashBalance;
             AddCashFlow(cashFlows, startDate, -initialValue);
                      
             // generate list of cashFlows
@@ -249,7 +257,13 @@ namespace PortfolioManager.Service
             
             // Get the final portfolio value
             var finalHoldings = GetHoldings(endDate);
-            var finalValue = finalHoldings.Sum(x => x.MarketValue);
+            var finalHoldingsValue = finalHoldings.Sum(x => x.MarketValue);
+
+            // Get final Cash Account Balance
+            var finalCashBalance = _CashAccountService.GetBalance(endDate);
+
+            // Add the final portfolio value
+            var finalValue = finalHoldingsValue + finalCashBalance;
             AddCashFlow(cashFlows, endDate, finalValue);
 
             var irr = IRRCalculator.CalculateIRR(cashFlows);
