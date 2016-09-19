@@ -40,8 +40,10 @@ namespace PortfolioManager.UI.ViewModels
         public override void RefreshView()
         {          
             var holdings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
-            PortfolioValue.InitialValue = holdings.Sum(x => x.TotalCostBase); 
-            PortfolioValue.Value = holdings.Sum(x => x.MarketValue);
+            var cashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(DateTime.Today);
+
+            PortfolioValue.InitialValue = holdings.Sum(x => x.TotalCostBase) + cashBalance; 
+            PortfolioValue.Value = holdings.Sum(x => x.MarketValue) + cashBalance;
 
             _PortfolioStartDate = _Parameter.Portfolio.ShareHoldingService.GetPortfolioStartDate();
 
@@ -55,6 +57,8 @@ namespace PortfolioManager.UI.ViewModels
                 Holdings.Add(new HoldingItemViewModel(holding));
 
             Holdings.Sort(HoldingItemViewModel.CompareByCompanyName);
+
+            Holdings.Add(new HoldingItemViewModel("Cash Account", cashBalance));
         }
 
         private void CalculateIRR(PortfolioReturn portfolioReturn, int years)
@@ -92,6 +96,14 @@ namespace PortfolioManager.UI.ViewModels
         public string CompanyName { get; set; }
         public int Units { get; set; }
         public ChangeInValue ChangeInValue { get; set; }
+
+        public HoldingItemViewModel(string Description, decimal value)
+        {
+            ASXCode = "";
+            CompanyName = Description;
+            Units = 0;
+            ChangeInValue = new ChangeInValue(value, value);
+        }
 
         public HoldingItemViewModel(ShareHolding holding)
         {
