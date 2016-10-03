@@ -6,7 +6,7 @@
                     xmlns:model="clr-namespace:PortfolioManager.Model.Portfolios;assembly=PortfolioManager.Model">
 
     <DataTemplate DataType="{x:Type viewmodels:CostBaseAdjustmentViewModel}">
-        <Grid controls:MarginSetter.Margin="2" >
+        <Grid Margin="20,20" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="200"/>
@@ -14,10 +14,10 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource FormLabel}" Text="Adjustment Date"/>

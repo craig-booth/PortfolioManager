@@ -6,6 +6,7 @@
         xmlns:views="clr-namespace:PortfolioManager.UI.Views"
         xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels"
         xmlns:utilities="clr-namespace:PortfolioManager.UI.Utilities"
+        xmlns:cbcontrols="clr-namespace:CBControls;assembly=CBControls"
         mc:Ignorable="d"
         Title="Portfolio Manager" Height="600" Width="1000">
 
@@ -211,61 +212,19 @@
 
         </DockPanel>
 
-        <!-- Edit Transaction Window-->
-        <Border Background="Black" OpacityMask="#7F000000">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Visibility" Value="Hidden"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding EditTransactionWindow.IsOpen}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-        </Border>
-        <Border Background="White" BorderBrush="Black" BorderThickness="2" Height="500" Width="700">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Visibility" Value="Hidden"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding EditTransactionWindow.IsOpen}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
 
-            <Border.Resources>
-                <DataTemplate DataType="{x:Type viewmodels:EditTransactionWindow}">
+        <cbcontrols:FloatingDialog Content="{Binding EditTransactionWindow.TransactionViewModel, Mode=OneWay}" Commands="{Binding EditTransactionWindow.Commands}" IsOpen="{Binding EditTransactionWindow.IsOpen}" />
 
-                    <StackPanel>
-
-                        <ContentControl Content="{Binding TransactionViewModel}" HorizontalAlignment="Center"/>
-
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20" >
-
-                            <Button Command="{Binding SaveTransactionCommand}" Style="{StaticResource Button}">
-                                <TextBlock Text="Save"/>
-                            </Button>
-                            <Button Command="{Binding DeleteTransactionCommand}" Style="{StaticResource Button}">
-                                <TextBlock Text="Delete"/>
-                            </Button>
-                            <Button Command="{Binding CancelTransactionCommand}" Style="{StaticResource Button}">
-                                <TextBlock Text="Cancel"/>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
-
-                </DataTemplate>
-
-            </Border.Resources>
-
-            <ContentControl Content="{Binding EditTransactionWindow}"/>
-
-
-        </Border>
-
+        <cbcontrols:FloatingDialog Commands="{Binding CreateTransactionsWindow.Commands}" IsOpen="{Binding CreateTransactionsWindow.IsOpen}" Height="500" Width="600" >
+            <TabControl ItemsSource="{Binding CreateTransactionsWindow.Transactions}" SelectedValue="{Binding CreateTransactionsWindow.SelectedTransaction}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Transaction.Type}"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+            </TabControl>
+        </cbcontrols:FloatingDialog>
+        
     </Grid>
 
 </Window>

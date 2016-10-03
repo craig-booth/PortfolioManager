@@ -13,12 +13,18 @@ using PortfolioManager.Service.Transactions;
 
 namespace PortfolioManager.Service
 {
+
     public class TransactionService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly Dictionary<TransactionType, ITransactionHandler> _TransactionHandlers;
         private readonly AttachmentService _AttachmentService;
 
+        internal event PortfolioChangedEventHandler PortfolioChanged;
+        protected void OnPortfolioChanged()
+        {
+            PortfolioChanged?.Invoke(new PortfolioChangedEventArgs());
+        }
 
         internal TransactionService(IPortfolioDatabase portfolioDatabase, ParcelService parcelService, StockService stockService, AttachmentService attachmentService)
         {
@@ -47,6 +53,8 @@ namespace PortfolioManager.Service
 
                 unitOfWork.Save();
             }
+
+            OnPortfolioChanged();
         }
 
         public void ProcessTransactions(IEnumerable<Transaction> transactions)
@@ -61,6 +69,8 @@ namespace PortfolioManager.Service
                 };
                 unitOfWork.Save();
             }
+
+            OnPortfolioChanged();
         }
 
         private void AddTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)

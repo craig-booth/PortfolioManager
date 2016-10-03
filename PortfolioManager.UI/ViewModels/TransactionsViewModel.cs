@@ -17,7 +17,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class TransactionsViewModel : PortfolioViewModel
     {
-        public TransactionsViewModel(string label, ViewParameter parameter, EditTransactionWindow editTransactionWindow)
+        public TransactionsViewModel(string label, ViewParameter parameter, EditTransactionViewModel editTransactionViewModel)
             : base(label, parameter)
         {
             Options.AllowStockSelection = true;
@@ -27,7 +27,10 @@ namespace PortfolioManager.UI.ViewModels
 
             Transactions = new ObservableCollection<TransactionViewModel>();
 
-            EditTransactionWindow = editTransactionWindow;
+            _EditTransactionViewModel = editTransactionViewModel;
+
+            EditTransactionCommand = new RelayCommand<ViewModels.TransactionViewModel>(EditTransaction);
+            CreateTransactionCommand = new RelayCommand<TransactionType>(CreateTransaction);
         }
 
         private string _Heading;
@@ -47,8 +50,8 @@ namespace PortfolioManager.UI.ViewModels
         public TransactionViewModelFactory TransactionViewModelFactory { get; private set; }
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
-        
-        public EditTransactionWindow EditTransactionWindow { get; private set; }
+
+        private EditTransactionViewModel _EditTransactionViewModel;
 
         public override void Activate()
         {
@@ -71,6 +74,18 @@ namespace PortfolioManager.UI.ViewModels
                    Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
 
             OnPropertyChanged("");            
+        }
+
+        public RelayCommand<TransactionType> CreateTransactionCommand { get; private set; }
+        private void CreateTransaction(TransactionType transactionType)
+        {
+            _EditTransactionViewModel.CreateTransaction(transactionType);
+        }
+
+        public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
+        private void EditTransaction(TransactionViewModel transactionViewModel)
+        {
+            _EditTransactionViewModel.EditTransaction(transactionViewModel);
         }
 
         private bool MeetsSelectionCriteria(Transaction transaction)

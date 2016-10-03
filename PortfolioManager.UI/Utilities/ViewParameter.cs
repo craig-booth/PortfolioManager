@@ -23,11 +23,23 @@ namespace PortfolioManager.UI.Utilities
 
             set
             {
-                _Portfolio = value;
-                OnPropertyChanged();
+                if (_Portfolio != value)
+                {
+                    if (_Portfolio != null)
+                        _Portfolio.PortfolioChanged -= Portfolio_PortfolioChanged;
+
+                    _Portfolio = value;
+                    _Portfolio.PortfolioChanged += Portfolio_PortfolioChanged;
+                   
+                    OnPropertyChanged();
+                }
             }
         }
 
+        private void Portfolio_PortfolioChanged(PortfolioChangedEventArgs e)
+        {
+            OnPropertyChanged("Portfolio");
+        }
 
         private Stock _Stock;
         public Stock Stock

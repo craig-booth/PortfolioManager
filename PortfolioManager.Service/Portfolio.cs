@@ -23,6 +23,12 @@ namespace PortfolioManager.Service
         }
     }
 
+    public class PortfolioChangedEventArgs : EventArgs
+    {
+
+    }
+    public delegate void PortfolioChangedEventHandler(PortfolioChangedEventArgs e);
+
     public class Portfolio
     {
         public Dictionary<string, StockSetting> StockSetting { get; private set; }
@@ -38,6 +44,13 @@ namespace PortfolioManager.Service
 
         public StockService StockService { get; private set; }
         public StockPriceService StockPriceService { get; private set; }
+
+        public event PortfolioChangedEventHandler PortfolioChanged;
+
+        protected void OnPortfolioChanged()
+        {
+            PortfolioChanged?.Invoke(new PortfolioChangedEventArgs());
+        }
 
         public Portfolio(IPortfolioDatabase database, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
@@ -65,6 +78,13 @@ namespace PortfolioManager.Service
                     TransactionService.ApplyTransaction(unitOfWork, transaction);
                 unitOfWork.Save();
             }
+
+            TransactionService.PortfolioChanged += TransactionService_PortfolioChanged;
+        }
+
+        private void TransactionService_PortfolioChanged(PortfolioChangedEventArgs e)
+        {
+            OnPortfolioChanged();
         }
     }
 }

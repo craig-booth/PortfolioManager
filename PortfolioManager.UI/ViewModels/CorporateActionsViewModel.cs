@@ -18,13 +18,16 @@ namespace PortfolioManager.UI.ViewModels
 
     class CorporateActionsViewModel : PortfolioViewModel
     {
-        public CorporateActionsViewModel(string label, ViewParameter parameter)
+        private CreateMulitpleTransactionsViewModel _CreateTransactionsViewModel;
+
+        public CorporateActionsViewModel(string label, ViewParameter parameter, CreateMulitpleTransactionsViewModel createTransactionsViewModel)
             : base(label, parameter)
         {
             Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.None;
 
             _Heading = label;
+            _CreateTransactionsViewModel = createTransactionsViewModel;
 
             CorporateActions = new ObservableCollection<CorporateActionViewModel>();
 
@@ -52,6 +55,9 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (corporateAction != null)
             {
+                var transactions = _Parameter.Portfolio.CorporateActionService.CreateTransactionList(corporateAction.CorporateAction);
+
+                _CreateTransactionsViewModel.AddTransactions(transactions);
             }
         }
 
@@ -62,7 +68,7 @@ namespace PortfolioManager.UI.ViewModels
             var corporateActions = _Parameter.Portfolio.CorporateActionService.GetUnappliedCorporateActions();
             
             foreach (var corporateAction in corporateActions)
-                CorporateActions.Add(new ViewModels.CorporateActionViewModel(corporateAction, _Parameter.Portfolio.StockService));
+                CorporateActions.Add(new CorporateActionViewModel(corporateAction, _Parameter.Portfolio.StockService));
 
             OnPropertyChanged(""); 
         }
@@ -71,6 +77,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class CorporateActionViewModel
     {
+        public CorporateAction CorporateAction { get; private set; }
         public Guid Id { get; set; }
         public DateTime ActionDate { get; set; }
         public string CompanyName { get; set; }
@@ -78,6 +85,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public CorporateActionViewModel(CorporateAction corporateAction, StockService stockService)
         {
+            CorporateAction = corporateAction;
             Id = corporateAction.Id;
             ActionDate = corporateAction.ActionDate;
 
