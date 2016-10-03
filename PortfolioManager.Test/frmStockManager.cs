@@ -287,5 +287,60 @@ namespace PortfolioManager.Test
                 AddCorporateAction(stock, CorporateActionType.Composite);
             }
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+     /*       AddSentreGroupNTA(new DateTime(2014, 06, 30), 0.0394m, 0.3334m, 0.6272m, 0.00m);
+            AddSentreGroupNTA(new DateTime(2014, 12, 31), 0.0433m, 0.3407m, 0.6149m, 0.0011m);
+            AddSentreGroupNTA(new DateTime(2015, 06, 30), 0.0374m, 0.3439m, 0.6174m, 0.0013m);
+            AddSentreGroupNTA(new DateTime(2015, 12, 31), 0.0417m, 0.3483m, 0.6087m, 0.0013m);
+            AddSentreGroupNTA(new DateTime(2016, 06, 30), 0.0442m, 0.3556m, 0.5989m, 0.0013m); 
+
+            AddWestfieldGroupNTA(new DateTime(2014, 06, 30), 0.1263m, 0.7579m, 0.1158m);
+            AddWestfieldGroupNTA(new DateTime(2014, 12, 31), 0.1348m, 0.6667m, 0.1985m);
+            AddWestfieldGroupNTA(new DateTime(2015, 06, 30), 0.1638m, 0.6022m, 0.2340m);
+            AddWestfieldGroupNTA(new DateTime(2015, 12, 31), 0.1798m, 0.5099m, 0.3103m);
+            AddWestfieldGroupNTA(new DateTime(2016, 06, 30), 0.1955m, 0.4935m, 0.3110m); */
+        }
+
+        private void AddSentreGroupNTA(DateTime date, decimal whl, decimal wt, decimal wrt1, decimal wrt2)
+        {
+            if (whl + wt + wrt1 + wrt2 != 1.0m)
+            { 
+                MessageBox.Show(string.Format("SCentre Group {0} doesn't add up to 100%", date));
+                return;
+            }
+
+            var WHL = _StockServiceRepository.StockService.GetStock("WHL", date);
+            var WT = _StockServiceRepository.StockService.GetStock("WT", date);
+            var WRT1 = _StockServiceRepository.StockService.GetStock("WRT1", date);
+            var WRT2 = _StockServiceRepository.StockService.GetStock("WRT2", date);
+
+            _StockServiceRepository.StockService.AddRelativeNTA(WHL, date, whl);
+            _StockServiceRepository.StockService.AddRelativeNTA(WT, date, wt);
+            _StockServiceRepository.StockService.AddRelativeNTA(WRT1, date, wrt1);
+            _StockServiceRepository.StockService.AddRelativeNTA(WRT2, date, wrt2);
+        }
+
+        private void AddWestfieldGroupNTA(DateTime date, decimal wcl, decimal wfdt, decimal wat)
+        {
+            if (wcl + wfdt + wat != 1.0m)
+            {
+                MessageBox.Show(string.Format("Westfield {0} doesn't add up to 100%", date));
+                return;
+            }
+
+            var WCL = _StockServiceRepository.StockService.GetStock("WCL", date);
+            var WFDT = _StockServiceRepository.StockService.GetStock("WFDT", date);
+            var WAT = _StockServiceRepository.StockService.GetStock("WAT", date);
+
+            _StockServiceRepository.StockService.AddRelativeNTA(WCL, date, wcl);
+            _StockServiceRepository.StockService.AddRelativeNTA(WFDT, date, wfdt);
+            _StockServiceRepository.StockService.AddRelativeNTA(WAT, date, wat);
+        }
+
+
+
+
     }
 }
