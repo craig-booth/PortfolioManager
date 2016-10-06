@@ -66,7 +66,7 @@ namespace PortfolioManager.Service.CorporateActions
 
                     transactions.Add(new CostBaseAdjustment()
                     {
-                        TransactionDate = transformation.ImplementationDate,
+                        TransactionDate = transformation.ActionDate,
                         ASXCode = stock.ASXCode,
                         RecordDate = transformation.ActionDate,
                         Percentage = originalCostBasePercentage,
