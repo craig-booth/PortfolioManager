@@ -36,11 +36,16 @@ namespace PortfolioManager.Service.Transactions
 
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
         {
+            AddParcel(unitOfWork, aquisitionDate, aquisitionDate, stock, units, unitPrice, amount, costBase, parcelEvent);
+        }
+
+        protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
+        {
             /* Handle Stapled Securities */
             if (stock.Type == StockType.StapledSecurity)
             {
                 /* Get child stocks */
-                var childStocks = _StockService.GetChildStocks(stock, aquisitionDate);
+                var childStocks = _StockService.GetChildStocks(stock, fromDate);
 
                 /* Apportion amount and cost base */
                 ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[childStocks.Count];
@@ -49,7 +54,7 @@ namespace PortfolioManager.Service.Transactions
                 int i = 0;
                 foreach (Stock childStock in childStocks)
                 {
-                    decimal percentageOfParent = _StockService.PercentageOfParentCostBase(childStock, aquisitionDate);
+                    decimal percentageOfParent = _StockService.PercentageOfParentCostBase(childStock, fromDate);
                     int relativeValue = (int)(percentageOfParent * 10000);
 
                     apportionedAmounts[i].Units = relativeValue;
@@ -65,7 +70,7 @@ namespace PortfolioManager.Service.Transactions
                 var purchaseId = Guid.NewGuid();
                 foreach (Stock childStock in childStocks)
                 {
-                    var childParcel = new ShareParcel(aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId, parcelEvent);
+                    var childParcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId, parcelEvent);
 
                     unitOfWork.ParcelRepository.Add(childParcel);
 
@@ -74,7 +79,7 @@ namespace PortfolioManager.Service.Transactions
             }
             else
             {
-                var parcel = new ShareParcel(aquisitionDate, stock.Id, units, unitPrice, amount, costBase, parcelEvent);
+                var parcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, stock.Id, units, unitPrice, amount, costBase, Guid.Empty, parcelEvent);
                 unitOfWork.ParcelRepository.Add(parcel);
             }
         }

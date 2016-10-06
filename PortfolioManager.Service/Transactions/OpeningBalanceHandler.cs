@@ -24,7 +24,7 @@ namespace PortfolioManager.Service.Transactions
 
             var stock = _StockService.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
             
-            AddParcel(unitOfWork, openingBalance.AquisitionDate, stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
+            AddParcel(unitOfWork, openingBalance.AquisitionDate, transaction.TransactionDate, stock, openingBalance.Units, openingBalance.CostBase / openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, ParcelEvent.OpeningBalance);
         }
     }
 }
