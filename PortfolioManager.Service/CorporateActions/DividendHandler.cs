@@ -35,6 +35,11 @@ namespace PortfolioManager.Service.CorporateActions
 
             var stock = _StockService.Get(dividend.Stock, dividend.PaymentDate);
 
+            /* Assume that DRP applies */
+            bool applyDRP = false;
+            if (dividend.DRPPrice != 0.00M)
+                applyDRP = true;
+
             var unitsHeld = parcels.Sum(x => x.Units);
             var amountPaid = unitsHeld * dividend.DividendAmount;
             var franked = (amountPaid * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
@@ -49,11 +54,12 @@ namespace PortfolioManager.Service.CorporateActions
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,
                 FrankingCredits = frankingCredits,
+                CreateCashTransaction = !applyDRP,
                 Comment = dividend.Description
             });
 
             /* add drp shares */
-            if (dividend.DRPPrice != 0.00M)
+            if (applyDRP)
             {
                 int drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
 
@@ -68,7 +74,7 @@ namespace PortfolioManager.Service.CorporateActions
                     Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
                 }
                 );
-            }
+            }         
 
             return transactions;
         }

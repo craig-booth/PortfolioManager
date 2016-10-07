@@ -40,7 +40,8 @@ namespace PortfolioManager.Service.CorporateActions
                     TransactionDate = capitalReturn.PaymentDate,
                     RecordDate = capitalReturn.ActionDate,
                     Amount = capitalReturn.Amount,
-                    Comment = capitalReturn.Description
+                    CreateCashTransaction = true,
+                    Comment = capitalReturn.Description,
                 }
             );
 

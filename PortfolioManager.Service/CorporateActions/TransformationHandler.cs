@@ -110,6 +110,7 @@ namespace PortfolioManager.Service.CorporateActions
                         ASXCode = stock.ASXCode,
                         RecordDate = transformation.ActionDate,
                         Amount = capitalReturn,
+                        CreateCashTransaction = false,
                         Comment = transformation.Description
                     });
                 }
@@ -130,6 +131,7 @@ namespace PortfolioManager.Service.CorporateActions
                     TransactionCosts = 0.00m,
                     CGTMethod = CGTCalculationMethod.FirstInFirstOut,
                     RecordDate = transformation.ImplementationDate,
+                    CreateCashTransaction = true,
                     Comment = transformation.Description
                 });
             }
