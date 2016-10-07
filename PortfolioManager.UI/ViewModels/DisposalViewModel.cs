@@ -83,9 +83,9 @@ namespace PortfolioManager.UI.ViewModels
         public bool CreateCashTransaction { get; set; }
 
         public DisposalViewModel(Disposal disposal, StockService stockService, ShareHoldingService holdingService)
-            : base(disposal, TransactionStockSelection.Owned, stockService, holdingService)
+            : base(disposal, TransactionStockSelection.TradeableStocks(true), stockService, holdingService)
         {
-
+            
         }
 
         protected override void CopyTransactionToFields()

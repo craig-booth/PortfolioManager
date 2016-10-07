@@ -87,14 +87,14 @@ namespace PortfolioManager.Service.CorporateActions
                     capitalReturn += units * resultingStock.CostBase;
                     var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
 
-                    transactions.Add(new Aquisition()
+                    transactions.Add(new OpeningBalance()
                     {
-                        TransactionDate = resultingStock.AquisitionDate,
+                        TransactionDate = transformation.ImplementationDate,
                         ASXCode = stock.ASXCode,
                         Units = units,
-                        AveragePrice = resultingStock.CostBase,
-                        TransactionCosts = 0.00m,
-                        RecordDate = resultingStock.AquisitionDate,
+                        CostBase = costBase,
+                        AquisitionDate = resultingStock.AquisitionDate,
+                        RecordDate = transformation.ImplementationDate,
                         Comment = transformation.Description
                     });
                 }

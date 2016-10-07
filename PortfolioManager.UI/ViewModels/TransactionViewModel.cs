@@ -14,7 +14,35 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
-    enum TransactionStockSelection { None, Owned, OwnedChildStocks, Any }
+    class TransactionStockSelection
+    {
+        public bool OwnedStocksOnly;
+        public bool IncludeStapledSecurites;
+        public bool IncludeChildStocks;    
+        
+        public TransactionStockSelection(bool ownedStocksOnly, bool includeStapledSecurities, bool includeChildStocks)
+        {
+            OwnedStocksOnly = ownedStocksOnly;
+            IncludeStapledSecurites = includeStapledSecurities;
+            IncludeChildStocks = includeChildStocks;
+        }
+
+        public static TransactionStockSelection AllStocks()
+        {
+            return new TransactionStockSelection(false, true, true);
+        }
+
+        public static TransactionStockSelection TradeableStocks(bool owned)
+        {
+            return new TransactionStockSelection(owned, true, false);
+        }
+
+        public static TransactionStockSelection NonStapledStocks(bool owned)
+        {
+            return new TransactionStockSelection(owned, false, true);
+        }
+    }
+    
 
     class TransactionViewModel : ViewModel, IEditableObject
     {
@@ -40,7 +68,7 @@ namespace PortfolioManager.UI.ViewModels
             {
                 _Stock = value;
 
-                if (_StockSelection != TransactionStockSelection.None)
+                if (_StockSelection != null)
                 {
                     ClearErrors();
 
@@ -64,7 +92,7 @@ namespace PortfolioManager.UI.ViewModels
             {
                 _RecordDate = value;
 
-                if (_BeingEdited && (_StockSelection != TransactionStockSelection.None))
+                if (_BeingEdited && (_StockSelection != null))
                     PopulateAvailableStocks(_RecordDate);
             }
         }
@@ -98,7 +126,7 @@ namespace PortfolioManager.UI.ViewModels
             _HoldingService = holdingService;
             Transaction = transaction;
 
-            if (_StockSelection != TransactionStockSelection.None)
+            if (_StockSelection != null)
             {
                 AvailableStocks = new ObservableCollection<Stock>();
 
@@ -113,7 +141,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             _BeingEdited = true;
 
-            if (_StockSelection != TransactionStockSelection.None)
+            if (_StockSelection != null)
             {
                 PopulateAvailableStocks(RecordDate);
                 Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
@@ -172,16 +200,26 @@ namespace PortfolioManager.UI.ViewModels
 
         private void PopulateAvailableStocks(DateTime date)
         {
+            if (_StockSelection == null)
+                return;
+
             AvailableStocks.Clear();
 
             IEnumerable<Stock> stocks = null;
+            if (_StockSelection.OwnedStocksOnly)
+            {
+                stocks = _HoldingService.GetOwnedStocks(date, _StockSelection.IncludeChildStocks).OrderBy(x => x.Name);
+            }
+            else
+            {
+                stocks = _StockService.GetAll(date).OrderBy(x => x.Name);
 
-            if (_StockSelection == TransactionStockSelection.Any)
-                stocks = _StockService.GetAll(date).Where(x => x.ParentId == Guid.Empty).OrderBy(x => x.Name);
-            else if (_StockSelection == TransactionStockSelection.Owned)
-                stocks = _HoldingService.GetOwnedStocks(date, false).OrderBy(x => x.Name);
-            else if (_StockSelection == TransactionStockSelection.OwnedChildStocks)
-                stocks = _HoldingService.GetOwnedStocks(date, true).OrderBy(x => x.Name);
+                if (!_StockSelection.IncludeStapledSecurites)
+                    stocks = stocks.Where(x => x.Type != StockType.StapledSecurity);
+
+                if (!_StockSelection.IncludeChildStocks)
+                    stocks = stocks.Where(x => x.ParentId == Guid.Empty);
+            }
 
             if (stocks != null)
             {

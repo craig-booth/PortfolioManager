@@ -20,7 +20,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal Amount { get; set; }
 
         public CashTransactionViewModel(CashTransaction cashTransaction, StockService stockService, ShareHoldingService holdingService)
-            : base(cashTransaction, TransactionStockSelection.None, stockService, holdingService)
+            : base(cashTransaction, null, stockService, holdingService)
         {
             
         }
