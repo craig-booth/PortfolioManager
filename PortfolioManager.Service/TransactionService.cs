@@ -114,6 +114,8 @@ namespace PortfolioManager.Service
 
             // Need to work out how to reapply
             // _Portfolio.ApplyTransaction(transaction);
+
+            OnPortfolioChanged();
         }
 
         public void DeleteTransaction(Transaction transaction)
@@ -126,6 +128,8 @@ namespace PortfolioManager.Service
 
             // Need to work out how to reapply
             // _Portfolio.ApplyTransaction(transaction);
+
+            OnPortfolioChanged();
         }
 
     }
