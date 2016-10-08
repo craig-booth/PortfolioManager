@@ -41,7 +41,7 @@ namespace PortfolioManager.Service.CorporateActions
                     /* create parcels for resulting stock */
                     foreach (ResultingStock resultingStock in transformation.ResultingStocks)
                     {
-                        int units = (int)Math.Round(parcel.Units * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
+                        int units = (int)Math.Ceiling(parcel.Units * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
                         decimal costBase = parcel.CostBase * resultingStock.CostBase;
                         var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
 
@@ -82,7 +82,7 @@ namespace PortfolioManager.Service.CorporateActions
                 /* create parcels for resulting stock */
                 foreach (ResultingStock resultingStock in transformation.ResultingStocks)
                 {
-                    int units = (int)Math.Round(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
+                    int units = (int)Math.Ceiling(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
                     decimal costBase = totalCostBase * resultingStock.CostBase;
                     capitalReturn += units * resultingStock.CostBase;
                     var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);

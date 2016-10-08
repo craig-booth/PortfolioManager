@@ -37,7 +37,7 @@ namespace PortfolioManager.Service.Transactions
 
             /* Determine total number of units after split/consolidation */
             var originalTotalUnitCount = parcels.Sum(x => x.Units);
-            var newTotalUnitCount = (int)Math.Round(originalTotalUnitCount * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
+            var newTotalUnitCount = (int)Math.Ceiling(originalTotalUnitCount * ((decimal)unitCountAdjustment.NewUnits / (decimal)unitCountAdjustment.OriginalUnits));
 
             /* Apportion unit count over parcels */
             var newUnitCounts = PortfolioUtils.ApportionAmountOverParcels(parcels, newTotalUnitCount);
