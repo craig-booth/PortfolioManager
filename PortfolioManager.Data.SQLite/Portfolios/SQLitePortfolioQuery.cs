@@ -74,7 +74,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<Transaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
@@ -96,7 +96,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<Transaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY RecordDate], [Sequence]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@Type", transactionType);
@@ -119,7 +119,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<Transaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@ASXCode", asxCode);
@@ -142,7 +142,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<Transaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [TransactionDate], [Sequence]", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@ASXCode", asxCode);

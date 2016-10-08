@@ -68,7 +68,7 @@ namespace PortfolioManager.Service
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService);            
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService);
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
