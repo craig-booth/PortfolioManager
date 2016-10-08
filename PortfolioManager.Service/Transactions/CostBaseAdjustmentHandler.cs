@@ -35,16 +35,10 @@ namespace PortfolioManager.Service.Transactions
                 throw new NoParcelsForTransaction(costBaseAdjustment, "No parcels found for transaction");
 
             /* Reduce cost base of parcels */
-            foreach (ShareParcel parcelAtRecordDate in parcels)
+            foreach (ShareParcel parcel in parcels)
             {
-                ShareParcel parcelAtPaymentDate;
-                if (costBaseAdjustment.TransactionDate <= parcelAtRecordDate.ToDate)
-                    parcelAtPaymentDate = parcelAtRecordDate;
-                else
-                    parcelAtPaymentDate = _ParcelService.GetParcel(parcelAtRecordDate.Id, costBaseAdjustment.TransactionDate);
-
-                var costBaseReduction = parcelAtPaymentDate.CostBase * (1 - costBaseAdjustment.Percentage);
-                ModifyParcel(unitOfWork, parcelAtPaymentDate, costBaseAdjustment.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
+                var costBaseReduction = parcel.CostBase * (1 - costBaseAdjustment.Percentage);
+                ModifyParcel(unitOfWork, parcel, costBaseAdjustment.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
             }
 
         }

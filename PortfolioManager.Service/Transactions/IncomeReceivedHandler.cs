@@ -45,23 +45,17 @@ namespace PortfolioManager.Service.Transactions
 
                 /* Reduce cost base of parcels */
                 i = 0;
-                foreach (ShareParcel parcelAtRecordDate in parcels)
+                foreach (ShareParcel parcel in parcels)
                 {
-                    ShareParcel parcelAtPaymentDate;
-                    if (incomeReceived.TransactionDate <= parcelAtRecordDate.ToDate)
-                        parcelAtPaymentDate = parcelAtRecordDate;
-                    else
-                        parcelAtPaymentDate = _ParcelService.GetParcel(parcelAtRecordDate.Id, incomeReceived.TransactionDate);
-
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
-                    if (costBaseReduction <= parcelAtPaymentDate.CostBase)
-                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
+                    if (costBaseReduction <= parcel.CostBase)
+                        ModifyParcel(unitOfWork, parcel, incomeReceived.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
                     else
                     {
-                        ModifyParcel(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
+                        ModifyParcel(unitOfWork, parcel, incomeReceived.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
 
-                        AddCGTEvent(unitOfWork, parcelAtPaymentDate, incomeReceived.TransactionDate, costBaseReduction - parcelAtPaymentDate.CostBase);
+                        AddCGTEvent(unitOfWork, parcel, incomeReceived.RecordDate, costBaseReduction - parcel.CostBase);
                     }
                 }
             }
