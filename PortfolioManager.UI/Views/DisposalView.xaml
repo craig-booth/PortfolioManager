@@ -4,7 +4,7 @@
                     xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels"
                     xmlns:controls="clr-namespace:PortfolioManager.UI.Controls"
                     xmlns:model="clr-namespace:PortfolioManager.Model.Portfolios;assembly=PortfolioManager.Model">
-    
+
     <DataTemplate DataType="{x:Type viewmodels:DisposalViewModel}">
 
         <DataTemplate.Resources>
@@ -39,21 +39,21 @@
             <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding RecordDate}" />
 
             <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Company"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEnabled="{Binding StockReadOnly}" />
+            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEditable="{Binding IsStockEditable, Converter={StaticResource NotTrue}}" IsEnabled="{Binding IsStockEditable}" Text="{Binding CompanyName, Mode=OneWay}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Units" />
-            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units, NotifyOnValidationError=true, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" TextAlignment="Right" />
 
             <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Average Price" />
-            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding AveragePrice, StringFormat={}{0:c2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding AveragePrice, NotifyOnValidationError=true, StringFormat=\{0:c2\}, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" TextAlignment="Right"/>
 
             <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource FormLabel}" Text="Transaction Costs" />
-            <TextBox Grid.Column="1" Grid.Row="4" Style="{StaticResource FormTextBox}" Text="{Binding TransactionCosts, StringFormat={}{0:c2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Style="{StaticResource FormTextBox}" Text="{Binding TransactionCosts, NotifyOnValidationError=true, StringFormat=\{0:c2\}, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" TextAlignment="Right"/>
 
             <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource FormLabel}" Text="CGT Method"/>
             <ComboBox Grid.Column="1" Grid.Row="5" Style="{StaticResource FormComboBox}" SelectedItem="{Binding CGTMethod}" ItemsSource="{Binding Source={StaticResource CGTCalculationMethods}}"  />
 
-            <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding CreateCashTransaction, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" >
+            <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding CreateCashTransaction, NotifyOnValidationError=true, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" >
                 <TextBlock Text="Create Cash Transaction" />
             </CheckBox>
 
@@ -63,5 +63,5 @@
         </Grid>
 
     </DataTemplate>
-    
+
 </ResourceDictionary>

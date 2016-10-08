@@ -24,7 +24,7 @@
             <DatePicker Grid.Column="1" Grid.Row="0" Style="{StaticResource FormDatePicker}" SelectedDate="{Binding RecordDate}" />
 
             <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource FormLabel}" Text="Company"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEnabled="{Binding StockReadOnly}" />
+            <ComboBox Grid.Column="1" Grid.Row="1" Style="{StaticResource FormComboBox}" SelectedItem="{Binding Stock}" ItemsSource="{Binding AvailableStocks}" IsEditable="{Binding IsStockEditable, Converter={StaticResource NotTrue}}" IsEnabled="{Binding IsStockEditable}" Text="{Binding CompanyName, Mode=OneWay}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Percentage" />
             <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Percentage, StringFormat={}{0:p2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />

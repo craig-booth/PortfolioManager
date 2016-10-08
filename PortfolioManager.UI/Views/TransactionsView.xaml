@@ -15,7 +15,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ComboBox Text="Add Transaction" Grid.Row="0" Width="100"  ItemsSource="{Binding TransactionViewModelFactory.TransactionTypes}" DisplayMemberPath="Key" SelectedIndex="0" controls:SelectionChangedCommand.Command="{Binding CreateTransactionCommand}" controls:SelectionChangedCommand.CommandParameter="{Binding SelectedValue.Value, RelativeSource={RelativeSource Self}}"/>
+            <ComboBox Text="Add Transaction" Grid.Row="0" Width="250"  ItemsSource="{Binding TransactionViewModelFactory.TransactionTypes}" DisplayMemberPath="Key" SelectedIndex="0" controls:SelectionChangedCommand.Command="{Binding CreateTransactionCommand}" controls:SelectionChangedCommand.CommandParameter="{Binding SelectedValue.Value, RelativeSource={RelativeSource Self}}"/>
 
             <ListView Grid.Row="1" ItemsSource="{Binding Transactions}" Margin="0,10,0,0" SelectionMode="Single" controls:DoubleClickCommand.Command="{Binding EditTransactionCommand}" controls:DoubleClickCommand.CommandParameter="{Binding SelectedValue, RelativeSource={RelativeSource Self}}">
                 <ListView.View>

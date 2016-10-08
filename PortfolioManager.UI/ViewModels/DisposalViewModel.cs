@@ -36,8 +36,13 @@ namespace PortfolioManager.UI.ViewModels
                 if (Stock != null)
                 {
                     var holding = _HoldingService.GetHolding(Stock, RecordDate);
-                    if (_Units > holding.Units)
-                        AddError(String.Format("Only {0} units available", holding.Units));
+
+                    var availableUnits = holding.Units;
+                    if (Transaction != null)
+                        availableUnits += ((Disposal)Transaction).Units;
+
+                    if (_Units > availableUnits)
+                        AddError(String.Format("Only {0} units available", availableUnits));
                 }
             }
         }

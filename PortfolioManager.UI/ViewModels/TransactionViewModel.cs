@@ -92,7 +92,7 @@ namespace PortfolioManager.UI.ViewModels
             {
                 _RecordDate = value;
 
-                if (_BeingEdited && (_StockSelection != null))
+                if (_BeingEdited)
                     PopulateAvailableStocks(_RecordDate);
             }
         }
@@ -111,7 +111,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<Stock> AvailableStocks { get; private set; }
 
-        public bool StockReadOnly
+        public bool IsStockEditable
         {
             get
             {
@@ -144,7 +144,9 @@ namespace PortfolioManager.UI.ViewModels
             if (_StockSelection != null)
             {
                 PopulateAvailableStocks(RecordDate);
-                Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
+
+                if (IsStockEditable)
+                    Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
             }
         }
 
