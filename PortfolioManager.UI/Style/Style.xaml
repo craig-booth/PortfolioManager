@@ -4,6 +4,8 @@
 
 
     <style:NotTrue x:Key="NotTrue"/>
+    <style:VisibilityConverter x:Key="HideIfFalse" TrueValue="Visible" FalseValue="Hidden"/>
+    <style:VisibilityConverter x:Key="HideIfTrue" TrueValue="Hidden" FalseValue="Visible"/>
     
     <Color x:Key="PositiveColor" A="255" R="3" G="102" B="2"/>
     <Color x:Key="NegativeColor" A="255" R="143" G="3" B="3"/>

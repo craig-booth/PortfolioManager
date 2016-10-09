@@ -90,10 +90,13 @@ namespace PortfolioManager.UI.ViewModels
 
             set
             {
-                _RecordDate = value;
+                if (_RecordDate != value)
+                {
+                    _RecordDate = value;
 
-                if (_BeingEdited)
-                    PopulateAvailableStocks(_RecordDate);
+                    if (_BeingEdited)
+                        PopulateAvailableStocks(_RecordDate);
+                }
             }
         }
 
