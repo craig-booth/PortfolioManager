@@ -29,22 +29,27 @@ namespace PortfolioManager.Service
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
-        {            
-            var parcels = _ParcelService.GetParcels(stock, date);
+        {
+            IReadOnlyCollection<ShareParcel> parcels;
+
+            if (stock.Type == StockType.StapledSecurity)
+                parcels = _ParcelService.GetStapledSecurityParcels(stock, date);
+            else
+                parcels = _ParcelService.GetParcels(stock, date);
 
             var holding = new ShareHolding();
             holding.Stock = stock;
-            holding.UnitValue = _StockPriceService.GetPrice(stock, date);
 
             foreach (var parcel in parcels)
             {
                 holding.Units += parcel.Units;
                 holding.TotalCostBase += parcel.CostBase;
                 holding.TotalCost += parcel.Units * parcel.UnitPrice;
-                
+
             }
 
             return holding;
+
         }
 
         public IReadOnlyCollection<ShareHolding> GetHoldings(DateTime date)
