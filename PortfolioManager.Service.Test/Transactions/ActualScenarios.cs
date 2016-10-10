@@ -112,9 +112,9 @@ namespace PortfolioManager.Service.Test.Transactions
             
             _ExpectedIncome.Add(new Income(_StockServiceRepository.StockService.GetStock("NWSLV", new DateTime(2013, 06, 21)), 0.00m, 0.00m, 0.00m, 0.00m, 12.20m));
 
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[0], new DateTime(2013, 07, 22), 68, (68 * 17.32m) - 19.95m));
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[1], new DateTime(2015, 02, 10), 235, (235 * 35.79m) - 17.05m));
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[2], new DateTime(2015, 02, 10), 40, (40 * 35.79m) - 2.90m));      
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[0], new DateTime(2013, 07, 22), 68, (68 * 17.32m) - 19.95m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[1], new DateTime(2015, 02, 10), 235, (235 * 35.79m) - 17.05m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[2], new DateTime(2015, 02, 10), 40, (40 * 35.79m) - 2.90m));      
         }
     }
 }

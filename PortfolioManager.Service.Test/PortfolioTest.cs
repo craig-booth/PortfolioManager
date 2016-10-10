@@ -12,6 +12,7 @@ using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
+using PortfolioManager.Service.Utils;
 using StockManager.Service;
 
 namespace PortfolioManager.Service.Test
@@ -52,6 +53,19 @@ namespace PortfolioManager.Service.Test
             var portfolioDatabase = new SQLitePortfolioDatabase(":memory:");
             _Portfolio = new Portfolio(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);
         }
+
+        public CGTEvent CreateCGTEvent(ShareParcel parcel, DateTime eventDate, decimal amount)
+        {
+            return CreateCGTEvent(parcel, eventDate, parcel.Units, amount);
+        }
+
+        public CGTEvent CreateCGTEvent(ShareParcel parcel, DateTime eventDate, int units, decimal amount)
+        {
+            var costBase = parcel.CostBase * ((decimal)units / parcel.Units);
+
+            return new CGTEvent(parcel.Stock, eventDate, units, costBase, amount, amount - costBase, CGTCalculator.CGTMethodForParcel(parcel, eventDate));
+        }
+
         protected virtual void AddStocks()
         {
             _StockServiceRepository.StockService.Add("AAA", "Stock AAA", StockType.Ordinary);
@@ -101,5 +115,7 @@ namespace PortfolioManager.Service.Test
 
         }
     }
+
+
 
 }

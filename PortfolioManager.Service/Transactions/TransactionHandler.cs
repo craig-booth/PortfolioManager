@@ -114,22 +114,28 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int units, decimal amountReceived, string description)
+        protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int unitsSold, decimal amountReceived)
         {
             /* Modify Parcel */
-            var costBase = parcel.CostBase * ((decimal)units / parcel.Units);
-            var amount = parcel.Amount * ((decimal)units / parcel.Units);
-            ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= units; x.CostBase -= costBase; x.Amount -= amount; });
+            var costBase = parcel.CostBase * ((decimal)unitsSold / parcel.Units);
+            var amount = parcel.Amount * ((decimal)unitsSold / parcel.Units);
+            ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= unitsSold; x.CostBase -= costBase; x.Amount -= amount; });
+
+            var cgtEvent = new CGTEvent(parcel.Stock, disposalDate, unitsSold, costBase, amountReceived, amountReceived - costBase, CGTCalculator.CGTMethodForParcel(parcel, disposalDate));
+            unitOfWork.CGTEventRepository.Add(cgtEvent);
         }
 
-        protected void AddCGTEvent(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime eventDate, decimal amount)
+        protected void ReduceParcelCostBase(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime date, decimal amount)
         {
-            unitOfWork.CGTEventRepository.Add(PortfolioUtils.CreateCGTEvent(parcel, eventDate, amount));
-        }
+            if (amount <= parcel.CostBase)
+                ModifyParcel(unitOfWork, parcel, date, ParcelEvent.CostBaseReduction, x => { x.CostBase -= amount; });
+            else
+            {
+                ModifyParcel(unitOfWork, parcel, date, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
 
-        protected void AddCGTEvent(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime eventDate, int units, decimal amount)
-        {
-            unitOfWork.CGTEventRepository.Add(PortfolioUtils.CreateCGTEvent(parcel, eventDate, units, amount));
+                var cgtEvent = new CGTEvent(parcel.Stock, date, parcel.Units, parcel.CostBase, amount - parcel.CostBase, amount - parcel.CostBase, CGTMethod.Other);
+                unitOfWork.CGTEventRepository.Add(cgtEvent);
+            }
         }
 
         protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, CashAccountTransactionType type, DateTime date, string description, decimal amount)

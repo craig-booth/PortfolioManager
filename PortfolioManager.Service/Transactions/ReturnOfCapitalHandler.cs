@@ -40,14 +40,7 @@ namespace PortfolioManager.Service.Transactions
             {
                 var costBaseReduction = parcel.Units * returnOfCapital.Amount;
 
-                if (costBaseReduction <= parcel.CostBase)
-                    ModifyParcel(unitOfWork, parcel, returnOfCapital.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
-                else
-                {
-                    ModifyParcel(unitOfWork, parcel, returnOfCapital.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
-
-                    AddCGTEvent(unitOfWork, parcel, returnOfCapital.RecordDate, costBaseReduction - parcel.CostBase);
-                }
+                ReduceParcelCostBase(unitOfWork, parcel, returnOfCapital.RecordDate, costBaseReduction);
 
                 totalAmount += costBaseReduction;
             }

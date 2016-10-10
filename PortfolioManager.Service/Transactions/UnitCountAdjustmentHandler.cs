@@ -42,7 +42,7 @@ namespace PortfolioManager.Service.Transactions
             /* Apportion unit count over parcels */
             var newUnitCounts = PortfolioUtils.ApportionAmountOverParcels(parcels, newTotalUnitCount);
 
-            /* Reduce cost base of parcels */
+            /* Change the unit count of the parcels */
             int i = 0;
             foreach (ShareParcel parcel in parcels)
                 ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, x => { x.Units = newUnitCounts[i++].Amount; } );

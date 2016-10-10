@@ -48,7 +48,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
             var parcels = _Portfolio.ParcelService.GetParcels(GetStock("AAA"), aquisitionDate);
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(parcels.First(), _TransactionDate, 1000, 1690.00m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(parcels.First(), _TransactionDate, 1000, 1690.00m));
         }
     }
 
@@ -87,7 +87,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("AAA"), 500, 1.50m, 750.00m, 750.00m, Guid.Empty, ParcelEvent.Disposal));
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 500, 840.00m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 500, 840.00m));
 
         }
     }
@@ -138,7 +138,7 @@ namespace PortfolioManager.Service.Test.Transactions
             // costbase of sold shares = (1300 / 2) = 650
             // costbase of remainging shares = 1300 - 650 = 650
             _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("AAA"), 500, 1.50m, 750.00m, 650.00m, Guid.Empty, ParcelEvent.Disposal));
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 500, 590.00m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 500, 590.00m));
 
         }
     }
@@ -188,8 +188,8 @@ namespace PortfolioManager.Service.Test.Transactions
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 1000, 1693.33m));
-            _ExpectedCGTEvents.Add(PortfolioUtils.CreateCGTEvent(_ExpectedParcels[1], _TransactionDate, 500, 846.67m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[0], _TransactionDate, 1000, 1693.33m));
+            _ExpectedCGTEvents.Add(CreateCGTEvent(_ExpectedParcels[1], _TransactionDate, 500, 846.67m));
         }
     }
 

@@ -44,12 +44,38 @@ namespace PortfolioManager.Service
 
         public decimal GetClosingPrice(Stock stock, DateTime date)
         {
-            return _StockQuery.GetClosingPrice(stock.Id, date);
+            decimal closingPrice;
+
+            if (TryGetClosingPrice(stock, date, out closingPrice))
+                return closingPrice;
+            else
+                return 0.00m;
         }
 
         public bool TryGetClosingPrice(Stock stock, DateTime date, out decimal price)
         {
-            return _StockQuery.TryGetClosingPrice(stock.Id, date, out price);
+
+            if (stock.ParentId == Guid.Empty)
+            {
+                return _StockQuery.TryGetClosingPrice(stock.Id, date, out price);
+            }
+            else
+            {
+                decimal parentPrice;
+                if (_StockQuery.TryGetClosingPrice(stock.ParentId, date, out parentPrice))
+                {
+                    var percentOfPrice = _StockQuery.PercentOfParentCost(stock.ParentId, stock.Id, date);
+
+                    price = parentPrice * percentOfPrice;
+                    return true;
+                }
+                else
+                {
+                    price = 0.00m;
+                    return false;
+                }
+
+            }
         }
       
         public decimal GetCurrentPrice(Stock stock)
@@ -141,8 +167,8 @@ namespace PortfolioManager.Service
             if (date == DateTime.Today)
                 return GetCurrentPrice(stock);
             else
-                return _StockQuery.GetClosingPrice(stock.Id, date);
-        }     
+                return GetClosingPrice(stock, date);
+        }
 
     }
 }

@@ -49,14 +49,7 @@ namespace PortfolioManager.Service.Transactions
                 {
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
-                    if (costBaseReduction <= parcel.CostBase)
-                        ModifyParcel(unitOfWork, parcel, incomeReceived.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
-                    else
-                    {
-                        ModifyParcel(unitOfWork, parcel, incomeReceived.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
-
-                        AddCGTEvent(unitOfWork, parcel, incomeReceived.RecordDate, costBaseReduction - parcel.CostBase);
-                    }
+                    ReduceParcelCostBase(unitOfWork, parcel, incomeReceived.RecordDate, costBaseReduction);
                 }
             }
 

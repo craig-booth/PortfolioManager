@@ -59,9 +59,7 @@ namespace PortfolioManager.Service.Transactions
                         var childParcels = _ParcelService.GetParcels(childStock, disposal.TransactionDate);
 
                         var childParcel = childParcels.First(x => x.PurchaseId == parcelSold.Parcel.PurchaseId);
-                        DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, disposal.Description);
-
-                        AddCGTEvent(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount);
+                        DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount);
 
                         i++;
                     }
@@ -71,11 +69,7 @@ namespace PortfolioManager.Service.Transactions
             else
             {
                 foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
-                {
-                    DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived, disposal.Description);
-
-                    AddCGTEvent(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived);
-                }
+                    DisposeOfParcel(unitOfWork, parcelSold.Parcel, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived);
             }
 
             if (disposal.CreateCashTransaction)
