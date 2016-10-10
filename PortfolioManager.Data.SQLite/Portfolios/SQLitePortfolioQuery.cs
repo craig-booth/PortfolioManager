@@ -96,7 +96,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             var list = new List<Transaction>();
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY RecordDate], [Sequence]", _Connection);
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
             query.Prepare();
 
             query.Parameters.AddWithValue("@Type", transactionType);
