@@ -38,7 +38,7 @@ namespace PortfolioManager.Data.SQLite
                 reader.Close();
                 throw new RecordNotFoundException(stockId);
             }
-            var price = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
+            var price = SQLiteUtils.DBToDecimal(reader.GetInt64(0));
 
             reader.Close();
 

@@ -38,7 +38,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                               reader.GetDateTime(1),
                                               new Guid(reader.GetString(2)),
                                               new Guid(reader.GetString(3)),
-                                              SQLiteUtils.DBToDecimal(reader.GetInt32(4)));
+                                              SQLiteUtils.DBToDecimal(reader.GetInt64(4)));
             return nta;
         }
 
@@ -86,10 +86,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     stock,
                                     actionDate,
                                     dividendReader.GetDateTime(1),
-                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(2)),
-                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(4)),
-                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(3)),
-                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt32(5)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt64(2)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt64(4)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt64(3)),
+                                    SQLiteUtils.DBToDecimal(dividendReader.GetInt64(5)),
                                     description);
             dividendReader.Close();
 
@@ -113,7 +113,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     stock,
                                     actionDate,
                                     capitalReturnReader.GetDateTime(1),
-                                    SQLiteUtils.DBToDecimal(capitalReturnReader.GetInt32(2)),
+                                    SQLiteUtils.DBToDecimal(capitalReturnReader.GetInt64(2)),
                                     description);
             capitalReturnReader.Close();
 
@@ -160,7 +160,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     stock,
                                     actionDate,
                                     transformationReader.GetDateTime(1),
-                                    SQLiteUtils.DBToDecimal(transformationReader.GetInt32(2)),
+                                    SQLiteUtils.DBToDecimal(transformationReader.GetInt64(2)),
                                     SQLiteUtils.DBToBool(transformationReader.GetString(3)),
                                     description);
             transformationReader.Close();
@@ -176,7 +176,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 ResultingStock resultingStock = new ResultingStock(new Guid(transformationReader.GetString(1)),
                                         transformationReader.GetInt32(2),
                                         transformationReader.GetInt32(3),
-                                        SQLiteUtils.DBToDecimal(transformationReader.GetInt32(4)),
+                                        SQLiteUtils.DBToDecimal(transformationReader.GetInt64(4)),
                                         transformationReader.GetDateTime(5));
 
                 transformation.AddResultStock(resultingStock);

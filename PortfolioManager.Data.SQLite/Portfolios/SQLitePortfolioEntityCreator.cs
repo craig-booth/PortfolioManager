@@ -64,8 +64,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             Aquisition aquisition = new Aquisition(id)
             {
                 Units = aquisitionReader.GetInt32(0),
-                AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(1)),
-                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt32(2)),
+                AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt64(1)),
+                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt64(2)),
                 CreateCashTransaction = SQLiteUtils.DBToBool(aquisitionReader.GetString(3))
             };
             aquisitionReader.Close();
@@ -88,7 +88,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             CostBaseAdjustment costBaseAdjustment = new CostBaseAdjustment(id)
             {
-                Percentage = SQLiteUtils.DBToDecimal(costBaseAdjustmentReader.GetInt32(0))
+                Percentage = SQLiteUtils.DBToDecimal(costBaseAdjustmentReader.GetInt64(0))
             };
             costBaseAdjustmentReader.Close();
 
@@ -111,8 +111,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             Disposal disposal = new Disposal(id)
             {
                 Units = disposalReader.GetInt32(0),
-                AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(1)),
-                TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt32(2)),
+                AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt64(1)),
+                TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt64(2)),
                 CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3),
                 CreateCashTransaction = SQLiteUtils.DBToBool(disposalReader.GetString(4))
             };
@@ -136,11 +136,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             IncomeReceived incomeReceived = new IncomeReceived(id)
             {
-                FrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(0)),
-                UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(1)),
-                FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(2)),
-                Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(3)),
-                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt32(4)),
+                FrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(0)),
+                UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(1)),
+                FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(2)),
+                Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(3)),
+                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(4)),
                 CreateCashTransaction = SQLiteUtils.DBToBool(incomeReceivedReader.GetString(5))
             };
             incomeReceivedReader.Close();
@@ -164,7 +164,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             OpeningBalance openingBalance = new OpeningBalance(id)
             {
                 Units = openingBalanceReader.GetInt32(0),
-                CostBase = SQLiteUtils.DBToDecimal(openingBalanceReader.GetInt32(1)),
+                CostBase = SQLiteUtils.DBToDecimal(openingBalanceReader.GetInt64(1)),
                 AquisitionDate = openingBalanceReader.GetDateTime(2),
                 PurchaseId = new Guid(openingBalanceReader.GetString(3))
             };  
@@ -189,7 +189,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             ReturnOfCapital returnOfCapital = new ReturnOfCapital(id)
             {
-                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt32(0)),
+                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt64(0)),
                 CreateCashTransaction = SQLiteUtils.DBToBool(returnOfCapitalReader.GetString(1))
             };
             returnOfCapitalReader.Close();
@@ -237,7 +237,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             CashTransaction cashTransaction = new CashTransaction(id)
             {
                 CashTransactionType = (CashAccountTransactionType)cashTransactionReader.GetInt32(0),
-                Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt32(1))
+                Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt64(1))
             };
 
             cashTransactionReader.Close();

@@ -8,12 +8,12 @@ namespace PortfolioManager.Data.SQLite
 {
     static class SQLiteUtils
     {
-        public static int DecimalToDB(decimal value)
+        public static long DecimalToDB(decimal value)
         {
-            return (int)Math.Floor(value * 100000);
+            return (long)Math.Floor(value * 100000);
         }
 
-        public static decimal DBToDecimal(int value)
+        public static decimal DBToDecimal(long value)
         {
             return (decimal)value / 100000;
         }
