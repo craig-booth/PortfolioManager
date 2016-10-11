@@ -334,12 +334,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [AquisitionDate]) VALUES (@Id, @Units, @CostBase, @AquisitionDate)";
+            return "INSERT INTO [OpeningBalances] ([Id], [Units], [CostBase], [AquisitionDate], [PurchaseId]) VALUES (@Id, @Units, @CostBase, @AquisitionDate, @PurchaseId)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[OpeningBalances] SET [Units] = @Units, [CostBase] = @CostBase, [AquisitionDate] = @AquisitionDate WHERE [Id] = @Id";
+            return "UPDATE[OpeningBalances] SET [Units] = @Units, [CostBase] = @CostBase, [AquisitionDate] = @AquisitionDate, [PurchaseId] = @PurchaseId WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -355,6 +355,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Units", openingBalance.Units);
             command.Parameters.AddWithValue("@CostBase", SQLiteUtils.DecimalToDB(openingBalance.CostBase));
             command.Parameters.AddWithValue("@AquisitionDate", openingBalance.AquisitionDate.ToString("yyyy-MM-dd")); 
+            command.Parameters.AddWithValue("@PurchaseId", openingBalance.PurchaseId.ToString());
         }
     }
 

@@ -53,6 +53,7 @@ namespace PortfolioManager.Service.CorporateActions
                             CostBase = costBase,
                             AquisitionDate = parcel.AquisitionDate,
                             RecordDate = transformation.ImplementationDate,
+                            PurchaseId = parcel.PurchaseId,
                             Comment = transformation.Description
                         });
                     }
@@ -95,6 +96,7 @@ namespace PortfolioManager.Service.CorporateActions
                         CostBase = costBase,
                         AquisitionDate = resultingStock.AquisitionDate,
                         RecordDate = transformation.ImplementationDate,
+                        PurchaseId = transformation.Id,
                         Comment = transformation.Description
                     });
                 }

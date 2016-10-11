@@ -34,12 +34,7 @@ namespace PortfolioManager.Service.Transactions
             _StockService = stockService;
         }
 
-        protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
-        {
-            AddParcel(unitOfWork, aquisitionDate, aquisitionDate, stock, units, unitPrice, amount, costBase, parcelEvent);
-        }
-
-        protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, ParcelEvent parcelEvent)
+        protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
         {
             /* Handle Stapled Securities */
             if (stock.Type == StockType.StapledSecurity)
@@ -67,7 +62,6 @@ namespace PortfolioManager.Service.Transactions
                 MathUtils.ApportionAmount(unitPrice, apportionedUnitPrices);
 
                 i = 0;
-                var purchaseId = Guid.NewGuid();
                 foreach (Stock childStock in childStocks)
                 {
                     var childParcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId, parcelEvent);
@@ -79,7 +73,7 @@ namespace PortfolioManager.Service.Transactions
             }
             else
             {
-                var parcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, stock.Id, units, unitPrice, amount, costBase, Guid.Empty, parcelEvent);
+                var parcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, stock.Id, units, unitPrice, amount, costBase, purchaseId, parcelEvent);
                 unitOfWork.ParcelRepository.Add(parcel);
             }
         }

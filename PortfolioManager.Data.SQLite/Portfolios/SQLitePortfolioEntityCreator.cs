@@ -151,7 +151,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private static OpeningBalance CreateOpeningBalance(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get opening balance values */
-            var command = new SQLiteCommand("SELECT [Units], [CostBase], [AquisitionDate] FROM [OpeningBalances] WHERE [Id] = @Id", database._Connection);
+            var command = new SQLiteCommand("SELECT [Units], [CostBase], [AquisitionDate], [PurchaseId] FROM [OpeningBalances] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader openingBalanceReader = command.ExecuteReader();
@@ -165,7 +165,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             {
                 Units = openingBalanceReader.GetInt32(0),
                 CostBase = SQLiteUtils.DBToDecimal(openingBalanceReader.GetInt32(1)),
-                AquisitionDate = openingBalanceReader.GetDateTime(2)
+                AquisitionDate = openingBalanceReader.GetDateTime(2),
+                PurchaseId = new Guid(openingBalanceReader.GetString(3))
             };  
 
             openingBalanceReader.Close();

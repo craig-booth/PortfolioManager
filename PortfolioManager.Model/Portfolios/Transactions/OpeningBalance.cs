@@ -13,6 +13,7 @@ namespace PortfolioManager.Model.Portfolios
         public int Units { get; set; }
         public decimal CostBase { get; set; }
         public DateTime AquisitionDate { get; set; }
+        public Guid PurchaseId { get; set; }
 
         public OpeningBalance()
             : this(Guid.NewGuid())
