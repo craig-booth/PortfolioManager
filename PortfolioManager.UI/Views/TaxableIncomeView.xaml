@@ -5,23 +5,24 @@
                     xmlns:controls="clr-namespace:PortfolioManager.UI.Controls">
 
     <DataTemplate DataType="{x:Type viewmodels:TaxableIncomeViewModel}">
-        
-        <StackPanel Orientation="Vertical" Margin="10,30,10,0">
 
-            <TextBlock Text="{Binding Heading}" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" Margin="10,30,10,0">
 
-            <controls:DataTable Data="{Binding Income}" DataType="{x:Type viewmodels:IncomeItemViewModel}">
-                <controls:DataTable.Columns>
-                    <controls:DataTableColumn Heading="Company" Width="*" MemberBinding="{Binding CompanyName, Mode=OneWay}" SummaryType="Fixed" SummaryValue="Total"/>
-                    <controls:DataTableColumn Heading="Unfranked" Width="70" MemberBinding="{Binding UnfrankedAmount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
-                    <controls:DataTableColumn Heading="Franked" Width="70" MemberBinding="{Binding FrankedAmount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
-                    <controls:DataTableColumn Heading="Franking Credits" Width="70" MemberBinding="{Binding FrankingCredits, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
-                    <controls:DataTableColumn Heading="Gross" Width="70" MemberBinding="{Binding TotalAmount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
-                </controls:DataTable.Columns>
-            </controls:DataTable>
-  
-        </StackPanel>
+                <TextBlock Text="{Binding Heading}" />
 
+                <controls:DataTable Data="{Binding Income}" DataType="{x:Type viewmodels:IncomeItemViewModel}">
+                    <controls:DataTable.Columns>
+                        <controls:DataTableColumn Heading="Company" Width="*" MemberBinding="{Binding CompanyName, Mode=OneWay}" SummaryType="Fixed" SummaryValue="Total"/>
+                        <controls:DataTableColumn Heading="Unfranked" Width="70" MemberBinding="{Binding UnfrankedAmount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                        <controls:DataTableColumn Heading="Franked" Width="70" MemberBinding="{Binding FrankedAmount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                        <controls:DataTableColumn Heading="Franking Credits" Width="70" MemberBinding="{Binding FrankingCredits, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                        <controls:DataTableColumn Heading="Gross" Width="70" MemberBinding="{Binding TotalAmount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" SummaryType="Sum" />
+                    </controls:DataTable.Columns>
+                </controls:DataTable>
+
+            </StackPanel>
+        </ScrollViewer>
     </DataTemplate>
 
 
