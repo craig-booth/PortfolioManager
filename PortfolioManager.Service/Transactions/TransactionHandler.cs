@@ -111,8 +111,8 @@ namespace PortfolioManager.Service.Transactions
         protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int unitsSold, decimal amountReceived)
         {
             /* Modify Parcel */
-            var costBase = parcel.CostBase * ((decimal)unitsSold / parcel.Units);
-            var amount = parcel.Amount * ((decimal)unitsSold / parcel.Units);
+            var costBase = Math.Round(parcel.CostBase * ((decimal)unitsSold / parcel.Units), 2, MidpointRounding.AwayFromZero);
+            var amount = Math.Round(parcel.Amount * ((decimal)unitsSold / parcel.Units), 2, MidpointRounding.AwayFromZero);
             ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= unitsSold; x.CostBase -= costBase; x.Amount -= amount; });
 
             var cgtEvent = new CGTEvent(parcel.Stock, disposalDate, unitsSold, costBase, amountReceived, amountReceived - costBase, CGTCalculator.CGTMethodForParcel(parcel, disposalDate));
