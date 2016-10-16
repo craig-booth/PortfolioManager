@@ -54,7 +54,6 @@ namespace PortfolioManager.Service
 
         public bool TryGetClosingPrice(Stock stock, DateTime date, out decimal price)
         {
-
             if (stock.ParentId == Guid.Empty)
             {
                 return _StockQuery.TryGetClosingPrice(stock.Id, date, out price);

@@ -42,7 +42,7 @@ namespace StockManager.Service
                 if (stockQuery.TryGetByASXCode(stockPriceRecord.ASXCode, stockPriceRecord.Date, out stock))
                 {
                     decimal price;
-                    if (stockQuery.TryGetClosingPrice(stock.Id, stockPriceRecord.Date, out price))
+                    if (stockQuery.TryGetClosingPrice(stock.Id, stockPriceRecord.Date, out price, true))
                         unitOfWork.StockPriceRepository.Update(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price);
                     else
                         unitOfWork.StockPriceRepository.Add(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price);

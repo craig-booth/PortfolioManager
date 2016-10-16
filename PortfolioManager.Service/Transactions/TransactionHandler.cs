@@ -98,22 +98,35 @@ namespace PortfolioManager.Service.Transactions
                 change(newParcel);
 
                 /* Add new record */
-                if (newParcel.Units > 0)
-                    unitOfWork.ParcelRepository.Add(newParcel);
+                unitOfWork.ParcelRepository.Add(newParcel);
 
                 /* End existing effective dated entity */
                 parcel.EndEntity(changeDate.AddDays(-1));
                 unitOfWork.ParcelRepository.Update(parcel);
             }
-
         }
+
 
         protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int unitsSold, decimal amountReceived)
         {
-            /* Modify Parcel */
-            var costBase = Math.Round(parcel.CostBase * ((decimal)unitsSold / parcel.Units), 2, MidpointRounding.AwayFromZero);
-            var amount = Math.Round(parcel.Amount * ((decimal)unitsSold / parcel.Units), 2, MidpointRounding.AwayFromZero);
-            ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= unitsSold; x.CostBase -= costBase; x.Amount -= amount; });
+            decimal costBase;
+            decimal amount;
+
+            if (unitsSold == parcel.Units)
+            {
+                costBase = parcel.CostBase;
+                amount = parcel.Amount;
+
+                ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units = 0; x.CostBase = 0.00m; x.Amount = 0.00m; x.EndEntity(disposalDate); });
+            }
+            else
+            {
+                costBase = (parcel.CostBase * ((decimal)unitsSold / parcel.Units)).ToCurrency(RoundingRule.Round);
+                amount = (parcel.Amount * ((decimal)unitsSold / parcel.Units)).ToCurrency(RoundingRule.Round);
+
+                ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= unitsSold; x.CostBase -= costBase; x.Amount -= amount; });
+            }
+
 
             var cgtEvent = new CGTEvent(parcel.Stock, disposalDate, unitsSold, costBase, amountReceived, amountReceived - costBase, CGTCalculator.CGTMethodForParcel(parcel, disposalDate));
             unitOfWork.CGTEventRepository.Add(cgtEvent);

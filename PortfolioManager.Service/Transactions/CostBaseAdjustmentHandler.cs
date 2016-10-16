@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
@@ -37,7 +37,7 @@ namespace PortfolioManager.Service.Transactions
             /* Reduce cost base of parcels */
             foreach (ShareParcel parcel in parcels)
             {
-                var costBaseReduction = parcel.CostBase * (1 - costBaseAdjustment.Percentage);
+                var costBaseReduction = (parcel.CostBase * (1 - costBaseAdjustment.Percentage)).ToCurrency(RoundingRule.Round);
                 ModifyParcel(unitOfWork, parcel, costBaseAdjustment.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
             }
 

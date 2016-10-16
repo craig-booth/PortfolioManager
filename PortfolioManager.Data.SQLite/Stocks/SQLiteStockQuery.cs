@@ -276,7 +276,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
         {
-            return TryGetClosingPrice(stock, date, out price, true);
+            return TryGetClosingPrice(stock, date, out price, false);
         }
 
 

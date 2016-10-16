@@ -128,15 +128,15 @@ namespace PortfolioManager.Service
             {
                 foreach (var shareHolding in holdings)
                 {
-                    decimal closingPrice;
+                    decimal stockPrice;
 
-                    if (_StockPriceService.TryGetClosingPrice(shareHolding.Stock, date, out closingPrice))
-                        shareHolding.UnitValue = _StockPriceService.GetClosingPrice(shareHolding.Stock, date);
-                    else
-                    {
-                        // If no price available then use the cost base
-                        shareHolding.UnitValue = shareHolding.AverageUnitCost;
+                    if (! _StockPriceService.TryGetClosingPrice(shareHolding.Stock, date, out stockPrice))
+                    {                    
+                        // If no price available then use average cost
+                        stockPrice = shareHolding.AverageUnitCost;
                     }
+
+                    shareHolding.UnitValue = stockPrice;
                 }
             }
 
@@ -263,9 +263,8 @@ namespace PortfolioManager.Service
                 if (transaction.Type == TransactionType.CashTransaction)
                 {
                     var cashTransaction = transaction as CashTransaction;
-                    if (cashTransaction.CashTransactionType == CashAccountTransactionType.Deposit)
-                        AddCashFlow(cashFlows, cashTransaction.TransactionDate, cashTransaction.Amount);
-                    else if (cashTransaction.CashTransactionType == CashAccountTransactionType.Withdrawl)
+                    if ((cashTransaction.CashTransactionType == CashAccountTransactionType.Deposit) ||
+                        (cashTransaction.CashTransactionType == CashAccountTransactionType.Withdrawl))
                         AddCashFlow(cashFlows, cashTransaction.TransactionDate, -cashTransaction.Amount);
                 }
             }
