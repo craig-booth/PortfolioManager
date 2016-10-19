@@ -45,7 +45,7 @@ namespace PortfolioManager.UI.ViewModels
         public override void RefreshView()
         {
             // Get opening blance
-            OpeningBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
+            OpeningBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate.AddDays(-1));
 
             decimal balance = OpeningBalance;
 
