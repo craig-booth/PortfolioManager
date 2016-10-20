@@ -14,11 +14,13 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly StockService _StockService;
         private readonly ParcelService _ParcelService;
+        private readonly PortfolioSettings _PortfolioSettings;
 
-        public DividendHandler(StockService stockService, ParcelService parcelService)
+        public DividendHandler(StockService stockService, ParcelService parcelService, PortfolioSettings portfolioSettings)
         {
             _StockService = stockService;
             _ParcelService = parcelService;
+            _PortfolioSettings = portfolioSettings;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -61,7 +63,20 @@ namespace PortfolioManager.Service.CorporateActions
             /* add drp shares */
             if (applyDRP)
             {
-                int drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
+                int drpUnits;
+                if (stock.DRPMethod == DRPMethod.RoundUp)
+                    drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
+                else if (stock.DRPMethod == DRPMethod.RoundDown)
+                    drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
+                else if (stock.DRPMethod == DRPMethod.RetainBalance)
+                {
+                    drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
+
+                    var retainedBalance = amountPaid - (drpUnits * dividend.DRPPrice);
+                    _PortfolioSettings.StockSettings[stock.ASXCode].DRPBalance += retainedBalance;
+                }                    
+                else
+                    drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
 
                 transactions.Add(new OpeningBalance()
                 {

@@ -15,49 +15,50 @@
 
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition Height="25"/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition Height="25"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Non-Discounted Capital Gains" Grid.Row="0" Grid.Column="0" />
-                    <TextBlock Text="{Binding NonDiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="0" Grid.Column="1"/>
-           
-                    <TextBlock Text="less Offset Capital Losses" Margin="5,0,0,0" FontStyle="Italic" Grid.Row="1" Grid.Column="0" />
-                    <TextBlock Text="{Binding NonDiscountedOffsetLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="Other" Grid.Row="0" Grid.Column="1" TextAlignment="Center" />
+                    <TextBlock Text="Discount" Grid.Row="0" Grid.Column="2" TextAlignment="Center"/>
+                    <TextBlock Text="Total" Grid.Row="0" Grid.Column="3" TextAlignment="Center"/>
 
-                    <TextBlock Text="{Binding TotalNonDiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="2" Grid.Column="2"/>
+                    <TextBlock Text="Current Year Capital Gains" Grid.Row="1" Grid.Column="0" />
+                    <TextBlock Text="{Binding CurrentYearCapitalGainsOther, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="{Binding CurrentYearCapitalGainsDiscounted, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="1" Grid.Column="2"/>
+                    <TextBlock Text="{Binding CurrentYearCapitalGainsTotal, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="1" Grid.Column="3"/>
 
-                    <TextBlock Text="Discounted Capital Gains" Grid.Row="3" Grid.Column="0" />
-                    <TextBlock Text="{Binding DiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="1"/>
-                
-                    <TextBlock Text="less Offset Capital Losses"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="4" Grid.Column="0" />
-                    <TextBlock Text="{Binding DiscountedOffsetLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="4" Grid.Column="1"/>
-                
-                    <TextBlock Text="less Prior Year Losses"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="5" Grid.Column="0" />
-                    <TextBlock Text="{Binding PriorYearLosses, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="1"/>
-                
-                    <TextBlock Text="less Discount"  Margin="5,0,0,0" FontStyle="Italic" Grid.Row="6" Grid.Column="0" />
-                    <TextBlock Text="{Binding Discount, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="6" Grid.Column="1"/>
+                    <TextBlock Text="less Current Year Capital Losses" Grid.Row="2" Grid.Column="0" />
+                    <TextBlock Text="{Binding CurrentYearCapitalLossesOther, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="2" Grid.Column="1"/>
+                    <TextBlock Text="{Binding CurrentYearCapitalLossesDiscounted, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="2" Grid.Column="2"/>
+                    <TextBlock Text="{Binding CurrentYearCapitalLossesTotal, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="2" Grid.Column="3"/>
 
-                    <TextBlock Text="{Binding TotalDiscountedGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="7" Grid.Column="2"/>
+                     <TextBlock Text="{Binding GrossCapitalGainOther, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="1"/>
+                    <TextBlock Text="{Binding GrossCapitalGainDiscounted, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="2"/>
+                    <TextBlock Text="{Binding GrossCapitalGainTotal, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="3"/>
 
-                    <TextBlock Text="Capital Gain/Loss" FontWeight="Bold" Grid.Row="8" Grid.Column="0" />
-                    <TextBlock Text="{Binding TotalCapitalGain, StringFormat={}{0:c0}, Mode=OneWay}" FontWeight="Bold" TextAlignment="Right" Grid.Row="8" Grid.Column="1"/>
+                    <TextBlock Text="less Discount (50%)" Grid.Row="4" Grid.Column="0" />
+                    <TextBlock Text="{Binding Discount, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="4" Grid.Column="2"/>
+                    
+                    <TextBlock Text="Capital Gain/Loss" Grid.Row="5" Grid.Column="0" />
+                    <TextBlock Text="{Binding NetCapitalGainOther, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="1"/>
+                    <TextBlock Text="{Binding NetCapitalGainDiscounted, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="2"/>
+                    <TextBlock Text="{Binding NetCapitalGainTotal, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="3"/>
+
+
                 </Grid>
 
-                <controls:DataTable Data="{Binding CGTEvents}" DataType="{x:Type viewmodels:CGTEventViewModel}" Margin="0,10,0,0">
+                <controls:DataTable Data="{Binding CGTEvents}" DataType="{x:Type viewmodels:CGTEventViewModel}" Margin="0,30,0,0">
                     <controls:DataTable.Columns>
                         <controls:DataTableColumn Heading="Date" Width="70" MemberBinding="{Binding EventDate, StringFormat={}{0:d}, Mode=OneWay}" SummaryType="Fixed" SummaryValue="Total"/>
                         <controls:DataTableColumn Heading="Company" Width="*" MemberBinding="{Binding CompanyName, Mode=OneWay}" />

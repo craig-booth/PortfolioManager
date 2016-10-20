@@ -75,7 +75,7 @@ namespace PortfolioManager.Test
             {
                 DRPActive = true
             };
-            _MyPortfolio.StockSetting.Add("ARG", stockSetting);
+            _MyPortfolio.Settings.StockSettings.Add("ARG", stockSetting);
 
             cboFinancialYear.SelectedIndex = 0;
             DisplayCorporateActions();

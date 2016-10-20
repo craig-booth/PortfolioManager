@@ -30,6 +30,13 @@ namespace PortfolioManager.Model.Stocks
         }
     }
 
+    public enum DRPMethod
+    {
+        RoundUp,
+        RoundDown,
+        Round,
+        RetainBalance
+    }
 
     public class Stock: EffectiveDatedEntity, IEditableEffectiveDatedEntity<Stock>  
     {
@@ -38,6 +45,7 @@ namespace PortfolioManager.Model.Stocks
         public StockType Type { get; set; }
         public Guid ParentId { get; set; }
         public RoundingRule DividendRoundingRule { get; set; }
+        public DRPMethod DRPMethod { get; set; }
 
         public Stock(DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
             : this(Guid.NewGuid(), fromDate, DateUtils.NoEndDate, asxCode, name, type, parent)
@@ -58,6 +66,7 @@ namespace PortfolioManager.Model.Stocks
             Type = type;
             ParentId = parent;
             DividendRoundingRule = dividendRoundingRule;
+            DRPMethod = DRPMethod.Round;
         }
 
         public override string ToString()
