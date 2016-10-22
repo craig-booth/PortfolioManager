@@ -29,7 +29,6 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
-                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Company"/>
@@ -40,6 +39,18 @@
                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding AquisitionDate, StringFormat={}{0:d}}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="2" Text="Parcel Id"/>
                                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding ParcelId}"/>
+
+                                <controls:DataTable Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Data="{Binding ParcelTransactions}" DataType="{x:Type viewmodels:ParcelCostBaseTransactionsViewItem}" Margin="0,10,0,0">
+                                    <controls:DataTable.Columns>
+                                        <controls:DataTableColumn Heading="Date" Width="70" MemberBinding="{Binding Date, StringFormat={}{0:d}, Mode=OneWay}"/>
+                                        <controls:DataTableColumn Heading="Transaction" Width="100" MemberBinding="{Binding TransactionType, Mode=OneWay}" />
+                                        <controls:DataTableColumn Heading="Units" Width="80" MemberBinding="{Binding Units, Mode=OneWay}" TextAlignment="Right" />
+                                        <controls:DataTableColumn Heading="Amount" Width="80" MemberBinding="{Binding Amount, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right"  />
+                                        <controls:DataTableColumn Heading="Transaction Costs" Width="80" MemberBinding="{Binding TransactionCosts, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right"  />
+                                        <controls:DataTableColumn Heading="Costbase" Width="80" MemberBinding="{Binding CostBase, StringFormat={}{0:c2}, Mode=OneWay}" TextAlignment="Right" />
+                                        <controls:DataTableColumn Heading="Comment" Width="*" MemberBinding="{Binding Comment, Mode=OneWay}" />
+                                    </controls:DataTable.Columns>
+                                </controls:DataTable>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

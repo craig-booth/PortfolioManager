@@ -112,7 +112,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public ParcelCostBaseTransactionsViewItem(ShareParcel parcel)
         {
-            TransactionType = "";
+            TransactionType = parcel.Event.ToString();
             Date = parcel.FromDate;
             Units = parcel.Units;
             Amount = 0.00m;
