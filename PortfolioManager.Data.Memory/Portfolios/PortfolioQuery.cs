@@ -105,5 +105,10 @@ namespace PortfolioManager.Data.Memory.Portfolios
         {
             return null;
         }
+
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
+        {
+            return null;
+        }
     }
 }

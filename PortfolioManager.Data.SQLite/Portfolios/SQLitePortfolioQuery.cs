@@ -167,5 +167,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return _Database._CashAccountTransactions.Where(t => (t.Date >= fromDate) && (t.Date <= toDate)).OrderBy(x => x.Date).ThenByDescending(x => x.Amount).ToList();
         }
 
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
+        {
+            return _Database._ParcelAudit.Where(x => (x.Parcel == id) && (x.Date >= fromDate) && (x.Date <= toDate)).ToList();
+        }
+
     }
 }

@@ -88,5 +88,14 @@ namespace PortfolioManager.Service
             return _PortfolioQuery.GetParcels(id, fromDate, toDate);
         }
 
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id)
+        {
+            return _PortfolioQuery.GetParcelAudit(id, DateUtils.NoStartDate, DateUtils.NoEndDate);
+        }
+
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetParcelAudit(id, fromDate, toDate);
+        }
     }
 }
