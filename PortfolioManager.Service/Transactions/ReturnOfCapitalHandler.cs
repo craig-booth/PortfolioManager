@@ -40,7 +40,7 @@ namespace PortfolioManager.Service.Transactions
             {
                 var costBaseReduction = parcel.Units * returnOfCapital.Amount;
 
-                ReduceParcelCostBase(unitOfWork, parcel, returnOfCapital.RecordDate, costBaseReduction);
+                ReduceParcelCostBase(unitOfWork, parcel, returnOfCapital.RecordDate, costBaseReduction, transaction.Id);
 
                 totalAmount += costBaseReduction;
             }

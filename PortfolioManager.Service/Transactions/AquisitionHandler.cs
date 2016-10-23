@@ -29,7 +29,7 @@ namespace PortfolioManager.Service.Transactions
             decimal amountPaid = (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 
-            AddParcel(unitOfWork, aquisition.TransactionDate, aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, transaction.Id, ParcelEvent.Aquisition);
+            AddParcel(unitOfWork, aquisition.TransactionDate, aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase, transaction.Id, transaction.Id);
 
             if (aquisition.CreateCashTransaction)
             {

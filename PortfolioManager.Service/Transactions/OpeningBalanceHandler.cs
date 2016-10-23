@@ -30,7 +30,7 @@ namespace PortfolioManager.Service.Transactions
 
             var unitPrice = Math.Round(openingBalance.CostBase / openingBalance.Units, 5, MidpointRounding.AwayFromZero);
 
-            AddParcel(unitOfWork, openingBalance.AquisitionDate, transaction.TransactionDate, stock, openingBalance.Units, unitPrice, openingBalance.CostBase, openingBalance.CostBase, purchaseId, ParcelEvent.OpeningBalance);
+            AddParcel(unitOfWork, openingBalance.AquisitionDate, transaction.TransactionDate, stock, openingBalance.Units, unitPrice, openingBalance.CostBase, openingBalance.CostBase, transaction.Id, purchaseId);
         }
     }
 }

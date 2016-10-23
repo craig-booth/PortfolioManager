@@ -34,7 +34,7 @@ namespace PortfolioManager.Service.Transactions
             _StockService = stockService;
         }
 
-        protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid purchaseId, ParcelEvent parcelEvent)
+        protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)
         {
             /* Handle Stapled Securities */
             if (stock.Type == StockType.StapledSecurity)
@@ -64,21 +64,26 @@ namespace PortfolioManager.Service.Transactions
                 i = 0;
                 foreach (Stock childStock in childStocks)
                 {
-                    var childParcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId, parcelEvent);
-
+                    var childParcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId);
                     unitOfWork.ParcelRepository.Add(childParcel);
+
+                    var parcelAudit = new ShareParcelAudit(childParcel.Id, aquisitionDate, transactionId, childParcel.Units, childParcel.CostBase, childParcel.Amount);
+                    unitOfWork.ParcelAuditRepository.Add(parcelAudit);
 
                     i++;
                 }
             }
             else
             {
-                var parcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, stock.Id, units, unitPrice, amount, costBase, purchaseId, parcelEvent);
+                var parcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, stock.Id, units, unitPrice, amount, costBase, purchaseId);
                 unitOfWork.ParcelRepository.Add(parcel);
+
+                var parcelAudit = new ShareParcelAudit(parcel.Id, aquisitionDate, transactionId, parcel.Units, parcel.CostBase, parcel.Amount);
+                unitOfWork.ParcelAuditRepository.Add(parcelAudit);
             }
         }
 
-        protected void ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, ParcelEvent parcelEvent, Action<ShareParcel> change)
+        private ShareParcel ModifyParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime changeDate, int newUnitCount, decimal costBaseChange, decimal amountChange, Guid transactionId)
         {
             // Check that this is the latest version of this parcel
             if (parcel.ToDate != DateUtils.NoEndDate)
@@ -86,16 +91,25 @@ namespace PortfolioManager.Service.Transactions
 
             if (parcel.FromDate == changeDate)
             {
-                parcel.Event = parcelEvent;
-                change(parcel);
+                parcel.Units = newUnitCount;
+                parcel.CostBase += costBaseChange;
+                parcel.Amount += amountChange;
+
                 unitOfWork.ParcelRepository.Update(parcel);
+
+                var parcelAudit = new ShareParcelAudit(parcel.Id, changeDate, transactionId, newUnitCount, costBaseChange, amountChange);
+                unitOfWork.ParcelAuditRepository.Add(parcelAudit);
+
+                return parcel;
             }
             else
             {
                 /* Create new effective dated entity */
                 var newParcel = parcel.CreateNewEffectiveEntity(changeDate);
-                newParcel.Event = parcelEvent;
-                change(newParcel);
+
+                newParcel.Units = newUnitCount;
+                newParcel.CostBase += costBaseChange;
+                newParcel.Amount += amountChange;
 
                 /* Add new record */
                 unitOfWork.ParcelRepository.Add(newParcel);
@@ -103,11 +117,15 @@ namespace PortfolioManager.Service.Transactions
                 /* End existing effective dated entity */
                 parcel.EndEntity(changeDate.AddDays(-1));
                 unitOfWork.ParcelRepository.Update(parcel);
+
+                var parcelAudit = new ShareParcelAudit(parcel.Id, changeDate, transactionId, newUnitCount, costBaseChange, amountChange);
+                unitOfWork.ParcelAuditRepository.Add(parcelAudit);
+
+                return newParcel;
             }
         }
 
-
-        protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int unitsSold, decimal amountReceived)
+        protected void DisposeOfParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime disposalDate, int unitsSold, decimal amountReceived, Guid transactionId)
         {
             decimal costBase;
             decimal amount;
@@ -117,14 +135,15 @@ namespace PortfolioManager.Service.Transactions
                 costBase = parcel.CostBase;
                 amount = parcel.Amount;
 
-                ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units = 0; x.CostBase = 0.00m; x.Amount = 0.00m; x.EndEntity(disposalDate); });
+                var newParcel = ModifyParcel(unitOfWork, parcel, disposalDate, 0, -parcel.CostBase, -parcel.Amount, transactionId);
+                EndParcel(unitOfWork, newParcel, disposalDate);
             }
             else
             {
                 costBase = (parcel.CostBase * ((decimal)unitsSold / parcel.Units)).ToCurrency(RoundingRule.Round);
                 amount = (parcel.Amount * ((decimal)unitsSold / parcel.Units)).ToCurrency(RoundingRule.Round);
 
-                ModifyParcel(unitOfWork, parcel, disposalDate, ParcelEvent.Disposal, x => { x.Units -= unitsSold; x.CostBase -= costBase; x.Amount -= amount; });
+                ModifyParcel(unitOfWork, parcel, disposalDate, parcel.Units - unitsSold, -costBase, -amount, transactionId);
             }
 
 
@@ -132,17 +151,28 @@ namespace PortfolioManager.Service.Transactions
             unitOfWork.CGTEventRepository.Add(cgtEvent);
         }
 
-        protected void ReduceParcelCostBase(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime date, decimal amount)
+        protected void ReduceParcelCostBase(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime date, decimal amount, Guid transactionId)
         {
             if (amount <= parcel.CostBase)
-                ModifyParcel(unitOfWork, parcel, date, ParcelEvent.CostBaseReduction, x => { x.CostBase -= amount; });
+                ModifyParcel(unitOfWork, parcel, date, parcel.Units, -amount, 0.00m, transactionId);
             else
             {
-                ModifyParcel(unitOfWork, parcel, date, ParcelEvent.CostBaseReduction, x => { x.CostBase = 0.00m; });
+                ModifyParcel(unitOfWork, parcel, date, parcel.Units, -parcel.CostBase, 0.00m, transactionId);
 
                 var cgtEvent = new CGTEvent(parcel.Stock, date, parcel.Units, parcel.CostBase, amount - parcel.CostBase, amount - parcel.CostBase, CGTMethod.Other);
                 unitOfWork.CGTEventRepository.Add(cgtEvent);
             }
+        }
+
+        protected void ChangeParcelUnitCount(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime date, int newUnitCount, Guid transactionId)
+        {
+            ModifyParcel(unitOfWork, parcel, date, newUnitCount, 0.00m, 0.00m, transactionId);
+        }
+
+        protected void EndParcel(IPortfolioUnitOfWork unitOfWork, ShareParcel parcel, DateTime date)
+        {
+            parcel.EndEntity(date);
+            unitOfWork.ParcelRepository.Update(parcel);
         }
 
         protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, CashAccountTransactionType type, DateTime date, string description, decimal amount)

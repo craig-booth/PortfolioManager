@@ -64,6 +64,14 @@ namespace PortfolioManager.Data.Memory.Portfolios
             }
         }
 
+        public IParcelAuditRepository ParcelAuditRepository
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         protected internal MemoryPortfolioUnitOfWork(MemoryPortfolioDatabase database)
         {
             _Database = database;

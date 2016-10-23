@@ -44,7 +44,7 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("AAA"), 1000, 1.50m, 1500.00m, 450.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("AAA"), 1000, 1.50m, 1500.00m, 450.00m, Guid.Empty));
         }
     }
 
@@ -91,8 +91,8 @@ namespace PortfolioManager.Service.Test.Transactions
             _Portfolio.TransactionService.ProcessTransactions(transactions);
 
 
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate1, GetStockId("AAA"), 1000, 1.50m, 1500.00m, 450.00m, Guid.Empty, ParcelEvent.CostBaseReduction));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate2, GetStockId("AAA"), 500, 2.40m, 1200.00m, 360.00m, Guid.Empty, ParcelEvent.CostBaseReduction));                           
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate1, GetStockId("AAA"), 1000, 1.50m, 1500.00m, 450.00m, Guid.Empty));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate2, GetStockId("AAA"), 500, 2.40m, 1200.00m, 360.00m, Guid.Empty));                           
 
         }
     }
@@ -130,9 +130,9 @@ namespace PortfolioManager.Service.Test.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, GetStockId("SSS1"), 1000, 1.50m, 1500.00m, 1500.00m, purchaseId, ParcelEvent.OpeningBalance));
-            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, GetStockId("SSS2"), 1000, 4.50m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.OpeningBalance));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS3"), 1000, 9.00m, 9000.00m, 2700.00m, purchaseId, ParcelEvent.CostBaseReduction));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, GetStockId("SSS1"), 1000, 1.50m, 1500.00m, 1500.00m, purchaseId));
+            _ExpectedParcels.Add(new ShareParcel(aquisitionDate, GetStockId("SSS2"), 1000, 4.50m, 4500.00m, 4500.00m, purchaseId));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, DateUtils.NoEndDate, aquisitionDate, GetStockId("SSS3"), 1000, 9.00m, 9000.00m, 2700.00m, purchaseId));
 
         }
     }

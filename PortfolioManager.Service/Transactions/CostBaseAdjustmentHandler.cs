@@ -38,9 +38,8 @@ namespace PortfolioManager.Service.Transactions
             foreach (ShareParcel parcel in parcels)
             {
                 var costBaseReduction = (parcel.CostBase * (1 - costBaseAdjustment.Percentage)).ToCurrency(RoundingRule.Round);
-                ModifyParcel(unitOfWork, parcel, costBaseAdjustment.RecordDate, ParcelEvent.CostBaseReduction, x => { x.CostBase -= costBaseReduction; });
+                ReduceParcelCostBase(unitOfWork, parcel, costBaseAdjustment.RecordDate, costBaseReduction, transaction.Id);
             }
-
         }
     }
 }

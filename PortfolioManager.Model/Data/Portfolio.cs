@@ -22,6 +22,7 @@ namespace PortfolioManager.Model.Data
         ICGTEventRepository CGTEventRepository { get; }
         IAttachmentRepository AttachmentRepository { get; }
         ICashAccountRepository CashAccountRepository { get; }
+        IParcelAuditRepository ParcelAuditRepository { get; }
 
         void Save();
     }
@@ -47,6 +48,11 @@ namespace PortfolioManager.Model.Data
     }
 
     public interface ICashAccountRepository : IRepository<CashAccountTransaction>
+    {
+
+    }
+
+    public interface IParcelAuditRepository : IRepository<ShareParcelAudit>
     {
 
     }
