@@ -70,6 +70,27 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
+        public Transaction GetTransaction(Guid id)
+        {
+            Transaction transaction;
+
+            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Id] = @Id", _Connection);
+            query.Prepare();
+
+            query.Parameters.AddWithValue("@Id", id.ToString());
+
+            SQLiteDataReader reader = query.ExecuteReader();
+
+            if (reader.Read())
+                transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+            else
+                transaction = null;
+
+            reader.Close();
+
+            return transaction;
+        }
+
         public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var list = new List<Transaction>();

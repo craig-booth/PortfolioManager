@@ -65,6 +65,15 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
+        public Transaction GetTransaction(Guid id)
+        {
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.Id == id
+                                   select transaction;
+
+            return transactionQuery.FirstOrDefault();
+        }
+
         public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions

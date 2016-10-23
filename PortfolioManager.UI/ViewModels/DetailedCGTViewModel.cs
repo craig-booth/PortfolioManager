@@ -49,11 +49,13 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
+            Parcels.Clear();
+
             var parcels = _Parameter.Portfolio.ParcelService.GetParcels(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
             foreach (var parcel in parcels)
             {
                 var stock = _Parameter.Portfolio.StockService.Get(parcel.Stock, parcel.ToDate);
-                var parcelCostBase = new ParcelCostBaseViewItem(stock, parcel.Id, _Parameter.Portfolio.ParcelService);
+                var parcelCostBase = new ParcelCostBaseViewItem(stock, parcel, DateUtils.EndOfFinancialYear(_Parameter.FinancialYear), _Parameter.Portfolio.ParcelService, _Parameter.Portfolio.TransactionService);
 
                 Parcels.Add(parcelCostBase);
             }
@@ -75,50 +77,49 @@ namespace PortfolioManager.UI.ViewModels
         public int Units { get; private set; }
         public decimal CostBase { get; private set; }
 
-        public ObservableCollection<ParcelCostBaseTransactionsViewItem> ParcelTransactions { get; private set; }
+        public ObservableCollection<ParcelCostBaseAuditViewItem> ParcelAudit { get; private set; }
 
-        public ParcelCostBaseViewItem(Stock stock, Guid id, ParcelService parcelService)
+        public ParcelCostBaseViewItem(Stock stock, ShareParcel parcel, DateTime toDate, ParcelService parcelService, TransactionService transactionService)
         {           
-            ParcelId = id;
+            ParcelId = parcel.Id;
             CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
 
-            ParcelTransactions = new ObservableCollection<ViewModels.ParcelCostBaseTransactionsViewItem>();
+            AquisitionDate = parcel.AquisitionDate;
+            Units = parcel.Units;
+            CostBase = parcel.CostBase; 
 
-            var parcels = parcelService.GetParcels(id);
-            foreach (var parcel in parcels)
+            ParcelAudit = new ObservableCollection<ParcelCostBaseAuditViewItem>();
+
+            decimal costBase = 0.00m;
+            var parcelAudit = parcelService.GetParcelAudit(parcel.Id, parcel.AquisitionDate, toDate);
+            foreach (var auditRecord in parcelAudit)
             {
-                AquisitionDate = parcel.AquisitionDate;
-                Units = parcel.Units;
-                CostBase = parcel.CostBase;
+                costBase += auditRecord.CostBaseChange;
 
-                var parcelTransaction = new ParcelCostBaseTransactionsViewItem(parcel);
+                var transaction = transactionService.GetTransaction(auditRecord.Transaction);
 
+                var parcelAuditItem = new ParcelCostBaseAuditViewItem()
+                {
+                    TransactionType = transaction.Type.ToString(),
+                    Date = auditRecord.Date,
+                    Units = auditRecord.UnitCount,
+                    Amount = auditRecord.CostBaseChange,
+                    CostBase = costBase,
+                    Comment = transaction.Description
+                };
 
-                ParcelTransactions.Add(parcelTransaction);
+                ParcelAudit.Add(parcelAuditItem);       
             }
-
         }
     }
 
-    class ParcelCostBaseTransactionsViewItem
+    class ParcelCostBaseAuditViewItem
     {
-        public string TransactionType { get; private set; }
-        public DateTime Date { get; private set; }
-        public int Units { get; private set; }
-        public decimal Amount { get; private set; }
-        public decimal TransactionCosts { get; private set; }
-        public decimal CostBase { get; private set; }
-        public string Comment { get; private set; }
-
-        public ParcelCostBaseTransactionsViewItem(ShareParcel parcel)
-        {
-            TransactionType = "";
-            Date = parcel.FromDate;
-            Units = parcel.Units;
-            Amount = 0.00m;
-            TransactionCosts = 0.00m;
-            CostBase = parcel.CostBase;
-            Comment = "";
-        }
+        public string TransactionType { get; set; }
+        public DateTime Date { get; set; }
+        public int Units { get; set; }
+        public decimal Amount { get; set; }
+        public decimal CostBase { get; set; }
+        public string Comment { get; set; }
     }
 }

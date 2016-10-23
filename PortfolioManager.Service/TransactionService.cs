@@ -89,6 +89,11 @@ namespace PortfolioManager.Service
                 throw new NotSupportedException("Transaction type not supported");
         }
 
+        public Transaction GetTransaction(Guid id)
+        {
+            return _PortfolioDatabase.PortfolioQuery.GetTransaction(id);
+        }
+
         public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             return _PortfolioDatabase.PortfolioQuery.GetTransactions(fromDate, toDate);
