@@ -14,11 +14,13 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly StockService _StockService;
         private readonly ParcelService _ParcelService;
+        private readonly StockSettingService _StockSettingService;
 
-        public DividendHandler(StockService stockService, ParcelService parcelService)
+        public DividendHandler(StockService stockService, ParcelService parcelService, StockSettingService stockSettingService)
         {
             _StockService = stockService;
             _ParcelService = parcelService;
+            _StockSettingService = stockSettingService;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -34,10 +36,11 @@ namespace PortfolioManager.Service.CorporateActions
                 return transactions;
 
             var stock = _StockService.Get(dividend.Stock, dividend.PaymentDate);
+            var stockSetting = _StockSettingService.Get(stock.ASXCode);
 
             /* Assume that DRP applies */
             bool applyDRP = false;
-            if (dividend.DRPPrice != 0.00M)
+            if ((stockSetting.DRPActive) && (dividend.DRPPrice != 0.00m))
                 applyDRP = true;
 
             var unitsHeld = parcels.Sum(x => x.Units);
@@ -46,7 +49,7 @@ namespace PortfolioManager.Service.CorporateActions
             var unFranked = (amountPaid * (1 - dividend.PercentFranked)).ToCurrency(stock.DividendRoundingRule);
             var frankingCredits = (((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
 
-            transactions.Add(new IncomeReceived()
+            var incomeReceived = new IncomeReceived()
             {
                 TransactionDate = dividend.PaymentDate,
                 ASXCode = stock.ASXCode,
@@ -54,14 +57,35 @@ namespace PortfolioManager.Service.CorporateActions
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,
                 FrankingCredits = frankingCredits,
-                CreateCashTransaction = !applyDRP,
+                CreateCashTransaction = true,
+                DRPCashBalance = 0.00m,
                 Comment = dividend.Description
-            });
+            };
+            transactions.Add(incomeReceived);
 
             /* add drp shares */
             if (applyDRP)
             {
-                int drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
+                incomeReceived.CreateCashTransaction = false;
+
+                int drpUnits;
+                if (stock.DRPMethod == DRPMethod.RoundUp)
+                {
+                    drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
+                }
+                else if (stock.DRPMethod == DRPMethod.RoundDown)
+                {
+                    drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
+                }
+                else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
+                {
+                    drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
+                    incomeReceived.DRPCashBalance = amountPaid  - (drpUnits * dividend.DRPPrice);
+                }
+                else
+                {
+                    drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
+                }
 
                 transactions.Add(new OpeningBalance()
                 {

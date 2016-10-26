@@ -22,7 +22,7 @@ namespace PortfolioManager.Service
 
         private readonly Dictionary<CorporateActionType, ICorporateActionHandler> _CorporateActionHandlers;
 
-        internal CorporateActionService(ICorporateActionQuery corporateActionQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService, ShareHoldingService shareHoldingService)
+        internal CorporateActionService(ICorporateActionQuery corporateActionQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService, ShareHoldingService shareHoldingService, StockSettingService stockSettingService)
         {
             _CorporateActionQuery = corporateActionQuery;
             _ParcelService = parcelService;
@@ -34,7 +34,7 @@ namespace PortfolioManager.Service
 
             /* Add corporate action handlers */
             _CorporateActionHandlers.Add(CorporateActionType.CapitalReturn, new CapitalReturnHandler(_StockService, _ParcelService));
-            _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(_StockService, _ParcelService));
+            _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(_StockService, _ParcelService, stockSettingService));
             _CorporateActionHandlers.Add(CorporateActionType.Transformation, new TransformationHandler(_StockService, _ParcelService));
             _CorporateActionHandlers.Add(CorporateActionType.SplitConsolidation, new SplitConsolidationHandler(_StockService, _ParcelService));
             _CorporateActionHandlers.Add(CorporateActionType.Composite, new CompositeActionHandler(_StockService, _ParcelService, this));

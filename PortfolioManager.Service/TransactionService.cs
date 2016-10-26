@@ -26,7 +26,7 @@ namespace PortfolioManager.Service
             PortfolioChanged?.Invoke(new PortfolioChangedEventArgs());
         }
 
-        internal TransactionService(IPortfolioDatabase portfolioDatabase, ParcelService parcelService, StockService stockService, AttachmentService attachmentService)
+        internal TransactionService(IPortfolioDatabase portfolioDatabase, ParcelService parcelService, StockService stockService, AttachmentService attachmentService, StockSettingService stockSettingService)
         {
             _PortfolioDatabase = portfolioDatabase;
             _AttachmentService = attachmentService;
@@ -37,7 +37,7 @@ namespace PortfolioManager.Service
             _TransactionHandlers.Add(TransactionType.Aquisition, new AquisitionHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.CostBaseAdjustment, new CostBaseAdjustmentHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.Disposal, new DisposalHandler(parcelService, stockService));
-            _TransactionHandlers.Add(TransactionType.Income, new IncomeReceivedHandler(parcelService, stockService));
+            _TransactionHandlers.Add(TransactionType.Income, new IncomeReceivedHandler(parcelService, stockService, stockSettingService));
             _TransactionHandlers.Add(TransactionType.OpeningBalance, new OpeningBalanceHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.ReturnOfCapital, new ReturnOfCapitalHandler(parcelService, stockService));
             _TransactionHandlers.Add(TransactionType.UnitCountAdjustment, new UnitCountAdjustmentHandler(parcelService, stockService));

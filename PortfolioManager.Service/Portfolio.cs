@@ -11,18 +11,6 @@ using PortfolioManager.Service.Utils;
 namespace PortfolioManager.Service
 {
 
-    public class StockSetting
-    {
-        public string ASXCode { get; private set; }
-        public bool DRPActive { get; set; }
-
-        public StockSetting(string asxCode)
-        {
-            ASXCode = asxCode;
-            DRPActive = false;
-        }
-    }
-
     public class PortfolioChangedEventArgs : EventArgs
     {
 
@@ -31,8 +19,7 @@ namespace PortfolioManager.Service
 
     public class Portfolio
     {
-        public Dictionary<string, StockSetting> StockSetting { get; private set; }
-
+        public  StockSettingService StockSettingService {get; private set;}
         public ParcelService ParcelService { get; private set; }
         public ShareHoldingService ShareHoldingService { get; private set; }
         public TransactionService TransactionService { get; private set; }
@@ -54,7 +41,7 @@ namespace PortfolioManager.Service
 
         public Portfolio(IPortfolioDatabase database, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
-            StockSetting = new Dictionary<string, StockSetting>();
+            StockSettingService = new StockSettingService();
 
             StockService = new StockService(stockQuery);
 
@@ -62,13 +49,13 @@ namespace PortfolioManager.Service
             StockPriceService = new StockPriceService(stockQuery, stockPriceDownloader);
 
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
-            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
+            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService, StockSettingService);
             CashAccountService = new CashAccountService(database);
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService, TransactionService, CashAccountService);
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService);
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, StockSettingService);
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);

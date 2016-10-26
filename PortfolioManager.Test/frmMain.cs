@@ -71,11 +71,9 @@ namespace PortfolioManager.Test
             _MyPortfolio = new Portfolio(portfolioDatabase, _StockDatabase.StockQuery, _StockDatabase.CorporateActionQuery);         
 
             /* TODO: Priority Low, should add this when purchasing */
-            var stockSetting = new StockSetting("ARG")
-            {
-                DRPActive = true
-            };
-            _MyPortfolio.StockSetting.Add("ARG", stockSetting);
+            var stockSetting = _MyPortfolio.StockSettingService.Get("ARG");
+            stockSetting.DRPActive = true;
+
 
             cboFinancialYear.SelectedIndex = 0;
             DisplayCorporateActions();

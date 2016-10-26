@@ -12,6 +12,8 @@ namespace PortfolioManager.Model.Stocks
 {
     public enum StockType {Ordinary, StapledSecurity, Trust}
 
+    public enum DRPMethod { Round, RoundDown, RoundUp, RetainCashBalance}
+
     [Serializable]
     public class NotStapledSecurityException : Exception
     {
@@ -38,6 +40,7 @@ namespace PortfolioManager.Model.Stocks
         public StockType Type { get; set; }
         public Guid ParentId { get; set; }
         public RoundingRule DividendRoundingRule { get; set; }
+        public DRPMethod DRPMethod { get; set; }
 
         public Stock(DateTime fromDate, string asxCode, string name, StockType type, Guid parent)
             : this(Guid.NewGuid(), fromDate, DateUtils.NoEndDate, asxCode, name, type, parent)
@@ -46,11 +49,11 @@ namespace PortfolioManager.Model.Stocks
         }
 
         public Stock(Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent)
-            : this(id, fromDate, toDate, asxCode, name, type, parent, RoundingRule.Round)
+            : this(id, fromDate, toDate, asxCode, name, type, parent, RoundingRule.Round, DRPMethod.Round)
         {
         }
 
-        public Stock(Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent, RoundingRule dividendRoundingRule)
+        public Stock(Guid id, DateTime fromDate, DateTime toDate, string asxCode, string name, StockType type, Guid parent, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
             : base(id, fromDate, toDate)
         {
             ASXCode = asxCode;
@@ -58,6 +61,7 @@ namespace PortfolioManager.Model.Stocks
             Type = type;
             ParentId = parent;
             DividendRoundingRule = dividendRoundingRule;
+            DRPMethod = drpMethod;
         }
 
         public override string ToString()
@@ -67,7 +71,7 @@ namespace PortfolioManager.Model.Stocks
 
         public Stock CreateNewEffectiveEntity(DateTime atDate)
         {
-            return new Stock(this.Id, atDate, this.ToDate, this.ASXCode, this.Name, this.Type, this.ParentId, this.DividendRoundingRule);
+            return new Stock(this.Id, atDate, this.ToDate, this.ASXCode, this.Name, this.Type, this.ParentId, this.DividendRoundingRule, this.DRPMethod);
         }
 
     }
