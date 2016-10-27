@@ -15,7 +15,7 @@ namespace PortfolioManager.Service
         public StockSetting(string asxCode)
         {
             ASXCode = asxCode;
-            DRPActive = false;
+            DRPActive = true;
             DRPBalance = 0.00m;
         }
     }
