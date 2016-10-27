@@ -146,12 +146,25 @@ namespace PortfolioManager.Service
 
         public DateTime GetPortfolioStartDate()
         {
-            var firstParcel = _ParcelService.GetParcels(new DateTime(0001, 01, 01), DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();
+            DateTime parcelStartDate;
+            DateTime cashStartDate;
 
+            var firstParcel = _ParcelService.GetParcels(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();         
             if (firstParcel != null)
-                return firstParcel.FromDate;
+                parcelStartDate = firstParcel.FromDate;
             else
-                return DateTime.Today;
+                parcelStartDate = DateTime.Today;
+
+            var firstCashTransaction = _CashAccountService.GetTransactions(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.Date).FirstOrDefault();
+            if (firstCashTransaction != null)
+                cashStartDate = firstCashTransaction.Date;
+            else
+                cashStartDate = DateTime.Today;
+
+            if (parcelStartDate <= cashStartDate)
+                return parcelStartDate;
+            else
+                return cashStartDate;
         }
 
         public IReadOnlyCollection<Stock> GetOwnedStocks(DateTime date, bool includeChildStocks)

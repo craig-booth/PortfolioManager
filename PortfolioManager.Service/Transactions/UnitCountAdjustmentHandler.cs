@@ -45,10 +45,8 @@ namespace PortfolioManager.Service.Transactions
             /* Change the unit count of the parcels */
             int i = 0;
             foreach (ShareParcel parcel in parcels)
-                ModifyParcel(unitOfWork, parcel, unitCountAdjustment.TransactionDate, ParcelEvent.UnitCountChange, x => { x.Units = newUnitCounts[i++].Amount; } );
-
+                ChangeParcelUnitCount(unitOfWork, parcel, unitCountAdjustment.TransactionDate, newUnitCounts[i++].Amount, transaction.Id);
         }
-
 
     }
 }

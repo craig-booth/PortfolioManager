@@ -145,6 +145,7 @@ namespace PortfolioManager.UI.ViewModels
             _Modules.Add(taxModule);
             taxModule.Pages.Add(new TaxableIncomeViewModel("Taxable Income", ViewParameter));
             taxModule.Pages.Add(new CGTViewModel("CGT", ViewParameter));
+            taxModule.Pages.Add(new DetailedCGTViewModel("Detailed CGT", ViewParameter));
 
             var settingsModule = new Module("Settings", "SettingsIcon")
             {

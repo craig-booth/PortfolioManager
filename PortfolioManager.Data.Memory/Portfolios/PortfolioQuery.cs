@@ -65,6 +65,15 @@ namespace PortfolioManager.Data.Memory.Portfolios
             return cgtQuery.ToList().AsReadOnly();
         }
 
+        public Transaction GetTransaction(Guid id)
+        {
+            var transactionQuery = from transaction in _Database._Transactions
+                                   where transaction.Id == id
+                                   select transaction;
+
+            return transactionQuery.FirstOrDefault();
+        }
+
         public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var transactionQuery = from transaction in _Database._Transactions
@@ -102,6 +111,11 @@ namespace PortfolioManager.Data.Memory.Portfolios
         }
 
         public IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
+        {
+            return null;
+        }
+
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
         {
             return null;
         }

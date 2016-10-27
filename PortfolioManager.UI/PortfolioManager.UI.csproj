@@ -83,6 +83,7 @@
     <Compile Include="ViewModels\CorporateActionsViewModel.cs" />
     <Compile Include="ViewModels\CostBaseAdjustmentViewModel.cs" />
     <Compile Include="ViewModels\CreateMulitpleTransactionsViewModel.cs" />
+    <Compile Include="ViewModels\DetailedCGTViewModel.cs" />
     <Compile Include="ViewModels\DisposalViewModel.cs" />
     <Compile Include="ViewModels\EditTransactionViewModel.cs" />
     <Compile Include="ViewModels\HoldingSummaryViewModel.cs" />
@@ -134,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CostBaseAdjustmentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DetailedCGTView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

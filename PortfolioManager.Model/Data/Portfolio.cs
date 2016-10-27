@@ -22,6 +22,7 @@ namespace PortfolioManager.Model.Data
         ICGTEventRepository CGTEventRepository { get; }
         IAttachmentRepository AttachmentRepository { get; }
         ICashAccountRepository CashAccountRepository { get; }
+        IParcelAuditRepository ParcelAuditRepository { get; }
 
         void Save();
     }
@@ -51,6 +52,11 @@ namespace PortfolioManager.Model.Data
 
     }
 
+    public interface IParcelAuditRepository : IRepository<ShareParcelAudit>
+    {
+
+    }
+
     public interface IPortfolioQuery
     {
         ShareParcel GetParcel(Guid id, DateTime atDate);
@@ -58,10 +64,12 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
+        Transaction GetTransaction(Guid id);
         IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
         IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate);
+        IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate);
     }
 }

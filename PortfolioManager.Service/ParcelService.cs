@@ -57,7 +57,7 @@ namespace PortfolioManager.Service
                     var stapledParcel = stapledParcels.FirstOrDefault(x => x.PurchaseId == childParcel.PurchaseId);
                     if (stapledParcel == null)
                     {
-                        stapledParcel = new ShareParcel(childParcel.AquisitionDate, stock.Id, childParcel.Units, childParcel.UnitPrice, childParcel.Amount, childParcel.CostBase, childParcel.PurchaseId, ParcelEvent.OpeningBalance);
+                        stapledParcel = new ShareParcel(childParcel.AquisitionDate, stock.Id, childParcel.Units, childParcel.UnitPrice, childParcel.Amount, childParcel.CostBase, childParcel.PurchaseId);
                         stapledParcels.Add(stapledParcel);
                     }
                     else
@@ -88,5 +88,14 @@ namespace PortfolioManager.Service
             return _PortfolioQuery.GetParcels(id, fromDate, toDate);
         }
 
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id)
+        {
+            return _PortfolioQuery.GetParcelAudit(id, DateUtils.NoStartDate, DateUtils.NoEndDate);
+        }
+
+        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
+        {
+            return _PortfolioQuery.GetParcelAudit(id, fromDate, toDate);
+        }
     }
 }

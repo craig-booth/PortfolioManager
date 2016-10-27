@@ -66,6 +66,7 @@
     <Compile Include="Portfolios\SQLiteAttachmentRepository.cs" />
     <Compile Include="Portfolios\SQLiteCashAccountRepository.cs" />
     <Compile Include="Portfolios\SQLiteCGTEventRepository.cs" />
+    <Compile Include="Portfolios\SQLiteParcelAuditRepository.cs" />
     <Compile Include="Portfolios\SQLiteParcelRepository.cs" />
     <Compile Include="Portfolios\SQLitePortfolioDatabase.cs" />
     <Compile Include="Portfolios\SQLitePortfolioEntityCreator.cs" />

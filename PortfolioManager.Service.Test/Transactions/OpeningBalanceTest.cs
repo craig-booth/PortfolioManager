@@ -31,7 +31,7 @@ namespace PortfolioManager.Service.Test.Transactions
             };
             _Portfolio.TransactionService.ProcessTransaction(openingbalance);
 
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("AAA"), openingbalance.Units, 1.50m, openingbalance.CostBase, openingbalance.CostBase, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("AAA"), openingbalance.Units, 1.50m, openingbalance.CostBase, openingbalance.CostBase));
         }
     }
 
@@ -56,9 +56,9 @@ namespace PortfolioManager.Service.Test.Transactions
 
             // Relative NTA... s1 = 10% ,s2 = 30%, s3 = 60%
             var purchaseId = Guid.NewGuid();
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS1"), openingbalance.Units, 1.50m, 1500.00m, 1500.00m, purchaseId, ParcelEvent.OpeningBalance));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS2"), openingbalance.Units, 4.50m, 4500.00m, 4500.00m, purchaseId, ParcelEvent.OpeningBalance));
-            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS3"), openingbalance.Units, 9.00m, 9000.00m, 9000.00m, purchaseId, ParcelEvent.OpeningBalance));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS1"), openingbalance.Units, 1.50m, 1500.00m, 1500.00m, purchaseId));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS2"), openingbalance.Units, 4.50m, 4500.00m, 4500.00m, purchaseId));
+            _ExpectedParcels.Add(new ShareParcel(_TransactionDate, GetStockId("SSS3"), openingbalance.Units, 9.00m, 9000.00m, 9000.00m, purchaseId));
         }
      }
 

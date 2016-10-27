@@ -53,7 +53,7 @@ namespace PortfolioManager.Service.Transactions
                 {
                     decimal costBaseReduction = apportionedAmounts[i++].Amount;
 
-                    ReduceParcelCostBase(unitOfWork, parcel, incomeReceived.RecordDate, costBaseReduction);
+                    ReduceParcelCostBase(unitOfWork, parcel, incomeReceived.RecordDate, costBaseReduction, transaction.Id);
                 }
             }
 
