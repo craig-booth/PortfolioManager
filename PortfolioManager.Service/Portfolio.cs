@@ -19,7 +19,8 @@ namespace PortfolioManager.Service
 
     public class Portfolio
     {
-        public  StockSettingService StockSettingService {get; private set;}
+        public PortfolioSettings Settings { get; private set; }
+
         public ParcelService ParcelService { get; private set; }
         public ShareHoldingService ShareHoldingService { get; private set; }
         public TransactionService TransactionService { get; private set; }
@@ -41,7 +42,7 @@ namespace PortfolioManager.Service
 
         public Portfolio(IPortfolioDatabase database, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
-            StockSettingService = new StockSettingService();
+            Settings = new Service.PortfolioSettings();
 
             StockService = new StockService(stockQuery);
 
@@ -55,7 +56,7 @@ namespace PortfolioManager.Service
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, StockSettingService);
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, Settings);
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);

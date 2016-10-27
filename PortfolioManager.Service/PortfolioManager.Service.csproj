@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
     <Compile Include="CashAccountService.cs" />
-    <Compile Include="StockSettingService.cs" />
+    <Compile Include="PortfolioSettings.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
     <Compile Include="CGTService.cs" />
     <Compile Include="CorporateActionService.cs" />

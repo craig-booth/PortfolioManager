@@ -14,13 +14,13 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly StockService _StockService;
         private readonly ParcelService _ParcelService;
-        private readonly StockSettingService _StockSettingService;
+        private readonly PortfolioSettings _PortfolioSettings;
 
-        public DividendHandler(StockService stockService, ParcelService parcelService, StockSettingService stockSettingService)
+        public DividendHandler(StockService stockService, ParcelService parcelService, PortfolioSettings portfolioSettings)
         {
             _StockService = stockService;
             _ParcelService = parcelService;
-            _StockSettingService = stockSettingService;
+            _PortfolioSettings = portfolioSettings;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)

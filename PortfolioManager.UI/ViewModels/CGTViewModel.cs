@@ -21,15 +21,94 @@ namespace PortfolioManager.UI.ViewModels
   
         public ObservableCollection<CGTEventViewModel> CGTEvents { get; private set; }
 
-        public decimal NonDiscountedGains { get; private set; }
-        public decimal NonDiscountedOffsetLosses { get; private set; }
-        public decimal TotalNonDiscountedGains { get; private set; }
-        public decimal DiscountedGains { get; private set; }
-        public decimal DiscountedOffsetLosses { get; private set; }
-        public decimal PriorYearLosses { get; private set; }
-        public decimal Discount { get; private set; }
-        public decimal TotalDiscountedGains { get; private set; }
-        public decimal TotalCapitalGain { get; private set; }
+        public decimal CurrentYearCapitalGainsOther { get; private set; }
+        public decimal CurrentYearCapitalGainsDiscounted { get; private set; }
+        public decimal CurrentYearCapitalGainsTotal
+        {
+            get
+            {
+                return CurrentYearCapitalGainsOther + CurrentYearCapitalGainsDiscounted;
+            }
+        }
+
+        public decimal CurrentYearCapitalLossesOther
+        {
+            get
+            {
+                if (CurrentYearCapitalGainsOther > CurrentYearCapitalLossesTotal)
+                    return CurrentYearCapitalLossesTotal;
+                else
+                    return CurrentYearCapitalGainsOther;
+            }
+        }
+
+        public decimal CurrentYearCapitalLossesDiscounted
+        {
+            get
+            {
+                if (CurrentYearCapitalGainsOther > CurrentYearCapitalLossesTotal)
+                    return 0.00m;
+                else
+                    return CurrentYearCapitalLossesTotal - CurrentYearCapitalGainsOther;
+            }
+        }
+        public decimal CurrentYearCapitalLossesTotal { get; private set; }
+
+        public decimal GrossCapitalGainOther
+        {
+            get
+            {
+                return CurrentYearCapitalGainsOther - CurrentYearCapitalLossesOther;
+            }
+        }
+        public decimal GrossCapitalGainDiscounted
+        {
+            get
+            {
+                return CurrentYearCapitalGainsDiscounted - CurrentYearCapitalLossesDiscounted;
+            }
+        }
+        public decimal GrossCapitalGainTotal
+        {
+            get
+            {
+                return GrossCapitalGainOther + GrossCapitalGainDiscounted;
+            }
+        }
+
+        public decimal Discount
+        {
+            get
+            {
+                if (GrossCapitalGainDiscounted > 0)
+                    return (GrossCapitalGainDiscounted / 2).ToCurrency(RoundingRule.Round);
+                else
+                    return 0.00m;
+            }
+        }
+
+
+        public decimal NetCapitalGainOther
+        {
+            get
+            {
+                return GrossCapitalGainOther;
+            }
+        }
+        public decimal NetCapitalGainDiscounted
+        {
+            get
+            {
+                return GrossCapitalGainDiscounted - Discount;
+            }
+        }
+        public decimal NetCapitalGainTotal
+        {
+            get
+            {
+                return NetCapitalGainOther + NetCapitalGainDiscounted;
+            }
+        }
 
         private string _Heading;
         new public string Heading
@@ -72,43 +151,21 @@ namespace PortfolioManager.UI.ViewModels
 
         private void CalculateCGT(IEnumerable<CGTEvent> cgtEvents)
         {
-            DiscountedGains = 0.00m;
-            NonDiscountedGains = 0.00m;
-            decimal capitalLosses = 0.00m;
 
+            CurrentYearCapitalGainsOther = 0.00m;
+            CurrentYearCapitalGainsDiscounted = 0.00m;
+            CurrentYearCapitalLossesTotal = 0.00m;
+            
             // Apportion capital gains
             foreach (var cgtEvent in cgtEvents)
             {
                 if (cgtEvent.CapitalGain < 0)
-                    capitalLosses += -cgtEvent.CapitalGain;
+                    CurrentYearCapitalLossesTotal += -cgtEvent.CapitalGain;
                 else if (cgtEvent.CGTMethod == CGTMethod.Discount)
-                    DiscountedGains += cgtEvent.CapitalGain;
+                    CurrentYearCapitalGainsDiscounted += cgtEvent.CapitalGain;
                 else
-                    NonDiscountedGains += cgtEvent.CapitalGain;
+                    CurrentYearCapitalGainsOther += cgtEvent.CapitalGain;
             }
-
-            if (capitalLosses > NonDiscountedGains)
-            {
-                NonDiscountedOffsetLosses = NonDiscountedGains;
-                capitalLosses -= NonDiscountedOffsetLosses;
-            }
-            else
-            {
-                NonDiscountedOffsetLosses = capitalLosses;
-                capitalLosses = 0.00m;
-            }
-            TotalNonDiscountedGains = NonDiscountedGains - NonDiscountedOffsetLosses;
-
-            DiscountedOffsetLosses = capitalLosses;
-            var capitalGain = DiscountedGains - capitalLosses - PriorYearLosses;
-            if (capitalGain > 0)
-                Discount = CGTCalculator.CGTDiscount(capitalGain);
-            else
-                Discount = 0.00m;
-
-            TotalDiscountedGains = capitalGain - Discount;
-
-            TotalCapitalGain = TotalNonDiscountedGains + TotalDiscountedGains;
         }
     }
 
