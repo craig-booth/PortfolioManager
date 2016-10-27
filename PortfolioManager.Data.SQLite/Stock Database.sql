@@ -15,9 +15,11 @@ CREATE TABLE [Stocks]
 	[Type] INTEGER NOT NULL,
 	[Parent] TEXT(36) NOT NULL,
 	[DividendRounding] INTEGER,
-	
+	[DRPMethod] INTEGER,
+
 	PRIMARY KEY ([Id] ASC, [FromDate] ASC)
 );
+
 CREATE UNIQUE INDEX [Index_Stocks_ByCode] ON [Stocks]
 (
 	[ASXCode] ASC, 

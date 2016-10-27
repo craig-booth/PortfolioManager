@@ -79,6 +79,7 @@ CREATE TABLE [IncomeReceived]
 	[Interest] INTEGER NOT NULL,
 	[TaxDeferred] INTEGER  NOT NULL,
 	[CreateCashTransaction] TEXT(1) NOT NULL DEFAULT "N",
+	[DRPCashBalance] INTEGER NOT NULL DEFAULT 0;
 	
 	PRIMARY KEY ([Id])
 );

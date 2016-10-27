@@ -70,34 +70,31 @@ namespace PortfolioManager.Service.CorporateActions
 
                 int drpUnits;
                 if (stock.DRPMethod == DRPMethod.RoundUp)
-                {
                     drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
-                }
                 else if (stock.DRPMethod == DRPMethod.RoundDown)
-                {
                     drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
-                }
                 else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
                 {
-                    drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
-                    incomeReceived.DRPCashBalance = amountPaid  - (drpUnits * dividend.DRPPrice);
+                    drpUnits = (int)Math.Floor((amountPaid + stockSetting.DRPCashBalance) / dividend.DRPPrice);
+                    incomeReceived.DRPCashBalance = amountPaid - (drpUnits * dividend.DRPPrice);
                 }
                 else
-                {
                     drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
-                }
 
-                transactions.Add(new OpeningBalance()
+                if (drpUnits > 0)
                 {
-                    TransactionDate = dividend.PaymentDate,
-                    ASXCode = stock.ASXCode,
-                    Units = drpUnits,
-                    CostBase = amountPaid,
-                    AquisitionDate = dividend.PaymentDate,
-                    RecordDate = dividend.PaymentDate,
-                    Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
+                    transactions.Add(new OpeningBalance()
+                    {
+                        TransactionDate = dividend.PaymentDate,
+                        ASXCode = stock.ASXCode,
+                        Units = drpUnits,
+                        CostBase = amountPaid - incomeReceived.DRPCashBalance,
+                        AquisitionDate = dividend.PaymentDate,
+                        RecordDate = dividend.PaymentDate,
+                        Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
+                    }
+                    );
                 }
-                );
             }         
 
             return transactions;

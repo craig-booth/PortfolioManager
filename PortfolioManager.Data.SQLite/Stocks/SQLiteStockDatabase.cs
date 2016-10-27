@@ -17,7 +17,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         protected override int RepositoryVersion
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public IStockUnitOfWork CreateUnitOfWork()
@@ -43,6 +43,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 return new SQLiteSimpleDatabaseUpgrade(2, "Upgrade\\StockDatabaseUpgradeToVersion2.sql");
             else if (forVersion == 2)
                 return new SQLiteSimpleDatabaseUpgrade(3, "Upgrade\\StockDatabaseUpgradeToVersion3.sql");
+            else if (forVersion == 3)
+                return new SQLiteSimpleDatabaseUpgrade(4, "Upgrade\\StockDatabaseUpgradeToVersion4.sql");
             else
                 throw new NotSupportedException();
         }

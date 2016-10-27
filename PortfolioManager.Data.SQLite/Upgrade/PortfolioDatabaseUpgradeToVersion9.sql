@@ -1,0 +1,3 @@
+﻿
+ALTER TABLE [IncomeReceived]
+	ADD COLUMN[DRPCashBalance] INTEGER NOT NULL DEFAULT 0;

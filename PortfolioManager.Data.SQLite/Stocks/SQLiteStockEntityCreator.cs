@@ -21,7 +21,9 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 dividendRoundingRule = (RoundingRule)reader.GetInt32(7);
 
             DRPMethod drpMethod = DRPMethod.Round;
-             
+            if (!reader.IsDBNull(8))
+                drpMethod = (DRPMethod)reader.GetInt32(8);
+
             Stock stock = new Stock(new Guid(reader.GetString(0)),
                                     reader.GetDateTime(1),
                                     reader.GetDateTime(2),

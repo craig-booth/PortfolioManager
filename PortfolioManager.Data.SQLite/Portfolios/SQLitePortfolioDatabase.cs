@@ -15,7 +15,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         protected override int RepositoryVersion
         {
-            get { return 8; }
+            get { return 9; }
         }
 
         internal List<ShareParcel> _Parcels { get; private set; }
@@ -53,6 +53,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 return new SQLiteSimpleDatabaseUpgrade(7, "Upgrade\\PortfolioDatabaseUpgradeToVersion7.sql");
             else if (forVersion == 7)
                 return new SQLiteSimpleDatabaseUpgrade(8, "Upgrade\\PortfolioDatabaseUpgradeToVersion8.sql");
+            else if (forVersion == 8)
+                return new SQLiteSimpleDatabaseUpgrade(9, "Upgrade\\PortfolioDatabaseUpgradeToVersion9.sql");
             else
                 throw new NotSupportedException();
         }

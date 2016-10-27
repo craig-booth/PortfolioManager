@@ -124,7 +124,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private static IncomeReceived CreateIncomeReceived(SQLitePortfolioDatabase database, Guid id)
         {
             /* Get income received values */
-            var command = new SQLiteCommand("SELECT [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction] FROM [IncomeReceived] WHERE [Id] = @Id", database._Connection);
+            var command = new SQLiteCommand("SELECT [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction], [DRPCashBalance] FROM [IncomeReceived] WHERE [Id] = @Id", database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
             SQLiteDataReader incomeReceivedReader = command.ExecuteReader();
@@ -141,7 +141,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(2)),
                 Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(3)),
                 TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(4)),
-                CreateCashTransaction = SQLiteUtils.DBToBool(incomeReceivedReader.GetString(5))
+                CreateCashTransaction = SQLiteUtils.DBToBool(incomeReceivedReader.GetString(5)),
+                DRPCashBalance = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(6))
             };
             incomeReceivedReader.Close();
 

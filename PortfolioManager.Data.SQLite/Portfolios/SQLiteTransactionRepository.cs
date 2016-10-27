@@ -297,12 +297,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override string GetAddSQL()
         {
-            return "INSERT INTO [IncomeReceived] ([Id], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction]) VALUES (@Id, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @CreateCashTransaction)";
+            return "INSERT INTO [IncomeReceived] ([Id], [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction], [DRPCashBalance]) VALUES (@Id, @FrankedAmount, @UnfrankedAmount, @FrankingCredits, @Interest, @TaxDeferred, @CreateCashTransaction, @DRPCashBalance)";
         }
 
         protected override string GetUpdateSQL()
         {
-            return "UPDATE[IncomeReceived] SET [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [CreateCashTransaction] = @CreateCashTransaction WHERE [Id] = @Id";
+            return "UPDATE[IncomeReceived] SET [FrankedAmount] = @FrankedAmount, [UnfrankedAmount] = @UnfrankedAmount, [FrankingCredits] = @FrankingCredits, [Interest] = @Interest, [TaxDeferred] = @TaxDeferred, [CreateCashTransaction] = @CreateCashTransaction, [DRPCashBalance] = @DRPCashBalance WHERE [Id] = @Id";
         }
 
         protected override string GetDeleteSQL()
@@ -321,6 +321,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@Interest", SQLiteUtils.DecimalToDB(incomeReceived.Interest));
             command.Parameters.AddWithValue("@TaxDeferred", SQLiteUtils.DecimalToDB(incomeReceived.TaxDeferred));
             command.Parameters.AddWithValue("@CreateCashTransaction", SQLiteUtils.BoolToDb(incomeReceived.CreateCashTransaction));
+            command.Parameters.AddWithValue("DRPCashBalance", SQLiteUtils.DecimalToDB(incomeReceived.DRPCashBalance));
         }
     }
 

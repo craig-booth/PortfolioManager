@@ -22,7 +22,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO Stocks ([Id], [FromDate], [ToDate], [ASXCode], [Name], [Type], [Parent], [DividendRounding]) VALUES (@Id, @FromDate, @ToDate, @ASXCode, @Name, @Type, @Parent, @DividendRounding)", _Connection);
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO Stocks ([Id], [FromDate], [ToDate], [ASXCode], [Name], [Type], [Parent], [DividendRounding], [DRPMethod]) VALUES (@Id, @FromDate, @ToDate, @ASXCode, @Name, @Type, @Parent, @DividendRounding, @DRPMethod)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -34,7 +34,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE Stocks SET [ToDate] = @ToDate, [ASXCode] = @ASXCode, [Name] = @Name, [Type] = @Type, [Parent] = @Parent, [DividendRounding] = @DividendRounding WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE Stocks SET [ToDate] = @ToDate, [ASXCode] = @ASXCode, [Name] = @Name, [Type] = @Type, [Parent] = @Parent, [DividendRounding] = @DividendRounding, [DRPMethod] = @DRPMethod WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -56,6 +56,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Type", entity.Type);
             command.Parameters.AddWithValue("@Parent", entity.ParentId.ToString());
             command.Parameters.AddWithValue("@DividendRounding", entity.DividendRoundingRule);
+            command.Parameters.AddWithValue("@DRPMethod", entity.DRPMethod);
         }
 
     }
