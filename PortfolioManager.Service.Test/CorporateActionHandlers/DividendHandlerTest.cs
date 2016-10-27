@@ -151,7 +151,7 @@ namespace PortfolioManager.Service.Test.CorporateActionHandlers
                 }
             };
             _Portfolio.TransactionService.ProcessTransactions(transactions);
-            var stockSetting = _Portfolio.StockSettingService.Get("AAA");
+            var stockSetting = _Portfolio.SettingsService.Get("AAA");
             stockSetting.DRPActive = true;
 
             var dividend = new Dividend(_StockServiceRepository.StockService.GetStock("AAA", recordDate).Id, recordDate, paymentDate, 0.50m, 1.00m, 0.30m, 20.00m, "Test");

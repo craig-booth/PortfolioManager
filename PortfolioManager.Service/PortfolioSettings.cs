@@ -20,13 +20,26 @@ namespace PortfolioManager.Service
         }
     }
 
-    public class PortfolioSettings
+    public class PortfolioSettingsService
     {
-        public Dictionary<string, StockSetting> StockSettings { get; private set; }
+        private Dictionary<string, StockSetting> _StockSettings;
 
-        public PortfolioSettings()
+        public PortfolioSettingsService()
         {
-            StockSettings = new Dictionary<string, StockSetting>();
+            _StockSettings = new Dictionary<string, StockSetting>();
+        }
+
+        public StockSetting Get(string asxCode)
+        {
+            StockSetting stockSetting;
+
+            if (! _StockSettings.TryGetValue(asxCode, out stockSetting))
+            {
+                stockSetting = new Service.StockSetting(asxCode);
+                _StockSettings.Add(asxCode, stockSetting);
+            }
+
+            return stockSetting;
         }
     }
 }

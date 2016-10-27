@@ -14,12 +14,12 @@ namespace PortfolioManager.Service.Transactions
     class IncomeReceivedHandler : TransacactionHandler, ITransactionHandler
     {
 
-        private readonly StockSettingService _StockSettingService;
+        private readonly PortfolioSettingsService _PortfolioSettingService;
 
-        public IncomeReceivedHandler(ParcelService parcelService, StockService stockService, StockSettingService stockSettingService)
+        public IncomeReceivedHandler(ParcelService parcelService, StockService stockService, PortfolioSettingsService portfolioSettingsService)
             : base (parcelService, stockService)
         {
-            _StockSettingService = stockSettingService;
+            _PortfolioSettingService = portfolioSettingsService;
         }
 
         public void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
@@ -60,8 +60,8 @@ namespace PortfolioManager.Service.Transactions
             if (incomeReceived.CreateCashTransaction)
                 CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
 
-            var stockSetting = _StockSettingService.Get(stock.ASXCode);
-            stockSetting.DRPCashBalance = incomeReceived.DRPCashBalance;
+            var stockSetting = _PortfolioSettingService.Get(stock.ASXCode);
+            stockSetting.DRPBalance = incomeReceived.DRPCashBalance;
 
         }
     }

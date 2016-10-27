@@ -14,13 +14,13 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly StockService _StockService;
         private readonly ParcelService _ParcelService;
-        private readonly PortfolioSettings _PortfolioSettings;
+        private readonly PortfolioSettingsService _PortfolioSettingsService;
 
-        public DividendHandler(StockService stockService, ParcelService parcelService, PortfolioSettings portfolioSettings)
+        public DividendHandler(StockService stockService, ParcelService parcelService, PortfolioSettingsService portfolioSettingsService)
         {
             _StockService = stockService;
             _ParcelService = parcelService;
-            _PortfolioSettings = portfolioSettings;
+            _PortfolioSettingsService = portfolioSettingsService;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -36,7 +36,7 @@ namespace PortfolioManager.Service.CorporateActions
                 return transactions;
 
             var stock = _StockService.Get(dividend.Stock, dividend.PaymentDate);
-            var stockSetting = _StockSettingService.Get(stock.ASXCode);
+            var stockSetting = _PortfolioSettingsService.Get(stock.ASXCode);
 
             /* Assume that DRP applies */
             bool applyDRP = false;
@@ -75,7 +75,7 @@ namespace PortfolioManager.Service.CorporateActions
                     drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
                 else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
                 {
-                    drpUnits = (int)Math.Floor((amountPaid + stockSetting.DRPCashBalance) / dividend.DRPPrice);
+                    drpUnits = (int)Math.Floor((amountPaid + stockSetting.DRPBalance) / dividend.DRPPrice);
                     incomeReceived.DRPCashBalance = amountPaid - (drpUnits * dividend.DRPPrice);
                 }
                 else

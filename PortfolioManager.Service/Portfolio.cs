@@ -19,7 +19,7 @@ namespace PortfolioManager.Service
 
     public class Portfolio
     {
-        public PortfolioSettings Settings { get; private set; }
+        public PortfolioSettingsService SettingsService { get; private set; }
 
         public ParcelService ParcelService { get; private set; }
         public ShareHoldingService ShareHoldingService { get; private set; }
@@ -42,7 +42,7 @@ namespace PortfolioManager.Service
 
         public Portfolio(IPortfolioDatabase database, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
-            Settings = new Service.PortfolioSettings();
+            SettingsService = new PortfolioSettingsService();
 
             StockService = new StockService(stockQuery);
 
@@ -50,13 +50,13 @@ namespace PortfolioManager.Service
             StockPriceService = new StockPriceService(stockQuery, stockPriceDownloader);
 
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
-            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService, StockSettingService);
+            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService, SettingsService);
             CashAccountService = new CashAccountService(database);
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService, TransactionService, CashAccountService);
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, Settings);
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, SettingsService);
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
