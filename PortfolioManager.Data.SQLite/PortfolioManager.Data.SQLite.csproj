@@ -141,6 +141,9 @@
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion5.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Upgrade\StockDatabaseUpgradeToVersion5.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Upgrade\StockDatabaseUpgradeToVersion4.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

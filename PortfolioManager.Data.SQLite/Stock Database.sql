@@ -14,8 +14,9 @@ CREATE TABLE [Stocks]
 	[Name] TEXT(50)  NOT NULL,
 	[Type] INTEGER NOT NULL,
 	[Parent] TEXT(36) NOT NULL,
-	[DividendRounding] INTEGER,
-	[DRPMethod] INTEGER,
+	[DividendRounding] INTEGER NOT NULL,
+	[DRPMethod] INTEGER NOT NULL,
+	[Category] INTEGER NOT NULL;
 
 	PRIMARY KEY ([Id] ASC, [FromDate] ASC)
 );
