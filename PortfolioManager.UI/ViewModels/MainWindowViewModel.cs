@@ -134,6 +134,7 @@ namespace PortfolioManager.UI.ViewModels
             reportsModule.Pages.Add(new UnrealisedGainsViewModel("Unrealised Gains", ViewParameter));
             reportsModule.Pages.Add(new TransactionReportViewModel("Transactions", ViewParameter));
             reportsModule.Pages.Add(new CashAccountViewModel("Cash Summary", ViewParameter));
+            reportsModule.Pages.Add(new AssetAllocationViewModel("Asset Allocation", ViewParameter));
 
 
             var taxModule = new Module("Tax", "TaxIcon")
