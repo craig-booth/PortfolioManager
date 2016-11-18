@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\IncomeReceivedViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\OpeningBalanceViewModel.cs" />
+    <Compile Include="ViewModels\PerformanceViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
     <Compile Include="ViewModels\ReturnOfCapitalViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -159,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OpeningBalanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PerformanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
