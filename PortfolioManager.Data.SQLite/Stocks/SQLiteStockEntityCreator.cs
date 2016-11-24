@@ -32,7 +32,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                     (StockType)(reader.GetInt32(5)),
                                     new Guid(reader.GetString(6)),
                                     dividendRoundingRule,
-                                    drpMethod);
+                                    drpMethod,
+                                    (AssetCategory)reader.GetInt32(9));
 
             return stock;
         }

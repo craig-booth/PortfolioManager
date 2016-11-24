@@ -38,6 +38,14 @@
     <Reference Include="CBControls">
       <HintPath>.\CBControls.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.7.17.0, Culture=neutral, PublicKeyToken=c5935629d38af058, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.7.17\lib\portable-net40+sl5+win8+wp8+wpa81\LiveCharts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.7.17.0, Culture=neutral, PublicKeyToken=3b585c2a5f1a92c1, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.7.17\lib\net452\LiveCharts.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -65,6 +73,9 @@
     </Compile>
     <Compile Include="Controls\DoubleClickCommand.cs" />
     <Compile Include="Controls\MarginSetter.cs" />
+    <Compile Include="Controls\PieChartLegend.xaml.cs">
+      <DependentUpon>PieChartLegend.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Style\ValueConverters.cs" />
     <Compile Include="Utilities\ApplicationSettings.cs" />
@@ -77,6 +88,7 @@
     <Compile Include="Utilities\ViewParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\AquisitionViewModel.cs" />
+    <Compile Include="ViewModels\AssetAllocationViewModel.cs" />
     <Compile Include="ViewModels\CashAccountViewModel.cs" />
     <Compile Include="ViewModels\CashTransactionViewModel.cs" />
     <Compile Include="ViewModels\CGTViewModel.cs" />
@@ -111,11 +123,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\PieChartLegend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Style\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AquisitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AssetAllocationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +238,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
