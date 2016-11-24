@@ -51,9 +51,6 @@ namespace PortfolioManager.UI.ViewModels
             Cash = new ChartValues<ObservableValue>() { new ObservableValue(0) };
 
             LabelFormatter = chartPoint => string.Format("{0:c}", chartPoint.Y);
-
-        
-
         }
 
         public override void RefreshView()
@@ -126,21 +123,5 @@ namespace PortfolioManager.UI.ViewModels
             return total;
         } 
     }
-
-
-    class CategoryValue
-    {
-        public AssetCategory Category { get; private set; }
-        public decimal Value { get; set; }
-        public decimal Percentage { get; set; }
-
-        public CategoryValue(AssetCategory category, decimal value, decimal percentage)
-        {
-            Category = category;
-            Value = value;
-            Percentage = percentage;
-        }
-    }
-
 
 }
