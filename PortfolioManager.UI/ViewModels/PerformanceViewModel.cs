@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
 //using PortfolioManager.Service;
 //using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
-//using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -25,11 +25,15 @@ namespace PortfolioManager.UI.ViewModels
         public decimal CapitalGains { get; private set; }
         public decimal ClosingBalance { get; private set; }
 
+        public ObservableCollection<StockPerformanceItem> StockPerformance { get; private set; }
+
         public PerformanceViewModel(string label, ViewParameter parameter)
             : base(label, parameter)
         {
-            Options.AllowStockSelection = true;
+            Options.AllowStockSelection = false;
             Options.DateSelection = DateSelectionType.Range;
+
+            StockPerformance = new ObservableCollection<StockPerformanceItem>();
         }
 
 
@@ -54,8 +58,174 @@ namespace PortfolioManager.UI.ViewModels
 
             CapitalGains = ClosingBalance - (Dividends + Interest + Fees) - (Deposits + Withdrawls) - OpeningBalance;
 
+            PopulateStockPerformance();
+            StockPerformance.Add(new ViewModels.StockPerformanceItem()
+            {
+                CompanyName = "Cash",
+                OpeningBalance = openingCashBalance,
+                Purchases = 0.00m,
+                Sales = 0.00m,
+                Dividends = Interest,
+                CapitalGain = 0.00m,
+                ClosingBalance = closingCashBalance
+            }); 
+
             OnPropertyChanged(""); 
         }
 
+        private void PopulateStockPerformance()
+        {
+            StockPerformance.Clear();
+
+            // Add opening holdings
+            var openingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.StartDate);
+            foreach (var holding in openingHoldings)
+            {
+                var stockPerfomance = new StockPerformanceItem()
+                {
+                    Stock = holding.Stock,
+                    CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode),
+                    OpeningBalance = holding.MarketValue,
+                    Purchases = 0.00m,
+                    Sales = 0.00m,
+                    Dividends = 0.00m,
+                    CapitalGain = 0.00m,
+                    ClosingBalance = 0.00m
+                };
+
+                StockPerformance.Add(stockPerfomance);
+            }
+
+            // Process transactions during the period
+            var transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.StartDate.AddDays(1), _Parameter.EndDate);
+            foreach (var transaction in transactions)
+            {
+                var stockPerfomance = StockPerformance.FirstOrDefault(x => x.Stock.ASXCode == transaction.ASXCode);
+
+                if (transaction.Type == TransactionType.Aquisition) 
+                {
+                    var aquisition = transaction as Aquisition;
+
+                    if (stockPerfomance == null)
+                    {
+                        var stock = _Parameter.Portfolio.StockService.Get(aquisition.ASXCode, aquisition.TransactionDate);
+                        stockPerfomance = new StockPerformanceItem()
+                        {
+                            Stock = stock,
+                            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode),
+                            OpeningBalance = 0.00m,
+                            Purchases = 0.00m,
+                            Sales = 0.00m,
+                            Dividends = 0.00m,
+                            CapitalGain = 0.00m,
+                            ClosingBalance = 0.00m
+                        };
+
+                        StockPerformance.Add(stockPerfomance);
+                    }
+
+                    stockPerfomance.Purchases += aquisition.Units * aquisition.AveragePrice;
+                }
+                else if (transaction.Type == TransactionType.OpeningBalance)
+                {
+             /*       var openingBalance = transaction as OpeningBalance;
+
+                    if (stockPerfomance == null)
+                    {
+                        var stock = _Parameter.Portfolio.StockService.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
+                        stockPerfomance = new StockPerformanceItem()
+                        {
+                            Stock = stock,
+                            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode),
+                            OpeningBalance = 0.00m,
+                            Purchases = 0.00m,
+                            Sales = 0.00m,
+                            Dividends = 0.00m,
+                            CapitalGain = 0.00m,
+                            ClosingBalance = 0.00m
+                        };
+
+                        StockPerformance.Add(stockPerfomance);
+                    }
+
+                    stockPerfomance.Purchases += openingBalance.CostBase; */
+                }
+                else if (transaction.Type == TransactionType.Disposal)
+                {
+                    var disposal = transaction as Disposal;
+
+                    if (stockPerfomance == null)
+                    {
+                        var stock = _Parameter.Portfolio.StockService.Get(disposal.ASXCode, disposal.TransactionDate);
+                        stockPerfomance = new StockPerformanceItem()
+                        {
+                            Stock = stock,
+                            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode),
+                            OpeningBalance = 0.00m,
+                            Purchases = 0.00m,
+                            Sales = 0.00m,
+                            Dividends = 0.00m,
+                            CapitalGain = 0.00m,
+                            ClosingBalance = 0.00m
+                        };
+
+                        StockPerformance.Add(stockPerfomance);
+                    }
+
+                    stockPerfomance.Sales += disposal.Units * disposal.AveragePrice;
+                }
+                else if (transaction.Type == TransactionType.Income)
+                {
+                    var income = transaction as IncomeReceived;
+
+                    if (stockPerfomance == null)
+                    {
+                        var stock = _Parameter.Portfolio.StockService.Get(income.ASXCode, income.RecordDate);
+                        stockPerfomance = new StockPerformanceItem()
+                        {
+                            Stock = stock,
+                            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode),
+                            OpeningBalance = 0.00m,
+                            Purchases = 0.00m,
+                            Sales = 0.00m,
+                            Dividends = 0.00m,
+                            CapitalGain = 0.00m,
+                            ClosingBalance = 0.00m
+                        };
+
+                        StockPerformance.Add(stockPerfomance);
+                    }
+
+                    stockPerfomance.Dividends += income.CashIncome;
+                }
+            }
+
+
+            // Update closing balance and capital gain
+            var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
+            foreach (var holding in closingHoldings)
+            {
+                var stockPerfomance = StockPerformance.FirstOrDefault(x => x.Stock.Id == holding.Stock.Id);
+                if (stockPerfomance != null)
+                {
+                    stockPerfomance.CapitalGain = holding.MarketValue - (stockPerfomance.OpeningBalance + stockPerfomance.Purchases - stockPerfomance.Sales);
+                    stockPerfomance.ClosingBalance = holding.MarketValue;
+                }
+            }
+        }
+
+    }
+
+
+    public class StockPerformanceItem
+    {
+        public Stock Stock { get; set; }
+        public string CompanyName { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal Purchases { get; set; }
+        public decimal Sales { get; set; }
+        public decimal Dividends { get; set; }
+        public decimal CapitalGain { get; set; }
+        public decimal ClosingBalance { get; set; }
     }
 }
