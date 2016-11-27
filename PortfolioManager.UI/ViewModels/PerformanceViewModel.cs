@@ -128,7 +128,7 @@ namespace PortfolioManager.UI.ViewModels
                 }
                 else if (transaction.Type == TransactionType.OpeningBalance)
                 {
-             /*       var openingBalance = transaction as OpeningBalance;
+                    var openingBalance = transaction as OpeningBalance;
 
                     if (stockPerfomance == null)
                     {
@@ -148,7 +148,7 @@ namespace PortfolioManager.UI.ViewModels
                         StockPerformance.Add(stockPerfomance);
                     }
 
-                    stockPerfomance.Purchases += openingBalance.CostBase; */
+                    stockPerfomance.Purchases += openingBalance.CostBase; 
                 }
                 else if (transaction.Type == TransactionType.Disposal)
                 {
@@ -200,18 +200,18 @@ namespace PortfolioManager.UI.ViewModels
                 }
             }
 
-
-            // Update closing balance and capital gain
+            // Update Closing Balance, Capital Gain and Total Return
             var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
-            foreach (var holding in closingHoldings)
+            foreach (var stockPerformance in StockPerformance)
             {
-                var stockPerfomance = StockPerformance.FirstOrDefault(x => x.Stock.Id == holding.Stock.Id);
-                if (stockPerfomance != null)
-                {
-                    stockPerfomance.CapitalGain = holding.MarketValue - (stockPerfomance.OpeningBalance + stockPerfomance.Purchases - stockPerfomance.Sales);
-                    stockPerfomance.ClosingBalance = holding.MarketValue;
-                }
+                var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == stockPerformance.Stock.Id);
+                if (holding != null)
+                    stockPerformance.ClosingBalance = holding.MarketValue;
+
+                stockPerformance.CapitalGain = stockPerformance.ClosingBalance - (stockPerformance.OpeningBalance + stockPerformance.Purchases - stockPerformance.Sales);
+                stockPerformance.TotalReturn = stockPerformance.CapitalGain + stockPerformance.Dividends;
             }
+
         }
 
     }
@@ -224,8 +224,9 @@ namespace PortfolioManager.UI.ViewModels
         public decimal OpeningBalance { get; set; }
         public decimal Purchases { get; set; }
         public decimal Sales { get; set; }
+        public decimal ClosingBalance { get; set; }
         public decimal Dividends { get; set; }
         public decimal CapitalGain { get; set; }
-        public decimal ClosingBalance { get; set; }
+        public decimal TotalReturn { get; set; }
     }
 }
