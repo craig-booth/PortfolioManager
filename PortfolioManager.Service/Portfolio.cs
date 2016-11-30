@@ -50,13 +50,13 @@ namespace PortfolioManager.Service
             StockPriceService = new StockPriceService(stockQuery, stockPriceDownloader);
 
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
-            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService, SettingsService);
+            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
             CashAccountService = new CashAccountService(database);
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService, TransactionService, CashAccountService);
             AttachmentService = new AttachmentService(database);
-            IncomeService = new IncomeService(database.PortfolioQuery, StockService);
+            IncomeService = new IncomeService(database.PortfolioQuery, StockService, SettingsService);
             CGTService = new CGTService(database.PortfolioQuery);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, SettingsService);
+            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, IncomeService);
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);

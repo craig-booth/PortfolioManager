@@ -48,6 +48,7 @@
     <Compile Include="Data\Stock.cs" />
     <Compile Include="Portfolios\Attachment.cs" />
     <Compile Include="Portfolios\CashAccountTransaction.cs" />
+    <Compile Include="Portfolios\DRPCashBalance.cs" />
     <Compile Include="Portfolios\ShareParcelAudit.cs" />
     <Compile Include="Portfolios\Transactions\Aquisition.cs" />
     <Compile Include="Portfolios\CGTEvent.cs" />

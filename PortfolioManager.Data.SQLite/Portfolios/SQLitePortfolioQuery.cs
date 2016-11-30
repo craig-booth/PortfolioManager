@@ -193,5 +193,14 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return _Database._ParcelAudit.Where(x => (x.Parcel == id) && (x.Date >= fromDate) && (x.Date <= toDate)).ToList();
         }
 
+        public decimal GetDRPCashBalance(Guid stock, DateTime atDate)
+        {
+            var drpBalanceQuery = from drpBalance in _Database._DRPCashBalances
+                               where (drpBalance.Id == stock) && ((atDate >= drpBalance.FromDate && atDate <= drpBalance.ToDate))
+                               select drpBalance.Balance;
+
+            return drpBalanceQuery.FirstOrDefault();
+        }
+
     }
 }

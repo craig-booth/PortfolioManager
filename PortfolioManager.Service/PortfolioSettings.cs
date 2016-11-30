@@ -10,13 +10,11 @@ namespace PortfolioManager.Service
     {
         public string ASXCode { get; private set; }
         public bool DRPActive { get; set; }
-        public decimal DRPBalance { get; set; }
 
         public StockSetting(string asxCode)
         {
             ASXCode = asxCode;
             DRPActive = true;
-            DRPBalance = 0.00m;
         }
     }
 

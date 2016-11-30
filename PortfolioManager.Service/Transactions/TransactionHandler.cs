@@ -189,7 +189,40 @@ namespace PortfolioManager.Service.Transactions
                 unitOfWork.CashAccountRepository.Add(cashTransaction);
             }
         }
- 
+
+        protected void UpdateDRPCashBalance(IPortfolioUnitOfWork unitOfWork, Stock stock, DateTime balanceDate, decimal balance)
+        {
+            var drpCashBalance = unitOfWork.DRPCashBalanceRepository.Get(stock.Id, balanceDate);
+
+            if (drpCashBalance == null)
+            {
+                drpCashBalance = new DRPCashBalance(stock.Id, balanceDate, DateUtils.NoEndDate, balance);
+
+                unitOfWork.DRPCashBalanceRepository.Add(drpCashBalance);
+
+            }
+            else if (drpCashBalance.FromDate == balanceDate)
+            {
+                drpCashBalance.Balance = balance;
+
+                unitOfWork.DRPCashBalanceRepository.Update(drpCashBalance);
+            }
+            else
+            {
+                /* Create new effective dated entity */
+                var newDrpCashBalance = drpCashBalance.CreateNewEffectiveEntity(balanceDate);
+
+                newDrpCashBalance.Balance = balance;
+
+                /* Add new record */
+                unitOfWork.DRPCashBalanceRepository.Add(newDrpCashBalance);
+
+                /* End existing effective dated entity */
+                drpCashBalance.EndEntity(balanceDate.AddDays(-1));
+                unitOfWork.DRPCashBalanceRepository.Update(drpCashBalance);
+            }
+        }
+
     }
 
 }

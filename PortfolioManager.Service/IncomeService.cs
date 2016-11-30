@@ -56,11 +56,13 @@ namespace PortfolioManager.Service
 
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
+        private readonly PortfolioSettingsService _SettingsService;
 
-        internal IncomeService(IPortfolioQuery portfolioQuery, StockService stockService)
+        internal IncomeService(IPortfolioQuery portfolioQuery, StockService stockService, PortfolioSettingsService settingsService)
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
+            _SettingsService = settingsService;
         }
 
 
@@ -88,5 +90,30 @@ namespace PortfolioManager.Service
 
             return result;
         }
+
+        public Income GetIncome(Stock stock, DateTime fromDate, DateTime toDate)
+        {
+            var incomeTransactions = _PortfolioQuery.GetTransactions(stock.ASXCode, TransactionType.Income, fromDate, toDate).Cast<IncomeReceived>();
+ 
+            var frankedAmount = incomeTransactions.Sum(x => x.FrankedAmount);
+            var unfrankedAmount = incomeTransactions.Sum(x => x.UnfrankedAmount);
+            var frankingCredits = incomeTransactions.Sum(x => x.FrankingCredits);
+            var interest = incomeTransactions.Sum(x => x.Interest);
+            var taxDeferred = incomeTransactions.Sum(x => x.TaxDeferred);
+
+            return new Income(stock, frankedAmount, unfrankedAmount, frankingCredits, interest, taxDeferred);
+        }
+
+        public bool DRPActive(Stock stock)
+        {
+            var setting = _SettingsService.Get(stock.ASXCode);
+            return setting.DRPActive;
+        }
+
+        public decimal GetDRPCashBalance(Stock stock, DateTime date)
+        {
+            return _PortfolioQuery.GetDRPCashBalance(stock.Id, date);
+        }
+
     }
 }

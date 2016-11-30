@@ -14,13 +14,13 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly StockService _StockService;
         private readonly ParcelService _ParcelService;
-        private readonly PortfolioSettingsService _PortfolioSettingsService;
+        private readonly IncomeService _IncomeService;
 
-        public DividendHandler(StockService stockService, ParcelService parcelService, PortfolioSettingsService portfolioSettingsService)
+        public DividendHandler(StockService stockService, ParcelService parcelService, IncomeService incomeService)
         {
             _StockService = stockService;
             _ParcelService = parcelService;
-            _PortfolioSettingsService = portfolioSettingsService;
+            _IncomeService = incomeService;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -36,11 +36,10 @@ namespace PortfolioManager.Service.CorporateActions
                 return transactions;
 
             var stock = _StockService.Get(dividend.Stock, dividend.PaymentDate);
-            var stockSetting = _PortfolioSettingsService.Get(stock.ASXCode);
 
             /* Assume that DRP applies */
             bool applyDRP = false;
-            if ((stockSetting.DRPActive) && (dividend.DRPPrice != 0.00m))
+            if ((dividend.DRPPrice != 0.00m) && (_IncomeService.DRPActive(stock)))
                 applyDRP = true;
 
             var unitsHeld = parcels.Sum(x => x.Units);
@@ -75,7 +74,8 @@ namespace PortfolioManager.Service.CorporateActions
                     drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
                 else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
                 {
-                    drpUnits = (int)Math.Floor((amountPaid + stockSetting.DRPBalance) / dividend.DRPPrice);
+                    var drpCashBalance = _IncomeService.GetDRPCashBalance(stock, dividend.PaymentDate);
+                    drpUnits = (int)Math.Floor((amountPaid + drpCashBalance) / dividend.DRPPrice);
                     incomeReceived.DRPCashBalance = amountPaid - (drpUnits * dividend.DRPPrice);
                 }
                 else

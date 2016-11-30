@@ -119,5 +119,11 @@ namespace PortfolioManager.Data.Memory.Portfolios
         {
             return null;
         }
+
+        public decimal GetDRPCashBalance(Guid stock, DateTime atDate)
+        {
+            return 0.00m;
+        }
+
     }
 }

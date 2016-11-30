@@ -23,6 +23,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
         internal List<CashAccountTransaction> _CashAccountTransactions { get; private set; }
         internal List<ShareParcelAudit> _ParcelAudit { get; private set; }
+        internal List<DRPCashBalance> _DRPCashBalances { get; private set; }
 
         public IPortfolioQuery PortfolioQuery { get; private set; }
 
@@ -35,6 +36,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _IncomeReceived = new List<IncomeReceived>();
             _CashAccountTransactions = new List<CashAccountTransaction>();
             _ParcelAudit = new List<ShareParcelAudit>();
+            _DRPCashBalances = new List<DRPCashBalance>();
         }
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)

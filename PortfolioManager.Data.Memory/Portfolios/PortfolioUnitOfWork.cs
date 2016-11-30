@@ -72,6 +72,14 @@ namespace PortfolioManager.Data.Memory.Portfolios
             }
         }
 
+        public IDRPCashBalanceRepository DRPCashBalanceRepository
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         protected internal MemoryPortfolioUnitOfWork(MemoryPortfolioDatabase database)
         {
             _Database = database;
