@@ -41,11 +41,19 @@ namespace PortfolioManager.UI.ViewModels
         {
             var openingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.StartDate);
             var openingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
-            OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance;
+
+            decimal openingDRPCashBalance = 0.00m;
+            foreach (var holding in openingHoldings)
+                openingDRPCashBalance += _Parameter.Portfolio.IncomeService.GetDRPCashBalance(holding.Stock, _Parameter.StartDate);
+
+            OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance + openingDRPCashBalance;
 
             var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
             var closingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.EndDate);
-            ClosingBalance = closingHoldings.Sum(x => x.MarketValue) + closingCashBalance;
+            decimal closingDRPCashBalance = 0.00m;
+            foreach (var holding in closingHoldings)
+                closingDRPCashBalance += _Parameter.Portfolio.IncomeService.GetDRPCashBalance(holding.Stock, _Parameter.EndDate);
+            ClosingBalance = closingHoldings.Sum(x => x.MarketValue) + closingCashBalance + closingDRPCashBalance;
 
             var cashTransactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
             Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
@@ -67,8 +75,20 @@ namespace PortfolioManager.UI.ViewModels
                 Sales = 0.00m,
                 Dividends = Interest,
                 CapitalGain = 0.00m,
-                ClosingBalance = closingCashBalance
-            }); 
+                ClosingBalance = closingCashBalance,
+                TotalReturn = Interest
+            });
+            StockPerformance.Add(new ViewModels.StockPerformanceItem()
+            {
+                CompanyName = "DRP Cash Balance",
+                OpeningBalance = openingDRPCashBalance,
+                Purchases = 0.00m,
+                Sales = 0.00m,
+                Dividends = 0.00m,
+                CapitalGain = 0.00m,
+                ClosingBalance = closingDRPCashBalance,
+                TotalReturn = 0.00m
+            });
 
             OnPropertyChanged(""); 
         }
@@ -223,7 +243,7 @@ namespace PortfolioManager.UI.ViewModels
         public string CompanyName { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal Purchases { get; set; }
-        public decimal Sales { get; set; }
+        public decimal Sales { get; set; }      
         public decimal ClosingBalance { get; set; }
         public decimal Dividends { get; set; }
         public decimal CapitalGain { get; set; }

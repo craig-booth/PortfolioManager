@@ -43,7 +43,7 @@ namespace PortfolioManager.Service.CorporateActions
                 applyDRP = true;
 
             var unitsHeld = parcels.Sum(x => x.Units);
-            var amountPaid = unitsHeld * dividend.DividendAmount;
+            var amountPaid = (unitsHeld * dividend.DividendAmount).ToCurrency(stock.DividendRoundingRule);
             var franked = (amountPaid * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
             var unFranked = (amountPaid * (1 - dividend.PercentFranked)).ToCurrency(stock.DividendRoundingRule);
             var frankingCredits = (((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
@@ -68,27 +68,40 @@ namespace PortfolioManager.Service.CorporateActions
                 incomeReceived.CreateCashTransaction = false;
 
                 int drpUnits;
+                decimal costBase;
+
                 if (stock.DRPMethod == DRPMethod.RoundUp)
+                {
                     drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
+                    costBase = amountPaid;
+                }
                 else if (stock.DRPMethod == DRPMethod.RoundDown)
+                { 
                     drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
+                    costBase = amountPaid;
+                }
                 else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
                 {
                     var drpCashBalance = _IncomeService.GetDRPCashBalance(stock, dividend.PaymentDate);
-                    drpUnits = (int)Math.Floor((amountPaid + drpCashBalance) / dividend.DRPPrice);
-                    incomeReceived.DRPCashBalance = amountPaid - (drpUnits * dividend.DRPPrice);
+                    var availableAmount = amountPaid + drpCashBalance;
+                    drpUnits = (int)Math.Floor(availableAmount / dividend.DRPPrice);
+                    costBase = (drpUnits * dividend.DRPPrice).ToCurrency(stock.DividendRoundingRule);
+                    incomeReceived.DRPCashBalance = availableAmount - costBase;
                 }
                 else
+                { 
                     drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
+                    costBase = amountPaid;
+                }
 
-                if (drpUnits > 0)
+            if (drpUnits > 0)
                 {
                     transactions.Add(new OpeningBalance()
                     {
                         TransactionDate = dividend.PaymentDate,
                         ASXCode = stock.ASXCode,
                         Units = drpUnits,
-                        CostBase = amountPaid - incomeReceived.DRPCashBalance,
+                        CostBase = costBase,
                         AquisitionDate = dividend.PaymentDate,
                         RecordDate = dividend.PaymentDate,
                         Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
