@@ -244,19 +244,9 @@ namespace PortfolioManager.Service
             list.Add(entry);
         }
 
-        private void AddCashFlow(IList<CashFlow> cashFlows, DateTime date, decimal amount)
-        {
-            var cashFlow = cashFlows.FirstOrDefault(x => x.Date == date);
-
-            if (cashFlow != null)
-                cashFlow.Amount += amount;
-            else
-                cashFlows.Add(new CashFlow(date, amount));
-        }
-
         public decimal CalculateIRR(DateTime startDate, DateTime endDate)
         {
-            var cashFlows = new List<CashFlow>();
+            var cashFlows = new CashFlows();
 
             // Get the initial portfolio value
             var initialHoldings = GetHoldings(startDate);
@@ -267,7 +257,7 @@ namespace PortfolioManager.Service
 
             // Add the initial portfolio value
             var initialValue = initialHoldingsValue + initialCashBalance;
-            AddCashFlow(cashFlows, startDate, -initialValue);
+            cashFlows.Add(startDate, -initialValue);
                      
             // generate list of cashFlows
             var transactions = _TransactionService.GetTransactions(startDate.AddDays(1), endDate);
@@ -278,7 +268,7 @@ namespace PortfolioManager.Service
                     var cashTransaction = transaction as CashTransaction;
                     if ((cashTransaction.CashTransactionType == CashAccountTransactionType.Deposit) ||
                         (cashTransaction.CashTransactionType == CashAccountTransactionType.Withdrawl))
-                        AddCashFlow(cashFlows, cashTransaction.TransactionDate, -cashTransaction.Amount);
+                        cashFlows.Add(cashTransaction.TransactionDate, -cashTransaction.Amount);
                 }
             }
             
@@ -291,7 +281,7 @@ namespace PortfolioManager.Service
 
             // Add the final portfolio value
             var finalValue = finalHoldingsValue + finalCashBalance;
-            AddCashFlow(cashFlows, endDate, finalValue);
+            cashFlows.Add(endDate, finalValue);
 
             var irr = IRRCalculator.CalculateIRR(cashFlows);
 
