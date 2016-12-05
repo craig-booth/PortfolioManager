@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
+using PortfolioManager.Service;
 using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
@@ -47,6 +48,7 @@ namespace PortfolioManager.UI.ViewModels
             ClosingBalance = closingHoldings.Sum(x => x.MarketValue) + closingCashBalance;
 
             var cashTransactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+
             Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
             Withdrawls = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Withdrawl).Sum(x => x.Amount);
             Interest = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Interest).Sum(x => x.Amount);
@@ -57,24 +59,18 @@ namespace PortfolioManager.UI.ViewModels
 
             CapitalGains = ClosingBalance - (Dividends + Interest + Fees) - (Deposits + Withdrawls) - OpeningBalance;
 
-            PopulateStockPerformance();
-            StockPerformance.Add(new ViewModels.StockPerformanceItem("Cash", openingCashBalance)
-            {
-                Dividends = Interest,
-                ClosingBalance = closingCashBalance
-            }); 
+            PopulateStockPerformance(openingHoldings, closingHoldings);
 
             OnPropertyChanged(""); 
         }
 
-        private void PopulateStockPerformance()
+        private void PopulateStockPerformance(IEnumerable<ShareHolding> openingHoldings, IEnumerable<ShareHolding> closingHoldings)
         {
 
             StockPerformance.Clear();
         
 
             // Add opening holdings
-            var openingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.StartDate);
             foreach (var holding in openingHoldings)
             {
                 var stockPerfomance = new StockPerformanceItem(holding.Stock, holding.MarketValue);
@@ -133,7 +129,7 @@ namespace PortfolioManager.UI.ViewModels
 
                     stockPerformance.Sales += disposal.Units * disposal.AveragePrice;
 
-                    stockPerformance._CashFlows.Add(disposal.TransactionDate, -(disposal.Units * disposal.AveragePrice));
+                    stockPerformance._CashFlows.Add(disposal.TransactionDate, disposal.Units * disposal.AveragePrice);
                 }
                 else if (transaction.Type == TransactionType.Income)
                 {
@@ -153,7 +149,6 @@ namespace PortfolioManager.UI.ViewModels
             }
 
             // Update Closing Balance, Capital Gain and Total Return
-            var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
             foreach (var stockPerformance in StockPerformance)
             {
                 var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == stockPerformance.Stock.Id);
@@ -171,10 +166,10 @@ namespace PortfolioManager.UI.ViewModels
 
                 stockPerformance.IRR = IRRCalculator.CalculateIRR(stockPerformance._CashFlows);       
             }
-
         }
 
     }
+
 
 
     public class StockPerformanceItem

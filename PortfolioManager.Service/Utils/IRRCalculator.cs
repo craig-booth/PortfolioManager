@@ -33,8 +33,11 @@ namespace PortfolioManager.Service.Utils
             var startDate = _Amounts.First().Key;
             foreach (var amount in _Amounts)
             {
-                values[i] = (double)amount.Value;
-                periods[i] = (amount.Key - startDate).Days / 365.0;
+                if (amount.Value != 0.00m)
+                {
+                    values[i] = (double)amount.Value;
+                    periods[i] = (amount.Key - startDate).Days / 365.0;
+                }
 
                 i++;
             }
@@ -54,10 +57,7 @@ namespace PortfolioManager.Service.Utils
             double result = values[0];
 
             for (var i = 1; i < values.Length; i++)
-            {
-                //result += values[i] / Math.pow(r, (dates[i] - dates[0]) / 365);
                 result += values[i] / Math.Pow(r, period[i]);
-            }
 
             return result;
         }
