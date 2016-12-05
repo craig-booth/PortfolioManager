@@ -7,19 +7,43 @@ using System.Threading.Tasks;
 namespace PortfolioManager.Service.Utils
 {
 
-    class CashFlow
+    public class CashFlows
     {
-        public DateTime Date;
-        public decimal Amount;
+        private Dictionary<DateTime, decimal> _Amounts;
 
-        public CashFlow(DateTime date, decimal amount)
+        public CashFlows()
         {
-            Date = date;
-            Amount = amount;
+            _Amounts = new Dictionary<DateTime, decimal>();
         }
+
+        public void Add(DateTime date, decimal amount)
+        {
+            if (_Amounts.ContainsKey(date))
+                _Amounts[date] += amount;
+            else
+                _Amounts.Add(date, amount);
+        }
+
+        public void GetCashFlows(out double[] values, out double[]periods)
+        {
+            values = new double[_Amounts.Count];
+            periods = new double[_Amounts.Count];
+
+            int i = 0;
+            var startDate = _Amounts.First().Key;
+            foreach (var amount in _Amounts)
+            {
+                values[i] = (double)amount.Value;
+                periods[i] = (amount.Key - startDate).Days / 365.0;
+
+                i++;
+            }
+
+        }
+
     }
 
-    class IRRCalculator
+    public class IRRCalculator
     {
         private const double RequiredPrecision = 0.000001;
         private const int MaximumIterations = 50;
@@ -83,37 +107,21 @@ namespace PortfolioManager.Service.Utils
             return irr;
         }
 
-        public static double CalculateIRR(double[] cashFlows)
+        public static double CalculateIRR(CashFlows cashFlows)
         {
             return CalculateIRR(cashFlows, 0.10);
         }
 
-        public static double CalculateIRR(double[] cashFlows, double guess)
+        public static double CalculateIRR(CashFlows cashFlows, double guess)
         {
-            var periods = new double[cashFlows.Length];
-            for (var i = 0; i < cashFlows.Length; i++)
-                periods[i] = i;
+            double[] values;
+            double[] periods;
 
-            return Calculate(cashFlows, periods, guess);
-        }
-
-        public static double CalculateIRR(IReadOnlyList<CashFlow> cashFlows)
-        {
-            return CalculateIRR(cashFlows, 0.10);
-        }
-
-        public static double CalculateIRR(IReadOnlyList<CashFlow> cashFlows, double guess)
-        {
-            var values = new double[cashFlows.Count];
-            var periods = new double[cashFlows.Count];
-            for (var i = 0; i < values.Length; i++)
-            {
-                values[i] = (double)cashFlows[i].Amount;
-                periods[i] = (cashFlows[i].Date - cashFlows[0].Date).Days / 365.0;
-            }
+            cashFlows.GetCashFlows(out values, out periods);
 
             return Calculate(values, periods, guess);
         }
+
     }
 
 

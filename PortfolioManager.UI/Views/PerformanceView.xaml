@@ -58,12 +58,13 @@
                     <controls:DataTable.Columns>
                         <controls:DataTableColumn Heading="Company" Width="200" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
                         <controls:DataTableColumn Heading="Opening Balance" Width="70" MemberBinding="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
-                        <controls:DataTableColumn Heading="Purchases" Width="70" MemberBinding="{Binding Purchases, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
-                        <controls:DataTableColumn Heading="Sales" Width="70" MemberBinding="{Binding Sales, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum" />
-                        <controls:DataTableColumn Heading="Closing Balance" Width="70" MemberBinding="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
-                        <controls:DataTableColumn Heading="Dividends" Width="70" MemberBinding="{Binding Dividends, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
-                        <controls:DataTableColumn Heading="Capital Gain" Width="70" MemberBinding="{Binding CapitalGain, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
-                        <controls:DataTableColumn Heading="Total Return" Width="70" MemberBinding="{Binding TotalReturn, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
+                        <controls:DataTableColumn Heading="Purchases" Width="70" MemberBinding="{Binding Purchases, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
+                        <controls:DataTableColumn Heading="Sales" Width="70" MemberBinding="{Binding Sales, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right" />
+                        <controls:DataTableColumn Heading="Closing Balance" Width="70" MemberBinding="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
+                        <controls:DataTableColumn Heading="Dividends" Width="70" MemberBinding="{Binding Dividends, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
+                        <controls:DataTableColumn Heading="Capital Gain" Width="70" MemberBinding="{Binding CapitalGain, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
+                        <controls:DataTableColumn Heading="Total Return" Width="70" MemberBinding="{Binding TotalReturn, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
+                        <controls:DataTableColumn Heading="IRR" Width="70" MemberBinding="{Binding IRR, StringFormat={}{0:p2}, Mode=OneWay}"  TextAlignment="Right"/>
                     </controls:DataTable.Columns>
                 </controls:DataTable>
                 
