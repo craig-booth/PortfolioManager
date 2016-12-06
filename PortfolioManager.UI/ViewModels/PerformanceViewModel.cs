@@ -100,8 +100,19 @@ namespace PortfolioManager.UI.ViewModels
             // Process transactions during the period
             var transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.StartDate.AddDays(1), _Parameter.EndDate);
             foreach (var transaction in transactions)
-            {               
-                var stockPerformance = StockPerformance.FirstOrDefault(x => x.Stock.ASXCode == transaction.ASXCode);
+            {
+                if ((transaction.Type != TransactionType.Aquisition) &&
+                            (transaction.Type != TransactionType.OpeningBalance) &&
+                            (transaction.Type != TransactionType.Disposal) &&
+                            (transaction.Type != TransactionType.Income))
+                    continue;
+
+
+                var stock = _Parameter.Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
+                if (stock.ParentId != Guid.Empty)
+                    stock = _Parameter.Portfolio.StockService.Get(stock.ParentId, transaction.RecordDate);
+
+                var stockPerformance = StockPerformance.FirstOrDefault(x => x.Stock.Id == stock.Id);
 
                 if (transaction.Type == TransactionType.Aquisition) 
                 {
@@ -109,7 +120,6 @@ namespace PortfolioManager.UI.ViewModels
 
                     if (stockPerformance == null)
                     {
-                        var stock = _Parameter.Portfolio.StockService.Get(aquisition.ASXCode, aquisition.TransactionDate);
                         stockPerformance = new StockPerformanceItem(stock, 0.00m);
                         StockPerformance.Add(stockPerformance);
                     }
@@ -123,7 +133,6 @@ namespace PortfolioManager.UI.ViewModels
 
                     if (stockPerformance == null)
                     {
-                        var stock = _Parameter.Portfolio.StockService.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
                         stockPerformance = new StockPerformanceItem(stock, 0.00m);
                         StockPerformance.Add(stockPerformance);
                     }
@@ -137,7 +146,6 @@ namespace PortfolioManager.UI.ViewModels
 
                     if (stockPerformance == null)
                     {
-                        var stock = _Parameter.Portfolio.StockService.Get(disposal.ASXCode, disposal.TransactionDate);
                         stockPerformance = new StockPerformanceItem(stock, 0.00m);
                         StockPerformance.Add(stockPerformance);
                     }
@@ -151,7 +159,6 @@ namespace PortfolioManager.UI.ViewModels
 
                     if (stockPerformance == null)
                     {
-                        var stock = _Parameter.Portfolio.StockService.Get(income.ASXCode, income.RecordDate);
                         stockPerformance = new StockPerformanceItem(stock, 0.00m);
                         StockPerformance.Add(stockPerformance);
                     }
