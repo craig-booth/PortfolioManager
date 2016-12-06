@@ -92,13 +92,11 @@ namespace PortfolioManager.UI.ViewModels
                     if (stockPerformance == null)
                     {
                         var stock = _Parameter.Portfolio.StockService.Get(aquisition.ASXCode, aquisition.TransactionDate);
-                        stockPerformance = new StockPerformanceItem(stock, aquisition.Units * aquisition.AveragePrice);
+                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
                         StockPerformance.Add(stockPerformance);
                     }
-                    else
-                        stockPerformance.Purchases += aquisition.Units * aquisition.AveragePrice;
-                        
-    
+
+                    stockPerformance.Purchases += aquisition.Units * aquisition.AveragePrice;                  
                     stockPerformance._CashFlows.Add(aquisition.TransactionDate, -(aquisition.Units * aquisition.AveragePrice));
                 }
                 else if (transaction.Type == TransactionType.OpeningBalance)
@@ -108,12 +106,11 @@ namespace PortfolioManager.UI.ViewModels
                     if (stockPerformance == null)
                     {
                         var stock = _Parameter.Portfolio.StockService.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
-                        stockPerformance = new StockPerformanceItem(stock, openingBalance.CostBase);
+                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
                         StockPerformance.Add(stockPerformance);
                     }
-                    else
-                        stockPerformance.Purchases += openingBalance.CostBase;
 
+                    stockPerformance.Purchases += openingBalance.CostBase;
                     stockPerformance._CashFlows.Add(openingBalance.TransactionDate, -openingBalance.CostBase);
                 }
                 else if (transaction.Type == TransactionType.Disposal)
@@ -128,7 +125,6 @@ namespace PortfolioManager.UI.ViewModels
                     }
 
                     stockPerformance.Sales += disposal.Units * disposal.AveragePrice;
-
                     stockPerformance._CashFlows.Add(disposal.TransactionDate, disposal.Units * disposal.AveragePrice);
                 }
                 else if (transaction.Type == TransactionType.Income)
@@ -143,7 +139,6 @@ namespace PortfolioManager.UI.ViewModels
                     }
 
                     stockPerformance.Dividends += income.CashIncome;
-
                     stockPerformance._CashFlows.Add(income.TransactionDate, income.CashIncome);
                 }
             }
@@ -155,7 +150,6 @@ namespace PortfolioManager.UI.ViewModels
                 if (holding != null)
                 {
                     stockPerformance.ClosingBalance = holding.MarketValue;
-
                     stockPerformance._CashFlows.Add(_Parameter.EndDate, holding.MarketValue);
                 }
                 else
