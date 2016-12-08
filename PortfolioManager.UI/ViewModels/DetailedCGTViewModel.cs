@@ -38,7 +38,7 @@ namespace PortfolioManager.UI.ViewModels
         public DetailedCGTViewModel(string label, ViewParameter parameter)
             : base(label, parameter)
         {
-            Options.AllowStockSelection = false;
+            Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.FinancialYear;
 
             Transactions = new ObservableCollection<ViewModels.TransactionViewItem>();
@@ -51,11 +51,27 @@ namespace PortfolioManager.UI.ViewModels
 
             Parcels.Clear();
 
-            var parcels = _Parameter.Portfolio.ParcelService.GetParcels(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            IReadOnlyCollection<ShareParcel> parcels;
+            
+            if (_Parameter.Stock.Id == Guid.Empty)
+                parcels = _Parameter.Portfolio.ParcelService.GetParcels(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            else
+                parcels = _Parameter.Portfolio.ParcelService.GetParcels(_Parameter.Stock, DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear)).ToList();
+
+            var parcelAndStock = new List<Tuple<string, ShareParcel>>();
             foreach (var parcel in parcels)
             {
-                var stock = _Parameter.Portfolio.StockService.Get(parcel.Stock, parcel.ToDate);
-                var parcelCostBase = new ParcelCostBaseViewItem(stock, parcel, DateUtils.EndOfFinancialYear(_Parameter.FinancialYear), _Parameter.Portfolio.ParcelService, _Parameter.Portfolio.TransactionService);
+                // Check if parcel has already been added
+                if (parcelAndStock.FirstOrDefault(x => x.Item2.Id == parcel.Id) == null)
+                {
+                    var stock = _Parameter.Portfolio.StockService.Get(parcel.Stock, parcel.ToDate);
+                    parcelAndStock.Add(new Tuple<string, ShareParcel>(string.Format("{0} ({1})", stock.Name, stock.ASXCode), parcel));
+                }
+            }
+            
+            foreach (var tuple in parcelAndStock.OrderBy(x => x.Item1).ThenBy(x => x.Item2.AquisitionDate))
+            {
+                var parcelCostBase = new ParcelCostBaseViewItem(tuple.Item1, tuple.Item2, DateUtils.EndOfFinancialYear(_Parameter.FinancialYear), _Parameter.Portfolio.ParcelService, _Parameter.Portfolio.TransactionService);
 
                 Parcels.Add(parcelCostBase);
             }
@@ -79,14 +95,12 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<ParcelCostBaseAuditViewItem> ParcelAudit { get; private set; }
 
-        public ParcelCostBaseViewItem(Stock stock, ShareParcel parcel, DateTime toDate, ParcelService parcelService, TransactionService transactionService)
+        public ParcelCostBaseViewItem(string companyName, ShareParcel parcel, DateTime toDate, ParcelService parcelService, TransactionService transactionService)
         {           
             ParcelId = parcel.Id;
-            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
+            CompanyName = companyName;
 
             AquisitionDate = parcel.AquisitionDate;
-            Units = parcel.Units;
-            CostBase = parcel.CostBase; 
 
             ParcelAudit = new ObservableCollection<ParcelCostBaseAuditViewItem>();
 
@@ -108,7 +122,10 @@ namespace PortfolioManager.UI.ViewModels
                     Comment = transaction.Description
                 };
 
-                ParcelAudit.Add(parcelAuditItem);       
+                ParcelAudit.Add(parcelAuditItem);
+
+                Units = parcelAuditItem.Units;
+                CostBase = parcelAuditItem.CostBase;
             }
         }
     }
