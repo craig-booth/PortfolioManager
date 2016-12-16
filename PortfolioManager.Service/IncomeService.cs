@@ -70,25 +70,25 @@ namespace PortfolioManager.Service
         {
             var incomeTransactions = _PortfolioQuery.GetTransactions(TransactionType.Income, fromDate, toDate).Cast<IncomeReceived>();
 
-            var transactionsByASXCode = from incomeReceived in incomeTransactions 
-                              group incomeReceived by incomeReceived.ASXCode into g
-                              orderby g.Key
-                              select g;
-
             var result = new List<Income>();
-            foreach (var incomeReceivedTransactions in transactionsByASXCode)
+            foreach (var transaction in incomeTransactions)
             {
-                var stock = _StockService.Get(incomeReceivedTransactions.Key, toDate);
-                var frankedAmount = incomeReceivedTransactions.Sum(x => x.FrankedAmount);
-                var unfrankedAmount = incomeReceivedTransactions.Sum(x => x.UnfrankedAmount);
-                var frankingCredits = incomeReceivedTransactions.Sum(x => x.FrankingCredits);
-                var interest = incomeReceivedTransactions.Sum(x => x.Interest);
-                var taxDeferred = incomeReceivedTransactions.Sum(x => x.TaxDeferred);
+                var stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
+                var income = result.Find(x => x.Stock.Id == stock.Id);
+                if (income == null)
+                {
+                    income = new Income(stock, 0.00m, 0.00m, 0.00m, 0.00m, 0.00m);
+                    result.Add(income);
+                }
 
-                result.Add(new Income(stock, frankedAmount, unfrankedAmount, frankingCredits, interest, taxDeferred));
+                income.FrankedAmount += transaction.FrankedAmount;
+                income.UnfrankedAmount += transaction.UnfrankedAmount;
+                income.FrankingCredits += transaction.FrankingCredits;
+                income.Interest += transaction.Interest;
+                income.TaxDeferred += transaction.TaxDeferred;
             }
 
-            return result;
+            return result.OrderBy(x => x.Stock.ASXCode).ToList();
         }
 
         public Income GetIncome(Stock stock, DateTime fromDate, DateTime toDate)
