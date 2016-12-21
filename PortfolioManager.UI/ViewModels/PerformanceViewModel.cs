@@ -22,8 +22,32 @@ namespace PortfolioManager.UI.ViewModels
         public decimal Interest { get; private set; }
         public decimal Dividends { get; private set; }
         public decimal Fees { get; private set; }
-        public decimal CapitalGains { get; private set; }
-        public decimal ClosingBalance { get; private set; }
+        public decimal ChangeInMarketValue { get; private set; }
+        public decimal OutstandingDRPAmount { get; private set; }
+
+        public decimal TotalIncome
+        {
+            get
+            {
+                return Interest + Dividends + Fees;
+            }
+        }
+
+        public decimal ChangeInValue
+        {
+            get
+            {
+                return Deposits + Withdrawls + TotalIncome + ChangeInMarketValue + OutstandingDRPAmount;
+            }
+        }
+
+        public decimal ClosingBalance
+        {
+            get
+            {
+                return OpeningBalance + ChangeInValue;
+            }
+        }
 
         public ObservableCollection<StockPerformanceItem> StockPerformance { get; private set; }
 
@@ -40,43 +64,31 @@ namespace PortfolioManager.UI.ViewModels
         public override void RefreshView()
         {
             var openingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.StartDate);
-            var openingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
-
-            decimal openingDRPCashBalance = 0.00m;
-            foreach (var holding in openingHoldings)
-                openingDRPCashBalance += _Parameter.Portfolio.IncomeService.GetDRPCashBalance(holding.Stock, _Parameter.StartDate);
-
-            OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance + openingDRPCashBalance;
-
             var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
+
+            var openingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
             var closingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.EndDate);
-            decimal closingDRPCashBalance = 0.00m;
-            foreach (var holding in closingHoldings)
-                closingDRPCashBalance += _Parameter.Portfolio.IncomeService.GetDRPCashBalance(holding.Stock, _Parameter.EndDate);
-            ClosingBalance = closingHoldings.Sum(x => x.MarketValue) + closingCashBalance + closingDRPCashBalance;
 
             var cashTransactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
 
+
+            PopulateStockPerformance(openingHoldings, closingHoldings);
+
+            OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance;                 
             Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
             Withdrawls = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Withdrawl).Sum(x => x.Amount);
             Interest = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Interest).Sum(x => x.Amount);
             Fees = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Fee).Sum(x => x.Amount);
 
-            var income = _Parameter.Portfolio.IncomeService.GetIncome(_Parameter.StartDate, _Parameter.EndDate);
-            Dividends = income.Sum(x => x.CashIncome);
 
-            CapitalGains = ClosingBalance - (Dividends + Interest + Fees) - (Deposits + Withdrawls) - OpeningBalance;
+            Dividends = StockPerformance.Sum(x => x.Dividends);
+            ChangeInMarketValue = StockPerformance.Sum(x => x.CapitalGain);
+            OutstandingDRPAmount = - StockPerformance.Sum(x => x.DRPCashBalance);
 
-            PopulateStockPerformance(openingHoldings, closingHoldings);
             StockPerformance.Add(new ViewModels.StockPerformanceItem("Cash", openingCashBalance)
             {
                 Dividends = Interest,
                 ClosingBalance = closingCashBalance
-            });
-            StockPerformance.Add(new ViewModels.StockPerformanceItem("DRP Cash Balance", openingDRPCashBalance)
-            { 
-                ClosingBalance = closingDRPCashBalance,
-                TotalReturn = 0.00m
             });
 
             OnPropertyChanged(""); 
@@ -168,7 +180,7 @@ namespace PortfolioManager.UI.ViewModels
                 }
             }
 
-            // Update Closing Balance, Capital Gain and Total Return
+            // Update Closing Balance, Capital Gain, DRP Cash Balance and Total Return
             foreach (var stockPerformance in StockPerformance)
             {
                 var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == stockPerformance.Stock.Id);
@@ -176,10 +188,12 @@ namespace PortfolioManager.UI.ViewModels
                 {
                     stockPerformance.ClosingBalance = holding.MarketValue;
                     stockPerformance._CashFlows.Add(_Parameter.EndDate, holding.MarketValue);
+
+                    stockPerformance.DRPCashBalance = _Parameter.Portfolio.IncomeService.GetDRPCashBalance(holding.Stock, _Parameter.EndDate);
                 }
                 else
                     stockPerformance.ClosingBalance = 0.00m;
-
+                  
                 stockPerformance.CapitalGain = stockPerformance.ClosingBalance - (stockPerformance.OpeningBalance + stockPerformance.Purchases - stockPerformance.Sales);
                 stockPerformance.TotalReturn = stockPerformance.CapitalGain + stockPerformance.Dividends;
 
@@ -203,6 +217,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal ClosingBalance { get; set; }
         public decimal Dividends { get; set; }
         public decimal CapitalGain { get; set; }
+        public decimal DRPCashBalance { get; set; }
         public decimal TotalReturn { get; set; }
         public double IRR { get; set; }
 
@@ -218,6 +233,7 @@ namespace PortfolioManager.UI.ViewModels
             Dividends = 0.00m;
             CapitalGain = 0.00m;
             ClosingBalance = 0.00m;
+            DRPCashBalance = 0.00m;
         }
 
         public StockPerformanceItem(Stock stock, decimal openingBalance)

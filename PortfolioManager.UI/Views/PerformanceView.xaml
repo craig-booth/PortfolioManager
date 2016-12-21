@@ -7,6 +7,32 @@
 
     <DataTemplate DataType="{x:Type viewmodels:PerformanceViewModel}">
 
+        <DataTemplate.Resources>
+
+            <Style x:Key="SubTotalText" TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Padding" Value="10,2"/>
+            </Style>
+
+            <Style x:Key="SubTotalBackGround" TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="Gray"/>
+            </Style>
+
+            <Style x:Key="TotalText" TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="10,2"/>
+            </Style>
+
+            <Style x:Key="TotalBackGround" TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="Black"/>
+            </Style>
+
+        </DataTemplate.Resources>
+
         <ScrollViewer VerticalScrollBarVisibility="Auto">
 
             <StackPanel>
@@ -17,44 +43,70 @@
                         <ColumnDefinition Width="80"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>                    
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Opening Balance" Grid.Row="0" Grid.Column="0" />
-                    <TextBlock Text="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="0" Grid.Column="2"/>
+                    <Border Style="{StaticResource TotalBackGround}" Grid.Row="0" Grid.ColumnSpan="3" />
+                    <TextBlock Text="Opening Balance" Grid.Row="0" Grid.Column="0" Style="{StaticResource TotalText}"/>
+                    <TextBlock Text="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="0" Grid.Column="2" Style="{StaticResource TotalText}"/>
 
-                    <TextBlock Text="Deposits" Grid.Row="1" Grid.Column="0" />
+                    <TextBlock Text="Deposits" Grid.Row="1" Grid.Column="0"/>
                     <TextBlock Text="{Binding Deposits, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="1" Grid.Column="1"/>
-                
+
                     <TextBlock Text="Withdrawls" Grid.Row="2" Grid.Column="0" />
                     <TextBlock Text="{Binding Withdrawls, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="2" Grid.Column="1"/>
-                
-                    <TextBlock Text="Interest" Grid.Row="3" Grid.Column="0" />
-                    <TextBlock Text="{Binding Interest, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="1"/>
-                
-                    <TextBlock Text="Dividends" Grid.Row="4" Grid.Column="0" />
-                    <TextBlock Text="{Binding Dividends, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="4" Grid.Column="1"/>
-                
-                    <TextBlock Text="Fees" Grid.Row="5" Grid.Column="0" />
-                    <TextBlock Text="{Binding Fees, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="1"/>
-                
-                    <TextBlock Text="Capital Gains" Grid.Row="6" Grid.Column="0" />
-                    <TextBlock Text="{Binding CapitalGains, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="6" Grid.Column="1"/>
-                
-                    <TextBlock Text="Closing Balance" Grid.Row="7" Grid.Column="0" />
-                    <TextBlock Text="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="7" Grid.Column="2"/>
+
+                    <TextBlock Text="Income" Grid.Row="3" Grid.Column="0"  />
+                    <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="3" Grid.Column="1"/>
+
+                    <TextBlock Text="Change in Market Value" Grid.Row="4" Grid.Column="0" />
+                    <TextBlock Text="{Binding ChangeInMarketValue, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="4" Grid.Column="1"/>
+
+                    <TextBlock Text="Outstanding DRP Amount" Grid.Row="5" Grid.Column="0" />
+                    <TextBlock Text="{Binding OutstandingDRPAmount, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="1"/>
+
+                    <Border Style="{StaticResource SubTotalBackGround}" Grid.Row="6" Grid.ColumnSpan="3" />
+                    <TextBlock Text="Total Change for Period" Grid.Row="6" Grid.Column="0" Style="{StaticResource SubTotalText}" />
+                    <TextBlock Text="{Binding ChangeInValue, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="6" Grid.Column="2" Style="{StaticResource SubTotalText}" />
+
+                    <Border Style="{StaticResource TotalBackGround}" Grid.Row="7" Grid.ColumnSpan="3" />
+                    <TextBlock Text="Closing Balance" Grid.Row="7" Grid.Column="0" Style="{StaticResource TotalText}" />
+                    <TextBlock Text="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="7" Grid.Column="2" Style="{StaticResource TotalText}"/>
+
+
+
+                    <TextBlock Text="Income and Expences" Grid.Row="8" Grid.Column="0" FontWeight="Bold" Margin="0,10,0,0" />
+
+                    <TextBlock Text="Interest" Grid.Row="9" Grid.Column="0"  />
+                    <TextBlock Text="{Binding Interest, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="9" Grid.Column="1"/>
+
+                    <TextBlock Text="Dividends" Grid.Row="10" Grid.Column="0" />
+                    <TextBlock Text="{Binding Dividends, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="10" Grid.Column="1"/>
+
+                    <TextBlock Text="Fees" Grid.Row="11" Grid.Column="0" />
+                    <TextBlock Text="{Binding Fees, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="11" Grid.Column="1"/>
+
+                    <Border Style="{StaticResource SubTotalBackGround}" Grid.Row="12" Grid.ColumnSpan="3" />
+                    <TextBlock Text="Total Income" Grid.Row="12" Grid.Column="0" Style="{StaticResource SubTotalText}" />
+                    <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="12" Grid.Column="2" Style="{StaticResource SubTotalText}" />
+
 
                 </Grid>
 
 
-                <controls:DataTable Data="{Binding StockPerformance}" DataType="{x:Type viewmodels:StockPerformanceItem}" Margin="0,10,0,0">
+                <controls:DataTable Data="{Binding StockPerformance}" DataType="{x:Type viewmodels:StockPerformanceItem}" Margin="0,30,0,0">
                     <controls:DataTable.Columns>
                         <controls:DataTableColumn Heading="Company" Width="200" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
                         <controls:DataTableColumn Heading="Opening Balance" Width="70" MemberBinding="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
@@ -63,6 +115,7 @@
                         <controls:DataTableColumn Heading="Closing Balance" Width="70" MemberBinding="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
                         <controls:DataTableColumn Heading="Dividends" Width="70" MemberBinding="{Binding Dividends, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
                         <controls:DataTableColumn Heading="Capital Gain" Width="70" MemberBinding="{Binding CapitalGain, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
+                        <controls:DataTableColumn Heading="DRP Cash Balance" Width="70" MemberBinding="{Binding DRPCashBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
                         <controls:DataTableColumn Heading="Total Return" Width="70" MemberBinding="{Binding TotalReturn, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
                         <controls:DataTableColumn Heading="IRR" Width="70" MemberBinding="{Binding IRR, StringFormat={}{0:p2}, Mode=OneWay}"  TextAlignment="Right"/>
                     </controls:DataTable.Columns>
