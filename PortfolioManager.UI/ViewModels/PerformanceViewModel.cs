@@ -33,6 +33,14 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+        public decimal TotalReturn
+        {
+            get
+            {
+                return TotalIncome + ChangeInMarketValue;
+            }
+        }
+
         public decimal ChangeInValue
         {
             get

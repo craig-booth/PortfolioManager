@@ -16,7 +16,7 @@
                 <Setter Property="Padding" Value="10,2"/>
             </Style>
 
-            <Style x:Key="SubTotalBackGround" TargetType="{x:Type Border}">
+            <Style x:Key="SubTotalBackground" TargetType="{x:Type Border}">
                 <Setter Property="Background" Value="Gray"/>
             </Style>
 
@@ -27,7 +27,7 @@
                 <Setter Property="Padding" Value="10,2"/>
             </Style>
 
-            <Style x:Key="TotalBackGround" TargetType="{x:Type Border}">
+            <Style x:Key="TotalBackground" TargetType="{x:Type Border}">
                 <Setter Property="Background" Value="Black"/>
             </Style>
 
@@ -56,9 +56,11 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Border Style="{StaticResource TotalBackGround}" Grid.Row="0" Grid.ColumnSpan="3" />
+                    <Border Style="{StaticResource TotalBackground}" Grid.Row="0" Grid.ColumnSpan="3" />
                     <TextBlock Text="Opening Balance" Grid.Row="0" Grid.Column="0" Style="{StaticResource TotalText}"/>
                     <TextBlock Text="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="0" Grid.Column="2" Style="{StaticResource TotalText}"/>
 
@@ -77,11 +79,11 @@
                     <TextBlock Text="Outstanding DRP Amount" Grid.Row="5" Grid.Column="0" />
                     <TextBlock Text="{Binding OutstandingDRPAmount, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="5" Grid.Column="1"/>
 
-                    <Border Style="{StaticResource SubTotalBackGround}" Grid.Row="6" Grid.ColumnSpan="3" />
+                    <Border Style="{StaticResource SubTotalBackground}" Grid.Row="6" Grid.ColumnSpan="3" />
                     <TextBlock Text="Total Change for Period" Grid.Row="6" Grid.Column="0" Style="{StaticResource SubTotalText}" />
-                    <TextBlock Text="{Binding ChangeInValue, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="6" Grid.Column="2" Style="{StaticResource SubTotalText}" />
+                    <TextBlock Text="{Binding ChangeInValue, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="6" Grid.Column="1" Style="{StaticResource SubTotalText}" />
 
-                    <Border Style="{StaticResource TotalBackGround}" Grid.Row="7" Grid.ColumnSpan="3" />
+                    <Border Style="{StaticResource TotalBackground}" Grid.Row="7" Grid.ColumnSpan="3" />
                     <TextBlock Text="Closing Balance" Grid.Row="7" Grid.Column="0" Style="{StaticResource TotalText}" />
                     <TextBlock Text="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="7" Grid.Column="2" Style="{StaticResource TotalText}"/>
 
@@ -98,11 +100,18 @@
                     <TextBlock Text="Fees" Grid.Row="11" Grid.Column="0" />
                     <TextBlock Text="{Binding Fees, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="11" Grid.Column="1"/>
 
-                    <Border Style="{StaticResource SubTotalBackGround}" Grid.Row="12" Grid.ColumnSpan="3" />
+                    <Border Style="{StaticResource SubTotalBackground}" Grid.Row="12" Grid.ColumnSpan="3" />
                     <TextBlock Text="Total Income" Grid.Row="12" Grid.Column="0" Style="{StaticResource SubTotalText}" />
-                    <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="12" Grid.Column="2" Style="{StaticResource SubTotalText}" />
+                    <TextBlock Text="{Binding TotalIncome, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="12" Grid.Column="1" Style="{StaticResource SubTotalText}" />
 
+                    <TextBlock Text="Capital Gain" Grid.Row="13" Grid.Column="0"  />
+                    <TextBlock Text="{Binding ChangeInMarketValue, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="13" Grid.Column="1"/>
 
+                    <Border Style="{StaticResource TotalBackground}" Grid.Row="14" Grid.ColumnSpan="3" />
+                    <TextBlock Text="Total return for period" Grid.Row="14" Grid.Column="0" Style="{StaticResource TotalText}" />
+                    <TextBlock Text="{Binding TotalReturn, StringFormat={}{0:c0}, Mode=OneWay}" TextAlignment="Right" Grid.Row="14" Grid.Column="2" Style="{StaticResource TotalText}"/>
+
+                    
                 </Grid>
 
 
