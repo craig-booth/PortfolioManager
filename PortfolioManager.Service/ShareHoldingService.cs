@@ -111,33 +111,25 @@ namespace PortfolioManager.Service
 
             }
 
-            /* Retrieve the stock price information */
-            if (date == DateTime.Today)
+            /* Add prices to the Holdings list */
+            decimal stockPrice;
+            foreach (var shareHolding in holdings)
             {
-                var stockPrices = holdings.Select(x => new StockPrice(x.Stock)).ToList();
-                _StockPriceService.GetCurrentPrices(stockPrices);
-
-                /* Add prices to the Holdings list */
-                foreach (var shareHolding in holdings)
+                /* Retrieve the stock price information */
+                if (date == DateTime.Today)
                 {
-                    var stockPrice = stockPrices.FirstOrDefault(x => x.Stock.ASXCode == shareHolding.Stock.ASXCode);
-                    shareHolding.UnitValue = stockPrice.Price;
-                } 
-            }
-            else
-            {
-                foreach (var shareHolding in holdings)
+                    stockPrice = _StockPriceService.GetCurrentPrice(shareHolding.Stock);
+                }
+                else
                 {
-                    decimal stockPrice;
-
-                    if (! _StockPriceService.TryGetClosingPrice(shareHolding.Stock, date, out stockPrice))
-                    {                    
+                    if (!_StockPriceService.TryGetClosingPrice(shareHolding.Stock, date, out stockPrice))
+                    {
                         // If no price available then use average cost
                         stockPrice = shareHolding.AverageUnitCost;
                     }
-
-                    shareHolding.UnitValue = stockPrice;
                 }
+
+                shareHolding.UnitValue = stockPrice;
             }
 
             return holdings.AsReadOnly();

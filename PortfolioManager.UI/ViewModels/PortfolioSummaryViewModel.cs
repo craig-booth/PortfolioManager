@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Drawing;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 using PortfolioManager.Service;
 using PortfolioManager.Model.Utils;
@@ -23,12 +24,12 @@ namespace PortfolioManager.UI.ViewModels
         public PortfolioReturn Return5Year { get; private set; }
         public PortfolioReturn ReturnAll { get; private set; }
 
-        public List<HoldingItemViewModel> Holdings { get; private set; }
+        public ObservableCollection<HoldingItemViewModel> Holdings { get; private set; }
 
         public PortfolioSummaryViewModel(string label, ViewParameter parameter)
             : base(label, parameter)
         {
-            Holdings = new List<HoldingItemViewModel>();
+            Holdings = new ObservableCollection<HoldingItemViewModel>();
 
             PortfolioValue = new ChangeInValue();
             Return1Year = new PortfolioReturn("1 Year");
@@ -56,9 +57,11 @@ namespace PortfolioManager.UI.ViewModels
             foreach (var holding in holdings)
                 Holdings.Add(new HoldingItemViewModel(holding));
 
-            Holdings.Sort(HoldingItemViewModel.CompareByCompanyName);
+           // Holdings.Sort(HoldingItemViewModel.CompareByCompanyName);
 
             Holdings.Add(new HoldingItemViewModel("Cash Account", cashBalance));
+
+            OnPropertyChanged("");
         }
 
         private void CalculateIRR(PortfolioReturn portfolioReturn, int years)
@@ -92,10 +95,10 @@ namespace PortfolioManager.UI.ViewModels
 
     class HoldingItemViewModel
     {
-        public string ASXCode { get; set; }
-        public string CompanyName { get; set; }
-        public int Units { get; set; }
-        public ChangeInValue ChangeInValue { get; set; }
+        public string ASXCode { get; private set; }
+        public string CompanyName { get; private set; }
+        public int Units { get; private set; }
+        public ChangeInValue ChangeInValue { get; private set; }
 
         public HoldingItemViewModel(string Description, decimal value)
         {
@@ -121,10 +124,41 @@ namespace PortfolioManager.UI.ViewModels
 
     enum DirectionChange { Increase, Decrease, Neutral };
 
-    class ChangeInValue
+    class ChangeInValue : NotifyClass
     {
-        public decimal InitialValue { get; set; }
-        public decimal Value { get; set; }
+        private decimal _InitialValue;
+        public decimal InitialValue
+        {
+            get
+            {
+                return _InitialValue;
+            }
+            set
+            {
+                if (value != _InitialValue)
+                {
+                    _InitialValue = value;
+                    OnPropertyChanged("");
+                }
+            }
+        }
+
+        private decimal _Value;
+        public decimal Value
+        {
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                if (value != _Value)
+                {
+                    _Value = value;
+                    OnPropertyChanged("");
+                }
+            }
+        }
 
         public decimal Change
         {

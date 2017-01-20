@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
@@ -23,6 +24,10 @@ namespace PortfolioManager.UI.ViewModels
 {
     class MainWindowViewModel : NotifyClass
     {
+
+        private readonly SynchronizationContext _SyncContext;
+        private readonly TaskScheduler _UITaskScheduler;
+
         private Portfolio _Portfolio;
 
         private Module _SelectedModule;
@@ -99,6 +104,10 @@ namespace PortfolioManager.UI.ViewModels
     
         public MainWindowViewModel()
         {
+            // we assume this ctor is called from the UI thread!
+            _SyncContext = SynchronizationContext.Current;
+            _UITaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
             _Modules = new List<Module>();
 
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
@@ -175,6 +184,7 @@ namespace PortfolioManager.UI.ViewModels
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
+            _Portfolio.PortfolioChanged += _Portfolio_PortfolioChanged;
             ViewParameter.Portfolio = _Portfolio;
 
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
@@ -186,6 +196,20 @@ namespace PortfolioManager.UI.ViewModels
             CreateTransactionsWindow.Portfolio = _Portfolio;
         }
 
+        private void _Portfolio_PortfolioChanged(PortfolioChangedEventArgs e)
+        {
+            // dodgy hack 
+       //     Application.Current.Dispatcher.Invoke(new Action(() => {
+       //         ViewParameter.Portfolio = _Portfolio;
+       //     }));
+
+
+            Task.Factory.StartNew(() => {
+                ViewParameter.Portfolio = _Portfolio;
+            }, CancellationToken.None, TaskCreationOptions.None, _UITaskScheduler);
+        }
+
+   
         private void PopulateFinancialYearList()
         {
             FinancialYears.Clear();

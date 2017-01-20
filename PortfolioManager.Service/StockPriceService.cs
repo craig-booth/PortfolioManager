@@ -33,15 +33,15 @@ namespace PortfolioManager.Service
     {
         private readonly IStockQuery _StockQuery;
         private readonly IStockPriceDownloader _StockPriceDownloader;
-        private Dictionary<string, StockQuote> _StockQuoteCache;
+        private Dictionary<string, decimal> _StockQuoteCache;
 
         internal StockPriceService(IStockQuery stockQuery, IStockPriceDownloader stockPriceDownloader)
         {
             _StockQuery = stockQuery;
             _StockPriceDownloader = stockPriceDownloader;
-            _StockQuoteCache = new Dictionary<string, StockQuote>();
+            _StockQuoteCache = new Dictionary<string, decimal>();
         }
-
+        
         public decimal GetClosingPrice(Stock stock, DateTime date)
         {
             decimal closingPrice;
@@ -51,7 +51,7 @@ namespace PortfolioManager.Service
             else
                 return 0.00m;
         }
-
+       
         public bool TryGetClosingPrice(Stock stock, DateTime date, out decimal price)
         {
             if (stock.ParentId == Guid.Empty)
@@ -76,16 +76,56 @@ namespace PortfolioManager.Service
 
             }
         }
-      
+        
         public decimal GetCurrentPrice(Stock stock)
         {
-            var prices = new StockPrice[] { new StockPrice(stock)};
+            decimal price;
 
-            GetCurrentPrices(prices);
-
-            return prices[0].Price;
+            if (_StockQuoteCache.TryGetValue(stock.ASXCode, out price))
+                return price;
+            else
+                return GetClosingPrice(stock, DateTime.Today);
         }
-        
+
+        public void UpdateCache()
+        {
+            var stocks = _StockQuery.GetAll(DateTime.Today);
+
+            List<string> asxCodes = new List<string>();
+            foreach (var stock in stocks)
+            {
+                if (stock.ParentId == Guid.Empty)
+                    asxCodes.Add(stock.ASXCode);
+            }
+
+            var stockQuotes = _StockPriceDownloader.GetMultipleQuotes(asxCodes);
+            foreach (var stockQuote in stockQuotes)
+            {
+                var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
+                if (stock != null)
+                {
+                    if (_StockQuoteCache.ContainsKey(stock.ASXCode))
+                        _StockQuoteCache[stock.ASXCode] = stockQuote.Price;
+                    else
+                        _StockQuoteCache.Add(stock.ASXCode, stockQuote.Price * 10);
+
+                    if (stock.Type == StockType.StapledSecurity)
+                    {
+                        var childStocks = stocks.Where(x => x.ParentId == stock.Id);
+                        foreach (var childStock in childStocks)
+                        {
+                            var percentOfPrice = _StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
+
+                            if (_StockQuoteCache.ContainsKey(childStock.ASXCode))
+                                _StockQuoteCache[childStock.ASXCode] = stockQuote.Price  * percentOfPrice;
+                            else
+                                _StockQuoteCache.Add(childStock.ASXCode, stockQuote.Price * percentOfPrice);
+                        }
+                    }
+                }
+            }
+        }
+        /*
         private bool GetPricesFromCache(IEnumerable<StockPrice> prices)
         {
             StockQuote cachedStockQuote;
@@ -131,9 +171,9 @@ namespace PortfolioManager.Service
                 else
                     _StockQuoteCache.Add(quote.ASXCode, quote);
             }
-        }
-
-        public bool GetCurrentPrices(IEnumerable<StockPrice> prices)
+        } */
+    /*    
+        private bool GetCurrentPrices(IEnumerable<StockPrice> prices)
         {
             // Try loading prices from cache 
             if (GetPricesFromCache(prices))
@@ -159,8 +199,8 @@ namespace PortfolioManager.Service
 
             // Try to fetch from the cache again
             return GetPricesFromCache(prices);
-        } 
-
+        }
+        */
         public decimal GetPrice(Stock stock, DateTime date)
         {
             if (date == DateTime.Today)
