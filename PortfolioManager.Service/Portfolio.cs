@@ -69,8 +69,6 @@ namespace PortfolioManager.Service
             }
 
             TransactionService.PortfolioChanged += TransactionService_PortfolioChanged;
-
-            Task.Run(() => { StockPriceService.UpdateCache(); OnPortfolioChanged(); });
         }
 
         private void TransactionService_PortfolioChanged(PortfolioChangedEventArgs e)

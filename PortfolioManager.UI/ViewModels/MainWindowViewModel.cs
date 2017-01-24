@@ -25,9 +25,6 @@ namespace PortfolioManager.UI.ViewModels
     class MainWindowViewModel : NotifyClass
     {
 
-        private readonly SynchronizationContext _SyncContext;
-        private readonly TaskScheduler _UITaskScheduler;
-
         private Portfolio _Portfolio;
 
         private Module _SelectedModule;
@@ -104,10 +101,6 @@ namespace PortfolioManager.UI.ViewModels
     
         public MainWindowViewModel()
         {
-            // we assume this ctor is called from the UI thread!
-            _SyncContext = SynchronizationContext.Current;
-            _UITaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-
             _Modules = new List<Module>();
 
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
@@ -184,7 +177,6 @@ namespace PortfolioManager.UI.ViewModels
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
 
             _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
-            _Portfolio.PortfolioChanged += _Portfolio_PortfolioChanged;
             ViewParameter.Portfolio = _Portfolio;
 
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
@@ -194,21 +186,11 @@ namespace PortfolioManager.UI.ViewModels
 
             EditTransactionWindow.Portfolio = _Portfolio;
             CreateTransactionsWindow.Portfolio = _Portfolio;
+
+
+            var ui = TaskScheduler.FromCurrentSynchronizationContext();
+            Task.Run(() => { _Portfolio.StockPriceService.UpdateCache(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
         }
-
-        private void _Portfolio_PortfolioChanged(PortfolioChangedEventArgs e)
-        {
-            // dodgy hack 
-       //     Application.Current.Dispatcher.Invoke(new Action(() => {
-       //         ViewParameter.Portfolio = _Portfolio;
-       //     }));
-
-
-            Task.Factory.StartNew(() => {
-                ViewParameter.Portfolio = _Portfolio;
-            }, CancellationToken.None, TaskCreationOptions.None, _UITaskScheduler);
-        }
-
    
         private void PopulateFinancialYearList()
         {

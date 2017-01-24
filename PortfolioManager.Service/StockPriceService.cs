@@ -107,7 +107,7 @@ namespace PortfolioManager.Service
                     if (_StockQuoteCache.ContainsKey(stock.ASXCode))
                         _StockQuoteCache[stock.ASXCode] = stockQuote.Price;
                     else
-                        _StockQuoteCache.Add(stock.ASXCode, stockQuote.Price * 10);
+                        _StockQuoteCache.Add(stock.ASXCode, stockQuote.Price);
 
                     if (stock.Type == StockType.StapledSecurity)
                     {
@@ -125,82 +125,7 @@ namespace PortfolioManager.Service
                 }
             }
         }
-        /*
-        private bool GetPricesFromCache(IEnumerable<StockPrice> prices)
-        {
-            StockQuote cachedStockQuote;
-            decimal percentOfPrice;
-            string asxCode;
-
-            bool allFound = true;
-            foreach (var price in prices)
-            {
-                if (price.Stock.ParentId == Guid.Empty)
-                {
-                    asxCode = price.Stock.ASXCode;
-                    percentOfPrice = 1.00m;
-                }
-                else
-                {
-                    var parentStock = _StockQuery.Get(price.Stock.ParentId, DateTime.Today);
-
-                    asxCode = parentStock.ASXCode;
-                    percentOfPrice = _StockQuery.PercentOfParentCost(parentStock.Id, price.Stock.Id, DateTime.Today);
-                }
-
-                if (_StockQuoteCache.TryGetValue(asxCode, out cachedStockQuote))
-                    price.Price = cachedStockQuote.Price * percentOfPrice;
-                else
-                    allFound = false;
-            }
-
-            return allFound;
-        }
-
-        private void UpdateCache(IEnumerable<StockQuote> quotes)
-        {
-            StockQuote cachedStockQuote;
-
-            foreach (var quote in quotes)
-            {
-                if (_StockQuoteCache.TryGetValue(quote.ASXCode, out cachedStockQuote))
-                {
-                    cachedStockQuote.Price = quote.Price;
-                    cachedStockQuote.Time = quote.Time;
-                }
-                else
-                    _StockQuoteCache.Add(quote.ASXCode, quote);
-            }
-        } */
-    /*    
-        private bool GetCurrentPrices(IEnumerable<StockPrice> prices)
-        {
-            // Try loading prices from cache 
-            if (GetPricesFromCache(prices))
-                return true;
-
-            // If we didn't find them all then fetch all stock quotes
-            var asxCodes = new List<string>();
-            foreach (var price in prices)
-            {
-                if (price.Stock.ParentId == Guid.Empty)
-                    asxCodes.Add(price.Stock.ASXCode);
-                else
-                {
-                    var parentStock = _StockQuery.Get(price.Stock.ParentId, DateTime.Today);
-                    if (!asxCodes.Contains(parentStock.ASXCode))
-                        asxCodes.Add(parentStock.ASXCode);
-                }
-            }
-            var stockQuotes = _StockPriceDownloader.GetMultipleQuotes(asxCodes);
-
-            // Update the cache with the returned quotes
-            UpdateCache(stockQuotes);
-
-            // Try to fetch from the cache again
-            return GetPricesFromCache(prices);
-        }
-        */
+  
         public decimal GetPrice(Stock stock, DateTime date)
         {
             if (date == DateTime.Today)
