@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Utils;
 
+using StockManager.Service;
 
 namespace PortfolioManager.Service
 {
@@ -15,6 +16,7 @@ namespace PortfolioManager.Service
     {
 
     }
+
     public delegate void PortfolioChangedEventHandler(PortfolioChangedEventArgs e);
 
     public class Portfolio
@@ -31,7 +33,6 @@ namespace PortfolioManager.Service
         public CashAccountService CashAccountService { get; private set; }
 
         public StockService StockService { get; private set; }
-        public StockPriceService StockPriceService { get; private set; }
 
         public event PortfolioChangedEventHandler PortfolioChanged;
 
@@ -41,19 +42,16 @@ namespace PortfolioManager.Service
             PortfolioChanged?.Invoke(new PortfolioChangedEventArgs());
         }
 
-        public Portfolio(IPortfolioDatabase database, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
+        public Portfolio(IPortfolioDatabase database, StockServiceRepository stockServiceRepository, IStockQuery stockQuery, ICorporateActionQuery corporateActionQuery)
         {
             SettingsService = new PortfolioSettingsService();
 
-            StockService = new StockService(stockQuery);
-
-            var stockPriceDownloader = new GoogleStockPriceDownloader();
-            StockPriceService = new StockPriceService(stockQuery, stockPriceDownloader);
+            StockService = new StockService(stockServiceRepository);
 
             ParcelService = new ParcelService(database.PortfolioQuery, StockService);
             TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
             CashAccountService = new CashAccountService(database);
-            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, StockPriceService, TransactionService, CashAccountService);
+            ShareHoldingService = new ShareHoldingService(ParcelService, StockService, TransactionService, CashAccountService);
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService, SettingsService);
             CGTService = new CGTService(database.PortfolioQuery);

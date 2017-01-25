@@ -15,15 +15,13 @@ namespace PortfolioManager.Service
     {
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
-        private readonly StockPriceService _StockPriceService;
         private readonly TransactionService _TransactionService;
         private readonly CashAccountService _CashAccountService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, StockPriceService stockPriceService, TransactionService transactionService, CashAccountService cashAccountService)
+        internal ShareHoldingService(ParcelService parcelService, StockService stockService, TransactionService transactionService, CashAccountService cashAccountService)
         {
             _ParcelService = parcelService;
             _StockService = stockService;
-            _StockPriceService = stockPriceService;
             _TransactionService = transactionService;
             _CashAccountService = cashAccountService;
         }
@@ -112,25 +110,9 @@ namespace PortfolioManager.Service
             }
 
             /* Add prices to the Holdings list */
-            decimal stockPrice;
             foreach (var shareHolding in holdings)
-            {
-                /* Retrieve the stock price information */
-                if (date == DateTime.Today)
-                {
-                    stockPrice = _StockPriceService.GetCurrentPrice(shareHolding.Stock);
-                }
-                else
-                {
-                    if (!_StockPriceService.TryGetClosingPrice(shareHolding.Stock, date, out stockPrice))
-                    {
-                        // If no price available then use average cost
-                        stockPrice = shareHolding.AverageUnitCost;
-                    }
-                }
+                shareHolding.UnitValue = _StockService.GetPrice(shareHolding.Stock, date);
 
-                shareHolding.UnitValue = stockPrice;
-            }
 
             return holdings.AsReadOnly();
 

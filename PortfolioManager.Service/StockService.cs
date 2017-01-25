@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using StockManager.Service;
+
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 
@@ -11,106 +13,56 @@ namespace PortfolioManager.Service
 {
     public class StockService
     {
-        private readonly IStockQuery _StockQuery;
-        private readonly StockCache _Cache;
+        private StockServiceRepository _StockServiceRepository;
 
-        internal StockService(IStockQuery stockQuery)
+        internal StockService(StockServiceRepository stockServiceRepository)
         {
-            _StockQuery = stockQuery;
-            _Cache = new StockCache();
+            _StockServiceRepository = stockServiceRepository;
         }
 
         public Stock Get(Guid id, DateTime date)
         {
-            Stock stock;
-
-            if (_Cache.Get(id, date, out stock))
-                return stock;
-            
-            stock = _StockQuery.Get(id, date);
-            _Cache.Add(stock);
-
-            return stock;
+            return _StockServiceRepository.StockService.GetStock(id, date);
         }
 
         public Stock Get(string asxCode, DateTime date)
         {
-            Stock stock;
-
-
-            if (_Cache.Get(asxCode, date, out stock))
-                return stock;
-
-            stock = _StockQuery.GetByASXCode(asxCode, date);
-            _Cache.Add(stock);
-
-            return stock;
+            return _StockServiceRepository.StockService.GetStock(asxCode, date);
         }
 
         public IReadOnlyCollection<Stock> GetAll(DateTime atDate)
         {
-            return _StockQuery.GetAll(atDate);
+            return _StockServiceRepository.StockService.GetStocks(atDate);
         }
 
         public IReadOnlyCollection<Stock> GetChildStocks(Stock stock, DateTime date)
         {
-            return _StockQuery.GetChildStocks(stock.Id, date);
+            return _StockServiceRepository.StockService.GetChildStocks(stock);
         }
 
         public decimal PercentageOfParentCostBase(Stock stock, DateTime atDate)
         {
-            if (stock.ParentId == Guid.Empty)
-                throw new NotStapledSecurityComponentException(stock.ASXCode);
+            return _StockServiceRepository.StockService.PercentageOfParentCostBase(stock, atDate);
+        }
 
-            return _StockQuery.PercentOfParentCost(stock.ParentId, stock.Id, atDate);
+        public decimal GetClosingPrice(Stock stock, DateTime atDate)
+        {
+            return _StockServiceRepository.StockPriceService.GetClosingPrice(stock, atDate);
+        }
+
+        public decimal GetCurrentPrice(Stock stock)
+        {
+            return _StockServiceRepository.StockPriceService.GetCurrentPrice(stock);
+        }
+
+        public decimal GetPrice(Stock stock, DateTime atDate)
+        {
+            if (atDate == DateTime.Today)
+                return GetCurrentPrice(stock);
+            else
+                return GetClosingPrice(stock, atDate);
         }
     }
 
 
-    class StockCache
-    {
-        private readonly Dictionary<Guid, Stock> _StockCacheById;
-        private readonly Dictionary<string, Stock> _StockCacheByASXCode;
-
-        public StockCache()
-        {
-            _StockCacheById = new Dictionary<Guid, Stock>();
-            _StockCacheByASXCode = new Dictionary<string, Stock>();
-        }
-
-        public bool Get(Guid id, DateTime date, out Stock stock)
-        {
-            if (_StockCacheById.TryGetValue(id, out stock))
-            {
-                if ((stock.FromDate <= date) && (stock.ToDate >= date))
-                    return true;
-                else
-                    stock = null;
-            }
-
-            return false;
-        }
-
-        public bool Get(string asxCode, DateTime date, out Stock stock)
-        {
-            if (_StockCacheByASXCode.TryGetValue(asxCode, out stock))
-            {
-                if ((stock.FromDate <= date) && (stock.ToDate >= date))
-                    return true;
-                else
-                    stock = null;
-            }
-
-            return false;
-        }
-
-        public void Add(Stock stock)
-        {
-            if ((stock.FromDate <= DateTime.Today) && (stock.ToDate >= DateTime.Today))
-            {
-                _StockCacheById.Add(stock.Id, stock);
-                _StockCacheByASXCode.Add(stock.ASXCode, stock);
-            }
-        }
-    }
 }

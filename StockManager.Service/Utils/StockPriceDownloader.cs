@@ -9,10 +9,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-using PortfolioManager.Model.Stocks;
-
-
-namespace PortfolioManager.Service.Utils
+namespace StockManager.Service.Utils
 {
 
     public class StockQuote
@@ -35,7 +32,7 @@ namespace PortfolioManager.Service.Utils
     }
 
 
-    interface IStockPriceDownloader
+    public interface IStockPriceDownloader
     {
         StockQuote GetSingleQuote(string asxCode);
         IList<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);

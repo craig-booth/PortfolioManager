@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using StockManager.Service.Utils;
 using PortfolioManager.Model.Data;
 
 namespace StockManager.Service
@@ -15,6 +16,7 @@ namespace StockManager.Service
 
         public CorporateActionService CorporateActionService { get; private set; }
         public StockService StockService { get; private set; }
+        public StockPriceService StockPriceService { get; private set; }
 
         public StockServiceRepository(IStockDatabase database)
         {
@@ -22,6 +24,12 @@ namespace StockManager.Service
 
             CorporateActionService = new CorporateActionService(_Database);
             StockService = new StockService(_Database);
+            StockPriceService = new StockPriceService(_Database, new GoogleStockPriceDownloader());
+        }
+
+        public void DownloadUpdatedData()
+        {
+            StockPriceService.UpdateCache();
         }
 
         public void ImportStockPrices(string fileName)

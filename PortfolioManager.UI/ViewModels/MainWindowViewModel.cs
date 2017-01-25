@@ -9,6 +9,7 @@ using System.Windows;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
+using StockManager.Service;
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
@@ -26,6 +27,7 @@ namespace PortfolioManager.UI.ViewModels
     {
 
         private Portfolio _Portfolio;
+        private StockServiceRepository _StockServiceRepository;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -176,7 +178,8 @@ namespace PortfolioManager.UI.ViewModels
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
 
-            _Portfolio = new Portfolio(portfolioDatabase, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
+            _StockServiceRepository = new StockServiceRepository(stockDatabase);
+            _Portfolio = new Portfolio(portfolioDatabase, _StockServiceRepository, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
             ViewParameter.Portfolio = _Portfolio;
 
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
@@ -189,7 +192,7 @@ namespace PortfolioManager.UI.ViewModels
 
 
             var ui = TaskScheduler.FromCurrentSynchronizationContext();
-            Task.Run(() => { _Portfolio.StockPriceService.UpdateCache(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
+            Task.Run(() => { _StockServiceRepository.DownloadUpdatedData(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
         }
    
         private void PopulateFinancialYearList()

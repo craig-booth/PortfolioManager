@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using StockManager.Service.Utils;
+
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Data;
@@ -14,10 +16,12 @@ namespace StockManager.Service
     {
 
         private IStockDatabase _Database;
+        private readonly StockCache _Cache;
 
         public StockService(IStockDatabase database)
         {
             _Database = database;
+            _Cache = new StockCache();
         }
 
         public Stock Add(string asxCode, string name)
@@ -69,6 +73,8 @@ namespace StockManager.Service
                 unitOfWork.StockRepository.Add(stock);
                 unitOfWork.Save();
             }
+
+            _Cache.Add(stock);
         }
 
         public void Delete(Stock stock)
@@ -79,6 +85,7 @@ namespace StockManager.Service
                 unitOfWork.Save();
             }
 
+            _Cache.Remove(stock);
         }
 
         public void Delete(IEnumerable<Stock> stocks)
@@ -92,16 +99,27 @@ namespace StockManager.Service
 
                 unitOfWork.Save();
             }
+
+            foreach (Stock stock in stocks)
+                _Cache.Remove(stock);
         }
 
         public Stock GetStock(Guid id)
         {
-            return _Database.StockQuery.Get(id, DateTime.Today);
+            return GetStock(id, DateTime.Today);
         }
 
         public Stock GetStock(Guid id, DateTime atDate)
         {
-            return _Database.StockQuery.Get(id, atDate);
+            Stock stock;
+
+            if (_Cache.Get(id, atDate, out stock))
+                return stock;
+
+            stock = _Database.StockQuery.Get(id, atDate);
+            _Cache.Add(stock);
+
+            return stock;
         }
 
         public Stock GetStock(string asxCode)
@@ -111,7 +129,15 @@ namespace StockManager.Service
 
         public Stock GetStock(string asxCode, DateTime atDate)
         {
-            return _Database.StockQuery.GetByASXCode(asxCode, atDate);
+            Stock stock;
+
+            if (_Cache.Get(asxCode, atDate, out stock))
+                return stock;
+
+            stock = _Database.StockQuery.GetByASXCode(asxCode, atDate);
+            _Cache.Add(stock);
+
+            return stock;
         }
 
         public IReadOnlyCollection<Stock> GetStocks()
@@ -124,16 +150,6 @@ namespace StockManager.Service
             return _Database.StockQuery.GetAll(atDate);
         }
 
-        public string GetASXCode(Guid stockId)
-        {
-            return _Database.StockQuery.GetASXCode(stockId, DateTime.Today);
-        }
-
-        public string GetASXCode(Guid stockId, DateTime atDate)
-        {
-            return _Database.StockQuery.GetASXCode(stockId, atDate);
-        }
-
         public void ChangeASXCode(Stock stock, DateTime atDate, string newAsxCode, string newName)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
@@ -141,7 +157,8 @@ namespace StockManager.Service
                 ModifyStock(unitOfWork, stock, atDate, x => { x.ASXCode = newAsxCode; x.Name = newName; });
                 unitOfWork.Save();
             }
-            
+
+            _Cache.Remove(stock);
         }
 
         public void Delist(Stock stock, DateTime atDate)
@@ -153,6 +170,8 @@ namespace StockManager.Service
 
                 unitOfWork.Save();
             }
+
+            _Cache.Remove(stock);
         }
 
         public void AddChildStock(Stock stock, DateTime atDate, Stock child)
@@ -165,6 +184,8 @@ namespace StockManager.Service
                 ModifyStock(_Database.CreateUnitOfWork(), child, atDate, x => { x.ParentId = stock.Id; });
                 unitOfWork.Save();
             }
+
+            _Cache.Remove(stock);
         }
 
         public void AddChildStocks(Stock stock, DateTime atDate, IEnumerable<Stock> children)
@@ -180,7 +201,7 @@ namespace StockManager.Service
                 unitOfWork.Save();
             }
 
-            
+            _Cache.Remove(stock);
         }
 
         public IReadOnlyCollection<Stock> GetChildStocks(Stock stock)
@@ -206,7 +227,8 @@ namespace StockManager.Service
                 ModifyStock(_Database.CreateUnitOfWork(), child, atDate, x => { x.ParentId = Guid.Empty; });
                 unitOfWork.Save();
             }
-            
+
+            _Cache.Remove(stock);
         }
 
         public void RemoveChildStocks(Stock stock, DateTime atDate, IEnumerable<Stock> children)
@@ -229,6 +251,8 @@ namespace StockManager.Service
                 unitOfWork.Save();
             }
 
+            foreach (var child in children)
+                _Cache.Remove(child);
         }
 
         public decimal PercentageOfParentCostBase(Stock stock, DateTime atDate)
@@ -324,7 +348,6 @@ namespace StockManager.Service
                 stock.EndEntity(changeDate.AddDays(-1));
                 unitOfWork.StockRepository.Update(stock);
             }
-
         }
     }
 }
