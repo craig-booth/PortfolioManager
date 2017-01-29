@@ -37,6 +37,7 @@
                 <ResourceDictionary Source="Views/SettingsView.xaml"/>
                 <ResourceDictionary Source="Views/AssetAllocationView.xaml"/>
                 <ResourceDictionary Source="Views/PerformanceView.xaml"/>
+                <ResourceDictionary Source="Views/PortfolioValueView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

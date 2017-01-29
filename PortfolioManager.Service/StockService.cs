@@ -62,6 +62,12 @@ namespace PortfolioManager.Service
             else
                 return GetClosingPrice(stock, atDate);
         }
+
+        public Dictionary<DateTime, decimal> GetClosingPrices(Stock stock, DateTime fromDate, DateTime toDate)
+        {
+            return _StockServiceRepository.StockPriceService.GetClosingPrices(stock, fromDate, toDate);
+        }
+
     }
 
 

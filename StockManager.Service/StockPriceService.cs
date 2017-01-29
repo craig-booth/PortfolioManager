@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using StockManager.Service.Utils;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Utils;
 
 namespace StockManager.Service
 {
@@ -56,6 +57,45 @@ namespace StockManager.Service
                 unitOfWork.StockPriceRepository.Update(stock.Id, atDate, price);
                 unitOfWork.Save();
             }
+        }
+
+        public Dictionary<DateTime, decimal> GetClosingPrices(Stock stock, DateTime fromDate, DateTime toDate)
+        {
+            var closingPrices = new Dictionary<DateTime, decimal>();
+
+            var priceData = _Database.StockQuery.GetClosingPrices(stock.Id, fromDate, toDate);
+
+            // Add current price
+            if (toDate >= DateTime.Today)
+            {
+                var currentPrice = GetCurrentPrice(stock);
+
+                if (priceData.ContainsKey(DateTime.Today))
+                    priceData[DateTime.Today] = currentPrice;
+                else
+                    priceData.Add(DateTime.Today, currentPrice);
+            }
+
+            var priceDataEnumerator = priceData.GetEnumerator();
+            priceDataEnumerator.MoveNext();
+
+            decimal lastPrice = 0.00m;
+            foreach (var date in DateUtils.WeekDays(fromDate, toDate))
+            {
+                var currentPriceData = priceDataEnumerator.Current;
+
+                if (date == currentPriceData.Key)
+                {
+                    closingPrices.Add(date, currentPriceData.Value);
+                    lastPrice = currentPriceData.Value;
+
+                    priceDataEnumerator.MoveNext();
+                }
+                else
+                    closingPrices.Add(date, lastPrice);
+            }
+
+            return closingPrices;
         }
 
         public void ImportStockPrices(string fileName)

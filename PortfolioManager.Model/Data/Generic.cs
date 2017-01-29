@@ -87,6 +87,12 @@ namespace PortfolioManager.Model.Data
             return (atDate >= FromDate) && (atDate <= ToDate);
         }
 
+        public bool IsWithinRange(DateTime startDate, DateTime endDate)
+        {
+            return (FromDate <= startDate && ToDate >= startDate) ||
+                   (FromDate > startDate && FromDate <= endDate);
+        }
+
     }
 
     public interface IEditableEffectiveDatedEntity<T> where T : EffectiveDatedEntity

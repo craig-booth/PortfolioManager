@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:views="clr-namespace:PortfolioManager.UI.Views"
+                    xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels"
+                    xmlns:controls="clr-namespace:PortfolioManager.UI.Controls"
+                    xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf">
+
+    <DataTemplate DataType="{x:Type viewmodels:PortfolioValueViewModel}">
+
+       
+        <charts:CartesianChart>
+            <charts:CartesianChart.Series>
+                <charts:LineSeries Title="Total Value" Values="{Binding PortfolioValues}" PointGeometry="" LabelPoint="{Binding LabelFormatter}"  />
+            </charts:CartesianChart.Series>
+            <charts:CartesianChart.AxisY>
+                <charts:Axis MinValue="0" LabelFormatter="{Binding YAxisFormatter}"/>
+            </charts:CartesianChart.AxisY>
+            <charts:CartesianChart.AxisX>
+                <charts:Axis Labels="{Binding DateValues}"></charts:Axis>
+            </charts:CartesianChart.AxisX>
+        </charts:CartesianChart>
+
+       
+    </DataTemplate>
+
+</ResourceDictionary>
