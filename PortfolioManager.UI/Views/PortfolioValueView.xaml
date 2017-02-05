@@ -10,10 +10,10 @@
        
         <charts:CartesianChart>
             <charts:CartesianChart.Series>
-                <charts:LineSeries Title="Total Value" Values="{Binding PortfolioValues}" PointGeometry="" LabelPoint="{Binding LabelFormatter}"  />
+                <charts:StepLineSeries Title="Total Value" Values="{Binding PortfolioValues}" PointGeometry="" LabelPoint="{Binding LabelFormatter}"  />
             </charts:CartesianChart.Series>
             <charts:CartesianChart.AxisY>
-                <charts:Axis MinValue="0" LabelFormatter="{Binding YAxisFormatter}"/>
+                <charts:Axis LabelFormatter="{Binding YAxisFormatter}"/>
             </charts:CartesianChart.AxisY>
             <charts:CartesianChart.AxisX>
                 <charts:Axis Labels="{Binding DateValues}"></charts:Axis>

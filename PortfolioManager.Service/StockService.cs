@@ -68,6 +68,11 @@ namespace PortfolioManager.Service
             return _StockServiceRepository.StockPriceService.GetClosingPrices(stock, fromDate, toDate);
         }
 
+        public bool TradingDay(DateTime date)
+        {
+            return _StockServiceRepository.StockPriceService.TradingDay(date);
+        }
+
     }
 
 

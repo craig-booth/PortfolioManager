@@ -24,12 +24,14 @@ namespace StockManager.Service
 
             CorporateActionService = new CorporateActionService(_Database);
             StockService = new StockService(_Database);
-            StockPriceService = new StockPriceService(_Database, new GoogleStockPriceDownloader());
+            StockPriceService = new StockPriceService(_Database, new GoogleStockPriceDownloader(), new YahooHistoricalPriceDownloader());
         }
 
         public void DownloadUpdatedData()
         {
-            StockPriceService.UpdateCache();
+            StockPriceService.DownloadNonTradingDays(2010);
+            StockPriceService.DownloadCurrentPrices();
+            StockPriceService.DownloadHistoricalPrices();
         }
 
         public void ImportStockPrices(string fileName)

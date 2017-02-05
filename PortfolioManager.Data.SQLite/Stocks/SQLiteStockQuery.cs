@@ -382,5 +382,31 @@ namespace PortfolioManager.Data.SQLite.Stocks
             
             return prices;          
         }
+
+
+        private SQLiteCommand _GetLatestClosingPriceCommand;
+        public DateTime GetLatestClosingPrice(Guid stock)
+        {
+            DateTime date;
+
+            if (_GetLatestClosingPriceCommand == null)
+            {
+                _GetLatestClosingPriceCommand = new SQLiteCommand("SELECT[Date] FROM[StockPrices] WHERE[Stock] = @Stock ORDER BY[Date] DESC LIMIT 1", _Connection);
+                _GetLatestClosingPriceCommand.Prepare();
+            }
+
+            _GetLatestClosingPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
+            SQLiteDataReader reader = _GetLatestClosingPriceCommand.ExecuteReader();
+
+            if (reader.Read())
+                date = reader.GetDateTime(0);
+            else
+                date = DateUtils.NoDate;
+
+            reader.Close();
+
+            return date;
+        }
+
     }
 }

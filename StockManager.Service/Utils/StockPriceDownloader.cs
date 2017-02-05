@@ -15,7 +15,7 @@ namespace StockManager.Service.Utils
     public class StockQuote
     {
         public string ASXCode { get; set; }
-        public DateTime Time { get; set; }
+        public DateTime Date { get; set; }
         public decimal Price { get; set; }
 
         public StockQuote()
@@ -23,10 +23,10 @@ namespace StockManager.Service.Utils
 
         }
 
-        public StockQuote(string asxCode, DateTime time, decimal price)
+        public StockQuote(string asxCode, DateTime date, decimal price)
         {
             ASXCode = asxCode;
-            Time = time;
+            Date = date;
             Price = price;
         }
     }
@@ -35,7 +35,7 @@ namespace StockManager.Service.Utils
     public interface IStockPriceDownloader
     {
         StockQuote GetSingleQuote(string asxCode);
-        IList<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);
+        IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);
     }
 
     class GoogleStockPriceDownloader : IStockPriceDownloader
@@ -56,7 +56,7 @@ namespace StockManager.Service.Utils
             return quotes.FirstOrDefault();
         }
 
-        public IList<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes)
+        public IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes)
         {
             HttpWebRequest request;
             HttpWebResponse response;

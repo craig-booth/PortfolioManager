@@ -55,8 +55,10 @@
     <Compile Include="StockPriceImporter.cs" />
     <Compile Include="StockPriceService.cs" />
     <Compile Include="StockService.cs" />
+    <Compile Include="Utils\HistoricalPriceDownloader.cs" />
     <Compile Include="Utils\StockCache.cs" />
     <Compile Include="Utils\StockPriceDownloader.cs" />
+    <Compile Include="Utils\TradingDayDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">

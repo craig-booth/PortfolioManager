@@ -49,6 +49,7 @@ namespace PortfolioManager.Model.Data
         bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price);
         bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price, bool exact);
         Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate);
+        DateTime GetLatestClosingPrice(Guid stock);
     }
 
     public interface ICorporateActionRepository : IRepository<CorporateAction>

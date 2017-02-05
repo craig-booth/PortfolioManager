@@ -76,7 +76,7 @@ namespace PortfolioManager.UI.ViewModels
             }
 
             // create chart data
-            foreach (var date in DateUtils.WeekDays(_Parameter.StartDate, _Parameter.EndDate))
+            foreach (var date in DateUtils.DateRange(_Parameter.StartDate, _Parameter.EndDate).Where(x => _Parameter.Portfolio.StockService.TradingDay(x)))
             {
                 double value;
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
+using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Data.Memory.Stocks
 {
@@ -118,6 +119,11 @@ namespace PortfolioManager.Data.Memory.Stocks
         public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
         {
             return new Dictionary<DateTime, decimal>();
+        }
+
+        public DateTime GetLatestClosingPrice(Guid stock)
+        {
+            return DateUtils.NoDate;
         }
     }
 }

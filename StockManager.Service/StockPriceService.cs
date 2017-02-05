@@ -14,15 +14,23 @@ namespace StockManager.Service
     public class StockPriceService
     {
 
-        private IStockDatabase _Database;
+        private readonly IStockDatabase _Database;
         private readonly IStockPriceDownloader _StockPriceDownloader;
+        private readonly IHistoricalPriceDownloader _HistoricalPriceDownloader;
+
+        private HashSet<DateTime> _NonTradingDays;
+
         private Dictionary<Guid, decimal> _StockQuoteCache;
 
-        public StockPriceService(IStockDatabase database, IStockPriceDownloader stockPriceDownloader)
+        public StockPriceService(IStockDatabase database, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader)
         {
             _Database = database;
 
+            _NonTradingDays = new HashSet<DateTime>();
+
             _StockPriceDownloader = stockPriceDownloader;
+            _HistoricalPriceDownloader = historicalPriceDownloader;
+
             _StockQuoteCache = new Dictionary<Guid, decimal>();
         }
 
@@ -80,9 +88,15 @@ namespace StockManager.Service
             priceDataEnumerator.MoveNext();
 
             decimal lastPrice = 0.00m;
-            foreach (var date in DateUtils.WeekDays(fromDate, toDate))
+            foreach (var date in DateUtils.DateRange(fromDate, toDate).Where(x => TradingDay(x)))
             {
                 var currentPriceData = priceDataEnumerator.Current;
+
+                while (date > currentPriceData.Key)
+                {
+                    priceDataEnumerator.MoveNext();
+                    currentPriceData = priceDataEnumerator.Current;
+                }
 
                 if (date == currentPriceData.Key)
                 {
@@ -92,7 +106,10 @@ namespace StockManager.Service
                     priceDataEnumerator.MoveNext();
                 }
                 else
+                {
                     closingPrices.Add(date, lastPrice);
+                }
+               
             }
 
             return closingPrices;
@@ -110,7 +127,12 @@ namespace StockManager.Service
             }
         }
 
-        internal void UpdateCache()
+        public bool TradingDay(DateTime date)
+        {
+            return (date.WeekDay() && !_NonTradingDays.Contains(date));
+        }
+
+        internal void DownloadCurrentPrices()
         {
             var stocks = _Database.StockQuery.GetAll(DateTime.Today);
 
@@ -148,6 +170,64 @@ namespace StockManager.Service
                 }
             }
         }
+
+        internal void DownloadHistoricalPrices()
+        {
+            DateTime lastExpectedDate;
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Monday)
+                lastExpectedDate = DateTime.Today.AddDays(-3);
+            else if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                lastExpectedDate = DateTime.Today.AddDays(-2);
+            else
+                lastExpectedDate = DateTime.Today.AddDays(-1);
+
+            var stocks = _Database.StockQuery.GetAll(DateTime.Today);
+
+            using (var unitOfWork = _Database.CreateUnitOfWork())
+            {
+                foreach (var stock in stocks)
+                {
+                    if (stock.ParentId == Guid.Empty)
+                    {
+                        var latestDate = _Database.StockQuery.GetLatestClosingPrice(stock.Id);
+
+                        if (latestDate < lastExpectedDate)
+                        {
+                            var data = _HistoricalPriceDownloader.GetHistoricalPriceData(stock.ASXCode, latestDate.AddDays(1), lastExpectedDate);
+                            UpdateStockPrices(unitOfWork, data);
+                        }
+                    }
+                }
+
+                unitOfWork.Save();
+            }
+        }
+
+        internal void DownloadNonTradingDays(int fromYear)
+        {
+            for (var year = fromYear; year <= DateTime.Today.Year; year++)
+            {
+                foreach (var nonTradingDay in TradingDayDownloader.NonTradingDays(year))
+                    _NonTradingDays.Add(nonTradingDay);
+            }
+        }
+
+        private void UpdateStockPrices(IStockUnitOfWork unitOfWork, IEnumerable<StockQuote> stockPrices)
+        {
+             Stock stock = null;
+
+            foreach (var stockPrice in stockPrices)
+            {
+                if (_Database.StockQuery.TryGetByASXCode(stockPrice.ASXCode, stockPrice.Date, out stock))
+                {
+                    decimal price;
+                    if (_Database.StockQuery.TryGetClosingPrice(stock.Id, stockPrice.Date, out price, true))
+                        unitOfWork.StockPriceRepository.Update(stock.Id, stockPrice.Date, stockPrice.Price);
+                    else
+                        unitOfWork.StockPriceRepository.Add(stock.Id, stockPrice.Date, stockPrice.Price);
+                }
+            }
+        } 
     }
 }
  
