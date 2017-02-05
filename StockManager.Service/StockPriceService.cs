@@ -94,7 +94,8 @@ namespace StockManager.Service
 
                 while (date > currentPriceData.Key)
                 {
-                    priceDataEnumerator.MoveNext();
+                    if (! priceDataEnumerator.MoveNext())
+                        break;
                     currentPriceData = priceDataEnumerator.Current;
                 }
 
