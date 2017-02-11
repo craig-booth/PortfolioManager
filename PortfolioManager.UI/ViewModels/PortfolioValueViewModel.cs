@@ -97,6 +97,13 @@ namespace PortfolioManager.UI.ViewModels
                     }
                 }
 
+                if (_Parameter.Stock.Id == Guid.Empty)
+                {
+                    var cashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(date);
+                    value += (double)cashBalance;
+                }
+
+
                 PortfolioValues.Add(value);
             }
         }
