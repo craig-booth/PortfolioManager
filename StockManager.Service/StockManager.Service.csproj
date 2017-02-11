@@ -55,10 +55,12 @@
     <Compile Include="StockPriceImporter.cs" />
     <Compile Include="StockPriceService.cs" />
     <Compile Include="StockService.cs" />
-    <Compile Include="Utils\HistoricalPriceDownloader.cs" />
+    <Compile Include="Utils\DownloaderInterfaces.cs" />
+    <Compile Include="Utils\FloatComAUHistoricalPriceDownloader.cs" />
+    <Compile Include="Utils\YahooHistoricalPriceDownloader.cs" />
     <Compile Include="Utils\StockCache.cs" />
-    <Compile Include="Utils\StockPriceDownloader.cs" />
-    <Compile Include="Utils\TradingDayDownloader.cs" />
+    <Compile Include="Utils\GoogleStockPriceDownloader.cs" />
+    <Compile Include="Utils\ASXTradingDayDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">

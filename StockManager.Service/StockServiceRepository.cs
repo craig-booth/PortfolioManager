@@ -24,7 +24,7 @@ namespace StockManager.Service
 
             CorporateActionService = new CorporateActionService(_Database);
             StockService = new StockService(_Database);
-            StockPriceService = new StockPriceService(_Database, new GoogleStockPriceDownloader(), new YahooHistoricalPriceDownloader());
+            StockPriceService = new StockPriceService(_Database, new GoogleStockPriceDownloader(), new FloatComAUHistoricalPriceDownloader(), new ASXTradingDayDownloader());
         }
 
         public void DownloadUpdatedData()

@@ -12,11 +12,6 @@ using CsvHelper.Configuration;
 namespace StockManager.Service.Utils
 {
 
-    public interface IHistoricalPriceDownloader
-    {
-        IEnumerable<StockQuote> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate);
-    }
-
     class YahooHistoricalPriceDownloader: IHistoricalPriceDownloader
     {
         public IEnumerable<StockQuote> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
@@ -43,7 +38,7 @@ namespace StockManager.Service.Utils
 
                 var csvReader = new CsvReader(reader);
 
-                csvReader.Configuration.RegisterClassMap(new YahooFinianceClassMap());
+                csvReader.Configuration.RegisterClassMap(new YahooFinanceClassMap());
                 csvReader.Configuration.HasHeaderRecord = true;
                 while (csvReader.Read())
                 {
@@ -62,9 +57,9 @@ namespace StockManager.Service.Utils
         }
     }
 
-    class YahooFinianceClassMap : CsvClassMap<StockQuote>
+    class YahooFinanceClassMap : CsvClassMap<StockQuote>
     {
-        public YahooFinianceClassMap()
+        public YahooFinanceClassMap()
         {
             Map(x => x.Date).Index(0).TypeConverterOption("yyyy-MM-dd");
             Map(x => x.Price).Index(4);

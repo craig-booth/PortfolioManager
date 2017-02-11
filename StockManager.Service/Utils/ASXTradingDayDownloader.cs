@@ -13,9 +13,9 @@ using PortfolioManager.Model.Utils;
 namespace StockManager.Service.Utils
 {
  
-    class TradingDayDownloader
+    class ASXTradingDayDownloader : ITradingDayDownloader
     {
-        public static IEnumerable<DateTime> NonTradingDays(int year)
+        public IEnumerable<DateTime> NonTradingDays(int year)
         {
             var data = DownloadData(year);
 
@@ -28,7 +28,7 @@ namespace StockManager.Service.Utils
 
         }
 
-        private static DateTime ParseRow(XmlElement row, int year)
+        private DateTime ParseRow(XmlElement row, int year)
         {
             if ((row.Name == "tr") && (row.ChildNodes.Count >= 4))
             {
@@ -47,7 +47,7 @@ namespace StockManager.Service.Utils
             return DateUtils.NoDate;        
         }
 
-        private static XmlElement DownloadData(int year)
+        private XmlElement DownloadData(int year)
         {
             var url = String.Format("http://www.asx.com.au/about/asx-trading-calendar-{0:d}.htm", year);
             var request = HttpWebRequest.Create(url);

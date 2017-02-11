@@ -17,12 +17,13 @@ namespace StockManager.Service
         private readonly IStockDatabase _Database;
         private readonly IStockPriceDownloader _StockPriceDownloader;
         private readonly IHistoricalPriceDownloader _HistoricalPriceDownloader;
+        private readonly ITradingDayDownloader _TradingDayDownloader;
 
         private HashSet<DateTime> _NonTradingDays;
 
         private Dictionary<Guid, decimal> _StockQuoteCache;
 
-        public StockPriceService(IStockDatabase database, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader)
+        public StockPriceService(IStockDatabase database, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader, ITradingDayDownloader tradingDayDownloader)
         {
             _Database = database;
 
@@ -30,6 +31,7 @@ namespace StockManager.Service
 
             _StockPriceDownloader = stockPriceDownloader;
             _HistoricalPriceDownloader = historicalPriceDownloader;
+            _TradingDayDownloader = tradingDayDownloader;
 
             _StockQuoteCache = new Dictionary<Guid, decimal>();
         }
@@ -207,7 +209,7 @@ namespace StockManager.Service
         {
             for (var year = fromYear; year <= DateTime.Today.Year; year++)
             {
-                foreach (var nonTradingDay in TradingDayDownloader.NonTradingDays(year))
+                foreach (var nonTradingDay in _TradingDayDownloader.NonTradingDays(year))
                     _NonTradingDays.Add(nonTradingDay);
             }
         }

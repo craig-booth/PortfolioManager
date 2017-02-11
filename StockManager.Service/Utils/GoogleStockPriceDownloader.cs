@@ -12,32 +12,6 @@ using Newtonsoft.Json.Serialization;
 namespace StockManager.Service.Utils
 {
 
-    public class StockQuote
-    {
-        public string ASXCode { get; set; }
-        public DateTime Date { get; set; }
-        public decimal Price { get; set; }
-
-        public StockQuote()
-        {
-
-        }
-
-        public StockQuote(string asxCode, DateTime date, decimal price)
-        {
-            ASXCode = asxCode;
-            Date = date;
-            Price = price;
-        }
-    }
-
-
-    public interface IStockPriceDownloader
-    {
-        StockQuote GetSingleQuote(string asxCode);
-        IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);
-    }
-
     class GoogleStockPriceDownloader : IStockPriceDownloader
     {
         private readonly JsonSerializerSettings _SerializerSettings;
