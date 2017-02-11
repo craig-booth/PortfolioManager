@@ -37,7 +37,7 @@ namespace PortfolioManager.Service
 
         public IReadOnlyCollection<Stock> GetChildStocks(Stock stock, DateTime date)
         {
-            return _StockServiceRepository.StockService.GetChildStocks(stock);
+            return _StockServiceRepository.StockService.GetChildStocks(stock, date);
         }
 
         public decimal PercentageOfParentCostBase(Stock stock, DateTime atDate)
