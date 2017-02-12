@@ -184,7 +184,7 @@ namespace StockManager.Service
             else
                 lastExpectedDate = DateTime.Today.AddDays(-1);
 
-            var stocks = _Database.StockQuery.GetAll(DateTime.Today);
+            var stocks = _Database.StockQuery.GetAll();
 
             using (var unitOfWork = _Database.CreateUnitOfWork())
             {
