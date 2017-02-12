@@ -19,6 +19,8 @@ namespace PortfolioManager.UI.ViewModels
 {
     class PortfolioValueViewModel : PortfolioViewModel 
     {
+        enum ChartFrequency { Daily, Weekly, Monthly};
+
         public ChartValues<double> PortfolioValues { get; private set; } 
         public List<string> DateValues { get; set; }
 
@@ -75,10 +77,25 @@ namespace PortfolioManager.UI.ViewModels
                 closingPrices.Add(holdingRange.StockId, priceData);
             }
 
+            // Determine frequency to use
+            var chartFrequency = ChartFrequency.Daily;
+            var timeSpan = _Parameter.EndDate - _Parameter.StartDate;
+            if (timeSpan.Days > 365 * 5)
+                chartFrequency = ChartFrequency.Monthly;
+            else if (timeSpan.Days > 365)
+                chartFrequency = ChartFrequency.Weekly;
+
             // create chart data
+            var values = new List<double>();
             foreach (var date in DateUtils.DateRange(_Parameter.StartDate, _Parameter.EndDate).Where(x => _Parameter.Portfolio.StockService.TradingDay(x)))
             {
                 double value;
+
+                if ((chartFrequency == ChartFrequency.Weekly) && (date.DayOfWeek != DayOfWeek.Friday))
+                    continue;
+
+                if ((chartFrequency == ChartFrequency.Monthly) && (date.Day != DateTime.DaysInMonth(date.Year, date.Month)))
+                    continue;
 
                 DateValues.Add(date.ToShortDateString());
 
@@ -104,8 +121,10 @@ namespace PortfolioManager.UI.ViewModels
                 }
 
 
-                PortfolioValues.Add(value);
+                values.Add(value);
             }
+
+            PortfolioValues.AddRange(values);
         }
 
     }
