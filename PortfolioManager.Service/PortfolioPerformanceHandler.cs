@@ -1,0 +1,256 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using PortfolioManager.Service;
+using PortfolioManager.Service.Utils;
+using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Stocks;
+
+namespace PortfolioManager.Service
+{
+    class PortfolioPerformanceHandler : IServiceHandler
+    {
+        private readonly ShareHoldingService _ShareHoldingService;
+        private readonly CashAccountService _CashAccountService;
+        private readonly TransactionService _TransactionService;
+        private readonly StockService _StockService;
+        private readonly IncomeService _IncomeService;
+
+        public PortfolioPerformanceHandler(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, TransactionService transactionService, StockService stockService, IncomeService incomeService)
+        {
+            _ShareHoldingService = shareHoldingService;
+            _CashAccountService = cashAccountService;
+            _TransactionService = transactionService;
+            _StockService = stockService;
+            _IncomeService = incomeService;
+        }
+
+        public object HandleRequest(object request)
+        {
+            return HandleRequest((PortfolioPerformanceRequest)request);
+        }
+
+        public PortfolioPerformanceResponce HandleRequest(PortfolioPerformanceRequest request)
+        {
+            var responce = new PortfolioPerformanceResponce();
+
+            var openingHoldings = _ShareHoldingService.GetHoldings(request.FromDate);
+            var closingHoldings = _ShareHoldingService.GetHoldings(request.ToDate);
+
+            var openingCashBalance = _CashAccountService.GetBalance(request.FromDate);
+            var closingCashBalance = _CashAccountService.GetBalance(request.ToDate);
+
+            var cashTransactions = _CashAccountService.GetTransactions(request.FromDate, request.ToDate);
+
+            responce.HoldingPerformance = CalculateHoldingPerformance(request.FromDate, request.ToDate, openingHoldings, closingHoldings);
+
+            responce.OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance;
+            responce.Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
+            responce.Withdrawls = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Withdrawl).Sum(x => x.Amount);
+            responce.Interest = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Interest).Sum(x => x.Amount);
+            responce.Fees = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Fee).Sum(x => x.Amount);
+
+
+            responce.Dividends = responce.HoldingPerformance.Sum(x => x.Dividends);
+            responce.ChangeInMarketValue = responce.HoldingPerformance.Sum(x => x.CapitalGain);
+            responce.OutstandingDRPAmount = -responce.HoldingPerformance.Sum(x => x.DRPCashBalance);
+
+        /*    StockPerformance.Add(new ViewModels.StockPerformanceItem("Cash", openingCashBalance)
+            {
+                Dividends = Interest,
+                ClosingBalance = closingCashBalance
+            });  */
+
+            return responce;
+        }
+
+        private class HoldingPerformanceWorkItem
+        {
+            public HoldingPerformance HoldingPerformance;
+            public Stock Stock;
+            public CashFlows CashFlows;
+
+            public HoldingPerformanceWorkItem(Stock stock)
+            {
+                HoldingPerformance = new HoldingPerformance(string.Format("{0} ({1})", stock.Name, stock.ASXCode));
+                Stock = stock;
+                CashFlows = new Utils.CashFlows();
+            }
+        }
+
+        private List<HoldingPerformance> CalculateHoldingPerformance(DateTime startDate, DateTime endDate, IEnumerable<ShareHolding> openingHoldings, IEnumerable<ShareHolding> closingHoldings)
+        {
+
+            var workingList = new List<HoldingPerformanceWorkItem>();
+            HoldingPerformanceWorkItem workItem;
+
+            // Add opening holdings
+            foreach (var holding in openingHoldings)
+            {
+                workItem = new HoldingPerformanceWorkItem(holding.Stock);            
+                workItem.HoldingPerformance.OpeningBalance = holding.MarketValue;
+                workItem.CashFlows.Add(startDate, -holding.MarketValue);
+
+                workingList.Add(workItem);
+            }
+
+            // Process transactions during the period
+            var transactions = _TransactionService.GetTransactions(startDate.AddDays(1), endDate);
+            foreach (var transaction in transactions)
+            {
+                if ((transaction.Type != TransactionType.Aquisition) &&
+                            (transaction.Type != TransactionType.OpeningBalance) &&
+                            (transaction.Type != TransactionType.Disposal) &&
+                            (transaction.Type != TransactionType.Income))
+                    continue;
+
+
+                var stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
+                if (stock.ParentId != Guid.Empty)
+                    stock = _StockService.Get(stock.ParentId, transaction.RecordDate);
+
+                workItem = workingList.FirstOrDefault(x => x.Stock.Id == stock.Id);
+
+                if (transaction.Type == TransactionType.Aquisition)
+                {
+                    var aquisition = transaction as Aquisition;
+
+                    if (workItem == null)
+                    {
+                        workItem = new HoldingPerformanceWorkItem(stock);
+                        workingList.Add(workItem);
+                    }
+
+                    workItem.HoldingPerformance.Purchases = aquisition.Units * aquisition.AveragePrice;
+                    workItem.CashFlows.Add(aquisition.TransactionDate, -(aquisition.Units * aquisition.AveragePrice));
+                }
+       /*         else if (transaction.Type == TransactionType.OpeningBalance)
+                {
+                    var openingBalance = transaction as OpeningBalance;
+
+                    if (stockPerformance == null)
+                    {
+                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
+                        result.Add(stockPerformance);
+                    }
+
+                    stockPerformance.Purchases += openingBalance.CostBase;
+                    stockPerformance._CashFlows.Add(openingBalance.TransactionDate, -openingBalance.CostBase);
+                }
+                else if (transaction.Type == TransactionType.Disposal)
+                {
+                    var disposal = transaction as Disposal;
+
+                    if (stockPerformance == null)
+                    {
+                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
+                        result.Add(stockPerformance);
+                    }
+
+                    stockPerformance.Sales += disposal.Units * disposal.AveragePrice;
+                    stockPerformance._CashFlows.Add(disposal.TransactionDate, disposal.Units * disposal.AveragePrice);
+                }
+                else if (transaction.Type == TransactionType.Income)
+                {
+                    var income = transaction as IncomeReceived;
+
+                    if (stockPerformance == null)
+                    {
+                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
+                        result.Add(stockPerformance);
+                    }
+
+                    stockPerformance.Dividends += income.CashIncome;
+                    stockPerformance._CashFlows.Add(income.TransactionDate, income.CashIncome);
+                } */
+            }
+
+            // Populate HoldingPerformace from work list
+            var holdingPerformance = new List<HoldingPerformance>();
+            foreach (var item in workingList)
+            {
+                var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == item.Stock.Id);
+                if (holding != null)
+                {
+                    item.HoldingPerformance.ClosingBalance = holding.MarketValue;
+                    item.CashFlows.Add(startDate, holding.MarketValue);
+
+                 //   item.HoldingPerformance.DRPCashBalance = _IncomeService.GetDRPCashBalance(holding.Stock, endDate);
+                }
+                else
+                    item.HoldingPerformance.ClosingBalance = 0.00m;
+
+                item.HoldingPerformance.CapitalGain = item.HoldingPerformance.ClosingBalance - (item.HoldingPerformance.OpeningBalance + item.HoldingPerformance.Purchases - item.HoldingPerformance.Sales);
+                item.HoldingPerformance.TotalReturn = item.HoldingPerformance.CapitalGain + item.HoldingPerformance.Dividends;
+
+                item.HoldingPerformance.IRR = IRRCalculator.CalculateIRR(item.CashFlows);
+
+                holdingPerformance.Add(item.HoldingPerformance);
+            }
+            
+            return holdingPerformance;
+        }
+    }
+
+    public class PortfolioPerformanceRequest
+    {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+
+        public PortfolioPerformanceRequest(DateTime fromDate, DateTime toDate)
+        {
+            FromDate = fromDate;
+            ToDate = ToDate;
+        }
+    }
+
+    public class PortfolioPerformanceResponce
+    {
+        public decimal OpeningBalance { get; set; }
+        public decimal Deposits { get; set; }
+        public decimal Withdrawls { get; set; }
+        public decimal Interest { get; set; }
+        public decimal Dividends { get; set; }
+        public decimal Fees { get; set; }
+        public decimal ChangeInMarketValue { get; set; }
+        public decimal OutstandingDRPAmount { get; set; }
+
+        public List<HoldingPerformance> HoldingPerformance { get; set; }
+
+        public PortfolioPerformanceResponce()
+        {
+    
+        }
+    }
+
+    public class HoldingPerformance
+    {
+        public string CompanyName { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal Purchases { get; set; }
+        public decimal Sales { get; set; }
+        public decimal ClosingBalance { get; set; }
+        public decimal Dividends { get; set; }
+        public decimal CapitalGain { get; set; }
+        public decimal DRPCashBalance { get; set; }
+        public decimal TotalReturn { get; set; }
+        public double IRR { get; set; }
+
+        public HoldingPerformance(string companyName)
+        {
+            CompanyName = companyName;
+            OpeningBalance = 0.00m;
+            Purchases = 0.00m;
+            Sales = 0.00m;
+            Dividends = 0.00m;
+            CapitalGain = 0.00m;
+            ClosingBalance = 0.00m;
+            DRPCashBalance = 0.00m;
+        }
+
+    }
+
+}

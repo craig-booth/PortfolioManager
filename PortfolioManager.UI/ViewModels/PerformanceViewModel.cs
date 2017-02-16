@@ -71,38 +71,57 @@ namespace PortfolioManager.UI.ViewModels
 
         public override void RefreshView()
         {
-            var openingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.StartDate);
-            var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
+            var request = new PortfolioPerformanceRequest(_Parameter.StartDate, _Parameter.EndDate);
+            var responce = _Parameter.PortfolioService.HandleRequest<PortfolioPerformanceRequest, PortfolioPerformanceResponce>(request);
 
-            var openingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
-            var closingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.EndDate);
+            OpeningBalance = responce.OpeningBalance;
+            Deposits = responce.Deposits;
+            Withdrawls = responce.Withdrawls;
+            Interest = responce.Interest;
+            Dividends = responce.Dividends;
+            Fees = responce.Fees;
+            ChangeInMarketValue = responce.ChangeInMarketValue;
+            OutstandingDRPAmount = responce.OutstandingDRPAmount;
 
-            var cashTransactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+            /*    var openingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.StartDate);
+                 var closingHoldings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(_Parameter.EndDate);
+
+                 var openingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate);
+                 var closingCashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.EndDate);
+
+                 var cashTransactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
 
 
-            PopulateStockPerformance(openingHoldings, closingHoldings);
+                 PopulateStockPerformance(openingHoldings, closingHoldings);
 
-            OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance;                 
-            Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
-            Withdrawls = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Withdrawl).Sum(x => x.Amount);
-            Interest = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Interest).Sum(x => x.Amount);
-            Fees = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Fee).Sum(x => x.Amount);
+                 OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance;                 
+                 Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
+                 Withdrawls = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Withdrawl).Sum(x => x.Amount);
+                 Interest = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Interest).Sum(x => x.Amount);
+                 Fees = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Fee).Sum(x => x.Amount);
 
 
-            Dividends = StockPerformance.Sum(x => x.Dividends);
-            ChangeInMarketValue = StockPerformance.Sum(x => x.CapitalGain);
-            OutstandingDRPAmount = - StockPerformance.Sum(x => x.DRPCashBalance);
+                 Dividends = StockPerformance.Sum(x => x.Dividends);
+                 ChangeInMarketValue = StockPerformance.Sum(x => x.CapitalGain);
+                 OutstandingDRPAmount = - StockPerformance.Sum(x => x.DRPCashBalance);
+*/
 
-            StockPerformance.Add(new ViewModels.StockPerformanceItem("Cash", openingCashBalance)
-            {
-                Dividends = Interest,
-                ClosingBalance = closingCashBalance
-            });
+
+            StockPerformance.Clear();
+            foreach (var stockPerformance in responce.HoldingPerformance.OrderBy(x => x.CompanyName))
+                StockPerformance.Add(new StockPerformanceItem(stockPerformance));
+
+            /*               StockPerformance.Add(new ViewModels.StockPerformanceItem("Cash", openingCashBalance)
+               {
+                   Dividends = Interest,
+                   ClosingBalance = closingCashBalance
+               });
+                */
 
             OnPropertyChanged(""); 
         }
 
-        private void PopulateStockPerformance(IEnumerable<ShareHolding> openingHoldings, IEnumerable<ShareHolding> closingHoldings)
+   /*     private void PopulateStockPerformance(IEnumerable<ShareHolding> openingHoldings, IEnumerable<ShareHolding> closingHoldings)
         {
 
             StockPerformance.Clear();
@@ -207,7 +226,7 @@ namespace PortfolioManager.UI.ViewModels
 
                 stockPerformance.IRR = IRRCalculator.CalculateIRR(stockPerformance._CashFlows);       
             }
-        }
+        } */
 
     }
 
@@ -215,9 +234,9 @@ namespace PortfolioManager.UI.ViewModels
 
     public class StockPerformanceItem
     {
-        internal CashFlows _CashFlows;
+   //     internal CashFlows _CashFlows;
 
-        public Stock Stock { get;  }
+   //     public Stock Stock { get;  }
         public string CompanyName { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal Purchases { get; set; }
@@ -229,7 +248,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal TotalReturn { get; set; }
         public double IRR { get; set; }
 
-        public StockPerformanceItem(string description, decimal openingBalance)
+   /*     public StockPerformanceItem(string description, decimal openingBalance)
         {
             _CashFlows = new CashFlows();
 
@@ -248,6 +267,19 @@ namespace PortfolioManager.UI.ViewModels
             : this(string.Format("{0} ({1})", stock.Name, stock.ASXCode), openingBalance)
         {        
             Stock = stock; 
+        } */
+
+        public StockPerformanceItem(HoldingPerformance stockPerformance)
+        {
+            CompanyName = stockPerformance.CompanyName;
+            OpeningBalance = stockPerformance.OpeningBalance;
+            Purchases = stockPerformance.Purchases;
+            Sales = stockPerformance.Sales;
+            Dividends = stockPerformance.Dividends;
+            CapitalGain = stockPerformance.CapitalGain;
+            ClosingBalance = stockPerformance.ClosingBalance;
+            DRPCashBalance = stockPerformance.DRPCashBalance;
+            IRR = stockPerformance.IRR;
         }
 
 

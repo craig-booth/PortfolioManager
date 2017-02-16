@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,7 +47,10 @@
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
     <Compile Include="CashAccountService.cs" />
+    <Compile Include="PortfolioPerformanceHandler.cs" />
+    <Compile Include="PortfolioService.cs" />
     <Compile Include="PortfolioSettings.cs" />
+    <Compile Include="PortfolioSummaryHandler.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
     <Compile Include="CGTService.cs" />
     <Compile Include="CorporateActionService.cs" />

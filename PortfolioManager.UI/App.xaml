@@ -18,7 +18,6 @@
                 <!-- Views -->
                 <ResourceDictionary Source="Views/PortfolioSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionReportView.xaml"/>
-                <ResourceDictionary Source="Views/HoldingSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TaxableIncomeView.xaml"/>
                 <ResourceDictionary Source="Views/CGTView.xaml"/>
                 <ResourceDictionary Source="Views/DetailedCGTView.xaml"/>

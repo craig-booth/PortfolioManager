@@ -13,6 +13,8 @@ namespace PortfolioManager.UI.Utilities
 {
     class ViewParameter : NotifyClass
     {
+        public PortfolioService PortfolioService;
+
         private Portfolio _Portfolio;
         public Portfolio Portfolio
         {

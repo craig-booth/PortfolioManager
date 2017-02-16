@@ -9,15 +9,12 @@ using System.Globalization;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Service;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
 {
     class PortfolioSummaryViewModel : PortfolioViewModel
     {
-        private DateTime _PortfolioStartDate;
-
         public ChangeInValue PortfolioValue { get; private set; }
         public PortfolioReturn Return1Year { get; private set; }
         public PortfolioReturn Return3Year { get; private set; }
@@ -35,62 +32,71 @@ namespace PortfolioManager.UI.ViewModels
             Return1Year = new PortfolioReturn("1 Year");
             Return3Year = new PortfolioReturn("3 Years");
             Return5Year = new PortfolioReturn("5 Years");
-            ReturnAll = new PortfolioReturn("All");
+            ReturnAll = new PortfolioReturn("All"); 
         }
 
         public override void RefreshView()
-        {          
-            var holdings = _Parameter.Portfolio.ShareHoldingService.GetHoldings(DateTime.Today);
-            var cashBalance = _Parameter.Portfolio.CashAccountService.GetBalance(DateTime.Today);
+        {
+            var request = new PortfolioSummaryRequest(DateTime.Today);
+            var responce = _Parameter.PortfolioService.HandleRequest<PortfolioSummaryRequest, PortfolioSummaryResponce>(request);
 
-            PortfolioValue.InitialValue = holdings.Sum(x => x.TotalCostBase) + cashBalance; 
-            PortfolioValue.Value = holdings.Sum(x => x.MarketValue) + cashBalance;
+            PortfolioValue.InitialValue = responce.PortfolioCost;
+            PortfolioValue.Value = responce.PortfolioValue;
 
-            _PortfolioStartDate = _Parameter.Portfolio.ShareHoldingService.GetPortfolioStartDate();
+            if (responce.Return1Year != null)
+            {
+                Return1Year.Value = (decimal)responce.Return1Year;
+                Return1Year.NotApplicable = false;
+            } 
+            else
+            {
+                Return1Year.Value = 0.00m;
+                Return1Year.NotApplicable = true;
+            }
 
-            CalculateIRR(Return1Year, 1);
-            CalculateIRR(Return3Year, 3);
-            CalculateIRR(Return5Year, 5);
-            CalculateIRR(ReturnAll, 0);   
+            if (responce.Return3Year != null)
+            {
+                Return3Year.Value = (decimal)responce.Return3Year;
+                Return3Year.NotApplicable = false;
+            }
+            else
+            {
+                Return3Year.Value = 0.00m;
+                Return3Year.NotApplicable = true;
+            }
+
+            if (responce.Return5Year != null)
+            {
+                Return5Year.Value = (decimal)responce.Return5Year;
+                Return5Year.NotApplicable = false;
+            }
+            else
+            {
+                Return5Year.Value = 0.00m;
+                Return5Year.NotApplicable = true;
+            }
+
+            if (responce.ReturnAll != null)
+            {
+                ReturnAll.Value = (decimal)responce.ReturnAll;
+                ReturnAll.NotApplicable = false;
+            }
+            else
+            {
+                ReturnAll.Value = 0.00m;
+                ReturnAll.NotApplicable = true;
+            }
 
             Holdings.Clear();
-            foreach (var holding in holdings)
+            foreach (var holding in responce.Holdings.OrderBy(x => x.CompanyName))
                 Holdings.Add(new HoldingItemViewModel(holding));
 
-           // Holdings.Sort(HoldingItemViewModel.CompareByCompanyName);
 
-            Holdings.Add(new HoldingItemViewModel("Cash Account", cashBalance));
+            Holdings.Add(new HoldingItemViewModel("", "Cash Account", 0, responce.CashBalance, responce.CashBalance));
 
             OnPropertyChanged("");
         }
 
-        private void CalculateIRR(PortfolioReturn portfolioReturn, int years)
-        {
-            DateTime startDate;
-            if (years == 0)
-                startDate = _PortfolioStartDate;
-            else
-                startDate = DateTime.Today.AddYears(-years);
-
-            if (startDate >= _PortfolioStartDate)
-            {
-                try
-                {
-                    portfolioReturn.Value = _Parameter.Portfolio.ShareHoldingService.CalculateIRR(startDate, DateTime.Today);
-                    portfolioReturn.NotApplicable = false;
-                }
-                catch
-                {
-                    portfolioReturn.Value = 0;
-                    portfolioReturn.NotApplicable = true;
-                }
-            }
-            else
-            {
-                portfolioReturn.Value = 0;
-                portfolioReturn.NotApplicable = true;
-            }
-        }
     }
 
     class HoldingItemViewModel
@@ -100,26 +106,22 @@ namespace PortfolioManager.UI.ViewModels
         public int Units { get; private set; }
         public ChangeInValue ChangeInValue { get; private set; }
 
-        public HoldingItemViewModel(string Description, decimal value)
+        public HoldingItemViewModel(string asxCode, string companyName, int units, decimal cost, decimal marketValue)
         {
-            ASXCode = "";
-            CompanyName = Description;
-            Units = 0;
-            ChangeInValue = new ChangeInValue(value, value);
+            ASXCode = asxCode;
+            CompanyName = companyName;
+            Units = units;
+            ChangeInValue = new ChangeInValue(cost, marketValue);
         }
 
-        public HoldingItemViewModel(ShareHolding holding)
+        public HoldingItemViewModel(Holding holding)
         {
-            ASXCode = holding.Stock.ASXCode;
-            CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode);
+            ASXCode = holding.ASXCode;
+            CompanyName = holding.CompanyName;
             Units = holding.Units;
-            ChangeInValue = new ChangeInValue(holding.TotalCostBase, holding.MarketValue);
+            ChangeInValue = new ChangeInValue(holding.Cost, holding.Value);
         }
 
-        public static int CompareByCompanyName(HoldingItemViewModel holding1, HoldingItemViewModel holding2)
-        {
-            return String.Compare(holding1.CompanyName, holding2.CompanyName);
-        }
     }
 
     enum DirectionChange { Increase, Decrease, Neutral };
@@ -235,6 +237,6 @@ namespace PortfolioManager.UI.ViewModels
             : this(period, 0)
         {
         }
-    }
+    } 
 
 }
