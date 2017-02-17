@@ -9,51 +9,46 @@ using PortfolioManager.Model.Stocks;
 namespace PortfolioManager.Service
 {
 
-    class PortfolioSummaryHandler : IServiceHandler
+    public class PortfolioSummaryService
     {
         private readonly ShareHoldingService _ShareHoldingService;
         private readonly CashAccountService _CashAccountService;
 
-        public PortfolioSummaryHandler(ShareHoldingService shareHoldingService, CashAccountService cashAccountService)
+        public PortfolioSummaryService(ShareHoldingService shareHoldingService, CashAccountService cashAccountService)
         {
             _ShareHoldingService = shareHoldingService;
             _CashAccountService = cashAccountService;
         }
 
-        public object HandleRequest(object request)
-        {
-            return HandleRequest((PortfolioSummaryRequest)request);
-        }
-
-        public PortfolioSummaryResponce HandleRequest(PortfolioSummaryRequest request)
+        public Task<PortfolioSummaryResponce> HandleRequest(DateTime date)
         {
             var response = new PortfolioSummaryResponce();
 
-            var holdings = _ShareHoldingService.GetHoldings(request.Date);
-            var cashBalance = _CashAccountService.GetBalance(request.Date);
+            var holdings = _ShareHoldingService.GetHoldings(date);
+            var cashBalance = _CashAccountService.GetBalance(date);
 
             response.PortfolioValue = holdings.Sum(x => x.MarketValue) + cashBalance; 
             response.PortfolioCost = holdings.Sum(x => x.TotalCostBase) + cashBalance;
 
             response.CashBalance = cashBalance;
 
-            response.Return1Year = CalculateIRR(request.Date, 1);
-            response.Return3Year = CalculateIRR(request.Date, 3);
-            response.Return5Year = CalculateIRR(request.Date, 5);
-            response.ReturnAll = CalculateIRR(request.Date, 0);
+            response.Return1Year = CalculateIRR(date, 1);
+            response.Return3Year = CalculateIRR(date, 3);
+            response.Return5Year = CalculateIRR(date, 5);
+            response.ReturnAll = CalculateIRR(date, 0);
 
             foreach (var holding in holdings)
                 response.Holdings.Add(new Holding()
                 {
                     ASXCode = holding.Stock.ASXCode,
-                    CompanyName = string.Format("{0} ({1})", holding.Stock.Name, holding.Stock.ASXCode),
+                    CompanyName = holding.Stock.Name, 
                     Category = holding.Stock.Category,
                     Units = holding.Units,
                     Value = holding.MarketValue,
                     Cost = holding.TotalCostBase
                 });
 
-            return response;
+            return Task.FromResult<PortfolioSummaryResponce>(response);
         }
 
         private decimal? CalculateIRR(DateTime date, int years)
@@ -87,16 +82,6 @@ namespace PortfolioManager.Service
 
     }
 
-
-    public class PortfolioSummaryRequest
-    {
-        public DateTime Date { get; set; }
-
-        public PortfolioSummaryRequest(DateTime date)
-        {
-            Date = date;
-        }
-    }
 
     public class PortfolioSummaryResponce
     {

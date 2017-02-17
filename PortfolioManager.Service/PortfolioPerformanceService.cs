@@ -11,7 +11,8 @@ using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Service
 {
-    class PortfolioPerformanceHandler : IServiceHandler
+
+    public class PortfolioPerformanceService
     {
         private readonly ShareHoldingService _ShareHoldingService;
         private readonly CashAccountService _CashAccountService;
@@ -19,7 +20,7 @@ namespace PortfolioManager.Service
         private readonly StockService _StockService;
         private readonly IncomeService _IncomeService;
 
-        public PortfolioPerformanceHandler(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, TransactionService transactionService, StockService stockService, IncomeService incomeService)
+        public PortfolioPerformanceService(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, TransactionService transactionService, StockService stockService, IncomeService incomeService)
         {
             _ShareHoldingService = shareHoldingService;
             _CashAccountService = cashAccountService;
@@ -28,43 +29,30 @@ namespace PortfolioManager.Service
             _IncomeService = incomeService;
         }
 
-        public object HandleRequest(object request)
-        {
-            return HandleRequest((PortfolioPerformanceRequest)request);
-        }
-
-        public PortfolioPerformanceResponce HandleRequest(PortfolioPerformanceRequest request)
+        public Task<PortfolioPerformanceResponce> HandleRequest(DateTime fromDate, DateTime toDate)
         {
             var responce = new PortfolioPerformanceResponce();
 
-            var openingHoldings = _ShareHoldingService.GetHoldings(request.FromDate);
-            var closingHoldings = _ShareHoldingService.GetHoldings(request.ToDate);
-
-            var openingCashBalance = _CashAccountService.GetBalance(request.FromDate);
-            var closingCashBalance = _CashAccountService.GetBalance(request.ToDate);
-
-            var cashTransactions = _CashAccountService.GetTransactions(request.FromDate, request.ToDate);
-
-            responce.HoldingPerformance = CalculateHoldingPerformance(request.FromDate, request.ToDate, openingHoldings, closingHoldings);
-
-            responce.OpeningBalance = openingHoldings.Sum(x => x.MarketValue) + openingCashBalance;
+            var cashTransactions = _CashAccountService.GetTransactions(fromDate, toDate);          
+            responce.OpeningCashBalance = _CashAccountService.GetBalance(fromDate);           
             responce.Deposits = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Deposit).Sum(x => x.Amount);
             responce.Withdrawls = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Withdrawl).Sum(x => x.Amount);
             responce.Interest = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Interest).Sum(x => x.Amount);
             responce.Fees = cashTransactions.Where(x => x.Type == CashAccountTransactionType.Fee).Sum(x => x.Amount);
+            responce.ClosingCashBalance = _CashAccountService.GetBalance(toDate);
 
-
+            var openingHoldings = _ShareHoldingService.GetHoldings(fromDate);
+            var closingHoldings = _ShareHoldingService.GetHoldings(toDate);      
+                     
+            responce.HoldingPerformance = CalculateHoldingPerformance(fromDate, toDate, openingHoldings, closingHoldings);
+            responce.OpeningBalance = openingHoldings.Sum(x => x.MarketValue);
             responce.Dividends = responce.HoldingPerformance.Sum(x => x.Dividends);
             responce.ChangeInMarketValue = responce.HoldingPerformance.Sum(x => x.CapitalGain);
             responce.OutstandingDRPAmount = -responce.HoldingPerformance.Sum(x => x.DRPCashBalance);
+            responce.ClosingBalance = closingHoldings.Sum(x => x.MarketValue);
 
-        /*    StockPerformance.Add(new ViewModels.StockPerformanceItem("Cash", openingCashBalance)
-            {
-                Dividends = Interest,
-                ClosingBalance = closingCashBalance
-            });  */
 
-            return responce;
+            return Task.FromResult<PortfolioPerformanceResponce>(responce);
         }
 
         private class HoldingPerformanceWorkItem
@@ -75,7 +63,7 @@ namespace PortfolioManager.Service
 
             public HoldingPerformanceWorkItem(Stock stock)
             {
-                HoldingPerformance = new HoldingPerformance(string.Format("{0} ({1})", stock.Name, stock.ASXCode));
+                HoldingPerformance = new HoldingPerformance(stock.ASXCode, stock.Name);
                 Stock = stock;
                 CashFlows = new Utils.CashFlows();
             }
@@ -113,59 +101,40 @@ namespace PortfolioManager.Service
                     stock = _StockService.Get(stock.ParentId, transaction.RecordDate);
 
                 workItem = workingList.FirstOrDefault(x => x.Stock.Id == stock.Id);
+                if (workItem == null)
+                {
+                    workItem = new HoldingPerformanceWorkItem(stock);
+                    workingList.Add(workItem);
+                }
 
                 if (transaction.Type == TransactionType.Aquisition)
                 {
                     var aquisition = transaction as Aquisition;
 
-                    if (workItem == null)
-                    {
-                        workItem = new HoldingPerformanceWorkItem(stock);
-                        workingList.Add(workItem);
-                    }
-
                     workItem.HoldingPerformance.Purchases = aquisition.Units * aquisition.AveragePrice;
                     workItem.CashFlows.Add(aquisition.TransactionDate, -(aquisition.Units * aquisition.AveragePrice));
                 }
-       /*         else if (transaction.Type == TransactionType.OpeningBalance)
+                else if (transaction.Type == TransactionType.OpeningBalance)
                 {
                     var openingBalance = transaction as OpeningBalance;
 
-                    if (stockPerformance == null)
-                    {
-                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
-                        result.Add(stockPerformance);
-                    }
-
-                    stockPerformance.Purchases += openingBalance.CostBase;
-                    stockPerformance._CashFlows.Add(openingBalance.TransactionDate, -openingBalance.CostBase);
+                    workItem.HoldingPerformance.Purchases += openingBalance.CostBase;
+                    workItem.CashFlows.Add(openingBalance.TransactionDate, -openingBalance.CostBase);
                 }
                 else if (transaction.Type == TransactionType.Disposal)
                 {
                     var disposal = transaction as Disposal;
 
-                    if (stockPerformance == null)
-                    {
-                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
-                        result.Add(stockPerformance);
-                    }
-
-                    stockPerformance.Sales += disposal.Units * disposal.AveragePrice;
-                    stockPerformance._CashFlows.Add(disposal.TransactionDate, disposal.Units * disposal.AveragePrice);
+                    workItem.HoldingPerformance.Sales += disposal.Units * disposal.AveragePrice;
+                    workItem.CashFlows.Add(disposal.TransactionDate, disposal.Units * disposal.AveragePrice);
                 }
                 else if (transaction.Type == TransactionType.Income)
                 {
                     var income = transaction as IncomeReceived;
 
-                    if (stockPerformance == null)
-                    {
-                        stockPerformance = new StockPerformanceItem(stock, 0.00m);
-                        result.Add(stockPerformance);
-                    }
-
-                    stockPerformance.Dividends += income.CashIncome;
-                    stockPerformance._CashFlows.Add(income.TransactionDate, income.CashIncome);
-                } */
+                    workItem.HoldingPerformance.Dividends += income.CashIncome;
+                    workItem.CashFlows.Add(income.TransactionDate, income.CashIncome);
+                } 
             }
 
             // Populate HoldingPerformace from work list
@@ -176,9 +145,9 @@ namespace PortfolioManager.Service
                 if (holding != null)
                 {
                     item.HoldingPerformance.ClosingBalance = holding.MarketValue;
-                    item.CashFlows.Add(startDate, holding.MarketValue);
+                    item.CashFlows.Add(endDate, holding.MarketValue);
 
-                 //   item.HoldingPerformance.DRPCashBalance = _IncomeService.GetDRPCashBalance(holding.Stock, endDate);
+                    item.HoldingPerformance.DRPCashBalance = _IncomeService.GetDRPCashBalance(holding.Stock, endDate);
                 }
                 else
                     item.HoldingPerformance.ClosingBalance = 0.00m;
@@ -195,28 +164,21 @@ namespace PortfolioManager.Service
         }
     }
 
-    public class PortfolioPerformanceRequest
-    {
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
-
-        public PortfolioPerformanceRequest(DateTime fromDate, DateTime toDate)
-        {
-            FromDate = fromDate;
-            ToDate = ToDate;
-        }
-    }
-
     public class PortfolioPerformanceResponce
     {
         public decimal OpeningBalance { get; set; }
+        public decimal Dividends { get; set; }
+        public decimal ChangeInMarketValue { get; set; }
+        public decimal OutstandingDRPAmount { get; set; }
+        public decimal ClosingBalance { get; set; }
+
+        public decimal OpeningCashBalance { get; set; }
         public decimal Deposits { get; set; }
         public decimal Withdrawls { get; set; }
         public decimal Interest { get; set; }
-        public decimal Dividends { get; set; }
         public decimal Fees { get; set; }
-        public decimal ChangeInMarketValue { get; set; }
-        public decimal OutstandingDRPAmount { get; set; }
+        public decimal ClosingCashBalance { get; set; }
+        
 
         public List<HoldingPerformance> HoldingPerformance { get; set; }
 
@@ -228,6 +190,7 @@ namespace PortfolioManager.Service
 
     public class HoldingPerformance
     {
+        public string ASXCode { get; set; }
         public string CompanyName { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal Purchases { get; set; }
@@ -239,8 +202,9 @@ namespace PortfolioManager.Service
         public decimal TotalReturn { get; set; }
         public double IRR { get; set; }
 
-        public HoldingPerformance(string companyName)
+        public HoldingPerformance(string asxCode, string companyName)
         {
+            ASXCode = asxCode;
             CompanyName = companyName;
             OpeningBalance = 0.00m;
             Purchases = 0.00m;

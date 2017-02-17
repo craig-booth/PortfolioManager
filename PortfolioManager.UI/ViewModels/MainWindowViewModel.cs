@@ -24,8 +24,7 @@ using PortfolioManager.UI.Utilities;
 namespace PortfolioManager.UI.ViewModels
 {
     class MainWindowViewModel : NotifyClass
-    {
-        private PortfolioService _PortfolioService;
+    {      
         private Portfolio _Portfolio;
         private StockServiceRepository _StockServiceRepository;
 
@@ -182,8 +181,7 @@ namespace PortfolioManager.UI.ViewModels
             _Portfolio = new Portfolio(portfolioDatabase, _StockServiceRepository, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
             ViewParameter.Portfolio = _Portfolio;
 
-            _PortfolioService = new PortfolioService(portfolioDatabase, _StockServiceRepository, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
-            ViewParameter.PortfolioService = _PortfolioService;
+            ViewParameter.PortfolioService = new LocalPortfolioServiceLocator(portfolioDatabase, stockDatabase);
 
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
 

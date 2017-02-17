@@ -54,10 +54,10 @@ namespace PortfolioManager.UI.ViewModels
             LabelFormatter = chartPoint => string.Format("{0:c}", chartPoint.Y);
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
-            var request = new PortfolioSummaryRequest(_Parameter.Date);
-            var responce = _Parameter.PortfolioService.HandleRequest< PortfolioSummaryRequest, PortfolioSummaryResponce>(request);
+            var portfolioSummaryService = _Parameter.PortfolioService.GetService<PortfolioSummaryService>();
+            var responce = await portfolioSummaryService.HandleRequest(_Parameter.Date);
 
             Cash[0].Value = (double)responce.CashBalance;
 
@@ -113,7 +113,7 @@ namespace PortfolioManager.UI.ViewModels
                 {
                     var series = new PieSeries()
                     {
-                        Title = holding.CompanyName,
+                        Title = FormattedCompanyName(holding.ASXCode, holding.CompanyName),
                         Values = new ChartValues<ObservableValue>() { new ObservableValue((double)holding.Value) },
                         LabelPoint = LabelFormatter
                     };

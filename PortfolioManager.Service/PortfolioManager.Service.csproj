@@ -47,10 +47,10 @@
   <ItemGroup>
     <Compile Include="AttachmentService.cs" />
     <Compile Include="CashAccountService.cs" />
-    <Compile Include="PortfolioPerformanceHandler.cs" />
+    <Compile Include="PortfolioPerformanceService.cs" />
     <Compile Include="PortfolioService.cs" />
     <Compile Include="PortfolioSettings.cs" />
-    <Compile Include="PortfolioSummaryHandler.cs" />
+    <Compile Include="PortfolioSummaryService.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
     <Compile Include="CGTService.cs" />
     <Compile Include="CorporateActionService.cs" />
@@ -82,6 +82,10 @@
     <Compile Include="Utils\PortfolioUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj">
+      <Project>{4dcb5a16-15d6-41ae-9d48-46b9c6e45edb}</Project>
+      <Name>PortfolioManager.Data.SQLite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">
       <Project>{befae5c7-fdc4-41a6-ba2b-785fd54fb805}</Project>
       <Name>PortfolioManager.Model</Name>

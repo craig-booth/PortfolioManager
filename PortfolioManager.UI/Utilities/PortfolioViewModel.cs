@@ -53,5 +53,10 @@ namespace PortfolioManager.UI.Utilities
         {
 
         }
+
+        public static string FormattedCompanyName(string asxCode, string companyName)
+        {
+            return string.Format("{0} ({1})", companyName, asxCode);
+        }
     }
 }

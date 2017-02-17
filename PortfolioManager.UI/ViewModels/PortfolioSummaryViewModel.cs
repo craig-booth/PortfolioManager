@@ -35,10 +35,10 @@ namespace PortfolioManager.UI.ViewModels
             ReturnAll = new PortfolioReturn("All"); 
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
-            var request = new PortfolioSummaryRequest(DateTime.Today);
-            var responce = _Parameter.PortfolioService.HandleRequest<PortfolioSummaryRequest, PortfolioSummaryResponce>(request);
+            var portfolioSummaryService = _Parameter.PortfolioService.GetService<PortfolioSummaryService>();
+            var responce = await portfolioSummaryService.HandleRequest(_Parameter.Date);
 
             PortfolioValue.InitialValue = responce.PortfolioCost;
             PortfolioValue.Value = responce.PortfolioValue;
@@ -92,7 +92,7 @@ namespace PortfolioManager.UI.ViewModels
                 Holdings.Add(new HoldingItemViewModel(holding));
 
 
-            Holdings.Add(new HoldingItemViewModel("", "Cash Account", 0, responce.CashBalance, responce.CashBalance));
+            Holdings.Add(new HoldingItemViewModel("Cash Account", 0, responce.CashBalance, responce.CashBalance));
 
             OnPropertyChanged("");
         }
@@ -101,14 +101,12 @@ namespace PortfolioManager.UI.ViewModels
 
     class HoldingItemViewModel
     {
-        public string ASXCode { get; private set; }
         public string CompanyName { get; private set; }
         public int Units { get; private set; }
         public ChangeInValue ChangeInValue { get; private set; }
 
-        public HoldingItemViewModel(string asxCode, string companyName, int units, decimal cost, decimal marketValue)
-        {
-            ASXCode = asxCode;
+        public HoldingItemViewModel( string companyName, int units, decimal cost, decimal marketValue)
+        {           
             CompanyName = companyName;
             Units = units;
             ChangeInValue = new ChangeInValue(cost, marketValue);
@@ -116,8 +114,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public HoldingItemViewModel(Holding holding)
         {
-            ASXCode = holding.ASXCode;
-            CompanyName = holding.CompanyName;
+            CompanyName = CompanyName = PortfolioViewModel.FormattedCompanyName(holding.ASXCode, holding.CompanyName);
             Units = holding.Units;
             ChangeInValue = new ChangeInValue(holding.Cost, holding.Value);
         }
