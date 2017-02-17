@@ -29,7 +29,7 @@ namespace PortfolioManager.Service
             _IncomeService = incomeService;
         }
 
-        public Task<PortfolioPerformanceResponce> HandleRequest(DateTime fromDate, DateTime toDate)
+        public Task<PortfolioPerformanceResponce> GetPerformance(DateTime fromDate, DateTime toDate)
         {
             var responce = new PortfolioPerformanceResponce();
 

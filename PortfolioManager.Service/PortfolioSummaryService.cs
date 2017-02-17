@@ -20,7 +20,7 @@ namespace PortfolioManager.Service
             _CashAccountService = cashAccountService;
         }
 
-        public Task<PortfolioSummaryResponce> HandleRequest(DateTime date)
+        public Task<PortfolioSummaryResponce> GetSummary(DateTime date)
         {
             var response = new PortfolioSummaryResponce();
 

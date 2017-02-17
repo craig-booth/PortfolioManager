@@ -27,7 +27,7 @@ namespace PortfolioManager.Service
         public ShareHoldingService ShareHoldingService { get; private set; }
         public TransactionService TransactionService { get; private set; }
         public IncomeService IncomeService { get; private set; }
-        public CGTService CGTService { get; private set; }
+        public CGTService2 CGTService { get; private set; }
         public CorporateActionService CorporateActionService { get; private set; }
         public AttachmentService AttachmentService { get; private set; }
         public CashAccountService CashAccountService { get; private set; }
@@ -54,7 +54,7 @@ namespace PortfolioManager.Service
             ShareHoldingService = new ShareHoldingService(ParcelService, StockService, TransactionService, CashAccountService);
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService, SettingsService);
-            CGTService = new CGTService(database.PortfolioQuery);
+            CGTService = new CGTService2(database.PortfolioQuery);
             CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, IncomeService);
 
             /* Load transactions */

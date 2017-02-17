@@ -54,15 +54,6 @@ namespace PortfolioManager.Service
 
     public class LocalPortfolioServiceLocator : PortfolioServiceLocator
     {
-        private readonly PortfolioSettingsService _SettingsService;
-        private readonly StockService _StockService;
-        private readonly ParcelService _ParcelService;
-        private readonly TransactionService _TransactionService;
-        private readonly CashAccountService _CashAccountService;
-        private readonly ShareHoldingService _ShareHoldingService;
-        private readonly AttachmentService _AttachmentService;
-        private readonly IncomeService _IncomeService;
-        private readonly CGTService _CGTService;
 
         public LocalPortfolioServiceLocator(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
@@ -70,19 +61,20 @@ namespace PortfolioManager.Service
             var stockQuery = stockDatabase.StockQuery;
             var corporateActionQuery = stockDatabase.CorporateActionQuery;
 
-            _SettingsService = new PortfolioSettingsService();
+            var settingsService = new PortfolioSettingsService();
 
-            _StockService = new StockService(stockServiceRepository);
-            _ParcelService = new ParcelService(portfolioDatabase.PortfolioQuery, _StockService);
-            _TransactionService = new TransactionService(portfolioDatabase, _ParcelService, _StockService, _AttachmentService);
-            _CashAccountService = new CashAccountService(portfolioDatabase);
-            _ShareHoldingService = new ShareHoldingService(_ParcelService, _StockService, _TransactionService, _CashAccountService);
-            _AttachmentService = new AttachmentService(portfolioDatabase);
-            _IncomeService = new IncomeService(portfolioDatabase.PortfolioQuery, _StockService, _SettingsService);
-            _CGTService = new CGTService(portfolioDatabase.PortfolioQuery);
+            var stockService = new StockService(stockServiceRepository);
+            var parcelService = new ParcelService(portfolioDatabase.PortfolioQuery, stockService);
+            var attachmentService = new AttachmentService(portfolioDatabase);
+            var transactionService = new TransactionService(portfolioDatabase, parcelService, stockService, attachmentService);
+            var cashAccountService = new CashAccountService(portfolioDatabase);
+            var shareHoldingService = new ShareHoldingService(parcelService, stockService, transactionService, cashAccountService);
+            var incomeService = new IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
+            var cgtService = new CGTService2(portfolioDatabase.PortfolioQuery);
 
-            Register<PortfolioSummaryService>(() => new PortfolioSummaryService(_ShareHoldingService, _CashAccountService));
-            Register<PortfolioPerformanceService>(() => new PortfolioPerformanceService(_ShareHoldingService, _CashAccountService, _TransactionService, _StockService, _IncomeService));
+            Register<PortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
+            Register<PortfolioPerformanceService>(() => new PortfolioPerformanceService(shareHoldingService, cashAccountService, transactionService, stockService, incomeService));
+            Register<CGTService>(() => new CGTService(portfolioDatabase.PortfolioQuery, stockService));
         }
 
     }

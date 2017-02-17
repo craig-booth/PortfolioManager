@@ -38,7 +38,7 @@ namespace PortfolioManager.UI.ViewModels
         public async override void RefreshView()
         {
             var portfolioSummaryService = _Parameter.PortfolioService.GetService<PortfolioSummaryService>();
-            var responce = await portfolioSummaryService.HandleRequest(_Parameter.Date);
+            var responce = await portfolioSummaryService.GetSummary(_Parameter.Date);
 
             PortfolioValue.InitialValue = responce.PortfolioCost;
             PortfolioValue.Value = responce.PortfolioValue;

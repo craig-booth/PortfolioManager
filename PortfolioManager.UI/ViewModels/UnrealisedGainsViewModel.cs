@@ -45,42 +45,30 @@ namespace PortfolioManager.UI.ViewModels
         }
 
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
-       
-            IEnumerable<ShareParcel> parcels;
+            var cgtService = _Parameter.PortfolioService.GetService<CGTService>();
+
+            SimpleCGTResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                parcels = _Parameter.Portfolio.ParcelService.GetParcels(_Parameter.Date).OrderBy(x => x.Stock);
+                responce = await cgtService.GetSimpleCGT(_Parameter.Date);
             else
-                parcels = _Parameter.Portfolio.ParcelService.GetParcels(_Parameter.Stock, _Parameter.Date);
+                responce = await cgtService.GetSimpleCGT(_Parameter.Stock.Id, _Parameter.Date);
 
-            Stock currentStock = null;
-            Guid previousStock = Guid.Empty;
-            decimal unitPrice = 0.00m;
-            var unrealisedGainsList = new List<UnrealisedGainViewItem>();
-            foreach (var parcel in parcels)
+            UnrealisedGains.Clear();
+            foreach (var cgtItem in responce.CGTItems)
             {
-                if (parcel.Stock != previousStock)
-                {
-                    currentStock = _Parameter.Portfolio.StockService.Get(parcel.Stock, _Parameter.Date);
-                    unitPrice = _Parameter.Portfolio.StockService.GetPrice(currentStock, _Parameter.Date);
-
-                    previousStock = parcel.Stock;
-                }
-
-                unrealisedGainsList.Add(new UnrealisedGainViewItem(currentStock, parcel, _Parameter.Date, unitPrice));
+                var viewItem = new UnrealisedGainViewItem(cgtItem);
+                UnrealisedGains.Add(viewItem);
             }
-
-            UnrealisedGains = new ObservableCollection<UnrealisedGainViewItem>(unrealisedGainsList.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate));
-
-            OnPropertyChanged("");
+            
+            OnPropertyChanged(""); 
         }
     }
 
 
     class UnrealisedGainViewItem
     {
-        public string ASXCode { get; private set; }
         public string CompanyName { get; private set; }
 
         public DateTime AquisitionDate { get; private set; }
@@ -91,25 +79,21 @@ namespace PortfolioManager.UI.ViewModels
         public decimal DiscoutedGain { get; private set; }
         public string DiscountMethod { get; private set; }
 
-        public UnrealisedGainViewItem(Stock stock, ShareParcel parcel, DateTime atDate, decimal unitPrice)
+        public UnrealisedGainViewItem(SimpleCGTResponceItem item)
         {
-            ASXCode = stock.ASXCode;
-            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
+            CompanyName = PortfolioViewModel.FormattedCompanyName(item.ASXCode, item.CompanyName);
+            AquisitionDate = item.AquisitionDate;
+            Units = item.Units;
+            CostBase = item.CostBase;
+            MarketValue = item.MarketValue;
+            CapitalGain = item.CapitalGain;
 
-            AquisitionDate = parcel.AquisitionDate;
-            Units = parcel.Units;
-            CostBase = parcel.CostBase;
-
-            MarketValue = Units * unitPrice;
-            CapitalGain = MarketValue - CostBase;
-
-            var cgtMethod = CGTCalculator.CGTMethodForParcel(parcel, atDate);
-            if (cgtMethod == CGTMethod.Discount)
+            if (item.DiscountMethod == CGTMethod.Discount)
             {
                 DiscountMethod = "Discount";
-                DiscoutedGain = CGTCalculator.CGTDiscount(CapitalGain);
+                DiscoutedGain = item.DiscoutedGain;
             }
-            else if (cgtMethod == CGTMethod.Indexation)
+            else if (item.DiscountMethod == CGTMethod.Indexation)
             {
                 DiscountMethod = "Indexation";
                 DiscoutedGain = 0.00m;
@@ -119,10 +103,7 @@ namespace PortfolioManager.UI.ViewModels
                 DiscountMethod = "Other";
                 DiscoutedGain = 0.00m;
             }
-
-            
-
-            
         }
+
     }
 }
