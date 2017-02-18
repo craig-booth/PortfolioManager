@@ -18,7 +18,6 @@ namespace PortfolioManager.UI.ViewModels
     class DetailedCGTViewModel : PortfolioViewModel
     {
 
-        public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
         public ObservableCollection<ParcelCostBaseViewItem> Parcels { get; private set; }
 
         private string _Heading;
@@ -41,48 +40,27 @@ namespace PortfolioManager.UI.ViewModels
             Options.AllowStockSelection = true;
             Options.DateSelection = DateSelectionType.FinancialYear;
 
-            Transactions = new ObservableCollection<ViewModels.TransactionViewItem>();
             Parcels = new ObservableCollection<ParcelCostBaseViewItem>();
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            Parcels.Clear();
+            var cgtService = _Parameter.PortfolioService.GetService<CGTService>();
 
-            IReadOnlyCollection<ShareParcel> parcels;
-            
+            DetailedCGTResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                parcels = _Parameter.Portfolio.ParcelService.GetParcels(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+                responce = await cgtService.GetDetailedCGT(_Parameter.Date);
             else
-                parcels = _Parameter.Portfolio.ParcelService.GetParcels(_Parameter.Stock, DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear)).ToList();
+                responce = await cgtService.GetDetailedCGT(_Parameter.Stock.Id, _Parameter.Date);
 
-            var parcelAndStock = new List<Tuple<string, ShareParcel>>();
-            foreach (var parcel in parcels)
-            {
-                // Check if parcel has already been added
-                if (parcelAndStock.FirstOrDefault(x => x.Item2.Id == parcel.Id) == null)
-                {
-                    var stock = _Parameter.Portfolio.StockService.Get(parcel.Stock, parcel.ToDate);
-                    parcelAndStock.Add(new Tuple<string, ShareParcel>(string.Format("{0} ({1})", stock.Name, stock.ASXCode), parcel));
-                }
-            }
-            
-            foreach (var tuple in parcelAndStock.OrderBy(x => x.Item1).ThenBy(x => x.Item2.AquisitionDate))
-            {
-                var parcelCostBase = new ParcelCostBaseViewItem(tuple.Item1, tuple.Item2, DateUtils.EndOfFinancialYear(_Parameter.FinancialYear), _Parameter.Portfolio.ParcelService, _Parameter.Portfolio.TransactionService);
-
-                Parcels.Add(parcelCostBase);
-            }
-
+            Parcels.Clear();
+            foreach (var item in responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate))
+                 Parcels.Add(new ParcelCostBaseViewItem(item));
+ 
             OnPropertyChanged("");
         }
-    }
-
-    class TransactionViewItem
-    {
-        
     }
 
     class ParcelCostBaseViewItem
@@ -95,37 +73,29 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<ParcelCostBaseAuditViewItem> ParcelAudit { get; private set; }
 
-        public ParcelCostBaseViewItem(string companyName, ShareParcel parcel, DateTime toDate, ParcelService parcelService, TransactionService transactionService)
+        public ParcelCostBaseViewItem(DetailedCGTResponceItem item)
         {           
-            ParcelId = parcel.Id;
-            CompanyName = companyName;
-
-            AquisitionDate = parcel.AquisitionDate;
+            ParcelId = item.Id;
+            CompanyName = PortfolioViewModel.FormattedCompanyName(item.ASXCode, item.CompanyName);
+            AquisitionDate = item.AquisitionDate;
+            Units = item.Units;
+            CostBase = item.CostBase;
 
             ParcelAudit = new ObservableCollection<ParcelCostBaseAuditViewItem>();
 
-            decimal costBase = 0.00m;
-            var parcelAudit = parcelService.GetParcelAudit(parcel.Id, parcel.AquisitionDate, toDate);
-            foreach (var auditRecord in parcelAudit)
+            foreach (var historyItem in item.History)
             {
-                costBase += auditRecord.CostBaseChange;
-
-                var transaction = transactionService.GetTransaction(auditRecord.Transaction);
-
                 var parcelAuditItem = new ParcelCostBaseAuditViewItem()
                 {
-                    TransactionType = transaction.Type.ToString(),
-                    Date = auditRecord.Date,
-                    Units = auditRecord.UnitCount,
-                    Amount = auditRecord.CostBaseChange,
-                    CostBase = costBase,
-                    Comment = transaction.Description
+                    TransactionType = historyItem.TransactionType.ToString(),
+                    Date = historyItem.Date,
+                    Units = historyItem.Units,
+                    Amount = historyItem.Amount,
+                    CostBase = historyItem.CostBase,
+                    Comment = historyItem.Comment
                 };
 
                 ParcelAudit.Add(parcelAuditItem);
-
-                Units = parcelAuditItem.Units;
-                CostBase = parcelAuditItem.CostBase;
             }
         }
     }

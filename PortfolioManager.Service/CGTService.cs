@@ -15,20 +15,14 @@ namespace PortfolioManager.Service
     public class CGTService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        //     private readonly ShareHoldingService _ShareHoldingService;
-        //     private readonly CashAccountService _CashAccountService;
-        //     private readonly TransactionService _TransactionService;
+        private readonly TransactionService _TransactionService;
         private readonly StockService _StockService;
-        //     private readonly IncomeService _IncomeService;
 
-        public CGTService(IPortfolioQuery portfolioQuery, StockService stockService) //(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, TransactionService transactionService, , IncomeService incomeService)
+        public CGTService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService)
         {
             _PortfolioQuery = portfolioQuery;
-     //       _ShareHoldingService = shareHoldingService;
-     //       _CashAccountService = cashAccountService;
-      //      _TransactionService = transactionService;
+            _TransactionService = transactionService;
             _StockService = stockService;
-      //      _IncomeService = incomeService;
         }
 
         public Task<SimpleCGTResponce> GetSimpleCGT(DateTime date)
@@ -63,6 +57,7 @@ namespace PortfolioManager.Service
 
                 var item = new SimpleCGTResponceItem()
                 {
+                    Id = parcel.Id,
                     ASXCode = currentStock.ASXCode,
                     CompanyName = currentStock.Name,
                     AquisitionDate = parcel.AquisitionDate,
@@ -86,11 +81,89 @@ namespace PortfolioManager.Service
             return Task.FromResult<SimpleCGTResponce>(responce);
         }
 
+
         public Task<DetailedCGTResponce> GetDetailedCGT(DateTime date)
+        {
+            var parcels = _PortfolioQuery.GetAllParcels(date, date);
+            return GetDetailedCGT(parcels, date);
+        }
+
+        public Task<DetailedCGTResponce> GetDetailedCGT(Guid stockId, DateTime date)
+        {
+            var parcels = _PortfolioQuery.GetParcelsForStock(stockId, date, date);
+            return GetDetailedCGT(parcels, date);
+        }
+
+        private Task<DetailedCGTResponce> GetDetailedCGT(IEnumerable<ShareParcel> parcels, DateTime date)
         {
             var responce = new DetailedCGTResponce();
 
+            Stock currentStock = null;
+            Guid previousStock = Guid.Empty;
+            decimal unitPrice = 0.00m;
+
+            foreach (var parcel in parcels)
+            {
+                if (parcel.Stock != previousStock)
+                {
+                    currentStock = _StockService.Get(parcel.Stock, date);
+                    unitPrice = _StockService.GetPrice(currentStock, date);
+
+                    previousStock = parcel.Stock;
+                }
+
+                var item = new DetailedCGTResponceItem()
+                {
+                    Id = parcel.Id,
+                    ASXCode = currentStock.ASXCode,
+                    CompanyName = currentStock.Name,
+                    AquisitionDate = parcel.AquisitionDate,
+                    Units = parcel.Units,
+                    CostBase = parcel.CostBase,
+                    MarketValue = parcel.Units * unitPrice,
+                    CapitalGain = parcel.Units * unitPrice - parcel.CostBase,
+                    DiscoutedGain = 0.00m
+                };
+                item.DiscountMethod = CGTCalculator.CGTMethodForParcel(parcel, date);
+                if (item.DiscountMethod == CGTMethod.Discount)
+                {
+                    item.DiscoutedGain = CGTCalculator.CGTDiscount(item.CapitalGain);
+                }
+
+                AddParcelHistory(item, date);
+
+                responce.CGTItems.Add(item);
+            }
+
+            responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate);
+
             return Task.FromResult<DetailedCGTResponce>(responce);
+        }
+
+        private void AddParcelHistory(DetailedCGTResponceItem parcelItem, DateTime date)
+        {
+            var parcelAudit = _PortfolioQuery.GetParcelAudit(parcelItem.Id, parcelItem.AquisitionDate, date);
+
+            decimal costBase = 0.00m;
+            foreach (var auditRecord in parcelAudit)
+            {
+                costBase += auditRecord.CostBaseChange;
+
+                var transaction = _TransactionService.GetTransaction(auditRecord.Transaction);
+          
+                var historyItem = new DetailedCGTParcelHistoryItem()
+                {
+                    TransactionType = transaction.Type,
+                    Date = auditRecord.Date,
+                    Units = auditRecord.UnitCount,
+                    Amount = auditRecord.CostBaseChange,
+                    CostBase = costBase,
+                    Comment = transaction.Description
+                };
+
+                parcelItem.History.Add(historyItem);
+            }
+
         }
 
 
@@ -108,6 +181,7 @@ namespace PortfolioManager.Service
 
     public class SimpleCGTResponceItem
     {
+        public Guid Id { get; set; }
         public string ASXCode { get; set; }
         public string CompanyName { get; set; }
 
@@ -123,6 +197,34 @@ namespace PortfolioManager.Service
 
     public class DetailedCGTResponce
     {
+        public List<DetailedCGTResponceItem> CGTItems;
+
+        public DetailedCGTResponce()
+        {
+            CGTItems = new List<DetailedCGTResponceItem>();
+        }
+    }
+
+    public class DetailedCGTResponceItem : SimpleCGTResponceItem
+    {
+        public List<DetailedCGTParcelHistoryItem> History;
+
+        public DetailedCGTResponceItem()
+        {
+            History = new List<DetailedCGTParcelHistoryItem>();
+        }
+
+    }
+
+
+    public class DetailedCGTParcelHistoryItem
+    {
+        public DateTime Date { get; set; }
+        public TransactionType TransactionType { get; set; }
+        public int Units { get; set; }
+        public decimal Amount { get; set; }
+        public decimal CostBase { get; set; }
+        public string Comment { get; set; }
     }
 
     public class CGTService2
