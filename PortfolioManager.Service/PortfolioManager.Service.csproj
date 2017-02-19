@@ -51,6 +51,7 @@
     <Compile Include="PortfolioService.cs" />
     <Compile Include="PortfolioSettings.cs" />
     <Compile Include="PortfolioSummaryService.cs" />
+    <Compile Include="PortfolioValueService.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
     <Compile Include="CGTService.cs" />
     <Compile Include="CorporateActionService.cs" />

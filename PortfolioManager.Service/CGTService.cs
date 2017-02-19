@@ -28,16 +28,20 @@ namespace PortfolioManager.Service
         public Task<SimpleCGTResponce> GetSimpleCGT(DateTime date)
         {
             var parcels = _PortfolioQuery.GetAllParcels(date, date);
-            return GetSimpleCGT(parcels, date);
+
+            var responce = GetSimpleCGT(parcels, date);
+            return Task.FromResult<SimpleCGTResponce>(responce);
         }
 
         public Task<SimpleCGTResponce> GetSimpleCGT(Guid stockId, DateTime date)
         {
             var parcels = _PortfolioQuery.GetParcelsForStock(stockId, date, date);
-            return GetSimpleCGT(parcels, date);
+
+            var responce = GetSimpleCGT(parcels, date);
+            return Task.FromResult<SimpleCGTResponce>(responce);
         }
 
-        private Task<SimpleCGTResponce> GetSimpleCGT(IEnumerable<ShareParcel> parcels, DateTime date)
+        private SimpleCGTResponce GetSimpleCGT(IEnumerable<ShareParcel> parcels, DateTime date)
         {
             var responce = new SimpleCGTResponce();
 
@@ -76,25 +80,28 @@ namespace PortfolioManager.Service
                 responce.CGTItems.Add(item);
             }
 
-            responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate); 
+            responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate);
 
-            return Task.FromResult<SimpleCGTResponce>(responce);
+            return responce;
         }
 
 
         public Task<DetailedCGTResponce> GetDetailedCGT(DateTime date)
         {
             var parcels = _PortfolioQuery.GetAllParcels(date, date);
-            return GetDetailedCGT(parcels, date);
+
+            var responce = GetDetailedCGT(parcels, date);
+            return Task.FromResult<DetailedCGTResponce>(responce);
         }
 
         public Task<DetailedCGTResponce> GetDetailedCGT(Guid stockId, DateTime date)
         {
             var parcels = _PortfolioQuery.GetParcelsForStock(stockId, date, date);
-            return GetDetailedCGT(parcels, date);
+            var responce = GetDetailedCGT(parcels, date);
+            return Task.FromResult<DetailedCGTResponce>(responce);
         }
 
-        private Task<DetailedCGTResponce> GetDetailedCGT(IEnumerable<ShareParcel> parcels, DateTime date)
+        private DetailedCGTResponce GetDetailedCGT(IEnumerable<ShareParcel> parcels, DateTime date)
         {
             var responce = new DetailedCGTResponce();
 
@@ -137,7 +144,7 @@ namespace PortfolioManager.Service
 
             responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate);
 
-            return Task.FromResult<DetailedCGTResponce>(responce);
+            return responce;
         }
 
         private void AddParcelHistory(DetailedCGTResponceItem parcelItem, DateTime date)

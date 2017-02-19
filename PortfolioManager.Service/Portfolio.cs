@@ -21,18 +21,18 @@ namespace PortfolioManager.Service
 
     public class Portfolio
     {
-        public PortfolioSettingsService SettingsService { get; private set; }
+        private PortfolioSettingsService SettingsService { get; set; }
 
-        public ParcelService ParcelService { get; private set; }
-        public ShareHoldingService ShareHoldingService { get; private set; }
-        public TransactionService TransactionService { get; private set; }
-        public IncomeService IncomeService { get; private set; }
-        public CGTService2 CGTService { get; private set; }
-        public CorporateActionService CorporateActionService { get; private set; }
-        public AttachmentService AttachmentService { get; private set; }
-        public CashAccountService CashAccountService { get; private set; }
+        public ParcelService ParcelService { get; set; }
+        public ShareHoldingService ShareHoldingService { get; set; }
+        public TransactionService TransactionService { get; set; }
+        public IncomeService IncomeService { get; set; }
+        public CGTService2 CGTService { get; set; }
+        public CorporateActionService CorporateActionService { get; set; }
+        private AttachmentService AttachmentService { get; set; }
+        public CashAccountService CashAccountService { get; set; }
 
-        public StockService StockService { get; private set; }
+        public StockService StockService { get; set; }
 
         public event PortfolioChangedEventHandler PortfolioChanged;
 

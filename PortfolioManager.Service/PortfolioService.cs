@@ -75,6 +75,7 @@ namespace PortfolioManager.Service
             Register<PortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
             Register<PortfolioPerformanceService>(() => new PortfolioPerformanceService(shareHoldingService, cashAccountService, transactionService, stockService, incomeService));
             Register<CGTService>(() => new CGTService(portfolioDatabase.PortfolioQuery, stockService, transactionService));
+            Register<PortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService, cashAccountService));
         }
 
     }
