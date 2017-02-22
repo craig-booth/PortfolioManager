@@ -10,7 +10,35 @@ namespace PortfolioManager.Service.Interface
 {
     public interface IPortfolioSummaryService : IPortfolioManagerService
     {
+        Task<PortfolioPropertiesResponce> GetProperties();
         Task<PortfolioSummaryResponce> GetSummary(DateTime date);
+    }
+
+    public class PortfolioPropertiesResponce
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public List<StockItem> StocksHeld { get; set; }
+
+        public PortfolioPropertiesResponce()
+        {
+            StocksHeld = new List<StockItem>();
+        }
+    }
+
+    public class StockItem
+    {
+        public Guid Id { get; set; }
+        public string ASXCode { get; set; }
+        public string Name { get; set; }
+
+        public StockItem(Guid id, string asxCode, string name)
+        {
+            Id = id;
+            ASXCode = asxCode;
+            Name = name;
+        }
     }
 
     public class PortfolioSummaryResponce

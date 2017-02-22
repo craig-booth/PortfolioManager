@@ -45,8 +45,8 @@ namespace PortfolioManager.UI.Utilities
             OnPropertyChanged("Portfolio");
         }
 
-        private Stock _Stock;
-        public Stock Stock
+        private StockItem _Stock;
+        public StockItem Stock
         {
             get
             {

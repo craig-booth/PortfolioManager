@@ -15,6 +15,7 @@ using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
+using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Local;
 using PortfolioManager.Model.Utils;
 
@@ -29,6 +30,8 @@ namespace PortfolioManager.UI.ViewModels
     {      
         private Portfolio _Portfolio;
         private StockServiceRepository _StockServiceRepository;
+
+        private IPortfolioManagerServiceFactory _PortfolioManagerService;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -82,9 +85,7 @@ namespace PortfolioManager.UI.ViewModels
         public ViewParameter ViewParameter { get; set; }
 
         public ObservableCollection<DescribedObject<int>> FinancialYears { get; set; }
-        public ObservableCollection<DescribedObject<Stock>> OwnedStocks { get; set; }
-
-        private DateTime _PortfolioStartDate;
+        public ObservableCollection<DescribedObject<StockItem>> OwnedStocks { get; set; }
 
         private ApplicationSettings _Settings;
         public ApplicationSettings Settings
@@ -107,7 +108,7 @@ namespace PortfolioManager.UI.ViewModels
             _Modules = new List<Module>();
 
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
-            OwnedStocks = new ObservableCollection<Utilities.DescribedObject<Stock>>();
+            OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
             ViewParameter = new ViewParameter();
             EditTransactionWindow = new EditTransactionViewModel();
@@ -167,7 +168,7 @@ namespace PortfolioManager.UI.ViewModels
             SelectedModule = homeModule;
         }
 
-        private void LoadPortfolio(object sender, EventArgs e)
+        private async void LoadPortfolio(object sender, EventArgs e)
         {
             var stockDataBasePath = _Settings.StockDatabase;
             if (!Path.IsPathRooted(stockDataBasePath))
@@ -183,12 +184,14 @@ namespace PortfolioManager.UI.ViewModels
             _Portfolio = new Portfolio(portfolioDatabase, _StockServiceRepository, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
             ViewParameter.Portfolio = _Portfolio;
 
-            ViewParameter.PortfolioManagerService = new LocalPortfolioManagerService(portfolioDatabase, stockDatabase);
+            _PortfolioManagerService = new LocalPortfolioManagerService(portfolioDatabase, stockDatabase);
+            ViewParameter.PortfolioManagerService = _PortfolioManagerService;
 
-            _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
+            var summaryService = _PortfolioManagerService.GetService<IPortfolioSummaryService>();
+            var responce = await summaryService.GetProperties();
 
-            PopulateFinancialYearList();
-            PopulateStockList();
+            PopulateFinancialYearList(responce.StartDate);
+            PopulateStockList(responce.StocksHeld);
 
             EditTransactionWindow.Portfolio = _Portfolio;
             CreateTransactionsWindow.Portfolio = _Portfolio;
@@ -198,13 +201,13 @@ namespace PortfolioManager.UI.ViewModels
             Task.Run(() => { _StockServiceRepository.DownloadUpdatedData(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
         }
    
-        private void PopulateFinancialYearList()
+        private void PopulateFinancialYearList(DateTime startDate)
         {
             FinancialYears.Clear();
 
             // Determinefirst and last financial years
             int currentFinancialYear = DateTime.Today.FinancialYear();
-            int oldestFinancialYear = _PortfolioStartDate.FinancialYear();
+            int oldestFinancialYear = startDate.FinancialYear();
 
             int year = currentFinancialYear;
             while (year >= oldestFinancialYear)
@@ -222,18 +225,17 @@ namespace PortfolioManager.UI.ViewModels
             ViewParameter.FinancialYear = currentFinancialYear;
         }
 
-        private void PopulateStockList()
+        private void PopulateStockList(IEnumerable<StockItem> stocks)
         {
             OwnedStocks.Clear();
 
             // Add entry to entire portfolio
-            var allCompanies = new Stock(Guid.Empty, DateUtils.NoStartDate, DateUtils.NoEndDate, "", "All Companies", StockType.Ordinary, Guid.Empty);
-            OwnedStocks.Add(new DescribedObject<Stock>(allCompanies, "All Companies"));
+            var allCompanies = new StockItem(Guid.Empty, "", "All Companies");
+            OwnedStocks.Add(new DescribedObject<StockItem>(allCompanies, "All Companies"));
 
-            var stocks = _Portfolio.ShareHoldingService.GetOwnedStocks(DateUtils.NoStartDate, DateUtils.NoEndDate, false).OrderBy(x => x.Name);
             foreach (var stock in stocks)
             {
-                OwnedStocks.Add(new DescribedObject<Stock>(stock, string.Format("{0} ({1})", stock.Name, stock.ASXCode)));
+                OwnedStocks.Add(new DescribedObject<StockItem>(stock, PortfolioViewModel.FormattedCompanyName(stock.ASXCode, stock.Name)));
             }
 
             ViewParameter.Stock = allCompanies;

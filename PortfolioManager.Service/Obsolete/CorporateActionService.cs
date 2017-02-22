@@ -12,7 +12,7 @@ using PortfolioManager.Service.CorporateActions;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class CorporateActionService
+    class CorporateActionService
     {
         private readonly ICorporateActionQuery _CorporateActionQuery;
         private readonly ShareHoldingService _ShareHoldingService;

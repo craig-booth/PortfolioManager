@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class StockSetting
+    class StockSetting
     {
         public string ASXCode { get; private set; }
         public bool DRPActive { get; set; }
@@ -18,7 +18,7 @@ namespace PortfolioManager.Service.Obsolete
         }
     }
 
-    public class PortfolioSettingsService
+    class PortfolioSettingsService
     {
         private Dictionary<string, StockSetting> _StockSettings;
 

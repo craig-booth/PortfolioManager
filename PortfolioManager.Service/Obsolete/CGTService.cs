@@ -10,7 +10,7 @@ using PortfolioManager.Model.Portfolios;
 namespace PortfolioManager.Service.Obsolete
 {
 
-    public class CGTService
+    class CGTService
     {
 
         private readonly IPortfolioQuery _PortfolioQuery;

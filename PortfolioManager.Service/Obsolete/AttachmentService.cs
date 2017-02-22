@@ -10,7 +10,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class AttachmentService
+    class AttachmentService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
 

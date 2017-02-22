@@ -23,15 +23,16 @@ namespace PortfolioManager.Service.Obsolete
     {
         private PortfolioSettingsService SettingsService { get; set; }
 
-        public ParcelService ParcelService { get; set; }
+        private ParcelService ParcelService { get; set; }       
+        private CGTService CGTService { get; set; }
+        private CorporateActionService CorporateActionService { get; set; }
+        private AttachmentService AttachmentService { get; set; }
+        
+
         public ShareHoldingService ShareHoldingService { get; set; }
         public TransactionService TransactionService { get; set; }
-        public IncomeService IncomeService { get; set; }
-        public CGTService CGTService { get; set; }
-        public CorporateActionService CorporateActionService { get; set; }
-        public AttachmentService AttachmentService { get; set; }
         public CashAccountService CashAccountService { get; set; }
-
+        public IncomeService IncomeService { get; set; }
         public StockService StockService { get; set; }
 
         public event PortfolioChangedEventHandler PortfolioChanged;

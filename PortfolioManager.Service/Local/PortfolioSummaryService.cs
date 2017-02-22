@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Utils;
 
 using PortfolioManager.Service.Interface;
 
@@ -22,6 +23,23 @@ namespace PortfolioManager.Service.Local
         {
             _ShareHoldingService = shareHoldingService;
             _CashAccountService = cashAccountService;
+        }
+
+        public Task<PortfolioPropertiesResponce> GetProperties()
+        {
+            var responce = new PortfolioPropertiesResponce();
+
+            responce.StartDate = _ShareHoldingService.GetPortfolioStartDate();
+            responce.EndDate = DateUtils.NoEndDate;   // This is wrong !!!!
+            
+            var stocksOwned = _ShareHoldingService.GetOwnedStocks(responce.StartDate, responce.EndDate, false);
+            foreach (var stock in stocksOwned)
+            {
+                responce.StocksHeld.Add(new StockItem(stock.Id, stock.ASXCode, stock.Name));
+            }
+
+
+            return Task.FromResult<PortfolioPropertiesResponce>(responce);
         }
 
         public Task<PortfolioSummaryResponce> GetSummary(DateTime date)
