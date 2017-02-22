@@ -10,12 +10,12 @@ using PortfolioManager.Model.Portfolios;
 namespace PortfolioManager.Service.Obsolete
 {
 
-    public class CapitalGain
+    public class CGTService
     {
 
         private readonly IPortfolioQuery _PortfolioQuery;
 
-        internal CapitalGain(IPortfolioQuery portfolioQuery)
+        internal CGTService(IPortfolioQuery portfolioQuery)
         {
             _PortfolioQuery = portfolioQuery;
         }

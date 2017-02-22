@@ -46,13 +46,13 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var cgtService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
+            var capitalGainService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
 
             SimpleUnrealisedGainsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await cgtService.GetSimpleUnrealisedGains(_Parameter.Date);
+                responce = await capitalGainService.GetSimpleUnrealisedGains(_Parameter.Date);
             else
-                responce = await cgtService.GetSimpleUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await capitalGainService.GetSimpleUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
 
             UnrealisedGains.Clear();
             foreach (var cgtItem in responce.CGTItems)

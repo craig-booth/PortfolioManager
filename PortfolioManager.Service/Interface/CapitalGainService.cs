@@ -15,7 +15,7 @@ namespace PortfolioManager.Service.Interface
         Task<DetailedUnrealisedGainsResponce> GetDetailedUnrealisedGains(DateTime date);
         Task<DetailedUnrealisedGainsResponce> GetDetailedUnrealisedGains(Guid stockId, DateTime date);
 
-        Task<CGTResponce> GetCGTLiability(DateTime fromDate, DateTime toDate);
+        Task<CGTLiabilityResponce> GetCGTLiability(DateTime fromDate, DateTime toDate);
     }
 
     public class SimpleUnrealisedGainsResponce
@@ -75,8 +75,38 @@ namespace PortfolioManager.Service.Interface
         public string Comment { get; set; }
     }
 
-    public class CGTResponce
+    public class CGTLiabilityResponce
     {
+        public decimal CurrentYearCapitalGainsOther { get; set; }
+        public decimal CurrentYearCapitalGainsDiscounted { get; set; }
+        public decimal CurrentYearCapitalGainsTotal { get; set; }
+        public decimal CurrentYearCapitalLossesOther { get; set; }
+        public decimal CurrentYearCapitalLossesDiscounted { get; set; }
+        public decimal CurrentYearCapitalLossesTotal { get; set; }
+        public decimal GrossCapitalGainOther { get; set; }
+        public decimal GrossCapitalGainDiscounted { get; set; }
+        public decimal GrossCapitalGainTotal { get; set; }
+        public decimal Discount { get; set; }
+        public decimal NetCapitalGainOther { get; set; }
+        public decimal NetCapitalGainDiscounted { get; set; }
+        public decimal NetCapitalGainTotal { get; set; }
+
+        public List<CGTLiabilityItem> Items { get; set; }
+
+        public CGTLiabilityResponce()
+        {
+            Items = new List<CGTLiabilityItem>();
+        }
     }
 
+    public class CGTLiabilityItem
+    {
+        public string ASXCode { get; set; }
+        public string CompanyName { get; set; }
+        public DateTime EventDate { get; set; }
+        public decimal CostBase { get; set; }
+        public decimal AmountReceived { get; set; }
+        public decimal CapitalGain { get; set; }
+        public CGTMethod Method { get; set; }
+    }
 }

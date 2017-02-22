@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service.Utils;
+using PortfolioManager.Model.Utils;
 
+using PortfolioManager.Service.Utils;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.Service.Obsolete;
@@ -20,12 +21,14 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly TransactionService _TransactionService;
         private readonly StockService _StockService;
+        private readonly CGTService _CGTService;
 
-        public CapitalGainService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService, CGTService cgtService)
         {
             _PortfolioQuery = portfolioQuery;
             _TransactionService = transactionService;
             _StockService = stockService;
+            _CGTService = cgtService;
         }
 
         public Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date)
@@ -176,12 +179,69 @@ namespace PortfolioManager.Service.Local
 
         }
 
-        public Task<CGTResponce> GetCGTLiability(DateTime fromDate, DateTime toDate)
+        public Task<CGTLiabilityResponce> GetCGTLiability(DateTime fromDate, DateTime toDate)
         {
-            var responce = new CGTResponce();
+            var responce = new CGTLiabilityResponce();
 
-            return Task.FromResult<CGTResponce>(responce);
+            responce.CurrentYearCapitalGainsOther = 0.00m;
+            responce.CurrentYearCapitalGainsDiscounted = 0.00m;
+            responce.CurrentYearCapitalLossesTotal = 0.00m;
+
+            // Get a list of all the cgt events for the year
+            var cgtEvents = _CGTService.GetEvents(fromDate, toDate);
+            foreach (var cgtEvent in cgtEvents)
+            {
+                var stock = _StockService.Get(cgtEvent.Stock, cgtEvent.EventDate);
+
+                var item = new CGTLiabilityItem()
+                {
+                    ASXCode = stock.ASXCode,
+                    CompanyName = stock.Name,
+                    EventDate = cgtEvent.EventDate,
+                    CostBase = cgtEvent.CostBase,
+                    AmountReceived = cgtEvent.AmountReceived,
+                    CapitalGain = cgtEvent.CapitalGain,
+                    Method = cgtEvent.CGTMethod
+                };
+                responce.Items.Add(item);
+
+                // Apportion capital gains
+                if (cgtEvent.CapitalGain < 0)
+                    responce.CurrentYearCapitalLossesTotal += -cgtEvent.CapitalGain;
+                else if (cgtEvent.CGTMethod == CGTMethod.Discount)
+                    responce.CurrentYearCapitalGainsDiscounted += cgtEvent.CapitalGain;
+                else
+                    responce.CurrentYearCapitalGainsOther += cgtEvent.CapitalGain;                
+            }
+
+
+            responce.CurrentYearCapitalGainsTotal = responce.CurrentYearCapitalGainsOther + responce.CurrentYearCapitalGainsDiscounted;
+
+            if (responce.CurrentYearCapitalGainsOther > responce.CurrentYearCapitalLossesTotal)
+                responce.CurrentYearCapitalLossesOther = responce.CurrentYearCapitalLossesTotal;
+            else
+                responce.CurrentYearCapitalLossesOther = responce.CurrentYearCapitalGainsOther;
+
+            if (responce.CurrentYearCapitalGainsOther > responce.CurrentYearCapitalLossesTotal)
+                responce.CurrentYearCapitalLossesDiscounted = 0.00m;
+            else
+                responce.CurrentYearCapitalLossesDiscounted = responce.CurrentYearCapitalLossesTotal - responce.CurrentYearCapitalGainsOther;
+
+            responce.GrossCapitalGainOther = responce.CurrentYearCapitalGainsOther - responce.CurrentYearCapitalLossesOther;
+            responce.GrossCapitalGainDiscounted = responce.CurrentYearCapitalGainsDiscounted - responce.CurrentYearCapitalLossesDiscounted;
+            responce.GrossCapitalGainTotal = responce.GrossCapitalGainOther + responce.GrossCapitalGainDiscounted;
+            if (responce.GrossCapitalGainDiscounted > 0)
+                responce.Discount = (responce.GrossCapitalGainDiscounted / 2).ToCurrency(RoundingRule.Round);
+            else
+                responce.Discount = 0.00m;
+            responce.NetCapitalGainOther = responce.GrossCapitalGainOther;
+            responce.NetCapitalGainDiscounted = responce.GrossCapitalGainDiscounted - responce.Discount;
+            responce.NetCapitalGainTotal = responce.NetCapitalGainOther + responce.NetCapitalGainDiscounted;
+
+            return Task.FromResult<CGTLiabilityResponce>(responce);
         }
 
     }
+
+
 }

@@ -43,13 +43,13 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var cgtService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
+            var capitalGainService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
 
             DetailedUnrealisedGainsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await cgtService.GetDetailedUnrealisedGains(_Parameter.Date);
+                responce = await capitalGainService.GetDetailedUnrealisedGains(_Parameter.Date);
             else
-                responce = await cgtService.GetDetailedUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await capitalGainService.GetDetailedUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
 
             Parcels.Clear();
             foreach (var item in responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate))
