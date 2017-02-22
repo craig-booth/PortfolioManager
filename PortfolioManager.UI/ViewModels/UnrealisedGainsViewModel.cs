@@ -46,13 +46,13 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var cgtService = _Parameter.PortfolioManagerService.GetService<ICGTService>();
+            var cgtService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
 
-            SimpleCGTResponce responce;
+            SimpleUnrealisedGainsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await cgtService.GetSimpleCGT(_Parameter.Date);
+                responce = await cgtService.GetSimpleUnrealisedGains(_Parameter.Date);
             else
-                responce = await cgtService.GetSimpleCGT(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await cgtService.GetSimpleUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
 
             UnrealisedGains.Clear();
             foreach (var cgtItem in responce.CGTItems)
@@ -78,7 +78,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal DiscoutedGain { get; private set; }
         public string DiscountMethod { get; private set; }
 
-        public UnrealisedGainViewItem(SimpleCGTResponceItem item)
+        public UnrealisedGainViewItem(SimpleUnrealisedGainsItem item)
         {
             CompanyName = PortfolioViewModel.FormattedCompanyName(item.ASXCode, item.CompanyName);
             AquisitionDate = item.AquisitionDate;

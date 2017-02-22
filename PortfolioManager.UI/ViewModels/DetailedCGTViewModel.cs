@@ -43,13 +43,13 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var cgtService = _Parameter.PortfolioManagerService.GetService<ICGTService>();
+            var cgtService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
 
-            DetailedCGTResponce responce;
+            DetailedUnrealisedGainsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await cgtService.GetDetailedCGT(_Parameter.Date);
+                responce = await cgtService.GetDetailedUnrealisedGains(_Parameter.Date);
             else
-                responce = await cgtService.GetDetailedCGT(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await cgtService.GetDetailedUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
 
             Parcels.Clear();
             foreach (var item in responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate))
@@ -69,7 +69,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public ObservableCollection<ParcelCostBaseAuditViewItem> ParcelAudit { get; private set; }
 
-        public ParcelCostBaseViewItem(DetailedCGTResponceItem item)
+        public ParcelCostBaseViewItem(DetailedUnrealisedGainsItem item)
         {           
             ParcelId = item.Id;
             CompanyName = PortfolioViewModel.FormattedCompanyName(item.ASXCode, item.CompanyName);
@@ -79,16 +79,16 @@ namespace PortfolioManager.UI.ViewModels
 
             ParcelAudit = new ObservableCollection<ParcelCostBaseAuditViewItem>();
 
-            foreach (var historyItem in item.History)
+            foreach (var cgtEvent in item.CGTEvents)
             {
                 var parcelAuditItem = new ParcelCostBaseAuditViewItem()
                 {
-                    TransactionType = historyItem.TransactionType.ToString(),
-                    Date = historyItem.Date,
-                    Units = historyItem.Units,
-                    Amount = historyItem.Amount,
-                    CostBase = historyItem.CostBase,
-                    Comment = historyItem.Comment
+                    TransactionType = cgtEvent.TransactionType.ToString(),
+                    Date = cgtEvent.Date,
+                    Units = cgtEvent.Units,
+                    Amount = cgtEvent.Amount,
+                    CostBase = cgtEvent.CostBase,
+                    Comment = cgtEvent.Comment
                 };
 
                 ParcelAudit.Add(parcelAuditItem);

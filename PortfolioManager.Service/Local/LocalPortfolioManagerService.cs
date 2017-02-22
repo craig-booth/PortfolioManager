@@ -31,12 +31,12 @@ namespace PortfolioManager.Service.Local
             var cashAccountService = new CashAccountService(portfolioDatabase);
             var shareHoldingService = new ShareHoldingService(parcelService, stockService, transactionService, cashAccountService);
             var incomeService = new IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
-            var cgtService = new PortfolioManager.Service.Obsolete.CGTService(portfolioDatabase.PortfolioQuery);
+            var cgtService = new PortfolioManager.Service.Obsolete.CapitalGain(portfolioDatabase.PortfolioQuery);
             var corporateActionService = new PortfolioManager.Service.Obsolete.CorporateActionService(corporateActionQuery, parcelService, stockService, transactionService, shareHoldingService, incomeService);
 
             Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
             Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(shareHoldingService, cashAccountService, transactionService, stockService, incomeService));
-            Register<ICGTService>(() => new CGTService(portfolioDatabase.PortfolioQuery, stockService, transactionService));
+            Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService, transactionService));
             Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService, cashAccountService));
             Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
         }

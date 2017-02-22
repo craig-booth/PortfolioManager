@@ -15,38 +15,38 @@ using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Local
 {
-    class CGTService : ICGTService
+    class CapitalGainService : ICapitalGainService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly TransactionService _TransactionService;
         private readonly StockService _StockService;
 
-        public CGTService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService)
         {
             _PortfolioQuery = portfolioQuery;
             _TransactionService = transactionService;
             _StockService = stockService;
         }
 
-        public Task<SimpleCGTResponce> GetSimpleCGT(DateTime date)
+        public Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date)
         {
             var parcels = _PortfolioQuery.GetAllParcels(date, date);
 
             var responce = GetSimpleCGT(parcels, date);
-            return Task.FromResult<SimpleCGTResponce>(responce);
+            return Task.FromResult<SimpleUnrealisedGainsResponce>(responce);
         }
 
-        public Task<SimpleCGTResponce> GetSimpleCGT(Guid stockId, DateTime date)
+        public Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(Guid stockId, DateTime date)
         {
             var parcels = _PortfolioQuery.GetParcelsForStock(stockId, date, date);
 
             var responce = GetSimpleCGT(parcels, date);
-            return Task.FromResult<SimpleCGTResponce>(responce);
+            return Task.FromResult<SimpleUnrealisedGainsResponce>(responce);
         }
 
-        private SimpleCGTResponce GetSimpleCGT(IEnumerable<ShareParcel> parcels, DateTime date)
+        private SimpleUnrealisedGainsResponce GetSimpleCGT(IEnumerable<ShareParcel> parcels, DateTime date)
         {
-            var responce = new SimpleCGTResponce();
+            var responce = new SimpleUnrealisedGainsResponce();
 
             Stock currentStock = null;
             Guid previousStock = Guid.Empty;
@@ -62,7 +62,7 @@ namespace PortfolioManager.Service.Local
                     previousStock = parcel.Stock;
                 }
 
-                var item = new SimpleCGTResponceItem()
+                var item = new SimpleUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
                     ASXCode = currentStock.ASXCode,
@@ -89,24 +89,24 @@ namespace PortfolioManager.Service.Local
         }
 
 
-        public Task<DetailedCGTResponce> GetDetailedCGT(DateTime date)
+        public Task<DetailedUnrealisedGainsResponce> GetDetailedUnrealisedGains(DateTime date)
         {
             var parcels = _PortfolioQuery.GetAllParcels(date, date);
 
             var responce = GetDetailedCGT(parcels, date);
-            return Task.FromResult<DetailedCGTResponce>(responce);
+            return Task.FromResult<DetailedUnrealisedGainsResponce>(responce);
         }
 
-        public Task<DetailedCGTResponce> GetDetailedCGT(Guid stockId, DateTime date)
+        public Task<DetailedUnrealisedGainsResponce> GetDetailedUnrealisedGains(Guid stockId, DateTime date)
         {
             var parcels = _PortfolioQuery.GetParcelsForStock(stockId, date, date);
             var responce = GetDetailedCGT(parcels, date);
-            return Task.FromResult<DetailedCGTResponce>(responce);
+            return Task.FromResult<DetailedUnrealisedGainsResponce>(responce);
         }
 
-        private DetailedCGTResponce GetDetailedCGT(IEnumerable<ShareParcel> parcels, DateTime date)
+        private DetailedUnrealisedGainsResponce GetDetailedCGT(IEnumerable<ShareParcel> parcels, DateTime date)
         {
-            var responce = new DetailedCGTResponce();
+            var responce = new DetailedUnrealisedGainsResponce();
 
             Stock currentStock = null;
             Guid previousStock = Guid.Empty;
@@ -122,7 +122,7 @@ namespace PortfolioManager.Service.Local
                     previousStock = parcel.Stock;
                 }
 
-                var item = new DetailedCGTResponceItem()
+                var item = new DetailedUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
                     ASXCode = currentStock.ASXCode,
@@ -150,7 +150,7 @@ namespace PortfolioManager.Service.Local
             return responce;
         }
 
-        private void AddParcelHistory(DetailedCGTResponceItem parcelItem, DateTime date)
+        private void AddParcelHistory(DetailedUnrealisedGainsItem parcelItem, DateTime date)
         {
             var parcelAudit = _PortfolioQuery.GetParcelAudit(parcelItem.Id, parcelItem.AquisitionDate, date);
 
@@ -161,7 +161,7 @@ namespace PortfolioManager.Service.Local
 
                 var transaction = _TransactionService.GetTransaction(auditRecord.Transaction);
 
-                var historyItem = new DetailedCGTParcelHistoryItem()
+                var cgtEvent = new CGTEventItem()
                 {
                     TransactionType = transaction.Type,
                     Date = auditRecord.Date,
@@ -171,11 +171,17 @@ namespace PortfolioManager.Service.Local
                     Comment = transaction.Description
                 };
 
-                parcelItem.History.Add(historyItem);
+                parcelItem.CGTEvents.Add(cgtEvent);
             }
 
         }
 
+        public Task<CGTResponce> GetCGTLiability(DateTime fromDate, DateTime toDate)
+        {
+            var responce = new CGTResponce();
+
+            return Task.FromResult<CGTResponce>(responce);
+        }
 
     }
 }
