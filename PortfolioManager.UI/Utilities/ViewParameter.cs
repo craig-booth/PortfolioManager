@@ -5,15 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
+
+using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.UI.Utilities
 {
     class ViewParameter : NotifyClass
     {
-        public IPortfolioServiceLocator PortfolioService;
+        public IPortfolioManagerServiceFactory PortfolioManagerService;
 
         private Portfolio _Portfolio;
         public Portfolio Portfolio

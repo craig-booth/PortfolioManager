@@ -8,6 +8,10 @@ using PortfolioManager.Service;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
+using PortfolioManager.Service.Interface;
+
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.Transactions
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler

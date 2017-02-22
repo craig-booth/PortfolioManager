@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service;
-using PortfolioManager.Service.Utils;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -71,7 +68,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioPerformanceService = _Parameter.PortfolioService.GetService<PortfolioPerformanceService>();
+            var portfolioPerformanceService = _Parameter.PortfolioManagerService.GetService<IPortfolioPerformanceService>();
             var responce = await portfolioPerformanceService.GetPerformance(_Parameter.StartDate, _Parameter.EndDate);
 
             OpeningBalance = responce.OpeningBalance + responce.OpeningCashBalance;

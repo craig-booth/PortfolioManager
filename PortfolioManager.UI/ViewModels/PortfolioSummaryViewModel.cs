@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
@@ -37,7 +37,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioSummaryService = _Parameter.PortfolioService.GetService<PortfolioSummaryService>();
+            var portfolioSummaryService = _Parameter.PortfolioManagerService.GetService<IPortfolioSummaryService>();
             var responce = await portfolioSummaryService.GetSummary(_Parameter.Date);
 
             PortfolioValue.InitialValue = responce.PortfolioCost;

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.CorporateActions
 {
     interface ICorporateActionHandler

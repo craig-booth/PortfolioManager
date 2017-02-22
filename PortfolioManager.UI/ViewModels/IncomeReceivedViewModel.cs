@@ -7,12 +7,10 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
 
-using PortfolioManager.UI.Utilities;
+using PortfolioManager.Service.Obsolete;
 
-namespace PortfolioManager.UI.ViewModels
+namespace PortfolioManager.UI.ViewModels.Transactions
 {
     class IncomeReceivedViewModel : TransactionViewModel
     {

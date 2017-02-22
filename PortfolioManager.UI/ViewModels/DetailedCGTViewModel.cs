@@ -5,11 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
-using PortfolioManager.Service.Utils;
-using PortfolioManager.Model.Utils;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -47,7 +43,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var cgtService = _Parameter.PortfolioService.GetService<CGTService>();
+            var cgtService = _Parameter.PortfolioManagerService.GetService<ICGTService>();
 
             DetailedCGTResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)

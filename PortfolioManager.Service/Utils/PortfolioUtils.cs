@@ -8,6 +8,8 @@ using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Utils;
 
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.Utils
 {
     public static class PortfolioUtils

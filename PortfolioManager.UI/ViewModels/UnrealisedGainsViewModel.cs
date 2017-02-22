@@ -7,10 +7,9 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service;
-using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
+
+using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -47,7 +46,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var cgtService = _Parameter.PortfolioService.GetService<CGTService>();
+            var cgtService = _Parameter.PortfolioManagerService.GetService<ICGTService>();
 
             SimpleCGTResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)

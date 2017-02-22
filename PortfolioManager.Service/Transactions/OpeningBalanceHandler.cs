@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.Transactions
 { 
 

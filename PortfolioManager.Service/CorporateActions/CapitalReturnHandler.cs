@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.CorporateActions
 {
     class CapitalReturnHandler : ICorporateActionHandler 

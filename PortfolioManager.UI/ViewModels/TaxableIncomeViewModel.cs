@@ -8,7 +8,8 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.Model.Utils;
-using PortfolioManager.Service;
+
+using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -67,7 +68,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal FrankingCredits { get; private set; }
         public decimal TotalAmount { get; private set; }
 
-        public IncomeItemViewModel(Service.Income income)
+        public IncomeItemViewModel(Income income)
         {
             ASXCode = income.Stock.ASXCode;
             CompanyName = string.Format("{0} ({1})", income.Stock.Name, income.Stock.ASXCode);

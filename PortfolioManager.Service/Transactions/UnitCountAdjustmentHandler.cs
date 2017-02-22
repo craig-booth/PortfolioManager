@@ -10,6 +10,10 @@ using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Utils;
 
+using PortfolioManager.Service.Interface;
+
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.Transactions
 {
     class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler

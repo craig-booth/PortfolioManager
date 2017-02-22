@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service;
 using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.UI.ViewModels

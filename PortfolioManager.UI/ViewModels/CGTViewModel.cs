@@ -8,8 +8,6 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
-using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Utils;
 
 using PortfolioManager.UI.Utilities;

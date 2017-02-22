@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service;
+
+using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -38,7 +37,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioValueService = _Parameter.PortfolioService.GetService<PortfolioValueService>();
+            var portfolioValueService = _Parameter.PortfolioManagerService.GetService<IPortfolioValueService>();
 
             DateValues.Clear();
             PortfolioValues.Clear();

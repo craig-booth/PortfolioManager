@@ -7,11 +7,9 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
-using PortfolioManager.Service.Utils;
 
 using PortfolioManager.UI.Utilities;
+using PortfolioManager.UI.ViewModels.Transactions;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -29,7 +27,7 @@ namespace PortfolioManager.UI.ViewModels
 
             _EditTransactionViewModel = editTransactionViewModel;
 
-            EditTransactionCommand = new RelayCommand<ViewModels.TransactionViewModel>(EditTransaction);
+            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
             CreateTransactionCommand = new RelayCommand<TransactionType>(CreateTransaction);
         }
 
@@ -56,7 +54,7 @@ namespace PortfolioManager.UI.ViewModels
         public override void Activate()
         {
             if (_Parameter != null)
-                TransactionViewModelFactory = new ViewModels.TransactionViewModelFactory(_Parameter.Portfolio.StockService, _Parameter.Portfolio.ShareHoldingService);
+                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.Portfolio.StockService, _Parameter.Portfolio.ShareHoldingService);
 
             base.Activate();
         }

@@ -11,7 +11,8 @@ using LiveCharts.Wpf;
 
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
+
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -56,7 +57,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioSummaryService = _Parameter.PortfolioService.GetService<PortfolioSummaryService>();
+            var portfolioSummaryService = _Parameter.PortfolioManagerService.GetService<IPortfolioSummaryService>();
             var responce = await portfolioSummaryService.GetSummary(_Parameter.Date);
 
             Cash[0].Value = (double)responce.CashBalance;

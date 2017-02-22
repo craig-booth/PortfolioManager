@@ -45,31 +45,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttachmentService.cs" />
-    <Compile Include="CashAccountService.cs" />
-    <Compile Include="PortfolioPerformanceService.cs" />
-    <Compile Include="PortfolioService.cs" />
-    <Compile Include="PortfolioSettings.cs" />
-    <Compile Include="PortfolioSummaryService.cs" />
-    <Compile Include="PortfolioValueService.cs" />
+    <Compile Include="Interface\CGTService.cs" />
+    <Compile Include="Interface\CorporateActionService.cs" />
+    <Compile Include="Interface\PortfolioPerformanceService.cs" />
+    <Compile Include="Interface\PortfolioSummaryService.cs" />
+    <Compile Include="Interface\PortfolioValueService.cs" />
+    <Compile Include="Local\CGTService.cs" />
+    <Compile Include="Local\CorporateActionService.cs" />
+    <Compile Include="Obsolete\AttachmentService.cs" />
+    <Compile Include="Obsolete\CashAccountService.cs" />
+    <Compile Include="Interface\PortfolioManagerService.cs" />
+    <Compile Include="Local\LocalPortfolioManagerService.cs" />
+    <Compile Include="Local\PortfolioPerformanceService.cs" />
+    <Compile Include="Obsolete\PortfolioSettings.cs" />
+    <Compile Include="Local\PortfolioSummaryService.cs" />
+    <Compile Include="Local\PortfolioValueService.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
-    <Compile Include="CGTService.cs" />
-    <Compile Include="CorporateActionService.cs" />
+    <Compile Include="Obsolete\CGTService.cs" />
+    <Compile Include="Obsolete\CorporateActionService.cs" />
     <Compile Include="CorporateActions\CapitalReturnHandler.cs" />
     <Compile Include="CorporateActions\CompositeActionHandler.cs" />
     <Compile Include="CorporateActions\CorporateActionHandler.cs" />
     <Compile Include="CorporateActions\DividendHandler.cs" />
     <Compile Include="CorporateActions\SplitConsolidationHandler.cs" />
     <Compile Include="CorporateActions\TransformationHandler.cs" />
-    <Compile Include="Exceptions.cs" />
-    <Compile Include="IncomeService.cs" />
-    <Compile Include="ParcelService.cs" />
-    <Compile Include="Portfolio.cs" />
+    <Compile Include="Interface\Exceptions.cs" />
+    <Compile Include="Obsolete\IncomeService.cs" />
+    <Compile Include="Obsolete\ParcelService.cs" />
+    <Compile Include="Obsolete\Portfolio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShareHolding.cs" />
-    <Compile Include="ShareHoldingService.cs" />
-    <Compile Include="StockService.cs" />
-    <Compile Include="TransactionService.cs" />
+    <Compile Include="Obsolete\ShareHolding.cs" />
+    <Compile Include="Obsolete\ShareHoldingService.cs" />
+    <Compile Include="Obsolete\StockService.cs" />
+    <Compile Include="Obsolete\TransactionService.cs" />
     <Compile Include="Transactions\AquisitionHandler.cs" />
     <Compile Include="Transactions\CashTransactionHandler.cs" />
     <Compile Include="Transactions\CostBaseAdjustmentHandler.cs" />
@@ -99,6 +107,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

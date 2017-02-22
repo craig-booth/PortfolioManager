@@ -10,6 +10,10 @@ using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
 
+using PortfolioManager.Service.Interface;
+
+using PortfolioManager.Service.Obsolete;
+
 namespace PortfolioManager.Service.Transactions
 {
     interface ITransactionHandler

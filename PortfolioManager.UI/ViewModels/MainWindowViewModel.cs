@@ -15,11 +15,13 @@ using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
-using PortfolioManager.Service;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Service.Local;
 using PortfolioManager.Model.Utils;
 
 using PortfolioManager.UI.Utilities;
+using PortfolioManager.UI.ViewModels.Transactions;
+
+using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -181,7 +183,7 @@ namespace PortfolioManager.UI.ViewModels
             _Portfolio = new Portfolio(portfolioDatabase, _StockServiceRepository, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
             ViewParameter.Portfolio = _Portfolio;
 
-            ViewParameter.PortfolioService = new LocalPortfolioServiceLocator(portfolioDatabase, stockDatabase);
+            ViewParameter.PortfolioManagerService = new LocalPortfolioManagerService(portfolioDatabase, stockDatabase);
 
             _PortfolioStartDate = _Portfolio.ShareHoldingService.GetPortfolioStartDate();
 
