@@ -9,7 +9,7 @@ using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 
-using PortfolioManager.Service.Interface;
+using PortfolioManager.Service.Utils;
 
 using PortfolioManager.Service.Obsolete;
 

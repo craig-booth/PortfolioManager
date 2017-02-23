@@ -36,7 +36,9 @@ namespace PortfolioManager.Service.Local
 
             foreach (var date in responce.Values.Keys.ToList())
                 responce.Values[date] += _CashAccountService.GetBalance(date);
- 
+
+            responce.SetStatusToSuccessfull();
+
             return Task.FromResult<PortfolioValueResponce>(responce);
         }
 
@@ -45,6 +47,9 @@ namespace PortfolioManager.Service.Local
             var parcels = _PortfolioQuery.GetParcelsForStock(stockId, fromDate, toDate);
 
             var responce = GetPortfolioValue(parcels, fromDate, toDate, frequency);
+
+            responce.SetStatusToSuccessfull();
+
             return Task.FromResult<PortfolioValueResponce>(responce);
         }
 

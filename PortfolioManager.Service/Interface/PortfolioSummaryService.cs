@@ -14,7 +14,7 @@ namespace PortfolioManager.Service.Interface
         Task<PortfolioSummaryResponce> GetSummary(DateTime date);
     }
 
-    public class PortfolioPropertiesResponce
+    public class PortfolioPropertiesResponce : ServiceResponce
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -22,26 +22,13 @@ namespace PortfolioManager.Service.Interface
         public List<StockItem> StocksHeld { get; set; }
 
         public PortfolioPropertiesResponce()
+            : base()
         {
             StocksHeld = new List<StockItem>();
         }
     }
 
-    public class StockItem
-    {
-        public Guid Id { get; set; }
-        public string ASXCode { get; set; }
-        public string Name { get; set; }
-
-        public StockItem(Guid id, string asxCode, string name)
-        {
-            Id = id;
-            ASXCode = asxCode;
-            Name = name;
-        }
-    }
-
-    public class PortfolioSummaryResponce
+    public class PortfolioSummaryResponce : ServiceResponce
     {
         public decimal PortfolioValue { get; set; }
         public decimal PortfolioCost { get; set; }
@@ -56,6 +43,7 @@ namespace PortfolioManager.Service.Interface
         public List<Holding> Holdings { get; private set; }
 
         public PortfolioSummaryResponce()
+            : base()
         {
             Holdings = new List<Holding>();
         }

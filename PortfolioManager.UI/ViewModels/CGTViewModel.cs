@@ -90,7 +90,6 @@ namespace PortfolioManager.UI.ViewModels
 
     class CGTEventViewModel
     {
-        public string ASXCode { get; private set; }
         public string CompanyName { get; private set; }
         public DateTime EventDate { get; private set; }
         public decimal CostBase { get; private set; }
@@ -100,8 +99,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public CGTEventViewModel(CGTLiabilityItem cgtItem)
         {
-            ASXCode = cgtItem.ASXCode;
-            CompanyName = PortfolioViewModel.FormattedCompanyName(cgtItem.ASXCode, cgtItem.CompanyName);
+            CompanyName = PortfolioViewModel.FormattedCompanyName(cgtItem.Stock);
             EventDate = cgtItem.EventDate;
             CostBase = cgtItem.CostBase;
             AmountReceived = cgtItem.AmountReceived;

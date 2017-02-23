@@ -80,7 +80,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public UnrealisedGainViewItem(SimpleUnrealisedGainsItem item)
         {
-            CompanyName = PortfolioViewModel.FormattedCompanyName(item.ASXCode, item.CompanyName);
+            CompanyName = PortfolioViewModel.FormattedCompanyName(item.Stock);
             AquisitionDate = item.AquisitionDate;
             Units = item.Units;
             CostBase = item.CostBase;

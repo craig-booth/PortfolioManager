@@ -38,29 +38,30 @@ namespace PortfolioManager.Service.Local
                 responce.StocksHeld.Add(new StockItem(stock.Id, stock.ASXCode, stock.Name));
             }
 
+            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<PortfolioPropertiesResponce>(responce);
         }
 
         public Task<PortfolioSummaryResponce> GetSummary(DateTime date)
         {
-            var response = new PortfolioSummaryResponce();
+            var responce = new PortfolioSummaryResponce();
 
             var holdings = _ShareHoldingService.GetHoldings(date);
             var cashBalance = _CashAccountService.GetBalance(date);
 
-            response.PortfolioValue = holdings.Sum(x => x.MarketValue) + cashBalance; 
-            response.PortfolioCost = holdings.Sum(x => x.TotalCostBase) + cashBalance;
+            responce.PortfolioValue = holdings.Sum(x => x.MarketValue) + cashBalance; 
+            responce.PortfolioCost = holdings.Sum(x => x.TotalCostBase) + cashBalance;
 
-            response.CashBalance = cashBalance;
+            responce.CashBalance = cashBalance;
 
-            response.Return1Year = CalculateIRR(date, 1);
-            response.Return3Year = CalculateIRR(date, 3);
-            response.Return5Year = CalculateIRR(date, 5);
-            response.ReturnAll = CalculateIRR(date, 0);
+            responce.Return1Year = CalculateIRR(date, 1);
+            responce.Return3Year = CalculateIRR(date, 3);
+            responce.Return5Year = CalculateIRR(date, 5);
+            responce.ReturnAll = CalculateIRR(date, 0);
 
             foreach (var holding in holdings)
-                response.Holdings.Add(new Holding()
+                responce.Holdings.Add(new Holding()
                 {
                     ASXCode = holding.Stock.ASXCode,
                     CompanyName = holding.Stock.Name, 
@@ -70,7 +71,9 @@ namespace PortfolioManager.Service.Local
                     Cost = holding.TotalCostBase
                 });
 
-            return Task.FromResult<PortfolioSummaryResponce>(response);
+            responce.SetStatusToSuccessfull();
+
+            return Task.FromResult<PortfolioSummaryResponce>(responce);
         }
 
         private decimal? CalculateIRR(DateTime date, int years)

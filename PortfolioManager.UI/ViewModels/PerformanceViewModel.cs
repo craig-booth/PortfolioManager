@@ -81,7 +81,7 @@ namespace PortfolioManager.UI.ViewModels
             OutstandingDRPAmount = responce.OutstandingDRPAmount;
 
             StockPerformance.Clear();
-            foreach (var stockPerformance in responce.HoldingPerformance.OrderBy(x => x.CompanyName))
+            foreach (var stockPerformance in responce.HoldingPerformance.OrderBy(x => x.Stock.Name))
                 StockPerformance.Add(new StockPerformanceItem(stockPerformance));
 
             StockPerformance.Add(new StockPerformanceItem("Cash")
@@ -117,7 +117,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public StockPerformanceItem(HoldingPerformance stockPerformance)
         {
-            CompanyName = PortfolioViewModel.FormattedCompanyName(stockPerformance.ASXCode, stockPerformance.CompanyName);
+            CompanyName = PortfolioViewModel.FormattedCompanyName(stockPerformance.Stock);
             OpeningBalance = stockPerformance.OpeningBalance;
             Purchases = stockPerformance.Purchases;
             Sales = stockPerformance.Sales;

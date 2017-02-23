@@ -68,8 +68,7 @@ namespace PortfolioManager.Service.Local
                 var item = new SimpleUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
-                    ASXCode = currentStock.ASXCode,
-                    CompanyName = currentStock.Name,
+                    Stock = new StockItem(currentStock.Id, currentStock.ASXCode, currentStock.Name),
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
                     CostBase = parcel.CostBase,
@@ -86,7 +85,9 @@ namespace PortfolioManager.Service.Local
                 responce.CGTItems.Add(item);
             }
 
-            responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate);
+            responce.CGTItems.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate);
+
+            responce.SetStatusToSuccessfull();
 
             return responce;
         }
@@ -97,6 +98,9 @@ namespace PortfolioManager.Service.Local
             var parcels = _PortfolioQuery.GetAllParcels(date, date);
 
             var responce = GetDetailedCGT(parcels, date);
+
+            responce.SetStatusToSuccessfull();
+
             return Task.FromResult<DetailedUnrealisedGainsResponce>(responce);
         }
 
@@ -104,6 +108,9 @@ namespace PortfolioManager.Service.Local
         {
             var parcels = _PortfolioQuery.GetParcelsForStock(stockId, date, date);
             var responce = GetDetailedCGT(parcels, date);
+
+            responce.SetStatusToSuccessfull();
+
             return Task.FromResult<DetailedUnrealisedGainsResponce>(responce);
         }
 
@@ -128,8 +135,7 @@ namespace PortfolioManager.Service.Local
                 var item = new DetailedUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
-                    ASXCode = currentStock.ASXCode,
-                    CompanyName = currentStock.Name,
+                    Stock = new StockItem(currentStock.Id, currentStock.ASXCode, currentStock.Name),
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
                     CostBase = parcel.CostBase,
@@ -148,7 +154,7 @@ namespace PortfolioManager.Service.Local
                 responce.CGTItems.Add(item);
             }
 
-            responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate);
+            responce.CGTItems.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate);
 
             return responce;
         }
@@ -195,8 +201,7 @@ namespace PortfolioManager.Service.Local
 
                 var item = new CGTLiabilityItem()
                 {
-                    ASXCode = stock.ASXCode,
-                    CompanyName = stock.Name,
+                    Stock = new StockItem(stock.Id, stock.ASXCode, stock.Name),
                     EventDate = cgtEvent.EventDate,
                     CostBase = cgtEvent.CostBase,
                     AmountReceived = cgtEvent.AmountReceived,
@@ -237,6 +242,8 @@ namespace PortfolioManager.Service.Local
             responce.NetCapitalGainOther = responce.GrossCapitalGainOther;
             responce.NetCapitalGainDiscounted = responce.GrossCapitalGainDiscounted - responce.Discount;
             responce.NetCapitalGainTotal = responce.NetCapitalGainOther + responce.NetCapitalGainDiscounted;
+
+            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<CGTLiabilityResponce>(responce);
         }

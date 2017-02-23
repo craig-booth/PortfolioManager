@@ -55,6 +55,7 @@ namespace PortfolioManager.Service.Local
             responce.OutstandingDRPAmount = -responce.HoldingPerformance.Sum(x => x.DRPCashBalance);
             responce.ClosingBalance = closingHoldings.Sum(x => x.MarketValue);
 
+            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<PortfolioPerformanceResponce>(responce);
         }
@@ -67,7 +68,7 @@ namespace PortfolioManager.Service.Local
 
             public HoldingPerformanceWorkItem(Stock stock)
             {
-                HoldingPerformance = new HoldingPerformance(stock.ASXCode, stock.Name);
+                HoldingPerformance = new HoldingPerformance(stock.Id, stock.ASXCode, stock.Name);
                 Stock = stock;
                 CashFlows = new Utils.CashFlows();
             }

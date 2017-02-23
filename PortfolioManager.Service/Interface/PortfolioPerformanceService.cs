@@ -11,7 +11,7 @@ namespace PortfolioManager.Service.Interface
         Task<PortfolioPerformanceResponce> GetPerformance(DateTime fromDate, DateTime toDate);
     }
 
-    public class PortfolioPerformanceResponce
+    public class PortfolioPerformanceResponce : ServiceResponce
     {
         public decimal OpeningBalance { get; set; }
         public decimal Dividends { get; set; }
@@ -30,6 +30,7 @@ namespace PortfolioManager.Service.Interface
         public List<HoldingPerformance> HoldingPerformance { get; set; }
 
         public PortfolioPerformanceResponce()
+            : base()
         {
 
         }
@@ -37,8 +38,7 @@ namespace PortfolioManager.Service.Interface
 
     public class HoldingPerformance
     {
-        public string ASXCode { get; set; }
-        public string CompanyName { get; set; }
+        public StockItem Stock { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal Purchases { get; set; }
         public decimal Sales { get; set; }
@@ -49,10 +49,9 @@ namespace PortfolioManager.Service.Interface
         public decimal TotalReturn { get; set; }
         public double IRR { get; set; }
 
-        public HoldingPerformance(string asxCode, string companyName)
+        public HoldingPerformance(Guid stockId, string asxCode, string companyName)
         {
-            ASXCode = asxCode;
-            CompanyName = companyName;
+            Stock = new StockItem(stockId, asxCode ,companyName);
             OpeningBalance = 0.00m;
             Purchases = 0.00m;
             Sales = 0.00m;

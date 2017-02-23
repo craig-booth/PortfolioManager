@@ -52,7 +52,7 @@ namespace PortfolioManager.UI.ViewModels
                 responce = await capitalGainService.GetDetailedUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
 
             Parcels.Clear();
-            foreach (var item in responce.CGTItems.OrderBy(x => x.CompanyName).ThenBy(x => x.AquisitionDate))
+            foreach (var item in responce.CGTItems.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate))
                  Parcels.Add(new ParcelCostBaseViewItem(item));
  
             OnPropertyChanged("");
@@ -72,7 +72,7 @@ namespace PortfolioManager.UI.ViewModels
         public ParcelCostBaseViewItem(DetailedUnrealisedGainsItem item)
         {           
             ParcelId = item.Id;
-            CompanyName = PortfolioViewModel.FormattedCompanyName(item.ASXCode, item.CompanyName);
+            CompanyName = PortfolioViewModel.FormattedCompanyName(item.Stock);
             AquisitionDate = item.AquisitionDate;
             Units = item.Units;
             CostBase = item.CostBase;

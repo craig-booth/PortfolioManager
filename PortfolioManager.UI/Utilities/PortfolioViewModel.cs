@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.Utilities
 {
@@ -52,6 +53,11 @@ namespace PortfolioManager.UI.Utilities
         public virtual void RefreshView()
         {
 
+        }
+
+        public static string FormattedCompanyName(StockItem stock)
+        {
+            return FormattedCompanyName(stock.ASXCode, stock.Name);
         }
 
         public static string FormattedCompanyName(string asxCode, string companyName)

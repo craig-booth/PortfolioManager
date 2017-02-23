@@ -18,11 +18,12 @@ namespace PortfolioManager.Service.Interface
         Task<CGTLiabilityResponce> GetCGTLiability(DateTime fromDate, DateTime toDate);
     }
 
-    public class SimpleUnrealisedGainsResponce
+    public class SimpleUnrealisedGainsResponce : ServiceResponce
     {
         public List<SimpleUnrealisedGainsItem> CGTItems;
 
         public SimpleUnrealisedGainsResponce()
+            : base()
         {
             CGTItems = new List<SimpleUnrealisedGainsItem>();
         }
@@ -31,8 +32,7 @@ namespace PortfolioManager.Service.Interface
     public class SimpleUnrealisedGainsItem
     {
         public Guid Id { get; set; }
-        public string ASXCode { get; set; }
-        public string CompanyName { get; set; }
+        public StockItem Stock { get; set; }
 
         public DateTime AquisitionDate { get; set; }
         public int Units { get; set; }
@@ -44,11 +44,12 @@ namespace PortfolioManager.Service.Interface
     }
 
 
-    public class DetailedUnrealisedGainsResponce
+    public class DetailedUnrealisedGainsResponce: ServiceResponce
     {
         public List<DetailedUnrealisedGainsItem> CGTItems;
 
         public DetailedUnrealisedGainsResponce()
+            : base()
         {
             CGTItems = new List<DetailedUnrealisedGainsItem>();
         }
@@ -75,7 +76,7 @@ namespace PortfolioManager.Service.Interface
         public string Comment { get; set; }
     }
 
-    public class CGTLiabilityResponce
+    public class CGTLiabilityResponce : ServiceResponce
     {
         public decimal CurrentYearCapitalGainsOther { get; set; }
         public decimal CurrentYearCapitalGainsDiscounted { get; set; }
@@ -101,8 +102,7 @@ namespace PortfolioManager.Service.Interface
 
     public class CGTLiabilityItem
     {
-        public string ASXCode { get; set; }
-        public string CompanyName { get; set; }
+        public StockItem Stock { get; set; }
         public DateTime EventDate { get; set; }
         public decimal CostBase { get; set; }
         public decimal AmountReceived { get; set; }

@@ -37,13 +37,14 @@ namespace PortfolioManager.Service.Local
                 {
                     Id = action.Id,
                     ActionDate = action.ActionDate,
-                    ASXCode = stock.ASXCode,
-                    CompanyName = stock.Name,
+                    Stock = new StockItem(stock.Id, stock.ASXCode, stock.Name),
                     Description = action.Description
                 };
 
                 responce.CorporateActions.Add(item);
             }
+
+            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<UnappliedCorporateActionsResponce>(responce);
         }
@@ -56,6 +57,8 @@ namespace PortfolioManager.Service.Local
             var transactions = _CorporateActionService.CreateTransactionList(action);
 
             responce.Transactions.AddRange(transactions);
+
+            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<TransactionsForCorparateActionsResponce>(responce);
         }

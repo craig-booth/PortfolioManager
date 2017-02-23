@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Model.Portfolios;
 
-namespace PortfolioManager.Service.Interface
+namespace PortfolioManager.Service.Utils
 {
 
     [Serializable]

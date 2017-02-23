@@ -14,11 +14,12 @@ namespace PortfolioManager.Service.Interface
 
     public enum ValueFrequency { Daily, Weekly, Monthly };
 
-    public class PortfolioValueResponce
+    public class PortfolioValueResponce  : ServiceResponce
     {
         public Dictionary<DateTime, decimal> Values;
 
         public PortfolioValueResponce()
+            : base()
         {
             Values = new Dictionary<DateTime, decimal>();
         }

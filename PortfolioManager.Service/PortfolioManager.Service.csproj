@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\CapitalGainService.cs" />
+    <Compile Include="Interface\Common.cs" />
     <Compile Include="Interface\CorporateActionService.cs" />
     <Compile Include="Interface\PortfolioPerformanceService.cs" />
     <Compile Include="Interface\PortfolioSummaryService.cs" />
@@ -69,7 +70,7 @@
     <Compile Include="CorporateActions\DividendHandler.cs" />
     <Compile Include="CorporateActions\SplitConsolidationHandler.cs" />
     <Compile Include="CorporateActions\TransformationHandler.cs" />
-    <Compile Include="Interface\Exceptions.cs" />
+    <Compile Include="Utils\Exceptions.cs" />
     <Compile Include="Obsolete\IncomeService.cs" />
     <Compile Include="Obsolete\ParcelService.cs" />
     <Compile Include="Obsolete\Portfolio.cs" />

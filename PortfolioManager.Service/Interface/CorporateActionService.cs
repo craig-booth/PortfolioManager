@@ -14,11 +14,12 @@ namespace PortfolioManager.Service.Interface
         Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid corporateAction);
     }
 
-    public class UnappliedCorporateActionsResponce
+    public class UnappliedCorporateActionsResponce : ServiceResponce
     {
         public List<CorporateActionItem> CorporateActions { get; set; }
 
         public UnappliedCorporateActionsResponce()
+            : base()
         {
             CorporateActions = new List<CorporateActionItem>();
         }
@@ -28,16 +29,16 @@ namespace PortfolioManager.Service.Interface
     {
         public Guid Id { get; set; }
         public DateTime ActionDate { get; set; }
-        public string ASXCode { get; set; }
-        public string CompanyName { get; set; }
+        public StockItem Stock { get; set; }
         public string Description { get; set; }
     }
 
-    public class TransactionsForCorparateActionsResponce
+    public class TransactionsForCorparateActionsResponce: ServiceResponce
     {
         public List<Transaction> Transactions { get; set; }
 
         public TransactionsForCorparateActionsResponce()
+            : base()
         {
             Transactions = new List<Transaction>();
         }
