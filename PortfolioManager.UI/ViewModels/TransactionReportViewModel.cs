@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -43,17 +44,18 @@ namespace PortfolioManager.UI.ViewModels
             Transactions = new ObservableCollection<TransactionReportViewItem>();
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
-            Transactions.Clear();
+            var transactionService = _Parameter.PortfolioManagerService.GetService<ITransactionService>();
 
-           
-            IReadOnlyCollection<Transaction> transactions;
+            GetTransactionsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+                responce = await transactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
             else
-                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
-            foreach (var transaction in transactions)
+                responce = await transactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
+
+            Transactions.Clear();
+            foreach (var transaction in responce.Transactions)
             {
                 if (transaction.Type != TransactionType.CashTransaction)
                 {
@@ -61,7 +63,6 @@ namespace PortfolioManager.UI.ViewModels
                     Transactions.Add(new TransactionReportViewItem(stock, transaction));
                 }
             }
-
          
             OnPropertyChanged("");
         }
@@ -79,7 +80,7 @@ namespace PortfolioManager.UI.ViewModels
         public TransactionReportViewItem(Stock stock, Transaction transaction)
         {
             ASXCode = stock.ASXCode;
-            CompanyName = string.Format("{0} ({1})", stock.Name, stock.ASXCode);
+            CompanyName = PortfolioViewModel.FormattedCompanyName(stock.ASXCode, stock.Name);
             
             TransactionDate = transaction.TransactionDate;
 

@@ -48,11 +48,15 @@
     <Compile Include="Interface\CapitalGainService.cs" />
     <Compile Include="Interface\Common.cs" />
     <Compile Include="Interface\CorporateActionService.cs" />
+    <Compile Include="Interface\HoldingService.cs" />
     <Compile Include="Interface\PortfolioPerformanceService.cs" />
     <Compile Include="Interface\PortfolioSummaryService.cs" />
     <Compile Include="Interface\PortfolioValueService.cs" />
+    <Compile Include="Interface\TransactionService.cs" />
     <Compile Include="Local\CapitalGainService.cs" />
     <Compile Include="Local\CorporateActionService.cs" />
+    <Compile Include="Local\HoldingService.cs" />
+    <Compile Include="Local\TransactionService.cs" />
     <Compile Include="Obsolete\AttachmentService.cs" />
     <Compile Include="Obsolete\CashAccountService.cs" />
     <Compile Include="Interface\PortfolioManagerService.cs" />

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -72,8 +72,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService, ShareHoldingService holdingService)
-            : base(openingBalance, TransactionStockSelection.AllStocks(), stockService, holdingService)
+        public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+            : base(openingBalance, TransactionStockSelection.AllStocks(), stockService, obsoleteHoldingService, holdingService)
         {
         }
 

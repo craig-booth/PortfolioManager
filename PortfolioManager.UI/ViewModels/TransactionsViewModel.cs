@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 
+using PortfolioManager.Service.Interface;
+
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
@@ -54,22 +56,28 @@ namespace PortfolioManager.UI.ViewModels
         public override void Activate()
         {
             if (_Parameter != null)
-                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.Portfolio.StockService, _Parameter.Portfolio.ShareHoldingService);
+            {
+                var holdingService = _Parameter.PortfolioManagerService.GetService<IHoldingService>();
+                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.Portfolio.StockService, _Parameter.Portfolio.ShareHoldingService, holdingService);
+            }
 
             base.Activate();
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
+            var transactionService = _Parameter.PortfolioManagerService.GetService<ITransactionService>();
+
+            GetTransactionsResponce responce;
+            if (_Parameter.Stock.Id == Guid.Empty)
+                responce = await transactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+            else
+                responce = await transactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
+
             Transactions.Clear();
 
-            IReadOnlyCollection<Transaction> transactions;
-            if (_Parameter.Stock.Id == Guid.Empty)
-                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
-            else
-                transactions = _Parameter.Portfolio.TransactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
-            foreach (var transaction in transactions)
-                   Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
+            foreach (var transaction in responce.Transactions)
+                Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
 
             OnPropertyChanged("");            
         }

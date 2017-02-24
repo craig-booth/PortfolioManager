@@ -20,11 +20,11 @@ namespace PortfolioManager.Service.Local
     {
         private readonly ShareHoldingService _ShareHoldingService;
         private readonly CashAccountService _CashAccountService;
-        private readonly TransactionService _TransactionService;
+        private readonly Obsolete.TransactionService _TransactionService;
         private readonly StockService _StockService;
         private readonly IncomeService _IncomeService;
 
-        public PortfolioPerformanceService(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, TransactionService transactionService, StockService stockService, IncomeService incomeService)
+        public PortfolioPerformanceService(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, Obsolete.TransactionService transactionService, StockService stockService, IncomeService incomeService)
         {
             _ShareHoldingService = shareHoldingService;
             _CashAccountService = cashAccountService;

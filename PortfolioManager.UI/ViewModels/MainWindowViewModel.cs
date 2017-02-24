@@ -194,7 +194,9 @@ namespace PortfolioManager.UI.ViewModels
             PopulateStockList(responce.StocksHeld);
 
             EditTransactionWindow.Portfolio = _Portfolio;
+            EditTransactionWindow.PortfolioManagerService = _PortfolioManagerService;
             CreateTransactionsWindow.Portfolio = _Portfolio;
+            CreateTransactionsWindow.PortfolioManagerService = _PortfolioManagerService;
 
 
             var ui = TaskScheduler.FromCurrentSynchronizationContext();

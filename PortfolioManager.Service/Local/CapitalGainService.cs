@@ -19,11 +19,11 @@ namespace PortfolioManager.Service.Local
     class CapitalGainService : ICapitalGainService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly TransactionService _TransactionService;
+        private readonly Obsolete.TransactionService _TransactionService;
         private readonly StockService _StockService;
         private readonly CGTService _CGTService;
 
-        public CapitalGainService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService, CGTService cgtService)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, StockService stockService, Obsolete.TransactionService transactionService, CGTService cgtService)
         {
             _PortfolioQuery = portfolioQuery;
             _TransactionService = transactionService;

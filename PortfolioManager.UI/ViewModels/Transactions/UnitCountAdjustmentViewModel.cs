@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -57,8 +57,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public UnitCountAdjustmentViewModel(UnitCountAdjustment unitCostAdjustment, StockService stockService, ShareHoldingService holdingService)
-            : base(unitCostAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, holdingService)
+        public UnitCountAdjustmentViewModel(UnitCountAdjustment unitCostAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+            : base(unitCostAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
 
         }

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -21,8 +21,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public CashAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransaction cashTransaction, StockService stockService, ShareHoldingService holdingService)
-            : base(cashTransaction, null, stockService, holdingService)
+        public CashTransactionViewModel(CashTransaction cashTransaction, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+            : base(cashTransaction, null, stockService, obsoleteHoldingService, holdingService)
         {
             
         }

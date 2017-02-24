@@ -19,18 +19,28 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class CreateMulitpleTransactionsViewModel : PopupWindow
     {
-        private TransactionService _TransactionService;
+        private ITransactionService _TransactionService;
         private TransactionViewModelFactory _TransactionViewModelFactory;
+
+        private IPortfolioManagerServiceFactory _PortfolioManagerService;
+        public IPortfolioManagerServiceFactory PortfolioManagerService
+        {
+            set
+            {
+                _PortfolioManagerService = value;
+                _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
+
+                var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
+                _TransactionViewModelFactory = new TransactionViewModelFactory(_Portfolio.StockService, _Portfolio.ShareHoldingService, holdingService);
+            }
+        }
 
         private Portfolio _Portfolio;
         public Portfolio Portfolio
         {
             set
             {
-                _Portfolio = value;
-
-                _TransactionService = _Portfolio.TransactionService;
-                _TransactionViewModelFactory = new TransactionViewModelFactory(_Portfolio.StockService, _Portfolio.ShareHoldingService);
+                _Portfolio = value;              
             }
         }
 
@@ -95,13 +105,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         private void SaveTransactions()
         {
             foreach (var transactionviewModel in Transactions)
-            {
                 transactionviewModel.EndEdit();
 
-                var transaction = transactionviewModel.Transaction;
-
-                _TransactionService.ProcessTransaction(transaction);
-            }
+            _TransactionService.AddTransactions(Transactions.Select(x => x.Transaction));
 
             IsOpen = false;
         }

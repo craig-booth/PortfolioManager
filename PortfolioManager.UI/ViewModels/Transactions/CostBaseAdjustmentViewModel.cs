@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -36,8 +36,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CostBaseAdjustmentViewModel(CostBaseAdjustment costBaseAdjustment, StockService stockService, ShareHoldingService holdingService)
-            : base(costBaseAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, holdingService)
+        public CostBaseAdjustmentViewModel(CostBaseAdjustment costBaseAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+            : base(costBaseAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
 
         }

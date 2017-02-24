@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 using CBControls;
 
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 using PortfolioManager.Model.Portfolios;
 
 using PortfolioManager.UI.Utilities;
@@ -56,8 +56,21 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class EditTransactionViewModel: PopupWindow
     { 
-        private TransactionService _TransactionService;
+        private ITransactionService _TransactionService;
         private TransactionViewModelFactory _TransactionViewModelFactory;
+
+        private IPortfolioManagerServiceFactory _PortfolioManagerService;
+        public IPortfolioManagerServiceFactory PortfolioManagerService
+        {
+            set
+            {
+                _PortfolioManagerService = value;
+                _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
+
+                var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
+                _TransactionViewModelFactory = new TransactionViewModelFactory(_Portfolio.StockService, _Portfolio.ShareHoldingService, holdingService);
+            }
+        }
 
         private Portfolio _Portfolio;
         public Portfolio Portfolio
@@ -65,9 +78,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             set
             {
                 _Portfolio = value;
-
-                _TransactionService = _Portfolio.TransactionService;
-                _TransactionViewModelFactory = new TransactionViewModelFactory(_Portfolio.StockService, _Portfolio.ShareHoldingService);
             }
         }
 
@@ -155,12 +165,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 TransactionViewModel.EndEdit();
 
-                var transaction = TransactionViewModel.Transaction;
-
                 if (NewTransaction)
-                    _TransactionService.ProcessTransaction(transaction);
+                    _TransactionService.AddTransaction(TransactionViewModel.Transaction);
                 else
-                    _TransactionService.UpdateTransaction(transaction);
+                    _TransactionService.UpdateTransaction(TransactionViewModel.Transaction);
             }
 
             TransactionViewModel = null;

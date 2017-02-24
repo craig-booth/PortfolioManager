@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Service;
+using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
 
@@ -37,7 +37,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
                 if (Stock != null)
                 {
-                    var holding = _HoldingService.GetHolding(Stock, RecordDate);
+                    var holding = _ObsoleteHoldingService.GetHolding(Stock, RecordDate);
 
                     var availableUnits = holding.Units;
                     if (Transaction != null)
@@ -89,8 +89,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(Disposal disposal, StockService stockService, ShareHoldingService holdingService)
-            : base(disposal, TransactionStockSelection.TradeableStocks(true), stockService, holdingService)
+        public DisposalViewModel(Disposal disposal, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+            : base(disposal, TransactionStockSelection.TradeableStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
             
         }
