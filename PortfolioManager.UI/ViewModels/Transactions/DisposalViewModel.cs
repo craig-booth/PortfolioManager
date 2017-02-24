@@ -37,7 +37,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
                 if (Stock != null)
                 {
-                    var holding = _ObsoleteHoldingService.GetHolding(Stock, RecordDate);
+                    var stock = _StockService.Get(Stock.Id, RecordDate);
+                    var holding = _ObsoleteHoldingService.GetHolding(stock, RecordDate);
 
                     var availableUnits = holding.Units;
                     if (Transaction != null)

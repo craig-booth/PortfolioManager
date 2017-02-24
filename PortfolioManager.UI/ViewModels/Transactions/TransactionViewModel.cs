@@ -227,13 +227,15 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else
             {
-                stocks = _StockService.GetAll(date).OrderBy(x => x.Name);
+                var stocks2 = _StockService.GetAll(date).AsEnumerable();
 
                 if (!_StockSelection.IncludeStapledSecurites)
-                    stocks = stocks.Where(x => x.Type != StockType.StapledSecurity);
+                    stocks2 = stocks2.Where(x => x.Type != StockType.StapledSecurity);
 
                 if (!_StockSelection.IncludeChildStocks)
-                    stocks = stocks.Where(x => x.ParentId == Guid.Empty);
+                    stocks2 = stocks2.Where(x => x.ParentId == Guid.Empty);
+
+                stocks = stocks2.Select(x => new StockItem(x.Id, x.ASXCode, x.Name));
             }
 
             if (stocks != null)
