@@ -72,7 +72,7 @@ namespace PortfolioManager.UI.ViewModels
         public ParcelCostBaseViewItem(DetailedUnrealisedGainsItem item)
         {           
             ParcelId = item.Id;
-            CompanyName = PortfolioViewModel.FormattedCompanyName(item.Stock);
+            CompanyName = item.Stock.FormattedCompanyName();
             AquisitionDate = item.AquisitionDate;
             Units = item.Units;
             CostBase = item.CostBase;

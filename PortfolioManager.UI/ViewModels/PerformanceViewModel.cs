@@ -117,7 +117,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public StockPerformanceItem(HoldingPerformance stockPerformance)
         {
-            CompanyName = PortfolioViewModel.FormattedCompanyName(stockPerformance.Stock);
+            CompanyName = stockPerformance.Stock.FormattedCompanyName();
             OpeningBalance = stockPerformance.OpeningBalance;
             Purchases = stockPerformance.Purchases;
             Sales = stockPerformance.Sales;

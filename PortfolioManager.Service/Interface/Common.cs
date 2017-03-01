@@ -4,20 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Model.Stocks;
+
 namespace PortfolioManager.Service.Interface
 {
 
     public class StockItem
     {
-        public Guid Id { get; private set; }
-        public string ASXCode { get; private set; }
-        public string Name { get; private set; }
+        public Guid Id { get; set; }
+        public string ASXCode { get; set; }
+        public string Name { get; set; }
+
+        public StockItem()
+        {
+
+        }
 
         public StockItem(Guid id, string asxCode, string name)
         {
             Id = id;
             ASXCode = asxCode;
             Name = name;
+        } 
+
+        internal StockItem(Stock stock)
+        {
+            Id = stock.Id;
+            ASXCode = stock.ASXCode;
+            Name = stock.Name;
         }
     }
 

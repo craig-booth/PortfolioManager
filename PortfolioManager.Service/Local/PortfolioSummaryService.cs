@@ -35,7 +35,7 @@ namespace PortfolioManager.Service.Local
             var stocksOwned = _ShareHoldingService.GetOwnedStocks(responce.StartDate, responce.EndDate, false);
             foreach (var stock in stocksOwned)
             {
-                responce.StocksHeld.Add(new StockItem(stock.Id, stock.ASXCode, stock.Name));
+                responce.StocksHeld.Add(new StockItem(stock));
             }
 
             responce.SetStatusToSuccessfull();
@@ -63,8 +63,7 @@ namespace PortfolioManager.Service.Local
             foreach (var holding in holdings)
                 responce.Holdings.Add(new Holding()
                 {
-                    ASXCode = holding.Stock.ASXCode,
-                    CompanyName = holding.Stock.Name, 
+                    Stock = new StockItem(holding.Stock),
                     Category = holding.Stock.Category,
                     Units = holding.Units,
                     Value = holding.MarketValue,

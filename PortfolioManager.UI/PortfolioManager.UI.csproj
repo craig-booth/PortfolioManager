@@ -85,6 +85,7 @@
     <Compile Include="Utilities\PageViewModel.cs" />
     <Compile Include="Utilities\PortfolioViewModel.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\StockItemExtension.cs" />
     <Compile Include="Utilities\ViewParameter.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\Transactions\AquisitionViewModel.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="ViewModels\DetailedCGTViewModel.cs" />
     <Compile Include="ViewModels\Transactions\DisposalViewModel.cs" />
     <Compile Include="ViewModels\Transactions\EditTransactionViewModel.cs" />
-    <Compile Include="ViewModels\IncomeReceivedViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\IncomeReceivedViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Transactions\OpeningBalanceViewModel.cs" />
     <Compile Include="ViewModels\PerformanceViewModel.cs" />
@@ -131,7 +132,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AquisitionView.xaml">
+    <Page Include="Views\Transactions\AquisitionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,7 +148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CashTransactionView.xaml">
+    <Page Include="Views\Transactions\CashTransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,7 +160,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CostBaseAdjustmentView.xaml">
+    <Page Include="Views\Transactions\CostBaseAdjustmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,11 +168,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DisposalView.xaml">
+    <Page Include="Views\Transactions\DisposalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\IncomeReceivedView.xaml">
+    <Page Include="Views\Transactions\IncomeReceivedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,7 +180,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\OpeningBalanceView.xaml">
+    <Page Include="Views\Transactions\OpeningBalanceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,7 +192,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ReturnOfCapitalView.xaml">
+    <Page Include="Views\Transactions\ReturnOfCapitalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -211,7 +212,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UnitCountAdjustmentView.xaml">
+    <Page Include="Views\Transactions\UnitCountAdjustmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -277,6 +278,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

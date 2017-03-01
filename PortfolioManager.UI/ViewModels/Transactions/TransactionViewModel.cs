@@ -44,7 +44,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             return new TransactionStockSelection(owned, false, true);
         }
     }
-    
 
     class TransactionViewModel : ViewModel, IEditableObject
     {

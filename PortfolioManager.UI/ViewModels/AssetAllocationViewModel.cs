@@ -114,7 +114,7 @@ namespace PortfolioManager.UI.ViewModels
                 {
                     var series = new PieSeries()
                     {
-                        Title = FormattedCompanyName(holding.ASXCode, holding.CompanyName),
+                        Title = holding.Stock.FormattedASXCode(),
                         Values = new ChartValues<ObservableValue>() { new ObservableValue((double)holding.Value) },
                         LabelPoint = LabelFormatter
                     };

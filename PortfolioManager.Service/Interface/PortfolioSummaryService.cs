@@ -51,13 +51,9 @@ namespace PortfolioManager.Service.Interface
 
     public class Holding
     {
-        public string ASXCode;
-        public string CompanyName;
-
+        public StockItem Stock;
         public AssetCategory Category;
-
         public int Units;
-
         public decimal Value;
         public decimal Cost;
     }

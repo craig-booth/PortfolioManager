@@ -37,7 +37,7 @@ namespace PortfolioManager.Service.Local
                 {
                     Id = action.Id,
                     ActionDate = action.ActionDate,
-                    Stock = new StockItem(stock.Id, stock.ASXCode, stock.Name),
+                    Stock = new StockItem(stock),
                     Description = action.Description
                 };
 

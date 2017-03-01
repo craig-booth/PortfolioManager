@@ -68,7 +68,7 @@ namespace PortfolioManager.Service.Local
                 var item = new SimpleUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
-                    Stock = new StockItem(currentStock.Id, currentStock.ASXCode, currentStock.Name),
+                    Stock = new StockItem(currentStock),
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
                     CostBase = parcel.CostBase,
@@ -135,7 +135,7 @@ namespace PortfolioManager.Service.Local
                 var item = new DetailedUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
-                    Stock = new StockItem(currentStock.Id, currentStock.ASXCode, currentStock.Name),
+                    Stock = new StockItem(currentStock),
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
                     CostBase = parcel.CostBase,
@@ -201,7 +201,7 @@ namespace PortfolioManager.Service.Local
 
                 var item = new CGTLiabilityItem()
                 {
-                    Stock = new StockItem(stock.Id, stock.ASXCode, stock.Name),
+                    Stock = new StockItem(stock),
                     EventDate = cgtEvent.EventDate,
                     CostBase = cgtEvent.CostBase,
                     AmountReceived = cgtEvent.AmountReceived,

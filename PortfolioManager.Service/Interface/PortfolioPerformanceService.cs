@@ -48,18 +48,5 @@ namespace PortfolioManager.Service.Interface
         public decimal DRPCashBalance { get; set; }
         public decimal TotalReturn { get; set; }
         public double IRR { get; set; }
-
-        public HoldingPerformance(Guid stockId, string asxCode, string companyName)
-        {
-            Stock = new StockItem(stockId, asxCode ,companyName);
-            OpeningBalance = 0.00m;
-            Purchases = 0.00m;
-            Sales = 0.00m;
-            Dividends = 0.00m;
-            CapitalGain = 0.00m;
-            ClosingBalance = 0.00m;
-            DRPCashBalance = 0.00m;
-        }
-
     }
 }

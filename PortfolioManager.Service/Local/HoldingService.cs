@@ -24,7 +24,7 @@ namespace PortfolioManager.Service.Local
             var responce = new GetOwnedStocksResponce();
 
             var stocks = _ShareHoldingService.GetOwnedStocks(date, true);
-            responce.Stocks.AddRange(stocks.Select(x => new StockItem(x.Id, x.ASXCode, x.Name)));
+            responce.Stocks.AddRange(stocks.Select(x => new StockItem(x)));
 
             responce.SetStatusToSuccessfull();
 

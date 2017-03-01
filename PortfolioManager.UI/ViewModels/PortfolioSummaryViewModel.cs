@@ -88,7 +88,7 @@ namespace PortfolioManager.UI.ViewModels
             }
 
             Holdings.Clear();
-            foreach (var holding in responce.Holdings.OrderBy(x => x.CompanyName))
+            foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.Name))
                 Holdings.Add(new HoldingItemViewModel(holding));
 
 
@@ -114,7 +114,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public HoldingItemViewModel(Holding holding)
         {
-            CompanyName = CompanyName = PortfolioViewModel.FormattedCompanyName(holding.ASXCode, holding.CompanyName);
+            CompanyName = holding.Stock.FormattedCompanyName();
             Units = holding.Units;
             ChangeInValue = new ChangeInValue(holding.Cost, holding.Value);
         }

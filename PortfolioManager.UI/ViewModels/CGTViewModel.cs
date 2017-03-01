@@ -99,7 +99,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public CGTEventViewModel(CGTLiabilityItem cgtItem)
         {
-            CompanyName = PortfolioViewModel.FormattedCompanyName(cgtItem.Stock);
+            CompanyName = cgtItem.Stock.FormattedCompanyName();
             EventDate = cgtItem.EventDate;
             CostBase = cgtItem.CostBase;
             AmountReceived = cgtItem.AmountReceived;

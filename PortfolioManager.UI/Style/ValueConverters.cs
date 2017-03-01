@@ -8,8 +8,8 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows;
 
-using PortfolioManager.UI.ViewModels;
-
+using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.Style
 {
@@ -51,4 +51,5 @@ namespace PortfolioManager.UI.Style
             return ((Visibility)value == TrueValue);
         }
     }
+
 }

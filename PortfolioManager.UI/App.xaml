@@ -14,7 +14,7 @@
 
                 <!-- Style -->
                 <ResourceDictionary Source="Style/Style.xaml"/>
-
+                
                 <!-- Views -->
                 <ResourceDictionary Source="Views/PortfolioSummaryView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionReportView.xaml"/>
@@ -25,18 +25,20 @@
                 <ResourceDictionary Source="Views/CashAccountView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionsView.xaml"/>
                 <ResourceDictionary Source="Views/CorporateActionsView.xaml"/>
-                <ResourceDictionary Source="Views/AquisitionView.xaml"/>
-                <ResourceDictionary Source="Views/CashTransactionView.xaml"/>
-                <ResourceDictionary Source="Views/CostBaseAdjustmentView.xaml"/>
-                <ResourceDictionary Source="Views/DisposalView.xaml"/>
-                <ResourceDictionary Source="Views/IncomeReceivedView.xaml"/>
-                <ResourceDictionary Source="Views/OpeningBalanceView.xaml"/>
-                <ResourceDictionary Source="Views/ReturnOfCapitalView.xaml"/>
-                <ResourceDictionary Source="Views/UnitCountAdjustmentView.xaml"/>
                 <ResourceDictionary Source="Views/SettingsView.xaml"/>
                 <ResourceDictionary Source="Views/AssetAllocationView.xaml"/>
                 <ResourceDictionary Source="Views/PerformanceView.xaml"/>
                 <ResourceDictionary Source="Views/PortfolioValueView.xaml"/>
+
+                <!-- Transactions -->
+                <ResourceDictionary Source="Views/Transactions/AquisitionView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/CashTransactionView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/CostBaseAdjustmentView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/DisposalView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/IncomeReceivedView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/OpeningBalanceView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/ReturnOfCapitalView.xaml"/>
+                <ResourceDictionary Source="Views/Transactions/UnitCountAdjustmentView.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

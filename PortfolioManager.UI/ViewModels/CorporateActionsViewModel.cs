@@ -88,7 +88,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             Id = corporateAction.Id;
             ActionDate = corporateAction.ActionDate;
-            CompanyName = PortfolioViewModel.FormattedCompanyName(corporateAction.Stock);
+            CompanyName = corporateAction.Stock.FormattedCompanyName();
             Description = corporateAction.Description;
         }
     }

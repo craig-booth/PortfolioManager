@@ -237,7 +237,7 @@ namespace PortfolioManager.UI.ViewModels
 
             foreach (var stock in stocks)
             {
-                OwnedStocks.Add(new DescribedObject<StockItem>(stock, PortfolioViewModel.FormattedCompanyName(stock.ASXCode, stock.Name)));
+                OwnedStocks.Add(new DescribedObject<StockItem>(stock, stock.FormattedCompanyName()));
             }
 
             ViewParameter.Stock = allCompanies;

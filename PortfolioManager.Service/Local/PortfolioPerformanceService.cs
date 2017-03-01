@@ -63,13 +63,12 @@ namespace PortfolioManager.Service.Local
         private class HoldingPerformanceWorkItem
         {
             public HoldingPerformance HoldingPerformance;
-            public Stock Stock;
             public CashFlows CashFlows;
 
             public HoldingPerformanceWorkItem(Stock stock)
             {
-                HoldingPerformance = new HoldingPerformance(stock.Id, stock.ASXCode, stock.Name);
-                Stock = stock;
+                HoldingPerformance = new HoldingPerformance();
+                HoldingPerformance.Stock = new StockItem(stock);
                 CashFlows = new Utils.CashFlows();
             }
         }
@@ -105,7 +104,7 @@ namespace PortfolioManager.Service.Local
                 if (stock.ParentId != Guid.Empty)
                     stock = _StockService.Get(stock.ParentId, transaction.RecordDate);
 
-                workItem = workingList.FirstOrDefault(x => x.Stock.Id == stock.Id);
+                workItem = workingList.FirstOrDefault(x => x.HoldingPerformance.Stock.Id == stock.Id);
                 if (workItem == null)
                 {
                     workItem = new HoldingPerformanceWorkItem(stock);
@@ -146,7 +145,7 @@ namespace PortfolioManager.Service.Local
             var holdingPerformance = new List<HoldingPerformance>();
             foreach (var item in workingList)
             {
-                var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == item.Stock.Id);
+                var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == item.HoldingPerformance.Stock.Id);
                 if (holding != null)
                 {
                     item.HoldingPerformance.ClosingBalance = holding.MarketValue;
