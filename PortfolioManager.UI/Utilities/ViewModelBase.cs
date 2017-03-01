@@ -7,7 +7,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using PortfolioManager.Service;
 
 namespace PortfolioManager.UI.Utilities
 {

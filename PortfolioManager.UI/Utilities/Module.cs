@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.UI.Utilities
 {

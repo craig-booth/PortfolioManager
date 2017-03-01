@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;

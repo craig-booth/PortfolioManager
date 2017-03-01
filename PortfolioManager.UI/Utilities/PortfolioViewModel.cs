@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using PortfolioManager.Service.Interface;
-
 namespace PortfolioManager.UI.Utilities
 {
     abstract class PortfolioViewModel : PageViewModel, IPageViewModel

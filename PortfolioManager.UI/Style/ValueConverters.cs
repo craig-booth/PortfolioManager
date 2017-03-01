@@ -8,8 +8,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows;
 
-using PortfolioManager.Service.Interface;
-using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.Style
 {

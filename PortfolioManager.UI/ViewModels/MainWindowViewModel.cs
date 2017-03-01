@@ -12,7 +12,6 @@ using System.Collections.ObjectModel;
 using StockManager.Service;
 
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
