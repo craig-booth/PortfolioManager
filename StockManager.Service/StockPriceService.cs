@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using StockManager.Service.Utils;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Utils;
 
 namespace StockManager.Service
 {

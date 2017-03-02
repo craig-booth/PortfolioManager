@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PortfolioManager.Model.Utils
+namespace PortfolioManager.Common
 {
     public static class DateUtils
     {

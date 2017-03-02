@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
+
 namespace PortfolioManager.Model.Portfolios
 {
     public class CashTransaction : Transaction
     {
-        public CashAccountTransactionType CashTransactionType { get; set; }
+        public BankAccountTransactionType CashTransactionType { get; set; }
         public decimal Amount { get; set; }
 
         public CashTransaction()

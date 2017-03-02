@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Service;
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
@@ -37,8 +37,8 @@ namespace PortfolioManager.Service.Transactions
 
             if (aquisition.CreateCashTransaction)
             {
-                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, aquisition.TransactionDate, String.Format("Purchase of {0}", aquisition.ASXCode), -1 * (aquisition.Units * aquisition.AveragePrice));
-                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Fee, aquisition.TransactionDate, String.Format("Brokerage for purchase of {0}", aquisition.ASXCode), -1 * aquisition.TransactionCosts);                
+                CashAccountTransaction(unitOfWork, BankAccountTransactionType.Transfer, aquisition.TransactionDate, String.Format("Purchase of {0}", aquisition.ASXCode), -1 * (aquisition.Units * aquisition.AveragePrice));
+                CashAccountTransaction(unitOfWork, BankAccountTransactionType.Fee, aquisition.TransactionDate, String.Format("Brokerage for purchase of {0}", aquisition.ASXCode), -1 * aquisition.TransactionCosts);                
             }
         }
     }

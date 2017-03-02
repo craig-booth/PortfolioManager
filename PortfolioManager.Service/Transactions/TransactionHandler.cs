@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
-
-using PortfolioManager.Service.Interface;
 
 using PortfolioManager.Service.Obsolete;
 
@@ -179,7 +177,7 @@ namespace PortfolioManager.Service.Transactions
             unitOfWork.ParcelRepository.Update(parcel);
         }
 
-        protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, CashAccountTransactionType type, DateTime date, string description, decimal amount)
+        protected void CashAccountTransaction(IPortfolioUnitOfWork unitOfWork, BankAccountTransactionType type, DateTime date, string description, decimal amount)
         {
             if (amount != 0.00m)
             {

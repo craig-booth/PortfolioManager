@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PortfolioManager.Data.Test</RootNamespace>
     <AssemblyName>PortfolioManager.Data.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,6 +72,10 @@
     <ProjectReference Include="..\NUnitExtension\NUnitExtension.csproj">
       <Project>{0e4423e8-50ef-467b-9211-d59137b2bf19}</Project>
       <Name>NUnitExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
+      <Project>{f93a244c-1f96-4ebb-a067-9005f04cf52f}</Project>
+      <Name>PortfolioManager.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Data.Memory\PortfolioManager.Data.Memory.csproj">
       <Project>{7336f40c-ecd4-4a94-a1d9-c629823fe5b3}</Project>

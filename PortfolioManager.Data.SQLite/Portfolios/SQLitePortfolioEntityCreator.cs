@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Data.SQLite.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -237,7 +237,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             CashTransaction cashTransaction = new CashTransaction(id)
             {
-                CashTransactionType = (CashAccountTransactionType)cashTransactionReader.GetInt32(0),
+                CashTransactionType = (BankAccountTransactionType)cashTransactionReader.GetInt32(0),
                 Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt64(1))
             };
 

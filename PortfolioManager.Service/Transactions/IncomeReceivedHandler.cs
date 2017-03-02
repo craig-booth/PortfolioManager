@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
 
 using PortfolioManager.Service.Utils;
@@ -59,7 +58,7 @@ namespace PortfolioManager.Service.Transactions
             }
 
             if (incomeReceived.CreateCashTransaction)
-                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
+                CashAccountTransaction(unitOfWork, BankAccountTransactionType.Transfer, incomeReceived.TransactionDate, String.Format("Distribution for {0}", incomeReceived.ASXCode), incomeReceived.CashIncome);
 
             UpdateDRPCashBalance(unitOfWork, stock, incomeReceived.TransactionDate, incomeReceived.DRPCashBalance);
         }

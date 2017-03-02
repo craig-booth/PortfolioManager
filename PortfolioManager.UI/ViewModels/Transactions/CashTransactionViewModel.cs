@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Interface;
 
@@ -15,7 +16,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 {
     class CashTransactionViewModel : TransactionViewModel
     {
-        public CashAccountTransactionType TransactionType { get; set; }
+        public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
         public CashTransactionViewModel(CashTransaction cashTransaction, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
@@ -35,7 +36,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
              }
             else
             {
-                TransactionType = CashAccountTransactionType.Deposit;
+                TransactionType = BankAccountTransactionType.Deposit;
                 Amount = 0.00m;
             }
         }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.CorporateActions;
 

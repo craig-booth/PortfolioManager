@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 

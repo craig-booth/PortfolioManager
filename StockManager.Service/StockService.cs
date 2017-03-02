@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using StockManager.Service.Utils;
-
+using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.Model.Data;
 
 namespace StockManager.Service

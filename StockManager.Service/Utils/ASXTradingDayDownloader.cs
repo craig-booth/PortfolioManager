@@ -8,7 +8,7 @@ using System.IO;
 using System.Net;
 using System.Xml;
 
-using PortfolioManager.Model.Utils;
+using PortfolioManager.Common;
 
 namespace StockManager.Service.Utils
 {

@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
+using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Model.Utils;
 
 using PortfolioManager.Service.Obsolete;
 

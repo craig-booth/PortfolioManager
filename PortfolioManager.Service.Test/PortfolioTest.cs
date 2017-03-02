@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using NUnitExtension;
 
-using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Utils;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Utils;

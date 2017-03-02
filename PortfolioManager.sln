@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model", "PortfolioManager.Model\PortfolioManager.Model.csproj", "{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}"
 EndProject
@@ -31,6 +31,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockManager.Service.Test", "StockManager.Service.Test\StockManager.Service.Test.csproj", "{EE4FE598-4A7F-41B8-9D52-094DFC0C0332}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "PortfolioManager.UI\PortfolioManager.UI.csproj", "{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Common", "PortfolioManager.Common\PortfolioManager.Common.csproj", "{F93A244C-1F96-4EBB-A067-9005F04CF52F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +88,10 @@ Global
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

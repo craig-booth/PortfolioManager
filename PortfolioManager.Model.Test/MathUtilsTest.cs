@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-using PortfolioManager.Model.Utils;
+using PortfolioManager.Common;
 
 namespace PortfolioManager.Model.Test
 {

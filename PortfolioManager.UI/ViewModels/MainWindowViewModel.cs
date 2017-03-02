@@ -11,12 +11,12 @@ using System.Collections.ObjectModel;
 
 using StockManager.Service;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Local;
-using PortfolioManager.Model.Utils;
 
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;

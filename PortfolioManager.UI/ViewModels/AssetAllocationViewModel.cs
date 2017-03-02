@@ -9,8 +9,8 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
+using PortfolioManager.Common;
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Model.Stocks;
 using PortfolioManager.Service.Interface;
 
 

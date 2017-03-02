@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Service.Test.Transactions
 {

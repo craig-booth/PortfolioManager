@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Service.Obsolete
 {
@@ -240,8 +240,8 @@ namespace PortfolioManager.Service.Obsolete
                 if (transaction.Type == TransactionType.CashTransaction)
                 {
                     var cashTransaction = transaction as CashTransaction;
-                    if ((cashTransaction.CashTransactionType == CashAccountTransactionType.Deposit) ||
-                        (cashTransaction.CashTransactionType == CashAccountTransactionType.Withdrawl))
+                    if ((cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit) ||
+                        (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl))
                         cashFlows.Add(cashTransaction.TransactionDate, -cashTransaction.Amount);
                 }
             }

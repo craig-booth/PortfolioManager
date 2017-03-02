@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using NUnitExtension;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Data.Test.Stocks
 {

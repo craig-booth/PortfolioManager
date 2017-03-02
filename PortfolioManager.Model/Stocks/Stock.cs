@@ -4,16 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Utils;
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Stocks
 {
-    public enum StockType {Ordinary, StapledSecurity, Trust}
-
-    public enum DRPMethod { Round, RoundDown, RoundUp, RetainCashBalance}
-
     [Serializable]
     public class NotStapledSecurityException : Exception
     {

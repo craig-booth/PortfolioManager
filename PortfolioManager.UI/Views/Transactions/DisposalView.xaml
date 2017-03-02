@@ -3,15 +3,15 @@
                     xmlns:views="clr-namespace:PortfolioManager.UI.Views"
                     xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels.Transactions"
                     xmlns:controls="clr-namespace:PortfolioManager.UI.Controls"                    
-                    xmlns:model="clr-namespace:PortfolioManager.Model.Portfolios;assembly=PortfolioManager.Model">
+                    xmlns:common="clr-namespace:PortfolioManager.Common;assembly=PortfolioManager.Common">
 
     <DataTemplate DataType="{x:Type viewmodels:DisposalViewModel}">
 
         <DataTemplate.Resources>
 
-            <ObjectDataProvider x:Key="CGTCalculationMethods" MethodName="GetValues" ObjectType="{x:Type model:CGTCalculationMethod}">
+            <ObjectDataProvider x:Key="CGTCalculationMethods" MethodName="GetValues" ObjectType="{x:Type common:CGTCalculationMethod}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="model:CGTCalculationMethod"/>
+                    <x:Type TypeName="common:CGTCalculationMethod"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
 

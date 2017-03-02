@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Utils;
-
+using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels

@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
-using PortfolioManager.Service;
 using StockManager.Service;
 
 namespace PortfolioManager.Service.Test

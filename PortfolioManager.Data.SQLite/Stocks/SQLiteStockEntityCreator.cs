@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Data.SQLite;
-using PortfolioManager.Model.Utils;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {

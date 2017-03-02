@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 
 using PortfolioManager.Service.Utils;
@@ -50,7 +50,7 @@ namespace PortfolioManager.Service.Transactions
             }
 
             if (returnOfCapital.CreateCashTransaction)
-                CashAccountTransaction(unitOfWork, CashAccountTransactionType.Transfer, returnOfCapital.TransactionDate, String.Format("Return of capital for {0}", returnOfCapital.ASXCode), totalAmount);                
+                CashAccountTransaction(unitOfWork, BankAccountTransactionType.Transfer, returnOfCapital.TransactionDate, String.Format("Return of capital for {0}", returnOfCapital.ASXCode), totalAmount);                
         }
     }
 }

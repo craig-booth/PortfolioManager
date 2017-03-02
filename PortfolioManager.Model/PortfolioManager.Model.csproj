@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PortfolioManager.Model</RootNamespace>
     <AssemblyName>PortfolioManager.Model</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +59,6 @@
     <Compile Include="Portfolios\Transactions\OpeningBalance.cs" />
     <Compile Include="Portfolios\Transactions\ReturnOfCapital.cs" />
     <Compile Include="Portfolios\Transactions\UnitCountAdjustment.cs" />
-    <Compile Include="Stocks\AssetCategory.cs" />
     <Compile Include="Stocks\CorporateActions\CapitalReturn.cs" />
     <Compile Include="Stocks\CorporateActions\CompositeAction.cs" />
     <Compile Include="Stocks\CorporateActions\Dividend.cs" />
@@ -71,14 +71,18 @@
     <Compile Include="Stocks\Stock.cs" />
     <Compile Include="Portfolios\Transactions\Transaction.cs" />
     <Compile Include="Stocks\CorporateActions\Transformation.cs" />
-    <Compile Include="Utils\DateUtils.cs" />
-    <Compile Include="Utils\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDependencies.dgml" />
     <None Include="TransactionClassDiagram.cd" />
     <None Include="ServicesClassDiagram.cd" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
+      <Project>{f93a244c-1f96-4ebb-a067-9005f04cf52f}</Project>
+      <Name>PortfolioManager.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
