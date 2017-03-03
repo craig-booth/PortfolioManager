@@ -40,7 +40,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
                     var availableUnits = holding.Units;
                     if (Transaction != null)
-                        availableUnits += ((Disposal)Transaction).Units;
+                        availableUnits += ((DisposalTransactionItem)Transaction).Units;
 
                     if (_Units > availableUnits)
                         AddError(String.Format("Only {0} units available", availableUnits));
@@ -88,7 +88,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(Disposal disposal, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public DisposalViewModel(DisposalTransactionItem disposal, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(disposal, TransactionStockSelection.TradeableStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
             
@@ -100,11 +100,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                Units = ((Disposal)Transaction).Units;
-                AveragePrice = ((Disposal)Transaction).AveragePrice;
-                TransactionCosts = ((Disposal)Transaction).TransactionCosts;
-                CGTMethod = ((Disposal)Transaction).CGTMethod;
-                CreateCashTransaction = ((Disposal)Transaction).CreateCashTransaction;
+                Units = ((DisposalTransactionItem)Transaction).Units;
+                AveragePrice = ((DisposalTransactionItem)Transaction).AveragePrice;
+                TransactionCosts = ((DisposalTransactionItem)Transaction).TransactionCosts;
+                CGTMethod = ((DisposalTransactionItem)Transaction).CGTMethod;
+                CreateCashTransaction = ((DisposalTransactionItem)Transaction).CreateCashTransaction;
             }
             else
             {
@@ -119,11 +119,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new Disposal();
+                Transaction = new DisposalTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var disposal = (Disposal)Transaction;
+            var disposal = (DisposalTransactionItem)Transaction;
             disposal.TransactionDate = RecordDate;
             disposal.Units = Units;
             disposal.AveragePrice = AveragePrice;

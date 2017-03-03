@@ -69,7 +69,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public OpeningBalanceViewModel(OpeningBalance openingBalance, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public OpeningBalanceViewModel(OpeningBalanceTransactionItem openingBalance, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(openingBalance, TransactionStockSelection.AllStocks(), stockService, obsoleteHoldingService, holdingService)
         {
         }
@@ -80,7 +80,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                var openingBalance = (OpeningBalance)Transaction;
+                var openingBalance = (OpeningBalanceTransactionItem)Transaction;
 
                 Units = openingBalance.Units;
                 CostBase = openingBalance.CostBase;
@@ -97,11 +97,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new OpeningBalance();
+                Transaction = new OpeningBalanceTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var openingBalance = (OpeningBalance)Transaction;
+            var openingBalance = (OpeningBalanceTransactionItem)Transaction;
             openingBalance.TransactionDate = RecordDate;
             openingBalance.Units = Units;
             openingBalance.CostBase = CostBase;

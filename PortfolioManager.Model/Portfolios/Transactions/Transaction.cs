@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Portfolios
-{
-    public enum TransactionType { Aquisition, Disposal, CostBaseAdjustment, OpeningBalance, ReturnOfCapital, Income, UnitCountAdjustment, CashTransaction }
+{ 
 
     public abstract class Transaction : Entity
     {

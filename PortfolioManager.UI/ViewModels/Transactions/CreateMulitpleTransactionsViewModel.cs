@@ -75,7 +75,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             Commands.Add(new DialogCommand("Cancel", CancelCommand));
         }
 
-        public void AddTransactions(IEnumerable<Transaction> transactions)
+        public void AddTransactions(IEnumerable<TransactionItem> transactions)
         {
             Transactions.Clear();
 

@@ -53,7 +53,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public ReturnOfCapitalViewModel(ReturnOfCapital returnOfCapital, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(returnOfCapital, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
 
@@ -65,9 +65,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                PaymentDate = ((ReturnOfCapital)Transaction).TransactionDate;
-                Amount = ((ReturnOfCapital)Transaction).Amount;
-                CreateCashTransaction = ((ReturnOfCapital)Transaction).CreateCashTransaction;
+                PaymentDate = ((ReturnOfCapitalTransactionItem)Transaction).TransactionDate;
+                Amount = ((ReturnOfCapitalTransactionItem)Transaction).Amount;
+                CreateCashTransaction = ((ReturnOfCapitalTransactionItem)Transaction).CreateCashTransaction;
             }
             else
             {
@@ -80,11 +80,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new ReturnOfCapital();
+                Transaction = new ReturnOfCapitalTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var returnOfCapital = (ReturnOfCapital)Transaction;
+            var returnOfCapital = (ReturnOfCapitalTransactionItem)Transaction;
             returnOfCapital.TransactionDate = PaymentDate;
             returnOfCapital.Amount = Amount;
             returnOfCapital.CreateCashTransaction = CreateCashTransaction;

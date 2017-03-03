@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 

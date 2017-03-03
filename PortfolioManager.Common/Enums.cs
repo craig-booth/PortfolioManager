@@ -17,4 +17,6 @@ namespace PortfolioManager.Common
     public enum CGTCalculationMethod { MinimizeGain, MaximizeGain, FirstInFirstOut, LastInFirstOut }
 
     public enum BankAccountTransactionType {Deposit, Withdrawl, Transfer, Fee, Interest }
+
+    public enum TransactionType { Aquisition, Disposal, CostBaseAdjustment, OpeningBalance, ReturnOfCapital, Income, UnitCountAdjustment, CashTransaction }
 }

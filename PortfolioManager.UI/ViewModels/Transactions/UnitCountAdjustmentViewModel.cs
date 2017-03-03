@@ -54,7 +54,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public UnitCountAdjustmentViewModel(UnitCountAdjustment unitCostAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransactionItem unitCostAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(unitCostAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
 
@@ -66,8 +66,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                OriginalUnits = ((UnitCountAdjustment)Transaction).OriginalUnits;
-                NewUnits = ((UnitCountAdjustment)Transaction).NewUnits;
+                OriginalUnits = ((UnitCountAdjustmentTransactionItem)Transaction).OriginalUnits;
+                NewUnits = ((UnitCountAdjustmentTransactionItem)Transaction).NewUnits;
             }
             else
             {
@@ -79,11 +79,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new UnitCountAdjustment();
+                Transaction = new UnitCountAdjustmentTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var unitCountAdjustment = (UnitCountAdjustment)Transaction;
+            var unitCountAdjustment = (UnitCountAdjustmentTransactionItem)Transaction;
             unitCountAdjustment.TransactionDate = RecordDate;
             unitCountAdjustment.OriginalUnits = OriginalUnits;
             unitCountAdjustment.NewUnits = NewUnits;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Interface;
 
@@ -71,7 +72,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public AquisitionViewModel(Aquisition aquisition, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public AquisitionViewModel(AquisitionTransactionItem aquisition, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(aquisition, TransactionStockSelection.TradeableStocks(false), stockService, obsoleteHoldingService, holdingService)
         {
 
@@ -83,10 +84,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                Units = ((Aquisition)Transaction).Units;
-                AveragePrice = ((Aquisition)Transaction).AveragePrice;
-                TransactionCosts = ((Aquisition)Transaction).TransactionCosts;
-                CreateCashTransaction = ((Aquisition)Transaction).CreateCashTransaction;
+                Units = ((AquisitionTransactionItem)Transaction).Units;
+                AveragePrice = ((AquisitionTransactionItem)Transaction).AveragePrice;
+                TransactionCosts = ((AquisitionTransactionItem)Transaction).TransactionCosts;
+                CreateCashTransaction = ((AquisitionTransactionItem)Transaction).CreateCashTransaction;
             }
             else
             {
@@ -100,11 +101,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new Aquisition();
+                Transaction = new AquisitionTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var aquisition = (Aquisition)Transaction;
+            var aquisition = (AquisitionTransactionItem)Transaction;
             aquisition.TransactionDate = RecordDate;
             aquisition.Units = Units;
             aquisition.AveragePrice = AveragePrice;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
@@ -76,7 +76,7 @@ namespace PortfolioManager.UI.ViewModels
         public DateTime TransactionDate { get; private set; }
         public string Description { get; private set; }
 
-        public TransactionReportViewItem(StockItem stock, Transaction transaction)
+        public TransactionReportViewItem(StockItem stock, TransactionItem transaction)
         {
             ASXCode = stock.ASXCode;
             CompanyName = stock.FormattedCompanyName();

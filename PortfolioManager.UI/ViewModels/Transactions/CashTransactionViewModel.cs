@@ -19,7 +19,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransaction cashTransaction, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public CashTransactionViewModel(CashTransactionItem cashTransaction, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(cashTransaction, null, stockService, obsoleteHoldingService, holdingService)
         {
             
@@ -31,8 +31,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                TransactionType = ((CashTransaction)Transaction).CashTransactionType;
-                Amount = ((CashTransaction)Transaction).Amount;
+                TransactionType = ((CashTransactionItem)Transaction).CashTransactionType;
+                Amount = ((CashTransactionItem)Transaction).Amount;
              }
             else
             {
@@ -44,11 +44,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new CashTransaction();
+                Transaction = new CashTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var cashTransaction = (CashTransaction)Transaction;
+            var cashTransaction = (CashTransactionItem)Transaction;
             cashTransaction.ASXCode = "";
             cashTransaction.TransactionDate = RecordDate;
             cashTransaction.CashTransactionType = TransactionType;

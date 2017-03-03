@@ -35,12 +35,12 @@ namespace PortfolioManager.Service.Interface
 
     public class TransactionsForCorparateActionsResponce: ServiceResponce
     {
-        public List<Transaction> Transactions { get; set; }
+        public List<TransactionItem> Transactions { get; set; }
 
         public TransactionsForCorparateActionsResponce()
             : base()
         {
-            Transactions = new List<Transaction>();
+            Transactions = new List<TransactionItem>();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CostBaseAdjustmentViewModel(CostBaseAdjustment costBaseAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(costBaseAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
 
@@ -44,7 +44,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             base.CopyTransactionToFields();
 
             if (Transaction != null)
-                Percentage = ((CostBaseAdjustment)Transaction).Percentage;
+                Percentage = ((CostBaseAdjustmentTransactionItem)Transaction).Percentage;
             else
                 Percentage = 0.00m;
         }
@@ -52,11 +52,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new CostBaseAdjustment();
+                Transaction = new CostBaseAdjustmentTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var costBaseAdjustment = (CostBaseAdjustment)Transaction;
+            var costBaseAdjustment = (CostBaseAdjustmentTransactionItem)Transaction;
             costBaseAdjustment.TransactionDate = RecordDate;
             costBaseAdjustment.Percentage = Percentage;
         }

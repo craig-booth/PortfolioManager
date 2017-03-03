@@ -126,7 +126,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public IncomeReceivedViewModel(IncomeReceived incomeReceived, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public IncomeReceivedViewModel(IncomeTransactionItem incomeReceived, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
             : base(incomeReceived, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
         {
 
@@ -138,13 +138,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                PaymentDate = ((IncomeReceived)Transaction).TransactionDate;
-                FrankedAmount = ((IncomeReceived)Transaction).FrankedAmount;
-                UnfrankedAmount = ((IncomeReceived)Transaction).UnfrankedAmount;
-                FrankingCredits = ((IncomeReceived)Transaction).FrankingCredits;
-                TaxDeferred = ((IncomeReceived)Transaction).TaxDeferred;
-                Interest = ((IncomeReceived)Transaction).Interest;
-                CreateCashTransaction = ((IncomeReceived)Transaction).CreateCashTransaction;
+                PaymentDate = ((IncomeTransactionItem)Transaction).TransactionDate;
+                FrankedAmount = ((IncomeTransactionItem)Transaction).FrankedAmount;
+                UnfrankedAmount = ((IncomeTransactionItem)Transaction).UnfrankedAmount;
+                FrankingCredits = ((IncomeTransactionItem)Transaction).FrankingCredits;
+                TaxDeferred = ((IncomeTransactionItem)Transaction).TaxDeferred;
+                Interest = ((IncomeTransactionItem)Transaction).Interest;
+                CreateCashTransaction = ((IncomeTransactionItem)Transaction).CreateCashTransaction;
             }
             else
             {
@@ -161,11 +161,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new IncomeReceived();
+                Transaction = new IncomeTransactionItem();
 
             base.CopyFieldsToTransaction();
 
-            var income = (IncomeReceived)Transaction;
+            var income = (IncomeTransactionItem)Transaction;
             income.TransactionDate = PaymentDate;
             income.FrankedAmount = FrankedAmount;
             income.UnfrankedAmount = UnfrankedAmount;

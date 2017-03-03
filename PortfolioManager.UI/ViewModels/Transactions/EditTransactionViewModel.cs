@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 
 using CBControls;
 
+using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Model.Portfolios;
 
