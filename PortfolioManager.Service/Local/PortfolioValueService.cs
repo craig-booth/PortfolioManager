@@ -18,10 +18,10 @@ namespace PortfolioManager.Service.Local
     {
 
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockService _StockService;
-        private readonly CashAccountService _CashAccountService;
+        private readonly Obsolete.StockService _StockService;
+        private readonly Obsolete.CashAccountService _CashAccountService;
 
-        public PortfolioValueService(IPortfolioQuery portfolioQuery, StockService stockService, CashAccountService cashAccountService) 
+        public PortfolioValueService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService, Obsolete.CashAccountService cashAccountService) 
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;

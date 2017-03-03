@@ -22,16 +22,16 @@ namespace PortfolioManager.Service.Local
             var stockQuery = stockDatabase.StockQuery;
             var corporateActionQuery = stockDatabase.CorporateActionQuery;
 
-            var settingsService = new PortfolioSettingsService();
+            var settingsService = new Obsolete.PortfolioSettingsService();
 
             var stockService = new Obsolete.StockService(stockServiceRepository);
-            var parcelService = new ParcelService(portfolioDatabase.PortfolioQuery, stockService);
-            var attachmentService = new AttachmentService(portfolioDatabase);
+            var parcelService = new Obsolete.ParcelService(portfolioDatabase.PortfolioQuery, stockService);
+            var attachmentService = new Obsolete.AttachmentService(portfolioDatabase);
             var transactionService = new Obsolete.TransactionService(portfolioDatabase, parcelService, stockService, attachmentService);
-            var cashAccountService = new CashAccountService(portfolioDatabase);
-            var shareHoldingService = new ShareHoldingService(parcelService, stockService, transactionService, cashAccountService);
-            var incomeService = new IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
-            var cgtService = new CGTService(portfolioDatabase.PortfolioQuery);
+            var cashAccountService = new Obsolete.CashAccountService(portfolioDatabase);
+            var shareHoldingService = new Obsolete.ShareHoldingService(parcelService, stockService, transactionService, cashAccountService);
+            var incomeService = new Obsolete.IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
+            var cgtService = new Obsolete.CGTService(portfolioDatabase.PortfolioQuery);
             var corporateActionService = new Obsolete.CorporateActionService(corporateActionQuery, parcelService, stockService, transactionService, shareHoldingService, incomeService);
 
             Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
@@ -41,6 +41,7 @@ namespace PortfolioManager.Service.Local
             Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
             Register<ITransactionService>(() => new TransactionService(transactionService));
             Register<IHoldingService>(() => new HoldingService(shareHoldingService));
+            Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
         }
 
     }

@@ -18,13 +18,13 @@ namespace PortfolioManager.Service.Local
 
     class PortfolioPerformanceService : IPortfolioPerformanceService
     {
-        private readonly ShareHoldingService _ShareHoldingService;
-        private readonly CashAccountService _CashAccountService;
+        private readonly Obsolete.ShareHoldingService _ShareHoldingService;
+        private readonly Obsolete.CashAccountService _CashAccountService;
         private readonly Obsolete.TransactionService _TransactionService;
-        private readonly StockService _StockService;
-        private readonly IncomeService _IncomeService;
+        private readonly Obsolete.StockService _StockService;
+        private readonly Obsolete.IncomeService _IncomeService;
 
-        public PortfolioPerformanceService(ShareHoldingService shareHoldingService, CashAccountService cashAccountService, Obsolete.TransactionService transactionService, StockService stockService, IncomeService incomeService)
+        public PortfolioPerformanceService(Obsolete.ShareHoldingService shareHoldingService, Obsolete.CashAccountService cashAccountService, Obsolete.TransactionService transactionService, Obsolete.StockService stockService, Obsolete.IncomeService incomeService)
         {
             _ShareHoldingService = shareHoldingService;
             _CashAccountService = cashAccountService;

@@ -14,10 +14,10 @@ namespace PortfolioManager.Service.Local
 
     class PortfolioSummaryService : IPortfolioSummaryService
     {
-        private readonly ShareHoldingService _ShareHoldingService;
-        private readonly CashAccountService _CashAccountService;
+        private readonly Obsolete.ShareHoldingService _ShareHoldingService;
+        private readonly Obsolete.CashAccountService _CashAccountService;
 
-        public PortfolioSummaryService(ShareHoldingService shareHoldingService, CashAccountService cashAccountService)
+        public PortfolioSummaryService(Obsolete.ShareHoldingService shareHoldingService, Obsolete.CashAccountService cashAccountService)
         {
             _ShareHoldingService = shareHoldingService;
             _CashAccountService = cashAccountService;

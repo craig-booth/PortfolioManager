@@ -16,9 +16,9 @@ namespace PortfolioManager.Service.Local
     {
         private readonly Obsolete.CorporateActionService _CorporateActionService;
         private readonly ICorporateActionQuery _CorporateActionQuery;
-        private readonly StockService _StockService;
+        private readonly Obsolete.StockService _StockService;
 
-        public CorporateActionService(Obsolete.CorporateActionService corporateActionService, ICorporateActionQuery corporateActionQuery, StockService stockService)
+        public CorporateActionService(Obsolete.CorporateActionService corporateActionService, ICorporateActionQuery corporateActionQuery, Obsolete.StockService stockService)
         {
             _CorporateActionService = corporateActionService;
             _CorporateActionQuery = corporateActionQuery;

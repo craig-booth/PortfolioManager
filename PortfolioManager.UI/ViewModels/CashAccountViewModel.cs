@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
+using PortfolioManager.Common;
+using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Model.Portfolios;
+
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -41,26 +43,19 @@ namespace PortfolioManager.UI.ViewModels
             Transactions = new ObservableCollection<CashAccountItemViewModel>();
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
-            // Get opening blance
-            OpeningBalance = _Parameter.Portfolio.CashAccountService.GetBalance(_Parameter.StartDate.AddDays(-1));
+            var cashAccountService = _Parameter.PortfolioManagerService.GetService<ICashAccountService>();
 
-            decimal balance = OpeningBalance;
+            var responce = await cashAccountService.GetTranasctions(_Parameter.StartDate, _Parameter.EndDate);
 
-            // get transactions
-            var transactions = _Parameter.Portfolio.CashAccountService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+            OpeningBalance = responce.OpeningBalance;
+            ClosingBalance = responce.ClosingBalance;
 
             Transactions.Clear();
-            foreach (var transaction in transactions)
-            {
-                balance += transaction.Amount;
-                var newItem = new CashAccountItemViewModel(transaction, balance);
+            foreach (var transaction in responce.Transactions)
+                Transactions.Add(new CashAccountItemViewModel(transaction));
 
-                Transactions.Add(newItem);
-            }
-
-            ClosingBalance = balance;
 
             OnPropertyChanged("");
         }
@@ -74,12 +69,12 @@ namespace PortfolioManager.UI.ViewModels
         public decimal Amount { get; private set; }
         public decimal Balance { get; private set; }
 
-        public CashAccountItemViewModel(CashAccountTransaction transaction, decimal balance)
+        public CashAccountItemViewModel(CashAccountTransactionItem transaction)
         {
             Date = transaction.Date;
             Description = transaction.Description;
             Amount = transaction.Amount;
-            Balance = balance;
+            Balance = transaction.Balance;
         }
     }
 }
