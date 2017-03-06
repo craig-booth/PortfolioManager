@@ -19,8 +19,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransactionItem cashTransaction, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
-            : base(cashTransaction, null, stockService, obsoleteHoldingService, holdingService)
+        public CashTransactionViewModel(CashTransactionItem cashTransaction, StockService stockService, IHoldingService holdingService)
+            : base(cashTransaction, null, stockService, holdingService)
         {
             
         }

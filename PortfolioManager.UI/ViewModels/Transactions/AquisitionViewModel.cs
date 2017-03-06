@@ -72,8 +72,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public AquisitionViewModel(AquisitionTransactionItem aquisition, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
-            : base(aquisition, TransactionStockSelection.TradeableStocks(false), stockService, obsoleteHoldingService, holdingService)
+        public AquisitionViewModel(AquisitionTransactionItem aquisition, StockService stockService, IHoldingService holdingService)
+            : base(aquisition, TransactionStockSelection.TradeableStocks(false), stockService, holdingService)
         {
 
         }

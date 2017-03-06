@@ -53,8 +53,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
-            : base(returnOfCapital, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
+        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, StockService stockService, IHoldingService holdingService)
+            : base(returnOfCapital, TransactionStockSelection.NonStapledStocks(true), stockService, holdingService)
         {
 
         }

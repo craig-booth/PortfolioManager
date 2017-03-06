@@ -33,8 +33,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
-            : base(costBaseAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
+        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, StockService stockService, IHoldingService holdingService)
+            : base(costBaseAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, holdingService)
         {
 
         }

@@ -126,8 +126,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public IncomeReceivedViewModel(IncomeTransactionItem incomeReceived, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
-            : base(incomeReceived, TransactionStockSelection.NonStapledStocks(true), stockService, obsoleteHoldingService, holdingService)
+        public IncomeReceivedViewModel(IncomeTransactionItem incomeReceived, StockService stockService, IHoldingService holdingService)
+            : base(incomeReceived, TransactionStockSelection.NonStapledStocks(true), stockService, holdingService)
         {
 
         }

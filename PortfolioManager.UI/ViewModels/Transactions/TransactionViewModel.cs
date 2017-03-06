@@ -48,7 +48,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class TransactionViewModel : ViewModel, IEditableObject
     {
         protected StockService _StockService;
-  //      protected ShareHoldingService _ObsoleteHoldingService;
         protected IHoldingService _HoldingService;
 
         protected bool _BeingEdited;
@@ -124,11 +123,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, StockService stockService, IHoldingService holdingService)
         {
             _StockSelection = stockSeletion;
             _StockService = stockService;
-    //        _ObsoleteHoldingService = obsoleteHoldingService;
             _HoldingService = holdingService;
             Transaction = transaction;
 
@@ -275,21 +273,21 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public TransactionViewModel CreateTransactionViewModel(TransactionType type)
         {
             if (type == TransactionType.Aquisition)
-                return new AquisitionViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new AquisitionViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new CashTransactionViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new CostBaseAdjustmentViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.Disposal)
-                return new DisposalViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new DisposalViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.Income)
-                return new IncomeReceivedViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new IncomeReceivedViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new OpeningBalanceViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new ReturnOfCapitalViewModel(null, _StockService, _HoldingService);
             else if (type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(null, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new UnitCountAdjustmentViewModel(null, _StockService, _HoldingService);
             else
                 throw new NotSupportedException();
         }
@@ -297,21 +295,21 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public TransactionViewModel CreateTransactionViewModel(TransactionItem transaction)
         {
             if (transaction.Type == TransactionType.Aquisition)
-                return new AquisitionViewModel(transaction as AquisitionTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new AquisitionViewModel(transaction as AquisitionTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(transaction as CashTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new CashTransactionViewModel(transaction as CashTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.Disposal)
-                return new DisposalViewModel(transaction as DisposalTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new DisposalViewModel(transaction as DisposalTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.Income)
-                return new IncomeReceivedViewModel(transaction as IncomeTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new IncomeReceivedViewModel(transaction as IncomeTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransactionItem, _StockService, _HoldingService);
             else if (transaction.Type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransactionItem, _StockService, _HoldingService);
             else
                 throw new NotSupportedException();
         }
