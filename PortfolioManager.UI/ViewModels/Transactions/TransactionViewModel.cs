@@ -48,7 +48,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class TransactionViewModel : ViewModel, IEditableObject
     {
         protected StockService _StockService;
-        protected ShareHoldingService _ObsoleteHoldingService;
+  //      protected ShareHoldingService _ObsoleteHoldingService;
         protected IHoldingService _HoldingService;
 
         protected bool _BeingEdited;
@@ -128,7 +128,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             _StockSelection = stockSeletion;
             _StockService = stockService;
-            _ObsoleteHoldingService = obsoleteHoldingService;
+    //        _ObsoleteHoldingService = obsoleteHoldingService;
             _HoldingService = holdingService;
             Transaction = transaction;
 

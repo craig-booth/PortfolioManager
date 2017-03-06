@@ -34,18 +34,22 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                     AddError("Units must be greater than 0");
 
                 if (Stock != null)
-                {
-                    var stock = _StockService.Get(Stock.Id, RecordDate);
-                    var holding = _ObsoleteHoldingService.GetHolding(stock, RecordDate);
-
-                    var availableUnits = holding.Units;
-                    if (Transaction != null)
-                        availableUnits += ((DisposalTransactionItem)Transaction).Units;
-
-                    if (_Units > availableUnits)
-                        AddError(String.Format("Only {0} units available", availableUnits));
-                }
+                    CheckEnoughUnitsOwned();
             }
+        }
+
+        private async void CheckEnoughUnitsOwned()
+        {
+            var stock = _StockService.Get(Stock.Id, RecordDate);
+            var responce = await _HoldingService.GetHolding(stock.Id, RecordDate);
+
+            var availableUnits = responce.Holding.Units;
+            if (Transaction != null)
+                availableUnits += ((DisposalTransactionItem)Transaction).Units;
+
+            if (_Units > availableUnits)
+                AddError(String.Format("Only {0} units available", availableUnits), "Units");
+
         }
 
         private decimal _AveragePrice;

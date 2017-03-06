@@ -40,21 +40,13 @@ namespace PortfolioManager.Service.Interface
 
         public decimal CashBalance { get; set; }
 
-        public List<Holding> Holdings { get; private set; }
+        public List<HoldingItem> Holdings { get; private set; }
 
         public PortfolioSummaryResponce()
             : base()
         {
-            Holdings = new List<Holding>();
+            Holdings = new List<HoldingItem>();
         }
     }
 
-    public class Holding
-    {
-        public StockItem Stock;
-        public AssetCategory Category;
-        public int Units;
-        public decimal Value;
-        public decimal Cost;
-    }
 }

@@ -112,7 +112,7 @@ namespace PortfolioManager.UI.ViewModels
             ChangeInValue = new ChangeInValue(cost, marketValue);
         }
 
-        public HoldingItemViewModel(Holding holding)
+        public HoldingItemViewModel(HoldingItem holding)
         {
             CompanyName = holding.Stock.FormattedCompanyName();
             Units = holding.Units;

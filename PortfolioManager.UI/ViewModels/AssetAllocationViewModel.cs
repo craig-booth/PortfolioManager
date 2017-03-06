@@ -105,7 +105,7 @@ namespace PortfolioManager.UI.ViewModels
             IndividualStocks.Add(series); 
         }
 
-        private decimal AddAssetCategory(IEnumerable<Holding> holdings, AssetCategory category)
+        private decimal AddAssetCategory(IEnumerable<HoldingItem> holdings, AssetCategory category)
         {
             decimal total = 0m;
             foreach (var holding in holdings)

@@ -42,7 +42,7 @@ namespace PortfolioManager.Service.Local
             Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService, cashAccountService));
             Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
             Register<ITransactionService>(() => new TransactionService(transactionService));
-            Register<IHoldingService>(() => new HoldingService(shareHoldingService));
+            Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
             Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
 
             SetMapping();
@@ -95,6 +95,7 @@ namespace PortfolioManager.Service.Local
             CreateMap<OpeningBalanceTransactionItem, OpeningBalance>();
             CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>();
             CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+
         }
     }
 }

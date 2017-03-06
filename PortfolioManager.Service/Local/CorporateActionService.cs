@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using PortfolioManager.Model.Data;
-
 using PortfolioManager.Service.Interface;
-
 using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Local
@@ -56,7 +56,7 @@ namespace PortfolioManager.Service.Local
             var action = _CorporateActionQuery.Get(corporateAction);
             var transactions = _CorporateActionService.CreateTransactionList(action);
 
-            responce.Transactions.AddRange(transactions);
+            responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
             responce.SetStatusToSuccessfull();
 

@@ -43,7 +43,7 @@
             <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding CompanyName}" Style="{StaticResource FormLabel}" Visibility="{Binding IsStockEditable,Converter={StaticResource HideIfTrue}}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Units" />
-            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units, NotifyOnValidationError=true, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" TextAlignment="Right" />
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Units, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" TextAlignment="Right" />
 
             <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Average Price" />
             <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding AveragePrice, NotifyOnValidationError=true, StringFormat=\{0:c2\}, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" TextAlignment="Right"/>

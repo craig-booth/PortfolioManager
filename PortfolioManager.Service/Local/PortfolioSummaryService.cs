@@ -59,7 +59,7 @@ namespace PortfolioManager.Service.Local
             responce.ReturnAll = CalculateIRR(date, 0);
 
             foreach (var holding in holdings)
-                responce.Holdings.Add(new Holding()
+                responce.Holdings.Add(new HoldingItem()
                 {
                     Stock = new StockItem(holding.Stock),
                     Category = holding.Stock.Category,
