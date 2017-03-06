@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using PortfolioManager.Common;
+using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 using StockManager.Service;
 
 using PortfolioManager.Service.Interface;
-
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Local
 {
@@ -42,7 +44,57 @@ namespace PortfolioManager.Service.Local
             Register<ITransactionService>(() => new TransactionService(transactionService));
             Register<IHoldingService>(() => new HoldingService(shareHoldingService));
             Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
+
+            SetMapping();
         }
 
+        private void SetMapping()
+        {
+            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping()));
+        }
+
+    }
+
+
+    class ModelToServiceMapping : Profile
+    {
+        public ModelToServiceMapping()
+        {
+            CreateMap<Transaction, TransactionItem>()
+                .Include<Aquisition, AquisitionTransactionItem>()
+                .Include<CashTransaction, CashTransactionItem>()
+                .Include<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>()
+                .Include<Disposal, DisposalTransactionItem>()
+                .Include<IncomeReceived, IncomeTransactionItem>()
+                .Include<OpeningBalance, OpeningBalanceTransactionItem>()
+                .Include<ReturnOfCapital, ReturnOfCapitalTransactionItem>()
+                .Include<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+            CreateMap<Aquisition, AquisitionTransactionItem>();
+            CreateMap<CashTransaction, CashTransactionItem>();
+            CreateMap<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>();
+            CreateMap<Disposal, DisposalTransactionItem>();
+            CreateMap<IncomeReceived, IncomeTransactionItem>();
+            CreateMap<OpeningBalance, OpeningBalanceTransactionItem>();
+            CreateMap<ReturnOfCapital, ReturnOfCapitalTransactionItem>();
+            CreateMap<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+
+            CreateMap<TransactionItem, Transaction>()
+                .Include<AquisitionTransactionItem, Aquisition>()
+                .Include<CashTransactionItem, CashTransaction>()
+                .Include<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>()
+                .Include<DisposalTransactionItem, Disposal>()
+                .Include<IncomeTransactionItem, IncomeReceived>()
+                .Include<OpeningBalanceTransactionItem, OpeningBalance>()
+                .Include<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
+                .Include<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+            CreateMap<AquisitionTransactionItem, Aquisition>();
+            CreateMap<CashTransactionItem, CashTransaction>();
+            CreateMap<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>();
+            CreateMap<DisposalTransactionItem, Disposal>();
+            CreateMap<IncomeTransactionItem, IncomeReceived>();
+            CreateMap<OpeningBalanceTransactionItem, OpeningBalance>();
+            CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>();
+            CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+        }
     }
 }

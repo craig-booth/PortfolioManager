@@ -60,7 +60,7 @@ namespace PortfolioManager.Service.Local
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<TransactionsForCorparateActionsResponce>(responce);
+            return Task.FromResult<TransactionsForCorparateActionsResponce>(responce); 
         }
     }
 

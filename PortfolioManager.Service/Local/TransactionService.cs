@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using AutoMapper;
+
+using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Interface;
 
@@ -17,84 +21,76 @@ namespace PortfolioManager.Service.Local
             _TransactionService = transactionService;
         }
 
-        public Task<AddTransactionsResponce> AddTransaction(TransactionItem transaction)
+        public Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem)
         {
-            throw new NotImplementedException();
-            /*
             var responce = new AddTransactionsResponce();
 
+            var transaction = Mapper.Map<Transaction>(transactionItem);
             _TransactionService.ProcessTransaction(transaction);
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<AddTransactionsResponce>(responce); */
+            return Task.FromResult<AddTransactionsResponce>(responce); 
         }
 
-        public Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactions)
+        public Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems)
         {
-            throw new NotImplementedException();
-            /*
             var responce = new AddTransactionsResponce();
 
+            var transactions = Mapper.Map<List<Transaction>>(transactionItems);
             _TransactionService.ProcessTransactions(transactions);
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<AddTransactionsResponce>(responce); */
+            return Task.FromResult<AddTransactionsResponce>(responce); 
         }
 
-        public Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transaction)
+        public Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transactionItem)
         {
-            throw new NotImplementedException();
-            /*   var responce = new DeleteTransactionsResponce();
+            var responce = new DeleteTransactionsResponce();
 
-               _TransactionService.DeleteTransaction(transaction);
+            var transaction = Mapper.Map<Transaction>(transactionItem);
+            _TransactionService.DeleteTransaction(transaction);
 
-               responce.SetStatusToSuccessfull();
+            responce.SetStatusToSuccessfull();
 
-               return Task.FromResult<DeleteTransactionsResponce>(responce); */
+            return Task.FromResult<DeleteTransactionsResponce>(responce); 
         }
 
-        public Task<UpdateTransactionsResponce> UpdateTransaction(TransactionItem transaction)
+        public Task<UpdateTransactionsResponce> UpdateTransaction(TransactionItem transactionItem)
         {
-            throw new NotImplementedException();
-       /*     var responce = new UpdateTransactionsResponce();
+            var responce = new UpdateTransactionsResponce();
 
+            var transaction = Mapper.Map<Transaction>(transactionItem);
             _TransactionService.UpdateTransaction(transaction);
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<UpdateTransactionsResponce>(responce); */
-
+            return Task.FromResult<UpdateTransactionsResponce>(responce); 
         }
 
         public Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate)
-        {
-            throw new NotImplementedException();
-            /*
+        {       
             var responce = new GetTransactionsResponce();
 
             var transactions = _TransactionService.GetTransactions(fromDate, toDate);
-            responce.Transactions.AddRange(transactions);
-
+            responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+            
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<GetTransactionsResponce>(responce); */
+            return Task.FromResult<GetTransactionsResponce>(responce); 
         }
 
         public Task<GetTransactionsResponce> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
-            throw new NotImplementedException();
-            /*
-
             var responce = new GetTransactionsResponce();
 
             var transactions = _TransactionService.GetTransactions(asxCode, fromDate, toDate);
-            responce.Transactions.AddRange(transactions);
+            responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<GetTransactionsResponce>(responce); */
+            return Task.FromResult<GetTransactionsResponce>(responce);
         }
 
     }

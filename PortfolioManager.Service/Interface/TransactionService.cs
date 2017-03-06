@@ -10,10 +10,10 @@ namespace PortfolioManager.Service.Interface
 {
     public interface ITransactionService : IPortfolioManagerService
     {
-        Task<AddTransactionsResponce> AddTransaction(TransactionItem transaction);
-        Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactions);
-        Task<UpdateTransactionsResponce> UpdateTransaction(TransactionItem transaction);
-        Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transaction);
+        Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem);
+        Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
+        Task<UpdateTransactionsResponce> UpdateTransaction(TransactionItem transactionItem);
+        Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transactionItem);
 
         Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate);
         Task<GetTransactionsResponce> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
@@ -54,7 +54,7 @@ namespace PortfolioManager.Service.Interface
         }
     }
 
-    public class TransactionItem
+    public abstract class TransactionItem
     {
         public Guid Id { get; set; }
         public TransactionType Type { get; set;  }

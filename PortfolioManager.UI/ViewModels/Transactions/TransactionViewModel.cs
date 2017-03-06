@@ -299,7 +299,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             if (transaction.Type == TransactionType.Aquisition)
                 return new AquisitionViewModel(transaction as AquisitionTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
             else if (transaction.Type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(transaction as CashAccountTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
+                return new CashTransactionViewModel(transaction as CashTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
             else if (transaction.Type == TransactionType.CostBaseAdjustment)
                 return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _StockService, _ObsoleteHoldingService, _HoldingService);
             else if (transaction.Type == TransactionType.Disposal)
