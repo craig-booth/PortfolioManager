@@ -30,7 +30,7 @@ namespace PortfolioManager.Service.Obsolete
         private TransactionService TransactionService { get; set; }
 
 
-        public ShareHoldingService ShareHoldingService { get; set; }
+        private ShareHoldingService ShareHoldingService { get; set; }
         public CashAccountService CashAccountService { get; set; }
         public IncomeService IncomeService { get; set; }
         public StockService StockService { get; set; }

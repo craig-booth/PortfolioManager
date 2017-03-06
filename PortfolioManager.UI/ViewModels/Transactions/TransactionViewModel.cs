@@ -248,15 +248,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class TransactionViewModelFactory
     {
         private StockService _StockService;
-        private ShareHoldingService _ObsoleteHoldingService;
         private IHoldingService _HoldingService;
 
         public Dictionary<string, TransactionType> TransactionTypes { get; private set; }
 
-        public TransactionViewModelFactory(StockService stockService, ShareHoldingService obsoleteHoldingService, IHoldingService holdingService)
+        public TransactionViewModelFactory(StockService stockService, IHoldingService holdingService)
         {
             _StockService = stockService;
-            _ObsoleteHoldingService = obsoleteHoldingService;
             _HoldingService = holdingService;
 
             TransactionTypes = new Dictionary<string, TransactionType>();
