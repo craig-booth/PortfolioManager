@@ -12,7 +12,7 @@ using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Utils
 {
-    public static class PortfolioUtils
+    static class PortfolioUtils
     {
 
         public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, decimal amount)

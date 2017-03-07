@@ -255,21 +255,9 @@
       <Project>{f93a244c-1f96-4ebb-a067-9005f04cf52f}</Project>
       <Name>PortfolioManager.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj">
-      <Project>{4dcb5a16-15d6-41ae-9d48-46b9c6e45edb}</Project>
-      <Name>PortfolioManager.Data.SQLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">
-      <Project>{befae5c7-fdc4-41a6-ba2b-785fd54fb805}</Project>
-      <Name>PortfolioManager.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj">
       <Project>{5c1f0fca-84b1-4910-934c-99e79c84052e}</Project>
       <Name>PortfolioManager.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StockManager.Service\StockManager.Service.csproj">
-      <Project>{7171f628-22a3-4f8e-80ac-e4a29993eb62}</Project>
-      <Name>StockManager.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

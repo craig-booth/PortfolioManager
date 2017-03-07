@@ -14,7 +14,7 @@ using PortfolioManager.Service.Transactions;
 namespace PortfolioManager.Service.Obsolete
 {
 
-    public class TransactionService
+    class TransactionService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly Dictionary<TransactionType, ITransactionHandler> _TransactionHandlers;

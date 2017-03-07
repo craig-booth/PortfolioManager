@@ -7,10 +7,8 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Interface;
 
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {

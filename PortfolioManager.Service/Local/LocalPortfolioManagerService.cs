@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using PortfolioManager.Data.SQLite.Stocks;
+using PortfolioManager.Data.SQLite.Portfolios;
+
 using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
@@ -18,8 +21,16 @@ namespace PortfolioManager.Service.Local
     public class LocalPortfolioManagerService : PortfolioManagerService
     {
 
-        public LocalPortfolioManagerService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
+        public LocalPortfolioManagerService()
         {
+
+        }
+
+        public void Connect(string portfolioDatabasePath, string stockDatabasePath)
+        {
+            IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDatabasePath);
+            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
+
             var stockServiceRepository = new StockServiceRepository(stockDatabase);
             var stockQuery = stockDatabase.StockQuery;
             var corporateActionQuery = stockDatabase.CorporateActionQuery;
@@ -48,6 +59,19 @@ namespace PortfolioManager.Service.Local
             Register<IStockService>(() => new StockService(stockService));
 
             SetMapping(stockService);
+
+            LoadTransactions(portfolioDatabase, transactionService);
+        }
+
+        private void LoadTransactions(IPortfolioDatabase database, Obsolete.TransactionService transactionService)
+        {
+            var allTransactions = transactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
+            {
+                foreach (var transaction in allTransactions)
+                    transactionService.ApplyTransaction(unitOfWork, transaction);
+                unitOfWork.Save();
+            }
         }
 
         private void SetMapping(Obsolete.StockService stockService)

@@ -8,41 +8,11 @@ using System.ComponentModel;
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.UI.Utilities
 {
     class ViewParameter : NotifyClass
     {
         public IPortfolioManagerServiceFactory PortfolioManagerService;
-
-        private Portfolio _Portfolio;
-        public Portfolio Portfolio
-        {
-            get
-            {
-                return _Portfolio;
-            }
-
-            set
-            {
-                if (_Portfolio != value)
-                {
-                    if (_Portfolio != null)
-                        _Portfolio.PortfolioChanged -= Portfolio_PortfolioChanged;
-
-                    _Portfolio = value;
-                    _Portfolio.PortfolioChanged += Portfolio_PortfolioChanged;
-                   
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private void Portfolio_PortfolioChanged(PortfolioChangedEventArgs e)
-        {
-            OnPropertyChanged("Portfolio");
-        }
 
         private StockItem _Stock;
         public StockItem Stock

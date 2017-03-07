@@ -11,7 +11,7 @@ using PortfolioManager.Model.Data;
 namespace PortfolioManager.Service.Obsolete
 {
 
-    public class CashAccountBalance
+    class CashAccountBalance
     {
         public DateTime FromDate { get; private set; }
         public DateTime ToDate { get; private set; }
@@ -25,7 +25,7 @@ namespace PortfolioManager.Service.Obsolete
         }
     }
 
-    public class CashAccountService
+    class CashAccountService
     {
 
         private readonly IPortfolioDatabase _PortfolioDatabase;

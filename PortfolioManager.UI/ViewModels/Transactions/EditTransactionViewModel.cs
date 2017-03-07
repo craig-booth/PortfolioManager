@@ -9,11 +9,8 @@ using CBControls;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Model.Portfolios;
-
 using PortfolioManager.UI.Utilities;
 
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
@@ -72,15 +69,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 var stockService = _PortfolioManagerService.GetService<IStockService>();
 
                 _TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
-            }
-        }
-
-        private Portfolio _Portfolio;
-        public Portfolio Portfolio
-        {
-            set
-            {
-                _Portfolio = value;
             }
         }
 

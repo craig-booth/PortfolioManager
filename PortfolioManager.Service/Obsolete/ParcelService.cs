@@ -11,7 +11,7 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class ParcelService
+    class ParcelService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;

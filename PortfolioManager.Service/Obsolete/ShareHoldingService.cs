@@ -11,7 +11,7 @@ using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class ShareHoldingService
+    class ShareHoldingService
     {
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
@@ -263,7 +263,7 @@ namespace PortfolioManager.Service.Obsolete
         }
     }
 
-    public class OwnedStockId
+    class OwnedStockId
     {
         public Guid Id;
         public DateTime FromDate;

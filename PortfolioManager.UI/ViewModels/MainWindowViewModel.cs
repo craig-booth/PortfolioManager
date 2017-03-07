@@ -9,28 +9,18 @@ using System.Windows;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
-using StockManager.Service;
-
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Data.SQLite.Stocks;
-using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Local;
 
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.UI.ViewModels
 {
     class MainWindowViewModel : NotifyClass
     {      
-        private Portfolio _Portfolio;
-        private StockServiceRepository _StockServiceRepository;
-
-        private IPortfolioManagerServiceFactory _PortfolioManagerService;
+        private LocalPortfolioManagerService _PortfolioManagerService;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -113,6 +103,9 @@ namespace PortfolioManager.UI.ViewModels
             EditTransactionWindow = new EditTransactionViewModel();
             CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel();
 
+            _PortfolioManagerService = new LocalPortfolioManagerService();
+            ViewParameter.PortfolioManagerService = _PortfolioManagerService;
+
             _Settings = new ApplicationSettings();
             _Settings.DatabaseChanged += LoadPortfolio;
 
@@ -169,22 +162,15 @@ namespace PortfolioManager.UI.ViewModels
 
         private async void LoadPortfolio(object sender, EventArgs e)
         {
-            var stockDataBasePath = _Settings.StockDatabase;
-            if (!Path.IsPathRooted(stockDataBasePath))
-                stockDataBasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, stockDataBasePath);
-            IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDataBasePath);
+            var stockDatabasePath = _Settings.StockDatabase;
+            if (!Path.IsPathRooted(stockDatabasePath))
+                stockDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, stockDatabasePath);
 
             var portfolioDatabasePath = _Settings.PortfolioDatabase;
             if (!Path.IsPathRooted(portfolioDatabasePath))
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
-            IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
 
-            _StockServiceRepository = new StockServiceRepository(stockDatabase);
-            _Portfolio = new Portfolio(portfolioDatabase, _StockServiceRepository, stockDatabase.StockQuery, stockDatabase.CorporateActionQuery);
-            ViewParameter.Portfolio = _Portfolio;
-
-            _PortfolioManagerService = new LocalPortfolioManagerService(portfolioDatabase, stockDatabase);
-            ViewParameter.PortfolioManagerService = _PortfolioManagerService;
+            _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath);
 
             var summaryService = _PortfolioManagerService.GetService<IPortfolioSummaryService>();
             var responce = await summaryService.GetProperties();
@@ -192,14 +178,10 @@ namespace PortfolioManager.UI.ViewModels
             PopulateFinancialYearList(responce.StartDate);
             PopulateStockList(responce.StocksHeld);
 
-            EditTransactionWindow.Portfolio = _Portfolio;
             EditTransactionWindow.PortfolioManagerService = _PortfolioManagerService;
-            CreateTransactionsWindow.Portfolio = _Portfolio;
             CreateTransactionsWindow.PortfolioManagerService = _PortfolioManagerService;
-
-
-            var ui = TaskScheduler.FromCurrentSynchronizationContext();
-            Task.Run(() => { _StockServiceRepository.DownloadUpdatedData(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
+            //    var ui = TaskScheduler.FromCurrentSynchronizationContext();
+            //    Task.Run(() => { _StockServiceRepository.DownloadUpdatedData(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
         }
    
         private void PopulateFinancialYearList(DateTime startDate)

@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
@@ -93,17 +92,6 @@ namespace PortfolioManager.UI.ViewModels
         private void EditTransaction(TransactionViewModel transactionViewModel)
         {
             _EditTransactionViewModel.EditTransaction(transactionViewModel);
-        }
-
-        private bool MeetsSelectionCriteria(Transaction transaction)
-        {
-            if ((transaction.TransactionDate < _Parameter.StartDate) || (transaction.TransactionDate > _Parameter.EndDate))
-                return false;
-
-            if (_Parameter.Stock.Id != Guid.Empty)
-                return (transaction.ASXCode == _Parameter.Stock.ASXCode);
-
-            return true;
         }
 
     }

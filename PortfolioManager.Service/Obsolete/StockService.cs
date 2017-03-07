@@ -11,7 +11,7 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class StockService
+    class StockService
     {
         private StockServiceRepository _StockServiceRepository;
 

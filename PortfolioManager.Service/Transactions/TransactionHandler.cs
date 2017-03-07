@@ -19,7 +19,7 @@ namespace PortfolioManager.Service.Transactions
         void ApplyTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction);
     }
 
-    public abstract class TransacactionHandler
+    abstract class TransacactionHandler
     {
 
         protected readonly ParcelService _ParcelService;

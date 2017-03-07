@@ -11,7 +11,7 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Service.Obsolete
 {
-    public class Income
+    class Income
     {
         public Stock Stock { get; set; }
         public decimal FrankedAmount { get; set; }
@@ -52,7 +52,7 @@ namespace PortfolioManager.Service.Obsolete
         }
     }
 
-    public class IncomeService
+    class IncomeService
     {
 
         private readonly IPortfolioQuery _PortfolioQuery;

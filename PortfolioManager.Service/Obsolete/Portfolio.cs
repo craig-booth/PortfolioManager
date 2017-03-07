@@ -12,14 +12,14 @@ using StockManager.Service;
 namespace PortfolioManager.Service.Obsolete
 {
 
-    public class PortfolioChangedEventArgs : EventArgs
+    class PortfolioChangedEventArgs : EventArgs
     {
 
     }
 
-    public delegate void PortfolioChangedEventHandler(PortfolioChangedEventArgs e);
+    delegate void PortfolioChangedEventHandler(PortfolioChangedEventArgs e);
 
-    public class Portfolio
+    class Portfolio
     {
         private PortfolioSettingsService SettingsService { get; set; }
 
