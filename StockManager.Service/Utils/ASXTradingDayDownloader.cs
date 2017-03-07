@@ -15,17 +15,20 @@ namespace StockManager.Service.Utils
  
     class ASXTradingDayDownloader : ITradingDayDownloader
     {
-        public IEnumerable<DateTime> NonTradingDays(int year)
-        {
-            var data = DownloadData(year);
 
+        public async Task<List<DateTime>> NonTradingDays(int year)
+        {
+            var days = new List<DateTime>();
+
+            var data = await DownloadData(year);
             foreach (var tableRow in data.ChildNodes)
             {
                 var date = ParseRow(tableRow as XmlElement, year);
                 if (date != DateUtils.NoDate)
-                    yield return date;
+                    days.Add(date);
             }
 
+            return days;
         }
 
         private DateTime ParseRow(XmlElement row, int year)
@@ -47,16 +50,16 @@ namespace StockManager.Service.Utils
             return DateUtils.NoDate;        
         }
 
-        private XmlElement DownloadData(int year)
+        private async Task<XmlElement> DownloadData(int year)
         {
             var url = String.Format("http://www.asx.com.au/about/asx-trading-calendar-{0:d}.htm", year);
             var request = HttpWebRequest.Create(url);
-            var response = (HttpWebResponse)request.GetResponse();
+            var response = (HttpWebResponse)await request.GetResponseAsync();
 
 
             var responseStream = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8"));
 
-            var responseText = responseStream.ReadToEnd();
+            var responseText = await responseStream.ReadToEndAsync();
 
             responseStream.Close();
             response.Close();

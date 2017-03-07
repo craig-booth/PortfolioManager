@@ -174,7 +174,7 @@ namespace StockManager.Service
             }
         }
 
-        internal void DownloadHistoricalPrices()
+        internal async Task DownloadHistoricalPrices()
         {
             DateTime lastExpectedDate;
             if (DateTime.Today.DayOfWeek == DayOfWeek.Monday)
@@ -196,7 +196,7 @@ namespace StockManager.Service
 
                         if (latestDate < lastExpectedDate)
                         {
-                            var data = _HistoricalPriceDownloader.GetHistoricalPriceData(stock.ASXCode, latestDate.AddDays(1), lastExpectedDate);
+                            var data = await _HistoricalPriceDownloader.GetHistoricalPriceData(stock.ASXCode, latestDate.AddDays(1), lastExpectedDate);
                             UpdateStockPrices(unitOfWork, data);
                         }
                     }
@@ -206,11 +206,12 @@ namespace StockManager.Service
             }
         }
 
-        internal void DownloadNonTradingDays(int fromYear)
+        internal async Task DownloadNonTradingDays(int fromYear)
         {
             for (var year = fromYear; year <= DateTime.Today.Year; year++)
             {
-                foreach (var nonTradingDay in _TradingDayDownloader.NonTradingDays(year))
+                var nonTradingDays = await _TradingDayDownloader.NonTradingDays(year);
+                foreach (var nonTradingDay in nonTradingDays)
                     _NonTradingDays.Add(nonTradingDay);
             }
         }

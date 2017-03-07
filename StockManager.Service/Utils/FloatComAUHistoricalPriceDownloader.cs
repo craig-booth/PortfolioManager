@@ -14,7 +14,7 @@ namespace StockManager.Service.Utils
     class FloatComAUHistoricalPriceDownloader : IHistoricalPriceDownloader
     {
 
-        public IEnumerable<StockQuote> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
+        public async Task<List<StockQuote>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
         {
             List<StockQuote> data = new List<StockQuote>();
 
@@ -27,12 +27,22 @@ namespace StockManager.Service.Utils
                 string url = string.Format("http://www.float.com.au/download/{0}.csv", asxCode);
 
                 request = WebRequest.Create(url) as HttpWebRequest;
-                response = request.GetResponse() as HttpWebResponse;
+                response = await request.GetResponseAsync() as HttpWebResponse;
 
                 dataStream = response.GetResponseStream();
                 reader = new StreamReader(dataStream);
 
-                var csvReader = new CsvReader(reader);
+                var csvData = new MemoryStream();
+                var writer = new StreamWriter(csvData);
+                char[] buffer = new char[32768];
+                int bytesRead;
+                while ((bytesRead = await reader.ReadAsync(buffer, 0, 32768)) > 0)
+                {
+                    await writer.WriteAsync(buffer, 0, bytesRead);
+                }
+
+
+                var csvReader = new CsvReader(new StreamReader(csvData));
 
                 csvReader.Configuration.RegisterClassMap(new FloatComAUClassMap());
                 csvReader.Configuration.HasHeaderRecord = false;

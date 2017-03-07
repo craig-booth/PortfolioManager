@@ -14,12 +14,13 @@ namespace StockManager.Service.Utils
 
     public interface IHistoricalPriceDownloader
     {
-        IEnumerable<StockQuote> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate);
+        Task<List<StockQuote>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate);
     }
 
     public interface ITradingDayDownloader
     {
-        IEnumerable<DateTime> NonTradingDays(int year);
+        Task<List<DateTime>> NonTradingDays(int year);
+      
     }
 
     public class StockQuote

@@ -26,7 +26,7 @@ namespace PortfolioManager.Service.Local
 
         }
 
-        public void Connect(string portfolioDatabasePath, string stockDatabasePath)
+        public async Task<bool> Connect(string portfolioDatabasePath, string stockDatabasePath)
         {
             IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDatabasePath);
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
@@ -61,6 +61,10 @@ namespace PortfolioManager.Service.Local
             SetMapping(stockService);
 
             LoadTransactions(portfolioDatabase, transactionService);
+
+            await stockServiceRepository.DownloadUpdatedData();
+
+            return true;
         }
 
         private void LoadTransactions(IPortfolioDatabase database, Obsolete.TransactionService transactionService)

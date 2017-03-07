@@ -27,11 +27,11 @@ namespace StockManager.Service
             StockPriceService = new StockPriceService(_Database, new GoogleStockPriceDownloader(), new FloatComAUHistoricalPriceDownloader(), new ASXTradingDayDownloader());
         }
 
-        public void DownloadUpdatedData()
+        public async Task DownloadUpdatedData()
         {
-            StockPriceService.DownloadNonTradingDays(2010);
+            await StockPriceService.DownloadNonTradingDays(2010);
             StockPriceService.DownloadCurrentPrices();
-            StockPriceService.DownloadHistoricalPrices();
+            await StockPriceService.DownloadHistoricalPrices();
         }
 
         public void ImportStockPrices(string fileName)
