@@ -58,7 +58,8 @@ namespace PortfolioManager.UI.ViewModels
             if (_Parameter != null)
             {
                 var holdingService = _Parameter.PortfolioManagerService.GetService<IHoldingService>();
-                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.Portfolio.StockService, holdingService);
+                var stockService = _Parameter.PortfolioManagerService.GetService<IStockService>();
+                TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
             }
 
             base.Activate();

@@ -19,13 +19,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class TransactionStockSelection
     {
         public bool OwnedStocksOnly;
-        public bool IncludeStapledSecurites;
+        public bool IncludeStapledSecurities;
         public bool IncludeChildStocks;    
         
         public TransactionStockSelection(bool ownedStocksOnly, bool includeStapledSecurities, bool includeChildStocks)
         {
             OwnedStocksOnly = ownedStocksOnly;
-            IncludeStapledSecurites = includeStapledSecurities;
+            IncludeStapledSecurities = includeStapledSecurities;
             IncludeChildStocks = includeChildStocks;
         }
 
@@ -47,7 +47,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class TransactionViewModel : ViewModel, IEditableObject
     {
-        protected StockService _StockService;
+        protected IStockService _StockService;
         protected IHoldingService _HoldingService;
 
         protected bool _BeingEdited;
@@ -55,8 +55,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public TransactionItem Transaction { get; protected set; }
         public string Description { get; private set; }
-
-        public string ASXCode { get; set; }
 
         private StockItem _Stock;
         public StockItem Stock
@@ -105,10 +103,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             get
             {
-                if (Stock != null)
-                    return string.Format("{0} ({1})", Stock.Name, Stock.ASXCode);
-                else
-                    return ASXCode;
+                return Stock.FormattedCompanyName();
             }
         }
         public string Comment { get; set; }
@@ -123,7 +118,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, StockService stockService, IHoldingService holdingService)
+        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, IStockService stockService, IHoldingService holdingService)
         {
             _StockSelection = stockSeletion;
             _StockService = stockService;
@@ -131,16 +126,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             Transaction = transaction;
 
             if (_StockSelection != null)
-            {
-                AvailableStocks = new ObservableCollection<StockItem>();
-
-                if (transaction != null)
-                {
-                    var stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
-                    Stock = new StockItem(stock.Id, stock.ASXCode, stock.Name);
-                }
-                    
-            }
+                AvailableStocks = new ObservableCollection<StockItem>();                   
 
             CopyTransactionToFields();
         }
@@ -152,9 +138,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             if (_StockSelection != null)
             {
                 PopulateAvailableStocks(RecordDate);
-
-                if (IsStockEditable)
-                    Stock = AvailableStocks.FirstOrDefault(x => x.ASXCode == ASXCode);
             }
         }
 
@@ -178,7 +161,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             if (Transaction != null)
             {
-                ASXCode = Transaction.ASXCode;
+                Stock = Transaction.Stock;
                 Description = Transaction.Description;
                 TransactionDate = Transaction.TransactionDate;
                 RecordDate = Transaction.RecordDate;
@@ -186,7 +169,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else
             {
-                ASXCode = "";
+                Stock = new StockItem(Guid.Empty, "", "");
                 Description = "";
                 TransactionDate = DateTime.Today;
                 RecordDate = DateTime.Today;
@@ -198,10 +181,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             if (Transaction != null)
             {
-                if (Stock != null)
-                    Transaction.ASXCode = Stock.ASXCode;
-                else
-                    Transaction.ASXCode = ASXCode;
+                Transaction.Stock = Stock;
                 Transaction.TransactionDate = TransactionDate;
                 Transaction.RecordDate = RecordDate;
                 Transaction.Comment = Comment;
@@ -219,20 +199,14 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             if (_StockSelection.OwnedStocksOnly)
             {
                 var responce = await _HoldingService.GetOwnedStocks(date);
-
+            
                 stocks = responce.Stocks;
             }
             else
             {
-                var stocks2 = _StockService.GetAll(date).AsEnumerable();
+                var responce = await _StockService.GetStocks(date, _StockSelection.IncludeStapledSecurities, _StockSelection.IncludeChildStocks);
 
-                if (!_StockSelection.IncludeStapledSecurites)
-                    stocks2 = stocks2.Where(x => x.Type != StockType.StapledSecurity);
-
-                if (!_StockSelection.IncludeChildStocks)
-                    stocks2 = stocks2.Where(x => x.ParentId == Guid.Empty);
-
-                stocks = stocks2.Select(x => new StockItem(x.Id, x.ASXCode, x.Name));
+                stocks = responce.Stocks;
             }
 
             if (stocks != null)
@@ -247,12 +221,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class TransactionViewModelFactory
     {
-        private StockService _StockService;
+        private IStockService _StockService;
         private IHoldingService _HoldingService;
 
         public Dictionary<string, TransactionType> TransactionTypes { get; private set; }
 
-        public TransactionViewModelFactory(StockService stockService, IHoldingService holdingService)
+        public TransactionViewModelFactory(IStockService stockService, IHoldingService holdingService)
         {
             _StockService = stockService;
             _HoldingService = holdingService;

@@ -59,12 +59,14 @@
     <Compile Include="Interface\PortfolioPerformanceService.cs" />
     <Compile Include="Interface\PortfolioSummaryService.cs" />
     <Compile Include="Interface\PortfolioValueService.cs" />
+    <Compile Include="Interface\StockService.cs" />
     <Compile Include="Interface\TransactionService.cs" />
     <Compile Include="Local\CapitalGainService.cs" />
     <Compile Include="Local\CashAccountService.cs" />
     <Compile Include="Local\CorporateActionService.cs" />
     <Compile Include="Local\HoldingService.cs" />
     <Compile Include="Local\IncomeService.cs" />
+    <Compile Include="Local\StockService.cs" />
     <Compile Include="Local\TransactionService.cs" />
     <Compile Include="Obsolete\AttachmentService.cs" />
     <Compile Include="Obsolete\CashAccountService.cs" />

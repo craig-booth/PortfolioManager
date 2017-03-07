@@ -19,7 +19,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransactionItem cashTransaction, StockService stockService, IHoldingService holdingService)
+        public CashTransactionViewModel(CashTransactionItem cashTransaction, IStockService stockService, IHoldingService holdingService)
             : base(cashTransaction, null, stockService, holdingService)
         {
             
@@ -49,7 +49,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             base.CopyFieldsToTransaction();
 
             var cashTransaction = (CashTransactionItem)Transaction;
-            cashTransaction.ASXCode = "";
             cashTransaction.TransactionDate = RecordDate;
             cashTransaction.CashTransactionType = TransactionType;
             cashTransaction.Amount = Amount;

@@ -54,7 +54,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransactionItem unitCostAdjustment, StockService stockService, IHoldingService holdingService)
+        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransactionItem unitCostAdjustment, IStockService stockService, IHoldingService holdingService)
             : base(unitCostAdjustment, TransactionStockSelection.NonStapledStocks(true), stockService, holdingService)
         {
 

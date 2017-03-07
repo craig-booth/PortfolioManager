@@ -33,15 +33,14 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 if (_Units <= 0)
                     AddError("Units must be greater than 0");
 
-                if (Stock != null)
+                if (Stock.Id != Guid.Empty)
                     CheckEnoughUnitsOwned();
             }
         }
 
         private async void CheckEnoughUnitsOwned()
         {
-            var stock = _StockService.Get(Stock.Id, RecordDate);
-            var responce = await _HoldingService.GetHolding(stock.Id, RecordDate);
+            var responce = await _HoldingService.GetHolding(Stock.Id, RecordDate);
 
             var availableUnits = responce.Holding.Units;
             if (Transaction != null)
@@ -92,7 +91,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(DisposalTransactionItem disposal, StockService stockService, IHoldingService holdingService)
+        public DisposalViewModel(DisposalTransactionItem disposal, IStockService stockService, IHoldingService holdingService)
             : base(disposal, TransactionStockSelection.TradeableStocks(true), stockService, holdingService)
         {
             

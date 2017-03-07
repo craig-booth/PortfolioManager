@@ -45,13 +45,14 @@ namespace PortfolioManager.Service.Local
             Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
             Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
             Register<IIncomeService>(() => new IncomeService(incomeService));
+            Register<IStockService>(() => new StockService(stockService));
 
-            SetMapping();
+            SetMapping(stockService);
         }
 
-        private void SetMapping()
+        private void SetMapping(Obsolete.StockService stockService)
         {
-            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping()));
+            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(stockService)));
         }
 
     }
@@ -59,9 +60,14 @@ namespace PortfolioManager.Service.Local
 
     class ModelToServiceMapping : Profile
     {
-        public ModelToServiceMapping()
+        private readonly Obsolete.StockService _StockService;
+
+        public ModelToServiceMapping(Obsolete.StockService stockService)
         {
+            _StockService = stockService;
+
             CreateMap<Transaction, TransactionItem>()
+                .ForMember(dest => dest.Stock, opts => opts.MapFrom(src => StockForTransaction(src)))
                 .Include<Aquisition, AquisitionTransactionItem>()
                 .Include<CashTransaction, CashTransactionItem>()
                 .Include<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>()
@@ -80,6 +86,7 @@ namespace PortfolioManager.Service.Local
             CreateMap<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
 
             CreateMap<TransactionItem, Transaction>()
+                .ForMember(dest => dest.ASXCode, opts => opts.MapFrom(src => src.Stock.ASXCode))
                 .Include<AquisitionTransactionItem, Aquisition>()
                 .Include<CashTransactionItem, CashTransaction>()
                 .Include<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>()
@@ -97,6 +104,24 @@ namespace PortfolioManager.Service.Local
             CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>();
             CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
 
+        }
+
+        private StockItem StockForTransaction(Transaction transaction)
+        {
+
+            if (transaction.ASXCode == "")
+                return new StockItem(Guid.Empty, "", "");
+            try
+            {
+                var stock = _StockService.Get(transaction.ASXCode, transaction.TransactionDate);
+                return new StockItem(stock);
+            }
+            catch
+            {
+                return new StockItem(Guid.Empty, transaction.ASXCode, "");
+            }
+             
+            
         }
     }
 }

@@ -31,8 +31,7 @@ namespace PortfolioManager.Service.Obsolete
         private ShareHoldingService ShareHoldingService { get; set; }
         private CashAccountService CashAccountService { get; set; }
         private IncomeService IncomeService { get; set; }
-
-        public StockService StockService { get; set; }
+        private StockService StockService { get; set; }
 
         public event PortfolioChangedEventHandler PortfolioChanged;
 

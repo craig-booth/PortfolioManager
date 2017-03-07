@@ -31,7 +31,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
 
                 var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
-                _TransactionViewModelFactory = new TransactionViewModelFactory(_Portfolio.StockService, holdingService);
+                var stockService = _PortfolioManagerService.GetService<IStockService>();
+
+                _TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
             }
         }
 

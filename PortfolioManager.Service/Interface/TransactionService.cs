@@ -57,9 +57,9 @@ namespace PortfolioManager.Service.Interface
     public abstract class TransactionItem
     {
         public Guid Id { get; set; }
+        public StockItem Stock { get; set; }
         public TransactionType Type { get; set;  }
         public DateTime TransactionDate { get; set; }
-        public string ASXCode { get; set; }
         public DateTime RecordDate { get; set; }
         public string Description { get; set; }
         public string Comment { get; set; }

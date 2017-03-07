@@ -57,10 +57,7 @@ namespace PortfolioManager.UI.ViewModels
             foreach (var transaction in responce.Transactions)
             {
                 if (transaction.Type != TransactionType.CashTransaction)
-                {
-                    var stock = _Parameter.Portfolio.StockService.Get(transaction.ASXCode, transaction.RecordDate);
-                    Transactions.Add(new TransactionReportViewItem(new StockItem(stock.Id, stock.ASXCode, stock.Name), transaction));
-                }
+                    Transactions.Add(new TransactionReportViewItem(transaction));
             }
          
             OnPropertyChanged("");
@@ -76,10 +73,10 @@ namespace PortfolioManager.UI.ViewModels
         public DateTime TransactionDate { get; private set; }
         public string Description { get; private set; }
 
-        public TransactionReportViewItem(StockItem stock, TransactionItem transaction)
+        public TransactionReportViewItem(TransactionItem transaction)
         {
-            ASXCode = stock.ASXCode;
-            CompanyName = stock.FormattedCompanyName();
+            ASXCode = transaction.Stock.ASXCode;
+            CompanyName = transaction.Stock.FormattedCompanyName();
             
             TransactionDate = transaction.TransactionDate;
 
