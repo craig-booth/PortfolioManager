@@ -44,6 +44,7 @@ namespace PortfolioManager.Service.Local
             Register<ITransactionService>(() => new TransactionService(transactionService));
             Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
             Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
+            Register<IIncomeService>(() => new IncomeService(incomeService));
 
             SetMapping();
         }

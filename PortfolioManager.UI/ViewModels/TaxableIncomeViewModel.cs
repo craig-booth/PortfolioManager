@@ -7,9 +7,9 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
+using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -42,15 +42,16 @@ namespace PortfolioManager.UI.ViewModels
             Income = new ObservableCollection<IncomeItemViewModel>();
         }
 
-        public override void RefreshView()
+        public async override void RefreshView()
         {
             Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            // Get  a list of all the income for the year
-            var income = _Parameter.Portfolio.IncomeService.GetIncome(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            var incomeService = _Parameter.PortfolioManagerService.GetService<IIncomeService>();
+
+            var responce = await incomeService.GetIncome(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
 
             Income.Clear();
-            foreach (var incomeItem in income)
+            foreach (var incomeItem in responce.Income)
                 Income.Add(new IncomeItemViewModel(incomeItem));
 
             OnPropertyChanged("");
@@ -68,15 +69,15 @@ namespace PortfolioManager.UI.ViewModels
         public decimal FrankingCredits { get; private set; }
         public decimal TotalAmount { get; private set; }
 
-        public IncomeItemViewModel(Income income)
+        public IncomeItemViewModel(IncomeItem income)
         {
             ASXCode = income.Stock.ASXCode;
-            CompanyName = string.Format("{0} ({1})", income.Stock.Name, income.Stock.ASXCode);
+            CompanyName = income.Stock.FormattedCompanyName();
 
             UnfrankedAmount = income.UnfrankedAmount;
             FrankedAmount = income.FrankedAmount;
             FrankingCredits = income.FrankingCredits;
-            TotalAmount = income.TotalIncome;
+            TotalAmount = income.TotalAmount;
         }
     }
 

@@ -28,11 +28,10 @@ namespace PortfolioManager.Service.Obsolete
         private CorporateActionService CorporateActionService { get; set; }
         private AttachmentService AttachmentService { get; set; }
         private TransactionService TransactionService { get; set; }
-
-
         private ShareHoldingService ShareHoldingService { get; set; }
-        public CashAccountService CashAccountService { get; set; }
-        public IncomeService IncomeService { get; set; }
+        private CashAccountService CashAccountService { get; set; }
+        private IncomeService IncomeService { get; set; }
+
         public StockService StockService { get; set; }
 
         public event PortfolioChangedEventHandler PortfolioChanged;
