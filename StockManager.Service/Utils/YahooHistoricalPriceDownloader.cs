@@ -5,23 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+using System.Globalization;
 
-using CsvHelper;
-using CsvHelper.Configuration;
+using KBCsv;
 
 namespace StockManager.Service.Utils
 {
 
     class YahooHistoricalPriceDownloader: IHistoricalPriceDownloader
     {
-        public async Task<List<StockQuote>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<StockQuote>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
         {
             List<StockQuote> data = new List<StockQuote>();
 
             HttpWebRequest request;
             HttpWebResponse response;
             Stream dataStream;
-            StreamReader reader;
             try
             {
                 string url = string.Format("http://ichart.finance.yahoo.com/table.csv?s={0}.AX&a={1:d}&b={2:d}&c={3:d}&d={4:d}&e={5:d}&f={6:d}&g=d&ignore=.csv",
@@ -34,27 +33,34 @@ namespace StockManager.Service.Utils
                 response = await request.GetResponseAsync() as HttpWebResponse;
 
                 dataStream = response.GetResponseStream();
-                reader = new StreamReader(dataStream);
-
-                var csvData = new MemoryStream((int)response.ContentLength);
-                var writer = new StreamWriter(csvData);
-                char[] buffer = new char[32768];
-                int bytesRead;
-                while ((bytesRead = await reader.ReadAsync(buffer, 0, 32768)) > 0)
+                using (var textReader = new StreamReader(dataStream))
                 {
-                    await writer.WriteAsync(buffer, 0, bytesRead);
-                }
-                
+                    using (var csvReader = new CsvReader(textReader, false))
+                    {
+                        var buffer = new DataRecord[128];
+                        DateTime date;
+                        decimal price;
 
-                var csvReader = new CsvReader(new StreamReader(csvData));
+                        await csvReader.ReadHeaderRecordAsync();
 
-                csvReader.Configuration.RegisterClassMap(new YahooFinanceClassMap());
-                csvReader.Configuration.HasHeaderRecord = true;
-                while (csvReader.Read())
-                {
-                    var quote = csvReader.GetRecord<StockQuote>();
-                    quote.ASXCode = asxCode;
-                    data.Add(quote);
+                        while (csvReader.HasMoreRecords)
+                        {
+                            var read = await csvReader.ReadDataRecordsAsync(buffer, 0, buffer.Length);
+                            for (var i = 0; i < read; ++i)
+                            {
+                                if (DateTime.TryParseExact(buffer[i][0], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                                {
+                                    if ((date >= fromDate) && (date <= toDate))
+                                    {
+                                        if (decimal.TryParse(buffer[i][4], out price))
+                                            data.Add(new StockQuote(asxCode, date, price));
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
                 }
 
             }
@@ -67,13 +73,5 @@ namespace StockManager.Service.Utils
         }
     }
 
-    class YahooFinanceClassMap : CsvClassMap<StockQuote>
-    {
-        public YahooFinanceClassMap()
-        {
-            Map(x => x.Date).Index(0).TypeConverterOption("yyyy-MM-dd");
-            Map(x => x.Price).Index(4);
-        }
-    }
 
 }

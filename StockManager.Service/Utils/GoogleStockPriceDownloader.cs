@@ -23,14 +23,14 @@ namespace StockManager.Service.Utils
             _SerializerSettings.ContractResolver = new GoogleStockContractResolver();
         }
 
-        public StockQuote GetSingleQuote(string asxCode)
+        public async Task<StockQuote> GetSingleQuote(string asxCode)
         {
-            var quotes = GetMultipleQuotes(new string[] { asxCode });
+            var quotes = await GetMultipleQuotes(new string[] { asxCode });
 
             return quotes.FirstOrDefault();
         }
 
-        public IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes)
+        public async Task<IEnumerable<StockQuote>> GetMultipleQuotes(IEnumerable<string> asxCodes)
         {
             HttpWebRequest request;
             HttpWebResponse response;
@@ -47,12 +47,12 @@ namespace StockManager.Service.Utils
                         url += ",ASX:" + asxCode;
                 }
                 request = WebRequest.Create(url) as HttpWebRequest;
-                response = request.GetResponse() as HttpWebResponse;
+                response = await request.GetResponseAsync() as HttpWebResponse;
 
                 dataStream = response.GetResponseStream();
                 reader = new StreamReader(dataStream);
 
-                var responseFromServer = reader.ReadToEnd();
+                var responseFromServer = await reader.ReadToEndAsync();
 
                 // remove comment at start if needed
                 var start = responseFromServer.IndexOfAny(new char[] { '[', '{' });

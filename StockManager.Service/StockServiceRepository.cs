@@ -29,9 +29,13 @@ namespace StockManager.Service
 
         public async Task DownloadUpdatedData()
         {
-            await StockPriceService.DownloadNonTradingDays(2010);
-            StockPriceService.DownloadCurrentPrices();
-            await StockPriceService.DownloadHistoricalPrices();
+            Task[] downloadTasks = new Task[2]
+            {
+                StockPriceService.DownloadCurrentPrices(),
+                StockPriceService.DownloadNonTradingDays(2010).ContinueWith(x => StockPriceService.DownloadHistoricalPrices())
+            };
+
+            await Task.WhenAll(downloadTasks);
         }
 
         public void ImportStockPrices(string fileName)

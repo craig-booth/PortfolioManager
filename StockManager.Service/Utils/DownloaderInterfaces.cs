@@ -8,18 +8,18 @@ namespace StockManager.Service.Utils
 {
     public interface IStockPriceDownloader
     {
-        StockQuote GetSingleQuote(string asxCode);
-        IEnumerable<StockQuote> GetMultipleQuotes(IEnumerable<string> asxCodes);
+        Task<StockQuote> GetSingleQuote(string asxCode);
+        Task<IEnumerable<StockQuote>> GetMultipleQuotes(IEnumerable<string> asxCodes);
     }
 
     public interface IHistoricalPriceDownloader
     {
-        Task<List<StockQuote>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<StockQuote>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate);
     }
 
     public interface ITradingDayDownloader
     {
-        Task<List<DateTime>> NonTradingDays(int year);
+        Task<IEnumerable<DateTime>> NonTradingDays(int year);
       
     }
 

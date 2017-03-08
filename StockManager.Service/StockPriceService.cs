@@ -135,7 +135,7 @@ namespace StockManager.Service
             return (date.WeekDay() && !_NonTradingDays.Contains(date));
         }
 
-        internal void DownloadCurrentPrices()
+        internal async Task DownloadCurrentPrices()
         {
             var stocks = _Database.StockQuery.GetAll(DateTime.Today);
 
@@ -146,7 +146,7 @@ namespace StockManager.Service
                     asxCodes.Add(stock.ASXCode);
             }
 
-            var stockQuotes = _StockPriceDownloader.GetMultipleQuotes(asxCodes);
+            var stockQuotes = await _StockPriceDownloader.GetMultipleQuotes(asxCodes);
             foreach (var stockQuote in stockQuotes)
             {
                 var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);

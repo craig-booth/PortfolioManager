@@ -16,7 +16,7 @@ namespace StockManager.Service.Utils
     class ASXTradingDayDownloader : ITradingDayDownloader
     {
 
-        public async Task<List<DateTime>> NonTradingDays(int year)
+        public async Task<IEnumerable<DateTime>> NonTradingDays(int year)
         {
             var days = new List<DateTime>();
 

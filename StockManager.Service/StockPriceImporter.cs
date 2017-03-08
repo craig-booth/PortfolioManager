@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
 
-using CsvHelper;
-using CsvHelper.Configuration;
-using CsvHelper.TypeConversion;
-
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Stocks;
 
@@ -55,26 +51,27 @@ namespace StockManager.Service
 
     class StockEasyPriceImporter: StockPriceImporter
     {
-        private readonly CsvReader csvFile;
+      //  private readonly CsvReader csvFile;
 
         public StockEasyPriceImporter(string fileName)
         {
-            csvFile = new CsvReader(new StreamReader(fileName));
+     /*       csvFile = new CsvReader(new StreamReader(fileName));
 
             csvFile.Configuration.RegisterClassMap(new StockEasyClassMap());
-            csvFile.Configuration.HasHeaderRecord = false;       
+            csvFile.Configuration.HasHeaderRecord = false;        */
         }
 
         protected override StockPriceRecord GetRecord()
         {
-            if (!csvFile.Read())
-                return null;
+            /*       if (!csvFile.Read())
+                       return null;
 
-            return csvFile.GetRecord<StockPriceRecord>();
+                   return csvFile.GetRecord<StockPriceRecord>(); */
+            throw new NotSupportedException();
         }
     }
     
-    class StockEasyClassMap : CsvClassMap<StockPriceRecord>
+   /* class StockEasyClassMap : CsvClassMap<StockPriceRecord>
     {
         public StockEasyClassMap()
         {               
@@ -82,7 +79,7 @@ namespace StockManager.Service
             Map(x => x.Date).Index(1).TypeConverterOption("yyyyMMdd");
             Map(x => x.Price).Index(5);
         }
-    } 
+    } */
 
    
 }
