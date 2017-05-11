@@ -49,6 +49,11 @@ namespace PortfolioManager.Common
             return (date.DayOfWeek >= DayOfWeek.Monday) && (date.DayOfWeek <= DayOfWeek.Friday);
         }
 
+        public static Boolean Between(this DateTime date, DateTime fromDate, DateTime toDate)
+        {
+            return ((date >= fromDate) && (date <= toDate));
+        }
+
         public static IEnumerable<DateTime> DateRange(DateTime fromDate, DateTime toDate)
         {
             return Enumerable.Range(0, toDate.Subtract(fromDate).Days + 1)

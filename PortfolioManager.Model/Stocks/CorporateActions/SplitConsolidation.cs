@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
+
 namespace PortfolioManager.Model.Stocks
 {
     public class SplitConsolidation : CorporateAction

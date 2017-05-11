@@ -12,7 +12,7 @@ namespace PortfolioManager.UI.Utilities
 {
     class ViewParameter : NotifyClass
     {
-        public IPortfolioManagerServiceFactory PortfolioManagerService;
+        public IPortfolioManagerService PortfolioManagerService;
 
         private StockItem _Stock;
         public StockItem Stock
@@ -24,8 +24,11 @@ namespace PortfolioManager.UI.Utilities
 
             set
             {
-                _Stock = value;
-                OnPropertyChanged();
+                if (_Stock != value)
+                {
+                    _Stock = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -39,8 +42,11 @@ namespace PortfolioManager.UI.Utilities
 
             set
             {
-                _Date = value;
-                OnPropertyChanged();
+                if (_Date != value)
+                {
+                    _Date = value;
+                    OnPropertyChanged();
+                }
             }
         }
         private DateTime _StartDate;
@@ -53,8 +59,11 @@ namespace PortfolioManager.UI.Utilities
 
             set
             {
-                _StartDate = value;
-                OnPropertyChanged();
+                if (_StartDate != value)
+                {
+                    _StartDate = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -68,8 +77,11 @@ namespace PortfolioManager.UI.Utilities
 
             set
             {
-                _EndDate = value;
-                OnPropertyChanged();
+                if (_EndDate != value)
+                {
+                    _EndDate = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -83,8 +95,11 @@ namespace PortfolioManager.UI.Utilities
 
             set
             {
-                _FinancialYear = value;
-                OnPropertyChanged();
+                if (_FinancialYear != value)
+                {
+                    _FinancialYear = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

@@ -8,10 +8,10 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IHoldingService : IPortfolioManagerService
+    public interface IHoldingService : IPortfolioService
     {
         Task<OwnedStocksResponce> GetOwnedStocks(DateTime date);
-        Task<HoldingResponce> GetHolding(Guid stock, DateTime date);
+        Task<HoldingResponce> GetHolding(Guid stockId, DateTime date);
         Task<HoldingsResponce> GetHoldings(DateTime date);
     }
 

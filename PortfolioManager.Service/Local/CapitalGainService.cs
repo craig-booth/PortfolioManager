@@ -174,7 +174,7 @@ namespace PortfolioManager.Service.Local
                     TransactionType = transaction.Type,
                     Date = auditRecord.Date,
                     Units = auditRecord.UnitCount,
-                    Amount = auditRecord.CostBaseChange,
+                    CostBaseChange = auditRecord.CostBaseChange,
                     CostBase = costBase,
                     Comment = transaction.Description
                 };

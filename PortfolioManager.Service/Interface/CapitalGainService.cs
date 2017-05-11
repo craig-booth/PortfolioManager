@@ -9,7 +9,7 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ICapitalGainService : IPortfolioManagerService
+    public interface ICapitalGainService : IPortfolioService
     {
         Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date);
         Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(Guid stockId, DateTime date);
@@ -71,8 +71,9 @@ namespace PortfolioManager.Service.Interface
     {
         public DateTime Date { get; set; }
         public TransactionType TransactionType { get; set; }
+        public int UnitChange { get; set; }
         public int Units { get; set; }
-        public decimal Amount { get; set; }
+        public decimal CostBaseChange { get; set; }
         public decimal CostBase { get; set; }
         public string Comment { get; set; }
     }

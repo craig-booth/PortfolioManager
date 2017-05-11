@@ -86,7 +86,7 @@ namespace PortfolioManager.UI.ViewModels
                     TransactionType = cgtEvent.TransactionType.ToString(),
                     Date = cgtEvent.Date,
                     Units = cgtEvent.Units,
-                    Amount = cgtEvent.Amount,
+                    Amount = cgtEvent.CostBaseChange,
                     CostBase = cgtEvent.CostBase,
                     Comment = cgtEvent.Comment
                 };

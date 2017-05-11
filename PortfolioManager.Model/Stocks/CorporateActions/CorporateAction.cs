@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Model.Stocks
 {
-    public enum CorporateActionType { Dividend, CapitalReturn, Transformation, SplitConsolidation, Composite}
 
     public abstract class CorporateAction : Entity
     {

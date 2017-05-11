@@ -54,7 +54,7 @@ namespace PortfolioManager.UI.ViewModels
                 responce = await capitalGainService.GetSimpleUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
 
             UnrealisedGains.Clear();
-            foreach (var cgtItem in responce.CGTItems)
+            foreach (var cgtItem in responce.CGTItems.OrderBy(x => x.Stock.FormattedCompanyName()))
             {
                 var viewItem = new UnrealisedGainViewItem(cgtItem);
                 UnrealisedGains.Add(viewItem);

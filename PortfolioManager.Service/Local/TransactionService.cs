@@ -15,10 +15,12 @@ namespace PortfolioManager.Service.Local
     class TransactionService : ITransactionService
     {
         private readonly Obsolete.TransactionService _TransactionService;
+        private readonly Obsolete.StockService _StockService;
 
-        public TransactionService(Obsolete.TransactionService transactionService)
+        public TransactionService(Obsolete.TransactionService transactionService, Obsolete.StockService stockService)
         {
             _TransactionService = transactionService;
+            _StockService = stockService;
         }
 
         public Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem)
@@ -81,9 +83,12 @@ namespace PortfolioManager.Service.Local
             return Task.FromResult<GetTransactionsResponce>(responce); 
         }
 
-        public Task<GetTransactionsResponce> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        public Task<GetTransactionsResponce> GetTransactions(Guid stockId, DateTime fromDate, DateTime toDate)
         {
             var responce = new GetTransactionsResponce();
+
+            var stock = _StockService.Get(stockId, fromDate);
+            var asxCode = stock.ASXCode;
 
             var transactions = _TransactionService.GetTransactions(asxCode, fromDate, toDate);
             responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));

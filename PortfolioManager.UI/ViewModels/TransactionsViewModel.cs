@@ -72,7 +72,7 @@ namespace PortfolioManager.UI.ViewModels
             if (_Parameter.Stock.Id == Guid.Empty)
                 responce = await transactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
             else
-                responce = await transactionService.GetTransactions(_Parameter.Stock.ASXCode, _Parameter.StartDate, _Parameter.EndDate);
+                responce = await transactionService.GetTransactions(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate);
 
             Transactions.Clear();
 

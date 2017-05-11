@@ -8,7 +8,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ITransactionService : IPortfolioManagerService
+    public interface ITransactionService : IPortfolioService
     {
         Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem);
         Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
@@ -16,7 +16,7 @@ namespace PortfolioManager.Service.Interface
         Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transactionItem);
 
         Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate);
-        Task<GetTransactionsResponce> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
+        Task<GetTransactionsResponce> GetTransactions(Guid stockId, DateTime fromDate, DateTime toDate);
     }
 
     public class AddTransactionsResponce : ServiceResponce
@@ -63,6 +63,7 @@ namespace PortfolioManager.Service.Interface
         public DateTime RecordDate { get; set; }
         public string Description { get; set; }
         public string Comment { get; set; }
+        public Guid Attachment { get; set; }
     }
 
     public class AquisitionTransactionItem : TransactionItem

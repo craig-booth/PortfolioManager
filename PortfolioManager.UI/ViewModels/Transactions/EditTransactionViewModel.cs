@@ -57,8 +57,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         private ITransactionService _TransactionService;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
-        private IPortfolioManagerServiceFactory _PortfolioManagerService;
-        public IPortfolioManagerServiceFactory PortfolioManagerService
+        private IPortfolioManagerService _PortfolioManagerService;
+        public IPortfolioManagerService PortfolioManagerService
         {
             set
             {

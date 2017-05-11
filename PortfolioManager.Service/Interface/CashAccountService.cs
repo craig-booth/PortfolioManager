@@ -8,7 +8,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ICashAccountService : IPortfolioManagerService
+    public interface ICashAccountService : IPortfolioService
     {
         Task<CashAccountTransactionsResponce> GetTranasctions(DateTime fromDate, DateTime toDate);
     }

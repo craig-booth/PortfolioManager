@@ -118,7 +118,7 @@
                 <controls:DataTable Data="{Binding StockPerformance}" DataType="{x:Type viewmodels:StockPerformanceItem}" Margin="0,30,0,0">
                     <controls:DataTable.Columns>
                         <controls:DataTableColumn Heading="Company" Width="200" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
-                        <controls:DataTableColumn Heading="Opening Balance" Width="70" MemberBinding="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"/>
+                        <controls:DataTableColumn Heading="Opening Balance" Width="70" MemberBinding="{Binding OpeningBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum" TextAlignment="Right"/>
                         <controls:DataTableColumn Heading="Purchases" Width="70" MemberBinding="{Binding Purchases, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>
                         <controls:DataTableColumn Heading="Sales" Width="70" MemberBinding="{Binding Sales, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right" />
                         <controls:DataTableColumn Heading="Closing Balance" Width="70" MemberBinding="{Binding ClosingBalance, StringFormat={}{0:c0}, Mode=OneWay}" SummaryType="Sum"  TextAlignment="Right"/>

@@ -19,7 +19,9 @@ using PortfolioManager.UI.ViewModels.Transactions;
 namespace PortfolioManager.UI.ViewModels
 {
     class MainWindowViewModel : NotifyClass
-    {      
+    {
+        private readonly StockItem _AllCompanies = new StockItem(Guid.Empty, "", "All Companies");
+
         private LocalPortfolioManagerService _PortfolioManagerService;
 
         private Module _SelectedModule;
@@ -100,6 +102,9 @@ namespace PortfolioManager.UI.ViewModels
             OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
             ViewParameter = new ViewParameter();
+            ViewParameter.Stock = _AllCompanies;
+            ViewParameter.FinancialYear = DateTime.Today.FinancialYear();
+
             EditTransactionWindow = new EditTransactionViewModel();
             CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel();
 
@@ -170,7 +175,7 @@ namespace PortfolioManager.UI.ViewModels
             if (!Path.IsPathRooted(portfolioDatabasePath))
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
 
-            _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath);
+            await _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath);
 
             var summaryService = _PortfolioManagerService.GetService<IPortfolioSummaryService>();
             var responce = await summaryService.GetProperties();
@@ -213,15 +218,14 @@ namespace PortfolioManager.UI.ViewModels
             OwnedStocks.Clear();
 
             // Add entry to entire portfolio
-            var allCompanies = new StockItem(Guid.Empty, "", "All Companies");
-            OwnedStocks.Add(new DescribedObject<StockItem>(allCompanies, "All Companies"));
+            OwnedStocks.Add(new DescribedObject<StockItem>(_AllCompanies, "All Companies"));
 
-            foreach (var stock in stocks)
+            foreach (var stock in stocks.OrderBy(x => x.FormattedCompanyName()))
             {
                 OwnedStocks.Add(new DescribedObject<StockItem>(stock, stock.FormattedCompanyName()));
             }
 
-            ViewParameter.Stock = allCompanies;
+            ViewParameter.Stock = _AllCompanies;
         }
 
     }

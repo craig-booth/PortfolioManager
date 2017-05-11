@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IStockService : IPortfolioManagerService
+    public interface IStockService : IPortfolioService
     {
         Task<GetStockResponce> GetStocks(DateTime date, bool IncludeStapledSecurities, bool IncludeChildStocks);
     }

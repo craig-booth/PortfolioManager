@@ -8,10 +8,10 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ICorporateActionService : IPortfolioManagerService
+    public interface ICorporateActionService : IPortfolioService
     {
         Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions();
-        Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid corporateAction);
+        Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid actionId);
     }
 
     public class UnappliedCorporateActionsResponce : ServiceResponce

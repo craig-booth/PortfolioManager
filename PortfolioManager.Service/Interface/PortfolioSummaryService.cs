@@ -8,7 +8,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IPortfolioSummaryService : IPortfolioManagerService
+    public interface IPortfolioSummaryService : IPortfolioService
     {
         Task<PortfolioPropertiesResponce> GetProperties();
         Task<PortfolioSummaryResponce> GetSummary(DateTime date);

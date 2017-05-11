@@ -18,8 +18,9 @@ using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Local
 {
-    public class LocalPortfolioManagerService : PortfolioManagerService
+    public class LocalPortfolioManagerService : IPortfolioManagerService
     {
+        private ServiceFactory<IPortfolioService> _ServiceFactory = new ServiceFactory<IPortfolioService>();
 
         public LocalPortfolioManagerService()
         {
@@ -47,24 +48,30 @@ namespace PortfolioManager.Service.Local
             var cgtService = new Obsolete.CGTService(portfolioDatabase.PortfolioQuery);
             var corporateActionService = new Obsolete.CorporateActionService(corporateActionQuery, parcelService, stockService, transactionService, shareHoldingService, incomeService);
 
-            Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
-            Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(shareHoldingService, cashAccountService, transactionService, stockService, incomeService));
-            Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService, transactionService, cgtService));
-            Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService, cashAccountService));
-            Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
-            Register<ITransactionService>(() => new TransactionService(transactionService));
-            Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
-            Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
-            Register<IIncomeService>(() => new IncomeService(incomeService));
-            Register<IStockService>(() => new StockService(stockService));
+            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
+            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(shareHoldingService ,cashAccountService, transactionService, stockService, incomeService));
+            _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService, transactionService, cgtService));
+            _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService, cashAccountService));
+            _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
+            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(transactionService, stockService));
+            _ServiceFactory.Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
+            _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
+            _ServiceFactory.Register<IIncomeService>(() => new IncomeService(incomeService));
+            _ServiceFactory.Register<IStockService>(() => new StockService(stockService));
 
             SetMapping(stockService);
+            Mapper.AssertConfigurationIsValid();
 
             LoadTransactions(portfolioDatabase, transactionService);
 
             await stockServiceRepository.DownloadUpdatedData();
 
             return true;
+        }
+
+        public T GetService<T>() where T : IPortfolioService
+        {
+            return (T)_ServiceFactory.GetService<T>();
         }
 
         private void LoadTransactions(IPortfolioDatabase database, Obsolete.TransactionService transactionService)
@@ -103,7 +110,7 @@ namespace PortfolioManager.Service.Local
                 .Include<IncomeReceived, IncomeTransactionItem>()
                 .Include<OpeningBalance, OpeningBalanceTransactionItem>()
                 .Include<ReturnOfCapital, ReturnOfCapitalTransactionItem>()
-                .Include<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+                .Include<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>(); 
             CreateMap<Aquisition, AquisitionTransactionItem>();
             CreateMap<CashTransaction, CashTransactionItem>();
             CreateMap<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>();
@@ -122,7 +129,7 @@ namespace PortfolioManager.Service.Local
                 .Include<IncomeTransactionItem, IncomeReceived>()
                 .Include<OpeningBalanceTransactionItem, OpeningBalance>()
                 .Include<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
-                .Include<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+                .Include<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>(); 
             CreateMap<AquisitionTransactionItem, Aquisition>();
             CreateMap<CashTransactionItem, CashTransaction>();
             CreateMap<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>();
@@ -131,7 +138,6 @@ namespace PortfolioManager.Service.Local
             CreateMap<OpeningBalanceTransactionItem, OpeningBalance>();
             CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>();
             CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
-
         }
 
         private StockItem StockForTransaction(Transaction transaction)
@@ -150,6 +156,6 @@ namespace PortfolioManager.Service.Local
             }
              
             
-        }
+        } 
     }
 }
