@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Data;
 
 using PortfolioManager.Service.Obsolete;
 
@@ -14,14 +15,14 @@ namespace PortfolioManager.Service.CorporateActions
 {
     class DividendHandler : ICorporateActionHandler 
     {
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly ParcelService _ParcelService;
         private readonly IncomeService _IncomeService;
 
-        public DividendHandler(StockService stockService, ParcelService parcelService, IncomeService incomeService)
+        public DividendHandler(IPortfolioQuery portfolioQuery, StockService stockService, IncomeService incomeService)
         {
+            _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _ParcelService = parcelService;
             _IncomeService = incomeService;
         }
 
@@ -33,7 +34,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             /* locate parcels that the dividend applies to */
             var dividendStock = _StockService.Get(dividend.Stock, dividend.ActionDate);
-            var parcels = _ParcelService.GetParcels(dividendStock, dividend.ActionDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(dividendStock.Id, dividend.ActionDate, dividend.ActionDate);
             if (parcels.Count == 0)
                 return transactions;
 

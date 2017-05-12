@@ -21,8 +21,7 @@ namespace PortfolioManager.Service.Transactions
 
     abstract class TransacactionHandler
     {
-
-        protected readonly ParcelService _ParcelService;
+        protected readonly IPortfolioQuery _PortfolioQuery;
         protected readonly StockService _StockService;
 
         protected TransacactionHandler()
@@ -30,9 +29,9 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        public TransacactionHandler(ParcelService parcelService, StockService stockService)
+        public TransacactionHandler(IPortfolioQuery portfolioQuery, StockService stockService)
         {
-            _ParcelService = parcelService;
+            _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
         }
 

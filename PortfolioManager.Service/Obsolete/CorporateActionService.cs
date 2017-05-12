@@ -14,14 +14,16 @@ namespace PortfolioManager.Service.Obsolete
 {
     class CorporateActionService
     {
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly ICorporateActionQuery _CorporateActionQuery;
         private readonly ShareHoldingService _ShareHoldingService;
         private readonly TransactionService _TransactionService;
 
         private readonly Dictionary<CorporateActionType, ICorporateActionHandler> _CorporateActionHandlers;
 
-        internal CorporateActionService(ICorporateActionQuery corporateActionQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService, ShareHoldingService shareHoldingService, IncomeService incomeService)
+        internal CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, StockService stockService, TransactionService transactionService, ShareHoldingService shareHoldingService, IncomeService incomeService)
         {
+            _PortfolioQuery = portfolioQuery;
             _CorporateActionQuery = corporateActionQuery;
             _ShareHoldingService = shareHoldingService;
             _TransactionService = transactionService;
@@ -29,11 +31,11 @@ namespace PortfolioManager.Service.Obsolete
             _CorporateActionHandlers = new Dictionary<CorporateActionType, ICorporateActionHandler>();
 
             /* Add corporate action handlers */
-            _CorporateActionHandlers.Add(CorporateActionType.CapitalReturn, new CapitalReturnHandler(stockService, parcelService));
-            _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(stockService, parcelService, incomeService));
-            _CorporateActionHandlers.Add(CorporateActionType.Transformation, new TransformationHandler(stockService, parcelService));
-            _CorporateActionHandlers.Add(CorporateActionType.SplitConsolidation, new SplitConsolidationHandler(stockService, parcelService));
-            _CorporateActionHandlers.Add(CorporateActionType.Composite, new CompositeActionHandler(stockService, parcelService, this));
+            _CorporateActionHandlers.Add(CorporateActionType.CapitalReturn, new CapitalReturnHandler(_PortfolioQuery, stockService));
+            _CorporateActionHandlers.Add(CorporateActionType.Dividend, new DividendHandler(_PortfolioQuery, stockService, incomeService));
+            _CorporateActionHandlers.Add(CorporateActionType.Transformation, new TransformationHandler(_PortfolioQuery, stockService));
+            _CorporateActionHandlers.Add(CorporateActionType.SplitConsolidation, new SplitConsolidationHandler(_PortfolioQuery, stockService));
+            _CorporateActionHandlers.Add(CorporateActionType.Composite, new CompositeActionHandler(_PortfolioQuery, stockService, this));
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)

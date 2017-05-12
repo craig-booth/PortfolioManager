@@ -39,12 +39,11 @@ namespace PortfolioManager.Service.Local
             var settingsService = new Obsolete.PortfolioSettingsService();
 
             var stockService = new Obsolete.StockService(stockServiceRepository);
-            var parcelService = new Obsolete.ParcelService(portfolioDatabase.PortfolioQuery, stockService);
             var attachmentService = new Obsolete.AttachmentService(portfolioDatabase);
-            var transactionService = new Obsolete.TransactionService(portfolioDatabase, parcelService, stockService, attachmentService);
-            var shareHoldingService = new Obsolete.ShareHoldingService(portfolioDatabase.PortfolioQuery, parcelService, stockService, transactionService);
+            var transactionService = new Obsolete.TransactionService(portfolioDatabase, stockService, attachmentService);
+            var shareHoldingService = new Obsolete.ShareHoldingService(portfolioDatabase.PortfolioQuery, stockService, transactionService);
             var incomeService = new Obsolete.IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
-            var corporateActionService = new Obsolete.CorporateActionService(corporateActionQuery, parcelService, stockService, transactionService, shareHoldingService, incomeService);
+            var corporateActionService = new Obsolete.CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, transactionService, shareHoldingService, incomeService);
 
             _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, shareHoldingService));
             _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, shareHoldingService, transactionService, stockService, incomeService));

@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class DisposalHandler : TransacactionHandler, ITransactionHandler
     {
-        public DisposalHandler(ParcelService parcelService, StockService stockService)
-            : base (parcelService, stockService)
+        public DisposalHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+            : base (portfolioQuery, stockService)
         {
 
         }
@@ -33,9 +33,9 @@ namespace PortfolioManager.Service.Transactions
             /* Determine which parcels to sell based on CGT method */
             IReadOnlyCollection<ShareParcel> ownedParcels;
             if (stock.Type == StockType.StapledSecurity)
-                ownedParcels = _ParcelService.GetStapledSecurityParcels(stock, disposal.TransactionDate);
+                ownedParcels = PortfolioUtils.GetStapledSecurityParcels(stock, disposal.TransactionDate, _StockService, _PortfolioQuery);
             else
-                ownedParcels = _ParcelService.GetParcels(stock, disposal.TransactionDate);
+                ownedParcels = _PortfolioQuery.GetParcelsForStock(stock.Id, disposal.TransactionDate, disposal.TransactionDate);
             decimal amountReceived = (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
             var cgtCalculation = CGTCalculator.CalculateCapitalGain(ownedParcels, disposal.TransactionDate, disposal.Units, amountReceived, disposal.CGTMethod);
 
@@ -57,7 +57,7 @@ namespace PortfolioManager.Service.Transactions
                     int i = 0;
                     foreach (var childStock in childStocks)
                     {
-                        var childParcels = _ParcelService.GetParcels(childStock, disposal.TransactionDate);
+                        var childParcels = _PortfolioQuery.GetParcelsForStock(childStock.Id, disposal.TransactionDate, disposal.TransactionDate);
 
                         var childParcel = childParcels.First(x => x.PurchaseId == parcelSold.Parcel.PurchaseId);
                         DisposeOfParcel(unitOfWork, childParcel, disposal.TransactionDate, parcelSold.UnitsSold, amountsReceived[i].Amount, transaction.Id);

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Data;
 
 using PortfolioManager.Service.Obsolete;
 
@@ -14,14 +15,13 @@ namespace PortfolioManager.Service.CorporateActions
 {
     class CapitalReturnHandler : ICorporateActionHandler 
     {
-
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly ParcelService _ParcelService;
 
-        public CapitalReturnHandler(StockService stockService, ParcelService parcelService)
+        public CapitalReturnHandler(IPortfolioQuery portfolioQuery, StockService stockService)
         {
+            _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _ParcelService = parcelService;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -33,7 +33,7 @@ namespace PortfolioManager.Service.CorporateActions
             var stock = _StockService.Get(capitalReturn.Stock, capitalReturn.ActionDate);
 
             /* locate parcels that the capital return applies to */
-            var parcels = _ParcelService.GetParcels(stock, capitalReturn.ActionDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, capitalReturn.ActionDate, capitalReturn.ActionDate);
             if (parcels.Count == 0)
                 return transactions;
 

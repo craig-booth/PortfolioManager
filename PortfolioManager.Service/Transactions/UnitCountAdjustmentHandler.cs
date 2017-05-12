@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public UnitCountAdjustmentHandler(ParcelService parcelService, StockService stockService)
-            : base (parcelService, stockService)
+        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+            : base (portfolioQuery, stockService)
         {
 
         }
@@ -32,7 +32,7 @@ namespace PortfolioManager.Service.Transactions
                 throw new TransctionNotSupportedForStapledSecurity(unitCountAdjustment, "Cannot adjust unit count of stapled securities. Adjust unit count of child securities instead");
 
             /* locate parcels that the split/consolidation applies to */
-            var parcels = _ParcelService.GetParcels(stock, unitCountAdjustment.TransactionDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, unitCountAdjustment.TransactionDate, unitCountAdjustment.TransactionDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(unitCountAdjustment, "No parcels found for transaction");

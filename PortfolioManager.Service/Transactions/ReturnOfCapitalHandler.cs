@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
-
 using PortfolioManager.Service.Utils;
 
 using PortfolioManager.Service.Obsolete;
@@ -17,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
     class ReturnOfCapitalHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public ReturnOfCapitalHandler(ParcelService parcelService, StockService stockService)
-            : base (parcelService, stockService)
+        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+            : base (portfolioQuery, stockService)
         {
 
         }
@@ -33,7 +32,7 @@ namespace PortfolioManager.Service.Transactions
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the transaction applies to */
-            var parcels = _ParcelService.GetParcels(stock, returnOfCapital.RecordDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, returnOfCapital.RecordDate, returnOfCapital.RecordDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(returnOfCapital, "No parcels found for transaction");

@@ -22,8 +22,7 @@ namespace PortfolioManager.Service.Obsolete
     class Portfolio
     {
         private PortfolioSettingsService SettingsService { get; set; }
-
-        private ParcelService ParcelService { get; set; }       
+   
         private CorporateActionService CorporateActionService { get; set; }
         private AttachmentService AttachmentService { get; set; }
         private TransactionService TransactionService { get; set; }
@@ -45,12 +44,11 @@ namespace PortfolioManager.Service.Obsolete
 
             StockService = new StockService(stockServiceRepository);
 
-            ParcelService = new ParcelService(database.PortfolioQuery, StockService);
-            TransactionService = new TransactionService(database, ParcelService, StockService, AttachmentService);
-            ShareHoldingService = new ShareHoldingService(database.PortfolioQuery, ParcelService, StockService, TransactionService);
+            TransactionService = new TransactionService(database, StockService, AttachmentService);
+            ShareHoldingService = new ShareHoldingService(database.PortfolioQuery, StockService, TransactionService);
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService, SettingsService);
-            CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, IncomeService);
+            CorporateActionService = new CorporateActionService(database.PortfolioQuery, corporateActionQuery, StockService, TransactionService, ShareHoldingService, IncomeService);
 
             /* Load transactions */
             var allTransactions = TransactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);

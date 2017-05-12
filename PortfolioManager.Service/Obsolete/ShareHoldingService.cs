@@ -16,14 +16,12 @@ namespace PortfolioManager.Service.Obsolete
     class ShareHoldingService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
         private readonly TransactionService _TransactionService;
 
-        internal ShareHoldingService(IPortfolioQuery portfolioQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService)
+        internal ShareHoldingService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService)
         {
             _PortfolioQuery = portfolioQuery;
-            _ParcelService = parcelService;
             _StockService = stockService;
             _TransactionService = transactionService;
         }
@@ -33,9 +31,9 @@ namespace PortfolioManager.Service.Obsolete
             IReadOnlyCollection<ShareParcel> parcels;
 
             if (stock.Type == StockType.StapledSecurity)
-                parcels = _ParcelService.GetStapledSecurityParcels(stock, date);
+                parcels = PortfolioUtils.GetStapledSecurityParcels(stock, date, _StockService, _PortfolioQuery);
             else
-                parcels = _ParcelService.GetParcels(stock, date);
+                parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, date, date);
 
             var holding = new ShareHolding();
             holding.Stock = stock;
@@ -54,7 +52,7 @@ namespace PortfolioManager.Service.Obsolete
 
         public IReadOnlyCollection<ShareHolding> GetHoldings(DateTime date)
         { 
-            var allParcels = _ParcelService.GetParcels(date).OrderBy(x => x.Stock);
+            var allParcels = _PortfolioQuery.GetAllParcels(date, date).OrderBy(x => x.Stock);
 
             var holdings = new List<ShareHolding>();
             ShareHolding holding = null;
@@ -125,7 +123,7 @@ namespace PortfolioManager.Service.Obsolete
             DateTime parcelStartDate;
             DateTime cashStartDate;
 
-            var firstParcel = _ParcelService.GetParcels(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();         
+            var firstParcel = _PortfolioQuery.GetAllParcels(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();         
             if (firstParcel != null)
                 parcelStartDate = firstParcel.FromDate;
             else
@@ -152,7 +150,7 @@ namespace PortfolioManager.Service.Obsolete
         {
             var ownedStocks = new List<Stock>();
 
-            var parcels = _ParcelService.GetParcels(fromDate, toDate).OrderBy(x => x.Stock);
+            var parcels = _PortfolioQuery.GetAllParcels(fromDate, toDate).OrderBy(x => x.Stock);
 
             Stock currentStock = null;
             foreach (var shareParcel in parcels)
@@ -180,12 +178,12 @@ namespace PortfolioManager.Service.Obsolete
         {
             var ownedStocks = new List<OwnedStockId>();
 
-            var parcels = _ParcelService.GetParcels(date);
+            var parcels = _PortfolioQuery.GetAllParcels(date, date);
 
             foreach (var shareParcel in parcels)
             {
                 // Make sure that we get the oldest effectve record for this parcel
-                var firstDate = _ParcelService.GetParcels(shareParcel.Id, DateUtils.NoStartDate, date).Min(x => x.FromDate);
+                var firstDate = _PortfolioQuery.GetParcels(shareParcel.Id, DateUtils.NoStartDate, date).Min(x => x.FromDate);
 
                 var ownedStock = new OwnedStockId()
                 {

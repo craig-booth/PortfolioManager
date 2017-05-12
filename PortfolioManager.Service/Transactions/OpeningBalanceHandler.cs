@@ -14,8 +14,8 @@ namespace PortfolioManager.Service.Transactions
 
     class OpeningBalanceHandler : TransacactionHandler, ITransactionHandler
     {
-        public OpeningBalanceHandler(ParcelService parcelService, StockService stockService)
-            : base (parcelService, stockService)
+        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+            : base (portfolioQuery, stockService)
         {
 
         }

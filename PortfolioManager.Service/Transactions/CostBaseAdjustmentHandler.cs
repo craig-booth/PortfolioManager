@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public CostBaseAdjustmentHandler(ParcelService parcelService, StockService stockService)
-            : base (parcelService, stockService)
+        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+            : base (portfolioQuery, stockService)
         {
 
         }
@@ -31,7 +31,7 @@ namespace PortfolioManager.Service.Transactions
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the dividend applies to */
-            var parcels = _ParcelService.GetParcels(stock, costBaseAdjustment.RecordDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, costBaseAdjustment.RecordDate, costBaseAdjustment.RecordDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(costBaseAdjustment, "No parcels found for transaction");

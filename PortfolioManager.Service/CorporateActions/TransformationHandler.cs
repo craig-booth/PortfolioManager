@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Data;
 
 using PortfolioManager.Service.Obsolete;
 
@@ -14,13 +15,13 @@ namespace PortfolioManager.Service.CorporateActions
 {
     class TransformationHandler : ICorporateActionHandler  
     {
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly ParcelService _ParcelService;
 
-        public TransformationHandler(StockService stockService, ParcelService parcelService)
+        public TransformationHandler(IPortfolioQuery portfolioQuery, StockService stockService)
         {
+            _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _ParcelService = parcelService;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -31,7 +32,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             /* locate parcels that the transformation applies to */
             var transfomationStock = _StockService.Get(transformation.Stock, transformation.ActionDate);
-            var ownedParcels = _ParcelService.GetParcels(transfomationStock, transformation.ActionDate);
+            var ownedParcels = _PortfolioQuery.GetParcelsForStock(transfomationStock.Id, transformation.ActionDate, transformation.ActionDate);
             if (ownedParcels.Count == 0)
                 return transactions;
 

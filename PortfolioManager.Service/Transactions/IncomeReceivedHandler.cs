@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
-
 using PortfolioManager.Service.Utils;
 
 using PortfolioManager.Service.Obsolete;
@@ -17,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
     class IncomeReceivedHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public IncomeReceivedHandler(ParcelService parcelService, StockService stockService)
-            : base (parcelService, stockService)
+        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+            : base (portfolioQuery, stockService)
         {
         }
 
@@ -32,7 +31,7 @@ namespace PortfolioManager.Service.Transactions
                 throw new TransctionNotSupportedForStapledSecurity(incomeReceived, "Cannot have a income for stapled securities. Income should be recorded against child securities instead");
 
             /* locate parcels that the dividend applies to */
-            var parcels = _ParcelService.GetParcels(stock, incomeReceived.RecordDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, incomeReceived.RecordDate, incomeReceived.RecordDate);
 
             if (parcels.Count == 0)
                 throw new NoParcelsForTransaction(incomeReceived, "No parcels found for transaction");
