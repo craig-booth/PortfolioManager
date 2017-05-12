@@ -19,13 +19,11 @@ namespace PortfolioManager.Service.Local
 
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly Obsolete.StockService _StockService;
-        private readonly Obsolete.CashAccountService _CashAccountService;
 
-        public PortfolioValueService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService, Obsolete.CashAccountService cashAccountService) 
+        public PortfolioValueService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService) 
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _CashAccountService = cashAccountService;
         }
 
         public Task<PortfolioValueResponce> GetPortfolioValue(DateTime fromDate, DateTime toDate, ValueFrequency frequency)
@@ -34,7 +32,7 @@ namespace PortfolioManager.Service.Local
             var responce = GetPortfolioValue(parcels, fromDate, toDate, frequency);
 
             foreach (var date in responce.Values.Keys.ToList())
-                responce.Values[date] += _CashAccountService.GetBalance(date);
+                responce.Values[date] += _PortfolioQuery.GetCashBalance(date);
 
             responce.SetStatusToSuccessfull();
 

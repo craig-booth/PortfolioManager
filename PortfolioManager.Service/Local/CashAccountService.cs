@@ -8,30 +8,30 @@ using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.Service.Obsolete;
+using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Service.Local
 {
     class CashAccountService : ICashAccountService
     {
-        private readonly Obsolete.CashAccountService _CashAccountService;
+        private readonly IPortfolioQuery _PortfolioQuery;
 
-        public CashAccountService(Obsolete.CashAccountService cashAccountService)
+        public CashAccountService(IPortfolioQuery portfolioQuery)
         {
-            _CashAccountService = cashAccountService;
+            _PortfolioQuery = portfolioQuery;
         }
 
         public Task<CashAccountTransactionsResponce> GetTranasctions(DateTime fromDate, DateTime toDate)
         {
             var responce = new CashAccountTransactionsResponce();
 
-
             // Get opening blance
-            responce.OpeningBalance = _CashAccountService.GetBalance(fromDate.AddDays(-1));
+            responce.OpeningBalance = _PortfolioQuery.GetCashBalance(fromDate.AddDays(-1));
 
             decimal balance = responce.OpeningBalance;
 
             // get transactions
-            var transactions = _CashAccountService.GetTransactions(fromDate, toDate);
+            var transactions = _PortfolioQuery.GetCashAccountTransactions(fromDate, toDate);
 
             foreach (var transaction in transactions)
             {

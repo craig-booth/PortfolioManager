@@ -184,6 +184,14 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
+        public decimal GetCashBalance(DateTime atDate)
+        {
+            // Sum up transactions prior to the request date
+            var transactions = GetCashAccountTransactions(DateUtils.NoStartDate, atDate);
+
+            return transactions.Sum(x => x.Amount);
+        }
+
         public IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
         {
             return _Database._CashAccountTransactions.Where(t => (t.Date >= fromDate) && (t.Date <= toDate)).OrderBy(x => x.Date).ThenByDescending(x => x.Amount).ToList();

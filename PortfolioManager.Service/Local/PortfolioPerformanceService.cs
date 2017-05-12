@@ -9,6 +9,7 @@ using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
 
+using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.Service.Obsolete;
@@ -18,16 +19,16 @@ namespace PortfolioManager.Service.Local
 
     class PortfolioPerformanceService : IPortfolioPerformanceService
     {
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly Obsolete.ShareHoldingService _ShareHoldingService;
-        private readonly Obsolete.CashAccountService _CashAccountService;
         private readonly Obsolete.TransactionService _TransactionService;
         private readonly Obsolete.StockService _StockService;
         private readonly Obsolete.IncomeService _IncomeService;
 
-        public PortfolioPerformanceService(Obsolete.ShareHoldingService shareHoldingService, Obsolete.CashAccountService cashAccountService, Obsolete.TransactionService transactionService, Obsolete.StockService stockService, Obsolete.IncomeService incomeService)
+        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService, Obsolete.TransactionService transactionService, Obsolete.StockService stockService, Obsolete.IncomeService incomeService)
         {
+            _PortfolioQuery = portfolioQuery;
             _ShareHoldingService = shareHoldingService;
-            _CashAccountService = cashAccountService;
             _TransactionService = transactionService;
             _StockService = stockService;
             _IncomeService = incomeService;
@@ -37,13 +38,13 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new PortfolioPerformanceResponce();
 
-            var cashTransactions = _CashAccountService.GetTransactions(fromDate, toDate);          
-            responce.OpeningCashBalance = _CashAccountService.GetBalance(fromDate);           
+            var cashTransactions = _PortfolioQuery.GetCashAccountTransactions(fromDate, toDate);          
+            responce.OpeningCashBalance = _PortfolioQuery.GetCashBalance(fromDate);           
             responce.Deposits = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Deposit).Sum(x => x.Amount);
             responce.Withdrawls = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Withdrawl).Sum(x => x.Amount);
             responce.Interest = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Interest).Sum(x => x.Amount);
             responce.Fees = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Fee).Sum(x => x.Amount);
-            responce.ClosingCashBalance = _CashAccountService.GetBalance(toDate);
+            responce.ClosingCashBalance = _PortfolioQuery.GetCashBalance(toDate);
 
             var openingHoldings = _ShareHoldingService.GetHoldings(fromDate);
             var closingHoldings = _ShareHoldingService.GetHoldings(toDate);      

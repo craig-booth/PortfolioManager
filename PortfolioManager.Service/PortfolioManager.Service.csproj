@@ -69,7 +69,6 @@
     <Compile Include="Local\StockService.cs" />
     <Compile Include="Local\TransactionService.cs" />
     <Compile Include="Obsolete\AttachmentService.cs" />
-    <Compile Include="Obsolete\CashAccountService.cs" />
     <Compile Include="Interface\PortfolioManagerService.cs" />
     <Compile Include="Local\LocalPortfolioManagerService.cs" />
     <Compile Include="Local\PortfolioPerformanceService.cs" />

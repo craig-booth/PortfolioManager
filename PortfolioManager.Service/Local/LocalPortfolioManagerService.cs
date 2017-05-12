@@ -42,20 +42,19 @@ namespace PortfolioManager.Service.Local
             var parcelService = new Obsolete.ParcelService(portfolioDatabase.PortfolioQuery, stockService);
             var attachmentService = new Obsolete.AttachmentService(portfolioDatabase);
             var transactionService = new Obsolete.TransactionService(portfolioDatabase, parcelService, stockService, attachmentService);
-            var cashAccountService = new Obsolete.CashAccountService(portfolioDatabase);
-            var shareHoldingService = new Obsolete.ShareHoldingService(parcelService, stockService, transactionService, cashAccountService);
+            var shareHoldingService = new Obsolete.ShareHoldingService(portfolioDatabase.PortfolioQuery, parcelService, stockService, transactionService);
             var incomeService = new Obsolete.IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
             var cgtService = new Obsolete.CGTService(portfolioDatabase.PortfolioQuery);
             var corporateActionService = new Obsolete.CorporateActionService(corporateActionQuery, parcelService, stockService, transactionService, shareHoldingService, incomeService);
 
-            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(shareHoldingService, cashAccountService));
-            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(shareHoldingService ,cashAccountService, transactionService, stockService, incomeService));
+            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, shareHoldingService));
+            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, shareHoldingService, transactionService, stockService, incomeService));
             _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService, transactionService, cgtService));
-            _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService, cashAccountService));
+            _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
             _ServiceFactory.Register<ITransactionService>(() => new TransactionService(transactionService, stockService));
             _ServiceFactory.Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
-            _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(cashAccountService));
+            _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(portfolioDatabase.PortfolioQuery));
             _ServiceFactory.Register<IIncomeService>(() => new IncomeService(incomeService));
             _ServiceFactory.Register<IStockService>(() => new StockService(stockService));
 

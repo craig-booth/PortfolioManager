@@ -5,22 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
+using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
-
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Local
 {
 
     class PortfolioSummaryService : IPortfolioSummaryService
     {
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly Obsolete.ShareHoldingService _ShareHoldingService;
-        private readonly Obsolete.CashAccountService _CashAccountService;
 
-        public PortfolioSummaryService(Obsolete.ShareHoldingService shareHoldingService, Obsolete.CashAccountService cashAccountService)
+        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService)
         {
+            _PortfolioQuery = portfolioQuery;
             _ShareHoldingService = shareHoldingService;
-            _CashAccountService = cashAccountService;
         }
 
         public Task<PortfolioPropertiesResponce> GetProperties()
@@ -46,7 +45,7 @@ namespace PortfolioManager.Service.Local
             var responce = new PortfolioSummaryResponce();
 
             var holdings = _ShareHoldingService.GetHoldings(date);
-            var cashBalance = _CashAccountService.GetBalance(date);
+            var cashBalance = _PortfolioQuery.GetCashBalance(date);
 
             responce.PortfolioValue = holdings.Sum(x => x.MarketValue) + cashBalance; 
             responce.PortfolioCost = holdings.Sum(x => x.TotalCostBase) + cashBalance;

@@ -8,22 +8,24 @@ using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Stocks;
+using PortfolioManager.Model.Data;
+
 
 namespace PortfolioManager.Service.Obsolete
 {
     class ShareHoldingService
     {
+        private readonly IPortfolioQuery _PortfolioQuery;
         private readonly ParcelService _ParcelService;
         private readonly StockService _StockService;
         private readonly TransactionService _TransactionService;
-        private readonly CashAccountService _CashAccountService;
 
-        internal ShareHoldingService(ParcelService parcelService, StockService stockService, TransactionService transactionService, CashAccountService cashAccountService)
+        internal ShareHoldingService(IPortfolioQuery portfolioQuery, ParcelService parcelService, StockService stockService, TransactionService transactionService)
         {
+            _PortfolioQuery = portfolioQuery;
             _ParcelService = parcelService;
             _StockService = stockService;
             _TransactionService = transactionService;
-            _CashAccountService = cashAccountService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -129,7 +131,7 @@ namespace PortfolioManager.Service.Obsolete
             else
                 parcelStartDate = DateTime.Today;
 
-            var firstCashTransaction = _CashAccountService.GetTransactions(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.Date).FirstOrDefault();
+            var firstCashTransaction = _PortfolioQuery.GetCashAccountTransactions(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.Date).FirstOrDefault();
             if (firstCashTransaction != null)
                 cashStartDate = firstCashTransaction.Date;
             else
@@ -227,7 +229,7 @@ namespace PortfolioManager.Service.Obsolete
             var initialHoldingsValue = initialHoldings.Sum(x => x.MarketValue);
 
             // Get initial Cash Account Balance
-            var initialCashBalance = _CashAccountService.GetBalance(startDate);
+            var initialCashBalance = _PortfolioQuery.GetCashBalance(startDate);
 
             // Add the initial portfolio value
             var initialValue = initialHoldingsValue + initialCashBalance;
@@ -251,7 +253,7 @@ namespace PortfolioManager.Service.Obsolete
             var finalHoldingsValue = finalHoldings.Sum(x => x.MarketValue);
 
             // Get final Cash Account Balance
-            var finalCashBalance = _CashAccountService.GetBalance(endDate);
+            var finalCashBalance = _PortfolioQuery.GetCashBalance(endDate);
 
             // Add the final portfolio value
             var finalValue = finalHoldingsValue + finalCashBalance;
