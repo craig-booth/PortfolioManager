@@ -21,15 +21,13 @@ namespace PortfolioManager.Service.Local
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly Obsolete.ShareHoldingService _ShareHoldingService;
-        private readonly Obsolete.TransactionService _TransactionService;
         private readonly Obsolete.StockService _StockService;
         private readonly Obsolete.IncomeService _IncomeService;
 
-        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService, Obsolete.TransactionService transactionService, Obsolete.StockService stockService, Obsolete.IncomeService incomeService)
+        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService, Obsolete.StockService stockService, Obsolete.IncomeService incomeService)
         {
             _PortfolioQuery = portfolioQuery;
             _ShareHoldingService = shareHoldingService;
-            _TransactionService = transactionService;
             _StockService = stockService;
             _IncomeService = incomeService;
         }
@@ -91,7 +89,7 @@ namespace PortfolioManager.Service.Local
             }
 
             // Process transactions during the period
-            var transactions = _TransactionService.GetTransactions(startDate.AddDays(1), endDate);
+            var transactions = _PortfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
             foreach (var transaction in transactions)
             {
                 if ((transaction.Type != TransactionType.Aquisition) &&

@@ -40,17 +40,16 @@ namespace PortfolioManager.Service.Local
 
             var stockService = new Obsolete.StockService(stockServiceRepository);
             var attachmentService = new Obsolete.AttachmentService(portfolioDatabase);
-            var transactionService = new Obsolete.TransactionService(portfolioDatabase, stockService, attachmentService);
-            var shareHoldingService = new Obsolete.ShareHoldingService(portfolioDatabase.PortfolioQuery, stockService, transactionService);
+            var shareHoldingService = new Obsolete.ShareHoldingService(portfolioDatabase.PortfolioQuery, stockService);
             var incomeService = new Obsolete.IncomeService(portfolioDatabase.PortfolioQuery, stockService, settingsService);
-            var corporateActionService = new Obsolete.CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, transactionService, shareHoldingService, incomeService);
+            var corporateActionService = new Obsolete.CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, shareHoldingService, incomeService);
 
             _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, shareHoldingService));
-            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, shareHoldingService, transactionService, stockService, incomeService));
-            _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService, transactionService));
+            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, shareHoldingService, stockService, incomeService));
+            _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
-            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(transactionService, stockService));
+            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(portfolioDatabase, stockService));
             _ServiceFactory.Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
             _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(portfolioDatabase.PortfolioQuery));
             _ServiceFactory.Register<IIncomeService>(() => new IncomeService(incomeService));
@@ -59,7 +58,7 @@ namespace PortfolioManager.Service.Local
             SetMapping(stockService);
             Mapper.AssertConfigurationIsValid();
 
-            LoadTransactions(portfolioDatabase, transactionService);
+            LoadTransactions(portfolioDatabase);
 
             await stockServiceRepository.DownloadUpdatedData();
 
@@ -71,13 +70,15 @@ namespace PortfolioManager.Service.Local
             return (T)_ServiceFactory.GetService<T>();
         }
 
-        private void LoadTransactions(IPortfolioDatabase database, Obsolete.TransactionService transactionService)
+        private void LoadTransactions(IPortfolioDatabase database)
         {
-            var allTransactions = transactionService.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            var transactionService = _ServiceFactory.GetService<ITransactionService>() as TransactionService;
+
+            var allTransactions = database.PortfolioQuery.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
             using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
             {
                 foreach (var transaction in allTransactions)
-                    transactionService.ApplyTransaction(unitOfWork, transaction);
+                    transactionService.LoadTransaction(unitOfWork, transaction);
                 unitOfWork.Save();
             }
         }

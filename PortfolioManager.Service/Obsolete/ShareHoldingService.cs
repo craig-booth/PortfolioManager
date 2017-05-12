@@ -17,13 +17,11 @@ namespace PortfolioManager.Service.Obsolete
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly TransactionService _TransactionService;
 
-        internal ShareHoldingService(IPortfolioQuery portfolioQuery, StockService stockService, TransactionService transactionService)
+        internal ShareHoldingService(IPortfolioQuery portfolioQuery, StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _TransactionService = transactionService;
         }
 
         public ShareHolding GetHolding(Stock stock, DateTime date)
@@ -234,7 +232,7 @@ namespace PortfolioManager.Service.Obsolete
             cashFlows.Add(startDate, -initialValue);
                      
             // generate list of cashFlows
-            var transactions = _TransactionService.GetTransactions(startDate.AddDays(1), endDate);
+            var transactions = _PortfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
             foreach (var transaction in transactions)
             {
                 if (transaction.Type == TransactionType.CashTransaction)

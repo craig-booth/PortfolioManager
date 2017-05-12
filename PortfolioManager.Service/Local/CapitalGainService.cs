@@ -16,13 +16,11 @@ namespace PortfolioManager.Service.Local
     class CapitalGainService : ICapitalGainService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly Obsolete.TransactionService _TransactionService;
         private readonly Obsolete.StockService _StockService;
 
-        public CapitalGainService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService, Obsolete.TransactionService transactionService)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
-            _TransactionService = transactionService;
             _StockService = stockService;
         }
 
@@ -163,7 +161,7 @@ namespace PortfolioManager.Service.Local
             {
                 costBase += auditRecord.CostBaseChange;
 
-                var transaction = _TransactionService.GetTransaction(auditRecord.Transaction);
+                var transaction = _PortfolioQuery.GetTransaction(auditRecord.Transaction);
 
                 var cgtEvent = new CGTEventItem()
                 {

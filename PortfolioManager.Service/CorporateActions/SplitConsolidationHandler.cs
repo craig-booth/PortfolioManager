@@ -51,12 +51,12 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions.AsReadOnly();
         }
 
-        public bool HasBeenApplied(CorporateAction corporateAction, TransactionService transactionService)
+        public bool HasBeenApplied(CorporateAction corporateAction)
         {
             SplitConsolidation splitConsolidation = corporateAction as SplitConsolidation;
             string asxCode = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate).ASXCode;
 
-            var transactions = transactionService.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
+            var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
             return (transactions.Count() > 0);
         }
     }

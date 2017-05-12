@@ -17,16 +17,14 @@ namespace PortfolioManager.Service.Obsolete
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly ICorporateActionQuery _CorporateActionQuery;
         private readonly ShareHoldingService _ShareHoldingService;
-        private readonly TransactionService _TransactionService;
 
         private readonly Dictionary<CorporateActionType, ICorporateActionHandler> _CorporateActionHandlers;
 
-        internal CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, StockService stockService, TransactionService transactionService, ShareHoldingService shareHoldingService, IncomeService incomeService)
+        internal CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, StockService stockService, ShareHoldingService shareHoldingService, IncomeService incomeService)
         {
             _PortfolioQuery = portfolioQuery;
             _CorporateActionQuery = corporateActionQuery;
             _ShareHoldingService = shareHoldingService;
-            _TransactionService = transactionService;
 
             _CorporateActionHandlers = new Dictionary<CorporateActionType, ICorporateActionHandler>();
 
@@ -84,7 +82,7 @@ namespace PortfolioManager.Service.Obsolete
             if (handler == null)
                 return false;
 
-            return (handler.HasBeenApplied(corporateAction, _TransactionService));
+            return (handler.HasBeenApplied(corporateAction));
         }
 
         internal void AddUnappliedCorporateActions(IList<CorporateAction> toList, IEnumerable<CorporateAction> fromList)

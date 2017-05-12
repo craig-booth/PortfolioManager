@@ -8,19 +8,46 @@ using AutoMapper;
 
 using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
+using PortfolioManager.Service.Transactions;
 
 namespace PortfolioManager.Service.Local
 {
     class TransactionService : ITransactionService
     {
-        private readonly Obsolete.TransactionService _TransactionService;
+        private readonly ServiceFactory<ITransactionHandler> _TransactionHandlers;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly Obsolete.StockService _StockService;
 
-        public TransactionService(Obsolete.TransactionService transactionService, Obsolete.StockService stockService)
+        public TransactionService(IPortfolioDatabase portfolioDatabase, Obsolete.StockService stockService)
         {
-            _TransactionService = transactionService;
+            _PortfolioDatabase = portfolioDatabase;
             _StockService = stockService;
+
+            _TransactionHandlers = new ServiceFactory<Transactions.ITransactionHandler>();
+            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<IncomeReceived>(() => new IncomeReceivedHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<OpeningBalance>(() => new OpeningBalanceHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(_PortfolioDatabase.PortfolioQuery, _StockService));
+            _TransactionHandlers.Register<CashTransaction>(() => new CashTransactionHandler());
+        }
+
+        /* TODO: This is temporary */
+        public void LoadTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
+        {
+            var handler = _TransactionHandlers.GetService(transaction);
+            if (handler != null)
+            {
+                handler.ApplyTransaction(unitOfWork, transaction);
+            }
+            else
+            {
+                throw new NotSupportedException("Transaction type not supported");
+            }
         }
 
         public Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem)
@@ -28,7 +55,22 @@ namespace PortfolioManager.Service.Local
             var responce = new AddTransactionsResponce();
 
             var transaction = Mapper.Map<Transaction>(transactionItem);
-            _TransactionService.ProcessTransaction(transaction);
+
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                var handler = _TransactionHandlers.GetService(transaction);
+                if (handler != null)
+                {
+                    handler.ApplyTransaction(unitOfWork, transaction);
+                    unitOfWork.TransactionRepository.Add(transaction);
+                }
+                else
+                {
+                    throw new NotSupportedException("Transaction type not supported"); 
+                }
+
+                unitOfWork.Save();
+            }
 
             responce.SetStatusToSuccessfull();
 
@@ -40,7 +82,29 @@ namespace PortfolioManager.Service.Local
             var responce = new AddTransactionsResponce();
 
             var transactions = Mapper.Map<List<Transaction>>(transactionItems);
-            _TransactionService.ProcessTransactions(transactions);
+
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                
+                foreach (var transaction in transactions)
+                {
+                    var handler = _TransactionHandlers.GetService(transaction);
+                    if (handler != null)
+                    {
+                        handler.ApplyTransaction(unitOfWork, transaction);
+                        unitOfWork.TransactionRepository.Add(transaction);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("Transaction type not supported");
+                    }
+
+                    handler.ApplyTransaction(unitOfWork, transaction);
+                    unitOfWork.TransactionRepository.Add(transaction);
+
+                };
+                unitOfWork.Save();
+            }
 
             responce.SetStatusToSuccessfull();
 
@@ -52,7 +116,12 @@ namespace PortfolioManager.Service.Local
             var responce = new DeleteTransactionsResponce();
 
             var transaction = Mapper.Map<Transaction>(transactionItem);
-            _TransactionService.DeleteTransaction(transaction);
+
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.TransactionRepository.Delete(transaction);
+                unitOfWork.Save();
+            }
 
             responce.SetStatusToSuccessfull();
 
@@ -64,7 +133,12 @@ namespace PortfolioManager.Service.Local
             var responce = new UpdateTransactionsResponce();
 
             var transaction = Mapper.Map<Transaction>(transactionItem);
-            _TransactionService.UpdateTransaction(transaction);
+
+            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                unitOfWork.TransactionRepository.Update(transaction);
+                unitOfWork.Save();
+            }
 
             responce.SetStatusToSuccessfull();
 
@@ -75,7 +149,7 @@ namespace PortfolioManager.Service.Local
         {       
             var responce = new GetTransactionsResponce();
 
-            var transactions = _TransactionService.GetTransactions(fromDate, toDate);
+            var transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(fromDate, toDate);
             responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
             
             responce.SetStatusToSuccessfull();
@@ -90,7 +164,7 @@ namespace PortfolioManager.Service.Local
             var stock = _StockService.Get(stockId, fromDate);
             var asxCode = stock.ASXCode;
 
-            var transactions = _TransactionService.GetTransactions(asxCode, fromDate, toDate);
+            var transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(asxCode, fromDate, toDate);
             responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
             responce.SetStatusToSuccessfull();

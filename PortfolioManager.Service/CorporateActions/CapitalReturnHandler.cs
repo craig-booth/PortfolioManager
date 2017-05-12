@@ -51,12 +51,12 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions.AsReadOnly();
         }
 
-        public bool HasBeenApplied(CorporateAction corporateAction, TransactionService transactionService)
+        public bool HasBeenApplied(CorporateAction corporateAction)
         {
             CapitalReturn capitalReturn = corporateAction as CapitalReturn;
             string asxCode = _StockService.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
 
-            var transactions = transactionService.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);
+            var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);
             return (transactions.Count() > 0);
         }
 

@@ -85,12 +85,10 @@
     <Compile Include="CorporateActions\TransformationHandler.cs" />
     <Compile Include="Utils\Exceptions.cs" />
     <Compile Include="Obsolete\IncomeService.cs" />
-    <Compile Include="Obsolete\Portfolio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Obsolete\ShareHolding.cs" />
     <Compile Include="Obsolete\ShareHoldingService.cs" />
     <Compile Include="Obsolete\StockService.cs" />
-    <Compile Include="Obsolete\TransactionService.cs" />
     <Compile Include="Transactions\AquisitionHandler.cs" />
     <Compile Include="Transactions\CashTransactionHandler.cs" />
     <Compile Include="Transactions\CostBaseAdjustmentHandler.cs" />
