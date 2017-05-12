@@ -24,7 +24,6 @@ namespace PortfolioManager.Service.Obsolete
         private PortfolioSettingsService SettingsService { get; set; }
 
         private ParcelService ParcelService { get; set; }       
-        private CGTService CGTService { get; set; }
         private CorporateActionService CorporateActionService { get; set; }
         private AttachmentService AttachmentService { get; set; }
         private TransactionService TransactionService { get; set; }
@@ -51,7 +50,6 @@ namespace PortfolioManager.Service.Obsolete
             ShareHoldingService = new ShareHoldingService(database.PortfolioQuery, ParcelService, StockService, TransactionService);
             AttachmentService = new AttachmentService(database);
             IncomeService = new IncomeService(database.PortfolioQuery, StockService, SettingsService);
-            CGTService = new CGTService(database.PortfolioQuery);
             CorporateActionService = new CorporateActionService(corporateActionQuery, ParcelService, StockService, TransactionService, ShareHoldingService, IncomeService);
 
             /* Load transactions */

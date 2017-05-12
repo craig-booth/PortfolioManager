@@ -11,8 +11,6 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Service.Utils;
 using PortfolioManager.Service.Interface;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.Local
 {
     class CapitalGainService : ICapitalGainService
@@ -20,14 +18,12 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly Obsolete.TransactionService _TransactionService;
         private readonly Obsolete.StockService _StockService;
-        private readonly Obsolete.CGTService _CGTService;
 
-        public CapitalGainService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService, Obsolete.TransactionService transactionService, Obsolete.CGTService cgtService)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService, Obsolete.TransactionService transactionService)
         {
             _PortfolioQuery = portfolioQuery;
             _TransactionService = transactionService;
             _StockService = stockService;
-            _CGTService = cgtService;
         }
 
         public Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date)
@@ -193,7 +189,7 @@ namespace PortfolioManager.Service.Local
             responce.CurrentYearCapitalLossesTotal = 0.00m;
 
             // Get a list of all the cgt events for the year
-            var cgtEvents = _CGTService.GetEvents(fromDate, toDate);
+            var cgtEvents = _PortfolioQuery.GetCGTEvents(fromDate, toDate);
             foreach (var cgtEvent in cgtEvents)
             {
                 var stock = _StockService.Get(cgtEvent.Stock, cgtEvent.EventDate);
