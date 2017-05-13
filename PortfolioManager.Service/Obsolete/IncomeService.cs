@@ -57,13 +57,11 @@ namespace PortfolioManager.Service.Obsolete
 
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly PortfolioSettingsService _SettingsService;
 
-        internal IncomeService(IPortfolioQuery portfolioQuery, StockService stockService, PortfolioSettingsService settingsService)
+        internal IncomeService(IPortfolioQuery portfolioQuery, StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _SettingsService = settingsService;
         }
 
 
@@ -103,12 +101,6 @@ namespace PortfolioManager.Service.Obsolete
             var taxDeferred = incomeTransactions.Sum(x => x.TaxDeferred);
 
             return new Income(stock, frankedAmount, unfrankedAmount, frankingCredits, interest, taxDeferred);
-        }
-
-        public bool DRPActive(Stock stock)
-        {
-            var setting = _SettingsService.Get(stock.ASXCode);
-            return setting.DRPActive;
         }
 
         public decimal GetDRPCashBalance(Stock stock, DateTime date)

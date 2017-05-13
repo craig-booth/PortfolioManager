@@ -25,6 +25,7 @@ namespace PortfolioManager.Model.Data
         ICashAccountRepository CashAccountRepository { get; }
         IParcelAuditRepository ParcelAuditRepository { get; }
         IDRPCashBalanceRepository DRPCashBalanceRepository { get; }
+        IStockSettingRepository StockSettingRepository { get; }
 
         void Save();
     }
@@ -59,6 +60,11 @@ namespace PortfolioManager.Model.Data
 
     }
 
+    public interface IStockSettingRepository : IEffectiveDatedRepository<StockSetting>
+    {
+
+    }
+
     public interface IDRPCashBalanceRepository : IEffectiveDatedRepository<DRPCashBalance>
     {
 
@@ -81,6 +87,8 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate);
 
         IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate);
+
+        StockSetting GetStockSetting(Guid stock, DateTime atDate);
         decimal GetDRPCashBalance(Guid stock, DateTime atDate);
     }
 }

@@ -48,6 +48,7 @@
     <Compile Include="Portfolios\CashAccountTransaction.cs" />
     <Compile Include="Portfolios\DRPCashBalance.cs" />
     <Compile Include="Portfolios\ShareParcelAudit.cs" />
+    <Compile Include="Portfolios\StockSetting.cs" />
     <Compile Include="Portfolios\Transactions\Aquisition.cs" />
     <Compile Include="Portfolios\CGTEvent.cs" />
     <Compile Include="Portfolios\Transactions\CostBaseAdjustment.cs" />

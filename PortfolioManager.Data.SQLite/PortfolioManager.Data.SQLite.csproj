@@ -74,6 +74,7 @@
     <Compile Include="Portfolios\SQLitePortfolioEntityCreator.cs" />
     <Compile Include="Portfolios\SQLitePortfolioQuery.cs" />
     <Compile Include="Portfolios\SQLitePortfolioUnitOfWork.cs" />
+    <Compile Include="Portfolios\SQLiteStockSettingRepository.cs" />
     <Compile Include="Portfolios\SQLiteTransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteDatabase.cs" />

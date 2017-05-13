@@ -72,7 +72,6 @@
     <Compile Include="Interface\PortfolioManagerService.cs" />
     <Compile Include="Local\LocalPortfolioManagerService.cs" />
     <Compile Include="Local\PortfolioPerformanceService.cs" />
-    <Compile Include="Obsolete\PortfolioSettings.cs" />
     <Compile Include="Local\PortfolioSummaryService.cs" />
     <Compile Include="Local\PortfolioValueService.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />

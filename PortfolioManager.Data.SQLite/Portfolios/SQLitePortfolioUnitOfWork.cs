@@ -17,6 +17,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private SQLiteAttachmentRepository _AttachmentRepository;
         private SQLiteCashAccountRepository _CashAccountRepository;
         private SQLiteParcelAuditRepository _ParcelAuditRepository;
+        private SQLiteStockSettingRepository _StockSettingRepository;
         private SQLiteDRPCashBalanceRepository _DRPCashBalanceRepository;
 
         public ITransactionRepository TransactionRepository
@@ -82,6 +83,17 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                     _ParcelAuditRepository = new SQLiteParcelAuditRepository(_Database);
 
                 return _ParcelAuditRepository;
+            }
+        }
+
+        public IStockSettingRepository StockSettingRepository
+        {
+            get
+            {
+                if (_StockSettingRepository == null)
+                    _StockSettingRepository = new SQLiteStockSettingRepository(_Database);
+
+                return _StockSettingRepository;
             }
         }
 

@@ -40,11 +40,6 @@ namespace PortfolioManager.Service.CorporateActions
 
             var stock = _StockService.Get(dividend.Stock, dividend.PaymentDate);
 
-            /* Assume that DRP applies */
-            bool applyDRP = false;
-            if ((dividend.DRPPrice != 0.00m) && (_IncomeService.DRPActive(stock)))
-                applyDRP = true;
-
             var unitsHeld = parcels.Sum(x => x.Units);
             var amountPaid = (unitsHeld * dividend.DividendAmount).ToCurrency(stock.DividendRoundingRule);
             var franked = (amountPaid * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
@@ -65,53 +60,58 @@ namespace PortfolioManager.Service.CorporateActions
             };
             transactions.Add(incomeReceived);
 
-            /* add drp shares */
-            if (applyDRP)
+            /* Handle Dividend Reinvestment Plan */
+            if (dividend.DRPPrice != 0.00m)
             {
-                incomeReceived.CreateCashTransaction = false;
-
-                int drpUnits;
-                decimal costBase;
-
-                if (stock.DRPMethod == DRPMethod.RoundUp)
+                var stockSetting = _PortfolioQuery.GetStockSetting(stock.Id, dividend.ActionDate);
+                if (stockSetting.ParticipateinDRP)
                 {
-                    drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
-                    costBase = amountPaid;
-                }
-                else if (stock.DRPMethod == DRPMethod.RoundDown)
-                { 
-                    drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
-                    costBase = amountPaid;
-                }
-                else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
-                {
-                    var drpCashBalance = _IncomeService.GetDRPCashBalance(stock, dividend.PaymentDate);
-                    var availableAmount = amountPaid + drpCashBalance;
-                    drpUnits = (int)Math.Floor(availableAmount / dividend.DRPPrice);
-                    costBase = (drpUnits * dividend.DRPPrice).ToCurrency(stock.DividendRoundingRule);
-                    incomeReceived.DRPCashBalance = availableAmount - costBase;
-                }
-                else
-                { 
-                    drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
-                    costBase = amountPaid;
-                }
+                    incomeReceived.CreateCashTransaction = false;
 
-            if (drpUnits > 0)
-                {
-                    transactions.Add(new OpeningBalance()
+                    int drpUnits;
+                    decimal costBase;
+
+                    if (stock.DRPMethod == DRPMethod.RoundUp)
                     {
-                        TransactionDate = dividend.PaymentDate,
-                        ASXCode = stock.ASXCode,
-                        Units = drpUnits,
-                        CostBase = costBase,
-                        AquisitionDate = dividend.PaymentDate,
-                        RecordDate = dividend.PaymentDate,
-                        Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
+                        drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
+                        costBase = amountPaid;
                     }
-                    );
+                    else if (stock.DRPMethod == DRPMethod.RoundDown)
+                    {
+                        drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
+                        costBase = amountPaid;
+                    }
+                    else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
+                    {
+                        var drpCashBalance = _IncomeService.GetDRPCashBalance(stock, dividend.PaymentDate);
+                        var availableAmount = amountPaid + drpCashBalance;
+                        drpUnits = (int)Math.Floor(availableAmount / dividend.DRPPrice);
+                        costBase = (drpUnits * dividend.DRPPrice).ToCurrency(stock.DividendRoundingRule);
+                        incomeReceived.DRPCashBalance = availableAmount - costBase;
+                    }
+                    else
+                    {
+                        drpUnits = (int)Math.Round(amountPaid / dividend.DRPPrice);
+                        costBase = amountPaid;
+                    }
+
+                    if (drpUnits > 0)
+                    {
+                        transactions.Add(new OpeningBalance()
+                        {
+                            TransactionDate = dividend.PaymentDate,
+                            ASXCode = stock.ASXCode,
+                            Units = drpUnits,
+                            CostBase = costBase,
+                            AquisitionDate = dividend.PaymentDate,
+                            RecordDate = dividend.PaymentDate,
+                            Comment = "DRP " + MathUtils.FormatCurrency(dividend.DRPPrice, false, true)
+                        }
+                        );
+                    }
                 }
-            }         
+            }
+                  
 
             return transactions;
         }
