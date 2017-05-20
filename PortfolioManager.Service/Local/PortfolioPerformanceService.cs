@@ -22,14 +22,12 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly Obsolete.ShareHoldingService _ShareHoldingService;
         private readonly Obsolete.StockService _StockService;
-        private readonly Obsolete.IncomeService _IncomeService;
 
-        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService, Obsolete.StockService stockService, Obsolete.IncomeService incomeService)
+        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService, Obsolete.StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
             _ShareHoldingService = shareHoldingService;
             _StockService = stockService;
-            _IncomeService = incomeService;
         }
 
         public Task<PortfolioPerformanceResponce> GetPerformance(DateTime fromDate, DateTime toDate)
@@ -150,7 +148,7 @@ namespace PortfolioManager.Service.Local
                     item.HoldingPerformance.ClosingBalance = holding.MarketValue;
                     item.CashFlows.Add(endDate, holding.MarketValue);
 
-                    item.HoldingPerformance.DRPCashBalance = _IncomeService.GetDRPCashBalance(holding.Stock, endDate);
+                    item.HoldingPerformance.DRPCashBalance = _PortfolioQuery.GetDRPCashBalance(holding.Stock.Id, endDate);
                 }
                 else
                     item.HoldingPerformance.ClosingBalance = 0.00m;

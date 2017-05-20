@@ -82,7 +82,6 @@
     <Compile Include="CorporateActions\SplitConsolidationHandler.cs" />
     <Compile Include="CorporateActions\TransformationHandler.cs" />
     <Compile Include="Utils\Exceptions.cs" />
-    <Compile Include="Obsolete\IncomeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Obsolete\ShareHolding.cs" />
     <Compile Include="Obsolete\ShareHoldingService.cs" />

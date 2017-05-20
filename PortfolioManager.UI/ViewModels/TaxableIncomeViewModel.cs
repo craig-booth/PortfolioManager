@@ -51,7 +51,7 @@ namespace PortfolioManager.UI.ViewModels
             var responce = await incomeService.GetIncome(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
 
             Income.Clear();
-            foreach (var incomeItem in responce.Income)
+            foreach (var incomeItem in responce.Income.OrderBy(x => x.Stock.Name))
                 Income.Add(new IncomeItemViewModel(incomeItem));
 
             OnPropertyChanged("");

@@ -17,13 +17,11 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly IncomeService _IncomeService;
 
-        public DividendHandler(IPortfolioQuery portfolioQuery, StockService stockService, IncomeService incomeService)
+        public DividendHandler(IPortfolioQuery portfolioQuery, StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _IncomeService = incomeService;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -83,7 +81,7 @@ namespace PortfolioManager.Service.CorporateActions
                     }
                     else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
                     {
-                        var drpCashBalance = _IncomeService.GetDRPCashBalance(stock, dividend.PaymentDate);
+                        var drpCashBalance = _PortfolioQuery.GetDRPCashBalance(stock.Id, dividend.PaymentDate);
                         var availableAmount = amountPaid + drpCashBalance;
                         drpUnits = (int)Math.Floor(availableAmount / dividend.DRPPrice);
                         costBase = (drpUnits * dividend.DRPPrice).ToCurrency(stock.DividendRoundingRule);
