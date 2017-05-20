@@ -54,6 +54,7 @@ namespace PortfolioManager.Service.CorporateActions
         public bool HasBeenApplied(CorporateAction corporateAction)
         {
             SplitConsolidation splitConsolidation = corporateAction as SplitConsolidation;
+
             string asxCode = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate).ASXCode;
 
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);

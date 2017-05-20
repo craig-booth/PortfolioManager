@@ -61,6 +61,25 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.ToList().AsReadOnly();
         }
 
+        public bool StockOwned(Guid id, DateTime atDate)
+        {
+            var parcelsQuery = from parcel in _Database._Parcels
+                               where (parcel.Stock == id) && (parcel.FromDate <= atDate && parcel.ToDate >= atDate)
+                               select parcel;
+
+            return parcelsQuery.Any();
+        }
+
+        public IReadOnlyCollection<Guid> GetStocksOwned(DateTime atDate)
+        {
+            var parcelsQuery = from parcel in _Database._Parcels
+                               where (parcel.FromDate <= atDate && parcel.ToDate >= atDate)
+                               group parcel by parcel.Stock into stockGroup
+                               select stockGroup.Key;
+
+            return parcelsQuery.Distinct().ToList().AsReadOnly();
+        }
+
         public IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
         {
             var cgtQuery = from cgt in _Database._CGTEvents

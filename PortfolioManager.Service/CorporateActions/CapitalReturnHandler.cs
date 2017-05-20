@@ -54,6 +54,7 @@ namespace PortfolioManager.Service.CorporateActions
         public bool HasBeenApplied(CorporateAction corporateAction)
         {
             CapitalReturn capitalReturn = corporateAction as CapitalReturn;
+
             string asxCode = _StockService.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
 
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);

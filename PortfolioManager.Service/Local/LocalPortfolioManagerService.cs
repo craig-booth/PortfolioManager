@@ -15,6 +15,7 @@ using PortfolioManager.Model.Data;
 using StockManager.Service;
 
 using PortfolioManager.Service.Interface;
+using PortfolioManager.Service.CorporateActions;
 
 namespace PortfolioManager.Service.Local
 {
@@ -40,13 +41,12 @@ namespace PortfolioManager.Service.Local
             var attachmentService = new Obsolete.AttachmentService(portfolioDatabase);
             var shareHoldingService = new Obsolete.ShareHoldingService(portfolioDatabase.PortfolioQuery, stockService);
             var incomeService = new Obsolete.IncomeService(portfolioDatabase.PortfolioQuery, stockService);
-            var corporateActionService = new Obsolete.CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, shareHoldingService, incomeService);
 
             _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, shareHoldingService));
             _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, shareHoldingService, stockService, incomeService));
             _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService));
-            _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(corporateActionService, corporateActionQuery, stockService));
+            _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, new CorporateActionHandlerFactory(portfolioDatabase.PortfolioQuery, stockService, incomeService)));
             _ServiceFactory.Register<ITransactionService>(() => new TransactionService(portfolioDatabase, stockService));
             _ServiceFactory.Register<IHoldingService>(() => new HoldingService(shareHoldingService, stockService));
             _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(portfolioDatabase.PortfolioQuery));

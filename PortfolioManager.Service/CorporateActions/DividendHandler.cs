@@ -119,6 +119,7 @@ namespace PortfolioManager.Service.CorporateActions
         public bool HasBeenApplied(CorporateAction corporateAction)
         {
             Dividend dividend = corporateAction as Dividend;
+
             string asxCode = _StockService.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
            
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, dividend.PaymentDate, dividend.PaymentDate);

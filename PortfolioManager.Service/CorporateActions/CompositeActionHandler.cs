@@ -16,13 +16,13 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockService _StockService;
-        private readonly CorporateActionService _CorporateActionService;
+        private readonly ICorporateActionHandlerFactory _CorporateActionHandlerFactory;
 
-        public CompositeActionHandler(IPortfolioQuery portfoliouery, StockService stockService, CorporateActionService corporateActionService)
+        public CompositeActionHandler(IPortfolioQuery portfoliouery, StockService stockService, ICorporateActionHandlerFactory corporateActionHandlerFactory)
         {
             _PortfolioQuery = portfoliouery;
             _StockService = stockService;
-            _CorporateActionService = corporateActionService;
+            _CorporateActionHandlerFactory = corporateActionHandlerFactory;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -39,7 +39,10 @@ namespace PortfolioManager.Service.CorporateActions
                 return transactions;
 
             foreach (var childAction in compositeAction.Children)
-                transactions.AddRange(_CorporateActionService.CreateTransactionList(childAction));
+            {
+                var handler = _CorporateActionHandlerFactory.GetHandler(childAction);
+                transactions.AddRange(handler.CreateTransactionList(childAction));
+            }
 
             return transactions.AsReadOnly();
         }
@@ -47,8 +50,11 @@ namespace PortfolioManager.Service.CorporateActions
         public bool HasBeenApplied(CorporateAction corporateAction)
         {
             CompositeAction compositeAction = corporateAction as CompositeAction;
+            var childAction = compositeAction.Children[0];
 
-            return _CorporateActionService.HasBeenApplied(compositeAction.Children[0]);
+            var handler = _CorporateActionHandlerFactory.GetHandler(childAction);
+
+            return handler.HasBeenApplied(childAction);
         }
 
     }

@@ -75,7 +75,6 @@
     <Compile Include="Local\PortfolioSummaryService.cs" />
     <Compile Include="Local\PortfolioValueService.cs" />
     <Compile Include="Utils\CGTCalculator.cs" />
-    <Compile Include="Obsolete\CorporateActionService.cs" />
     <Compile Include="CorporateActions\CapitalReturnHandler.cs" />
     <Compile Include="CorporateActions\CompositeActionHandler.cs" />
     <Compile Include="CorporateActions\CorporateActionHandler.cs" />
