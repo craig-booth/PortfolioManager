@@ -15,11 +15,15 @@ namespace PortfolioManager.Service.Utils
     class PortfolioUtils
     {
         private IPortfolioQuery _PortfolioQuery;
+        private IStockQuery _StockQuery;
+        private StockUtils _StockUtils;
         private Obsolete.StockService _StockService; 
 
-        public PortfolioUtils(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
+        public PortfolioUtils(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
+            _StockQuery = stockQuery;
+            _StockUtils = new StockUtils(stockQuery, stockDatabase);
             _StockService = stockService;
         }
 
@@ -121,7 +125,7 @@ namespace PortfolioManager.Service.Utils
         {
             IReadOnlyCollection<ShareParcel> parcels;
 
-            var stock = _StockService.Get(stockId, date);
+            var stock = _StockQuery.Get(stockId, date);
 
             if (stock.Type == StockType.StapledSecurity)
                 parcels = GetStapledSecurityParcels(stock, date);
@@ -129,7 +133,7 @@ namespace PortfolioManager.Service.Utils
                 parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, date, date);
 
             var holding = new HoldingItem();
-            holding.Stock = new StockItem(stock);
+            holding.Stock = _StockUtils.CreateStockItem(stock);
             holding.Category = stock.Category; 
 
             foreach (var parcel in parcels)
@@ -152,15 +156,14 @@ namespace PortfolioManager.Service.Utils
 
             foreach (var parcelGroup in holdingQuery)
             {
-                var stock = _StockService.Get(parcelGroup.Key, date);
-
                 var holding = new HoldingItem();
-                holding.Stock = new StockItem(stock);
+                holding.Stock = _StockUtils.Get(parcelGroup.Key, date);
                 foreach (var parcel in parcelGroup)
                 {
                     holding.Units += parcel.Units;
                     holding.Cost += parcel.Units * parcel.UnitPrice;
                 }
+                var stock =  _StockQuery.Get(parcelGroup.Key, date);
                 holding.Value = holding.Units * _StockService.GetPrice(stock, date);
 
                 holdings.Add(holding);
@@ -181,11 +184,11 @@ namespace PortfolioManager.Service.Utils
             {
                 HoldingItem holding;
 
-                var stock = _StockService.Get(parcelGroup.Key, date);
+                var stock = _StockQuery.Get(parcelGroup.Key, date);
 
                 if (stock.ParentId != Guid.Empty)
                 {
-                    stock = _StockService.Get(stock.ParentId, date);
+                    stock = _StockQuery.Get(stock.ParentId, date);
 
                     // Check if the parent stock has already been added
                     holding = holdings.FirstOrDefault(x => x.Stock.Id == stock.Id);
@@ -201,7 +204,7 @@ namespace PortfolioManager.Service.Utils
                 }
 
                 holding = new HoldingItem();
-                holding.Stock = new StockItem(stock);
+                holding.Stock = _StockUtils.CreateStockItem(stock);
                 foreach (var parcel in parcelGroup)
                 {
                     holding.Units += parcel.Units;

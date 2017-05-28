@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler
     {
-        public AquisitionHandler(IPortfolioQuery portfolioQuery, StockService stockService)
-            : base (portfolioQuery, stockService)
+        public AquisitionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
+            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
         {
         }
 

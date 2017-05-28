@@ -17,10 +17,10 @@ namespace PortfolioManager.Service.Local
         private readonly Obsolete.StockService _StockService;
         private readonly PortfolioUtils _PortfolioUtils;
 
-        public HoldingService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
+        public HoldingService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
         {
             _StockService = stockService;
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, _StockService);
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase, _StockService);
         }
 
         public Task<HoldingResponce> GetHolding(Guid stock, DateTime date)

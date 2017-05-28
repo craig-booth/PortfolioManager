@@ -95,6 +95,7 @@
     <Compile Include="Transactions\UnitCountAdjustmentHandler.cs" />
     <Compile Include="Utils\IRRCalculator.cs" />
     <Compile Include="Utils\PortfolioUtils.cs" />
+    <Compile Include="Utils\StockUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">

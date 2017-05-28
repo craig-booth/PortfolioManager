@@ -30,11 +30,11 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        public TransacactionHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
             _StockService = stockService;
-            _PortfolioUtils = new Utils.PortfolioUtils(_PortfolioQuery, _StockService); 
+            _PortfolioUtils = new Utils.PortfolioUtils(_PortfolioQuery, stockQuery, stockDatabase, _StockService); 
         }
 
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)
