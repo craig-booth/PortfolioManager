@@ -17,14 +17,12 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly IStockQuery _StockQuery;
         private readonly PortfolioUtils _PortfolioUtils;
-        private readonly StockUtils _StockUtils;
 
         public PortfolioSummaryService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
         {
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;
             _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase);
-            _StockUtils = new StockUtils(stockQuery, stockDatabase);
         }
 
         public Task<PortfolioPropertiesResponce> GetProperties()
@@ -39,7 +37,7 @@ namespace PortfolioManager.Service.Local
             {
                 var stock = _StockQuery.Get(id, responce.EndDate);
                 if (stock.ParentId == Guid.Empty)
-                    responce.StocksHeld.Add(_StockUtils.CreateStockItem(stock));
+                    responce.StocksHeld.Add(new StockItem(stock));
             }
 
             responce.SetStatusToSuccessfull();

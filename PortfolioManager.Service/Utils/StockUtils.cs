@@ -23,19 +23,15 @@ namespace PortfolioManager.Service.Utils
             _StockService = new StockServiceRepository(stockDatabase);
         }
 
-        public StockItem CreateStockItem(Stock stock)
-        {
-            return new StockItem(stock);
-        }
 
         public StockItem Get(Guid stock, DateTime date)
         {
-            return CreateStockItem(_StockQuery.Get(stock, date));
+            return new StockItem(_StockQuery.Get(stock, date));
         }
 
         public StockItem Get(string asxCode, DateTime date)
         {
-            return CreateStockItem(_StockQuery.GetByASXCode(asxCode, date));
+            return new StockItem(_StockQuery.GetByASXCode(asxCode, date));
         } 
 
         public decimal GetClosingPrice(Guid stock, DateTime date)

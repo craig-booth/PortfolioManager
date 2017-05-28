@@ -131,7 +131,7 @@ namespace PortfolioManager.Service.Utils
                 parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, date, date);
 
             var holding = new HoldingItem();
-            holding.Stock = _StockUtils.CreateStockItem(stock);
+            holding.Stock = new StockItem(stock);
             holding.Category = stock.Category; 
 
             foreach (var parcel in parcels)
@@ -201,7 +201,7 @@ namespace PortfolioManager.Service.Utils
                 }
 
                 holding = new HoldingItem();
-                holding.Stock = _StockUtils.CreateStockItem(stock);
+                holding.Stock = new StockItem(stock);
                 foreach (var parcel in parcelGroup)
                 {
                     holding.Units += parcel.Units;
