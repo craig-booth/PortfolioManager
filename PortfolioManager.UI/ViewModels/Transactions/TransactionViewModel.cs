@@ -12,34 +12,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
-    class TransactionStockSelection
-    {
-        public bool OwnedStocksOnly;
-        public bool IncludeStapledSecurities;
-        public bool IncludeChildStocks;    
-        
-        public TransactionStockSelection(bool ownedStocksOnly, bool includeStapledSecurities, bool includeChildStocks)
-        {
-            OwnedStocksOnly = ownedStocksOnly;
-            IncludeStapledSecurities = includeStapledSecurities;
-            IncludeChildStocks = includeChildStocks;
-        }
-
-        public static TransactionStockSelection AllStocks()
-        {
-            return new TransactionStockSelection(false, true, true);
-        }
-
-        public static TransactionStockSelection TradeableStocks(bool owned)
-        {
-            return new TransactionStockSelection(owned, true, false);
-        }
-
-        public static TransactionStockSelection NonStapledStocks(bool owned)
-        {
-            return new TransactionStockSelection(owned, false, true);
-        }
-    }
+    enum TransactionStockSelection { None, Holdings, TradeableHoldings, Stocks, TradeableStocks }
 
     class TransactionViewModel : ViewModel, IEditableObject
     {
@@ -63,7 +36,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 _Stock = value;
 
-                if (_StockSelection != null)
+                if (_StockSelection != TransactionStockSelection.None)
                 {
                     ClearErrors();
 
@@ -121,7 +94,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             _HoldingService = holdingService;
             Transaction = transaction;
 
-            if (_StockSelection != null)
+            if (_StockSelection != TransactionStockSelection.None)
                 AvailableStocks = new ObservableCollection<StockItem>();                   
 
             CopyTransactionToFields();
@@ -131,7 +104,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             _BeingEdited = true;
 
-            if (_StockSelection != null)
+            if (_StockSelection != TransactionStockSelection.None)
             {
                 PopulateAvailableStocks(RecordDate);
             }
@@ -186,33 +159,38 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         private async void PopulateAvailableStocks(DateTime date)
         {
-            if (_StockSelection == null)
-                return;
 
             AvailableStocks.Clear();
 
-            IEnumerable<StockItem> stocks = null;
-            if (_StockSelection.OwnedStocksOnly)
+            if (_StockSelection == TransactionStockSelection.Holdings)
             {
-                var responce = await _HoldingService.GetOwnedStocks(date);
-            
-                stocks = responce.Stocks;
-            }
-            else
-            {
-                var responce = await _StockService.GetStocks(date, _StockSelection.IncludeStapledSecurities, _StockSelection.IncludeChildStocks);
+                var responce = await _HoldingService.GetHoldings(date);
 
-                stocks = responce.Stocks;
+                foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.FormattedCompanyName()))
+                    AvailableStocks.Add(holding.Stock);
             }
-
-            if (stocks != null)
+            else if (_StockSelection == TransactionStockSelection.TradeableHoldings)
             {
-                foreach (var stock in stocks.OrderBy(x => x.Name))
+                var responce = await _HoldingService.GetTradeableHoldings(date);
+
+                foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.FormattedCompanyName()))
+                    AvailableStocks.Add(holding.Stock);
+            }
+            else if (_StockSelection == TransactionStockSelection.Stocks)
+            {
+                var responce = await _StockService.GetStocks(date, true, true);
+
+                foreach (var stock in responce.Stocks.OrderBy(x => x.FormattedCompanyName()))
+                    AvailableStocks.Add(stock);
+            }
+            else if (_StockSelection == TransactionStockSelection.TradeableStocks)
+            {
+                var responce = await _StockService.GetStocks(date, true, false);
+
+                foreach (var stock in responce.Stocks.OrderBy(x => x.FormattedCompanyName()))
                     AvailableStocks.Add(stock);
             }
         }
-
-
     }
 
     class TransactionViewModelFactory

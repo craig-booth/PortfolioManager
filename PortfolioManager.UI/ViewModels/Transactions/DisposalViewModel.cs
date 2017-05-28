@@ -89,7 +89,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public bool CreateCashTransaction { get; set; }
 
         public DisposalViewModel(DisposalTransactionItem disposal, IStockService stockService, IHoldingService holdingService)
-            : base(disposal, TransactionStockSelection.TradeableStocks(true), stockService, holdingService)
+            : base(disposal, TransactionStockSelection.TradeableHoldings, stockService, holdingService)
         {
             
         }

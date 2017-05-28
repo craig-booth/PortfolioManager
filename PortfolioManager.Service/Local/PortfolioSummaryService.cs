@@ -7,32 +7,37 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
 
     class PortfolioSummaryService : IPortfolioSummaryService
     {
-        private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly Obsolete.ShareHoldingService _ShareHoldingService;
+        private readonly IPortfolioQuery _PortfolioQuery;  
+        private readonly PortfolioUtils _PortfolioUtils;
+        private readonly Obsolete.StockService _StockService;
 
-        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService)
+        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
-            _ShareHoldingService = shareHoldingService;
+            _StockService = stockService;
+            _PortfolioUtils = new Utils.PortfolioUtils(portfolioQuery, stockService);
         }
 
         public Task<PortfolioPropertiesResponce> GetProperties()
         {
             var responce = new PortfolioPropertiesResponce();
 
-            responce.StartDate = _ShareHoldingService.GetPortfolioStartDate();
+            responce.StartDate = _PortfolioUtils.GetPortfolioStartDate();
             responce.EndDate = DateUtils.NoEndDate;   // This is wrong !!!!
             
-            var stocksOwned = _ShareHoldingService.GetOwnedStocks(responce.StartDate, responce.EndDate, false);
-            foreach (var stock in stocksOwned)
+            var stocksOwned =_PortfolioQuery.GetStocksOwned(responce.StartDate, responce.EndDate);
+            foreach (var id in stocksOwned)
             {
-                responce.StocksHeld.Add(new StockItem(stock));
+                var stock = _StockService.Get(id, responce.EndDate);
+                if (stock.ParentId == Guid.Empty)
+                    responce.StocksHeld.Add(new StockItem(stock));
             }
 
             responce.SetStatusToSuccessfull();
@@ -44,11 +49,11 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new PortfolioSummaryResponce();
 
-            var holdings = _ShareHoldingService.GetHoldings(date);
+            var holdings = _PortfolioUtils.GetHoldings(date);
             var cashBalance = _PortfolioQuery.GetCashBalance(date);
 
-            responce.PortfolioValue = holdings.Sum(x => x.MarketValue) + cashBalance; 
-            responce.PortfolioCost = holdings.Sum(x => x.TotalCostBase) + cashBalance;
+            responce.PortfolioValue = holdings.Sum(x => x.Value) + cashBalance; 
+            responce.PortfolioCost = holdings.Sum(x => x.Cost) + cashBalance;
 
             responce.CashBalance = cashBalance;
 
@@ -60,11 +65,11 @@ namespace PortfolioManager.Service.Local
             foreach (var holding in holdings)
                 responce.Holdings.Add(new HoldingItem()
                 {
-                    Stock = new StockItem(holding.Stock),
-                    Category = holding.Stock.Category,
+                    Stock = holding.Stock,
+                    Category = holding.Category,
                     Units = holding.Units,
-                    Value = holding.MarketValue,
-                    Cost = holding.TotalCostBase
+                    Value = holding.Value,
+                    Cost = holding.Cost
                 });
 
             responce.SetStatusToSuccessfull();
@@ -74,7 +79,7 @@ namespace PortfolioManager.Service.Local
 
         private decimal? CalculateIRR(DateTime date, int years)
         {
-            var portfolioStartDate = _ShareHoldingService.GetPortfolioStartDate();
+            var portfolioStartDate = _PortfolioUtils.GetPortfolioStartDate();
 
             DateTime startDate;
             if (years == 0)
@@ -86,7 +91,7 @@ namespace PortfolioManager.Service.Local
             {
                 try
                 {
-                   return _ShareHoldingService.CalculateIRR(startDate, date);
+                   return _PortfolioUtils.CalculatePortfolioIRR(startDate, date);
                 }
                 catch
                 {

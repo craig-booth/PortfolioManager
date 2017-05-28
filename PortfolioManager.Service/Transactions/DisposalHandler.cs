@@ -33,7 +33,7 @@ namespace PortfolioManager.Service.Transactions
             /* Determine which parcels to sell based on CGT method */
             IReadOnlyCollection<ShareParcel> ownedParcels;
             if (stock.Type == StockType.StapledSecurity)
-                ownedParcels = PortfolioUtils.GetStapledSecurityParcels(stock, disposal.TransactionDate, _StockService, _PortfolioQuery);
+                ownedParcels = _PortfolioUtils.GetStapledSecurityParcels(stock, disposal.TransactionDate);
             else
                 ownedParcels = _PortfolioQuery.GetParcelsForStock(stock.Id, disposal.TransactionDate, disposal.TransactionDate);
             decimal amountReceived = (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
@@ -52,7 +52,7 @@ namespace PortfolioManager.Service.Transactions
                     var childStocks = _StockService.GetChildStocks(stock, disposal.TransactionDate);
 
                     // Apportion amount based on NTA of child stocks
-                    var amountsReceived = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, disposal.TransactionDate, parcelSold.AmountReceived, _StockService);
+                    var amountsReceived = _PortfolioUtils.ApportionAmountOverChildStocks(childStocks, disposal.TransactionDate, parcelSold.AmountReceived);
 
                     int i = 0;
                     foreach (var childStock in childStocks)

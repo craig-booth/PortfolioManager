@@ -67,7 +67,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public OpeningBalanceViewModel(OpeningBalanceTransactionItem openingBalance, IStockService stockService, IHoldingService holdingService)
-            : base(openingBalance, TransactionStockSelection.AllStocks(), stockService, holdingService)
+            : base(openingBalance, TransactionStockSelection.Stocks, stockService, holdingService)
         {
         }
 

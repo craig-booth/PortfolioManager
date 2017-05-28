@@ -70,10 +70,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return parcelsQuery.Any();
         }
 
-        public IReadOnlyCollection<Guid> GetStocksOwned(DateTime atDate)
+        public IReadOnlyCollection<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate)
         {
             var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.FromDate <= atDate && parcel.ToDate >= atDate)
+                               where ((parcel.FromDate <= fromDate && parcel.ToDate >= fromDate) || (parcel.FromDate >= fromDate && parcel.FromDate <= toDate))
                                group parcel by parcel.Stock into stockGroup
                                select stockGroup.Key;
 

@@ -6,50 +6,28 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
-
-using PortfolioManager.Service.Obsolete;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
     class HoldingService : IHoldingService
     {
-        private readonly Obsolete.ShareHoldingService _ShareHoldingService;
         private readonly Obsolete.StockService _StockService;
+        private readonly PortfolioUtils _PortfolioUtils;
 
-        public HoldingService(Obsolete.ShareHoldingService shareHoldingService, Obsolete.StockService stockService)
+        public HoldingService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
         {
-            _ShareHoldingService = shareHoldingService;
             _StockService = stockService;
-        }
-
-        public Task<OwnedStocksResponce> GetOwnedStocks(DateTime date)
-        {
-            var responce = new OwnedStocksResponce();
-
-            var stocks = _ShareHoldingService.GetOwnedStocks(date, true);
-            responce.Stocks.AddRange(stocks.Select(x => new StockItem(x)));
-
-            responce.SetStatusToSuccessfull();
-
-            return Task.FromResult<OwnedStocksResponce>(responce);
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, _StockService);
         }
 
         public Task<HoldingResponce> GetHolding(Guid stock, DateTime date)
         {
             var responce = new HoldingResponce();
 
-            var s = _StockService.Get(stock, date);
-            var holding = _ShareHoldingService.GetHolding(s, date);
-
-            responce.Holding = new HoldingItem()
-            {
-                Stock = new StockItem(s),
-                Category = s.Category,
-                Units = holding.Units,
-                Value = holding.MarketValue,
-                Cost = holding.TotalCost
-            };
+            responce.Holding = _PortfolioUtils.GetHolding(stock, date);
          
             responce.SetStatusToSuccessfull();
 
@@ -60,22 +38,20 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new HoldingsResponce();
 
-            var holdings = _ShareHoldingService.GetHoldings(date);
+            responce.Holdings.AddRange(_PortfolioUtils.GetHoldings(date));
 
-            foreach (var holding in holdings)
-            {
-                var item = new HoldingItem()
-                {
-                    Stock = new StockItem(holding.Stock),
-                    Category = holding.Stock.Category,
-                    Units = holding.Units,
-                    Value = holding.MarketValue,
-                    Cost = holding.TotalCost
-                };
+            responce.SetStatusToSuccessfull();
 
-                responce.Holdings.Add(item);
-            }
-            
+            return Task.FromResult<HoldingsResponce>(responce);
+        }
+
+
+        public Task<HoldingsResponce> GetTradeableHoldings(DateTime date)
+        {
+            var responce = new HoldingsResponce();
+
+            responce.Holdings.AddRange(_PortfolioUtils.GetTradeableHoldings(date));
+
             responce.SetStatusToSuccessfull();
 
             return Task.FromResult<HoldingsResponce>(responce);

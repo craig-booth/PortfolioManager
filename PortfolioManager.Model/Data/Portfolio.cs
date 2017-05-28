@@ -78,7 +78,7 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate);
 
         bool StockOwned(Guid id, DateTime atDate);
-        IReadOnlyCollection<Guid> GetStocksOwned(DateTime atDate);
+        IReadOnlyCollection<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate);
 
         IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
 

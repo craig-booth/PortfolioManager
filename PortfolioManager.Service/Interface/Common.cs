@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
 using PortfolioManager.Model.Stocks;
 
 namespace PortfolioManager.Service.Interface
@@ -33,6 +34,15 @@ namespace PortfolioManager.Service.Interface
             ASXCode = stock.ASXCode;
             Name = stock.Name;
         }
+    }
+
+    public class HoldingItem
+    {
+        public StockItem Stock;
+        public AssetCategory Category;
+        public int Units;
+        public decimal Value;
+        public decimal Cost;
     }
 
     public enum ResponceStatus { Failed, Successfull }

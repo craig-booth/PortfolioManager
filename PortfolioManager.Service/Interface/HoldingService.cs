@@ -4,15 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Common;
-
 namespace PortfolioManager.Service.Interface
 {
     public interface IHoldingService : IPortfolioService
     {
-        Task<OwnedStocksResponce> GetOwnedStocks(DateTime date);
         Task<HoldingResponce> GetHolding(Guid stockId, DateTime date);
         Task<HoldingsResponce> GetHoldings(DateTime date);
+        Task<HoldingsResponce> GetTradeableHoldings(DateTime date);
     }
 
     public class OwnedStocksResponce : ServiceResponce
@@ -38,14 +36,5 @@ namespace PortfolioManager.Service.Interface
         {
             Holdings = new List<HoldingItem>();
         }
-    }
-
-    public class HoldingItem
-    {
-        public StockItem Stock;
-        public AssetCategory Category;
-        public int Units;
-        public decimal Value;
-        public decimal Cost;
     }
 }

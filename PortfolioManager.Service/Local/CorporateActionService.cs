@@ -34,7 +34,7 @@ namespace PortfolioManager.Service.Local
             var responce = new UnappliedCorporateActionsResponce();
 
             // Get a list of all stocks held
-            var allOwnedStocks = _PortfolioQuery.GetStocksOwned(DateTime.Today);
+            var allOwnedStocks = _PortfolioQuery.GetStocksOwned(DateTime.Today, DateTime.Today);
 
             var actions = new List<CorporateAction>();
             foreach (var ownedStock in allOwnedStocks)

@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
 using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
-
 using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
-
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Local
 {
@@ -20,13 +16,13 @@ namespace PortfolioManager.Service.Local
     class PortfolioPerformanceService : IPortfolioPerformanceService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly Obsolete.ShareHoldingService _ShareHoldingService;
+        private readonly PortfolioUtils _PortfolioUtils;
         private readonly Obsolete.StockService _StockService;
 
-        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.ShareHoldingService shareHoldingService, Obsolete.StockService stockService)
+        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
-            _ShareHoldingService = shareHoldingService;
+            _PortfolioUtils = new Utils.PortfolioUtils(portfolioQuery, stockService);
             _StockService = stockService;
         }
 
@@ -42,15 +38,15 @@ namespace PortfolioManager.Service.Local
             responce.Fees = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Fee).Sum(x => x.Amount);
             responce.ClosingCashBalance = _PortfolioQuery.GetCashBalance(toDate);
 
-            var openingHoldings = _ShareHoldingService.GetHoldings(fromDate);
-            var closingHoldings = _ShareHoldingService.GetHoldings(toDate);      
+            var openingHoldings = _PortfolioUtils.GetHoldings(fromDate);
+            var closingHoldings = _PortfolioUtils.GetHoldings(toDate);      
                      
             responce.HoldingPerformance = CalculateHoldingPerformance(fromDate, toDate, openingHoldings, closingHoldings);
-            responce.OpeningBalance = openingHoldings.Sum(x => x.MarketValue);
+            responce.OpeningBalance = openingHoldings.Sum(x => x.Value);
             responce.Dividends = responce.HoldingPerformance.Sum(x => x.Dividends);
             responce.ChangeInMarketValue = responce.HoldingPerformance.Sum(x => x.CapitalGain);
             responce.OutstandingDRPAmount = -responce.HoldingPerformance.Sum(x => x.DRPCashBalance);
-            responce.ClosingBalance = closingHoldings.Sum(x => x.MarketValue);
+            responce.ClosingBalance = closingHoldings.Sum(x => x.Value);
 
             responce.SetStatusToSuccessfull();
 
@@ -62,15 +58,15 @@ namespace PortfolioManager.Service.Local
             public HoldingPerformance HoldingPerformance;
             public CashFlows CashFlows;
 
-            public HoldingPerformanceWorkItem(Stock stock)
+            public HoldingPerformanceWorkItem(StockItem stock)
             {
                 HoldingPerformance = new HoldingPerformance();
-                HoldingPerformance.Stock = new StockItem(stock);
+                HoldingPerformance.Stock = stock;
                 CashFlows = new Utils.CashFlows();
             }
         }
 
-        private List<HoldingPerformance> CalculateHoldingPerformance(DateTime startDate, DateTime endDate, IEnumerable<ShareHolding> openingHoldings, IEnumerable<ShareHolding> closingHoldings)
+        private List<HoldingPerformance> CalculateHoldingPerformance(DateTime startDate, DateTime endDate, IEnumerable<HoldingItem> openingHoldings, IEnumerable<HoldingItem> closingHoldings)
         {
 
             var workingList = new List<HoldingPerformanceWorkItem>();
@@ -80,8 +76,8 @@ namespace PortfolioManager.Service.Local
             foreach (var holding in openingHoldings)
             {
                 workItem = new HoldingPerformanceWorkItem(holding.Stock);            
-                workItem.HoldingPerformance.OpeningBalance = holding.MarketValue;
-                workItem.CashFlows.Add(startDate, -holding.MarketValue);
+                workItem.HoldingPerformance.OpeningBalance = holding.Value;
+                workItem.CashFlows.Add(startDate, -holding.Value);
 
                 workingList.Add(workItem);
             }
@@ -104,7 +100,7 @@ namespace PortfolioManager.Service.Local
                 workItem = workingList.FirstOrDefault(x => x.HoldingPerformance.Stock.Id == stock.Id);
                 if (workItem == null)
                 {
-                    workItem = new HoldingPerformanceWorkItem(stock);
+                    workItem = new HoldingPerformanceWorkItem(new StockItem(stock));
                     workingList.Add(workItem);
                 }
 
@@ -145,8 +141,8 @@ namespace PortfolioManager.Service.Local
                 var holding = closingHoldings.FirstOrDefault(x => x.Stock.Id == item.HoldingPerformance.Stock.Id);
                 if (holding != null)
                 {
-                    item.HoldingPerformance.ClosingBalance = holding.MarketValue;
-                    item.CashFlows.Add(endDate, holding.MarketValue);
+                    item.HoldingPerformance.ClosingBalance = holding.Value;
+                    item.CashFlows.Add(endDate, holding.Value);
 
                     item.HoldingPerformance.DRPCashBalance = _PortfolioQuery.GetDRPCashBalance(holding.Stock.Id, endDate);
                 }
