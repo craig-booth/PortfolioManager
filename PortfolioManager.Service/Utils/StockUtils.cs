@@ -33,52 +33,37 @@ namespace PortfolioManager.Service.Utils
             return CreateStockItem(_StockQuery.Get(stock, date));
         }
 
-        /*  public StockItem Get(string asxCode, DateTime date)
-          {
-              return new StockItem(_StockQuery.GetByASXCode(asxCode, date));
-          } */
+        public StockItem Get(string asxCode, DateTime date)
+        {
+            return CreateStockItem(_StockQuery.GetByASXCode(asxCode, date));
+        } 
 
-        /*      public IEnumerable<StockItem> GetAll(DateTime date)
-              {
-                  return _StockQuery.GetAll(date).Select(x => new StockItem(x));
-              } */
+        public decimal GetClosingPrice(Guid stock, DateTime date)
+        {
+            return _StockQuery.GetClosingPrice(stock, date);
+        } 
 
-        /*     public IEnumerable<StockItem> GetChildStocks(Guid id, DateTime date)
-             {
-                 return _StockQuery.GetChildStocks(id, date).Select(x => new StockItem(x));
-             } */
+        public decimal GetCurrentPrice(Guid stock)
+        {
+            return _StockService.StockPriceService.GetCurrentPrice(_StockQuery.Get(stock, DateTime.Today));
+        }
 
-        /*      public decimal PercentageOfParentCostBase(Guid parentId, Guid id, DateTime date)
-              {
-                  return _StockQuery.PercentOfParentCost(parentId, id, date);
-              } */
+        public decimal GetPrice(Guid stock, DateTime atDate)
+        {
+            if (atDate == DateTime.Today)
+                return GetCurrentPrice(stock);
+            else
+                return GetClosingPrice(stock, atDate);
+        }
 
-            public decimal GetClosingPrice(Guid stock, DateTime date)
-            {
-                return _StockQuery.GetClosingPrice(stock, date);
-            } 
+        public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
+        {
+            return _StockService.StockPriceService.GetClosingPrices(_StockQuery.Get(stock, fromDate), fromDate, toDate);
+        } 
 
-            public decimal GetCurrentPrice(Guid stock)
-            {
-                return _StockService.StockPriceService.GetCurrentPrice(_StockQuery.Get(stock, DateTime.Today));
-            }
-
-            public decimal GetPrice(Guid stock, DateTime atDate)
-            {
-                if (atDate == DateTime.Today)
-                    return GetCurrentPrice(stock);
-                else
-                    return GetClosingPrice(stock, atDate);
-            }
-
-      /*      public Dictionary<DateTime, decimal> GetClosingPrices(Stock stock, DateTime fromDate, DateTime toDate)
-            {
-                return _StockServiceRepository.StockPriceService.GetClosingPrices(stock, fromDate, toDate);
-            } */
-
-         /*   public bool TradingDay(DateTime date)
-            {
-                return _StockServiceRepository.StockPriceService.TradingDay(date);
-            } */
+        public bool TradingDay(DateTime date)
+        {
+            return _StockService.StockPriceService.TradingDay(date);
+        } 
     }
 }

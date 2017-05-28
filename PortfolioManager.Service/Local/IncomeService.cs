@@ -8,19 +8,20 @@ using PortfolioManager.Common;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
+using PortfolioManager.Service.Utils;
 
 
 namespace PortfolioManager.Service.Local
 {
     class IncomeService : IIncomeService
     {
-        private readonly Obsolete.StockService _StockService;
         private readonly IPortfolioQuery _PortfolioQuery;
+        private readonly StockUtils _StockUtils;
 
-        public IncomeService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
+        public IncomeService(IPortfolioQuery portfolioQuery, IStockDatabase stockDatabase, IStockQuery stockQuery)
         {
-            _StockService = stockService;
             _PortfolioQuery = portfolioQuery;
+            _StockUtils = new StockUtils(stockQuery, stockDatabase);
         }
 
         public Task<IncomeResponce> GetIncome(DateTime fromDate, DateTime toDate)
@@ -33,7 +34,7 @@ namespace PortfolioManager.Service.Local
                                 group income by income.ASXCode into incomeGroup
                                 select new IncomeItem()
                                 {
-                                    Stock = new StockItem(_StockService.Get(incomeGroup.Key, toDate)),
+                                    Stock = _StockUtils.Get(incomeGroup.Key, toDate),
                                     UnfrankedAmount = incomeGroup.Sum(x => x.UnfrankedAmount),
                                     FrankedAmount = incomeGroup.Sum(x => x.FrankedAmount),
                                     FrankingCredits = incomeGroup.Sum(x => x.FrankingCredits),

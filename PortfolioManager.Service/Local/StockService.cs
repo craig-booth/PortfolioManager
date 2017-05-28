@@ -5,24 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
+using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Local
 {
     class StockService : IStockService
     {
-        private readonly Obsolete.StockService _StockService;
+        private readonly IStockQuery _StockQuery;
 
-        public StockService(Obsolete.StockService stockService)
+        public StockService(IStockQuery stockQuery)
         {
-            _StockService = stockService;
+            _StockQuery = stockQuery;
         }
 
         public Task<GetStockResponce> GetStocks(DateTime date, bool IncludeStapledSecurities, bool IncludeChildStocks)
         {
             var responce = new GetStockResponce();
 
-            var stocks = _StockService.GetAll(date).AsEnumerable();
+            var stocks = _StockQuery.GetAll(date).AsEnumerable();
 
             if (!IncludeStapledSecurities)
                 stocks = stocks.Where(x => x.Type != StockType.StapledSecurity);

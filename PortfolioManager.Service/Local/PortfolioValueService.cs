@@ -8,8 +8,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Interface;
-
-using PortfolioManager.Service.Obsolete;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
@@ -18,12 +17,12 @@ namespace PortfolioManager.Service.Local
     {
 
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly Obsolete.StockService _StockService;
+        private readonly StockUtils _StockUtils;
 
-        public PortfolioValueService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService) 
+        public PortfolioValueService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase) 
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
+            _StockUtils = new StockUtils(stockQuery, stockDatabase);
         }
 
         public Task<PortfolioValueResponce> GetPortfolioValue(DateTime fromDate, DateTime toDate, ValueFrequency frequency)
@@ -73,14 +72,12 @@ namespace PortfolioManager.Service.Local
             var closingPrices = new Dictionary<Guid, Dictionary<DateTime, decimal>>();
             foreach (var holdingRange in holdingRanges)
             {
-                var stock = _StockService.Get(holdingRange.StockId, holdingRange.StartDate);
-
-                var priceData = _StockService.GetClosingPrices(stock, holdingRange.StartDate, holdingRange.EndDate);
+                var priceData = _StockUtils.GetClosingPrices(holdingRange.StockId, holdingRange.StartDate, holdingRange.EndDate);
 
                 closingPrices.Add(holdingRange.StockId, priceData);
             }
 
-            foreach (var date in DateUtils.DateRange(fromDate, toDate).Where(x => _StockService.TradingDay(x)))
+            foreach (var date in DateUtils.DateRange(fromDate, toDate).Where(x => _StockUtils.TradingDay(x)))
             {
                 if ((frequency == ValueFrequency.Weekly) && (date.DayOfWeek != DayOfWeek.Friday))
                     continue;

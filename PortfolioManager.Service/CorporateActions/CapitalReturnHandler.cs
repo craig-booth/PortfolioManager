@@ -16,12 +16,12 @@ namespace PortfolioManager.Service.CorporateActions
     class CapitalReturnHandler : ICorporateActionHandler 
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockService _StockService;
+        private readonly IStockQuery _StockQuery;
 
-        public CapitalReturnHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+        public CapitalReturnHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
+            _StockQuery = stockQuery;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -30,7 +30,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             var transactions = new List<Transaction>();
 
-            var stock = _StockService.Get(capitalReturn.Stock, capitalReturn.ActionDate);
+            var stock = _StockQuery.Get(capitalReturn.Stock, capitalReturn.ActionDate);
 
             /* locate parcels that the capital return applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, capitalReturn.ActionDate, capitalReturn.ActionDate);
@@ -55,7 +55,7 @@ namespace PortfolioManager.Service.CorporateActions
         {
             CapitalReturn capitalReturn = corporateAction as CapitalReturn;
 
-            string asxCode = _StockService.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
+            string asxCode = _StockQuery.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
 
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);
             return (transactions.Count() > 0);

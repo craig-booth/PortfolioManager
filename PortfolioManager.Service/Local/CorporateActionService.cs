@@ -11,6 +11,7 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.CorporateActions;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
@@ -18,15 +19,15 @@ namespace PortfolioManager.Service.Local
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly ICorporateActionQuery _CorporateActionQuery;
-        private readonly Obsolete.StockService _StockService;
         private readonly ICorporateActionHandlerFactory _CorporateActionHandlerFactory;
+        private readonly StockUtils _StockUtils;
 
-        public CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, Obsolete.StockService stockService, ICorporateActionHandlerFactory corporateActionHandlerFactory)
+        public CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, ICorporateActionHandlerFactory corporateActionHandlerFactory)
         {
             _PortfolioQuery = portfolioQuery;
             _CorporateActionQuery = corporateActionQuery;
-            _StockService = stockService;
             _CorporateActionHandlerFactory = corporateActionHandlerFactory;
+            _StockUtils = new StockUtils(stockQuery, stockDatabase);
         }
 
         public Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions()
@@ -56,12 +57,11 @@ namespace PortfolioManager.Service.Local
            
             foreach (var action in actions.OrderBy(x => x.ActionDate))
             {
-                var stock = _StockService.Get(action.Stock, action.ActionDate);
                 var item = new CorporateActionItem()
                 {
                     Id = action.Id,
                     ActionDate = action.ActionDate,
-                    Stock = new StockItem(stock),
+                    Stock = _StockUtils.Get(action.Stock, action.ActionDate),
                     Description = action.Description
                 };
 

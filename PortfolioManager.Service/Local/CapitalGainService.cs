@@ -16,12 +16,12 @@ namespace PortfolioManager.Service.Local
     class CapitalGainService : ICapitalGainService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly Obsolete.StockService _StockService;
+        private readonly StockUtils _StockUtils;
 
-        public CapitalGainService(IPortfolioQuery portfolioQuery, Obsolete.StockService stockService)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
+            _StockUtils = new StockUtils(stockQuery, stockDatabase);
         }
 
         public Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date)
@@ -44,7 +44,7 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new SimpleUnrealisedGainsResponce();
 
-            Stock currentStock = null;
+            StockItem currentStock = null;
             Guid previousStock = Guid.Empty;
             decimal unitPrice = 0.00m;
 
@@ -52,8 +52,8 @@ namespace PortfolioManager.Service.Local
             {
                 if (parcel.Stock != previousStock)
                 {
-                    currentStock = _StockService.Get(parcel.Stock, date);
-                    unitPrice = _StockService.GetPrice(currentStock, date);
+                    currentStock = _StockUtils.Get(parcel.Stock, date);
+                    unitPrice = _StockUtils.GetPrice(parcel.Stock, date);
 
                     previousStock = parcel.Stock;
                 }
@@ -61,7 +61,7 @@ namespace PortfolioManager.Service.Local
                 var item = new SimpleUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
-                    Stock = new StockItem(currentStock),
+                    Stock = currentStock,
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
                     CostBase = parcel.CostBase,
@@ -111,7 +111,7 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new DetailedUnrealisedGainsResponce();
 
-            Stock currentStock = null;
+            StockItem currentStock = null;
             Guid previousStock = Guid.Empty;
             decimal unitPrice = 0.00m;
 
@@ -119,8 +119,8 @@ namespace PortfolioManager.Service.Local
             {
                 if (parcel.Stock != previousStock)
                 {
-                    currentStock = _StockService.Get(parcel.Stock, date);
-                    unitPrice = _StockService.GetPrice(currentStock, date);
+                    currentStock = _StockUtils.Get(parcel.Stock, date);
+                    unitPrice = _StockUtils.GetPrice(parcel.Stock, date);
 
                     previousStock = parcel.Stock;
                 }
@@ -128,7 +128,7 @@ namespace PortfolioManager.Service.Local
                 var item = new DetailedUnrealisedGainsItem()
                 {
                     Id = parcel.Id,
-                    Stock = new StockItem(currentStock),
+                    Stock = currentStock,
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
                     CostBase = parcel.CostBase,
@@ -190,11 +190,9 @@ namespace PortfolioManager.Service.Local
             var cgtEvents = _PortfolioQuery.GetCGTEvents(fromDate, toDate);
             foreach (var cgtEvent in cgtEvents)
             {
-                var stock = _StockService.Get(cgtEvent.Stock, cgtEvent.EventDate);
-
                 var item = new CGTLiabilityItem()
                 {
-                    Stock = new StockItem(stock),
+                    Stock = _StockUtils.Get(cgtEvent.Stock, cgtEvent.EventDate),
                     EventDate = cgtEvent.EventDate,
                     CostBase = cgtEvent.CostBase,
                     AmountReceived = cgtEvent.AmountReceived,

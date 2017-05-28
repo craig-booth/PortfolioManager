@@ -16,14 +16,14 @@ namespace PortfolioManager.Service.Local
     class PortfolioPerformanceService : IPortfolioPerformanceService
     {
         private readonly IPortfolioQuery _PortfolioQuery;
+        private readonly IStockQuery _StockQuery;
         private readonly PortfolioUtils _PortfolioUtils;
-        private readonly Obsolete.StockService _StockService;
 
         public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
         {
             _PortfolioQuery = portfolioQuery;
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase, stockService);
-            _StockService = stockService;
+            _StockQuery = stockQuery;
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase);
         }
 
         public Task<PortfolioPerformanceResponce> GetPerformance(DateTime fromDate, DateTime toDate)
@@ -93,9 +93,9 @@ namespace PortfolioManager.Service.Local
                     continue;
 
 
-                var stock = _StockService.Get(transaction.ASXCode, transaction.RecordDate);
+                var stock = _StockQuery.GetByASXCode(transaction.ASXCode, transaction.RecordDate);
                 if (stock.ParentId != Guid.Empty)
-                    stock = _StockService.Get(stock.ParentId, transaction.RecordDate);
+                    stock = _StockQuery.Get(stock.ParentId, transaction.RecordDate);
 
                 workItem = workingList.FirstOrDefault(x => x.HoldingPerformance.Stock.Id == stock.Id);
                 if (workItem == null)
