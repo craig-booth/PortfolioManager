@@ -77,10 +77,6 @@
       <Project>{f93a244c-1f96-4ebb-a067-9005f04cf52f}</Project>
       <Name>PortfolioManager.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Data.Memory\PortfolioManager.Data.Memory.csproj">
-      <Project>{7336f40c-ecd4-4a94-a1d9-c629823fe5b3}</Project>
-      <Name>PortfolioManager.Data.Memory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj">
       <Project>{4dcb5a16-15d6-41ae-9d48-46b9c6e45edb}</Project>
       <Name>PortfolioManager.Data.SQLite</Name>

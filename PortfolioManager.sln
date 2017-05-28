@@ -5,15 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model", "PortfolioManager.Model\PortfolioManager.Model.csproj", "{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{7A3A74C5-9521-4B42-8734-83CF5077589B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3} = {7336F40C-ECD4-4A94-A1D9-C629823FE5B3}
-		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB} = {4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}
-		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805} = {BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.Memory", "PortfolioManager.Data.Memory\PortfolioManager.Data.Memory.csproj", "{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.Test", "PortfolioManager.Data.Test\PortfolioManager.Data.Test.csproj", "{4CE3C835-140F-4524-A7D1-7027854B89E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.SQLite", "PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj", "{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}"
@@ -25,10 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockManager.Service", "StockManager.Service\StockManager.Service.csproj", "{7171F628-22A3-4F8E-80AC-E4A29993EB62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Service", "PortfolioManager.Service\PortfolioManager.Service.csproj", "{5C1F0FCA-84B1-4910-934C-99E79C84052E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Service.Test", "PortfolioManager.Service.Test\PortfolioManager.Service.Test.csproj", "{C280AFCF-C9E3-4BD0-A424-808C903A1D1A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockManager.Service.Test", "StockManager.Service.Test\StockManager.Service.Test.csproj", "{EE4FE598-4A7F-41B8-9D52-094DFC0C0332}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "PortfolioManager.UI\PortfolioManager.UI.csproj", "{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}"
 EndProject
@@ -44,14 +31,6 @@ Global
 		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A3A74C5-9521-4B42-8734-83CF5077589B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7336F40C-ECD4-4A94-A1D9-C629823FE5B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,14 +55,6 @@ Global
 		{5C1F0FCA-84B1-4910-934C-99E79C84052E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C1F0FCA-84B1-4910-934C-99E79C84052E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C1F0FCA-84B1-4910-934C-99E79C84052E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C280AFCF-C9E3-4BD0-A424-808C903A1D1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C280AFCF-C9E3-4BD0-A424-808C903A1D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C280AFCF-C9E3-4BD0-A424-808C903A1D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C280AFCF-C9E3-4BD0-A424-808C903A1D1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE4FE598-4A7F-41B8-9D52-094DFC0C0332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE4FE598-4A7F-41B8-9D52-094DFC0C0332}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE4FE598-4A7F-41B8-9D52-094DFC0C0332}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE4FE598-4A7F-41B8-9D52-094DFC0C0332}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
