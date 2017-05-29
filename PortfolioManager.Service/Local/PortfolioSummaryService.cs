@@ -14,15 +14,17 @@ namespace PortfolioManager.Service.Local
 
     class PortfolioSummaryService : IPortfolioSummaryService
     {
-        private readonly IPortfolioQuery _PortfolioQuery;  
+        private readonly IPortfolioQuery _PortfolioQuery;
+        private readonly IStockQuery _StockQuery;
         private readonly PortfolioUtils _PortfolioUtils;
-        private readonly Obsolete.StockService _StockService;
+        
 
-        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
+        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase, stockService);
+            _StockQuery = stockQuery;
+
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, livePriceQuery);
         }
 
         public Task<PortfolioPropertiesResponce> GetProperties()
@@ -35,7 +37,7 @@ namespace PortfolioManager.Service.Local
             var stocksOwned =_PortfolioQuery.GetStocksOwned(responce.StartDate, responce.EndDate);
             foreach (var id in stocksOwned)
             {
-                var stock = _StockService.Get(id, responce.EndDate);
+                var stock = _StockQuery.Get(id, responce.EndDate);
                 if (stock.ParentId == Guid.Empty)
                     responce.StocksHeld.Add(new StockItem(stock));
             }

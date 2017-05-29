@@ -15,12 +15,12 @@ namespace PortfolioManager.Service.Utils
     class StockUtils
     {
         private IStockQuery _StockQuery;
-        private StockServiceRepository _StockService;
+        private ILiveStockPriceQuery _LivePriceQuery;
 
-        internal StockUtils(IStockQuery stockQuery, IStockDatabase stockDatabase)
+        internal StockUtils(IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _StockQuery = stockQuery;
-            _StockService = new StockServiceRepository(stockDatabase);
+            _LivePriceQuery = livePriceQuery;
         }
 
         public StockItem CreateStockItem(Stock stock)
@@ -59,13 +59,13 @@ namespace PortfolioManager.Service.Utils
             } 
 
             public decimal GetCurrentPrice(Guid stock)
-            {
-                return _StockService.StockPriceService.GetCurrentPrice(_StockQuery.Get(stock, DateTime.Today));
+            {          
+                return _LivePriceQuery.GetPrice(stock);
             }
 
             public decimal GetPrice(Guid stock, DateTime atDate)
             {
-                if (atDate == DateTime.Today)
+                if (atDate.Date == DateTime.Today)
                     return GetCurrentPrice(stock);
                 else
                     return GetClosingPrice(stock, atDate);

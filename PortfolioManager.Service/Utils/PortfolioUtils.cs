@@ -17,14 +17,12 @@ namespace PortfolioManager.Service.Utils
         private IPortfolioQuery _PortfolioQuery;
         private IStockQuery _StockQuery;
         private StockUtils _StockUtils;
-        private Obsolete.StockService _StockService; 
 
-        public PortfolioUtils(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
+        public PortfolioUtils(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;
-            _StockUtils = new StockUtils(stockQuery, stockDatabase);
-            _StockService = stockService;
+            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
         }
 
         public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, decimal amount)
@@ -55,7 +53,7 @@ namespace PortfolioManager.Service.Utils
             int i = 0;
             foreach (Stock childStock in childStocks)
             {
-                decimal percentageOfParent = _StockService.PercentageOfParentCostBase(childStock, atDate);
+                decimal percentageOfParent = _StockQuery.PercentOfParentCost(childStock.ParentId, childStock.Id, atDate);
                 int relativeValue = (int)(percentageOfParent * 10000);
 
                 result[i].Units = relativeValue;
@@ -70,7 +68,7 @@ namespace PortfolioManager.Service.Utils
         {
             var stapledParcels = new List<ShareParcel>();
 
-            var childStocks = _StockService.GetChildStocks(stock, date);
+            var childStocks = _StockQuery.GetChildStocks(stock.Id, date);
 
             foreach (var childStock in childStocks)
             {
@@ -141,7 +139,7 @@ namespace PortfolioManager.Service.Utils
                 holding.Units += parcel.Units;
                 holding.Cost += parcel.Units * parcel.UnitPrice;
             }
-            holding.Value = holding.Units * _StockService.GetPrice(stock, date);
+            holding.Value = holding.Units * _StockUtils.GetPrice(stock.Id, date);
 
             return holding;
         }
@@ -164,7 +162,7 @@ namespace PortfolioManager.Service.Utils
                     holding.Cost += parcel.Units * parcel.UnitPrice;
                 }
                 var stock =  _StockQuery.Get(parcelGroup.Key, date);
-                holding.Value = holding.Units * _StockService.GetPrice(stock, date);
+                holding.Value = holding.Units * _StockUtils.GetPrice(stock.Id, date);
 
                 holdings.Add(holding);
             }
@@ -210,7 +208,7 @@ namespace PortfolioManager.Service.Utils
                     holding.Units += parcel.Units;
                     holding.Cost += parcel.Units * parcel.UnitPrice;
                 }
-                holding.Value = holding.Units * _StockService.GetPrice(stock, date);
+                holding.Value = holding.Units * _StockUtils.GetPrice(stock.Id, date);
 
                 holdings.Add(holding);
             }

@@ -14,13 +14,11 @@ namespace PortfolioManager.Service.Local
 {
     class HoldingService : IHoldingService
     {
-        private readonly Obsolete.StockService _StockService;
         private readonly PortfolioUtils _PortfolioUtils;
 
-        public HoldingService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
+        public HoldingService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
-            _StockService = stockService;
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase, _StockService);
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, livePriceQuery);
         }
 
         public Task<HoldingResponce> GetHolding(Guid stock, DateTime date)

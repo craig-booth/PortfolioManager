@@ -26,6 +26,7 @@ CREATE UNIQUE INDEX [Index_Stocks_ByCode] ON [Stocks]
 	[ASXCode] ASC, 
 	[FromDate] ASC
 );
+
 CREATE INDEX [Index_Stocks_ByParent] ON [Stocks]
 (
 	[Parent]  ASC

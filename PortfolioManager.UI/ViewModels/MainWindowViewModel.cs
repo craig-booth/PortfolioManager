@@ -175,7 +175,9 @@ namespace PortfolioManager.UI.ViewModels
             if (!Path.IsPathRooted(portfolioDatabasePath))
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
 
-            await _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath);
+            var livePortfolioDatabasePath = Path.GetTempFileName();
+
+            await _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath, livePortfolioDatabasePath);
 
             var summaryService = _PortfolioManagerService.GetService<IPortfolioSummaryService>();
             var responce = await summaryService.GetProperties();
@@ -185,8 +187,6 @@ namespace PortfolioManager.UI.ViewModels
 
             EditTransactionWindow.PortfolioManagerService = _PortfolioManagerService;
             CreateTransactionsWindow.PortfolioManagerService = _PortfolioManagerService;
-            //    var ui = TaskScheduler.FromCurrentSynchronizationContext();
-            //    Task.Run(() => { _StockServiceRepository.DownloadUpdatedData(); }).ContinueWith(t => { (SelectedPage as PortfolioViewModel)?.RefreshView(); }, ui);
         }
    
         private void PopulateFinancialYearList(DateTime startDate)

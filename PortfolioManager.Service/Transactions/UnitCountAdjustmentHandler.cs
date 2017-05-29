@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
 
         }
@@ -26,7 +26,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var unitCountAdjustment = transaction as UnitCountAdjustment;
 
-            var stock = _StockService.Get(unitCountAdjustment.ASXCode, unitCountAdjustment.TransactionDate);
+            var stock = _StockQuery.GetByASXCode(unitCountAdjustment.ASXCode, unitCountAdjustment.TransactionDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(unitCountAdjustment, "Cannot adjust unit count of stapled securities. Adjust unit count of child securities instead");

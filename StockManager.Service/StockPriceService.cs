@@ -15,6 +15,7 @@ namespace StockManager.Service
     {
 
         private readonly IStockDatabase _Database;
+        private readonly ILiveStockPriceDatabase _LiveStockPriceDatabase;
         private readonly IStockPriceDownloader _StockPriceDownloader;
         private readonly IHistoricalPriceDownloader _HistoricalPriceDownloader;
         private readonly ITradingDayDownloader _TradingDayDownloader;
@@ -23,9 +24,10 @@ namespace StockManager.Service
 
         private Dictionary<Guid, decimal> _StockQuoteCache;
 
-        public StockPriceService(IStockDatabase database, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader, ITradingDayDownloader tradingDayDownloader)
+        public StockPriceService(IStockDatabase database, ILiveStockPriceDatabase livePriceDatabase, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader, ITradingDayDownloader tradingDayDownloader)
         {
             _Database = database;
+            _LiveStockPriceDatabase = livePriceDatabase;
 
             _NonTradingDays = new HashSet<DateTime>();
 
@@ -147,30 +149,40 @@ namespace StockManager.Service
             }
 
             var stockQuotes = await _StockPriceDownloader.GetMultipleQuotes(asxCodes);
-            foreach (var stockQuote in stockQuotes)
+
+            using (var unitOfWork = _LiveStockPriceDatabase.CreateUnitOfWork())
             {
-                var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
-                if (stock != null)
+                foreach (var stockQuote in stockQuotes)
                 {
-                    if (_StockQuoteCache.ContainsKey(stock.Id))
-                        _StockQuoteCache[stock.Id] = stockQuote.Price;
-                    else
-                        _StockQuoteCache.Add(stock.Id, stockQuote.Price);
-
-                    if (stock.Type == StockType.StapledSecurity)
+                    var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
+                    if (stock != null)
                     {
-                        var childStocks = stocks.Where(x => x.ParentId == stock.Id);
-                        foreach (var childStock in childStocks)
-                        {
-                            var percentOfPrice = _Database.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
+                        if (_StockQuoteCache.ContainsKey(stock.Id))
+                            _StockQuoteCache[stock.Id] = stockQuote.Price;
+                        else
+                            _StockQuoteCache.Add(stock.Id, stockQuote.Price);
 
-                            if (_StockQuoteCache.ContainsKey(childStock.Id))
-                                _StockQuoteCache[childStock.Id] = stockQuote.Price * percentOfPrice;
-                            else
-                                _StockQuoteCache.Add(childStock.Id, stockQuote.Price * percentOfPrice);
+                        unitOfWork.LivePriceRepository.Update(stock.Id, stockQuote.Price);
+
+                        if (stock.Type == StockType.StapledSecurity)
+                        {
+                            var childStocks = stocks.Where(x => x.ParentId == stock.Id);
+                            foreach (var childStock in childStocks)
+                            {
+                                var percentOfPrice = _Database.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
+
+                                if (_StockQuoteCache.ContainsKey(childStock.Id))
+                                    _StockQuoteCache[childStock.Id] = stockQuote.Price * percentOfPrice;
+                                else
+                                    _StockQuoteCache.Add(childStock.Id, stockQuote.Price * percentOfPrice);
+
+                                unitOfWork.LivePriceRepository.Update(childStock.Id, stockQuote.Price * percentOfPrice);
+                            }
                         }
                     }
                 }
+
+                unitOfWork.Save();
             }
         }
 

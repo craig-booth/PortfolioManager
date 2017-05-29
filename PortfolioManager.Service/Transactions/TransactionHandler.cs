@@ -10,7 +10,6 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Transactions
 {
@@ -22,7 +21,7 @@ namespace PortfolioManager.Service.Transactions
     abstract class TransacactionHandler
     {
         protected readonly IPortfolioQuery _PortfolioQuery;
-        protected readonly StockService _StockService;
+        protected readonly IStockQuery _StockQuery;
         protected readonly PortfolioUtils _PortfolioUtils;
 
         protected TransacactionHandler()
@@ -30,11 +29,11 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
+        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
-            _PortfolioUtils = new Utils.PortfolioUtils(_PortfolioQuery, stockQuery, stockDatabase, _StockService); 
+            _StockQuery = stockQuery;
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, livePriceQuery); 
         }
 
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)
@@ -43,7 +42,7 @@ namespace PortfolioManager.Service.Transactions
             if (stock.Type == StockType.StapledSecurity)
             {
                 /* Get child stocks */
-                var childStocks = _StockService.GetChildStocks(stock, fromDate);
+                var childStocks = _StockQuery.GetChildStocks(stock.Id, fromDate);
 
                 /* Apportion amount and cost base */
                 ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[childStocks.Count];
@@ -52,7 +51,7 @@ namespace PortfolioManager.Service.Transactions
                 int i = 0;
                 foreach (Stock childStock in childStocks)
                 {
-                    decimal percentageOfParent = _StockService.PercentageOfParentCostBase(childStock, fromDate);
+                    decimal percentageOfParent = _StockQuery.PercentOfParentCost(childStock.ParentId, childStock.Id, fromDate);
                     int relativeValue = (int)(percentageOfParent * 10000);
 
                     apportionedAmounts[i].Units = relativeValue;

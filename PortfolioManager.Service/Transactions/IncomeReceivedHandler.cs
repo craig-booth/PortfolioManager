@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
     class IncomeReceivedHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
         }
 
@@ -25,7 +25,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var incomeReceived = transaction as IncomeReceived;
 
-            var stock = _StockService.Get(incomeReceived.ASXCode, incomeReceived.RecordDate);
+            var stock = _StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(incomeReceived, "Cannot have a income for stapled securities. Income should be recorded against child securities instead");

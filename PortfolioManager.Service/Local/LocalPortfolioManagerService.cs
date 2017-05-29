@@ -28,34 +28,35 @@ namespace PortfolioManager.Service.Local
 
         }
 
-        public async Task<bool> Connect(string portfolioDatabasePath, string stockDatabasePath)
+        public async Task<bool> Connect(string portfolioDatabasePath, string stockDatabasePath, string liveStockPriceDatabasePath)
         {
             IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDatabasePath);
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
+            ILiveStockPriceDatabase liveStockPriceDatabase = new SQLiteLiveStockPriceDatabase(liveStockPriceDatabasePath);
 
-            var stockServiceRepository = new StockServiceRepository(stockDatabase);
+            var stockServiceRepository = new StockServiceRepository(stockDatabase, liveStockPriceDatabase);
             var stockQuery = stockDatabase.StockQuery;
+            var listPriceQuery = liveStockPriceDatabase.LivePriceQuery;
             var corporateActionQuery = stockDatabase.CorporateActionQuery;
 
             var stockService = new Obsolete.StockService(stockServiceRepository);
-            var attachmentService = new Obsolete.AttachmentService(portfolioDatabase);
 
-            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, stockService));
-            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, stockService));
+            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, listPriceQuery));
+            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, listPriceQuery));
             _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, new CorporateActionHandlerFactory(portfolioDatabase.PortfolioQuery, stockService)));
-            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(portfolioDatabase, stockDatabase, stockService));
-            _ServiceFactory.Register<IHoldingService>(() => new HoldingService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, stockService));
+            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(portfolioDatabase, stockDatabase.StockQuery, listPriceQuery));
+            _ServiceFactory.Register<IHoldingService>(() => new HoldingService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, listPriceQuery));
             _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(portfolioDatabase.PortfolioQuery));
             _ServiceFactory.Register<IIncomeService>(() => new IncomeService(portfolioDatabase.PortfolioQuery, stockService));
             _ServiceFactory.Register<IStockService>(() => new StockService(stockService));
 
-            SetMapping(stockService);
+            SetMapping(stockQuery);
             Mapper.AssertConfigurationIsValid();
 
             LoadTransactions(portfolioDatabase);
-
+            
             await stockServiceRepository.DownloadUpdatedData();
 
             return true;
@@ -79,9 +80,9 @@ namespace PortfolioManager.Service.Local
             }
         }
 
-        private void SetMapping(Obsolete.StockService stockService)
+        private void SetMapping(IStockQuery stockQuery)
         {
-            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(stockService)));
+            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(stockQuery)));
         }
 
     }
@@ -89,11 +90,11 @@ namespace PortfolioManager.Service.Local
 
     class ModelToServiceMapping : Profile
     {
-        private readonly Obsolete.StockService _StockService;
+        private readonly IStockQuery _StockQuery;
 
-        public ModelToServiceMapping(Obsolete.StockService stockService)
+        public ModelToServiceMapping(IStockQuery stockQuery)
         {
-            _StockService = stockService;
+            _StockQuery = stockQuery;
 
             CreateMap<Transaction, TransactionItem>()
                 .ForMember(dest => dest.Stock, opts => opts.MapFrom(src => StockForTransaction(src)))
@@ -141,7 +142,7 @@ namespace PortfolioManager.Service.Local
                 return new StockItem(Guid.Empty, "", "");
             try
             {
-                var stock = _StockService.Get(transaction.ASXCode, transaction.TransactionDate);
+                var stock = _StockQuery.GetByASXCode(transaction.ASXCode, transaction.TransactionDate);
                 return new StockItem(stock);
             }
             catch

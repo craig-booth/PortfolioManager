@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
     class ReturnOfCapitalHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
 
         }
@@ -26,7 +26,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var returnOfCapital = transaction as ReturnOfCapital;
 
-            var stock = _StockService.Get(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
+            var stock = _StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");

@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
 
         }
@@ -25,7 +25,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var costBaseAdjustment = transaction as CostBaseAdjustment;
 
-            var stock = _StockService.Get(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
+            var stock = _StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
