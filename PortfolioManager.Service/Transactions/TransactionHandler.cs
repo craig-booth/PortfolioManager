@@ -22,7 +22,7 @@ namespace PortfolioManager.Service.Transactions
     abstract class TransacactionHandler
     {
         protected readonly IPortfolioQuery _PortfolioQuery;
-        protected readonly StockService _StockService;
+        protected readonly IStockQuery _StockQuery;
         protected readonly PortfolioUtils _PortfolioUtils;
 
         protected TransacactionHandler()
@@ -30,11 +30,11 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
+        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
-            _PortfolioUtils = new Utils.PortfolioUtils(_PortfolioQuery, stockQuery, stockDatabase); 
+            _StockQuery = stockQuery;
+            _PortfolioUtils = new PortfolioUtils(_PortfolioQuery, stockQuery, stockDatabase); 
         }
 
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)
@@ -43,28 +43,14 @@ namespace PortfolioManager.Service.Transactions
             if (stock.Type == StockType.StapledSecurity)
             {
                 /* Get child stocks */
-                var childStocks = _StockService.GetChildStocks(stock, fromDate);
+                var childStocks = _StockQuery.GetChildStocks(stock.Id, fromDate);
 
                 /* Apportion amount and cost base */
-                ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[childStocks.Count];
-                ApportionedCurrencyValue[] apportionedCostBases = new ApportionedCurrencyValue[childStocks.Count];
-                ApportionedCurrencyValue[] apportionedUnitPrices = new ApportionedCurrencyValue[childStocks.Count];
+                var apportionedAmounts = _PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, amount);
+                var apportionedCostBases = _PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, costBase);
+                var apportionedUnitPrices = _PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, unitPrice);
+
                 int i = 0;
-                foreach (Stock childStock in childStocks)
-                {
-                    decimal percentageOfParent = _StockService.PercentageOfParentCostBase(childStock, fromDate);
-                    int relativeValue = (int)(percentageOfParent * 10000);
-
-                    apportionedAmounts[i].Units = relativeValue;
-                    apportionedCostBases[i].Units = relativeValue;
-                    apportionedUnitPrices[i].Units = relativeValue;
-                    i++;
-                }
-                MathUtils.ApportionAmount(amount, apportionedAmounts);
-                MathUtils.ApportionAmount(costBase, apportionedCostBases);
-                MathUtils.ApportionAmount(unitPrice, apportionedUnitPrices);
-
-                i = 0;
                 foreach (Stock childStock in childStocks)
                 {
                     var childParcel = new ShareParcel(fromDate, DateUtils.NoEndDate, aquisitionDate, childStock.Id, units, apportionedUnitPrices[i].Amount, apportionedAmounts[i].Amount, apportionedCostBases[i].Amount, purchaseId);

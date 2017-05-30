@@ -9,19 +9,17 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.CorporateActions
 {
     class DividendHandler : ICorporateActionHandler 
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockService _StockService;
+        private readonly IStockQuery _StockQuery;
 
-        public DividendHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+        public DividendHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
+            _StockQuery = stockQuery;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -31,12 +29,12 @@ namespace PortfolioManager.Service.CorporateActions
             var transactions = new List<Transaction>();
 
             /* locate parcels that the dividend applies to */
-            var dividendStock = _StockService.Get(dividend.Stock, dividend.ActionDate);
+            var dividendStock = _StockQuery.Get(dividend.Stock, dividend.ActionDate);
             var parcels = _PortfolioQuery.GetParcelsForStock(dividendStock.Id, dividend.ActionDate, dividend.ActionDate);
             if (parcels.Count == 0)
                 return transactions;
 
-            var stock = _StockService.Get(dividend.Stock, dividend.PaymentDate);
+            var stock = _StockQuery.Get(dividend.Stock, dividend.PaymentDate);
 
             var unitsHeld = parcels.Sum(x => x.Units);
             var amountPaid = (unitsHeld * dividend.DividendAmount).ToCurrency(stock.DividendRoundingRule);
@@ -118,7 +116,7 @@ namespace PortfolioManager.Service.CorporateActions
         {
             Dividend dividend = corporateAction as Dividend;
 
-            string asxCode = _StockService.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
+            string asxCode = _StockQuery.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
            
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, dividend.PaymentDate, dividend.PaymentDate);
             return (transactions.Count() > 0); 

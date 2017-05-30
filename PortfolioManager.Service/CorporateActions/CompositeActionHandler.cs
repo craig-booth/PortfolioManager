@@ -8,20 +8,18 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.CorporateActions
 {
     class CompositeActionHandler : ICorporateActionHandler
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockService _StockService;
+        private readonly IStockQuery _StockQuery;
         private readonly ICorporateActionHandlerFactory _CorporateActionHandlerFactory;
 
-        public CompositeActionHandler(IPortfolioQuery portfoliouery, StockService stockService, ICorporateActionHandlerFactory corporateActionHandlerFactory)
+        public CompositeActionHandler(IPortfolioQuery portfoliouery, IStockQuery stockQuery, ICorporateActionHandlerFactory corporateActionHandlerFactory)
         {
             _PortfolioQuery = portfoliouery;
-            _StockService = stockService;
+            _StockQuery = stockQuery;
             _CorporateActionHandlerFactory = corporateActionHandlerFactory;
         }
 
@@ -31,7 +29,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             var transactions = new List<Transaction>();
 
-            var stock = _StockService.Get(compositeAction.Stock, compositeAction.ActionDate);
+            var stock = _StockQuery.Get(compositeAction.Stock, compositeAction.ActionDate);
 
             /* locate parcels that the capital return applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, compositeAction.ActionDate, compositeAction.ActionDate);

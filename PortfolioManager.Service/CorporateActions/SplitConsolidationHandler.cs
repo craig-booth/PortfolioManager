@@ -9,19 +9,18 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.CorporateActions
 {
     class SplitConsolidationHandler : ICorporateActionHandler
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockService _StockService;
+        private readonly IStockQuery _StockQuery;
 
-        public SplitConsolidationHandler(IPortfolioQuery portfolioQuery, StockService stockService) 
+        public SplitConsolidationHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery) 
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
+            _StockQuery = stockQuery;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -30,7 +29,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             var transactions = new List<Transaction>();
 
-            var stock = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate);
+            var stock = _StockQuery.Get(splitConsolidation.Stock, splitConsolidation.ActionDate);
 
             /* locate parcels that the capital return applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
@@ -55,7 +54,7 @@ namespace PortfolioManager.Service.CorporateActions
         {
             SplitConsolidation splitConsolidation = corporateAction as SplitConsolidation;
 
-            string asxCode = _StockService.Get(splitConsolidation.Stock, splitConsolidation.ActionDate).ASXCode;
+            string asxCode = _StockQuery.Get(splitConsolidation.Stock, splitConsolidation.ActionDate).ASXCode;
 
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
             return (transactions.Count() > 0);

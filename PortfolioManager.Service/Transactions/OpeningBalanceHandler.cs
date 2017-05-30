@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.Transactions
 { 
 
     class OpeningBalanceHandler : TransacactionHandler, ITransactionHandler
     {
-        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
+            : base (portfolioQuery, stockQuery, stockDatabase)
         {
 
         }

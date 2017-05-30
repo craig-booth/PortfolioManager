@@ -19,7 +19,7 @@ namespace PortfolioManager.Service.Local
         private readonly IStockQuery _StockQuery;
         private readonly PortfolioUtils _PortfolioUtils;
 
-        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, Obsolete.StockService stockService)
+        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
         {
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;

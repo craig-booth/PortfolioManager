@@ -10,14 +10,12 @@ using PortfolioManager.Model.Portfolios;
 
 using PortfolioManager.Service.Utils;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.Transactions
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler
     {
-        public AquisitionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public AquisitionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
+            : base (portfolioQuery, stockQuery, stockDatabase)
         {
         }
 

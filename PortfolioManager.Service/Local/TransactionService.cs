@@ -18,21 +18,19 @@ namespace PortfolioManager.Service.Local
     {
         private readonly ServiceFactory<ITransactionHandler> _TransactionHandlers;
         private readonly IPortfolioDatabase _PortfolioDatabase;
-        private readonly Obsolete.StockService _StockService;
 
-        public TransactionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase, Obsolete.StockService stockService)
+        public TransactionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
             _PortfolioDatabase = portfolioDatabase;
-            _StockService = stockService;
 
             _TransactionHandlers = new ServiceFactory<Transactions.ITransactionHandler>();
-            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
-            _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
-            _TransactionHandlers.Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
-            _TransactionHandlers.Register<IncomeReceived>(() => new IncomeReceivedHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
-            _TransactionHandlers.Register<OpeningBalance>(() => new OpeningBalanceHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
-            _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
-            _TransactionHandlers.Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase, _StockService));
+            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
+            _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
+            _TransactionHandlers.Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
+            _TransactionHandlers.Register<IncomeReceived>(() => new IncomeReceivedHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
+            _TransactionHandlers.Register<OpeningBalance>(() => new OpeningBalanceHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
+            _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
+            _TransactionHandlers.Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(_PortfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, stockDatabase));
             _TransactionHandlers.Register<CashTransaction>(() => new CashTransactionHandler());
         }
 

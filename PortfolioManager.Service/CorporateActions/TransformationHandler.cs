@@ -9,19 +9,17 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.CorporateActions
 {
     class TransformationHandler : ICorporateActionHandler  
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockService _StockService;
+        private readonly IStockQuery _StockQuery;
 
-        public TransformationHandler(IPortfolioQuery portfolioQuery, StockService stockService)
+        public TransformationHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockService = stockService;
+            _StockQuery = stockQuery;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -31,7 +29,7 @@ namespace PortfolioManager.Service.CorporateActions
             var transactions = new List<Transaction>();
 
             /* locate parcels that the transformation applies to */
-            var transfomationStock = _StockService.Get(transformation.Stock, transformation.ActionDate);
+            var transfomationStock = _StockQuery.Get(transformation.Stock, transformation.ActionDate);
             var ownedParcels = _PortfolioQuery.GetParcelsForStock(transfomationStock.Id, transformation.ActionDate, transformation.ActionDate);
             if (ownedParcels.Count == 0)
                 return transactions;
@@ -47,7 +45,7 @@ namespace PortfolioManager.Service.CorporateActions
                     {
                         int units = (int)Math.Ceiling(parcel.Units * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
                         decimal costBase = parcel.CostBase * resultingStock.CostBase;
-                        var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
+                        var stock = _StockQuery.Get(resultingStock.Stock, transformation.ImplementationDate);
 
                         transactions.Add(new OpeningBalance()
                         {
@@ -67,7 +65,7 @@ namespace PortfolioManager.Service.CorporateActions
                 if (transformation.ResultingStocks.Any())
                 {
                     decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBase);
-                    var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
+                    var stock = _StockQuery.Get(transformation.Stock, transformation.ImplementationDate);
 
                     transactions.Add(new CostBaseAdjustment()
                     {
@@ -90,7 +88,7 @@ namespace PortfolioManager.Service.CorporateActions
                     int units = (int)Math.Ceiling(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
                     decimal costBase = totalCostBase * resultingStock.CostBase;
                     capitalReturn += units * resultingStock.CostBase;
-                    var stock = _StockService.Get(resultingStock.Stock, transformation.ImplementationDate);
+                    var stock = _StockQuery.Get(resultingStock.Stock, transformation.ImplementationDate);
 
                     transactions.Add(new OpeningBalance()
                     {
@@ -108,7 +106,7 @@ namespace PortfolioManager.Service.CorporateActions
                 /* Reduce the costbase of the original parcels */
                 if (capitalReturn != 0.00m)
                 {
-                    var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
+                    var stock = _StockQuery.Get(transformation.Stock, transformation.ImplementationDate);
 
                     transactions.Add(new ReturnOfCapital()
                     {
@@ -126,7 +124,7 @@ namespace PortfolioManager.Service.CorporateActions
             /* Handle disposal of original parcels */
             if (transformation.CashComponent > 0)
             {
-                var stock = _StockService.Get(transformation.Stock, transformation.ImplementationDate);
+                var stock = _StockQuery.Get(transformation.Stock, transformation.ImplementationDate);
 
                 transactions.Add(new Disposal()
                 {
@@ -154,12 +152,12 @@ namespace PortfolioManager.Service.CorporateActions
 
             if (transformation.ResultingStocks.Any())
             {
-                asxCode = _StockService.Get(transformation.ResultingStocks.First().Stock, transformation.ImplementationDate).ASXCode;
+                asxCode = _StockQuery.GetASXCode(transformation.ResultingStocks.First().Stock, transformation.ImplementationDate);
                 transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.OpeningBalance, transformation.ImplementationDate, transformation.ImplementationDate);
             }
             else
             { 
-                asxCode = _StockService.Get(transformation.Stock, transformation.ImplementationDate).ASXCode;
+                asxCode = _StockQuery.GetASXCode(transformation.Stock, transformation.ImplementationDate);
 
                 transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Disposal, transformation.ImplementationDate, transformation.ImplementationDate);
             }

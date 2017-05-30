@@ -10,14 +10,12 @@ using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Utils;
 
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.Transactions
 {
     class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase, StockService stockService)
-            : base (portfolioQuery, stockQuery, stockDatabase, stockService)
+        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
+            : base (portfolioQuery, stockQuery, stockDatabase)
         {
 
         }
