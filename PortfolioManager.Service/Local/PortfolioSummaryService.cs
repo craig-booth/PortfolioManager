@@ -17,12 +17,14 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly IStockQuery _StockQuery;
         private readonly PortfolioUtils _PortfolioUtils;
+        
 
-        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
+        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, stockDatabase);
+
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, livePriceQuery);
         }
 
         public Task<PortfolioPropertiesResponce> GetProperties()

@@ -12,8 +12,8 @@ namespace PortfolioManager.Service.Transactions
 
     class OpeningBalanceHandler : TransacactionHandler, ITransactionHandler
     {
-        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
-            : base (portfolioQuery, stockQuery, stockDatabase)
+        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
 
         }
@@ -22,7 +22,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var openingBalance = transaction as OpeningBalance;
 
-            var stock = _StockService.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
+            var stock = _StockQuery.GetByASXCode(openingBalance.ASXCode, openingBalance.TransactionDate);
 
             Guid purchaseId = openingBalance.PurchaseId;
             if (purchaseId == Guid.Empty)

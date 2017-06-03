@@ -10,7 +10,6 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
-using PortfolioManager.Service.Obsolete;
 
 namespace PortfolioManager.Service.Transactions
 {
@@ -30,11 +29,11 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
+        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;
-            _PortfolioUtils = new PortfolioUtils(_PortfolioQuery, stockQuery, stockDatabase); 
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, livePriceQuery); 
         }
 
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)

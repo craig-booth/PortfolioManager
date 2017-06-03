@@ -14,8 +14,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler
     {
-        public AquisitionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
-            : base (portfolioQuery, stockQuery, stockDatabase)
+        public AquisitionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
         }
 
@@ -23,7 +23,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var aquisition = transaction as Aquisition;
 
-            var stock = _StockService.Get(aquisition.ASXCode, aquisition.TransactionDate);
+            var stock = _StockQuery.GetByASXCode(aquisition.ASXCode, aquisition.TransactionDate);
 
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(aquisition, "Cannot aquire child securities. Aquire stapled security instead");

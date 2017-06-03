@@ -84,11 +84,15 @@
     <Compile Include="SQLiteStockPriceRepository.cs" />
     <Compile Include="SQLiteUtils.cs" />
     <Compile Include="Stocks\CapitalReturnDetailRepository.cs" />
+    <Compile Include="Stocks\SQLiteLiveStockPriceQuery.cs" />
+    <Compile Include="Stocks\SQLiteLiveStockPriceRepository.cs" />
     <Compile Include="Stocks\CompositeActionDetailRepository.cs" />
     <Compile Include="Stocks\DividendDetailRepository.cs" />
     <Compile Include="Stocks\SplitConsolidtionDetailRepository.cs" />
     <Compile Include="Stocks\SQLiteCorporateActionQuery.cs" />
     <Compile Include="Stocks\CorporateActionRepository.cs" />
+    <Compile Include="Stocks\SQLiteLiveStockPriceDatabase.cs" />
+    <Compile Include="Stocks\SQLiteLiveStockPriceUnitOfWork.cs" />
     <Compile Include="Stocks\SQLiteRelateNTARepository.cs" />
     <Compile Include="Stocks\SQLiteStockDatabase.cs" />
     <Compile Include="Stocks\SQLiteStockEntityCreator.cs" />
@@ -115,6 +119,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LivePrice Database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Portfolio Database.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

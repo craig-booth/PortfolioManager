@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class DisposalHandler : TransacactionHandler, ITransactionHandler
     {
-        public DisposalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase)
-            : base (portfolioQuery, stockQuery, stockDatabase)
+        public DisposalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+            : base (portfolioQuery, stockQuery, livePriceQuery)
         {
 
         }
@@ -25,7 +25,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var disposal = transaction as Disposal;
 
-            var stock = _StockService.Get(disposal.ASXCode, disposal.TransactionDate);
+            var stock = _StockQuery.GetByASXCode(disposal.ASXCode, disposal.TransactionDate);
 
             if (stock.ParentId != Guid.Empty)
                 throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
@@ -49,7 +49,7 @@ namespace PortfolioManager.Service.Transactions
             {
                 foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
                 {
-                    var childStocks = _StockService.GetChildStocks(stock, disposal.TransactionDate);
+                    var childStocks = _StockQuery.GetChildStocks(stock.Id, disposal.TransactionDate);
 
                     // Apportion amount based on NTA of child stocks
                     var amountsReceived = _PortfolioUtils.ApportionAmountOverChildStocks(childStocks, disposal.TransactionDate, parcelSold.AmountReceived);

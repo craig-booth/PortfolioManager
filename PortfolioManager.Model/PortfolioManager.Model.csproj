@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Generic.cs" />
+    <Compile Include="Data\LiveStockPrice.cs" />
     <Compile Include="Data\Portfolio.cs" />
     <Compile Include="Data\Stock.cs" />
     <Compile Include="Portfolios\Attachment.cs" />
