@@ -18,10 +18,10 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockUtils _StockUtils;
 
-        public IncomeService(IPortfolioQuery portfolioQuery, IStockDatabase stockDatabase, IStockQuery stockQuery)
+        public IncomeService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockUtils = new StockUtils(stockQuery, stockDatabase);
+            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
         }
 
         public Task<IncomeResponce> GetIncome(DateTime fromDate, DateTime toDate)

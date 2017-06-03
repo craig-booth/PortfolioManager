@@ -54,12 +54,14 @@ namespace PortfolioManager.Service.Utils
 
         public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
         {
-            return _StockService.StockPriceService.GetClosingPrices(_StockQuery.Get(stock, fromDate), fromDate, toDate);
-        } 
+            return new Dictionary<DateTime, decimal>();
+            //return _StockService.StockPriceService.GetClosingPrices(_StockQuery.Get(stock, fromDate), fromDate, toDate);
+        }  
 
         public bool TradingDay(DateTime date)
         {
-            return _StockService.StockPriceService.TradingDay(date);
-        } 
+            return true;
+            //return _StockService.StockPriceService.TradingDay(date);
+        }  
     }
 }

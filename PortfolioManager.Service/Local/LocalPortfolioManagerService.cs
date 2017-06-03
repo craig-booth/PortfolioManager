@@ -36,20 +36,18 @@ namespace PortfolioManager.Service.Local
 
             var stockServiceRepository = new StockServiceRepository(stockDatabase, liveStockPriceDatabase);
             var stockQuery = stockDatabase.StockQuery;
-            var listPriceQuery = liveStockPriceDatabase.LivePriceQuery;
+            var livePriceQuery = liveStockPriceDatabase.LivePriceQuery;
             var corporateActionQuery = stockDatabase.CorporateActionQuery;
 
-            var stockService = new Obsolete.StockService(stockServiceRepository);
-
-            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, listPriceQuery));
-            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, listPriceQuery));
-            _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockService));
-            _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockService));
-            _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockService, new CorporateActionHandlerFactory(portfolioDatabase.PortfolioQuery, stockService)));
-            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(portfolioDatabase, stockDatabase.StockQuery, listPriceQuery));
-            _ServiceFactory.Register<IHoldingService>(() => new HoldingService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, listPriceQuery));
+            _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, livePriceQuery));
+            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, livePriceQuery));
+            _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, livePriceQuery));
+            _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, livePriceQuery));
+            _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(portfolioDatabase.PortfolioQuery, corporateActionQuery, stockQuery, livePriceQuery, new CorporateActionHandlerFactory(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery)));
+            _ServiceFactory.Register<ITransactionService>(() => new TransactionService(portfolioDatabase, stockDatabase.StockQuery, livePriceQuery));
+            _ServiceFactory.Register<IHoldingService>(() => new HoldingService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, livePriceQuery));
             _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(portfolioDatabase.PortfolioQuery));
-            _ServiceFactory.Register<IIncomeService>(() => new IncomeService(portfolioDatabase.PortfolioQuery, stockDatabase, stockDatabase.StockQuery));
+            _ServiceFactory.Register<IIncomeService>(() => new IncomeService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery, livePriceQuery));
             _ServiceFactory.Register<IStockService>(() => new StockService(stockDatabase.StockQuery));
 
             SetMapping(stockQuery);

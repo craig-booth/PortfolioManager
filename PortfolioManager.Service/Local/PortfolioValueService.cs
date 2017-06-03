@@ -19,10 +19,10 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockUtils _StockUtils;
 
-        public PortfolioValueService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, IStockDatabase stockDatabase) 
+        public PortfolioValueService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery) 
         {
             _PortfolioQuery = portfolioQuery;
-            _StockUtils = new StockUtils(stockQuery, stockDatabase);
+            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
         }
 
         public Task<PortfolioValueResponce> GetPortfolioValue(DateTime fromDate, DateTime toDate, ValueFrequency frequency)
