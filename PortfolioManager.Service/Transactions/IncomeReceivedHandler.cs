@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
     class IncomeReceivedHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
-            : base (portfolioQuery, stockQuery, livePriceQuery)
+        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+            : base (portfolioQuery, stockQuery)
         {
         }
 

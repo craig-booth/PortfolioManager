@@ -269,28 +269,28 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return (decimal)value / 100000;
         }
 
-        public decimal GetClosingPrice(Guid stock, DateTime date)
+        public decimal GetPrice(Guid stock, DateTime date)
         {
-            return GetClosingPrice(stock, date, false);
+            return GetPrice(stock, date, false);
         }
 
-        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price)
+        public bool TryGetPrice(Guid stock, DateTime date, out decimal price)
         {
-            return TryGetClosingPrice(stock, date, out price, false);
+            return TryGetPrice(stock, date, out price, false);
         }
 
 
-        public decimal GetClosingPrice(Guid stock, DateTime date, bool exact)
+        public decimal GetPrice(Guid stock, DateTime date, bool exact)
         {
             decimal closingPrice;
 
-            if (TryGetClosingPrice(stock, date, out closingPrice, exact))
+            if (TryGetPrice(stock, date, out closingPrice, exact))
                 return closingPrice;
             else
                 return 0.00m;
         }
 
-        public bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price, bool exact)
+        public bool TryGetPrice(Guid stock, DateTime date, out decimal price, bool exact)
         {
             if (exact)
                 return GetExactClosingPrice(stock, date, out price);
@@ -298,18 +298,18 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 return GetClosingPrice(stock, date, out price);
         }
 
-        private SQLiteCommand _GetClosingPriceCommand;
+        private SQLiteCommand _GetPriceCommand;
         private bool GetClosingPrice(Guid stock, DateTime date, out decimal price)
         {
-            if (_GetClosingPriceCommand == null)
+            if (_GetPriceCommand == null)
             {
-                _GetClosingPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] <= @Date ORDER BY [Date] DESC LIMIT 1", _Connection);
-                _GetClosingPriceCommand.Prepare();
+                _GetPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] <= @Date ORDER BY [Date] DESC LIMIT 1", _Connection);
+                _GetPriceCommand.Prepare();
             }
 
-            _GetClosingPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetClosingPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetClosingPriceCommand.ExecuteReader();
+            _GetPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
+            _GetPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            SQLiteDataReader reader = _GetPriceCommand.ExecuteReader();
 
             if (reader.Read())
             {
@@ -326,18 +326,18 @@ namespace PortfolioManager.Data.SQLite.Stocks
         }
 
 
-        private SQLiteCommand _GetExactClosingPriceCommand;
+        private SQLiteCommand _GetExactPriceCommand;
         private bool GetExactClosingPrice(Guid stock, DateTime date, out decimal price)
         {
-            if (_GetExactClosingPriceCommand == null)
+            if (_GetExactPriceCommand == null)
             {
-                _GetExactClosingPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
-                _GetExactClosingPriceCommand.Prepare();
+                _GetExactPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetExactPriceCommand.Prepare();
             }
 
-            _GetExactClosingPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetExactClosingPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetExactClosingPriceCommand.ExecuteReader();
+            _GetExactPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
+            _GetExactPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            SQLiteDataReader reader = _GetExactPriceCommand.ExecuteReader();
 
             if (reader.Read())
             {
@@ -354,21 +354,21 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         }
 
-        private SQLiteCommand _GetClosingPricesCommand;
-        public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
+        private SQLiteCommand _GetPricesCommand;
+        public Dictionary<DateTime, decimal> GetPrices(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var prices = new Dictionary<DateTime, decimal>();
 
-            if (_GetClosingPricesCommand == null)
+            if (_GetPricesCommand == null)
             {
-                _GetClosingPricesCommand = new SQLiteCommand("SELECT [Date], [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] BETWEEN @FromDate AND @ToDate ORDER BY [Date]", _Connection);
-                _GetClosingPricesCommand.Prepare();
+                _GetPricesCommand = new SQLiteCommand("SELECT [Date], [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] BETWEEN @FromDate AND @ToDate ORDER BY [Date]", _Connection);
+                _GetPricesCommand.Prepare();
             }
 
-            _GetClosingPricesCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetClosingPricesCommand.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            _GetClosingPricesCommand.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetClosingPricesCommand.ExecuteReader();
+            _GetPricesCommand.Parameters.AddWithValue("@Stock", stock.ToString());
+            _GetPricesCommand.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
+            _GetPricesCommand.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
+            SQLiteDataReader reader = _GetPricesCommand.ExecuteReader();
 
             while (reader.Read())
             {
@@ -391,7 +391,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_GetLatestClosingPriceCommand == null)
             {
-                _GetLatestClosingPriceCommand = new SQLiteCommand("SELECT[Date] FROM[StockPrices] WHERE[Stock] = @Stock ORDER BY[Date] DESC LIMIT 1", _Connection);
+                _GetLatestClosingPriceCommand = new SQLiteCommand("SELECT [Date] FROM [StockPrices] WHERE [Stock] = @Stock and [Current] = 0 ORDER BY [Date] DESC LIMIT 1", _Connection);
                 _GetLatestClosingPriceCommand.Prepare();
             }
 
@@ -406,6 +406,49 @@ namespace PortfolioManager.Data.SQLite.Stocks
             reader.Close();
 
             return date;
+        }
+
+        private SQLiteCommand _TradingDayCommand;
+        public bool TradingDay(DateTime date)
+        {
+            if (_TradingDayCommand == null)
+            {
+                _TradingDayCommand = new SQLiteCommand("SELECT [Date] FROM [NonTradingDays] WHERE [Date] = @Date LIMIT 1", _Connection);
+                _TradingDayCommand.Prepare();
+            }
+
+            _TradingDayCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+
+            if (_TradingDayCommand.ExecuteScalar() == null)
+                return true;
+            else
+                return false;
+        }
+
+        private SQLiteCommand _NonTradingDaysCommand;
+        public IEnumerable<DateTime> NonTradingDays()
+        {
+            var nonTradingDays = new List<DateTime>();
+
+            if (_NonTradingDaysCommand == null)
+            {
+                _NonTradingDaysCommand = new SQLiteCommand("SELECT [Date] FROM [NonTradingDays] ORDER BY [Date]", _Connection);
+                _NonTradingDaysCommand.Prepare();
+            }
+
+            SQLiteDataReader reader = _NonTradingDaysCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                DateTime date = reader.GetDateTime(0);
+  
+                nonTradingDays.Add(date);
+            }
+
+            reader.Close();
+
+            return nonTradingDays;
+
         }
 
     }

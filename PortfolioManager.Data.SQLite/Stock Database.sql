@@ -135,6 +135,20 @@ CREATE TABLE [StockPrices]
 	[Stock]  TEXT(36) NOT NULL,
 	[Date] TEXT(10) NOT NULL,
 	[Price] INTEGER NOT NULL,
+	[Current] INTEGER NOT NULL DEFAULT 0,
 
 	PRIMARY KEY ([Stock], [Date])
+);
+
+CREATE INDEX [StockPrices_Current] ON [StockPrices]
+(
+	[Current] ASC,
+	[Stock]  ASC
+);
+
+CREATE TABLE [NonTradingDays]
+(
+	[Date] TEXT(10) NOT NULL,
+
+	PRIMARY KEY ([Date])
 );

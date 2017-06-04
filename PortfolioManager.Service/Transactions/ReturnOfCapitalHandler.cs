@@ -16,8 +16,8 @@ namespace PortfolioManager.Service.Transactions
     class ReturnOfCapitalHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
-            : base (portfolioQuery, stockQuery, livePriceQuery)
+        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+            : base (portfolioQuery, stockQuery)
         {
 
         }

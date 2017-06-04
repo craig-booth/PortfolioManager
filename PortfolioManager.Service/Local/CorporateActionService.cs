@@ -22,12 +22,12 @@ namespace PortfolioManager.Service.Local
         private readonly ICorporateActionHandlerFactory _CorporateActionHandlerFactory;
         private readonly StockUtils _StockUtils;
 
-        public CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery, ICorporateActionHandlerFactory corporateActionHandlerFactory)
+        public CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, IStockQuery stockQuery, ICorporateActionHandlerFactory corporateActionHandlerFactory)
         {
             _PortfolioQuery = portfolioQuery;
             _CorporateActionQuery = corporateActionQuery;
             _CorporateActionHandlerFactory = corporateActionHandlerFactory;
-            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
+            _StockUtils = new StockUtils(stockQuery);
         }
 
         public Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions()

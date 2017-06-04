@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using StockManager.Service;
 
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Service.Interface;
 
@@ -15,14 +15,11 @@ namespace PortfolioManager.Service.Utils
     class StockUtils
     {
         private IStockQuery _StockQuery;
-        private ILiveStockPriceQuery _LivePriceQuery;
 
-        internal StockUtils(IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+        internal StockUtils(IStockQuery stockQuery)
         {
             _StockQuery = stockQuery;
-            _LivePriceQuery = livePriceQuery;
         }
-
 
         public StockItem Get(Guid stock, DateTime date)
         {
@@ -34,34 +31,52 @@ namespace PortfolioManager.Service.Utils
             return new StockItem(_StockQuery.GetByASXCode(asxCode, date));
         } 
 
-        public decimal GetClosingPrice(Guid stock, DateTime date)
+        public decimal GetPrice(Guid stock, DateTime date)
         {
-            return _StockQuery.GetClosingPrice(stock, date);
+            return _StockQuery.GetPrice(stock, date);
         } 
 
-            public decimal GetCurrentPrice(Guid stock)
-            {          
-                return _LivePriceQuery.GetPrice(stock);
-            }
-
-            public decimal GetPrice(Guid stock, DateTime atDate)
-            {
-                if (atDate.Date == DateTime.Today)
-                    return GetCurrentPrice(stock);
-                else
-                    return GetClosingPrice(stock, atDate);
-            }
-
-        public Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate)
+        public Dictionary<DateTime, decimal> GetPrices(Guid stock, DateTime fromDate, DateTime toDate)
         {
-            return new Dictionary<DateTime, decimal>();
-            //return _StockService.StockPriceService.GetClosingPrices(_StockQuery.Get(stock, fromDate), fromDate, toDate);
+            var closingPrices = new Dictionary<DateTime, decimal>();
+
+            var priceData = _StockQuery.GetPrices(stock, fromDate, toDate);
+
+            var priceDataEnumerator = priceData.GetEnumerator();
+            priceDataEnumerator.MoveNext();
+
+            decimal lastPrice = 0.00m;
+            foreach (var date in DateUtils.DateRange(fromDate, toDate).Where(x => TradingDay(x)))
+            {
+                var currentPriceData = priceDataEnumerator.Current;
+
+                while (date > currentPriceData.Key)
+                {
+                    if (!priceDataEnumerator.MoveNext())
+                        break;
+                    currentPriceData = priceDataEnumerator.Current;
+                }
+
+                if (date == currentPriceData.Key)
+                {
+                    closingPrices.Add(date, currentPriceData.Value);
+                    lastPrice = currentPriceData.Value;
+
+                    priceDataEnumerator.MoveNext();
+                }
+                else
+                {
+                    closingPrices.Add(date, lastPrice);
+                }
+
+            }
+
+            return closingPrices;
         }  
 
         public bool TradingDay(DateTime date)
         {
-            return true;
-            //return _StockService.StockPriceService.TradingDay(date);
+            return _StockQuery.TradingDay(date);
         }  
     }
 }

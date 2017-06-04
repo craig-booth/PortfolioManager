@@ -19,10 +19,10 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockUtils _StockUtils;
 
-        public PortfolioValueService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery) 
+        public PortfolioValueService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery) 
         {
             _PortfolioQuery = portfolioQuery;
-            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
+            _StockUtils = new StockUtils(stockQuery);
         }
 
         public Task<PortfolioValueResponce> GetPortfolioValue(DateTime fromDate, DateTime toDate, ValueFrequency frequency)
@@ -72,7 +72,7 @@ namespace PortfolioManager.Service.Local
             var closingPrices = new Dictionary<Guid, Dictionary<DateTime, decimal>>();
             foreach (var holdingRange in holdingRanges)
             {
-                var priceData = _StockUtils.GetClosingPrices(holdingRange.StockId, holdingRange.StartDate, holdingRange.EndDate);
+                var priceData = _StockUtils.GetPrices(holdingRange.StockId, holdingRange.StartDate, holdingRange.EndDate);
 
                 closingPrices.Add(holdingRange.StockId, priceData);
             }

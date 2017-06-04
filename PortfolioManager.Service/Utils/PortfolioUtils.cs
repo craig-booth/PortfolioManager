@@ -18,11 +18,11 @@ namespace PortfolioManager.Service.Utils
         private IStockQuery _StockQuery;
         private StockUtils _StockUtils;
 
-        public PortfolioUtils(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+        public PortfolioUtils(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;
-            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
+            _StockUtils = new StockUtils(stockQuery);
         }
 
         public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, decimal amount)

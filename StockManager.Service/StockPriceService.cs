@@ -15,49 +15,34 @@ namespace StockManager.Service
     {
 
         private readonly IStockDatabase _Database;
-        private readonly ILiveStockPriceDatabase _LiveStockPriceDatabase;
         private readonly IStockPriceDownloader _StockPriceDownloader;
         private readonly IHistoricalPriceDownloader _HistoricalPriceDownloader;
         private readonly ITradingDayDownloader _TradingDayDownloader;
 
-        private HashSet<DateTime> _NonTradingDays;
-
-        private Dictionary<Guid, decimal> _StockQuoteCache;
-
-        public StockPriceService(IStockDatabase database, ILiveStockPriceDatabase livePriceDatabase, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader, ITradingDayDownloader tradingDayDownloader)
+        public StockPriceService(IStockDatabase database, IStockPriceDownloader stockPriceDownloader, IHistoricalPriceDownloader historicalPriceDownloader, ITradingDayDownloader tradingDayDownloader)
         {
             _Database = database;
-            _LiveStockPriceDatabase = livePriceDatabase;
-
-            _NonTradingDays = new HashSet<DateTime>();
 
             _StockPriceDownloader = stockPriceDownloader;
             _HistoricalPriceDownloader = historicalPriceDownloader;
             _TradingDayDownloader = tradingDayDownloader;
-
-            _StockQuoteCache = new Dictionary<Guid, decimal>();
         }
 
-        public decimal GetClosingPrice(Stock stock, DateTime atDate)
+        public decimal GetPrice(Stock stock, DateTime atDate)
         {
-            return _Database.StockQuery.GetClosingPrice(stock.Id, atDate);
+            return _Database.StockQuery.GetPrice(stock.Id, atDate);
         } 
 
         public decimal GetCurrentPrice(Stock stock)
         {
-            decimal price;
-
-            if (_StockQuoteCache.TryGetValue(stock.Id, out price))
-                return price;
-            else
-                return GetClosingPrice(stock, DateTime.Today);
+            return GetPrice(stock, DateTime.Today);
         } 
 
         public void AddPrice(Stock stock, DateTime atDate, decimal price)
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                unitOfWork.StockPriceRepository.Add(stock.Id, atDate, price);
+                unitOfWork.StockPriceRepository.Add(stock.Id, atDate, price, false);
                 unitOfWork.Save();
             }
         }
@@ -66,27 +51,16 @@ namespace StockManager.Service
         {
             using (IStockUnitOfWork unitOfWork = _Database.CreateUnitOfWork())
             {
-                unitOfWork.StockPriceRepository.Update(stock.Id, atDate, price);
+                unitOfWork.StockPriceRepository.Update(stock.Id, atDate, price, false);
                 unitOfWork.Save();
             }
         }
 
-        public Dictionary<DateTime, decimal> GetClosingPrices(Stock stock, DateTime fromDate, DateTime toDate)
+        public Dictionary<DateTime, decimal> GetPrices(Stock stock, DateTime fromDate, DateTime toDate)
         {
             var closingPrices = new Dictionary<DateTime, decimal>();
 
-            var priceData = _Database.StockQuery.GetClosingPrices(stock.Id, fromDate, toDate);
-
-            // Add current price
-            if (toDate >= DateTime.Today)
-            {
-                var currentPrice = GetCurrentPrice(stock);
-
-                if (priceData.ContainsKey(DateTime.Today))
-                    priceData[DateTime.Today] = currentPrice;
-                else
-                    priceData.Add(DateTime.Today, currentPrice);
-            }
+            var priceData = _Database.StockQuery.GetPrices(stock.Id, fromDate, toDate);
 
             var priceDataEnumerator = priceData.GetEnumerator();
             priceDataEnumerator.MoveNext();
@@ -134,7 +108,7 @@ namespace StockManager.Service
 
         public bool TradingDay(DateTime date)
         {
-            return (date.WeekDay() && !_NonTradingDays.Contains(date));
+            return (date.WeekDay() && ! _Database.StockQuery.TradingDay(date));
         }
 
         internal async Task DownloadCurrentPrices()
@@ -150,19 +124,21 @@ namespace StockManager.Service
 
             var stockQuotes = await _StockPriceDownloader.GetMultipleQuotes(asxCodes);
 
-            using (var unitOfWork = _LiveStockPriceDatabase.CreateUnitOfWork())
+            using (var unitOfWork = _Database.CreateUnitOfWork())
             {
                 foreach (var stockQuote in stockQuotes)
                 {
                     var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
                     if (stock != null)
                     {
-                        if (_StockQuoteCache.ContainsKey(stock.Id))
-                            _StockQuoteCache[stock.Id] = stockQuote.Price;
+                        if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
+                        {
+                            unitOfWork.StockPriceRepository.Add(stock.Id, DateTime.Today, stockQuote.Price, true);
+                        }
                         else
-                            _StockQuoteCache.Add(stock.Id, stockQuote.Price);
-
-                        unitOfWork.LivePriceRepository.Update(stock.Id, stockQuote.Price);
+                        {
+                            unitOfWork.StockPriceRepository.Update(stock.Id, DateTime.Today, stockQuote.Price, true);
+                        }                           
 
                         if (stock.Type == StockType.StapledSecurity)
                         {
@@ -171,12 +147,14 @@ namespace StockManager.Service
                             {
                                 var percentOfPrice = _Database.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
 
-                                if (_StockQuoteCache.ContainsKey(childStock.Id))
-                                    _StockQuoteCache[childStock.Id] = stockQuote.Price * percentOfPrice;
+                                if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
+                                {
+                                    unitOfWork.StockPriceRepository.Add(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
+                                }
                                 else
-                                    _StockQuoteCache.Add(childStock.Id, stockQuote.Price * percentOfPrice);
-
-                                unitOfWork.LivePriceRepository.Update(childStock.Id, stockQuote.Price * percentOfPrice);
+                                {
+                                    unitOfWork.StockPriceRepository.Update(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
+                                }
                             }
                         }
                     }
@@ -223,24 +201,29 @@ namespace StockManager.Service
             for (var year = fromYear; year <= DateTime.Today.Year; year++)
             {
                 var nonTradingDays = await _TradingDayDownloader.NonTradingDays(year);
-                foreach (var nonTradingDay in nonTradingDays)
-                    _NonTradingDays.Add(nonTradingDay);
+
+                using (var unitOfWork = _Database.CreateUnitOfWork())
+                {
+                    foreach (var nonTradingDay in nonTradingDays)
+                    {
+                        unitOfWork.NonTradingDayRepository.Add(nonTradingDay);
+                    }
+                }                    
             }
         }
 
         private void UpdateStockPrices(IStockUnitOfWork unitOfWork, IEnumerable<StockQuote> stockPrices)
         {
-             Stock stock = null;
+            Stock stock = null;
 
             foreach (var stockPrice in stockPrices)
             {
                 if (_Database.StockQuery.TryGetByASXCode(stockPrice.ASXCode, stockPrice.Date, out stock))
                 {
-                    decimal price;
-                    if (_Database.StockQuery.TryGetClosingPrice(stock.Id, stockPrice.Date, out price, true))
-                        unitOfWork.StockPriceRepository.Update(stock.Id, stockPrice.Date, stockPrice.Price);
+                    if (unitOfWork.StockPriceRepository.Exists(stock.Id, stockPrice.Date))
+                        unitOfWork.StockPriceRepository.Update(stock.Id, stockPrice.Date, stockPrice.Price, false);
                     else
-                        unitOfWork.StockPriceRepository.Add(stock.Id, stockPrice.Date, stockPrice.Price);
+                        unitOfWork.StockPriceRepository.Add(stock.Id, stockPrice.Date, stockPrice.Price, false);
                 }
             }
         } 

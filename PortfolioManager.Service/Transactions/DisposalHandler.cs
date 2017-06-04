@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class DisposalHandler : TransacactionHandler, ITransactionHandler
     {
-        public DisposalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
-            : base (portfolioQuery, stockQuery, livePriceQuery)
+        public DisposalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+            : base (portfolioQuery, stockQuery)
         {
 
         }

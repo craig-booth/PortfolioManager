@@ -14,8 +14,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class UnitCountAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
-            : base (portfolioQuery, stockQuery, livePriceQuery)
+        public UnitCountAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+            : base (portfolioQuery, stockQuery)
         {
 
         }

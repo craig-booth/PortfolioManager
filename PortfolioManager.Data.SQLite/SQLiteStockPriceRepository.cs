@@ -23,7 +23,7 @@ namespace PortfolioManager.Data.SQLite
         private SQLiteCommand _GetCommand;
         public decimal Get(Guid stockId, DateTime date)
         {
-            if (_GetCommand == null)
+                    if (_GetCommand == null)
             {
                 _GetCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
                 _GetCommand.Prepare();
@@ -42,10 +42,10 @@ namespace PortfolioManager.Data.SQLite
 
             reader.Close();
 
-            return price;            
+            return price;    
         }
 
-        public bool PriceExists(Guid stockId, DateTime date)
+        public bool Exists(Guid stockId, DateTime date)
         {
             if (_GetCommand == null)
             {
@@ -64,32 +64,34 @@ namespace PortfolioManager.Data.SQLite
         }
 
         private SQLiteCommand _AddCommand;
-        public void Add(Guid stockId, DateTime date, decimal price)
+        public void Add(Guid stockId, DateTime date, decimal price, bool current)
         {
             if (_AddCommand == null)
             {
-                _AddCommand = new SQLiteCommand("INSERT INTO [StockPrices] ([Stock], [Date], [Price]) VALUES (@Stock, @Date, @Price)", _Connection);
+                _AddCommand = new SQLiteCommand("INSERT INTO [StockPrices] ([Stock], [Date], [Price], [Current]) VALUES (@Stock, @Date, @Price, @Current)", _Connection);
                 _AddCommand.Prepare();
             }
 
             _AddCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
             _AddCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
             _AddCommand.Parameters.AddWithValue("@Price", SQLiteUtils.DecimalToDB(price));
+            _AddCommand.Parameters.AddWithValue("@Current", SQLiteUtils.BoolToDb(current));
             _AddCommand.ExecuteNonQuery(); 
         }
 
         private SQLiteCommand _UpdateCommand;
-        public void Update(Guid stockId, DateTime date, decimal price)
+        public void Update(Guid stockId, DateTime date, decimal price, bool current)
         {
             if (_UpdateCommand == null)
             {
-                _UpdateCommand = new SQLiteCommand("UPDATE [StockPrices] SET [Price] = @Price WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
+                _UpdateCommand = new SQLiteCommand("UPDATE [StockPrices] SET [Price] = @Price, [Current] = @Current WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
                 _UpdateCommand.Prepare();
             }
 
             _UpdateCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
             _UpdateCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
             _UpdateCommand.Parameters.AddWithValue("@Price", SQLiteUtils.DecimalToDB(price));
+            _UpdateCommand.Parameters.AddWithValue("@Current", SQLiteUtils.BoolToDb(current));
             _UpdateCommand.ExecuteNonQuery(); 
         }
 

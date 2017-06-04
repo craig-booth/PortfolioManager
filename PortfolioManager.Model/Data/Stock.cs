@@ -22,6 +22,7 @@ namespace PortfolioManager.Model.Data
         ICorporateActionRepository CorporateActionRepository { get; }
         IRelativeNTARepository RelativeNTARepository { get; }
         IStockPriceRepository StockPriceRepository { get; }
+        INonTradingDayRepository NonTradingDayRepository { get; }
 
         void Save();
     }
@@ -44,12 +45,15 @@ namespace PortfolioManager.Model.Data
         IReadOnlyCollection<RelativeNTA> GetRelativeNTAs(Guid parent, Guid child);
         string GetASXCode(Guid id, DateTime atDate);
 
-        decimal GetClosingPrice(Guid stock, DateTime date);
-        decimal GetClosingPrice(Guid stock, DateTime date, bool exact);
-        bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price);
-        bool TryGetClosingPrice(Guid stock, DateTime date, out decimal price, bool exact);
-        Dictionary<DateTime, decimal> GetClosingPrices(Guid stock, DateTime fromDate, DateTime toDate);
+        decimal GetPrice(Guid stock, DateTime date);
+        decimal GetPrice(Guid stock, DateTime date, bool exact);
+        bool TryGetPrice(Guid stock, DateTime date, out decimal price);
+        bool TryGetPrice(Guid stock, DateTime date, out decimal price, bool exact);
+        Dictionary<DateTime, decimal> GetPrices(Guid stock, DateTime fromDate, DateTime toDate);
         DateTime GetLatestClosingPrice(Guid stock);
+
+        bool TradingDay(DateTime date);
+        IEnumerable<DateTime> NonTradingDays();
     }
 
     public interface ICorporateActionRepository : IRepository<CorporateAction>
@@ -72,9 +76,17 @@ namespace PortfolioManager.Model.Data
 
     public interface IStockPriceRepository
     {
+        bool Exists(Guid stockId, DateTime date);
         decimal Get(Guid stockId, DateTime date);
-        void Add(Guid stockId, DateTime date, decimal price);
-        void Update(Guid stockId, DateTime date, decimal price);
+        void Add(Guid stockId, DateTime date, decimal price, bool Current);
+        void Update(Guid stockId, DateTime date, decimal price, bool Current);
         void Delete(Guid stockId, DateTime date);
     }
+
+    public interface INonTradingDayRepository
+    {
+        void Add(DateTime date);    
+        void Delete(DateTime date);
+    }
+
 }

@@ -18,10 +18,10 @@ namespace PortfolioManager.Service.Local
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly StockUtils _StockUtils;
 
-        public CapitalGainService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+        public CapitalGainService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockUtils = new StockUtils(stockQuery, livePriceQuery);
+            _StockUtils = new StockUtils(stockQuery);
         }
 
         public Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date)

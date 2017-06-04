@@ -16,9 +16,9 @@ namespace PortfolioManager.Service.Local
     {
         private readonly PortfolioUtils _PortfolioUtils;
 
-        public HoldingService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
+        public HoldingService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery, livePriceQuery);
+            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery);
         }
 
         public Task<HoldingResponce> GetHolding(Guid stock, DateTime date)

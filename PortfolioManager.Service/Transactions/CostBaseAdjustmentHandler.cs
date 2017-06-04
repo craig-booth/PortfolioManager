@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery, ILiveStockPriceQuery livePriceQuery)
-            : base (portfolioQuery, stockQuery, livePriceQuery)
+        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+            : base (portfolioQuery, stockQuery)
         {
 
         }

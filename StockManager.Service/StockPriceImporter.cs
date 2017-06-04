@@ -24,10 +24,6 @@ namespace StockManager.Service
     {
         protected abstract StockPriceRecord GetRecord();
 
-     /*   private StockPrice Convert(StockPriceRecord priceRecord)
-        {
-            return null;
-        } */
 
         public void ImportToDatabase(IStockQuery stockQuery, IStockUnitOfWork unitOfWork)
         {
@@ -38,10 +34,10 @@ namespace StockManager.Service
                 if (stockQuery.TryGetByASXCode(stockPriceRecord.ASXCode, stockPriceRecord.Date, out stock))
                 {
                     decimal price;
-                    if (stockQuery.TryGetClosingPrice(stock.Id, stockPriceRecord.Date, out price, true))
-                        unitOfWork.StockPriceRepository.Update(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price);
+                    if (stockQuery.TryGetPrice(stock.Id, stockPriceRecord.Date, out price, true))
+                        unitOfWork.StockPriceRepository.Update(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price, false);
                     else
-                        unitOfWork.StockPriceRepository.Add(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price);
+                        unitOfWork.StockPriceRepository.Add(stock.Id, stockPriceRecord.Date, stockPriceRecord.Price, false);
                 }
                 
                 stockPriceRecord = GetRecord();
