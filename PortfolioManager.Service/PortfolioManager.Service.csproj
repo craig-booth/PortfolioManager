@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\AttachmentService.cs" />
     <Compile Include="Interface\CapitalGainService.cs" />
     <Compile Include="Interface\CashAccountService.cs" />
     <Compile Include="Interface\Common.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Interface\PortfolioValueService.cs" />
     <Compile Include="Interface\StockService.cs" />
     <Compile Include="Interface\TransactionService.cs" />
+    <Compile Include="Local\AttachmentService.cs" />
     <Compile Include="Local\CapitalGainService.cs" />
     <Compile Include="Local\CashAccountService.cs" />
     <Compile Include="Local\CorporateActionService.cs" />
@@ -68,7 +70,6 @@
     <Compile Include="Local\IncomeService.cs" />
     <Compile Include="Local\StockService.cs" />
     <Compile Include="Local\TransactionService.cs" />
-    <Compile Include="Obsolete\AttachmentService.cs" />
     <Compile Include="Interface\PortfolioManagerService.cs" />
     <Compile Include="Local\LocalPortfolioManagerService.cs" />
     <Compile Include="Local\PortfolioPerformanceService.cs" />

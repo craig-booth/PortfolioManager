@@ -9,8 +9,6 @@ using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Service.Utils;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.Transactions
 {
     class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler

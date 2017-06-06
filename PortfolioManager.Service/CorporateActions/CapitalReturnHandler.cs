@@ -9,8 +9,6 @@ using PortfolioManager.Model.Stocks;
 using PortfolioManager.Model.Portfolios;
 using PortfolioManager.Model.Data;
 
-using PortfolioManager.Service.Obsolete;
-
 namespace PortfolioManager.Service.CorporateActions
 {
     class CapitalReturnHandler : ICorporateActionHandler 

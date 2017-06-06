@@ -47,6 +47,7 @@ namespace PortfolioManager.Service.Local
             _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(portfolioDatabase.PortfolioQuery));
             _ServiceFactory.Register<IIncomeService>(() => new IncomeService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery));
             _ServiceFactory.Register<IStockService>(() => new StockService(stockDatabase.StockQuery));
+            _ServiceFactory.Register<IAttachmentService>(() => new AttachmentService(portfolioDatabase));
 
             SetMapping(stockQuery);
             Mapper.AssertConfigurationIsValid();

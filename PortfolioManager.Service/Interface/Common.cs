@@ -47,7 +47,7 @@ namespace PortfolioManager.Service.Interface
 
     public enum ResponceStatus { Failed, Successfull }
 
-    public abstract class ServiceResponce
+    public class ServiceResponce
     {
         public DateTime ResponceTime { get; set; }
         public ResponceStatus Status { get; set; }
