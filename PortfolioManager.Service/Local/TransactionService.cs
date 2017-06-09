@@ -53,9 +53,9 @@ namespace PortfolioManager.Service.Local
             }
         }
 
-        public Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem)
+        public Task<ServiceResponce> AddTransaction(TransactionItem transactionItem)
         {
-            var responce = new AddTransactionsResponce();
+            var responce = new ServiceResponce();
 
             var transaction = Mapper.Map<Transaction>(transactionItem);
 
@@ -77,12 +77,12 @@ namespace PortfolioManager.Service.Local
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<AddTransactionsResponce>(responce); 
+            return Task.FromResult<ServiceResponce>(responce); 
         }
 
-        public Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems)
+        public Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems)
         {
-            var responce = new AddTransactionsResponce();
+            var responce = new ServiceResponce();
 
             var transactions = Mapper.Map<List<Transaction>>(transactionItems);
 
@@ -111,12 +111,12 @@ namespace PortfolioManager.Service.Local
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<AddTransactionsResponce>(responce); 
+            return Task.FromResult<ServiceResponce>(responce); 
         }
 
-        public Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transactionItem)
+        public Task<ServiceResponce> DeleteTransaction(TransactionItem transactionItem)
         {
-            var responce = new DeleteTransactionsResponce();
+            var responce = new ServiceResponce();
 
             var transaction = Mapper.Map<Transaction>(transactionItem);
 
@@ -128,12 +128,12 @@ namespace PortfolioManager.Service.Local
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<DeleteTransactionsResponce>(responce); 
+            return Task.FromResult<ServiceResponce>(responce); 
         }
 
-        public Task<UpdateTransactionsResponce> UpdateTransaction(TransactionItem transactionItem)
+        public Task<ServiceResponce> UpdateTransaction(TransactionItem transactionItem)
         {
-            var responce = new UpdateTransactionsResponce();
+            var responce = new ServiceResponce();
 
             var transaction = Mapper.Map<Transaction>(transactionItem);
 
@@ -145,7 +145,7 @@ namespace PortfolioManager.Service.Local
 
             responce.SetStatusToSuccessfull();
 
-            return Task.FromResult<UpdateTransactionsResponce>(responce); 
+            return Task.FromResult<ServiceResponce>(responce); 
         }
 
         public Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate)

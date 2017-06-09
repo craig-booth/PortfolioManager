@@ -10,37 +10,13 @@ namespace PortfolioManager.Service.Interface
 {
     public interface ITransactionService : IPortfolioService
     {
-        Task<AddTransactionsResponce> AddTransaction(TransactionItem transactionItem);
-        Task<AddTransactionsResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
-        Task<UpdateTransactionsResponce> UpdateTransaction(TransactionItem transactionItem);
-        Task<DeleteTransactionsResponce> DeleteTransaction(TransactionItem transactionItem);
+        Task<ServiceResponce> AddTransaction(TransactionItem transactionItem);
+        Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
+        Task<ServiceResponce> UpdateTransaction(TransactionItem transactionItem);
+        Task<ServiceResponce> DeleteTransaction(TransactionItem transactionItem);
 
         Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate);
         Task<GetTransactionsResponce> GetTransactions(Guid stockId, DateTime fromDate, DateTime toDate);
-    }
-
-    public class AddTransactionsResponce : ServiceResponce
-    {
-        public AddTransactionsResponce()
-            : base()
-        {
-        }
-    }
-
-    public class UpdateTransactionsResponce : ServiceResponce
-    {
-        public UpdateTransactionsResponce()
-            : base()
-        {
-        }
-    }
-
-    public class DeleteTransactionsResponce : ServiceResponce
-    {
-        public DeleteTransactionsResponce()
-            : base()
-        {
-        }
     }
 
     public class GetTransactionsResponce : ServiceResponce

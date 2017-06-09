@@ -22,6 +22,12 @@ namespace PortfolioManager.Common
             _ServiceFactories.Add(typeof(T), factory);
         }
 
+        public void Clear()
+        {
+            _Services.Clear();
+            _ServiceFactories.Clear();
+        }
+
         public I GetService<T>()
         {
             I service;

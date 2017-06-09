@@ -28,15 +28,15 @@ namespace PortfolioManager.Service.Local
 
         }
 
-        public async Task<bool> Connect(string portfolioDatabasePath, string stockDatabasePath, string liveStockPriceDatabasePath)
+        public Task<bool> Connect(string portfolioDatabasePath, string stockDatabasePath)
         {
             IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDatabasePath);
             IPortfolioDatabase portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabasePath);
-
-            var stockServiceRepository = new StockServiceRepository(stockDatabase);
+           
             var stockQuery = stockDatabase.StockQuery;
             var corporateActionQuery = stockDatabase.CorporateActionQuery;
 
+            _ServiceFactory.Clear();
             _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery));
             _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery));
             _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(portfolioDatabase.PortfolioQuery, stockDatabase.StockQuery));
@@ -53,10 +53,15 @@ namespace PortfolioManager.Service.Local
             Mapper.AssertConfigurationIsValid();
 
             LoadTransactions(portfolioDatabase);
-            
-            await stockServiceRepository.DownloadUpdatedData();
 
-            return true;
+            return Task.FromResult<bool>(true);
+        }
+
+        public async Task UpdateStockData(string stockDatabasePath)
+        {
+            IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDatabasePath);
+            var stockServiceRepository = new StockServiceRepository(stockDatabase);
+            await stockServiceRepository.DownloadUpdatedData();
         }
 
         public T GetService<T>() where T : IPortfolioService

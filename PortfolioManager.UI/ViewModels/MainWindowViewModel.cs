@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Local;
+using PortfolioManager.Service.Rest;
 
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
@@ -22,7 +23,7 @@ namespace PortfolioManager.UI.ViewModels
     {
         private readonly StockItem _AllCompanies = new StockItem(Guid.Empty, "", "All Companies");
 
-        private LocalPortfolioManagerService _PortfolioManagerService;
+        private RestPortfolioManagerService _PortfolioManagerService;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -108,7 +109,7 @@ namespace PortfolioManager.UI.ViewModels
             EditTransactionWindow = new EditTransactionViewModel();
             CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel();
 
-            _PortfolioManagerService = new LocalPortfolioManagerService();
+            _PortfolioManagerService = new RestPortfolioManagerService();
             ViewParameter.PortfolioManagerService = _PortfolioManagerService;
 
             _Settings = new ApplicationSettings();
@@ -175,9 +176,7 @@ namespace PortfolioManager.UI.ViewModels
             if (!Path.IsPathRooted(portfolioDatabasePath))
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
 
-            var livePortfolioDatabasePath = Path.GetTempFileName();
-
-            await _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath, livePortfolioDatabasePath);
+            await _PortfolioManagerService.Connect(portfolioDatabasePath, stockDatabasePath);
 
             var summaryService = _PortfolioManagerService.GetService<IPortfolioSummaryService>();
             var responce = await summaryService.GetProperties();
@@ -187,6 +186,10 @@ namespace PortfolioManager.UI.ViewModels
 
             EditTransactionWindow.PortfolioManagerService = _PortfolioManagerService;
             CreateTransactionsWindow.PortfolioManagerService = _PortfolioManagerService;
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _PortfolioManagerService.UpdateStockData(stockDatabasePath);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
    
         private void PopulateFinancialYearList(DateTime startDate)
