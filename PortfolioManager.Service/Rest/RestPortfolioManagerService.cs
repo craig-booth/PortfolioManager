@@ -24,16 +24,16 @@ namespace PortfolioManager.Service.Rest
         {
             _ServiceFactory.Clear();
             _ServiceFactory.Register<IPortfolioSummaryService>(() => new PortfolioSummaryService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<IPortfolioPerformanceService>(() => new PortfolioPerformanceService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<ICapitalGainService>(() => new CapitalGainService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<IPortfolioValueService>(() => new PortfolioValueService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<ICorporateActionService>(() => new CorporateActionService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
             _ServiceFactory.Register<ITransactionService>(() => new TransactionService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
             _ServiceFactory.Register<IHoldingService>(() => new HoldingService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<IIncomeService>(() => new IncomeService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //    _ServiceFactory.Register<IStockService>(() => new StockService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
-            //   _ServiceFactory.Register<IAttachmentService>(() => new AttachmentService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<ICashAccountService>(() => new CashAccountService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<IIncomeService>(() => new IncomeService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<IStockService>(() => new StockService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
+            _ServiceFactory.Register<IAttachmentService>(() => new AttachmentService(_LocalPortfolioManagerService, portfolioDatabasePath, stockDatabasePath));
 
             return Task.FromResult<bool>(true);
         }

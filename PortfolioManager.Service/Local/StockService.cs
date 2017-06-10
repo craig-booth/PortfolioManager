@@ -19,16 +19,16 @@ namespace PortfolioManager.Service.Local
             _StockQuery = stockQuery;
         }
 
-        public Task<GetStockResponce> GetStocks(DateTime date, bool IncludeStapledSecurities, bool IncludeChildStocks)
+        public Task<GetStockResponce> GetStocks(DateTime date, bool includeStapledSecurities, bool includeChildStocks)
         {
             var responce = new GetStockResponce();
 
             var stocks = _StockQuery.GetAll(date).AsEnumerable();
 
-            if (!IncludeStapledSecurities)
+            if (!includeStapledSecurities)
                 stocks = stocks.Where(x => x.Type != StockType.StapledSecurity);
 
-            if (!IncludeChildStocks)
+            if (!includeChildStocks)
                 stocks = stocks.Where(x => x.ParentId == Guid.Empty);
 
             responce.Stocks.AddRange(stocks.Select(x => new StockItem(x)));

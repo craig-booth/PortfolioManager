@@ -8,7 +8,7 @@ namespace PortfolioManager.Service.Interface
 {
     public interface IStockService : IPortfolioService
     {
-        Task<GetStockResponce> GetStocks(DateTime date, bool IncludeStapledSecurities, bool IncludeChildStocks);
+        Task<GetStockResponce> GetStocks(DateTime date, bool includeStapledSecurities, bool includeChildStocks);
     }
 
     public class GetStockResponce : ServiceResponce
