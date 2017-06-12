@@ -19,12 +19,12 @@ namespace StockManager.Service
             _Database = database;
         }
 
-        public IReadOnlyCollection<CorporateAction> GetCorporateActions(Stock stock)
+        public IEnumerable<CorporateAction> GetCorporateActions(Stock stock)
         {
             return _Database.CorporateActionQuery.Find(stock.Id, DateUtils.NoStartDate, DateUtils.NoEndDate);
         }
 
-        public IReadOnlyCollection<CorporateAction> GetCorporateActions(Stock stock, DateTime fromDate, DateTime toDate)
+        public IEnumerable<CorporateAction> GetCorporateActions(Stock stock, DateTime fromDate, DateTime toDate)
         {
             return _Database.CorporateActionQuery.Find(stock.Id, fromDate, toDate);
         }

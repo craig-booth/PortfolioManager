@@ -13,6 +13,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
     class SQLiteStockUnitOfWork : IStockUnitOfWork
     {
         private SQLiteStockDatabase _Database;
+        private SQLiteStockEntityCreator _EntityCreator;
 
         SQLiteStockRepository _StockRepository;
         SQLiteCorporateActionRepository _CorporateActionRepository;
@@ -25,7 +26,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             get
             {
                 if (_StockRepository == null)
-                    _StockRepository = new SQLiteStockRepository(_Database);
+                    _StockRepository = new SQLiteStockRepository(_Database, _EntityCreator);
 
                 return _StockRepository;
             }
@@ -36,7 +37,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             get
             {
                 if (_CorporateActionRepository == null)
-                    _CorporateActionRepository = new SQLiteCorporateActionRepository(_Database);
+                    _CorporateActionRepository = new SQLiteCorporateActionRepository(_Database, _EntityCreator);
 
                 return _CorporateActionRepository;
             }
@@ -47,7 +48,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             get
             {
                 if (_RelativeNTARepository == null)
-                    _RelativeNTARepository = new SQLiteRelateNTARepository(_Database);
+                    _RelativeNTARepository = new SQLiteRelateNTARepository(_Database, _EntityCreator);
 
                 return _RelativeNTARepository;
             }
@@ -79,6 +80,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             _Database = database;
             _Database._Transaction.BeginTransaction();
+            _EntityCreator = new SQLiteStockEntityCreator(database);
         }
 
         public void Save()

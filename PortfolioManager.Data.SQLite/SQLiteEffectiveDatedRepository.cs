@@ -9,10 +9,10 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
-    public class SQLiteEffectiveDatedRepository<T>: SQLiteRepository<T> where T : EffectiveDatedEntity
+    public abstract class SQLiteEffectiveDatedRepository<T>: SQLiteRepository<T> where T : EffectiveDatedEntity
     {
 
-        protected internal SQLiteEffectiveDatedRepository(SQLiteDatabase database, string tableName) : base(database, tableName)
+        protected internal SQLiteEffectiveDatedRepository(SQLiteDatabase database, string tableName, IEntityCreator entityCreator) : base(database, tableName, entityCreator)
         {
         }
         
@@ -77,7 +77,7 @@ namespace PortfolioManager.Data.SQLite
                 throw new RecordNotFoundException(id);
             }
 
-            T entity = CreateEntity(reader);
+            T entity = _EntityCreator.CreateEntity<T>(reader);
             reader.Close();
 
             return entity;

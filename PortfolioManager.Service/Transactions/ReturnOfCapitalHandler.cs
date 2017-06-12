@@ -32,7 +32,7 @@ namespace PortfolioManager.Service.Transactions
             /* locate parcels that the transaction applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, returnOfCapital.RecordDate, returnOfCapital.RecordDate);
 
-            if (parcels.Count == 0)
+            if (!parcels.Any())
                 throw new NoParcelsForTransaction(returnOfCapital, "No parcels found for transaction");
 
             /* Reduce cost base of parcels */

@@ -11,76 +11,89 @@ using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
-
-    class SQLitePortfolioQuery : IPortfolioQuery
+    class SQLitePortfolioQuery : SQLiteQuery, IPortfolioQuery
     {
         private SQLitePortfolioDatabase _Database;
-        protected SQLiteConnection _Connection;
 
         protected internal SQLitePortfolioQuery(SQLitePortfolioDatabase database)
+            : base(database._Connection, new SQLitePortfolioEntityCreator(database))
         {
             _Database = database;
-            _Connection = database._Connection;
         }
 
         public ShareParcel GetParcel(Guid id, DateTime atDate)
         {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Id == id) && ((atDate >= parcel.FromDate && atDate <= parcel.ToDate))
-                               select parcel;
+            var query = EntityQuery.FromTable("Parcels")
+                .WithId(id)
+                .EffectiveAt(atDate);
 
-            return parcelsQuery.First();
+            return query.CreateEntity<ShareParcel>();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetParcels(Guid id, DateTime fromDate, DateTime toDate)
+        public IEnumerable<ShareParcel> GetParcels(Guid id, DateTime fromDate, DateTime toDate)
         {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Id == id) &&
-                                   (((parcel.FromDate <= fromDate) && (parcel.ToDate >= fromDate)) || ((parcel.FromDate <= toDate) && (parcel.ToDate >= fromDate)))
-                               select parcel;
+            var query = EntityQuery.FromTable("Parcels")
+                            .WithId(id)
+                            .EffectiveBetween(fromDate, toDate);
 
-            return parcelsQuery.ToList().AsReadOnly();
+            return query.CreateEntities<ShareParcel>();
         }
 
-        public IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate)
+        public IEnumerable<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate)
         {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.FromDate <= fromDate && parcel.ToDate >= fromDate) || (parcel.FromDate >= fromDate && parcel.FromDate <= toDate)
-                               select parcel;
+            var query = EntityQuery.FromTable("Parcels")
+                            .EffectiveBetween(fromDate, toDate);
 
-            return parcelsQuery.ToList().AsReadOnly();
+            return query.CreateEntities<ShareParcel>();
         }
 
 
-        public IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate)
+        public IEnumerable<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate)
         {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Stock == stock) && ((parcel.FromDate <= fromDate && parcel.ToDate >= fromDate) || (parcel.FromDate >= fromDate && parcel.FromDate <= toDate))
-                               select parcel;
+            var query = EntityQuery.FromTable("Parcels")
+                .Where("[Stock] = @Stock")
+                .WithParameter("@Stock", stock)
+                .EffectiveBetween(fromDate, toDate);
 
-            return parcelsQuery.ToList().AsReadOnly();
+            return query.CreateEntities<ShareParcel>();
         }
 
         public bool StockOwned(Guid id, DateTime atDate)
         {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where (parcel.Stock == id) && (parcel.FromDate <= atDate && parcel.ToDate >= atDate)
-                               select parcel;
+            bool result;
 
-            return parcelsQuery.Any();
+            var query = EntityQuery.FromTable("Parcels")
+                    .Where("[Stock] = @Stock")
+                    .WithParameter("@Stock", id)
+                    .EffectiveAt(atDate);
+
+            var reader = query.GetFields("[Id]");
+            result = reader.HasRows;
+
+            reader.Close();
+
+            return result;
         }
 
-        public IReadOnlyCollection<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate)
+        public IEnumerable<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate)
         {
-            var parcelsQuery = from parcel in _Database._Parcels
-                               where ((parcel.FromDate <= fromDate && parcel.ToDate >= fromDate) || (parcel.FromDate >= fromDate && parcel.FromDate <= toDate))
-                               group parcel by parcel.Stock into stockGroup
-                               select stockGroup.Key;
+            List<Guid> stocks = new List<Guid>();
 
-            return parcelsQuery.Distinct().ToList().AsReadOnly();
+            var query = EntityQuery.FromTable("Parcels")
+                    .EffectiveBetween(fromDate, toDate);
+
+            var reader = query.GetFields("DISTINCT [Stock]");
+            while (reader.Read())
+            {
+                stocks.Add(new Guid(reader.GetString(0)));
+            }
+
+            reader.Close();
+
+            return stocks;
         }
 
-        public IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
+        public IEnumerable<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
         {
             var cgtQuery = from cgt in _Database._CGTEvents
                            where cgt.EventDate >= fromDate && cgt.EventDate <= toDate
@@ -102,7 +115,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             SQLiteDataReader reader = query.ExecuteReader();
 
             if (reader.Read())
-                transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                transaction = _EntityCreator.CreateEntity<Transaction>(reader);
             else
                 transaction = null;
 
@@ -111,7 +124,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return transaction;
         }
 
-        public IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
+        public IEnumerable<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var list = new List<Transaction>();
 
@@ -125,7 +138,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -133,7 +146,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IEnumerable<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var list = new List<Transaction>();
 
@@ -148,7 +161,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -156,7 +169,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
+        public IEnumerable<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
             var list = new List<Transaction>();
 
@@ -171,7 +184,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -179,7 +192,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return list;
         }
 
-        public IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
+        public IEnumerable<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var list = new List<Transaction>();
 
@@ -195,7 +208,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
             while (reader.Read())
             {
-                var transaction = SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);
+                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
                 list.Add(transaction);
             }
             reader.Close();
@@ -211,12 +224,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return transactions.Sum(x => x.Amount);
         }
 
-        public IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
+        public IEnumerable<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
         {
             return _Database._CashAccountTransactions.Where(t => (t.Date >= fromDate) && (t.Date <= toDate)).OrderBy(x => x.Date).ThenByDescending(x => x.Amount).ToList();
         }
 
-        public IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
+        public IEnumerable<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
         {
             return _Database._ParcelAudit.Where(x => (x.Parcel == id) && (x.Date >= fromDate) && (x.Date <= toDate)).ToList();
         }

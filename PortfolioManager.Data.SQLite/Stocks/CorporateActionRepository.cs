@@ -22,8 +22,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
     {
         private Dictionary<CorporateActionType, ICorporateActionDetailRepository> _DetailRepositories;
 
-        protected internal SQLiteCorporateActionRepository(SQLiteStockDatabase database)
-            : base(database, "CorporateActions")
+        protected internal SQLiteCorporateActionRepository(SQLiteStockDatabase database, IEntityCreator entityCreator)
+            : base(database, "CorporateActions", entityCreator)
         {
             _DetailRepositories = new Dictionary<CorporateActionType, ICorporateActionDetailRepository>();
             _DetailRepositories.Add(CorporateActionType.Dividend, new DividendDetailRepository(_Connection));
@@ -99,11 +99,5 @@ namespace PortfolioManager.Data.SQLite.Stocks
             command.Parameters.AddWithValue("@Description", entity.Description);
             command.Parameters.AddWithValue("@Type", entity.Type);
         }
-
-        protected override CorporateAction CreateEntity(SQLiteDataReader reader)
-        {
-            return SQLiteStockEntityCreator.CreateCorporateAction(_Database as SQLiteStockDatabase, reader);
-        }
-
     }
 }

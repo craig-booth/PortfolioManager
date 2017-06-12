@@ -79,6 +79,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="SQLiteEffectiveDatedRepository.cs" />
+    <Compile Include="SQLiteQuery.cs" />
     <Compile Include="SQLiteRepository.cs" />
     <Compile Include="SQLiteRepositoryTransaction.cs" />
     <Compile Include="SQLiteStockPriceRepository.cs" />
@@ -129,6 +130,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion3.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Upgrade\PortfolioDatabaseUpgradeToVersion9.sql">

@@ -13,11 +13,16 @@ namespace PortfolioManager.Data.SQLite.Upgrade
 {
     public abstract class SQLiteDatabaseUpgrade 
     {
-        protected int _Version = -1;
+        protected int _Version;
 
         public int Version
         {
             get { return _Version; }
+        }
+
+        public SQLiteDatabaseUpgrade(int version)
+        {
+            _Version = version;
         }
 
         public abstract void Upgrade(SQLiteDatabase database);
@@ -40,16 +45,14 @@ namespace PortfolioManager.Data.SQLite.Upgrade
         private readonly string _ScriptFile;
 
         public SQLiteSimpleDatabaseUpgrade(int version, string scriptFile)
+            : base(version)
         {
-            _Version = version;
             _ScriptFile = scriptFile;
         }
 
         public override void Upgrade(SQLiteDatabase database)
         {
-           // var transaction = database._Connection.BeginTransaction();
             database.ExecuteScript(_ScriptFile);
-           // transaction.Commit();
         }
     }
 

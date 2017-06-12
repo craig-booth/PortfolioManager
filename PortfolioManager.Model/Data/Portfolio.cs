@@ -73,25 +73,25 @@ namespace PortfolioManager.Model.Data
     public interface IPortfolioQuery
     {
         ShareParcel GetParcel(Guid id, DateTime atDate);
-        IReadOnlyCollection<ShareParcel> GetParcels(Guid id, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate);
+        IEnumerable<ShareParcel> GetParcels(Guid id, DateTime fromDate, DateTime toDate);
+        IEnumerable<ShareParcel> GetAllParcels(DateTime fromDate, DateTime toDate);
+        IEnumerable<ShareParcel> GetParcelsForStock(Guid stock, DateTime fromDate, DateTime toDate);
 
         bool StockOwned(Guid id, DateTime atDate);
-        IReadOnlyCollection<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate);
+        IEnumerable<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate);
 
-        IReadOnlyCollection<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
+        IEnumerable<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate);
 
         Transaction GetTransaction(Guid id);
-        IReadOnlyCollection<Transaction> GetTransactions(DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
-        IReadOnlyCollection<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IEnumerable<Transaction> GetTransactions(DateTime fromDate, DateTime toDate);
+        IEnumerable<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate);
+        IEnumerable<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate);
+        IEnumerable<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate);
 
         decimal GetCashBalance(DateTime atDate);
-        IReadOnlyCollection<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate);
+        IEnumerable<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate);
 
-        IReadOnlyCollection<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate);
+        IEnumerable<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate);
 
         StockSetting GetStockSetting(Guid stock, DateTime atDate);
         decimal GetDRPCashBalance(Guid stock, DateTime atDate);

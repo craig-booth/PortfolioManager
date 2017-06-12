@@ -31,14 +31,14 @@ namespace PortfolioManager.Service.Transactions
             /* locate parcels that the dividend applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, incomeReceived.RecordDate, incomeReceived.RecordDate);
 
-            if (parcels.Count == 0)
+            if (!parcels.Any())
                 throw new NoParcelsForTransaction(incomeReceived, "No parcels found for transaction");
 
             /* Handle any tax deferred amount recieved */
             if (incomeReceived.TaxDeferred > 0)
             {
                 /* Apportion amount between parcels */
-                ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[parcels.Count];
+                ApportionedCurrencyValue[] apportionedAmounts = new ApportionedCurrencyValue[parcels.Count()];
                 int i = 0;
                 foreach (ShareParcel parcel in parcels)
                     apportionedAmounts[i++].Units = parcel.Units;

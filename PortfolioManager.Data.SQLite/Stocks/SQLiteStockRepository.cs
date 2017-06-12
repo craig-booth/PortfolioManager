@@ -13,7 +13,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     public class SQLiteStockRepository : SQLiteEffectiveDatedRepository<Stock>, IStockRepository
     {
-        protected internal SQLiteStockRepository(SQLiteStockDatabase database) : base(database, "Stocks")
+        protected internal SQLiteStockRepository(SQLiteStockDatabase database, IEntityCreator entityCreator) 
+            : base(database, "Stocks", entityCreator)
         {
         }
 
@@ -39,11 +40,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             }
 
             return _GetUpdateRecordCommand;
-        }
-
-        protected override Stock CreateEntity(SQLiteDataReader reader)
-        {
-            return SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
         }
 
         protected override void AddParameters(SQLiteCommand command, Stock entity)

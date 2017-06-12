@@ -12,8 +12,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     public class SQLiteRelateNTARepository : SQLiteRepository<RelativeNTA>, IRelativeNTARepository
     {
-        protected internal SQLiteRelateNTARepository(SQLiteStockDatabase database)
-            : base(database, "RelativeNTAs")
+        protected internal SQLiteRelateNTARepository(SQLiteStockDatabase database, IEntityCreator entityCreator)
+            : base(database, "RelativeNTAs", entityCreator)
         {
         }
 
@@ -39,11 +39,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             }
 
             return _GetUpdateRecordCommand;
-        }
-
-        protected override RelativeNTA CreateEntity(SQLiteDataReader reader)
-        {
-            return SQLiteStockEntityCreator.CreateRelativeNTA(_Database as SQLiteStockDatabase, reader);
         }
 
         protected override void AddParameters(SQLiteCommand command, RelativeNTA entity)

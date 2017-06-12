@@ -139,12 +139,12 @@ namespace StockManager.Service
             return stock;
         }
 
-        public IReadOnlyCollection<Stock> GetStocks()
+        public IEnumerable<Stock> GetStocks()
         {
             return _Database.StockQuery.GetAll();
         }
 
-        public IReadOnlyCollection<Stock> GetStocks(DateTime atDate)
+        public IEnumerable<Stock> GetStocks(DateTime atDate)
         {
             return _Database.StockQuery.GetAll(atDate);
         }
@@ -203,12 +203,12 @@ namespace StockManager.Service
             _Cache.Remove(stock);
         }
 
-        public IReadOnlyCollection<Stock> GetChildStocks(Stock stock)
+        public IEnumerable<Stock> GetChildStocks(Stock stock)
         {
             return _Database.StockQuery.GetChildStocks(stock.Id, DateTime.Today);
         }
 
-        public IReadOnlyCollection<Stock> GetChildStocks(Stock stock, DateTime atDate)
+        public IEnumerable<Stock> GetChildStocks(Stock stock, DateTime atDate)
         {
             return _Database.StockQuery.GetChildStocks(stock.Id, atDate);
         }
@@ -262,7 +262,7 @@ namespace StockManager.Service
             return _Database.StockQuery.PercentOfParentCost(stock.ParentId, stock.Id, atDate);
         }
 
-        public IReadOnlyCollection<RelativeNTA> GetRelativeNTAs(Stock stock)
+        public IEnumerable<RelativeNTA> GetRelativeNTAs(Stock stock)
         {
             return _Database.StockQuery.GetRelativeNTAs(stock.ParentId, stock.Id);
         }

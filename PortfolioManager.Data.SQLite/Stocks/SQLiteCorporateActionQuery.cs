@@ -12,13 +12,15 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteCorporateActionQuery: ICorporateActionQuery
     {
-        protected SQLiteDatabase _Database;
+        protected SQLiteStockDatabase _Database;
         protected SQLiteConnection _Connection;
+        private SQLiteStockEntityCreator _EntityCreator;
 
-        protected internal SQLiteCorporateActionQuery(SQLiteDatabase database)
+        protected internal SQLiteCorporateActionQuery(SQLiteStockDatabase database)
         {
             _Database = database;
             _Connection = database._Connection;
+            _EntityCreator = new Stocks.SQLiteStockEntityCreator(database);
         }
 
         private SQLiteCommand _GetCorporateActionById;
@@ -40,14 +42,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 throw new RecordNotFoundException("");
             }
 
-            var corpoarateAction = SQLiteStockEntityCreator.CreateCorporateAction(_Database as SQLiteStockDatabase, reader);
+            var corpoarateAction = _EntityCreator.CreateEntity<CorporateAction>(reader);
             reader.Close();
 
             return corpoarateAction;
         }
 
         private SQLiteCommand _FindCorporateAction;
-        public IReadOnlyCollection<CorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate)
+        public IEnumerable<CorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var list = new List<CorporateAction>();
 
@@ -65,7 +67,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             while (reader.Read())
             {
-                var corporateAction = SQLiteStockEntityCreator.CreateCorporateAction(_Database as SQLiteStockDatabase, reader);
+                var corporateAction = _EntityCreator.CreateEntity<CorporateAction>(reader);
                 list.Add(corporateAction);
             }    
             reader.Close();

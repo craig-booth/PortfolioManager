@@ -16,7 +16,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private Dictionary<TransactionType, TransactionDetailRepository> _DetailRepositories;
 
         protected internal SQLiteTransactionRepository(SQLitePortfolioDatabase database)
-            : base(database, "Transactions")
+            : base(database, "Transactions", new SQLitePortfolioEntityCreator(database))
         {
             _Database = database;
 
@@ -105,12 +105,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             command.Parameters.AddWithValue("@RecordDate", entity.RecordDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@Comment", entity.Comment);
         }
-
-        protected override Transaction CreateEntity(SQLiteDataReader reader)
-        {
-            return SQLitePortfolioEntityCreator.CreateTransaction(_Database as SQLitePortfolioDatabase, reader);             
-        }
-
     }
 
     public class TransactionDetailRepository

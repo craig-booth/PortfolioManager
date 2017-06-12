@@ -25,9 +25,9 @@ namespace PortfolioManager.Service.Utils
             _StockUtils = new StockUtils(stockQuery);
         }
 
-        public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, decimal amount)
+        public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IEnumerable<ShareParcel> parcels, decimal amount)
         {
-            ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[parcels.Count];
+            ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[parcels.Count()];
             int i = 0;
             foreach (ShareParcel parcel in parcels)
                 result[i++].Units = parcel.Units;
@@ -36,9 +36,9 @@ namespace PortfolioManager.Service.Utils
             return result;
         }
 
-        public static ApportionedIntegerValue[] ApportionAmountOverParcels(IReadOnlyCollection<ShareParcel> parcels, int amount)
+        public static ApportionedIntegerValue[] ApportionAmountOverParcels(IEnumerable<ShareParcel> parcels, int amount)
         {
-            ApportionedIntegerValue[] result = new ApportionedIntegerValue[parcels.Count];
+            ApportionedIntegerValue[] result = new ApportionedIntegerValue[parcels.Count()];
             int i = 0;
             foreach (ShareParcel parcel in parcels)
                 result[i++].Units = parcel.Units;
@@ -47,9 +47,9 @@ namespace PortfolioManager.Service.Utils
             return result;
         }
 
-        public ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IReadOnlyCollection<Stock> childStocks, DateTime atDate, decimal amount)
+        public ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IEnumerable<Stock> childStocks, DateTime atDate, decimal amount)
         {
-            ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[childStocks.Count];
+            ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[childStocks.Count()];
             int i = 0;
             foreach (Stock childStock in childStocks)
             {
@@ -121,7 +121,7 @@ namespace PortfolioManager.Service.Utils
 
         public HoldingItem GetHolding(Guid stockId, DateTime date)
         {
-            IReadOnlyCollection<ShareParcel> parcels;
+            IEnumerable<ShareParcel> parcels;
 
             var stock = _StockQuery.Get(stockId, date);
 

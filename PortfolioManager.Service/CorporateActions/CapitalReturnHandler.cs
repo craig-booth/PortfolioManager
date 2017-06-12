@@ -32,7 +32,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             /* locate parcels that the capital return applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, capitalReturn.ActionDate, capitalReturn.ActionDate);
-            if (parcels.Count == 0)
+            if (! parcels.Any())
                 return transactions;
 
             transactions.Add(new ReturnOfCapital()

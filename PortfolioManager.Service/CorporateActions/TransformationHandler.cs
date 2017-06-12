@@ -31,7 +31,7 @@ namespace PortfolioManager.Service.CorporateActions
             /* locate parcels that the transformation applies to */
             var transfomationStock = _StockQuery.Get(transformation.Stock, transformation.ActionDate);
             var ownedParcels = _PortfolioQuery.GetParcelsForStock(transfomationStock.Id, transformation.ActionDate, transformation.ActionDate);
-            if (ownedParcels.Count == 0)
+            if (!ownedParcels.Any())
                 return transactions;
 
             decimal totalCostBase = ownedParcels.Sum(x => x.CostBase);
@@ -147,7 +147,7 @@ namespace PortfolioManager.Service.CorporateActions
         {
             Transformation transformation = corporateAction as Transformation;
 
-            IReadOnlyCollection<Transaction> transactions;
+            IEnumerable<Transaction> transactions;
             string asxCode;
 
             if (transformation.ResultingStocks.Any())

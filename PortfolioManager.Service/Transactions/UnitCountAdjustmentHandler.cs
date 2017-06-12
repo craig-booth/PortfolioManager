@@ -32,7 +32,7 @@ namespace PortfolioManager.Service.Transactions
             /* locate parcels that the split/consolidation applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, unitCountAdjustment.TransactionDate, unitCountAdjustment.TransactionDate);
 
-            if (parcels.Count == 0)
+            if (!parcels.Any())
                 throw new NoParcelsForTransaction(unitCountAdjustment, "No parcels found for transaction");
 
             /* Determine total number of units after split/consolidation */

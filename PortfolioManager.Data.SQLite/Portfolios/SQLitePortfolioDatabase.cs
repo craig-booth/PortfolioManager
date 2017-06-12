@@ -15,10 +15,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     {
         protected override int RepositoryVersion
         {
-            get { return 9; }
+            get { return 10; }
         }
 
-        internal List<ShareParcel> _Parcels { get; private set; }
         internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
         internal List<CashAccountTransaction> _CashAccountTransactions { get; private set; }
@@ -32,7 +31,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             PortfolioQuery = new SQLitePortfolioQuery(this);
 
-            _Parcels = new List<ShareParcel>();
             _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();
             _CashAccountTransactions = new List<CashAccountTransaction>();
@@ -61,6 +59,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 return new SQLiteSimpleDatabaseUpgrade(8, "Upgrade\\PortfolioDatabaseUpgradeToVersion8.sql");
             else if (forVersion == 8)
                 return new SQLiteSimpleDatabaseUpgrade(9, "Upgrade\\PortfolioDatabaseUpgradeToVersion9.sql");
+            else if (forVersion == 9)
+                return new SQLiteSimpleDatabaseUpgrade(10, "Upgrade\\PortfolioDatabaseUpgradeToVersion10.sql");
             else
                 throw new NotSupportedException();
         }

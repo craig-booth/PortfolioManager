@@ -31,7 +31,7 @@ namespace PortfolioManager.Service.Transactions
             /* locate parcels that the dividend applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, costBaseAdjustment.RecordDate, costBaseAdjustment.RecordDate);
 
-            if (parcels.Count == 0)
+            if (!parcels.Any())
                 throw new NoParcelsForTransaction(costBaseAdjustment, "No parcels found for transaction");
 
             /* Reduce cost base of parcels */

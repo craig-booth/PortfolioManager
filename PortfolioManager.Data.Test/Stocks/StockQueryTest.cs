@@ -405,7 +405,7 @@ namespace PortfolioManager.Data.Test.Stocks
         public void GetChildStocks()
         {
             Stock parent, child1, child2, child;
-            IReadOnlyCollection<Stock> children;
+            IEnumerable<Stock> children;
 
             var database = CreateStockDatabase();
 
@@ -424,7 +424,7 @@ namespace PortfolioManager.Data.Test.Stocks
             }
 
             children = database.StockQuery.GetChildStocks(parent.Id, new DateTime(2000, 01, 01));
-            Assert.AreEqual(children.Count, 2);
+            Assert.AreEqual(children.Count(), 2);
 
             child = children.First();
             Assert.AreEqual(child.ASXCode, "DEF");
@@ -438,7 +438,7 @@ namespace PortfolioManager.Data.Test.Stocks
         public void GetChildStocksNoChildren()
         {
             Stock parent;
-            IReadOnlyCollection<Stock> children;
+            IEnumerable<Stock> children;
 
             var database = CreateStockDatabase();
 
@@ -451,7 +451,7 @@ namespace PortfolioManager.Data.Test.Stocks
             }
 
             children = database.StockQuery.GetChildStocks(parent.Id, new DateTime(2000, 01, 01));
-            Assert.AreEqual(children.Count, 0);   
+            Assert.AreEqual(children.Count(), 0);   
         }
 
         [Test, Description("Test PercentOfParentCost()")]

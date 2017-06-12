@@ -11,6 +11,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class SQLitePortfolioUnitOfWork : IPortfolioUnitOfWork
     {
         private SQLitePortfolioDatabase _Database;
+        private SQLitePortfolioEntityCreator _EntityCreator;
         private SQLiteParcelRepository _ParcelRepository;
         private SQLiteTransactionRepository _TransactionRepository;
         private SQLiteCGTEventRepository _CGTEventRepository;
@@ -36,7 +37,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_ParcelRepository == null)
-                    _ParcelRepository = new SQLiteParcelRepository(_Database);
+                    _ParcelRepository = new SQLiteParcelRepository(_Database, _EntityCreator);
 
                 return _ParcelRepository;
             }
@@ -58,7 +59,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_AttachmentRepository == null)
-                    _AttachmentRepository = new SQLiteAttachmentRepository(_Database);
+                    _AttachmentRepository = new SQLiteAttachmentRepository(_Database, _EntityCreator);
 
                 return _AttachmentRepository;
             }
@@ -112,6 +113,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             _Database = database;
             _Database._Transaction.BeginTransaction();
+            _EntityCreator = new Portfolios.SQLitePortfolioEntityCreator(database);
         }
 
         public void Save()

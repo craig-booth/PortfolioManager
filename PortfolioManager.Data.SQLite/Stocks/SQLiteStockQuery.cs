@@ -11,82 +11,38 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
-    class SQLiteStockQuery: IStockQuery 
+    class SQLiteStockQuery: SQLiteQuery, IStockQuery 
     {
-        protected SQLiteDatabase _Database;
-        protected SQLiteConnection _Connection;
-
-        protected internal SQLiteStockQuery(SQLiteDatabase database)
+        protected internal SQLiteStockQuery(SQLiteStockDatabase database)
+            : base(database._Connection, new SQLiteStockEntityCreator(database))
         {
-            _Database = database;
-            _Connection = database._Connection;
         }
 
-        private SQLiteCommand _GetStockByIdandDate;
         public Stock Get(Guid id, DateTime atDate)
         {
-            if (_GetStockByIdandDate == null)
-            {
-                _GetStockByIdandDate = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [Id] = @Id AND @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
-                _GetStockByIdandDate.Prepare();
-            }
+            var query = EntityQuery.FromTable("Stocks")
+                .WithId(id)
+                .EffectiveAt(atDate);
 
-            _GetStockByIdandDate.Parameters.AddWithValue("@Id", id.ToString());
-            _GetStockByIdandDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
-
-            var stock = GetStock(_GetStockByIdandDate);
-            if (stock == null)
-                throw new RecordNotFoundException("");
-            return stock;
+            return query.CreateEntity<Stock>();
         }
 
-        private SQLiteCommand _GetAllStocks;
-        public IReadOnlyCollection<Stock> GetAll()
+        public IEnumerable<Stock> GetAll()
         {
-            var list = new List<Stock>();
+            var query = EntityQuery.FromTable("Stocks");
 
-            if (_GetAllStocks == null)
-            {
-                _GetAllStocks = new SQLiteCommand("SELECT * FROM [Stocks]", _Connection);
-                _GetAllStocks.Prepare();
-            }
-
-            SQLiteDataReader reader = _GetAllStocks.ExecuteReader();
-            while (reader.Read())
-            {
-                Stock stock = SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
-                list.Add(stock);
-            }
-            reader.Close();
-
-            return list.AsReadOnly();
+            return query.CreateEntities<Stock>();
         }
 
-        private SQLiteCommand _GetAllStocksAtDate;
-        public IReadOnlyCollection<Stock> GetAll(DateTime atDate)
+        
+        public IEnumerable<Stock> GetAll(DateTime atDate)
         {
-            var list = new List<Stock>();
+            var query = EntityQuery.FromTable("Stocks")
+                        .EffectiveAt(atDate);
 
-            if (_GetAllStocksAtDate == null)
-            {
-                _GetAllStocksAtDate = new SQLiteCommand("SELECT * FROM [Stocks] WHERE @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
-                _GetAllStocksAtDate.Prepare();
-            }
-
-            _GetAllStocksAtDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = _GetAllStocksAtDate.ExecuteReader();
-            while (reader.Read())
-            {
-                Stock stock = SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
-                list.Add(stock);
-            }
-            reader.Close();
-
-            return list.AsReadOnly();
+            return query.CreateEntities<Stock>();
         }
 
-        private SQLiteCommand _GetStockByASXCodeandDate;
         public Stock GetByASXCode(string asxCode, DateTime atDate)
         {
             Stock stock;
@@ -99,102 +55,62 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public bool TryGetByASXCode(string asxCode, DateTime atDate, out Stock stock)
         {
-            if (_GetStockByASXCodeandDate == null)
-            {
-                _GetStockByASXCodeandDate = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [ASXCode] = @ASXCode AND @Date BETWEEN [FromDate] AND [ToDate] ORDER BY [ASXCode]", _Connection);
-                _GetStockByASXCodeandDate.Prepare();
-            }
+            var query = EntityQuery.FromTable("Stocks")
+                .Where("[ASXCode] = @ASXCode")
+                .WithParameter("@ASXCode", asxCode)
+                .EffectiveAt(atDate);
 
-            _GetStockByASXCodeandDate.Parameters.AddWithValue("@ASXCode", asxCode);
-            _GetStockByASXCodeandDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
+            stock = query.CreateEntity<Stock>();
 
-           stock = GetStock(_GetStockByASXCodeandDate);
-           return (stock != null);
+            return (stock != null);
         }
 
-        private SQLiteCommand _GetChildStocks;
-        public IReadOnlyCollection<Stock> GetChildStocks(Guid parent, DateTime atDate)
+        public IEnumerable<Stock> GetChildStocks(Guid parent, DateTime atDate)
         {
-            var list = new List<Stock>();
+            var query = EntityQuery.FromTable("Stocks")
+                .Where("[Parent] = @Parent")
+                .WithParameter("@Parent", parent)
+                .EffectiveAt(atDate);
 
-            if (_GetChildStocks == null)
-            {
-                _GetChildStocks = new SQLiteCommand("SELECT * FROM [Stocks] WHERE [Parent] = @Parent AND @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
-                _GetChildStocks.Prepare();
-            }
-
-            _GetChildStocks.Parameters.AddWithValue("@Parent", parent.ToString());
-            _GetChildStocks.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = _GetChildStocks.ExecuteReader();
-            while (reader.Read())
-            {
-                Stock stock = SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
-                list.Add(stock);
-            }       
-            reader.Close();
-
-            return list.AsReadOnly();
+            return query.CreateEntities<Stock>();
         }
 
-        private SQLiteCommand _GetRelativeNTA;
         public RelativeNTA GetRelativeNTA(Guid parent, Guid child, DateTime atDate)
         {
-            if (_GetRelativeNTA == null)
-            {
-                _GetRelativeNTA = new SQLiteCommand("SELECT * FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child AND [Date] = @Date", _Connection);
-                _GetRelativeNTA.Prepare();
-            }
+            var query = EntityQuery.FromTable("RelativeNTAs")
+                .Where("[Parent] = @Parent AND [Child] = @Child AND [Date] = @Date")
+                .WithParameter("@Parent", parent)
+                .WithParameter("@Child", child)
+                .WithParameter("@Date", atDate);
 
-            _GetRelativeNTA.Parameters.AddWithValue("@Parent", parent.ToString());
-            _GetRelativeNTA.Parameters.AddWithValue("@Child", child.ToString());
-            _GetRelativeNTA.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
-
-            return GetRelativeNTA(_GetRelativeNTA);
+            return query.CreateEntity<RelativeNTA>();
         }
 
-        private SQLiteCommand _GetRelativeNTAs;
-        public IReadOnlyCollection<RelativeNTA> GetRelativeNTAs(Guid parent, Guid child)
+        public IEnumerable<RelativeNTA> GetRelativeNTAs(Guid parent, Guid child)
         {
-            var list = new List<RelativeNTA>();
+            var query = EntityQuery.FromTable("ReleativeNTAs")
+                .Where("[Parent] = @Parent AND [Child] = @Child")
+                .WithParameter("@Parent", parent)
+                .WithParameter("@Child", child);
 
-            if (_GetRelativeNTAs == null)
-            {
-                _GetRelativeNTAs = new SQLiteCommand("SELECT * FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child AND [Date] = @Date", _Connection);
-                _GetRelativeNTAs.Prepare();
-            }
-
-            _GetRelativeNTAs.Parameters.AddWithValue("@Parent", parent.ToString());
-            _GetRelativeNTAs.Parameters.AddWithValue("@Child", child.ToString());
-
-            SQLiteDataReader reader = _GetRelativeNTA.ExecuteReader();
-            while (reader.Read())
-            {
-                list.Add(SQLiteStockEntityCreator.CreateRelativeNTA(_Database as SQLiteStockDatabase, reader));
-            }
-            reader.Close();
-
-            return list.AsReadOnly();
+            return query.CreateEntities<RelativeNTA>();
         }
 
-        private SQLiteCommand _PercentOfParentCost;
         public decimal PercentOfParentCost(Guid parent, Guid child, DateTime atDate)
         {
             decimal percent = 0.00m;
 
-            if (_PercentOfParentCost == null)
-            {
-                _PercentOfParentCost = new SQLiteCommand("SELECT [Percentage] FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child AND [Date] <= @Date ORDER BY [Date] DESC", _Connection);
-                _PercentOfParentCost.Prepare();
-            }
+            var query = EntityQuery.FromTable("RelativeNTAs")
+                .Where("[Parent] = @Parent AND [Child] = @Child AND [Date] <= @Date")
+                .WithParameter("@Parent", parent)
+                .WithParameter("@Child", child)
+                .WithParameter("@Date", atDate)
+                .OrderBy("[Date] DESC");
 
-            _PercentOfParentCost.Parameters.AddWithValue("@Parent", parent.ToString());
-            _PercentOfParentCost.Parameters.AddWithValue("@Child", child.ToString());
-            _PercentOfParentCost.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
 
-            SQLiteDataReader reader = _PercentOfParentCost.ExecuteReader();
+            var reader = query.GetFields("[Percentage]");
             if (reader.Read())
-                percent = DBToDecimal(reader.GetInt32(0));
+                percent = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
 
             reader.Close();
 
@@ -206,19 +122,13 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return GetASXCode(id, DateTime.Now);
         }
 
-        private SQLiteCommand _GetASXCodeAtDate;
         public string GetASXCode(Guid id, DateTime atDate)
         {
-            if (_GetASXCodeAtDate == null)
-            {
-                _GetASXCodeAtDate = new SQLiteCommand("SELECT [ASXCode] FROM [Stocks] WHERE [Id] = @Id AND @Date BETWEEN [FromDate] AND [ToDate]", _Connection);
-                _GetASXCodeAtDate.Prepare();
-            }
+            var query = EntityQuery.FromTable("Stocks")
+                .WithId(id)
+                .EffectiveAt(atDate);
 
-            _GetASXCodeAtDate.Parameters.AddWithValue("@Id", id.ToString());
-            _GetASXCodeAtDate.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = _GetASXCodeAtDate.ExecuteReader();
+            var reader = query.GetFields("[ASXCode]");
             if (!reader.Read())
             {
                 reader.Close();
@@ -231,44 +141,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return asxCode;
         }
 
-        private Stock GetStock(SQLiteCommand command)
-        {
-          SQLiteDataReader reader = command.ExecuteReader();
-
-            if (!reader.Read())
-            {
-                reader.Close();
-                return null;
-            }
-
-            Stock stock = SQLiteStockEntityCreator.CreateStock(_Database as SQLiteStockDatabase, reader);
-            reader.Close();
-
-            return stock;
-        }
-
-        private RelativeNTA GetRelativeNTA(SQLiteCommand command)
-        {
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            if (!reader.Read())
-            {
-                reader.Close();
-                throw new RecordNotFoundException("");
-            }
-
-            RelativeNTA nta = SQLiteStockEntityCreator.CreateRelativeNTA(_Database as SQLiteStockDatabase, reader);
-            reader.Close();
-
-            return nta;
-        }
-
-
-        public decimal DBToDecimal(int value)
-        {
-            return (decimal)value / 100000;
-        }
-
         public decimal GetPrice(Guid stock, DateTime date)
         {
             return GetPrice(stock, date, false);
@@ -278,7 +150,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             return TryGetPrice(stock, date, out price, false);
         }
-
 
         public decimal GetPrice(Guid stock, DateTime date, bool exact)
         {
@@ -298,22 +169,18 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 return GetClosingPrice(stock, date, out price);
         }
 
-        private SQLiteCommand _GetPriceCommand;
         private bool GetClosingPrice(Guid stock, DateTime date, out decimal price)
         {
-            if (_GetPriceCommand == null)
-            {
-                _GetPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] <= @Date ORDER BY [Date] DESC LIMIT 1", _Connection);
-                _GetPriceCommand.Prepare();
-            }
+            var query = EntityQuery.FromTable("StockPrices")
+                .Where("[Stock] = @Stock AND [Date] <= @Date")
+                .WithParameter("@Stock", stock)
+                .WithParameter("@Date", date)
+                .OrderBy("[Date] DESC");
 
-            _GetPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetPriceCommand.ExecuteReader();
-
+            var reader = query.GetFields("Price");
             if (reader.Read())
             {
-                price = DBToDecimal(reader.GetInt32(0));
+                price = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
                 reader.Close();
                 return true;
             }
@@ -325,23 +192,17 @@ namespace PortfolioManager.Data.SQLite.Stocks
             }
         }
 
-
-        private SQLiteCommand _GetExactPriceCommand;
         private bool GetExactClosingPrice(Guid stock, DateTime date, out decimal price)
         {
-            if (_GetExactPriceCommand == null)
-            {
-                _GetExactPriceCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
-                _GetExactPriceCommand.Prepare();
-            }
+            var query = EntityQuery.FromTable("StockPrices")
+                .Where("[Stock] = @Stock AND[Date] = @Date")
+                .WithParameter("@Stock", stock)
+                .WithParameter("@Date", date);
 
-            _GetExactPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetExactPriceCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetExactPriceCommand.ExecuteReader();
-
+            var reader = query.GetFields("Price");
             if (reader.Read())
             {
-                price = DBToDecimal(reader.GetInt32(0));
+                price = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
                 reader.Close();
                 return true;
             }
@@ -373,7 +234,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             while (reader.Read())
             {
                 DateTime date = reader.GetDateTime(0);
-                decimal price = DBToDecimal(reader.GetInt32(1));
+                decimal price = SQLiteUtils.DBToDecimal(reader.GetInt32(1));
 
                 prices.Add(date, price);
             }
@@ -383,21 +244,16 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return prices;          
         }
 
-
-        private SQLiteCommand _GetLatestClosingPriceCommand;
         public DateTime GetLatestClosingPrice(Guid stock)
         {
             DateTime date;
 
-            if (_GetLatestClosingPriceCommand == null)
-            {
-                _GetLatestClosingPriceCommand = new SQLiteCommand("SELECT [Date] FROM [StockPrices] WHERE [Stock] = @Stock and [Current] = 0 ORDER BY [Date] DESC LIMIT 1", _Connection);
-                _GetLatestClosingPriceCommand.Prepare();
-            }
+            var query = EntityQuery.FromTable("StockPrices")
+                .Where("[Stock] = @Stock and [Current] = 0")
+                .WithParameter("@Stock", stock)
+                .OrderBy("[Date] DESC");
 
-            _GetLatestClosingPriceCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            SQLiteDataReader reader = _GetLatestClosingPriceCommand.ExecuteReader();
-
+            var reader = query.GetFields("[Date]");
             if (reader.Read())
                 date = reader.GetDateTime(0);
             else
@@ -408,36 +264,30 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return date;
         }
 
-        private SQLiteCommand _TradingDayCommand;
         public bool TradingDay(DateTime date)
         {
-            if (_TradingDayCommand == null)
-            {
-                _TradingDayCommand = new SQLiteCommand("SELECT [Date] FROM [NonTradingDays] WHERE [Date] = @Date LIMIT 1", _Connection);
-                _TradingDayCommand.Prepare();
-            }
+            bool result;
 
-            _TradingDayCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            var query = EntityQuery.FromTable("NonTradingDays")
+                .Where("[Date] = @Date")
+                .WithParameter("@Date", date);
 
-            if (_TradingDayCommand.ExecuteScalar() == null)
-                return true;
-            else
-                return false;
+            var reader = query.GetFields("Date");
+            result = (!reader.HasRows);
+
+            reader.Close();
+
+            return result;
         }
 
-        private SQLiteCommand _NonTradingDaysCommand;
         public IEnumerable<DateTime> NonTradingDays()
         {
             var nonTradingDays = new List<DateTime>();
 
-            if (_NonTradingDaysCommand == null)
-            {
-                _NonTradingDaysCommand = new SQLiteCommand("SELECT [Date] FROM [NonTradingDays] ORDER BY [Date]", _Connection);
-                _NonTradingDaysCommand.Prepare();
-            }
+            var query = EntityQuery.FromTable("NonTradingDays")
+                .OrderBy("Date");
 
-            SQLiteDataReader reader = _NonTradingDaysCommand.ExecuteReader();
-
+            var reader = query.GetFields("Date");
             while (reader.Read())
             {
                 DateTime date = reader.GetDateTime(0);
@@ -448,7 +298,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             reader.Close();
 
             return nonTradingDays;
-
         }
 
     }

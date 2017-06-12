@@ -33,7 +33,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             /* locate parcels that the capital return applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, compositeAction.ActionDate, compositeAction.ActionDate);
-            if (parcels.Count == 0)
+            if (!parcels.Any())
                 return transactions;
 
             foreach (var childAction in compositeAction.Children)

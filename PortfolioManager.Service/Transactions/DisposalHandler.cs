@@ -29,7 +29,7 @@ namespace PortfolioManager.Service.Transactions
                 throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
 
             /* Determine which parcels to sell based on CGT method */
-            IReadOnlyCollection<ShareParcel> ownedParcels;
+            IEnumerable<ShareParcel> ownedParcels;
             if (stock.Type == StockType.StapledSecurity)
                 ownedParcels = _PortfolioUtils.GetStapledSecurityParcels(stock, disposal.TransactionDate);
             else

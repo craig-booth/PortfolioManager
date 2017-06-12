@@ -152,7 +152,7 @@ namespace PortfolioManager.Service.Utils
                 return 0.00m; 
         }
 
-        public static CGTCalculation CalculateCapitalGain(IReadOnlyCollection<ShareParcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
+        public static CGTCalculation CalculateCapitalGain(IEnumerable<ShareParcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
         {
             /* Sort in prefered sell order */
             var sortedParcels = parcelsOwned.Where(x => x.ToDate == DateUtils.NoEndDate).OrderBy(x => x, new CGTComparer(saleDate, method));

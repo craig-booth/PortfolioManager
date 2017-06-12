@@ -14,8 +14,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class SQLiteAttachmentRepository :SQLiteRepository<Attachment>, IAttachmentRepository
     {
         
-        protected internal SQLiteAttachmentRepository(SQLitePortfolioDatabase database)
-            : base(database, "Attachments")
+        protected internal SQLiteAttachmentRepository(SQLitePortfolioDatabase database, IEntityCreator entityCreator)
+            : base(database, "Attachments", entityCreator)
         {
             _Database = database;
         }
@@ -42,26 +42,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             }
 
             return _GetUpdateRecordCommand;
-        }
-
-        protected override Attachment CreateEntity(SQLiteDataReader reader)
-        {
-            var attachment = new Attachment(new Guid(reader.GetString(0)))
-            {
-                Extension = reader.GetString(1)
-            };
-
-            byte[] buffer = new byte[1024];
-            long bytesRead;
-            long fieldOffset = 0;
-            while ((bytesRead = reader.GetBytes(2, fieldOffset, buffer, 0, buffer.Length)) > 0)
-            {
-                attachment.Data.Write(buffer, 0, (int)bytesRead);
-                fieldOffset += bytesRead;
-            }
-            attachment.Data.Seek(0, SeekOrigin.Begin);
-
-            return attachment;
         }
 
         protected override void AddParameters(SQLiteCommand command, Attachment entity)

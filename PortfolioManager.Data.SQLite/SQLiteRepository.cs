@@ -9,17 +9,25 @@ using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
-    public class SQLiteRepository<T> where T : Entity
+    public interface IEntityCreator
+    {
+        T CreateEntity<T>(SQLiteDataReader reader) where T : Entity;
+    }
+
+    public abstract class SQLiteRepository<T> where T : Entity
     {
         protected SQLiteDatabase _Database;
         protected SQLiteConnection _Connection;
+        protected IEntityCreator _EntityCreator;
 
         public string TableName { get; private set; }
 
-        protected internal SQLiteRepository(SQLiteDatabase database, string tableName)
+        protected internal SQLiteRepository(SQLiteDatabase database, string tableName, IEntityCreator entityCreator)
         {
             _Database = database;
             _Connection = database._Connection;
+            _EntityCreator = entityCreator;
+
             TableName = tableName;
         }
         
@@ -71,15 +79,7 @@ namespace PortfolioManager.Data.SQLite
             return _GetDeleteRecordCommand;
         }
 
-        protected virtual T CreateEntity(SQLiteDataReader reader)
-        {
-            return default(T);
-        }
-
-        protected virtual void AddParameters(SQLiteCommand command, T entity)
-        {
-
-        }
+        protected abstract void AddParameters(SQLiteCommand command, T entity);
 
         public virtual T Get(Guid id)
         {
@@ -93,7 +93,7 @@ namespace PortfolioManager.Data.SQLite
                 throw new RecordNotFoundException(id);
             }
                 
-            T entity = CreateEntity(reader);
+            T entity = _EntityCreator.CreateEntity<T>(reader);
             reader.Close();
 
             return entity;

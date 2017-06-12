@@ -19,7 +19,7 @@ namespace PortfolioManager.Model.Portfolios
         public decimal CostBase { get; set; }
         public Guid PurchaseId { get; set; }
 
-        private ShareParcel(Guid id, DateTime fromDate, DateTime toDate)
+        public ShareParcel(Guid id, DateTime fromDate, DateTime toDate)
             : base(id, fromDate, toDate)
         {
 

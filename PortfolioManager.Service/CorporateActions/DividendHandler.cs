@@ -31,7 +31,7 @@ namespace PortfolioManager.Service.CorporateActions
             /* locate parcels that the dividend applies to */
             var dividendStock = _StockQuery.Get(dividend.Stock, dividend.ActionDate);
             var parcels = _PortfolioQuery.GetParcelsForStock(dividendStock.Id, dividend.ActionDate, dividend.ActionDate);
-            if (parcels.Count == 0)
+            if (!parcels.Any())
                 return transactions;
 
             var stock = _StockQuery.Get(dividend.Stock, dividend.PaymentDate);
