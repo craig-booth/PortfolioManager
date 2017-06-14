@@ -98,23 +98,20 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public decimal PercentOfParentCost(Guid parent, Guid child, DateTime atDate)
         {
-            decimal percent = 0.00m;
+            decimal percent;
 
             var query = EntityQuery.FromTable("RelativeNTAs")
+                .Select("Percentage")
                 .Where("[Parent] = @Parent AND [Child] = @Child AND [Date] <= @Date")
                 .WithParameter("@Parent", parent)
                 .WithParameter("@Child", child)
                 .WithParameter("@Date", atDate)
                 .OrderBy("[Date] DESC");
 
-
-            var reader = query.GetFields("[Percentage]");
-            if (reader.Read())
-                percent = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
-
-            reader.Close();
-
-            return percent;
+            
+            query.ExecuteScalar(out percent);
+            
+            return percent; 
         }
 
         public string GetASXCode(Guid id)
@@ -124,21 +121,22 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public string GetASXCode(Guid id, DateTime atDate)
         {
+            string asxCode;
+
             var query = EntityQuery.FromTable("Stocks")
+                .Select("ASXCode")
                 .WithId(id)
                 .EffectiveAt(atDate);
 
-            var reader = query.GetFields("[ASXCode]");
-            if (!reader.Read())
+            
+            if (query.ExecuteScalar(out asxCode))
             {
-                reader.Close();
+                return asxCode;
+            }
+            else
+            {
                 throw new RecordNotFoundException("");
             }
-
-            string asxCode = reader.GetString(0);
-            reader.Close();
-
-            return asxCode;
         }
 
         public decimal GetPrice(Guid stock, DateTime date)
@@ -172,65 +170,39 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private bool GetClosingPrice(Guid stock, DateTime date, out decimal price)
         {
             var query = EntityQuery.FromTable("StockPrices")
+                .Select("Price")
                 .Where("[Stock] = @Stock AND [Date] <= @Date")
                 .WithParameter("@Stock", stock)
                 .WithParameter("@Date", date)
                 .OrderBy("[Date] DESC");
 
-            var reader = query.GetFields("Price");
-            if (reader.Read())
-            {
-                price = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
-                reader.Close();
-                return true;
-            }
-            else
-            {
-                price = 0.00m;
-                reader.Close();
-                return false;
-            }
+            return query.ExecuteScalar(out price);
         }
 
         private bool GetExactClosingPrice(Guid stock, DateTime date, out decimal price)
         {
             var query = EntityQuery.FromTable("StockPrices")
+                .Select("Price")
                 .Where("[Stock] = @Stock AND[Date] = @Date")
                 .WithParameter("@Stock", stock)
                 .WithParameter("@Date", date);
 
-            var reader = query.GetFields("Price");
-            if (reader.Read())
-            {
-                price = SQLiteUtils.DBToDecimal(reader.GetInt32(0));
-                reader.Close();
-                return true;
-            }
-            else
-            {
-                price = 0.00m;
-                reader.Close();
-                return false;
-            }
-
+            return query.ExecuteScalar(out price);
         }
 
-        private SQLiteCommand _GetPricesCommand;
         public Dictionary<DateTime, decimal> GetPrices(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var prices = new Dictionary<DateTime, decimal>();
 
-            if (_GetPricesCommand == null)
-            {
-                _GetPricesCommand = new SQLiteCommand("SELECT [Date], [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] BETWEEN @FromDate AND @ToDate ORDER BY [Date]", _Connection);
-                _GetPricesCommand.Prepare();
-            }
+            var query = EntityQuery.FromTable("StockPrices")
+                .Select("[Date], [Price]")
+                .Where("[Stock] = @Stock and [Date] between @FromDate and @ToDate")
+                .WithParameter("@Stock", stock)
+                .WithParameter("@FromDate", fromDate)
+                .WithParameter("@ToDate", toDate)
+                .OrderBy("[Date]");
 
-            _GetPricesCommand.Parameters.AddWithValue("@Stock", stock.ToString());
-            _GetPricesCommand.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            _GetPricesCommand.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetPricesCommand.ExecuteReader();
-
+            var reader = query.Execute();
             while (reader.Read())
             {
                 DateTime date = reader.GetDateTime(0);
@@ -246,20 +218,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public DateTime GetLatestClosingPrice(Guid stock)
         {
-            DateTime date;
-
             var query = EntityQuery.FromTable("StockPrices")
+                .Select("Date")
                 .Where("[Stock] = @Stock and [Current] = 0")
                 .WithParameter("@Stock", stock)
                 .OrderBy("[Date] DESC");
 
-            var reader = query.GetFields("[Date]");
-            if (reader.Read())
-                date = reader.GetDateTime(0);
-            else
-                date = DateUtils.NoDate;
-
-            reader.Close();
+            DateTime date;
+            query.ExecuteScalar(out date);
 
             return date;
         }
@@ -269,10 +235,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
             bool result;
 
             var query = EntityQuery.FromTable("NonTradingDays")
+                .Select("Date")
                 .Where("[Date] = @Date")
                 .WithParameter("@Date", date);
 
-            var reader = query.GetFields("Date");
+            var reader = query.ExecuteSingle();
             result = (!reader.HasRows);
 
             reader.Close();
@@ -285,9 +252,10 @@ namespace PortfolioManager.Data.SQLite.Stocks
             var nonTradingDays = new List<DateTime>();
 
             var query = EntityQuery.FromTable("NonTradingDays")
+                .Select("Date")
                 .OrderBy("Date");
 
-            var reader = query.GetFields("Date");
+            var reader = query.Execute();
             while (reader.Read())
             {
                 DateTime date = reader.GetDateTime(0);

@@ -63,11 +63,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             bool result;
 
             var query = EntityQuery.FromTable("Parcels")
+                    .Select("Id")
                     .Where("[Stock] = @Stock")
                     .WithParameter("@Stock", id)
                     .EffectiveAt(atDate);
 
-            var reader = query.GetFields("[Id]");
+            var reader = query.ExecuteSingle();
             result = reader.HasRows;
 
             reader.Close();
@@ -80,9 +81,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             List<Guid> stocks = new List<Guid>();
 
             var query = EntityQuery.FromTable("Parcels")
+                    .Select("DISTINCT [Stock]")
                     .EffectiveBetween(fromDate, toDate);
 
-            var reader = query.GetFields("DISTINCT [Stock]");
+            var reader = query.Execute();
             while (reader.Read())
             {
                 stocks.Add(new Guid(reader.GetString(0)));
