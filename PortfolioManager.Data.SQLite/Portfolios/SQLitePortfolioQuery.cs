@@ -97,138 +97,93 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         public IEnumerable<CGTEvent> GetCGTEvents(DateTime fromDate, DateTime toDate)
         {
-            var cgtQuery = from cgt in _Database._CGTEvents
-                           where cgt.EventDate >= fromDate && cgt.EventDate <= toDate
-                           orderby cgt.EventDate
-                           select cgt;
+            var query = EntityQuery.FromTable("CGTEvents")
+                            .Where("[EventDate] between @FromDate and @ToDate")
+                            .WithParameter("@FromDate", fromDate)
+                            .WithParameter("@ToDate", toDate)
+                            .OrderBy("[EventDate]");
 
-            return cgtQuery.ToList().AsReadOnly();
+            return query.CreateEntities<CGTEvent>();
         }
 
         public Transaction GetTransaction(Guid id)
         {
-            Transaction transaction;
+            var query = EntityQuery.FromTable("Transactions")
+                .WithId(id);
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Id] = @Id", _Connection);
-            query.Prepare();
-
-            query.Parameters.AddWithValue("@Id", id.ToString());
-
-            SQLiteDataReader reader = query.ExecuteReader();
-
-            if (reader.Read())
-                transaction = _EntityCreator.CreateEntity<Transaction>(reader);
-            else
-                transaction = null;
-
-            reader.Close();
-
-            return transaction;
+            return query.CreateEntity<Transaction>();
         }
 
         public IEnumerable<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
-            var list = new List<Transaction>();
+            var query = EntityQuery.FromTable("Transactions")
+                            .Where("[TransactionDate] between @FromDate and @ToDate")
+                            .WithParameter("@FromDate", fromDate)
+                            .WithParameter("@ToDate", toDate)
+                            .OrderBy("[RecordDate], [Sequence]");
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
-            query.Prepare();
-
-            query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = query.ExecuteReader();
-
-            while (reader.Read())
-            {
-                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
-                list.Add(transaction);
-            }
-            reader.Close();
-
-            return list;
+            return query.CreateEntities<Transaction>();
         }
 
         public IEnumerable<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
-            var list = new List<Transaction>();
+            var query = EntityQuery.FromTable("Transactions")
+                            .Where("[Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate")
+                            .OrderBy("[RecordDate], [Sequence]")
+                            .WithParameter("@Type", (int)transactionType)
+                            .WithParameter("@FromDate", fromDate)
+                            .WithParameter("@ToDate", toDate);
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
-            query.Prepare();
-
-            query.Parameters.AddWithValue("@Type", transactionType);
-            query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = query.ExecuteReader();
-
-            while (reader.Read())
-            {
-                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
-                list.Add(transaction);
-            }
-            reader.Close();
-
-            return list;
+            return query.CreateEntities<Transaction>();
         }
 
         public IEnumerable<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
-            var list = new List<Transaction>();
+            var query = EntityQuery.FromTable("Transactions")
+                            .Where("[ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate")
+                            .OrderBy("[RecordDate], [Sequence]")
+                            .WithParameter("@ASXCode", asxCode)
+                            .WithParameter("@FromDate", fromDate)
+                            .WithParameter("@ToDate", toDate);
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
-            query.Prepare();
-
-            query.Parameters.AddWithValue("@ASXCode", asxCode);
-            query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = query.ExecuteReader();
-
-            while (reader.Read())
-            {
-                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
-                list.Add(transaction);
-            }
-            reader.Close();
-
-            return list;
+            return query.CreateEntities<Transaction>();
         }
 
         public IEnumerable<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
-            var list = new List<Transaction>();
+            var query = EntityQuery.FromTable("Transactions")
+                .Where("[ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate")
+                .OrderBy("[RecordDate], [Sequence]")
+                .WithParameter("@ASXCode", asxCode)
+                .WithParameter("@Type", (int)transactionType)
+                .WithParameter("@FromDate", fromDate)
+                .WithParameter("@ToDate", toDate);
 
-            var query = new SQLiteCommand("SELECT * FROM [Transactions] WHERE [ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate ORDER BY [RecordDate], [Sequence]", _Connection);
-            query.Prepare();
-
-            query.Parameters.AddWithValue("@ASXCode", asxCode);
-            query.Parameters.AddWithValue("@Type", transactionType);
-            query.Parameters.AddWithValue("@FromDate", fromDate.ToString("yyyy-MM-dd"));
-            query.Parameters.AddWithValue("@ToDate", toDate.ToString("yyyy-MM-dd"));
-
-            SQLiteDataReader reader = query.ExecuteReader();
-
-            while (reader.Read())
-            {
-                var transaction = _EntityCreator.CreateEntity<Transaction>(reader);
-                list.Add(transaction);
-            }
-            reader.Close();
-
-            return list;
+            return query.CreateEntities<Transaction>();
         }
 
         public decimal GetCashBalance(DateTime atDate)
         {
-            // Sum up transactions prior to the request date
-            var transactions = GetCashAccountTransactions(DateUtils.NoStartDate, atDate);
+            var query = EntityQuery.FromTable("CashAccountTransactions")
+                            .Select("SUM([Amount])")
+                            .Where("[Date] <= @Date")
+                            .WithParameter("@Date", atDate);
 
-            return transactions.Sum(x => x.Amount);
+            decimal balance;
+            query.ExecuteScalar(out balance);
+
+            return balance;
         }
 
         public IEnumerable<CashAccountTransaction> GetCashAccountTransactions(DateTime fromDate, DateTime toDate)
         {
-            return _Database._CashAccountTransactions.Where(t => (t.Date >= fromDate) && (t.Date <= toDate)).OrderBy(x => x.Date).ThenByDescending(x => x.Amount).ToList();
+            var query = EntityQuery.FromTable("CashAccountTransactions")
+                            .Where("[Date] between @FromDate and @ToDate")
+                            .WithParameter("@FromDate", fromDate)
+                            .WithParameter("@ToDate", toDate)
+                            .OrderBy("[Date], [Amount] DESC");
+
+            return query.CreateEntities<CashAccountTransaction>();
         }
 
         public IEnumerable<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)

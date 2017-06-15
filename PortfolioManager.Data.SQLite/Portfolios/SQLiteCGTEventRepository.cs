@@ -4,46 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Data.SQLite;
+
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
 
-    class SQLiteCGTEventRepository : ICGTEventRepository
+    class SQLiteCGTEventRepository : SQLiteRepository<CGTEvent>, ICGTEventRepository
     {
-
-        private SQLitePortfolioDatabase _Database;
-
         protected internal SQLiteCGTEventRepository(SQLitePortfolioDatabase database)
+            : base(database, "CGTEvents", new SQLitePortfolioEntityCreator(database))
         {
-            _Database = database;
         }
 
-        public CGTEvent Get(Guid id)
+        private SQLiteCommand _GetAddRecordCommand;
+        protected override SQLiteCommand GetAddRecordCommand()
         {
-            return null;
+            if (_GetAddRecordCommand == null)
+            {
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO CGTEvents ([Id], [Stock], [Units], [EventDate], [CostBase], [AmountReceived], [CapitalGain], [CGTMethod]) VALUES (@Id, @Stock, @Units, @EventDate, @CostBase, @AmountReceived, @CapitalGain, @CGTMethod)", _Connection);
+                _GetAddRecordCommand.Prepare();
+            }
+
+            return _GetAddRecordCommand;
         }
 
-
-        public void Add(CGTEvent entity)
+        private SQLiteCommand _GetUpdateRecordCommand;
+        protected override SQLiteCommand GetUpdateRecordCommand()
         {
-            _Database._CGTEvents.Add(entity);
+            if (_GetUpdateRecordCommand == null)
+            {
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE CGTEvents SET [Stock] = @Stock, [Units] = @Units, [EventDate] = @EventDate, [CostBase] = @CostBase, [AmountReceived] = @AmountReceived, [CapitalGain] = @CapitalGain, [CGTMethod] = @CGTMethod WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand.Prepare();
+            }
+
+            return _GetUpdateRecordCommand;
         }
 
-        public void Update(CGTEvent entity)
+        protected override void AddParameters(SQLiteCommand command, CGTEvent entity)
         {
-
-        }
-
-        public void Delete(CGTEvent entity)
-        {
-
-        }
-
-        public void Delete(Guid id)
-        {
-
+            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
+            command.Parameters.AddWithValue("@Stock", entity.Stock.ToString());
+            command.Parameters.AddWithValue("@Units", entity.Units);
+            command.Parameters.AddWithValue("@EventDate", entity.EventDate.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@CostBase", SQLiteUtils.DecimalToDB(entity.CostBase));
+            command.Parameters.AddWithValue("@AmountReceived", SQLiteUtils.DecimalToDB(entity.AmountReceived));
+            command.Parameters.AddWithValue("@CapitalGain", SQLiteUtils.DecimalToDB(entity.CapitalGain));
+            command.Parameters.AddWithValue("@CGTMethod", entity.CGTMethod);
         }
 
     }

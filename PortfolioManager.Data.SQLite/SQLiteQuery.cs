@@ -246,7 +246,7 @@ namespace PortfolioManager.Data.SQLite
 
         public bool ExecuteScalar(out int value)
         {
-            var query = BuildQuery(true);
+            var query = BuildQuery(false);
 
             var result = query.ExecuteScalar();
             if (result != null)
@@ -263,10 +263,10 @@ namespace PortfolioManager.Data.SQLite
 
         public bool ExecuteScalar(out decimal value)
         {
-            var query = BuildQuery(true);
+            var query = BuildQuery(false);
 
             var result = query.ExecuteScalar();
-            if (result != null)
+            if ((result != null) && (result != DBNull.Value))
             {
                 value = SQLiteUtils.DBToDecimal((long)result);
                 return true;
@@ -280,7 +280,7 @@ namespace PortfolioManager.Data.SQLite
 
         public bool ExecuteScalar(out string value)
         {
-            var query = BuildQuery(true);
+            var query = BuildQuery(false);
 
             var result = query.ExecuteScalar();
             if (result != null)
@@ -297,7 +297,7 @@ namespace PortfolioManager.Data.SQLite
 
         public bool ExecuteScalar(out DateTime value)
         {
-            var query = BuildQuery(true);
+            var query = BuildQuery(false);
 
             var result = query.ExecuteScalar();
             if (result != null)
@@ -314,7 +314,7 @@ namespace PortfolioManager.Data.SQLite
 
         public bool ExecuteScalar(out Guid value)
         {
-            var query = BuildQuery(true);
+            var query = BuildQuery(false);
 
             var result = query.ExecuteScalar();
             if (result != null)
@@ -331,7 +331,7 @@ namespace PortfolioManager.Data.SQLite
 
         public bool ExecuteScalar(out bool value)
         {
-            var query = BuildQuery(true);
+            var query = BuildQuery(false);
 
             var result = query.ExecuteScalar();
             if (result != null)

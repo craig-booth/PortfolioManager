@@ -18,9 +18,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get { return 10; }
         }
 
-        internal List<CGTEvent> _CGTEvents { get; private set; }
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
-        internal List<CashAccountTransaction> _CashAccountTransactions { get; private set; }
         internal List<ShareParcelAudit> _ParcelAudit { get; private set; }
         internal List<StockSetting> _StockSettings { get; private set; }
         internal List<DRPCashBalance> _DRPCashBalances { get; private set; }
@@ -31,9 +29,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             PortfolioQuery = new SQLitePortfolioQuery(this);
 
-            _CGTEvents = new List<CGTEvent>();
             _IncomeReceived = new List<IncomeReceived>();
-            _CashAccountTransactions = new List<CashAccountTransaction>();
             _ParcelAudit = new List<ShareParcelAudit>();
             _StockSettings = new List<StockSetting>();
             _DRPCashBalances = new List<DRPCashBalance>();

@@ -26,6 +26,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _EntityCreators.Add(typeof(Transaction), CreateTransaction);
             _EntityCreators.Add(typeof(ShareParcel), CreateShareParcel);
             _EntityCreators.Add(typeof(Attachment), CreateAttachment);
+            _EntityCreators.Add(typeof(CGTEvent), CreateCGTEvent);
+            _EntityCreators.Add(typeof(CashAccountTransaction), CreateCashAccountTransaction);
         }
 
         public T CreateEntity<T>(SQLiteDataReader reader) where T : Entity
@@ -107,6 +109,35 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             attachment.Data.Seek(0, SeekOrigin.Begin);
 
             return attachment;
+        }
+
+        private CGTEvent CreateCGTEvent(SQLiteDataReader reader)
+        {
+            var cgtEvent = new CGTEvent(new Guid(reader.GetString(0)))
+            {
+                Stock = new Guid(reader.GetString(1)),
+                Units = reader.GetInt32(2),
+                EventDate = reader.GetDateTime(3),
+                CostBase = SQLiteUtils.DBToDecimal(reader.GetInt64(4)),
+                AmountReceived = SQLiteUtils.DBToDecimal(reader.GetInt64(5)),
+                CapitalGain = SQLiteUtils.DBToDecimal(reader.GetInt64(6)),
+                CGTMethod = (CGTMethod)reader.GetInt32(7)
+            };
+
+            return cgtEvent;
+        }
+
+        private CashAccountTransaction CreateCashAccountTransaction(SQLiteDataReader reader)
+        {
+            var cashTransaction = new CashAccountTransaction(new Guid(reader.GetString(0)))
+            {
+                Type = (BankAccountTransactionType)reader.GetInt32(1),
+                Date = reader.GetDateTime(2),
+                Description = reader.GetString(3),
+                Amount = SQLiteUtils.DBToDecimal(reader.GetInt64(4)),
+            };
+
+            return cashTransaction;
         }
 
         private Aquisition CreateAquisition(Guid id)
