@@ -28,6 +28,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _EntityCreators.Add(typeof(Attachment), CreateAttachment);
             _EntityCreators.Add(typeof(CGTEvent), CreateCGTEvent);
             _EntityCreators.Add(typeof(CashAccountTransaction), CreateCashAccountTransaction);
+            _EntityCreators.Add(typeof(ShareParcelAudit), CreateShareParcelAudit);
         }
 
         public T CreateEntity<T>(SQLiteDataReader reader) where T : Entity
@@ -138,6 +139,21 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             };
 
             return cashTransaction;
+        }
+
+        private ShareParcelAudit CreateShareParcelAudit(SQLiteDataReader reader)
+        {
+            var audit = new ShareParcelAudit(new Guid(reader.GetString(0)))
+            {
+                Parcel = new Guid(reader.GetString(1)),
+                Date = reader.GetDateTime(2),
+                Transaction = new Guid(reader.GetString(3)),
+                UnitCount = reader.GetInt32(4),
+                CostBaseChange = SQLiteUtils.DBToDecimal(reader.GetInt64(5)),
+                AmountChange = SQLiteUtils.DBToDecimal(reader.GetInt64(6))
+            };
+
+            return audit;
         }
 
         private Aquisition CreateAquisition(Guid id)

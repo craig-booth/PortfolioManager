@@ -19,7 +19,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
         internal List<IncomeReceived> _IncomeReceived { get; private set; }
-        internal List<ShareParcelAudit> _ParcelAudit { get; private set; }
         internal List<StockSetting> _StockSettings { get; private set; }
         internal List<DRPCashBalance> _DRPCashBalances { get; private set; }
 
@@ -30,7 +29,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             PortfolioQuery = new SQLitePortfolioQuery(this);
 
             _IncomeReceived = new List<IncomeReceived>();
-            _ParcelAudit = new List<ShareParcelAudit>();
             _StockSettings = new List<StockSetting>();
             _DRPCashBalances = new List<DRPCashBalance>();
         }

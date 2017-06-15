@@ -10,16 +10,22 @@ namespace PortfolioManager.Model.Portfolios
 {
     public class ShareParcelAudit : Entity
     {
-        public Guid Parcel { get; private set; }
-        public DateTime Date { get; private set; }
-        public Guid Transaction { get; private set; }
+        public Guid Parcel { get; set; }
+        public DateTime Date { get; set; }
+        public Guid Transaction { get; set; }
 
-        public int UnitCount { get; private set; }
-        public decimal CostBaseChange { get; private set; }
-        public decimal AmountChange { get; private set; }
+        public int UnitCount { get; set; }
+        public decimal CostBaseChange { get; set; }
+        public decimal AmountChange { get; set; }
+
+        public ShareParcelAudit(Guid id)
+           : base(id)
+        {
+
+        }
 
         public ShareParcelAudit(Guid parcel, DateTime date, Guid transaction, int newUnitCount, decimal costBaseChange, decimal amountChange)
-            : base(Guid.NewGuid())
+            : this(Guid.NewGuid())
         {
             Parcel = parcel;
             Date = date;

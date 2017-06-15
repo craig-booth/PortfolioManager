@@ -3,55 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data.SQLite;
 
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
-    class SQLiteParcelAuditRepository : IParcelAuditRepository
+    class SQLiteParcelAuditRepository : SQLiteRepository<ShareParcelAudit>, IParcelAuditRepository
     {
 
-        private SQLitePortfolioDatabase _Database;
-
         protected internal SQLiteParcelAuditRepository(SQLitePortfolioDatabase database)
+            :base(database, "ParcelAudit", new SQLitePortfolioEntityCreator(database))
         {
             _Database = database;
         }
 
-        public ShareParcelAudit Get(Guid id)
+        private SQLiteCommand _GetAddRecordCommand;
+        protected override SQLiteCommand GetAddRecordCommand()
         {
-            return null;
+            if (_GetAddRecordCommand == null)
+            {
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO ParcelAudit ([Id], [Parcel], [Date], [Transaction], [UnitCount], [CostBaseChange], [AmountChange]) VALUES (@Id, @Parcel, @Date, @Transaction, @UnitCount, @CostBaseChange, @AmountChange)", _Connection);
+                _GetAddRecordCommand.Prepare();
+            }
+
+            return _GetAddRecordCommand;
         }
 
-        public ShareParcelAudit Get(Guid id, DateTime atDate)
+        private SQLiteCommand _GetUpdateRecordCommand;
+        protected override SQLiteCommand GetUpdateRecordCommand()
         {
-            return null;
+            if (_GetUpdateRecordCommand == null)
+            {
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE ParcelAudit SET [Parcel] = @Parcel, [Date] = @Date, [Transaction] = @Transaction, [UnitCount] = @UnitCount, [CostBaseChange] = @CostBaseChange, [AmountChange] = @AmountChange WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand.Prepare();
+            }
+
+            return _GetUpdateRecordCommand;
         }
 
-        public void Add(ShareParcelAudit entity)
+        protected override void AddParameters(SQLiteCommand command, ShareParcelAudit entity)
         {
-            _Database._ParcelAudit.Add(entity);
-        }
+            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
+            command.Parameters.AddWithValue("@Parcel", entity.Parcel.ToString());
+            command.Parameters.AddWithValue("@Date", entity.Date.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@Transaction", entity.Transaction.ToString());
+            command.Parameters.AddWithValue("@UnitCount", SQLiteUtils.DecimalToDB(entity.UnitCount));
+            command.Parameters.AddWithValue("@CostBaseChange", SQLiteUtils.DecimalToDB(entity.CostBaseChange));
+            command.Parameters.AddWithValue("@AmountChange", SQLiteUtils.DecimalToDB(entity.AmountChange));
+         }
 
-        public void Update(ShareParcelAudit entity)
-        {
-
-        }
-
-        public void Delete(ShareParcelAudit entity)
-        {
-            _Database._ParcelAudit.Remove(entity);
-        }
-
-        public void Delete(Guid id)
-        {
-
-        }
-
-        public void Delete(Guid id, DateTime atDate)
-        {
-        }
     }
 }

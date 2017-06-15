@@ -188,7 +188,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         public IEnumerable<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate)
         {
-            return _Database._ParcelAudit.Where(x => (x.Parcel == id) && (x.Date >= fromDate) && (x.Date <= toDate)).ToList();
+            var query = EntityQuery.FromTable("ParcelAudit")
+                            .Where("[Parcel] = @Parcel and [Date] between @FromDate and @ToDate")
+                            .WithParameter("@Parcel", id)
+                            .WithParameter("@FromDate", fromDate)
+                            .WithParameter("@ToDate", toDate);
+
+            return query.CreateEntities<ShareParcelAudit>();
         }
 
         public StockSetting GetStockSetting(Guid stock, DateTime atDate)
