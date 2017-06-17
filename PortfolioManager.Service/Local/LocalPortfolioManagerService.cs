@@ -52,6 +52,8 @@ namespace PortfolioManager.Service.Local
             SetMapping(stockQuery);
             Mapper.AssertConfigurationIsValid();
 
+           // LoadTransactions(portfolioDatabase);
+
             return Task.FromResult<bool>(true);
         }
 
@@ -70,6 +72,19 @@ namespace PortfolioManager.Service.Local
         private void SetMapping(IStockQuery stockQuery)
         {
             Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(stockQuery)));
+        }
+
+        private void LoadTransactions(IPortfolioDatabase database)
+        {
+            var transactionService = _ServiceFactory.GetService<ITransactionService>() as TransactionService;
+
+            var allTransactions = database.PortfolioQuery.GetTransactions(DateTime.MinValue, DateTime.MaxValue);
+            using (IPortfolioUnitOfWork unitOfWork = database.CreateUnitOfWork())
+            {
+                foreach (var transaction in allTransactions)
+                    transactionService.LoadTransaction(unitOfWork, transaction);
+                unitOfWork.Save();
+            }
         }
 
     }
