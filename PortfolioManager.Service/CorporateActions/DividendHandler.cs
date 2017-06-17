@@ -79,7 +79,7 @@ namespace PortfolioManager.Service.CorporateActions
                     }
                     else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
                     {
-                        var drpCashBalance = _PortfolioQuery.GetDRPCashBalance(stock.Id, dividend.PaymentDate);
+                        var drpCashBalance = _PortfolioQuery.GetDRPBalance(stock.Id, dividend.PaymentDate);
                         var availableAmount = amountPaid + drpCashBalance;
                         drpUnits = (int)Math.Floor(availableAmount / dividend.DRPPrice);
                         costBase = (drpUnits * dividend.DRPPrice).ToCurrency(stock.DividendRoundingRule);

@@ -23,7 +23,7 @@ namespace PortfolioManager.UI.ViewModels
     {
         private readonly StockItem _AllCompanies = new StockItem(Guid.Empty, "", "All Companies");
 
-        private RestPortfolioManagerService _PortfolioManagerService;
+        private LocalPortfolioManagerService _PortfolioManagerService;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -109,7 +109,7 @@ namespace PortfolioManager.UI.ViewModels
             EditTransactionWindow = new EditTransactionViewModel();
             CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel();
 
-            _PortfolioManagerService = new RestPortfolioManagerService();
+            _PortfolioManagerService = new LocalPortfolioManagerService();
             ViewParameter.PortfolioManagerService = _PortfolioManagerService;
 
             _Settings = new ApplicationSettings();

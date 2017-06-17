@@ -144,7 +144,7 @@ namespace PortfolioManager.Service.Local
                     item.HoldingPerformance.ClosingBalance = holding.Value;
                     item.CashFlows.Add(endDate, holding.Value);
 
-                    item.HoldingPerformance.DRPCashBalance = _PortfolioQuery.GetDRPCashBalance(holding.Stock.Id, endDate);
+                    item.HoldingPerformance.DRPCashBalance = _PortfolioQuery.GetDRPBalance(holding.Stock.Id, endDate);
                 }
                 else
                     item.HoldingPerformance.ClosingBalance = 0.00m;

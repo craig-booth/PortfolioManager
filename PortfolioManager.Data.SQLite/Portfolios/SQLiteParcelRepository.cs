@@ -16,7 +16,6 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         protected internal SQLiteParcelRepository(SQLitePortfolioDatabase database, IEntityCreator entityCreator)
             : base(database, "Parcels", entityCreator)
         {
-            _Database = database;
         }
 
         private SQLiteCommand _GetAddRecordCommand;

@@ -3,58 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 using PortfolioManager.Common;
 using PortfolioManager.Model.Data;
 using PortfolioManager.Model.Portfolios;
 
+
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
-    class SQLiteStockSettingRepository : IStockSettingRepository
+    class SQLiteStockSettingRepository : SQLiteEffectiveDatedRepository<StockSetting>, IStockSettingRepository
     {
-        private SQLitePortfolioDatabase _Database;
-
+ 
         protected internal SQLiteStockSettingRepository(SQLitePortfolioDatabase database)
+            : base(database, "StockSettings", new SQLitePortfolioEntityCreator(database))
         {
             _Database = database;
         }
 
-        public StockSetting Get(Guid id)
+        private SQLiteCommand _GetAddRecordCommand;
+        protected override SQLiteCommand GetAddRecordCommand()
         {
-            return Get(id, DateTime.Today);
+            if (_GetAddRecordCommand == null)
+            {
+                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO StockSettings ([Id], [FromDate], [ToDate], [ParticipateinDRP]) VALUES (@Id, @FromDate, @ToDate, @ParticipateinDRP)", _Connection);
+                _GetAddRecordCommand.Prepare();
+            }
+
+            return _GetAddRecordCommand;
         }
 
-        public StockSetting Get(Guid id, DateTime atDate)
+        private SQLiteCommand _GetUpdateRecordCommand;
+        protected override SQLiteCommand GetUpdateRecordCommand()
         {
-            var stockSettingQuery = from stockSetting in _Database._StockSettings
-                                  where (stockSetting.Id == id) && ((atDate >= stockSetting.FromDate && atDate <= stockSetting.ToDate))
-                                  select stockSetting;
+            if (_GetUpdateRecordCommand == null)
+            {
+                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE StockSettings SET [ToDate] = @ToDate, [ParticipateinDRP] = @ParticipateinDRP WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetUpdateRecordCommand.Prepare();
+            }
 
-            return stockSettingQuery.FirstOrDefault();
+            return _GetUpdateRecordCommand;
         }
 
-        public void Add(StockSetting entity)
+        protected override void AddParameters(SQLiteCommand command, StockSetting entity)
         {
-            _Database._StockSettings.Add(entity);
-        }
-
-        public void Update(StockSetting entity)
-        {
-
-        }
-
-        public void Delete(StockSetting entity)
-        {
-            _Database._StockSettings.Remove(entity);
-        }
-
-        public void Delete(Guid id)
-        {
-
-        }
-
-        public void Delete(Guid id, DateTime atDate)
-        {
+            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
+            command.Parameters.AddWithValue("@FromDate", entity.FromDate.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@ToDate", entity.ToDate.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@ParticipateinDRP", SQLiteUtils.BoolToDb(entity.ParticipateinDRP));
         }
     }
 }

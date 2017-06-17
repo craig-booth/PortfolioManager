@@ -199,20 +199,34 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         public StockSetting GetStockSetting(Guid stock, DateTime atDate)
         {
-            var stockSettingQuery = from stockSetting in _Database._StockSettings
-                                  where (stockSetting.Id == stock) && ((atDate >= stockSetting.FromDate && atDate <= stockSetting.ToDate))
-                                  select stockSetting;
+            var query = EntityQuery.FromTable("StockSettings")
+                            .WithId(stock)
+                            .EffectiveAt(atDate);
 
-            return stockSettingQuery.FirstOrDefault();
+            return query.CreateEntity<StockSetting>();
         }
 
-        public decimal GetDRPCashBalance(Guid stock, DateTime atDate)
-        {
-            var drpBalanceQuery = from drpBalance in _Database._DRPCashBalances
-                               where (drpBalance.Id == stock) && ((atDate >= drpBalance.FromDate && atDate <= drpBalance.ToDate))
-                               select drpBalance.Balance;
 
-            return drpBalanceQuery.FirstOrDefault();
+        public DRPCashBalance GetDRPCashBalance(Guid stock, DateTime atDate)
+        {
+            var query = EntityQuery.FromTable("DRPCashBalances")
+                            .WithId(stock)
+                            .EffectiveAt(atDate);
+
+            return query.CreateEntity<DRPCashBalance>();
+        }
+
+        public decimal GetDRPBalance(Guid stock, DateTime atDate)
+        {
+            var query = EntityQuery.FromTable("DRPCashBalances")
+                            .Select("Balance")
+                            .WithId(stock)
+                            .EffectiveAt(atDate);
+
+            decimal balance;
+            query.ExecuteScalar(out balance);
+
+            return balance;
         }
 
     }

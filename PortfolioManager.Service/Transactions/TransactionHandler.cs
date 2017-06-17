@@ -180,14 +180,13 @@ namespace PortfolioManager.Service.Transactions
 
         protected void UpdateDRPCashBalance(IPortfolioUnitOfWork unitOfWork, Stock stock, DateTime balanceDate, decimal balance)
         {
-            var drpCashBalance = unitOfWork.DRPCashBalanceRepository.Get(stock.Id, balanceDate);
+            var drpCashBalance = _PortfolioQuery.GetDRPCashBalance(stock.Id, balanceDate);
 
             if (drpCashBalance == null)
             {
                 drpCashBalance = new DRPCashBalance(stock.Id, balanceDate, DateUtils.NoEndDate, balance);
 
                 unitOfWork.DRPCashBalanceRepository.Add(drpCashBalance);
-
             }
             else if (drpCashBalance.FromDate == balanceDate)
             {
@@ -209,6 +208,7 @@ namespace PortfolioManager.Service.Transactions
                 drpCashBalance.EndEntity(balanceDate.AddDays(-1));
                 unitOfWork.DRPCashBalanceRepository.Update(drpCashBalance);
             }
+
         }
 
     }

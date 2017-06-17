@@ -29,6 +29,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _EntityCreators.Add(typeof(CGTEvent), CreateCGTEvent);
             _EntityCreators.Add(typeof(CashAccountTransaction), CreateCashAccountTransaction);
             _EntityCreators.Add(typeof(ShareParcelAudit), CreateShareParcelAudit);
+            _EntityCreators.Add(typeof(DRPCashBalance), CreateShareDRPCashBalance);
+            _EntityCreators.Add(typeof(StockSetting), CreateStockSetting);
         }
 
         public T CreateEntity<T>(SQLiteDataReader reader) where T : Entity
@@ -154,6 +156,26 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             };
 
             return audit;
+        }
+
+        private DRPCashBalance CreateShareDRPCashBalance(SQLiteDataReader reader)
+        {
+            var balance = new DRPCashBalance(new Guid(reader.GetString(0)),
+                                            reader.GetDateTime(1),
+                                            reader.GetDateTime(2),
+                                            SQLiteUtils.DBToDecimal(reader.GetInt64(3)));
+
+            return balance;
+        }
+
+        private StockSetting CreateStockSetting(SQLiteDataReader reader)
+        {
+            var setting = new StockSetting(new Guid(reader.GetString(0)), reader.GetDateTime(1), reader.GetDateTime(2))
+            {
+                ParticipateinDRP = SQLiteUtils.DBToBool(reader.GetString(3))
+            };
+
+            return setting;
         }
 
         private Aquisition CreateAquisition(Guid id)

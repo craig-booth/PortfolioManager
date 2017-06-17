@@ -18,19 +18,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get { return 10; }
         }
 
-        internal List<IncomeReceived> _IncomeReceived { get; private set; }
-        internal List<StockSetting> _StockSettings { get; private set; }
-        internal List<DRPCashBalance> _DRPCashBalances { get; private set; }
-
         public IPortfolioQuery PortfolioQuery { get; private set; }
 
         public SQLitePortfolioDatabase(string fileName) : base(fileName)
         {
             PortfolioQuery = new SQLitePortfolioQuery(this);
-
-            _IncomeReceived = new List<IncomeReceived>();
-            _StockSettings = new List<StockSetting>();
-            _DRPCashBalances = new List<DRPCashBalance>();
         }
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)

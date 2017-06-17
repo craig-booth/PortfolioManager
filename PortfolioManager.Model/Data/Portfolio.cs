@@ -94,6 +94,8 @@ namespace PortfolioManager.Model.Data
         IEnumerable<ShareParcelAudit> GetParcelAudit(Guid id, DateTime fromDate, DateTime toDate);
 
         StockSetting GetStockSetting(Guid stock, DateTime atDate);
-        decimal GetDRPCashBalance(Guid stock, DateTime atDate);
+
+        DRPCashBalance GetDRPCashBalance(Guid stock, DateTime atDate);
+        decimal GetDRPBalance(Guid stock, DateTime atDate);
     }
 }
