@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.IO;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -16,12 +16,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     class SQLitePortfolioEntityCreator : IEntityCreator
     {
         private readonly SQLitePortfolioDatabase _Database;
-        private readonly Dictionary<Type, Func<SQLiteDataReader, Entity>> _EntityCreators;
+        private readonly Dictionary<Type, Func<SqliteDataReader, Entity>> _EntityCreators;
 
         public SQLitePortfolioEntityCreator(SQLitePortfolioDatabase database)
         {
             _Database = database;
-            _EntityCreators = new Dictionary<Type, Func<SQLiteDataReader, Entity>>();
+            _EntityCreators = new Dictionary<Type, Func<SqliteDataReader, Entity>>();
 
             _EntityCreators.Add(typeof(Transaction), CreateTransaction);
             _EntityCreators.Add(typeof(ShareParcel), CreateShareParcel);
@@ -33,9 +33,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _EntityCreators.Add(typeof(StockSetting), CreateStockSetting);
         }
 
-        public T CreateEntity<T>(SQLiteDataReader reader) where T : Entity
+        public T CreateEntity<T>(SqliteDataReader reader) where T : Entity
         {
-            Func<SQLiteDataReader, Entity> creationFunction;
+            Func<SqliteDataReader, Entity> creationFunction;
 
             if (_EntityCreators.TryGetValue(typeof(T), out creationFunction))
                 return (T)creationFunction(reader);
@@ -43,7 +43,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 return default(T);
         }
 
-        private Transaction CreateTransaction(SQLiteDataReader reader)
+        private Transaction CreateTransaction(SqliteDataReader reader)
         {
             Transaction transaction;
 
@@ -78,7 +78,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return transaction;
         }
 
-        private ShareParcel CreateShareParcel(SQLiteDataReader reader)
+        private ShareParcel CreateShareParcel(SqliteDataReader reader)
         {
             var shareParcel = new ShareParcel(new Guid(reader.GetString(0)), reader.GetDateTime(1), reader.GetDateTime(2))
             {
@@ -94,7 +94,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return shareParcel;
         }
 
-        private Attachment CreateAttachment(SQLiteDataReader reader)
+        private Attachment CreateAttachment(SqliteDataReader reader)
         {
             var attachment = new Attachment(new Guid(reader.GetString(0)))
             {
@@ -114,7 +114,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return attachment;
         }
 
-        private CGTEvent CreateCGTEvent(SQLiteDataReader reader)
+        private CGTEvent CreateCGTEvent(SqliteDataReader reader)
         {
             var cgtEvent = new CGTEvent(new Guid(reader.GetString(0)))
             {
@@ -130,7 +130,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return cgtEvent;
         }
 
-        private CashAccountTransaction CreateCashAccountTransaction(SQLiteDataReader reader)
+        private CashAccountTransaction CreateCashAccountTransaction(SqliteDataReader reader)
         {
             var cashTransaction = new CashAccountTransaction(new Guid(reader.GetString(0)))
             {
@@ -143,7 +143,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return cashTransaction;
         }
 
-        private ShareParcelAudit CreateShareParcelAudit(SQLiteDataReader reader)
+        private ShareParcelAudit CreateShareParcelAudit(SqliteDataReader reader)
         {
             var audit = new ShareParcelAudit(new Guid(reader.GetString(0)))
             {
@@ -158,7 +158,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return audit;
         }
 
-        private DRPCashBalance CreateShareDRPCashBalance(SQLiteDataReader reader)
+        private DRPCashBalance CreateShareDRPCashBalance(SqliteDataReader reader)
         {
             var balance = new DRPCashBalance(new Guid(reader.GetString(0)),
                                             reader.GetDateTime(1),
@@ -168,7 +168,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return balance;
         }
 
-        private StockSetting CreateStockSetting(SQLiteDataReader reader)
+        private StockSetting CreateStockSetting(SqliteDataReader reader)
         {
             var setting = new StockSetting(new Guid(reader.GetString(0)), reader.GetDateTime(1), reader.GetDateTime(2))
             {
@@ -181,24 +181,26 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private Aquisition CreateAquisition(Guid id)
         {
             /* Get aquisition values */
-            var command = new SQLiteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CreateCashTransaction] FROM [Aquisitions] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CreateCashTransaction] FROM [Aquisitions] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader aquisitionReader = command.ExecuteReader();
-            if (!aquisitionReader.Read())
-            {
-                aquisitionReader.Close();
-                throw new RecordNotFoundException(id);
-            }
 
-            Aquisition aquisition = new Aquisition(id)
+            Aquisition aquisition;
+            using (SqliteDataReader aquisitionReader = command.ExecuteReader())
             {
-                Units = aquisitionReader.GetInt32(0),
-                AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt64(1)),
-                TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt64(2)),
-                CreateCashTransaction = SQLiteUtils.DBToBool(aquisitionReader.GetString(3))
-            };
-            aquisitionReader.Close();
+                if (!aquisitionReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                aquisition = new Aquisition(id)
+                {
+                    Units = aquisitionReader.GetInt32(0),
+                    AveragePrice = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt64(1)),
+                    TransactionCosts = SQLiteUtils.DBToDecimal(aquisitionReader.GetInt64(2)),
+                    CreateCashTransaction = SQLiteUtils.DBToBool(aquisitionReader.GetString(3))
+                };
+            }
 
             return aquisition;
         }
@@ -206,21 +208,23 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private CostBaseAdjustment CreateCostBaseAdjustment(Guid id)
         {
             /* Get cost base adjsutment values */
-            var command = new SQLiteCommand("SELECT [Percentage] FROM [CostBaseAdjustments] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [Percentage] FROM [CostBaseAdjustments] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader costBaseAdjustmentReader = command.ExecuteReader();
-            if (!costBaseAdjustmentReader.Read())
-            {
-                costBaseAdjustmentReader.Close();
-                throw new RecordNotFoundException(id);
-            }
 
-            CostBaseAdjustment costBaseAdjustment = new CostBaseAdjustment(id)
+            CostBaseAdjustment costBaseAdjustment;
+            using (SqliteDataReader costBaseAdjustmentReader = command.ExecuteReader())
             {
-                Percentage = SQLiteUtils.DBToDecimal(costBaseAdjustmentReader.GetInt64(0))
-            };
-            costBaseAdjustmentReader.Close();
+                if (!costBaseAdjustmentReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                costBaseAdjustment = new CostBaseAdjustment(id)
+                {
+                    Percentage = SQLiteUtils.DBToDecimal(costBaseAdjustmentReader.GetInt64(0))
+                };
+            }
 
             return costBaseAdjustment;
         }
@@ -228,25 +232,27 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private Disposal CreateDisposal(Guid id)
         {
             /* Get disposal values */
-            var command = new SQLiteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CGTMethod], [CreateCashTransaction] FROM [Disposals] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [Units], [AveragePrice], [TransactionCosts], [CGTMethod], [CreateCashTransaction] FROM [Disposals] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader disposalReader = command.ExecuteReader();
-            if (!disposalReader.Read())
-            {
-                disposalReader.Close();
-                throw new RecordNotFoundException(id);
-            }
 
-            Disposal disposal = new Disposal(id)
+            Disposal disposal;
+            using (SqliteDataReader disposalReader = command.ExecuteReader())
             {
-                Units = disposalReader.GetInt32(0),
-                AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt64(1)),
-                TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt64(2)),
-                CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3),
-                CreateCashTransaction = SQLiteUtils.DBToBool(disposalReader.GetString(4))
-            };
-            disposalReader.Close();
+                if (!disposalReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                disposal = new Disposal(id)
+                {
+                    Units = disposalReader.GetInt32(0),
+                    AveragePrice = SQLiteUtils.DBToDecimal(disposalReader.GetInt64(1)),
+                    TransactionCosts = SQLiteUtils.DBToDecimal(disposalReader.GetInt64(2)),
+                    CGTMethod = (CGTCalculationMethod)disposalReader.GetInt32(3),
+                    CreateCashTransaction = SQLiteUtils.DBToBool(disposalReader.GetString(4))
+                };
+            }
 
             return disposal;
         }
@@ -254,27 +260,29 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private IncomeReceived CreateIncomeReceived(Guid id)
         {
             /* Get income received values */
-            var command = new SQLiteCommand("SELECT [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction], [DRPCashBalance] FROM [IncomeReceived] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [FrankedAmount], [UnfrankedAmount], [FrankingCredits], [Interest], [TaxDeferred], [CreateCashTransaction], [DRPCashBalance] FROM [IncomeReceived] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader incomeReceivedReader = command.ExecuteReader();
-            if (!incomeReceivedReader.Read())
-            {
-                incomeReceivedReader.Close();
-                throw new RecordNotFoundException(id);
-            }
 
-            IncomeReceived incomeReceived = new IncomeReceived(id)
+            IncomeReceived incomeReceived;
+            using (SqliteDataReader incomeReceivedReader = command.ExecuteReader())
             {
-                FrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(0)),
-                UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(1)),
-                FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(2)),
-                Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(3)),
-                TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(4)),
-                CreateCashTransaction = SQLiteUtils.DBToBool(incomeReceivedReader.GetString(5)),
-                DRPCashBalance = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(6))
-            };
-            incomeReceivedReader.Close();
+                if (!incomeReceivedReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                incomeReceived = new IncomeReceived(id)
+                {
+                    FrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(0)),
+                    UnfrankedAmount = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(1)),
+                    FrankingCredits = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(2)),
+                    Interest = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(3)),
+                    TaxDeferred = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(4)),
+                    CreateCashTransaction = SQLiteUtils.DBToBool(incomeReceivedReader.GetString(5)),
+                    DRPCashBalance = SQLiteUtils.DBToDecimal(incomeReceivedReader.GetInt64(6))
+                };
+            }
 
             return incomeReceived;
         }
@@ -282,25 +290,26 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private OpeningBalance CreateOpeningBalance(Guid id)
         {
             /* Get opening balance values */
-            var command = new SQLiteCommand("SELECT [Units], [CostBase], [AquisitionDate], [PurchaseId] FROM [OpeningBalances] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [Units], [CostBase], [AquisitionDate], [PurchaseId] FROM [OpeningBalances] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader openingBalanceReader = command.ExecuteReader();
-            if (!openingBalanceReader.Read())
+
+            OpeningBalance openingBalance;
+            using (SqliteDataReader openingBalanceReader = command.ExecuteReader())
             {
-                openingBalanceReader.Close();
-                throw new RecordNotFoundException(id);
+                if (!openingBalanceReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                openingBalance = new OpeningBalance(id)
+                {
+                    Units = openingBalanceReader.GetInt32(0),
+                    CostBase = SQLiteUtils.DBToDecimal(openingBalanceReader.GetInt64(1)),
+                    AquisitionDate = openingBalanceReader.GetDateTime(2),
+                    PurchaseId = new Guid(openingBalanceReader.GetString(3))
+                };
             }
-
-            OpeningBalance openingBalance = new OpeningBalance(id)
-            {
-                Units = openingBalanceReader.GetInt32(0),
-                CostBase = SQLiteUtils.DBToDecimal(openingBalanceReader.GetInt64(1)),
-                AquisitionDate = openingBalanceReader.GetDateTime(2),
-                PurchaseId = new Guid(openingBalanceReader.GetString(3))
-            };
-
-            openingBalanceReader.Close();
 
             return openingBalance;
         }
@@ -308,22 +317,24 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private ReturnOfCapital CreateReturnOfCapital(Guid id)
         {
             /* Get opening balance values */
-            var command = new SQLiteCommand("SELECT [Amount], [CreateCashTransaction] FROM [ReturnsOfCapital] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [Amount], [CreateCashTransaction] FROM [ReturnsOfCapital] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader returnOfCapitalReader = command.ExecuteReader();
-            if (!returnOfCapitalReader.Read())
-            {
-                returnOfCapitalReader.Close();
-                throw new RecordNotFoundException(id);
-            }
 
-            ReturnOfCapital returnOfCapital = new ReturnOfCapital(id)
+            ReturnOfCapital returnOfCapital;
+            using (SqliteDataReader returnOfCapitalReader = command.ExecuteReader())
             {
-                Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt64(0)),
-                CreateCashTransaction = SQLiteUtils.DBToBool(returnOfCapitalReader.GetString(1))
-            };
-            returnOfCapitalReader.Close();
+                if (!returnOfCapitalReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                returnOfCapital = new ReturnOfCapital(id)
+                {
+                    Amount = SQLiteUtils.DBToDecimal(returnOfCapitalReader.GetInt64(0)),
+                    CreateCashTransaction = SQLiteUtils.DBToBool(returnOfCapitalReader.GetString(1))
+                };
+            }
 
             return returnOfCapital;
         }
@@ -331,47 +342,50 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         private UnitCountAdjustment CreateUnitCountAdjustment(Guid id)
         {
             /* Get opening balance values */
-            var command = new SQLiteCommand("SELECT [OriginalUnits], [NewUnits] FROM [UnitCountAdjustments] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [OriginalUnits], [NewUnits] FROM [UnitCountAdjustments] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader unitCountAdjustmentReader = command.ExecuteReader();
-            if (!unitCountAdjustmentReader.Read())
+
+            UnitCountAdjustment unitCountAdjustment;
+            using (SqliteDataReader unitCountAdjustmentReader = command.ExecuteReader())
             {
-                unitCountAdjustmentReader.Close();
-                throw new RecordNotFoundException(id);
+                if (!unitCountAdjustmentReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                unitCountAdjustment = new UnitCountAdjustment(id)
+                {
+                    OriginalUnits = unitCountAdjustmentReader.GetInt32(0),
+                    NewUnits = unitCountAdjustmentReader.GetInt32(1)
+                };
             }
 
-            UnitCountAdjustment unitCountAdjustmnet = new UnitCountAdjustment(id)
-            {
-                OriginalUnits = unitCountAdjustmentReader.GetInt32(0),
-                NewUnits = unitCountAdjustmentReader.GetInt32(1)
-            };
-
-            unitCountAdjustmentReader.Close();
-
-            return unitCountAdjustmnet;
+            return unitCountAdjustment;
         }
 
         private CashTransaction CreateCashTransaction(Guid id)
         {
             /* Get opening balance values */
-            var command = new SQLiteCommand("SELECT [Type], [Amount] FROM [CashTransactions] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT [Type], [Amount] FROM [CashTransactions] WHERE [Id] = @Id", _Database._Connection);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader cashTransactionReader = command.ExecuteReader();
-            if (!cashTransactionReader.Read())
+
+            CashTransaction cashTransaction;
+            using (SqliteDataReader cashTransactionReader = command.ExecuteReader())
             {
-                cashTransactionReader.Close();
-                throw new RecordNotFoundException(id);
+                if (!cashTransactionReader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                cashTransaction = new CashTransaction(id)
+                {
+                    CashTransactionType = (BankAccountTransactionType)cashTransactionReader.GetInt32(0),
+                    Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt64(1))
+                };
+
             }
-
-            CashTransaction cashTransaction = new CashTransaction(id)
-            {
-                CashTransactionType = (BankAccountTransactionType)cashTransactionReader.GetInt32(0),
-                Amount = SQLiteUtils.DBToDecimal(cashTransactionReader.GetInt64(1))
-            };
-
-            cashTransactionReader.Close();
 
             return cashTransaction;
         }

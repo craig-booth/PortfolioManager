@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -18,31 +18,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO DRPCashBalances ([Id], [FromDate], [ToDate], [Balance]) VALUES (@Id, @FromDate, @ToDate, @Balance)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO DRPCashBalances ([Id], [FromDate], [ToDate], [Balance]) VALUES (@Id, @FromDate, @ToDate, @Balance)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE DRPCashBalances SET [ToDate] = @ToDate, [Balance] = @Balance WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE DRPCashBalances SET [ToDate] = @ToDate, [Balance] = @Balance WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SQLiteCommand command, DRPCashBalance entity)
+        protected override void AddParameters(SqliteCommand command, DRPCashBalance entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@FromDate", entity.FromDate.ToString("yyyy-MM-dd"));

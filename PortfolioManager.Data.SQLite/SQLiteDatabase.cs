@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data;
 using PortfolioManager.Data.SQLite.Upgrade;
 
 namespace PortfolioManager.Data.SQLite
@@ -15,7 +15,7 @@ namespace PortfolioManager.Data.SQLite
     {
         protected abstract int RepositoryVersion { get; }         
 
-        protected internal SQLiteConnection _Connection;
+        protected internal SqliteConnection _Connection;
         protected internal SQLiteRepositoryTransaction _Transaction;        
 
         public string FileName { get; private set; }
@@ -26,12 +26,12 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            _Connection = new SQLiteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
+            _Connection = new SqliteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
             _Connection.Open();
 
             _Transaction = new SQLiteRepositoryTransaction(_Connection);
 
-               var tableCountCommand = new SQLiteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
+               var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
                if ((long)tableCountCommand.ExecuteScalar() == 0)
                {
                    CreateDatabaseTables();
@@ -53,20 +53,19 @@ namespace PortfolioManager.Data.SQLite
 
         private void LoadVersion()
         {            
-            var sql = new SQLiteCommand("SELECT [Version], [CreationTime], [UpgradeTime] FROM [DbVersion]", _Connection);
+            var sql = new SqliteCommand("SELECT [Version], [CreationTime], [UpgradeTime] FROM [DbVersion]", _Connection);
 
             try
             {
-                var reader = sql.ExecuteReader();
-
-                if (reader.Read())
+                using (var reader = sql.ExecuteReader())
                 {
-                    Version.Version = reader.GetInt32(0);
-                    Version.CreationDateTime = reader.GetDateTime(1);
-                    Version.UpgradeDateTime = reader.GetDateTime(2);
+                    if (reader.Read())
+                    {
+                        Version.Version = reader.GetInt32(0);
+                        Version.CreationDateTime = reader.GetDateTime(1);
+                        Version.UpgradeDateTime = reader.GetDateTime(2);
+                    }
                 }
-
-                reader.Close();
             }
             catch
             {
@@ -106,7 +105,7 @@ namespace PortfolioManager.Data.SQLite
 
         protected void UpdateDbVersion()
         {
-            var updateCommand = new SQLiteCommand("UPDATE [DbVersion] SET [Version] = @Version, [UpgradeTime] = @UpgradeTime", _Connection);
+            var updateCommand = new SqliteCommand("UPDATE [DbVersion] SET [Version] = @Version, [UpgradeTime] = @UpgradeTime", _Connection);
             updateCommand.Prepare();
 
             updateCommand.Parameters.AddWithValue("@Version", Version.Version);
@@ -117,7 +116,7 @@ namespace PortfolioManager.Data.SQLite
 
         protected void SetDbVersion()
         {
-            var insertCommand = new SQLiteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", _Connection);
+            var insertCommand = new SqliteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", _Connection);
             insertCommand.Prepare();
 
             insertCommand.Parameters.AddWithValue("@Version", Version.Version);
@@ -130,12 +129,14 @@ namespace PortfolioManager.Data.SQLite
         protected internal void ExecuteScript(string fileName)
         {
             /* Load SQL commands to execute */
-            var scriptFile = File.OpenText(fileName);
-            var sqlScript = scriptFile.ReadToEnd();
-            scriptFile.Close();
+            using (var scriptFile = File.OpenText(fileName))
+            {
+                var sqlScript = scriptFile.ReadToEnd();
 
-            var sqlCommand = new SQLiteCommand(sqlScript, _Connection);
-            sqlCommand.ExecuteNonQuery();
+                var sqlCommand = new SqliteCommand(sqlScript, _Connection);
+                sqlCommand.ExecuteNonQuery();
+            }
+
         }
     }
 

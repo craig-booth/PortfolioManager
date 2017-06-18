@@ -63,16 +63,6 @@
     <Compile Include="Utils\ASXTradingDayDownloader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
-      <Project>{f93a244c-1f96-4ebb-a067-9005f04cf52f}</Project>
-      <Name>PortfolioManager.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Model\PortfolioManager.Model.csproj">
-      <Project>{befae5c7-fdc4-41a6-ba2b-785fd54fb805}</Project>
-      <Name>PortfolioManager.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

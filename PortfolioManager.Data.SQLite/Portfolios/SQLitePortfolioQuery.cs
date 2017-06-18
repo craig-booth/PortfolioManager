@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -60,20 +60,16 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         public bool StockOwned(Guid id, DateTime atDate)
         {
-            bool result;
-
             var query = EntityQuery.FromTable("Parcels")
                     .Select("Id")
                     .Where("[Stock] = @Stock")
                     .WithParameter("@Stock", id)
                     .EffectiveAt(atDate);
 
-            var reader = query.ExecuteSingle();
-            result = reader.HasRows;
-
-            reader.Close();
-
-            return result;
+            using (var reader = query.ExecuteSingle())
+            {
+                return reader.HasRows;
+            }
         }
 
         public IEnumerable<Guid> GetStocksOwned(DateTime fromDate, DateTime toDate)
@@ -84,13 +80,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                     .Select("DISTINCT [Stock]")
                     .EffectiveBetween(fromDate, toDate);
 
-            var reader = query.Execute();
-            while (reader.Read())
+            using (var reader = query.Execute())
             {
-                stocks.Add(new Guid(reader.GetString(0)));
+                while (reader.Read())
+                {
+                    stocks.Add(new Guid(reader.GetString(0)));
+                }
             }
-
-            reader.Close();
 
             return stocks;
         }

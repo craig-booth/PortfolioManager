@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.SQLite.Portfolios;
 
@@ -27,16 +27,18 @@ namespace PortfolioManager.Data.SQLite.Upgrade
 
         public abstract void Upgrade(SQLiteDatabase database);
 
-        protected void ExecuteScript(SQLiteConnection connection, string fileName)
+        protected void ExecuteScript(SqliteConnection connection, string fileName)
         {
             /* Load SQL commands to execute */
-            var scriptFile = File.OpenText(fileName);
-            var sqlCommands = scriptFile.ReadToEnd();
-            scriptFile.Close();
+            using (var scriptFile = File.OpenText(fileName))
+            {
+                var sqlCommands = scriptFile.ReadToEnd();
 
-            SQLiteCommand sqlCommand = new SQLiteCommand(sqlCommands, connection);
-            sqlCommand.ExecuteNonQuery();
-            sqlCommand.Dispose();
+                SqliteCommand sqlCommand = new SqliteCommand(sqlCommands, connection);
+                sqlCommand.ExecuteNonQuery();
+                sqlCommand.Dispose();
+            }
+
         }
     }
 

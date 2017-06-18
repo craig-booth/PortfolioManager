@@ -3,14 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model", "PortfolioManager.Model\PortfolioManager.Model.csproj", "{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.Test", "PortfolioManager.Data.Test\PortfolioManager.Data.Test.csproj", "{4CE3C835-140F-4524-A7D1-7027854B89E0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.SQLite", "PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj", "{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Model.Test", "PortfolioManager.Model.Test\PortfolioManager.Model.Test.csproj", "{39DB963E-CB65-4116-A4BE-C603C9767620}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitExtension", "NUnitExtension\NUnitExtension.csproj", "{0E4423E8-50EF-467B-9211-D59137B2BF19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockManager.Service", "StockManager.Service\StockManager.Service.csproj", "{7171F628-22A3-4F8E-80AC-E4A29993EB62}"
@@ -19,7 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Service", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "PortfolioManager.UI\PortfolioManager.UI.csproj", "{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Common", "PortfolioManager.Common\PortfolioManager.Common.csproj", "{F93A244C-1F96-4EBB-A067-9005F04CF52F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Common", "PortfolioManager.Common\PortfolioManager.Common.csproj", "{4967C9E7-62F3-4C6C-BA97-5F6A569F0CF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data", "PortfolioManager.Data\PortfolioManager.Data.csproj", "{B13CE328-F1C2-4096-8F1E-9A6E477C727D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Data.SQLite", "PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj", "{E1040A1E-3126-4442-93AA-FEBCAA649FE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,22 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEFAE5C7-FDC4-41A6-BA2B-785FD54FB805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CE3C835-140F-4524-A7D1-7027854B89E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DCB5A16-15D6-41AE-9D48-46B9C6E45EDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39DB963E-CB65-4116-A4BE-C603C9767620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39DB963E-CB65-4116-A4BE-C603C9767620}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39DB963E-CB65-4116-A4BE-C603C9767620}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39DB963E-CB65-4116-A4BE-C603C9767620}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E4423E8-50EF-467B-9211-D59137B2BF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,10 +39,18 @@ Global
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F93A244C-1F96-4EBB-A067-9005F04CF52F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4967C9E7-62F3-4C6C-BA97-5F6A569F0CF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4967C9E7-62F3-4C6C-BA97-5F6A569F0CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4967C9E7-62F3-4C6C-BA97-5F6A569F0CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4967C9E7-62F3-4C6C-BA97-5F6A569F0CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B13CE328-F1C2-4096-8F1E-9A6E477C727D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B13CE328-F1C2-4096-8F1E-9A6E477C727D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B13CE328-F1C2-4096-8F1E-9A6E477C727D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B13CE328-F1C2-4096-8F1E-9A6E477C727D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1040A1E-3126-4442-93AA-FEBCAA649FE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1040A1E-3126-4442-93AA-FEBCAA649FE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1040A1E-3126-4442-93AA-FEBCAA649FE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1040A1E-3126-4442-93AA-FEBCAA649FE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

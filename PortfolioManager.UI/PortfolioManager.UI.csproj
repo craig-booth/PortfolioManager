@@ -251,10 +251,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
-      <Project>{f93a244c-1f96-4ebb-a067-9005f04cf52f}</Project>
-      <Name>PortfolioManager.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj">
       <Project>{5c1f0fca-84b1-4910-934c-99e79c84052e}</Project>
       <Name>PortfolioManager.Service</Name>

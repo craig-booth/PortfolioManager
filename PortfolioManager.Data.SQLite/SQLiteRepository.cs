@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
     public interface IEntityCreator
     {
-        T CreateEntity<T>(SQLiteDataReader reader) where T : Entity;
+        T CreateEntity<T>(SqliteDataReader reader) where T : Entity;
     }
 
     public abstract class SQLiteRepository<T> where T : Entity
     {
         protected SQLiteDatabase _Database;
-        protected SQLiteConnection _Connection;
+        protected SqliteConnection _Connection;
         protected IEntityCreator _EntityCreator;
 
         public string TableName { get; private set; }
@@ -31,70 +31,52 @@ namespace PortfolioManager.Data.SQLite
             TableName = tableName;
         }
         
-        private SQLiteCommand _GetCurrentRecordCommand;
-        protected virtual SQLiteCommand GetCurrentRecordCommand()
+        private SqliteCommand _GetCurrentRecordCommand;
+        protected virtual SqliteCommand GetCurrentRecordCommand()
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SQLiteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Connection);
                  _GetCurrentRecordCommand.Prepare();
              }
 
             return _GetCurrentRecordCommand;
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected virtual SQLiteCommand GetAddRecordCommand()
-        {
-            if (_GetAddRecordCommand == null)
-            {
-                _GetAddRecordCommand = new SQLiteCommand("", _Connection);
-                _GetAddRecordCommand.Prepare();
-            }
+        protected abstract SqliteCommand GetAddRecordCommand();
 
-            return _GetAddRecordCommand;
-        }
+        protected abstract SqliteCommand GetUpdateRecordCommand();
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected virtual SQLiteCommand GetUpdateRecordCommand()
-        {
-            if (_GetUpdateRecordCommand == null)
-            {
-                _GetUpdateRecordCommand = new SQLiteCommand("", _Connection);
-                _GetUpdateRecordCommand.Prepare();
-            }
-
-            return _GetUpdateRecordCommand;
-        }
-
-        private SQLiteCommand _GetDeleteRecordCommand;
-        protected virtual SQLiteCommand GetDeleteRecordCommand()
+        private SqliteCommand _GetDeleteRecordCommand;
+        protected virtual SqliteCommand GetDeleteRecordCommand()
         {
             if (_GetDeleteRecordCommand == null)
             {
-                _GetDeleteRecordCommand = new SQLiteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
                 _GetDeleteRecordCommand.Prepare();
             }
 
             return _GetDeleteRecordCommand;
         }
 
-        protected abstract void AddParameters(SQLiteCommand command, T entity);
+        protected abstract void AddParameters(SqliteCommand command, T entity);
 
         public virtual T Get(Guid id)
         {
+            T entity;
+
             var command = GetCurrentRecordCommand();
             command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader reader = command.ExecuteReader();
 
-            if (!reader.Read())
+            using (SqliteDataReader reader = command.ExecuteReader())
             {
-                reader.Close();
-                throw new RecordNotFoundException(id);
+                if (!reader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                entity = _EntityCreator.CreateEntity<T>(reader);
             }
-                
-            T entity = _EntityCreator.CreateEntity<T>(reader);
-            reader.Close();
 
             return entity;
         }
@@ -108,9 +90,9 @@ namespace PortfolioManager.Data.SQLite
             {
                 command.ExecuteNonQuery();
             }
-            catch (SQLiteException e)
+            catch (SqliteException e)
             {
-                if (e.ResultCode == SQLiteErrorCode.Constraint)
+                if (e.SqliteErrorCode == 19)
                     throw new DuplicateRecordException(entity.Id);
                 else
                     throw;

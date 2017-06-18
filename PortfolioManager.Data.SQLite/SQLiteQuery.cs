@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
@@ -35,8 +35,8 @@ namespace PortfolioManager.Data.SQLite
         T CreateEntity<T>() where T : Entity;
         IEnumerable<T> CreateEntities<T>() where T : Entity;
 
-        SQLiteDataReader Execute();
-        SQLiteDataReader ExecuteSingle();
+        SqliteDataReader Execute();
+        SqliteDataReader ExecuteSingle();
 
         bool ExecuteScalar(out int value);
         bool ExecuteScalar(out decimal value);
@@ -48,16 +48,16 @@ namespace PortfolioManager.Data.SQLite
 
     class SQLiteEntityQuery : IEntityQuery
     {
-        private SQLiteConnection _Connection;
+        private SqliteConnection _Connection;
         private IEntityCreator _EntityCreator;
         private string _TableName;
         private string _Where;
         private string _SQL;
         private string _Fields;
         private string _Orderby;
-        private List<SQLiteParameter> _Parameters;
+        private List<SqliteParameter> _Parameters;
 
-        public SQLiteEntityQuery(SQLiteConnection connection, IEntityCreator entityCreator)
+        public SQLiteEntityQuery(SqliteConnection connection, IEntityCreator entityCreator)
         {
             _Connection = connection;
             _EntityCreator = entityCreator;
@@ -66,7 +66,7 @@ namespace PortfolioManager.Data.SQLite
             _Where = "";
             _Fields = "*";
             _Orderby = "";
-            _Parameters = new List<SQLiteParameter>();
+            _Parameters = new List<SqliteParameter>();
         }
 
         public IEntityQuery SQL(string sql)
@@ -127,7 +127,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, string value)
         {
-            var parameter = new SQLiteParameter(name, value);
+            var parameter = new SqliteParameter(name, value);
             _Parameters.Add(parameter);
 
             return this;
@@ -135,7 +135,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, DateTime value)
         {
-            var parameter = new SQLiteParameter(name, value.ToString("yyyy-MM-dd"));
+            var parameter = new SqliteParameter(name, value.ToString("yyyy-MM-dd"));
             _Parameters.Add(parameter);
 
             return this;
@@ -143,7 +143,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, Guid value)
         {
-            var parameter = new SQLiteParameter(name, value.ToString());
+            var parameter = new SqliteParameter(name, value.ToString());
             _Parameters.Add(parameter);
 
             return this;
@@ -151,7 +151,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, int value)
         {
-            var parameter = new SQLiteParameter(name, value);
+            var parameter = new SqliteParameter(name, value);
             _Parameters.Add(parameter);
 
             return this;
@@ -159,7 +159,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, decimal value)
         {
-            var parameter = new SQLiteParameter(name, SQLiteUtils.DecimalToDB(value));
+            var parameter = new SqliteParameter(name, SQLiteUtils.DecimalToDB(value));
             _Parameters.Add(parameter);
            
             return this;
@@ -167,7 +167,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, bool value)
         {
-            var parameter = new SQLiteParameter(name, SQLiteUtils.BoolToDb(value));
+            var parameter = new SqliteParameter(name, SQLiteUtils.BoolToDb(value));
             _Parameters.Add(parameter);
 
             return this;
@@ -184,13 +184,13 @@ namespace PortfolioManager.Data.SQLite
         {
             T entity;
 
-            var reader = ExecuteSingle();
-            if (reader.Read())
-                entity = (T)_EntityCreator.CreateEntity<T>(reader);
-            else
-                entity = null;
-
-            reader.Close();
+            using (var reader = ExecuteSingle())
+            {
+                if (reader.Read())
+                    entity = (T)_EntityCreator.CreateEntity<T>(reader);
+                else
+                    entity = null;
+            }
 
             return entity;
         }
@@ -199,17 +199,18 @@ namespace PortfolioManager.Data.SQLite
         {
             var list = new List<T>();
 
-            var reader = Execute();
-            while (reader.Read())
+            using (var reader = Execute())
             {
-                list.Add(_EntityCreator.CreateEntity<T>(reader));
+                while (reader.Read())
+                {
+                    list.Add(_EntityCreator.CreateEntity<T>(reader));
+                }
             }
-            reader.Close();
 
             return list;
         }
 
-        private SQLiteCommand BuildQuery(bool single)
+        private SqliteCommand BuildQuery(bool single)
         {
             if (_SQL == "")
             { 
@@ -222,7 +223,7 @@ namespace PortfolioManager.Data.SQLite
                     _SQL += " LIMIT 1";
             }
 
-            var query = new SQLiteCommand(_SQL, _Connection);
+            var query = new SqliteCommand(_SQL, _Connection);
             query.Prepare();
 
             query.Parameters.AddRange(_Parameters.ToArray());
@@ -230,14 +231,14 @@ namespace PortfolioManager.Data.SQLite
             return query;
         }
 
-        public SQLiteDataReader Execute()
+        public SqliteDataReader Execute()
         {
             var query = BuildQuery(false);
 
             return query.ExecuteReader();
         }
 
-        public SQLiteDataReader ExecuteSingle()
+        public SqliteDataReader ExecuteSingle()
         {
             var query = BuildQuery(true);
 
@@ -349,10 +350,10 @@ namespace PortfolioManager.Data.SQLite
 
     abstract class SQLiteQuery
     {
-        protected SQLiteConnection _Connection;
+        protected SqliteConnection _Connection;
         protected IEntityCreator _EntityCreator;
 
-        protected internal SQLiteQuery(SQLiteConnection connection, IEntityCreator entityCreator)
+        protected internal SQLiteQuery(SqliteConnection connection, IEntityCreator entityCreator)
         {
             _Connection = connection;
             _EntityCreator = entityCreator;

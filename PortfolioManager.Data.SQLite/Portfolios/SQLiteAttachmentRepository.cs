@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -20,31 +20,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _Database = database;
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Attachments] ([Id], [Extension], [Data]) VALUES (@Id, @Extension, @Data)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [Attachments] ([Id], [Extension], [Data]) VALUES (@Id, @Extension, @Data)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Attachments] SET [Extension] = @Extension, [Data] = @Data WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [Attachments] SET [Extension] = @Extension, [Data] = @Data WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SQLiteCommand command, Attachment entity)
+        protected override void AddParameters(SqliteCommand command, Attachment entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@Extension", entity.Extension);

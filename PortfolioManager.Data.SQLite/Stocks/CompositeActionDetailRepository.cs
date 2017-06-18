@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
     class CompositeActionDetailRepository : ICorporateActionDetailRepository
     {
-        private SQLiteConnection _Connection;
+        private SqliteConnection _Connection;
         private Dictionary<CorporateActionType, ICorporateActionDetailRepository> _DetailRepositories;
 
-        public CompositeActionDetailRepository(SQLiteConnection connection, Dictionary<CorporateActionType, ICorporateActionDetailRepository> detailRepositories)
+        public CompositeActionDetailRepository(SqliteConnection connection, Dictionary<CorporateActionType, ICorporateActionDetailRepository> detailRepositories)
         {
             _Connection = connection;
             _DetailRepositories = detailRepositories;
         }
 
-        private SQLiteCommand _AddRecordCommand;
+        private SqliteCommand _AddRecordCommand;
         public void Add(Entity entity)
         {
             var compositeAction = entity as CompositeAction;
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SQLiteCommand("INSERT INTO [CompositeActions] ([Id], [Sequence], [ChildAction], [ChildType]) VALUES (@Id, @Sequence, @ChildAction, @ChildType)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [CompositeActions] ([Id], [Sequence], [ChildAction], [ChildType]) VALUES (@Id, @Sequence, @ChildAction, @ChildType)", _Connection);
                 _AddRecordCommand.Prepare();
             }
 
@@ -54,31 +54,32 @@ namespace PortfolioManager.Data.SQLite.Stocks
             Add(entity);
         }
 
-        private SQLiteCommand _DeleteRecordCommand;
-        private SQLiteCommand _GetChildrenCommand;
+        private SqliteCommand _DeleteRecordCommand;
+        private SqliteCommand _GetChildrenCommand;
         public void Delete(Guid id)
         {
             if (_GetChildrenCommand == null)
             {
-                _GetChildrenCommand = new SQLiteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
+                _GetChildrenCommand = new SqliteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
                 _GetChildrenCommand.Prepare();
             }
 
             _GetChildrenCommand.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader compositeActionReader = _GetChildrenCommand.ExecuteReader();
-            while (compositeActionReader.Read())
+
+            using (SqliteDataReader compositeActionReader = _GetChildrenCommand.ExecuteReader())
             {
-                var childId = new Guid(compositeActionReader.GetString(0));
-                var childType = (CorporateActionType)compositeActionReader.GetInt32(1);
+                while (compositeActionReader.Read())
+                {
+                    var childId = new Guid(compositeActionReader.GetString(0));
+                    var childType = (CorporateActionType)compositeActionReader.GetInt32(1);
 
-                _DetailRepositories[childType].Delete(childId);
+                    _DetailRepositories[childType].Delete(childId);
+                }
             }
-            compositeActionReader.Close();
-
 
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SQLiteCommand("DELETE FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
                 _DeleteRecordCommand.Prepare();
             }
 

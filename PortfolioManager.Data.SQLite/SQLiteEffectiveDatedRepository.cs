@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
@@ -16,48 +16,48 @@ namespace PortfolioManager.Data.SQLite
         {
         }
         
-        private SQLiteCommand _GetCurrentRecordCommand;
-        protected override SQLiteCommand GetCurrentRecordCommand()
+        private SqliteCommand _GetCurrentRecordCommand;
+        protected override SqliteCommand GetCurrentRecordCommand()
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SQLiteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND [ToDate] = '9999-12-31'", _Connection);
+                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND [ToDate] = '9999-12-31'", _Connection);
                  _GetCurrentRecordCommand.Prepare();
              }
 
             return _GetCurrentRecordCommand;
         }
 
-        private SQLiteCommand _GetEffectiveRecordCommand;
-        protected SQLiteCommand GetEffectiveRecordCommand()
+        private SqliteCommand _GetEffectiveRecordCommand;
+        protected SqliteCommand GetEffectiveRecordCommand()
         {
             if (_GetEffectiveRecordCommand == null)
             {
-                _GetEffectiveRecordCommand = new SQLiteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND @AtDate BETWEEN [FromDate] AND [ToDate]", _Connection);
+                _GetEffectiveRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND @AtDate BETWEEN [FromDate] AND [ToDate]", _Connection);
                 _GetEffectiveRecordCommand.Prepare();
             }
 
             return _GetEffectiveRecordCommand;
         }
 
-        private SQLiteCommand _GetDeleteRecordCommand;
-        protected override SQLiteCommand GetDeleteRecordCommand()
+        private SqliteCommand _GetDeleteRecordCommand;
+        protected override SqliteCommand GetDeleteRecordCommand()
         {
             if (_GetDeleteRecordCommand == null)
             {
-                _GetDeleteRecordCommand = new SQLiteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
                 _GetDeleteRecordCommand.Prepare();
             }
 
             return _GetDeleteRecordCommand;
         }
 
-        private SQLiteCommand _GetDeleteEffectiveRecordCommand;
-        protected SQLiteCommand GetDeleteEffectiveRecordCommand()
+        private SqliteCommand _GetDeleteEffectiveRecordCommand;
+        protected SqliteCommand GetDeleteEffectiveRecordCommand()
         {
             if (_GetDeleteEffectiveRecordCommand == null)
             {
-                _GetDeleteEffectiveRecordCommand = new SQLiteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetDeleteEffectiveRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
                 _GetDeleteEffectiveRecordCommand.Prepare();
             }
 
@@ -69,16 +69,17 @@ namespace PortfolioManager.Data.SQLite
             var command = GetEffectiveRecordCommand();
             command.Parameters.AddWithValue("@Id", id.ToString());
             command.Parameters.AddWithValue("@AtDate", atDate.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = command.ExecuteReader();
 
-            if (!reader.Read())
+            T entity;
+            using (SqliteDataReader reader = command.ExecuteReader())
             {
-                reader.Close();
-                throw new RecordNotFoundException(id);
-            }
+                if (!reader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
 
-            T entity = _EntityCreator.CreateEntity<T>(reader);
-            reader.Close();
+                entity = _EntityCreator.CreateEntity<T>(reader);
+            }
 
             return entity;
         }

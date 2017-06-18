@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
@@ -33,24 +33,24 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _DetailRepositories.Add(CorporateActionType.Composite, new CompositeActionDetailRepository(_Connection, _DetailRepositories));
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [CorporateActions] ([Id], [Stock], [ActionDate], [Description], [Type]) VALUES (@Id, @Stock, @ActionDate, @Description, @Type)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [CorporateActions] ([Id], [Stock], [ActionDate], [Description], [Type]) VALUES (@Id, @Stock, @ActionDate, @Description, @Type)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [CorporateActions] SET [ActionDate] = @ActionDate, [Description] = @Description WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [CorporateActions] SET [ActionDate] = @ActionDate, [Description] = @Description WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -91,7 +91,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 detailRepository.Delete(id);
         }
 
-        protected override void AddParameters(SQLiteCommand command, CorporateAction entity)
+        protected override void AddParameters(SqliteCommand command, CorporateAction entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@Stock", entity.Stock.ToString());

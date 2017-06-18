@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data;
 using PortfolioManager.Data.SQLite;
 
 namespace PortfolioManager.Data.SQLite.Stocks
@@ -18,31 +18,31 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO Stocks ([Id], [FromDate], [ToDate], [ASXCode], [Name], [Type], [Parent], [DividendRounding], [DRPMethod], [Category]) VALUES (@Id, @FromDate, @ToDate, @ASXCode, @Name, @Type, @Parent, @DividendRounding, @DRPMethod, @Category)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO Stocks ([Id], [FromDate], [ToDate], [ASXCode], [Name], [Type], [Parent], [DividendRounding], [DRPMethod], [Category]) VALUES (@Id, @FromDate, @ToDate, @ASXCode, @Name, @Type, @Parent, @DividendRounding, @DRPMethod, @Category)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE Stocks SET [ToDate] = @ToDate, [ASXCode] = @ASXCode, [Name] = @Name, [Type] = @Type, [Parent] = @Parent, [DividendRounding] = @DividendRounding, [DRPMethod] = @DRPMethod, [Category] = @Category WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE Stocks SET [ToDate] = @ToDate, [ASXCode] = @ASXCode, [Name] = @Name, [Type] = @Type, [Parent] = @Parent, [DividendRounding] = @DividendRounding, [DRPMethod] = @DRPMethod, [Category] = @Category WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SQLiteCommand command, Stock entity)
+        protected override void AddParameters(SqliteCommand command, Stock entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@FromDate", entity.FromDate.ToString("yyyy-MM-dd"));

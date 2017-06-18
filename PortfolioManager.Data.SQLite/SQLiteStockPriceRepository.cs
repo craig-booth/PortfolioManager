@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite
 {
     class SQLiteStockPriceRepository: IStockPriceRepository 
     {
         protected SQLiteDatabase _Database;
-        protected SQLiteConnection _Connection;
+        protected SqliteConnection _Connection;
 
         protected internal SQLiteStockPriceRepository(SQLiteDatabase database)
         {
@@ -20,27 +20,27 @@ namespace PortfolioManager.Data.SQLite
             _Connection = database._Connection;
         }
 
-        private SQLiteCommand _GetCommand;
+        private SqliteCommand _GetCommand;
         public decimal Get(Guid stockId, DateTime date)
         {
                     if (_GetCommand == null)
             {
-                _GetCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetCommand = new SqliteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
                 _GetCommand.Prepare();
             }
 
             _GetCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
             _GetCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetCommand.ExecuteReader();
 
-            if (!reader.Read())
+            decimal price;
+            using (SqliteDataReader reader = _GetCommand.ExecuteReader())
             {
-                reader.Close();
-                throw new RecordNotFoundException(stockId);
+                if (!reader.Read())
+                {
+                    throw new RecordNotFoundException(stockId);
+                }
+                price = SQLiteUtils.DBToDecimal(reader.GetInt64(0));
             }
-            var price = SQLiteUtils.DBToDecimal(reader.GetInt64(0));
-
-            reader.Close();
 
             return price;    
         }
@@ -49,26 +49,25 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetCommand == null)
             {
-                _GetCommand = new SQLiteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetCommand = new SqliteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
                 _GetCommand.Prepare();
             }
 
             _GetCommand.Parameters.AddWithValue("@Stock", stockId.ToString());
             _GetCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
-            SQLiteDataReader reader = _GetCommand.ExecuteReader();
 
-            var exists = reader.HasRows;
-            
-            reader.Close();
-            return exists;          
+            using (SqliteDataReader reader = _GetCommand.ExecuteReader())
+            {
+                return reader.HasRows;
+            }     
         }
 
-        private SQLiteCommand _AddCommand;
+        private SqliteCommand _AddCommand;
         public void Add(Guid stockId, DateTime date, decimal price, bool current)
         {
             if (_AddCommand == null)
             {
-                _AddCommand = new SQLiteCommand("INSERT INTO [StockPrices] ([Stock], [Date], [Price], [Current]) VALUES (@Stock, @Date, @Price, @Current)", _Connection);
+                _AddCommand = new SqliteCommand("INSERT INTO [StockPrices] ([Stock], [Date], [Price], [Current]) VALUES (@Stock, @Date, @Price, @Current)", _Connection);
                 _AddCommand.Prepare();
             }
 
@@ -79,12 +78,12 @@ namespace PortfolioManager.Data.SQLite
             _AddCommand.ExecuteNonQuery(); 
         }
 
-        private SQLiteCommand _UpdateCommand;
+        private SqliteCommand _UpdateCommand;
         public void Update(Guid stockId, DateTime date, decimal price, bool current)
         {
             if (_UpdateCommand == null)
             {
-                _UpdateCommand = new SQLiteCommand("UPDATE [StockPrices] SET [Price] = @Price, [Current] = @Current WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
+                _UpdateCommand = new SqliteCommand("UPDATE [StockPrices] SET [Price] = @Price, [Current] = @Current WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
                 _UpdateCommand.Prepare();
             }
 
@@ -95,12 +94,12 @@ namespace PortfolioManager.Data.SQLite
             _UpdateCommand.ExecuteNonQuery(); 
         }
 
-        private SQLiteCommand _DeleteCommand;
+        private SqliteCommand _DeleteCommand;
         public void Delete(Guid stockId, DateTime date)
         {
             if (_DeleteCommand == null)
             {
-                _DeleteCommand = new SQLiteCommand("DELETE FROM [StockPrices] WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
+                _DeleteCommand = new SqliteCommand("DELETE FROM [StockPrices] WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
                 _DeleteCommand.Prepare();
             }
 

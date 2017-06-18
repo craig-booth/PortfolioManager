@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data;
 using PortfolioManager.Data.SQLite.Upgrade;
 
 namespace PortfolioManager.Data.SQLite.Stocks

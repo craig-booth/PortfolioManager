@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -19,31 +19,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO CGTEvents ([Id], [Stock], [Units], [EventDate], [CostBase], [AmountReceived], [CapitalGain], [CGTMethod]) VALUES (@Id, @Stock, @Units, @EventDate, @CostBase, @AmountReceived, @CapitalGain, @CGTMethod)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO CGTEvents ([Id], [Stock], [Units], [EventDate], [CostBase], [AmountReceived], [CapitalGain], [CGTMethod]) VALUES (@Id, @Stock, @Units, @EventDate, @CostBase, @AmountReceived, @CapitalGain, @CGTMethod)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE CGTEvents SET [Stock] = @Stock, [Units] = @Units, [EventDate] = @EventDate, [CostBase] = @CostBase, [AmountReceived] = @AmountReceived, [CapitalGain] = @CapitalGain, [CGTMethod] = @CGTMethod WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE CGTEvents SET [Stock] = @Stock, [Units] = @Units, [EventDate] = @EventDate, [CostBase] = @CostBase, [AmountReceived] = @AmountReceived, [CapitalGain] = @CapitalGain, [CGTMethod] = @CGTMethod WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SQLiteCommand command, CGTEvent entity)
+        protected override void AddParameters(SqliteCommand command, CGTEvent entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@Stock", entity.Stock.ToString());

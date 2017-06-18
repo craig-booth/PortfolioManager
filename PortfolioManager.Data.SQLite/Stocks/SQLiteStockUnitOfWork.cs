@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
@@ -17,7 +17,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         SQLiteStockRepository _StockRepository;
         SQLiteCorporateActionRepository _CorporateActionRepository;
-        SQLiteRelateNTARepository _RelativeNTARepository;
+        SQLiteRelativeNTARepository _RelativeNTARepository;
         SQLiteStockPriceRepository _StockPriceRepository;
         SQLiteNonTradingDayRepository _NonTradingDayRepository;
 
@@ -48,7 +48,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             get
             {
                 if (_RelativeNTARepository == null)
-                    _RelativeNTARepository = new SQLiteRelateNTARepository(_Database, _EntityCreator);
+                    _RelativeNTARepository = new SQLiteRelativeNTARepository(_Database, _EntityCreator);
 
                 return _RelativeNTARepository;
             }

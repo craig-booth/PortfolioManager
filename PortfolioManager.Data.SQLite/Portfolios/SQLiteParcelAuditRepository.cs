@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -19,31 +19,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _Database = database;
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO ParcelAudit ([Id], [Parcel], [Date], [Transaction], [UnitCount], [CostBaseChange], [AmountChange]) VALUES (@Id, @Parcel, @Date, @Transaction, @UnitCount, @CostBaseChange, @AmountChange)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO ParcelAudit ([Id], [Parcel], [Date], [Transaction], [UnitCount], [CostBaseChange], [AmountChange]) VALUES (@Id, @Parcel, @Date, @Transaction, @UnitCount, @CostBaseChange, @AmountChange)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE ParcelAudit SET [Parcel] = @Parcel, [Date] = @Date, [Transaction] = @Transaction, [UnitCount] = @UnitCount, [CostBaseChange] = @CostBaseChange, [AmountChange] = @AmountChange WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE ParcelAudit SET [Parcel] = @Parcel, [Date] = @Date, [Transaction] = @Transaction, [UnitCount] = @UnitCount, [CostBaseChange] = @CostBaseChange, [AmountChange] = @AmountChange WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SQLiteCommand command, ShareParcelAudit entity)
+        protected override void AddParameters(SqliteCommand command, ShareParcelAudit entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@Parcel", entity.Parcel.ToString());

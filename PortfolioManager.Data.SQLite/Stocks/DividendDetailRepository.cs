@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
     class DividendDetailRepository : ICorporateActionDetailRepository
     {
-        private SQLiteConnection _Connection;
+        private SqliteConnection _Connection;
 
-        public DividendDetailRepository(SQLiteConnection connection)
+        public DividendDetailRepository(SqliteConnection connection)
         {
             _Connection = connection;
         }
 
-        private SQLiteCommand _AddRecordCommand;
+        private SqliteCommand _AddRecordCommand;
         public void Add(Entity entity)
         {
             var dividend = entity as Dividend;
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SQLiteCommand("INSERT INTO [Dividends] ([Id], [PaymentDate], [DividendAmount], [CompanyTaxRate], [PercentFranked], [DRPPrice]) VALUES (@Id, @PaymentDate, @DividendAmount, @CompanyTaxRate, @PercentFranked, @DRPPrice)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [Dividends] ([Id], [PaymentDate], [DividendAmount], [CompanyTaxRate], [PercentFranked], [DRPPrice]) VALUES (@Id, @PaymentDate, @DividendAmount, @CompanyTaxRate, @PercentFranked, @DRPPrice)", _Connection);
                 _AddRecordCommand.Prepare();
             }
 
@@ -34,14 +34,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _AddRecordCommand.ExecuteNonQuery();
         }
 
-        private SQLiteCommand _UpdateRecordCommand;
+        private SqliteCommand _UpdateRecordCommand;
         public void Update(Entity entity)
         {
             var dividend = entity as Dividend;
 
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SQLiteCommand("UPDATE [Dividends] SET [PaymentDate] = @PaymentDate, [DividendAmount] = @DividendAmount, [CompanyTaxRate] = @CompanyTaxRate, [PercentFranked] = @PercentFranked, [DRPPrice] = @DRPPrice WHERE [Id] = @Id", _Connection);
+                _UpdateRecordCommand = new SqliteCommand("UPDATE [Dividends] SET [PaymentDate] = @PaymentDate, [DividendAmount] = @DividendAmount, [CompanyTaxRate] = @CompanyTaxRate, [PercentFranked] = @PercentFranked, [DRPPrice] = @DRPPrice WHERE [Id] = @Id", _Connection);
                 _UpdateRecordCommand.Prepare();
             }
 
@@ -49,12 +49,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _UpdateRecordCommand.ExecuteNonQuery();
         }     
 
-        private SQLiteCommand _DeleteRecordCommand;
+        private SqliteCommand _DeleteRecordCommand;
         public void Delete(Guid id)
         {
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SQLiteCommand("DELETE FROM [Dividends] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [Dividends] WHERE [Id] = @Id", _Connection);
                 _DeleteRecordCommand.Prepare();
             }
 
@@ -62,7 +62,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _DeleteRecordCommand.ExecuteNonQuery();
         }
 
-        private void AddParameters(SQLiteCommand command, Dividend entity)
+        private void AddParameters(SqliteCommand command, Dividend entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@PaymentDate", entity.PaymentDate.ToString("yyyy-MM-dd"));

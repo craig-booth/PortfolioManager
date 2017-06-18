@@ -4,30 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Stocks;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SplitConsolidtionDetailRepository : ICorporateActionDetailRepository
     {
-        private SQLiteConnection _Connection;
+        private SqliteConnection _Connection;
 
-        public SplitConsolidtionDetailRepository(SQLiteConnection connection)
+        public SplitConsolidtionDetailRepository(SqliteConnection connection)
         {
             _Connection = connection;
         }
 
-        private SQLiteCommand _AddRecordCommand;
+        private SqliteCommand _AddRecordCommand;
         public void Add(Entity entity)
         {
             var splitConsolidation = entity as SplitConsolidation;
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SQLiteCommand("INSERT INTO [SplitConsolidations] ([Id], [OldUnits], [NewUnits]) VALUES (@Id, @OldUnits, @NewUnits)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [SplitConsolidations] ([Id], [OldUnits], [NewUnits]) VALUES (@Id, @OldUnits, @NewUnits)", _Connection);
                 _AddRecordCommand.Prepare();
             }
 
@@ -35,14 +35,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _AddRecordCommand.ExecuteNonQuery();
         }
 
-        private SQLiteCommand _UpdateRecordCommand;
+        private SqliteCommand _UpdateRecordCommand;
         public void Update(Entity entity)
         {
             var splitConsolidation = entity as SplitConsolidation;
 
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SQLiteCommand("UPDATE [SplitConsolidations] SET [OldUnits] = @OldUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id", _Connection);
+                _UpdateRecordCommand = new SqliteCommand("UPDATE [SplitConsolidations] SET [OldUnits] = @OldUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id", _Connection);
 
                 _UpdateRecordCommand.Prepare();
             }
@@ -51,12 +51,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _UpdateRecordCommand.ExecuteNonQuery();
         }
 
-        private SQLiteCommand _DeleteRecordCommand;
+        private SqliteCommand _DeleteRecordCommand;
         public void Delete(Guid id)
         {
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SQLiteCommand("DELETE FROM [SplitConsolidations] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [SplitConsolidations] WHERE [Id] = @Id", _Connection);
                 _DeleteRecordCommand.Prepare();
             }
 
@@ -64,7 +64,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             _DeleteRecordCommand.ExecuteNonQuery();
         }
 
-        private void AddParameters(SQLiteCommand command, SplitConsolidation entity)
+        private void AddParameters(SqliteCommand command, SplitConsolidation entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@OldUnits", entity.OldUnits);

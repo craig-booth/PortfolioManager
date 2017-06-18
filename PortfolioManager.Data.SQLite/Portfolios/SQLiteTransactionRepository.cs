@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
@@ -31,24 +31,24 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _DetailRepositories.Add(TransactionType.CashTransaction, new CashTransactionsRepository(_Connection));
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected override SQLiteCommand GetAddRecordCommand()
+        private SqliteCommand _GetAddRecordCommand;
+        protected override SqliteCommand GetAddRecordCommand()
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SQLiteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description], [Attachment], [RecordDate], [Comment]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description, @Attachment, @RecordDate, @Comment)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [Transactions] ([Id], [TransactionDate], [Type], [ASXCode], [Description], [Attachment], [RecordDate], [Comment]) VALUES (@Id, @TransactionDate, @Type, @ASXCode, @Description, @Attachment, @RecordDate, @Comment)", _Connection);
                 _GetAddRecordCommand.Prepare();
             }
 
             return _GetAddRecordCommand;
         }
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected override SQLiteCommand GetUpdateRecordCommand()
+        private SqliteCommand _GetUpdateRecordCommand;
+        protected override SqliteCommand GetUpdateRecordCommand()
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SQLiteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description, [Attachment] = @Attachment, [RecordDate] = @RecordDate, [Comment] = @Comment WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [Transactions] SET [TransactionDate] = @TransactionDate, [Description] = @Description, [Attachment] = @Attachment, [RecordDate] = @RecordDate, [Comment] = @Comment WHERE [Id] = @Id", _Connection);
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -94,7 +94,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             detailRepository.DeleteRecord(entity.Id);
         }
         
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());
             command.Parameters.AddWithValue("@TransactionDate", entity.TransactionDate.ToString("yyyy-MM-dd"));
@@ -109,19 +109,19 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
     public class TransactionDetailRepository
     {
-        private SQLiteConnection _Connection;
+        private SqliteConnection _Connection;
 
-        public TransactionDetailRepository(SQLiteConnection connection)
+        public TransactionDetailRepository(SqliteConnection connection)
         {
             _Connection = connection;
         }
 
-        private SQLiteCommand _AddRecordCommand;
+        private SqliteCommand _AddRecordCommand;
         public void AddRecord(Transaction entity)
         {
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SQLiteCommand(GetAddSQL(), _Connection);
+                _AddRecordCommand = new SqliteCommand(GetAddSQL(), _Connection);
                 _AddRecordCommand.Prepare();
             }
 
@@ -129,12 +129,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _AddRecordCommand.ExecuteNonQuery();
         }
 
-        private SQLiteCommand _UpdateRecordCommand;
+        private SqliteCommand _UpdateRecordCommand;
         public void UpdateRecord(Transaction entity)
         {
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SQLiteCommand(GetUpdateSQL(), _Connection);
+                _UpdateRecordCommand = new SqliteCommand(GetUpdateSQL(), _Connection);
                 _UpdateRecordCommand.Prepare();
             }
 
@@ -142,12 +142,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             _UpdateRecordCommand.ExecuteNonQuery();
         }
 
-        private SQLiteCommand _DeleteRecordCommand;
+        private SqliteCommand _DeleteRecordCommand;
         public void DeleteRecord(Guid id)
         {
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SQLiteCommand(GetDeleteSQL(), _Connection);
+                _DeleteRecordCommand = new SqliteCommand(GetDeleteSQL(), _Connection);
                 _DeleteRecordCommand.Prepare();
             }
 
@@ -170,7 +170,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             throw new NotSupportedException("");
         }
 
-        protected virtual void AddParameters(SQLiteCommand command, Transaction entity)
+        protected virtual void AddParameters(SqliteCommand command, Transaction entity)
         {
             command.Parameters.AddWithValue("@Id", entity.Id.ToString());   
         }
@@ -180,7 +180,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class AquisitionRepository : TransactionDetailRepository
     {
 
-        public AquisitionRepository(SQLiteConnection connection)
+        public AquisitionRepository(SqliteConnection connection)
             : base(connection)
         {
            
@@ -201,7 +201,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [Aquisitions] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             Aquisition aquisition = entity as Aquisition;
 
@@ -216,7 +216,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class CostBaseAdjustmentRepository: TransactionDetailRepository
     {
 
-        public CostBaseAdjustmentRepository(SQLiteConnection connection) 
+        public CostBaseAdjustmentRepository(SqliteConnection connection) 
             : base(connection)
         {
         }
@@ -237,7 +237,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [CostBaseAdjustments] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             CostBaseAdjustment costBaseAdjustment = entity as CostBaseAdjustment;
 
@@ -249,7 +249,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class DisposalRepository : TransactionDetailRepository
     {
 
-        public DisposalRepository(SQLiteConnection connection) 
+        public DisposalRepository(SqliteConnection connection) 
             : base(connection)
         {
         }
@@ -269,7 +269,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [Disposals] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             Disposal disposal = entity as Disposal;
 
@@ -285,7 +285,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class IncomeReceivedRepository : TransactionDetailRepository
     {
 
-        public IncomeReceivedRepository(SQLiteConnection connection) 
+        public IncomeReceivedRepository(SqliteConnection connection) 
             : base(connection)
         {
         }
@@ -305,7 +305,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [IncomeReceived] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             IncomeReceived incomeReceived = entity as IncomeReceived;
 
@@ -323,7 +323,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class OpeningBalanceRepository : TransactionDetailRepository
     {
 
-        public OpeningBalanceRepository(SQLiteConnection connection) 
+        public OpeningBalanceRepository(SqliteConnection connection) 
             : base(connection)
         {
         }
@@ -343,7 +343,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [OpeningBalances] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             OpeningBalance openingBalance = entity as OpeningBalance;
 
@@ -358,7 +358,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class ReturnOfCapitalRepository : TransactionDetailRepository
     {
 
-        public ReturnOfCapitalRepository(SQLiteConnection connection) 
+        public ReturnOfCapitalRepository(SqliteConnection connection) 
             : base(connection)
         {
         }
@@ -378,7 +378,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [ReturnsOfCapital] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             ReturnOfCapital returnOfCapital = entity as ReturnOfCapital;
 
@@ -391,7 +391,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class UnitCountAdjustmentRepository : TransactionDetailRepository
     {
 
-        public UnitCountAdjustmentRepository(SQLiteConnection connection)
+        public UnitCountAdjustmentRepository(SqliteConnection connection)
             : base(connection)
         {
         }
@@ -411,7 +411,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [UnitCountAdjustments] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             UnitCountAdjustment unitCountAdjustment = entity as UnitCountAdjustment;
 
@@ -424,7 +424,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     public class CashTransactionsRepository : TransactionDetailRepository
     {
 
-        public CashTransactionsRepository(SQLiteConnection connection)
+        public CashTransactionsRepository(SqliteConnection connection)
             : base(connection)
         {
         }
@@ -444,7 +444,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             return "DELETE FROM [CashTransactions] WHERE [Id] = @Id";
         }
 
-        protected override void AddParameters(SQLiteCommand command, Transaction entity)
+        protected override void AddParameters(SqliteCommand command, Transaction entity)
         {
             CashTransaction cashTransaction = entity as CashTransaction;
 

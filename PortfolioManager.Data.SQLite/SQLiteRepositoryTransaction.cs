@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 namespace PortfolioManager.Data.SQLite
 {
     public class SQLiteRepositoryTransaction
     {      
-        private SQLiteConnection _Connection;
-        private SQLiteTransaction _Transaction;
+        private SqliteConnection _Connection;
+        private SqliteTransaction _Transaction;
         private int _Level;
         private bool _SaveOnEnd;
         public bool SaveOnEnd
@@ -27,7 +27,7 @@ namespace PortfolioManager.Data.SQLite
             }
         }
 
-        public SQLiteRepositoryTransaction(SQLiteConnection connection)
+        public SQLiteRepositoryTransaction(SqliteConnection connection)
         {
             _Connection = connection;
             _Level = 0;
