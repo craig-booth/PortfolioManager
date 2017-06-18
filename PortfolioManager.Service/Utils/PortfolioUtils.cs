@@ -155,7 +155,12 @@ namespace PortfolioManager.Service.Utils
             foreach (var parcelGroup in holdingQuery)
             {
                 var holding = new HoldingItem();
-                holding.Stock = _StockUtils.Get(parcelGroup.Key, date);
+
+                var stock = _StockQuery.Get(parcelGroup.Key, date);
+
+                holding.Stock = new Interface.StockItem(stock);
+                holding.Category = stock.Category;
+
                 foreach (var parcel in parcelGroup)
                 {
                     holding.Units += parcel.Units;
