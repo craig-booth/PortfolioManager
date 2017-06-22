@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Utils
 {
 
-    [Serializable]
     public abstract class TransactionException : Exception
     {
         public Transaction Transacation { get; private set; }
@@ -21,7 +20,6 @@ namespace PortfolioManager.Service.Utils
         }
     }
 
-    [Serializable]
     public class TransctionNotSupportedForStapledSecurity: TransactionException 
     {   
         public TransctionNotSupportedForStapledSecurity(Transaction transcation, string message)
@@ -30,7 +28,6 @@ namespace PortfolioManager.Service.Utils
         }
     }
 
-    [Serializable]
     public class TransctionNotSupportedForChildSecurity : TransactionException
     {
         public TransctionNotSupportedForChildSecurity(Transaction transcation, string message)
@@ -39,7 +36,6 @@ namespace PortfolioManager.Service.Utils
         }
     }
 
-    [Serializable]
     public class NoParcelsForTransaction : TransactionException 
     {
         public NoParcelsForTransaction(Transaction transcation, string message)
@@ -49,7 +45,6 @@ namespace PortfolioManager.Service.Utils
         }
     }
 
-    [Serializable]
     public class NotEnoughSharesForDisposal : TransactionException
     {
         public NotEnoughSharesForDisposal(Transaction transcation, string message)
@@ -58,7 +53,6 @@ namespace PortfolioManager.Service.Utils
         }
     }
 
-    [Serializable]
     public class AttemptToModifyPreviousParcelVersion : Exception
     {
         public Guid Parcel { get; private set; }

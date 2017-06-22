@@ -12,7 +12,7 @@ namespace PortfolioManager.UI.Utilities
 {
     class ViewParameter : NotifyClass
     {
-        public IPortfolioManagerService PortfolioManagerService;
+        public RestWebClient RestWebClient;
 
         private StockItem _Stock;
         public StockItem Stock

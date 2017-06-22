@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Utils;
 

@@ -46,9 +46,9 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var incomeService = _Parameter.PortfolioManagerService.GetService<IIncomeService>();
-
-            var responce = await incomeService.GetIncome(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            var responce = await _Parameter.RestWebClient.GetIncomeAsync(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            if (responce == null)
+                return;
 
             Income.Clear();
             foreach (var incomeItem in responce.Income.OrderBy(x => x.Stock.Name))

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
@@ -66,8 +67,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public OpeningBalanceViewModel(OpeningBalanceTransactionItem openingBalance, IStockService stockService, IHoldingService holdingService)
-            : base(openingBalance, TransactionStockSelection.Stocks, stockService, holdingService)
+        public OpeningBalanceViewModel(OpeningBalanceTransactionItem openingBalance, RestWebClient restWebClient)
+            : base(openingBalance, TransactionStockSelection.Stocks, restWebClient)
         {
         }
 

@@ -37,8 +37,6 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioValueService = _Parameter.PortfolioManagerService.GetService<IPortfolioValueService>();
-
             DateValues.Clear();
             PortfolioValues.Clear();
 
@@ -52,9 +50,11 @@ namespace PortfolioManager.UI.ViewModels
 
             PortfolioValueResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await portfolioValueService.GetPortfolioValue(_Parameter.StartDate, _Parameter.EndDate, valueFrequency);
+                responce = await _Parameter.RestWebClient.GetPortfolioValueAsync(_Parameter.StartDate, _Parameter.EndDate, valueFrequency);
             else
-                responce = await portfolioValueService.GetPortfolioValue(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate, valueFrequency);
+                responce = await _Parameter.RestWebClient.GetPortfolioValueAsync(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate, valueFrequency);
+            if (responce == null)
+                return;
 
             // create chart data
             var values = new List<double>();

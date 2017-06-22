@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Data.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Utils;
 

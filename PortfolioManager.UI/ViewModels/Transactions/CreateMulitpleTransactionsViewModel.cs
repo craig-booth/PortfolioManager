@@ -15,23 +15,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class CreateMulitpleTransactionsViewModel : PopupWindow
     {
-        private ITransactionService _TransactionService;
+        private ITransactionService _TransactionService = null;
         private TransactionViewModelFactory _TransactionViewModelFactory;
-
-        private IPortfolioManagerService _PortfolioManagerService;
-        public IPortfolioManagerService PortfolioManagerService
-        {
-            set
-            {
-                _PortfolioManagerService = value;
-                _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
-
-                var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
-                var stockService = _PortfolioManagerService.GetService<IStockService>();
-
-                _TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
-            }
-        }
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
 
@@ -52,9 +37,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CreateMulitpleTransactionsViewModel()
+        public CreateMulitpleTransactionsViewModel(RestWebClient restWebClient)
             : base()
         {
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
             Transactions = new ObservableCollection<TransactionViewModel>();
 
             CancelCommand = new RelayCommand(Cancel);

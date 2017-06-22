@@ -1,0 +1,73 @@
+{
+  "version": 2,
+  "exports": {
+    "PortfolioManager.Common/1.0.0": {
+      "type": "project",
+      "framework": ".NETStandard,Version=v1.3",
+      "compile": {
+        "bin/Debug/PortfolioManager.Common.dll": {}
+      },
+      "runtime": {
+        "bin/Debug/PortfolioManager.Common.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/PortfolioManager.Common.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
+    "PortfolioManager.Data.SQLite/1.0.0": {
+      "type": "project",
+      "framework": ".NETStandard,Version=v1.3",
+      "compile": {
+        "bin/Debug/PortfolioManager.Data.SQLite.dll": {}
+      },
+      "runtime": {
+        "bin/Debug/PortfolioManager.Data.SQLite.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/PortfolioManager.Data.SQLite.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
+    "PortfolioManager.Service/1.0.0": {
+      "type": "project",
+      "framework": ".NETStandard,Version=v1.3",
+      "compile": {
+        "bin/Debug/PortfolioManager.Service.dll": {}
+      },
+      "runtime": {
+        "bin/Debug/PortfolioManager.Service.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/PortfolioManager.Service.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
+    "PortfolioManager.Data/1.0.0": {
+      "type": "project",
+      "framework": ".NETStandard,Version=v1.3",
+      "compile": {
+        "bin/Debug/PortfolioManager.Data.dll": {}
+      },
+      "runtime": {
+        "bin/Debug/PortfolioManager.Data.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/PortfolioManager.Data.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}

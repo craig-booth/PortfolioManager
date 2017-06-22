@@ -26,7 +26,7 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            _Connection = new SqliteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
+            _Connection = new SqliteConnection("Data Source=" + FileName);
             _Connection.Open();
 
             _Transaction = new SQLiteRepositoryTransaction(_Connection);

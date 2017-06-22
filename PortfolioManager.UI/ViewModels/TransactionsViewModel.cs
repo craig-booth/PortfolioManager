@@ -56,9 +56,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (_Parameter != null)
             {
-                var holdingService = _Parameter.PortfolioManagerService.GetService<IHoldingService>();
-                var stockService = _Parameter.PortfolioManagerService.GetService<IStockService>();
-                TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
+                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestWebClient);
             }
 
             base.Activate();
@@ -66,13 +64,13 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var transactionService = _Parameter.PortfolioManagerService.GetService<ITransactionService>();
-
             GetTransactionsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await transactionService.GetTransactions(_Parameter.StartDate, _Parameter.EndDate);
+                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.StartDate, _Parameter.EndDate);
             else
-                responce = await transactionService.GetTransactions(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate);
+                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate);
+            if (responce == null)
+                return;
 
             Transactions.Clear();
 

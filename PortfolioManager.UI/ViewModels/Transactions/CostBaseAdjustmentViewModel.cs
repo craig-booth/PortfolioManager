@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
@@ -30,8 +31,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, IStockService stockService, IHoldingService holdingService)
-            : base(costBaseAdjustment, TransactionStockSelection.Holdings, stockService, holdingService)
+        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, RestWebClient restWebClient)
+            : base(costBaseAdjustment, TransactionStockSelection.Holdings, restWebClient)
         {
 
         }

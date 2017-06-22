@@ -68,8 +68,9 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioPerformanceService = _Parameter.PortfolioManagerService.GetService<IPortfolioPerformanceService>();
-            var responce = await portfolioPerformanceService.GetPerformance(_Parameter.StartDate, _Parameter.EndDate);
+            var responce = await _Parameter.RestWebClient.GetPortfolioPerformanceAsync(_Parameter.StartDate, _Parameter.EndDate);
+            if (responce == null)
+                return;
 
             OpeningBalance = responce.OpeningBalance + responce.OpeningCashBalance;
             Deposits = responce.Deposits;

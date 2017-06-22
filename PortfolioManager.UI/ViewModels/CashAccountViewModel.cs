@@ -44,9 +44,9 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var cashAccountService = _Parameter.PortfolioManagerService.GetService<ICashAccountService>();
-
-            var responce = await cashAccountService.GetTranasctions(_Parameter.StartDate, _Parameter.EndDate);
+            var responce = await _Parameter.RestWebClient.GetCashAccountTransactionsAsync(_Parameter.StartDate, _Parameter.EndDate);
+            if (responce == null)
+                return;
 
             OpeningBalance = responce.OpeningBalance;
             ClosingBalance = responce.ClosingBalance;

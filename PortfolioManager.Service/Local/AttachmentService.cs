@@ -7,8 +7,8 @@ using System.IO;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Local
 {

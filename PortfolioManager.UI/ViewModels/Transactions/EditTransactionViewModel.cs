@@ -54,23 +54,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class EditTransactionViewModel: PopupWindow
     { 
-        private ITransactionService _TransactionService;
+        private ITransactionService _TransactionService = null;
         private TransactionViewModelFactory _TransactionViewModelFactory;
-
-        private IPortfolioManagerService _PortfolioManagerService;
-        public IPortfolioManagerService PortfolioManagerService
-        {
-            set
-            {
-                _PortfolioManagerService = value;
-                _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
-
-                var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
-                var stockService = _PortfolioManagerService.GetService<IStockService>();
-
-                _TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
-            }
-        }
 
         private TransactionViewModel _TransactionViewModel;
         public TransactionViewModel TransactionViewModel
@@ -101,9 +86,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public EditTransactionViewModel()
+        public EditTransactionViewModel(RestWebClient restWebClient)
             : base()
-        {           
+        {
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
+
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
             SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
             DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);

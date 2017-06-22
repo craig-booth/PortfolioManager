@@ -10,9 +10,9 @@ using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Data;
-using StockManager.Service;
+using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data;
 
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.CorporateActions;
@@ -55,13 +55,6 @@ namespace PortfolioManager.Service.Local
            // LoadTransactions(portfolioDatabase);
 
             return Task.FromResult<bool>(true);
-        }
-
-        public async Task UpdateStockData(string stockDatabasePath)
-        {
-            IStockDatabase stockDatabase = new SQLiteStockDatabase(stockDatabasePath);
-            var stockServiceRepository = new StockServiceRepository(stockDatabase);
-            await stockServiceRepository.DownloadUpdatedData();
         }
 
         public T GetService<T>() where T : IPortfolioService

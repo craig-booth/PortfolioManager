@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Data;
 using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Local

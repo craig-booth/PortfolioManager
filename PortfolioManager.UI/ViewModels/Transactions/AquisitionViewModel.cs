@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
@@ -69,8 +70,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public AquisitionViewModel(AquisitionTransactionItem aquisition, IStockService stockService, IHoldingService holdingService)
-            : base(aquisition, TransactionStockSelection.TradeableStocks, stockService, holdingService)
+        public AquisitionViewModel(AquisitionTransactionItem aquisition, RestWebClient restWebClient)
+            : base(aquisition, TransactionStockSelection.TradeableStocks, restWebClient)
         {
 
         }

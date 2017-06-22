@@ -2,16 +2,20 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5C1F0FCA-84B1-4910-934C-99E79C84052E}</ProjectGuid>
+    <ProjectGuid>{32F20D88-8D6B-4D82-85C0-129C848391DA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PortfolioManager.Service</RootNamespace>
     <AssemblyName>PortfolioManager.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,25 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <None Include="project.json" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CorporateActions\CapitalReturnHandler.cs" />
+    <Compile Include="CorporateActions\CompositeActionHandler.cs" />
+    <Compile Include="CorporateActions\CorporateActionHandler.cs" />
+    <Compile Include="CorporateActions\DividendHandler.cs" />
+    <Compile Include="CorporateActions\SplitConsolidationHandler.cs" />
+    <Compile Include="CorporateActions\TransformationHandler.cs" />
     <Compile Include="Interface\AttachmentService.cs" />
     <Compile Include="Interface\CapitalGainService.cs" />
     <Compile Include="Interface\CashAccountService.cs" />
@@ -57,6 +52,7 @@
     <Compile Include="Interface\CorporateActionService.cs" />
     <Compile Include="Interface\HoldingService.cs" />
     <Compile Include="Interface\IncomeService.cs" />
+    <Compile Include="Interface\PortfolioManagerService.cs" />
     <Compile Include="Interface\PortfolioPerformanceService.cs" />
     <Compile Include="Interface\PortfolioSummaryService.cs" />
     <Compile Include="Interface\PortfolioValueService.cs" />
@@ -68,33 +64,12 @@
     <Compile Include="Local\CorporateActionService.cs" />
     <Compile Include="Local\HoldingService.cs" />
     <Compile Include="Local\IncomeService.cs" />
-    <Compile Include="Local\StockService.cs" />
-    <Compile Include="Local\TransactionService.cs" />
-    <Compile Include="Interface\PortfolioManagerService.cs" />
     <Compile Include="Local\LocalPortfolioManagerService.cs" />
     <Compile Include="Local\PortfolioPerformanceService.cs" />
     <Compile Include="Local\PortfolioSummaryService.cs" />
     <Compile Include="Local\PortfolioValueService.cs" />
-    <Compile Include="Rest\AttachmentService.cs" />
-    <Compile Include="Rest\CapitalGainService.cs" />
-    <Compile Include="Rest\CashAccountService.cs" />
-    <Compile Include="Rest\CorporateActionService.cs" />
-    <Compile Include="Rest\HoldingService.cs" />
-    <Compile Include="Rest\IncomeService.cs" />
-    <Compile Include="Rest\PortfolioPerformanceService.cs" />
-    <Compile Include="Rest\PortfolioSummaryService.cs" />
-    <Compile Include="Rest\PortfolioValueService.cs" />
-    <Compile Include="Rest\RestPortfolioManagerService.cs" />
-    <Compile Include="Rest\StockService.cs" />
-    <Compile Include="Rest\TransactionService.cs" />
-    <Compile Include="Utils\CGTCalculator.cs" />
-    <Compile Include="CorporateActions\CapitalReturnHandler.cs" />
-    <Compile Include="CorporateActions\CompositeActionHandler.cs" />
-    <Compile Include="CorporateActions\CorporateActionHandler.cs" />
-    <Compile Include="CorporateActions\DividendHandler.cs" />
-    <Compile Include="CorporateActions\SplitConsolidationHandler.cs" />
-    <Compile Include="CorporateActions\TransformationHandler.cs" />
-    <Compile Include="Utils\Exceptions.cs" />
+    <Compile Include="Local\StockService.cs" />
+    <Compile Include="Local\TransactionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transactions\AquisitionHandler.cs" />
     <Compile Include="Transactions\CashTransactionHandler.cs" />
@@ -105,20 +80,27 @@
     <Compile Include="Transactions\ReturnOfCapitalHandler.cs" />
     <Compile Include="Transactions\TransactionHandler.cs" />
     <Compile Include="Transactions\UnitCountAdjustmentHandler.cs" />
+    <Compile Include="Utils\CGTCalculator.cs" />
+    <Compile Include="Utils\Exceptions.cs" />
     <Compile Include="Utils\IRRCalculator.cs" />
     <Compile Include="Utils\PortfolioUtils.cs" />
     <Compile Include="Utils\StockUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StockManager.Service\StockManager.Service.csproj">
-      <Project>{7171f628-22a3-4f8e-80ac-e4a29993eb62}</Project>
-      <Name>StockManager.Service</Name>
+    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
+      <Project>{4967c9e7-62f3-4c6c-ba97-5f6a569f0cf3}</Project>
+      <Name>PortfolioManager.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj">
+      <Project>{e1040a1e-3126-4442-93aa-febcaa649fe3}</Project>
+      <Name>PortfolioManager.Data.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj">
+      <Project>{b13ce328-f1c2-4096-8f1e-9a6e477c727d}</Project>
+      <Name>PortfolioManager.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

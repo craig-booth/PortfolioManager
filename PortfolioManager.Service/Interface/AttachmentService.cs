@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Interface
 {

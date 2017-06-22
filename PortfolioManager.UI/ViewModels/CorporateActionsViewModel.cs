@@ -51,20 +51,18 @@ namespace PortfolioManager.UI.ViewModels
         private async void ApplyCorporateAction(CorporateActionViewModel corporateAction)
         {
             if (corporateAction != null)
-            {
-                var corporateActionService = _Parameter.PortfolioManagerService.GetService<ICorporateActionService>();
-
-                var responce = await corporateActionService.TransactionsForCorporateAction(corporateAction.Id);
-
+            { 
+                var responce = await _Parameter.RestWebClient.GetTransactionsForCorporateActionAsync(corporateAction.Id);
+                
                 _CreateTransactionsViewModel.AddTransactions(responce.Transactions);
             } 
         }
 
         public async override void RefreshView()
         {
-            var corporateActionService = _Parameter.PortfolioManagerService.GetService<ICorporateActionService>();
-
-            var responce = await corporateActionService.GetUnappliedCorporateActions();
+            var responce = await _Parameter.RestWebClient.GetUnappliedCorporateActionsAsync();
+            if (responce == null)
+                return;
 
             CorporateActions.Clear();
             

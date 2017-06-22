@@ -56,11 +56,11 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var capitalGainService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
-
             Heading = string.Format("CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var responce = await capitalGainService.GetCGTLiability(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            var responce = await _Parameter.RestWebClient.GetCGTLiabilityAsync(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            if (responce == null)
+                return;
 
             CurrentYearCapitalGainsOther = responce.CurrentYearCapitalGainsDiscounted;
             CurrentYearCapitalGainsDiscounted = responce.CurrentYearCapitalGainsDiscounted;
