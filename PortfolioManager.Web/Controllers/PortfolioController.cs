@@ -134,12 +134,83 @@ namespace PortfolioManager.Web.Controllers
 
 
         // GET: /api/portfolio/corporateactions/unapplied
+        [Route("corporateactions/unapplied")]
+        [HttpGet]
+        public async Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions()
+        {
+            var service = _PortfolioManagerService.GetService<ICorporateActionService>();
+
+            return await service.GetUnappliedCorporateActions();
+        }
+
         // GET: /api/portfolio/corporateactions/transactions?id
-        // GET: /api/portfolio/holdings?stock&date
+        [Route("corporateactions/transactions")]
+        [HttpGet]
+        public async Task<TransactionsForCorparateActionsResponce> GetCorporateActionTransactions(Guid id)
+        {
+            var service = _PortfolioManagerService.GetService<ICorporateActionService>();
+
+            return await service.TransactionsForCorporateAction(id);
+        }
+
+        // GET: /api/portfolio/holding?stock&date
+        [Route("holding")]
+        [HttpGet]
+        public async Task<HoldingResponce> GetHolding(Guid? stock, DateTime? date)
+        {
+            var service = _PortfolioManagerService.GetService<IHoldingService>();
+
+            if (date == null)
+                date = DateTime.Now;
+            
+            return await service.GetHolding((Guid)stock, (DateTime)date);
+        }
+
         // GET: /api/portfolio/holdings?date
         // GET: /api/portfolio/holdings?date&tradeable=true
+        [Route("holdings")]
+        [HttpGet]
+        public async Task<HoldingsResponce> GetHoldings(DateTime? date, bool? tradeable)
+        {
+            var service = _PortfolioManagerService.GetService<IHoldingService>();
+
+            if (date == null)
+                date = DateTime.Now;
+
+            if ((tradeable != null) && (bool)tradeable)
+                return await service.GetTradeableHoldings((DateTime)date);
+            else
+                return await service.GetHoldings((DateTime)date);
+        }
+
         // GET: /api/portfolio/cashaccount/transactions?fromDate&toDate
-        // GET: /api/portfolio/cashaccount/transactions/id
+        [Route("cashaccount/transactions")]
+        [HttpGet]
+        public async Task<CashAccountTransactionsResponce> GetCashAccountTransactions(DateTime? fromDate, DateTime? toDate)
+        {
+            var service = _PortfolioManagerService.GetService<ICashAccountService>();
+
+            if (fromDate == null)
+                fromDate = DateUtils.NoStartDate;
+            if (toDate == null)
+                toDate = DateTime.Today;
+
+            return await service.GetTranasctions((DateTime)fromDate, (DateTime)toDate);
+        }
+
         // GET: /api/portfolio/income?fromDate&toDate
+        [Route("income")]
+        [HttpGet]
+        public async Task<IncomeResponce> GetIncome(DateTime? fromDate, DateTime? toDate)
+        {
+            var service = _PortfolioManagerService.GetService<IIncomeService>();
+
+            if (fromDate == null)
+                fromDate = DateUtils.NoStartDate;
+            if (toDate == null)
+                toDate = DateTime.Today;
+
+            return await service.GetIncome((DateTime)fromDate, (DateTime)toDate);
+        }
     }
 }

@@ -51,47 +51,47 @@ namespace PortfolioManager.UI.Utilities
 
         public async Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGainsAsync(DateTime date)
         {
-            return await GetAsync<SimpleUnrealisedGainsResponce>("api/portfolio/capitalgains?date" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<SimpleUnrealisedGainsResponce>("api/portfolio/capitalgains?date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGainsAsync(Guid stock, DateTime date)
         {
-            return await GetAsync<SimpleUnrealisedGainsResponce>("api/portfolio/capitalgains?stock=" + stock.ToString() + "&date" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<SimpleUnrealisedGainsResponce>("api/portfolio/capitalgains?stock=" + stock.ToString() + "&date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<DetailedUnrealisedGainsResponce> GetDetailedUnrealisedGainsAsync(DateTime date)
         {
-            return await GetAsync<DetailedUnrealisedGainsResponce>("api/portfolio/detailedcapitalgains?date" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<DetailedUnrealisedGainsResponce>("api/portfolio/detailedcapitalgains?date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<DetailedUnrealisedGainsResponce> GetDetailedUnrealisedGainsAsync(Guid stock, DateTime date)
         {
-            return await GetAsync<DetailedUnrealisedGainsResponce>("api/portfolio/detailedcapitalgains?stock=" + stock.ToString() + "&date" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<DetailedUnrealisedGainsResponce>("api/portfolio/detailedcapitalgains?stock=" + stock.ToString() + "&date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<CGTLiabilityResponce> GetCGTLiabilityAsync(DateTime fromDate, DateTime toDate)
         {
-            return await GetAsync<CGTLiabilityResponce>("api/portfolio/cgtliability?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<CGTLiabilityResponce>("api/portfolio/cgtliability?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<GetTransactionsResponce> GetTransactionsAsync(DateTime fromDate, DateTime toDate)
         {
-            return await GetAsync<GetTransactionsResponce>("api/transactions?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<GetTransactionsResponce>("api/transactions?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<GetTransactionsResponce> GetTransactionsAsync(Guid stock, DateTime fromDate, DateTime toDate)
         {
-            return await GetAsync<GetTransactionsResponce>("api/transactions?stock=" + stock.ToString() + "&fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<GetTransactionsResponce>("api/transactions?stock=" + stock.ToString() + "&fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<IncomeResponce> GetIncomeAsync(DateTime fromDate, DateTime toDate)
         {
-            return await GetAsync<IncomeResponce>("api/portfolio/income?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<IncomeResponce>("api/portfolio/income?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<PortfolioValueResponce> GetPortfolioValueAsync(DateTime fromDate, DateTime toDate, ValueFrequency frequency)
         {
-            var url = "api/portfolio/value?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd");
+            var url = "api/portfolio/value?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd");
             if (frequency == ValueFrequency.Weekly)
                 url += "&frequency=week";
             else if (frequency == ValueFrequency.Monthly)
@@ -104,7 +104,7 @@ namespace PortfolioManager.UI.Utilities
 
         public async Task<PortfolioValueResponce> GetPortfolioValueAsync(Guid stock, DateTime fromDate, DateTime toDate, ValueFrequency frequency)
         {
-            var url = "api/portfolio/value?stock=" + stock.ToString() + "&fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd");
+            var url = "api/portfolio/value?stock=" + stock.ToString() + "&fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd");
             if (frequency == ValueFrequency.Weekly)
                 url += "&frequency=week";
             else if (frequency == ValueFrequency.Monthly)
@@ -144,7 +144,7 @@ namespace PortfolioManager.UI.Utilities
 
         public async Task<CashAccountTransactionsResponce> GetCashAccountTransactionsAsync(DateTime fromDate, DateTime toDate)
         {
-            return await GetAsync<CashAccountTransactionsResponce>("api/portfolio/cashaccount/transactions?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<CashAccountTransactionsResponce>("api/portfolio/cashaccount/transactions?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
         private async Task<T> GetAsync<T>(string url)

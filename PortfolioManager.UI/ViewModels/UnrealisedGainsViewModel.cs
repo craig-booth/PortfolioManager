@@ -46,7 +46,7 @@ namespace PortfolioManager.UI.ViewModels
         public async override void RefreshView()
         {
             SimpleUnrealisedGainsResponce responce;
-            if (_Parameter.Stock.Id != Guid.Empty)
+            if (_Parameter.Stock.Id == Guid.Empty)
                 responce = await _Parameter.RestWebClient.GetSimpleUnrealisedGainsAsync(_Parameter.Date);
             else
                 responce = await _Parameter.RestWebClient.GetSimpleUnrealisedGainsAsync(_Parameter.Stock.Id, _Parameter.Date);
