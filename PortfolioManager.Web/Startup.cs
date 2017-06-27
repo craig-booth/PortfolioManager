@@ -19,6 +19,7 @@ namespace PortfolioManager.Web
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+            
             Configuration = builder.Build();
         }
 
@@ -28,7 +29,8 @@ namespace PortfolioManager.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(x => x.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

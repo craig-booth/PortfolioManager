@@ -115,15 +115,13 @@ namespace PortfolioManager.Service.Local
             return Task.FromResult<ServiceResponce>(responce); 
         }
 
-        public Task<ServiceResponce> DeleteTransaction(TransactionItem transactionItem)
+        public Task<ServiceResponce> DeleteTransaction(Guid id)
         {
             var responce = new ServiceResponce();
 
-            var transaction = Mapper.Map<Transaction>(transactionItem);
-
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Delete(transaction);
+                unitOfWork.TransactionRepository.Delete(id);
                 unitOfWork.Save();
             }
 
@@ -147,6 +145,17 @@ namespace PortfolioManager.Service.Local
             responce.SetStatusToSuccessfull();
 
             return Task.FromResult<ServiceResponce>(responce); 
+        }
+
+        public Task<GetTransactionResponce> GetTransaction(Guid id)
+        {
+            var responce = new GetTransactionResponce();
+
+            responce.Transaction = Mapper.Map<TransactionItem>(_PortfolioDatabase.PortfolioQuery.GetTransaction(id));
+         
+            responce.SetStatusToSuccessfull();
+
+            return Task.FromResult<GetTransactionResponce>(responce);
         }
 
         public Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate)

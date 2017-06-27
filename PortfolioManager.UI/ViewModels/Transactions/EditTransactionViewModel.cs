@@ -165,7 +165,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 _TransactionViewModel.EndEdit();
 
-                _TransactionService.DeleteTransaction(TransactionViewModel.Transaction);
+                _TransactionService.DeleteTransaction(TransactionViewModel.Transaction.Id);
             }
 
             TransactionViewModel = null;

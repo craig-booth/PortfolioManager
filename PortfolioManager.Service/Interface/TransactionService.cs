@@ -13,10 +13,21 @@ namespace PortfolioManager.Service.Interface
         Task<ServiceResponce> AddTransaction(TransactionItem transactionItem);
         Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
         Task<ServiceResponce> UpdateTransaction(TransactionItem transactionItem);
-        Task<ServiceResponce> DeleteTransaction(TransactionItem transactionItem);
+        Task<ServiceResponce> DeleteTransaction(Guid id);
 
+        Task<GetTransactionResponce> GetTransaction(Guid id);
         Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate);
         Task<GetTransactionsResponce> GetTransactions(Guid stockId, DateTime fromDate, DateTime toDate);
+    }
+
+    public class GetTransactionResponce : ServiceResponce
+    {
+        public TransactionItem Transaction;
+
+        public GetTransactionResponce()
+            : base()
+        {
+        }
     }
 
     public class GetTransactionsResponce : ServiceResponce

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Formatting;
 
 using PortfolioManager.Service.Interface;
 
@@ -36,7 +37,7 @@ namespace PortfolioManager.UI.Utilities
 
         public async Task<HoldingResponce> GetPortfolioHoldingsAsync(Guid stock, DateTime date)
         {
-            return await GetAsync<HoldingResponce>("/api/portfolio/holdings?stock=" + stock.ToString() + "&date=" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<HoldingResponce>("/api/portfolio/holding?stock=" + stock.ToString() + "&date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<HoldingsResponce> GetPortfolioHoldingsAsync(DateTime date)
@@ -159,7 +160,11 @@ namespace PortfolioManager.UI.Utilities
             HttpResponseMessage response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                responce = await response.Content.ReadAsAsync<T>();
+                var formatter = new JsonMediaTypeFormatter
+                {
+                    SerializerSettings = { TypeNameHandling =  Newtonsoft.Json.TypeNameHandling.Auto }
+                };
+                responce = await response.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { formatter });
             }
 
             return responce;
