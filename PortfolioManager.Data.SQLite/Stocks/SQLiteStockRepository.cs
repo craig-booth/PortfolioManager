@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.Stocks;
-using PortfolioManager.Data;
-using PortfolioManager.Data.SQLite;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {

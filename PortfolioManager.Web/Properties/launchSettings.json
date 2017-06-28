@@ -1,9 +1,9 @@
-{
+﻿{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:54092/",
+      "applicationUrl": "http://localhost:54952/",
       "sslPort": 0
     }
   },
@@ -19,10 +19,11 @@
     "PortfolioManager.Web": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000/api/portfolio/summary",
+      "launchUrl": "api/portfolio/summary",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:54953"
     }
   }
 }

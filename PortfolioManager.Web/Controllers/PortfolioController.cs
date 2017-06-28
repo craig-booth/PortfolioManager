@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +15,8 @@ namespace PortfolioManager.Web.Controllers
 
         public PortfolioController()
         {
-            var portfolioDatabase = @"C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\bin\Debug\netcoreapp1.0\Natalies Portfolio.db";
-            var stockDatabase = @"C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\bin\Debug\netcoreapp1.0\stocks.db";
+            var portfolioDatabase = @"C:\PortfolioManager\Natalies Portfolio.db";
+            var stockDatabase = @"C:\PortfolioManager\Stocks.db";
 
             _PortfolioManagerService.Connect(portfolioDatabase, stockDatabase);
         }

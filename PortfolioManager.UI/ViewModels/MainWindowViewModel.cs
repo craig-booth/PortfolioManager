@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
@@ -100,7 +96,7 @@ namespace PortfolioManager.UI.ViewModels
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
             OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
-            _RestWebClient = new RestWebClient("http://localhost:5000");
+            _RestWebClient = new RestWebClient("http://localhost");
 
             ViewParameter = new ViewParameter();
             ViewParameter.Stock = _AllCompanies;

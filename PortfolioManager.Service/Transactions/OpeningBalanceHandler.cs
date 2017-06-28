@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using PortfolioManager.Data;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Transactions
-{ 
+{
 
     class OpeningBalanceHandler : TransacactionHandler, ITransactionHandler
     {

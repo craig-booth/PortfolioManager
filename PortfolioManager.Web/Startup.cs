@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Server;
 
 namespace PortfolioManager.Web
 {
@@ -16,10 +17,10 @@ namespace PortfolioManager.Web
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            
+          
             Configuration = builder.Build();
         }
 
@@ -31,6 +32,7 @@ namespace PortfolioManager.Web
             // Add framework services.
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto);
+                 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

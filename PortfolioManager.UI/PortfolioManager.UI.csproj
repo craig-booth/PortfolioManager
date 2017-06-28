@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F23ACD78-F12C-451A-8DF7-37F1AA75BD89}</ProjectGuid>
+    <ProjectGuid>{92F26883-8D8C-4F37-AEA2-09D5088A9390}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PortfolioManager.UI</RootNamespace>
     <AssemblyName>PortfolioManager.UI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -40,25 +38,19 @@
     <Reference Include="CBControls">
       <HintPath>.\CBControls.dll</HintPath>
     </Reference>
-    <Reference Include="LiveCharts, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.0.9.6\lib\net45\LiveCharts.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.Wpf.0.9.6\lib\net45\LiveCharts.Wpf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,165 +66,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Controls\DataTable.xaml.cs">
-      <DependentUpon>DataTable.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DoubleClickCommand.cs" />
-    <Compile Include="Controls\MarginSetter.cs" />
-    <Compile Include="Controls\PieChartLegend.xaml.cs">
-      <DependentUpon>PieChartLegend.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SelectionChangedCommand.cs" />
-    <Compile Include="Style\ValueConverters.cs" />
-    <Compile Include="Utilities\ApplicationSettings.cs" />
-    <Compile Include="Utilities\DescribedObject.cs" />
-    <Compile Include="Utilities\Module.cs" />
-    <Compile Include="Utilities\NotifyClass.cs" />
-    <Compile Include="Utilities\PageViewModel.cs" />
-    <Compile Include="Utilities\PortfolioViewModel.cs" />
-    <Compile Include="Utilities\RelayCommand.cs" />
-    <Compile Include="Utilities\RestWebClient.cs" />
-    <Compile Include="Utilities\StockItemExtension.cs" />
-    <Compile Include="Utilities\ViewParameter.cs" />
-    <Compile Include="Utilities\ViewModelBase.cs" />
-    <Compile Include="ViewModels\Transactions\AquisitionViewModel.cs" />
-    <Compile Include="ViewModels\PortfolioValueViewModel.cs" />
-    <Compile Include="ViewModels\AssetAllocationViewModel.cs" />
-    <Compile Include="ViewModels\CashAccountViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\CashTransactionViewModel.cs" />
-    <Compile Include="ViewModels\CGTViewModel.cs" />
-    <Compile Include="ViewModels\CorporateActionsViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\CostBaseAdjustmentViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\CreateMulitpleTransactionsViewModel.cs" />
-    <Compile Include="ViewModels\DetailedCGTViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\DisposalViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\EditTransactionViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\IncomeReceivedViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\OpeningBalanceViewModel.cs" />
-    <Compile Include="ViewModels\PerformanceViewModel.cs" />
-    <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\ReturnOfCapitalViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\TaxableIncomeViewModel.cs" />
-    <Compile Include="ViewModels\TransactionReportViewModel.cs" />
-    <Compile Include="ViewModels\TransactionsViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
-    <Compile Include="ViewModels\Transactions\UnitCountAdjustmentViewModel.cs" />
-    <Compile Include="ViewModels\UnrealisedGainsViewModel.cs" />
-    <Compile Include="Views\MainWindowView.xaml.cs">
-      <DependentUpon>MainWindowView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
-    <Page Include="Controls\DataTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PieChartLegend.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Style\Style.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\AquisitionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PortfolioValueView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AssetAllocationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CashAccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\CashTransactionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CGTView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CorporateActionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\CostBaseAdjustmentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DetailedCGTView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\DisposalView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\IncomeReceivedView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindowView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Transactions\OpeningBalanceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PerformanceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PortfolioSummaryView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Transactions\ReturnOfCapitalView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TaxableIncomeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TransactionsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\TransactionReportView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Transactions\UnitCountAdjustmentView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UnrealisedGainsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Controls\DataTable.xaml.cs" />
+    <Compile Include="Controls\DoubleClickCommand.cs" />
+    <Compile Include="Controls\MarginSetter.cs" />
+    <Compile Include="Controls\PieChartLegend.xaml.cs" />
+    <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -246,6 +87,44 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Style\ValueConverters.cs" />
+    <Compile Include="Utilities\ApplicationSettings.cs" />
+    <Compile Include="Utilities\DescribedObject.cs" />
+    <Compile Include="Utilities\Module.cs" />
+    <Compile Include="Utilities\NotifyClass.cs" />
+    <Compile Include="Utilities\PageViewModel.cs" />
+    <Compile Include="Utilities\PortfolioViewModel.cs" />
+    <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\RestWebClient.cs" />
+    <Compile Include="Utilities\StockItemExtension.cs" />
+    <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="Utilities\ViewParameter.cs" />
+    <Compile Include="ViewModels\AssetAllocationViewModel.cs" />
+    <Compile Include="ViewModels\CashAccountViewModel.cs" />
+    <Compile Include="ViewModels\CGTViewModel.cs" />
+    <Compile Include="ViewModels\CorporateActionsViewModel.cs" />
+    <Compile Include="ViewModels\DetailedCGTViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PerformanceViewModel.cs" />
+    <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
+    <Compile Include="ViewModels\PortfolioValueViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\TaxableIncomeViewModel.cs" />
+    <Compile Include="ViewModels\TransactionReportViewModel.cs" />
+    <Compile Include="ViewModels\TransactionsViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\AquisitionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\CashTransactionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\CostBaseAdjustmentViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\CreateMulitpleTransactionsViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\DisposalViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\EditTransactionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\IncomeReceivedViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\OpeningBalanceViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\ReturnOfCapitalViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\UnitCountAdjustmentViewModel.cs" />
+    <Compile Include="ViewModels\UnrealisedGainsViewModel.cs" />
+    <Compile Include="Views\MainWindowView.xaml.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -255,38 +134,125 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CBControls.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x64\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Controls\DataTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PieChartLegend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\Style.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AssetAllocationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CashAccountView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CGTView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CorporateActionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DetailedCGTView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainWindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PerformanceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PortfolioSummaryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PortfolioValueView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TaxableIncomeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TransactionReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TransactionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\AquisitionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\CashTransactionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\CostBaseAdjustmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\DisposalView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\IncomeReceivedView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\OpeningBalanceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\ReturnOfCapitalView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Transactions\UnitCountAdjustmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UnrealisedGainsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
-      <Project>{4967c9e7-62f3-4c6c-ba97-5f6a569f0cf3}</Project>
+      <Project>{c754d5de-f2d5-4e1d-999a-b2deb7ddce04}</Project>
       <Name>PortfolioManager.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj">
-      <Project>{32f20d88-8d6b-4d82-85c0-129c848391da}</Project>
+      <Project>{6f59be81-1e14-4454-9c3e-6cc0a586a6c2}</Project>
       <Name>PortfolioManager.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

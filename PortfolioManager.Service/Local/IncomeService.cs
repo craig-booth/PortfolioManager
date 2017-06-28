@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.Stocks;
-using PortfolioManager.Data;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Utils;
 

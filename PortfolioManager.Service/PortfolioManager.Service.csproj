@@ -1,111 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32F20D88-8D6B-4D82-85C0-129C848391DA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PortfolioManager.Service</RootNamespace>
-    <AssemblyName>PortfolioManager.Service</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <None Include="project.json" />
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CorporateActions\CapitalReturnHandler.cs" />
-    <Compile Include="CorporateActions\CompositeActionHandler.cs" />
-    <Compile Include="CorporateActions\CorporateActionHandler.cs" />
-    <Compile Include="CorporateActions\DividendHandler.cs" />
-    <Compile Include="CorporateActions\SplitConsolidationHandler.cs" />
-    <Compile Include="CorporateActions\TransformationHandler.cs" />
-    <Compile Include="Interface\AttachmentService.cs" />
-    <Compile Include="Interface\CapitalGainService.cs" />
-    <Compile Include="Interface\CashAccountService.cs" />
-    <Compile Include="Interface\Common.cs" />
-    <Compile Include="Interface\CorporateActionService.cs" />
-    <Compile Include="Interface\HoldingService.cs" />
-    <Compile Include="Interface\IncomeService.cs" />
-    <Compile Include="Interface\PortfolioManagerService.cs" />
-    <Compile Include="Interface\PortfolioPerformanceService.cs" />
-    <Compile Include="Interface\PortfolioSummaryService.cs" />
-    <Compile Include="Interface\PortfolioValueService.cs" />
-    <Compile Include="Interface\StockService.cs" />
-    <Compile Include="Interface\TransactionService.cs" />
-    <Compile Include="Local\AttachmentService.cs" />
-    <Compile Include="Local\CapitalGainService.cs" />
-    <Compile Include="Local\CashAccountService.cs" />
-    <Compile Include="Local\CorporateActionService.cs" />
-    <Compile Include="Local\HoldingService.cs" />
-    <Compile Include="Local\IncomeService.cs" />
-    <Compile Include="Local\LocalPortfolioManagerService.cs" />
-    <Compile Include="Local\PortfolioPerformanceService.cs" />
-    <Compile Include="Local\PortfolioSummaryService.cs" />
-    <Compile Include="Local\PortfolioValueService.cs" />
-    <Compile Include="Local\StockService.cs" />
-    <Compile Include="Local\TransactionService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transactions\AquisitionHandler.cs" />
-    <Compile Include="Transactions\CashTransactionHandler.cs" />
-    <Compile Include="Transactions\CostBaseAdjustmentHandler.cs" />
-    <Compile Include="Transactions\DisposalHandler.cs" />
-    <Compile Include="Transactions\IncomeReceivedHandler.cs" />
-    <Compile Include="Transactions\OpeningBalanceHandler.cs" />
-    <Compile Include="Transactions\ReturnOfCapitalHandler.cs" />
-    <Compile Include="Transactions\TransactionHandler.cs" />
-    <Compile Include="Transactions\UnitCountAdjustmentHandler.cs" />
-    <Compile Include="Utils\CGTCalculator.cs" />
-    <Compile Include="Utils\Exceptions.cs" />
-    <Compile Include="Utils\IRRCalculator.cs" />
-    <Compile Include="Utils\PortfolioUtils.cs" />
-    <Compile Include="Utils\StockUtils.cs" />
+    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj" />
+    <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj" />
+    <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
-      <Project>{4967c9e7-62f3-4c6c-ba97-5f6a569f0cf3}</Project>
-      <Name>PortfolioManager.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj">
-      <Project>{e1040a1e-3126-4442-93aa-febcaa649fe3}</Project>
-      <Name>PortfolioManager.Data.SQLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj">
-      <Project>{b13ce328-f1c2-4096-8f1e-9a6e477c727d}</Project>
-      <Name>PortfolioManager.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
