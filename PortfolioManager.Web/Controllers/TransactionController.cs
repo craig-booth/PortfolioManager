@@ -15,8 +15,8 @@ namespace PortfolioManager.Web.Controllers
 
         public TransactionController()
         {
-            var portfolioDatabase = @"C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\bin\Debug\netcoreapp1.0\Natalies Portfolio.db";
-            var stockDatabase = @"C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\bin\Debug\netcoreapp1.0\stocks.db";
+            var portfolioDatabase = @"C:\PortfolioManager\Natalies Portfolio.db";
+            var stockDatabase = @"C:\PortfolioManager\Stocks.db";
 
             _PortfolioManagerService.Connect(portfolioDatabase, stockDatabase);
         }
