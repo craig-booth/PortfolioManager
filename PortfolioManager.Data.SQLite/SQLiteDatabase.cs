@@ -25,24 +25,24 @@ namespace PortfolioManager.Data.SQLite
 
             _Transaction = new SQLiteRepositoryTransaction(_Connection);
 
-               var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
-               if ((long)tableCountCommand.ExecuteScalar() == 0)
-               {
-                   CreateDatabaseTables();
+            var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
+            if ((long)tableCountCommand.ExecuteScalar() == 0)
+            {
+                CreateDatabaseTables();
 
-                   Version.Version = RepositoryVersion;
-                   Version.CreationDateTime = DateTime.Today;
-                   Version.UpgradeDateTime = DateTime.Today;
+                Version.Version = RepositoryVersion;
+                Version.CreationDateTime = DateTime.Today;
+                Version.UpgradeDateTime = DateTime.Today;
 
-                   SetDbVersion();
-               }
-               else
-               { 
-                   LoadVersion();
+                SetDbVersion();
+            }
+            else
+            { 
+                LoadVersion();
 
-                   if (UpgradeRequired())
-                       Upgrade();
-               } 
+                if (UpgradeRequired())
+                    Upgrade();
+            } 
         }
 
         private void LoadVersion()

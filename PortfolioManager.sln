@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Web", "Por
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "PortfolioManager.UI\PortfolioManager.UI.csproj", "{92F26883-8D8C-4F37-AEA2-09D5088A9390}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.DataImporter", "PortfolioManager.DataImporter\PortfolioManager.DataImporter.csproj", "{D42BC87C-8606-4126-B333-E14201F830D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42BC87C-8606-4126-B333-E14201F830D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42BC87C-8606-4126-B333-E14201F830D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42BC87C-8606-4126-B333-E14201F830D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42BC87C-8606-4126-B333-E14201F830D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
