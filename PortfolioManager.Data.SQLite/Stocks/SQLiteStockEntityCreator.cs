@@ -9,12 +9,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     public class SQLiteStockEntityCreator : IEntityCreator
     {
-        private readonly SQLiteStockDatabase _Database;
+        private readonly SqliteTransaction _Transaction;
         private readonly Dictionary<Type, Func<SqliteDataReader, Entity>> _EntityCreators;
 
-        public SQLiteStockEntityCreator(SQLiteStockDatabase database)
+        public SQLiteStockEntityCreator(SqliteTransaction transaction)
         {
-            _Database = database;
+            _Transaction = transaction;
             _EntityCreators = new Dictionary<Type, Func<SqliteDataReader, Entity>>();
 
             _EntityCreators.Add(typeof(Stock), CreateStock);
@@ -96,7 +96,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private Dividend CreateDividend(Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get dividend vales */
-            var command = new SqliteCommand("SELECT * FROM [Dividends] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT * FROM [Dividends] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
 
@@ -127,7 +127,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private CapitalReturn CreateCapitalReturn(Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get capital return vales */
-            var command = new SqliteCommand("SELECT * FROM [CapitalReturns] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT * FROM [CapitalReturns] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
 
@@ -154,7 +154,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private SplitConsolidation CreateSplitConsolidation(Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get capital return vales */
-            var command = new SqliteCommand("SELECT * FROM [SplitConsolidations] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT * FROM [SplitConsolidations] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
 
@@ -181,7 +181,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         private Transformation CreateTransformation(Guid id, Guid stock, DateTime actionDate, string description)
         {
             /* Get transformation vales */
-            var command = new SqliteCommand("SELECT * FROM [Transformations] WHERE [Id] = @Id", _Database._Connection);
+            var command = new SqliteCommand("SELECT * FROM [Transformations] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
 
@@ -204,7 +204,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
 
             /* Get result stocks */
-            command = new SqliteCommand("SELECT * FROM [TransformationResultingStocks] WHERE [Id] = @Id", _Database._Connection);
+            command = new SqliteCommand("SELECT * FROM [TransformationResultingStocks] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
 
@@ -234,7 +234,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
                         description);
 
             /* Get composite action children */
-            var command = new SqliteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id ORDER BY [Sequence]", _Database._Connection);
+            var command = new SqliteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id ORDER BY [Sequence]", _Transaction.Connection, _Transaction);
             command.Prepare();
             command.Parameters.AddWithValue("@Id", id.ToString());
 

@@ -5,8 +5,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLiteDRPCashBalanceRepository : SQLiteEffectiveDatedRepository<DRPCashBalance>, IDRPCashBalanceRepository
     {
-        protected internal SQLiteDRPCashBalanceRepository(SQLitePortfolioDatabase database)
-            : base(database, "DRPCashBalances", new SQLitePortfolioEntityCreator(database))
+        protected internal SQLiteDRPCashBalanceRepository(SqliteTransaction transaction)
+            : base(transaction, "DRPCashBalances", new SQLitePortfolioEntityCreator())
         {
         }
 
@@ -16,7 +16,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SqliteCommand("INSERT INTO DRPCashBalances ([Id], [FromDate], [ToDate], [Balance]) VALUES (@Id, @FromDate, @ToDate, @Balance)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO DRPCashBalances ([Id], [FromDate], [ToDate], [Balance]) VALUES (@Id, @FromDate, @ToDate, @Balance)", _Transaction.Connection, _Transaction);
+
+                _GetAddRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@FromDate", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@ToDate", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Balance", SqliteType.Integer);
+
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -28,19 +34,25 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SqliteCommand("UPDATE DRPCashBalances SET [ToDate] = @ToDate, [Balance] = @Balance WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE DRPCashBalances SET [ToDate] = @ToDate, [Balance] = @Balance WHERE [Id] = @Id AND [FromDate] = @FromDate", _Transaction.Connection, _Transaction);
+
+                _GetUpdateRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@FromDate", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@ToDate", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Balance", SqliteType.Integer);
+
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SqliteCommand command, DRPCashBalance entity)
+        protected override void AddParameters(SqliteParameterCollection parameters, DRPCashBalance entity)
         {
-            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
-            command.Parameters.AddWithValue("@FromDate", entity.FromDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@ToDate", entity.ToDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Balance", SQLiteUtils.DecimalToDB(entity.Balance));
+            parameters["@Id"].Value = entity.Id.ToString();
+            parameters["@FromDate"].Value = entity.FromDate.ToString("yyyy-MM-dd");
+            parameters["@ToDate"].Value = entity.ToDate.ToString("yyyy-MM-dd");
+            parameters["@Balance"].Value = SQLiteUtils.DecimalToDB(entity.Balance);
         }
     }
 }

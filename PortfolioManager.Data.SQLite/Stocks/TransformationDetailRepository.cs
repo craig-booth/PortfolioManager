@@ -6,11 +6,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class TransformationDetailRepository : ICorporateActionDetailRepository
     {
-        private SqliteConnection _Connection;
+        private SqliteTransaction _Transaction;
 
-        public TransformationDetailRepository(SqliteConnection connection)
+        public TransformationDetailRepository(SqliteTransaction transaction)
         {
-            _Connection = connection;
+            _Transaction = transaction;
         }
 
         private SqliteCommand _AddRecordCommand;
@@ -20,7 +20,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SqliteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent, @RolloverRelief)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [Transformations] ([Id], [ImplementationDate], [CashComponent], [RolloverRelief]) VALUES (@Id, @ImplementationDate, @CashComponent, @RolloverRelief)", _Transaction.Connection, _Transaction);
                 _AddRecordCommand.Prepare();
             }
 
@@ -40,7 +40,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SqliteCommand("UPDATE [Transformations] SET [ImplementationDate] = @ImplementationDate, [CashComponent] = @CashComponent, [RolloverRelief] = @RolloverRelief WHERE [Id] = @Id", _Connection);
+                _UpdateRecordCommand = new SqliteCommand("UPDATE [Transformations] SET [ImplementationDate] = @ImplementationDate, [CashComponent] = @CashComponent, [RolloverRelief] = @RolloverRelief WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _UpdateRecordCommand.Prepare();
             }
 
@@ -59,7 +59,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
             /* Delete transformation record */
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [Transformations] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [Transformations] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _DeleteRecordCommand.Prepare();
             }
 
@@ -83,7 +83,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddResultRecordCommand == null)
             {
-                _AddResultRecordCommand = new SqliteCommand("INSERT INTO [TransformationResultingStocks] ([Id], [Stock], [OriginalUnits], [NewUnits], [CostBasePercentage], [AquisitionDate]) VALUES (@Id, @Stock, @OriginalUnits, @NewUnits, @CostBasePercentage, @AquisitionDate)", _Connection);
+                _AddResultRecordCommand = new SqliteCommand("INSERT INTO [TransformationResultingStocks] ([Id], [Stock], [OriginalUnits], [NewUnits], [CostBasePercentage], [AquisitionDate]) VALUES (@Id, @Stock, @OriginalUnits, @NewUnits, @CostBasePercentage, @AquisitionDate)", _Transaction.Connection, _Transaction);
                 _AddResultRecordCommand.Prepare();
             }
             _AddResultRecordCommand.Parameters.AddWithValue("@Id", transformationId.ToString());
@@ -101,7 +101,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_DeleteResultRecordsCommand == null)
             {
-                _DeleteResultRecordsCommand = new SqliteCommand("DELETE FROM [TransformationResultingStocks] WHERE [Id] = @Id", _Connection);
+                _DeleteResultRecordsCommand = new SqliteCommand("DELETE FROM [TransformationResultingStocks] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _DeleteResultRecordsCommand.Prepare();
             }
 

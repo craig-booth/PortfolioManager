@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Data.Sqlite;
+
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.SQLite.Upgrade;
 
@@ -11,11 +13,19 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get { return 10; }
         }
 
-        public IPortfolioQuery PortfolioQuery { get; private set; }
+        public IPortfolioQuery PortfolioQuery
+        {
+            get
+            {
+                var transaction = CreateTransaction();
+                return new SQLitePortfolioQuery(transaction);
+            }
+                
+        }
 
         public SQLitePortfolioDatabase(string fileName) : base(fileName)
         {
-            PortfolioQuery = new SQLitePortfolioQuery(this);
+
         }
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)
@@ -46,13 +56,14 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         public IPortfolioUnitOfWork CreateUnitOfWork()
         {
-            return new SQLitePortfolioUnitOfWork(this);
+            var transaction = CreateTransaction();
+          
+            return new SQLitePortfolioUnitOfWork(transaction);
         }
 
-
-        protected override void CreateDatabaseTables()
+        protected override void CreateDatabaseTables(SqliteTransaction transaction)
         {
-            ExecuteScript("Portfolio Database.sql");
+            ExecuteScript("Portfolio Database.sql", transaction);
         }
     }
 }

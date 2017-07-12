@@ -3,13 +3,12 @@ using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Data.SQLite.Portfolios
 {
-    public class SQLiteAttachmentRepository :SQLiteRepository<Attachment>, IAttachmentRepository
+    public class SQLiteAttachmentRepository : SQLiteRepository<Attachment>, IAttachmentRepository
     {
         
-        protected internal SQLiteAttachmentRepository(SQLitePortfolioDatabase database, IEntityCreator entityCreator)
-            : base(database, "Attachments", entityCreator)
+        protected internal SQLiteAttachmentRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "Attachments", entityCreator)
         {
-            _Database = database;
         }
 
         private SqliteCommand _GetAddRecordCommand;
@@ -17,7 +16,12 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [Attachments] ([Id], [Extension], [Data]) VALUES (@Id, @Extension, @Data)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [Attachments] ([Id], [Extension], [Data]) VALUES (@Id, @Extension, @Data)", _Transaction.Connection, _Transaction);
+                
+                _GetAddRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Extension", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Data", SqliteType.Blob);
+
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -29,18 +33,23 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [Attachments] SET [Extension] = @Extension, [Data] = @Data WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [Attachments] SET [Extension] = @Extension, [Data] = @Data WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+                
+                _GetUpdateRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Extension", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Data", SqliteType.Blob);
+
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SqliteCommand command, Attachment entity)
+        protected override void AddParameters(SqliteParameterCollection parameters, Attachment entity)
         {
-            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
-            command.Parameters.AddWithValue("@Extension", entity.Extension);
-            command.Parameters.AddWithValue("@Data", entity.Data.ToArray());
+            parameters["@Id"].Value = entity.Id.ToString();
+            parameters["@Extension"].Value = entity.Extension;
+            parameters["@Data"].Value = entity.Data.ToArray();
         }
 
     }

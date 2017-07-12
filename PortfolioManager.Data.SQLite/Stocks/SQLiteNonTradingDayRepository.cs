@@ -7,13 +7,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteNonTradingDayRepository: INonTradingDayRepository
     {
-        protected SQLiteDatabase _Database;
-        protected SqliteConnection _Connection;
+        protected SqliteTransaction _Transaction;
 
-        protected internal SQLiteNonTradingDayRepository(SQLiteDatabase database)
+        protected internal SQLiteNonTradingDayRepository(SqliteTransaction transaction)
         {
-            _Database = database;
-            _Connection = database._Connection;
+            _Transaction = transaction;
         }
 
         private SqliteCommand _AddRecordCommand;
@@ -21,11 +19,13 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SqliteCommand("INSERT OR IGNORE INTO [NonTradingDays] ([Date]) VALUES (@Date)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT OR IGNORE INTO [NonTradingDays] ([Date]) VALUES (@Date)", _Transaction.Connection, _Transaction);
                 _AddRecordCommand.Prepare();
+
+                _AddRecordCommand.Parameters.Add("@Date", SqliteType.Text);
             }
 
-            _AddRecordCommand.Parameters.AddWithValue("@Date", date.ToString("yyyy-MM-dd"));
+            _AddRecordCommand.Parameters["@Date"].Value = date.ToString("yyyy-MM-dd");
             _AddRecordCommand.ExecuteNonQuery();
         }
 
@@ -34,7 +34,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [NonTradingDays] WHERE [Date] = @Date", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [NonTradingDays] WHERE [Date] = @Date", _Transaction.Connection, _Transaction);
                 _DeleteRecordCommand.Prepare();
             }
 

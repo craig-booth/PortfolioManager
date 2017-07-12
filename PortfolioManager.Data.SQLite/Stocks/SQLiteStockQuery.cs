@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.Stocks;
 
@@ -7,8 +8,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteStockQuery: SQLiteQuery, IStockQuery 
     {
-        protected internal SQLiteStockQuery(SQLiteStockDatabase database)
-            : base(database._Connection, new SQLiteStockEntityCreator(database))
+        protected internal SQLiteStockQuery(SqliteTransaction transaction)
+            : base(transaction, new SQLiteStockEntityCreator(transaction))
         {
         }
 

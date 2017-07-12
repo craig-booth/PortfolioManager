@@ -10,16 +10,14 @@ namespace PortfolioManager.Data.SQLite
 
     public abstract class SQLiteRepository<T> where T : Entity
     {
-        protected SQLiteDatabase _Database;
-        protected SqliteConnection _Connection;
+        protected readonly SqliteTransaction _Transaction;
         protected IEntityCreator _EntityCreator;
 
         public string TableName { get; private set; }
 
-        protected internal SQLiteRepository(SQLiteDatabase database, string tableName, IEntityCreator entityCreator)
+        protected internal SQLiteRepository(SqliteTransaction transaction, string tableName, IEntityCreator entityCreator)
         {
-            _Database = database;
-            _Connection = database._Connection;
+            _Transaction = transaction;
             _EntityCreator = entityCreator;
 
             TableName = tableName;
@@ -30,7 +28,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                  _GetCurrentRecordCommand.Prepare();
              }
 
@@ -46,14 +44,14 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetDeleteRecordCommand == null)
             {
-                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _GetDeleteRecordCommand.Prepare();
             }
 
             return _GetDeleteRecordCommand;
         }
 
-        protected abstract void AddParameters(SqliteCommand command, T entity);
+        protected abstract void AddParameters(SqliteParameterCollection parameters, T entity);
 
         public virtual T Get(Guid id)
         {
@@ -78,7 +76,7 @@ namespace PortfolioManager.Data.SQLite
         public virtual void Add(T entity)
         {
             var command = GetAddRecordCommand();
-            AddParameters(command, entity);
+            AddParameters(command.Parameters, entity);
 
             try
             {
@@ -96,7 +94,7 @@ namespace PortfolioManager.Data.SQLite
         public virtual void Update(T entity)
         {
             var command = GetUpdateRecordCommand();
-            AddParameters(command, entity);
+            AddParameters(command.Parameters, entity);
 
             if (command.ExecuteNonQuery() == 0)
                 throw new RecordNotFoundException(entity.Id);

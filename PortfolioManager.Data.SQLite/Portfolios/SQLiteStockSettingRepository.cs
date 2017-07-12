@@ -7,10 +7,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     class SQLiteStockSettingRepository : SQLiteEffectiveDatedRepository<StockSetting>, IStockSettingRepository
     {
  
-        protected internal SQLiteStockSettingRepository(SQLitePortfolioDatabase database)
-            : base(database, "StockSettings", new SQLitePortfolioEntityCreator(database))
+        protected internal SQLiteStockSettingRepository(SqliteTransaction transaction)
+            : base(transaction, "StockSettings", new SQLitePortfolioEntityCreator())
         {
-            _Database = database;
         }
 
         private SqliteCommand _GetAddRecordCommand;
@@ -18,7 +17,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SqliteCommand("INSERT INTO StockSettings ([Id], [FromDate], [ToDate], [ParticipateinDRP]) VALUES (@Id, @FromDate, @ToDate, @ParticipateinDRP)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO StockSettings ([Id], [FromDate], [ToDate], [ParticipateinDRP]) VALUES (@Id, @FromDate, @ToDate, @ParticipateinDRP)", _Transaction.Connection, _Transaction);
+
+                _GetAddRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@FromDate", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@ToDate", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@ParticipateinDRP", SqliteType.Text);
+
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -30,19 +35,25 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SqliteCommand("UPDATE StockSettings SET [ToDate] = @ToDate, [ParticipateinDRP] = @ParticipateinDRP WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE StockSettings SET [ToDate] = @ToDate, [ParticipateinDRP] = @ParticipateinDRP WHERE [Id] = @Id AND [FromDate] = @FromDate", _Transaction.Connection, _Transaction);
+
+                _GetUpdateRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@FromDate", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@ToDate", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@ParticipateinDRP", SqliteType.Text);
+
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SqliteCommand command, StockSetting entity)
+        protected override void AddParameters(SqliteParameterCollection parameters, StockSetting entity)
         {
-            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
-            command.Parameters.AddWithValue("@FromDate", entity.FromDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@ToDate", entity.ToDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@ParticipateinDRP", SQLiteUtils.BoolToDb(entity.ParticipateinDRP));
+            parameters["@Id"].Value = entity.Id.ToString();
+            parameters["@FromDate"].Value = entity.FromDate.ToString("yyyy-MM-dd");
+            parameters["@ToDate"].Value = entity.ToDate.ToString("yyyy-MM-dd");
+            parameters["@ParticipateinDRP"].Value = SQLiteUtils.BoolToDb(entity.ParticipateinDRP);
         }
     }
 }

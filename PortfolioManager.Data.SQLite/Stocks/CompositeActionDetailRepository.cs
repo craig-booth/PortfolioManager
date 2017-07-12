@@ -9,12 +9,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class CompositeActionDetailRepository : ICorporateActionDetailRepository
     {
-        private SqliteConnection _Connection;
+        private SqliteTransaction _Transaction;
         private Dictionary<CorporateActionType, ICorporateActionDetailRepository> _DetailRepositories;
 
-        public CompositeActionDetailRepository(SqliteConnection connection, Dictionary<CorporateActionType, ICorporateActionDetailRepository> detailRepositories)
+        public CompositeActionDetailRepository(SqliteTransaction transaction, Dictionary<CorporateActionType, ICorporateActionDetailRepository> detailRepositories)
         {
-            _Connection = connection;
+            _Transaction = transaction;
             _DetailRepositories = detailRepositories;
         }
 
@@ -25,7 +25,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SqliteCommand("INSERT INTO [CompositeActions] ([Id], [Sequence], [ChildAction], [ChildType]) VALUES (@Id, @Sequence, @ChildAction, @ChildType)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [CompositeActions] ([Id], [Sequence], [ChildAction], [ChildType]) VALUES (@Id, @Sequence, @ChildAction, @ChildType)", _Transaction.Connection, _Transaction);
                 _AddRecordCommand.Prepare();
             }
 
@@ -56,7 +56,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetChildrenCommand == null)
             {
-                _GetChildrenCommand = new SqliteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
+                _GetChildrenCommand = new SqliteCommand("SELECT [ChildAction], [ChildType] FROM [CompositeActions] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _GetChildrenCommand.Prepare();
             }
 
@@ -75,7 +75,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [CompositeActions] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [CompositeActions] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _DeleteRecordCommand.Prepare();
             }
 

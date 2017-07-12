@@ -18,7 +18,7 @@ namespace PortfolioManager.Data.SQLite.Upgrade
             _Version = version;
         }
 
-        public abstract void Upgrade(SQLiteDatabase database);
+        public abstract void Upgrade(SQLiteDatabase database, SqliteTransaction transaction);
 
         protected void ExecuteScript(SqliteConnection connection, string fileName)
         {
@@ -29,7 +29,6 @@ namespace PortfolioManager.Data.SQLite.Upgrade
 
                 SqliteCommand sqlCommand = new SqliteCommand(sqlCommands, connection);
                 sqlCommand.ExecuteNonQuery();
-                sqlCommand.Dispose();
             }
 
         }
@@ -45,9 +44,9 @@ namespace PortfolioManager.Data.SQLite.Upgrade
             _ScriptFile = scriptFile;
         }
 
-        public override void Upgrade(SQLiteDatabase database)
+        public override void Upgrade(SQLiteDatabase database, SqliteTransaction transaction)
         {
-            database.ExecuteScript(_ScriptFile);
+            database.ExecuteScript(_ScriptFile, transaction);
         }
     }
 

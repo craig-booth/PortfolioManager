@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
 using PortfolioManager.Data.Portfolios;
@@ -8,12 +9,10 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLitePortfolioQuery : SQLiteQuery, IPortfolioQuery
     {
-        private SQLitePortfolioDatabase _Database;
-
-        protected internal SQLitePortfolioQuery(SQLitePortfolioDatabase database)
-            : base(database._Connection, new SQLitePortfolioEntityCreator(database))
+     
+        protected internal SQLitePortfolioQuery(SqliteTransaction transaction)
+            : base(transaction, new SQLitePortfolioEntityCreator())
         {
-            _Database = database;
         }
 
         public ShareParcel GetParcel(Guid id, DateTime atDate)
@@ -100,49 +99,135 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         public Transaction GetTransaction(Guid id)
         {
             var query = EntityQuery.FromTable("Transactions")
+                .Select("[Id], [Type]")
                 .WithId(id);
 
-            return query.CreateEntity<Transaction>();
+            using (var reader = query.Execute())
+            {
+                if (reader.Read())
+                    return GetTransaction(new Guid(reader.GetString(0)), (TransactionType)reader.GetInt32(1));
+                else
+                    return null;
+            }
+        }
+
+        private T GetTransaction<T>(Guid id) where T : Transaction
+        {
+            var query = EntityQuery.FromTable("Transactions")
+                            .WithId(id);
+
+            if (typeof(T) == typeof(Aquisition))
+                query.Join("Aquisitions", "Transactions.Id = Aquisitions.Id");
+            else if (typeof(T) == typeof(CashTransaction))
+                query.Join("CashTransactions", "Transactions.Id = CashTransactions.Id");
+            else if (typeof(T) == typeof(CostBaseAdjustment))
+                query.Join("CostBaseAdjutments", "Transactions.Id = CostBaseAdjutments.Id");
+            else if (typeof(T) == typeof(Disposal))
+                query.Join("Disposals", "Transactions.Id = Disposals.Id");
+            else if (typeof(T) == typeof(IncomeReceived))
+                query.Join("IncomeReceived", "Transactions.Id = IncomeReceived.Id");
+            else if (typeof(T) == typeof(OpeningBalance))
+                query.Join("OpeningBalances", "Transactions.Id = OpeningBalances.Id");
+            else if (typeof(T) == typeof(ReturnOfCapital))
+                query.Join("ReturnsOfCapital", "Transactions.Id = ReturnsOfCapital.Id");
+            else if (typeof(T) == typeof(UnitCountAdjustment))
+                query.Join("UnitCountAdjustments", "Transactions.Id = UnitCountAdjustments.Id");
+
+            return query.CreateEntity<T>();
+        }
+
+        private Transaction GetTransaction(Guid id, TransactionType type)
+        {          
+            if (type == TransactionType.Aquisition)
+                return GetTransaction<Aquisition>(id);
+            else if (type == TransactionType.CashTransaction)
+                return GetTransaction<CashTransaction>(id);
+            else if (type == TransactionType.CostBaseAdjustment)
+                return GetTransaction<CostBaseAdjustment>(id);
+            else if (type == TransactionType.Disposal)
+                return GetTransaction<Disposal>(id);
+            else if (type == TransactionType.Income)
+                return GetTransaction<IncomeReceived>(id);
+            else if (type == TransactionType.OpeningBalance)
+                return GetTransaction<OpeningBalance>(id);
+            else if (type == TransactionType.ReturnOfCapital)
+                return GetTransaction<ReturnOfCapital>(id);
+            else if (type == TransactionType.UnitCountAdjustment)
+                return GetTransaction<UnitCountAdjustment>(id);
+            else
+                return null;
+            
         }
 
         public IEnumerable<Transaction> GetTransactions(DateTime fromDate, DateTime toDate)
         {
             var query = EntityQuery.FromTable("Transactions")
+                            .Select("[Id], [Type]")
                             .Where("[TransactionDate] between @FromDate and @ToDate")
                             .WithParameter("@FromDate", fromDate)
                             .WithParameter("@ToDate", toDate)
                             .OrderBy("[RecordDate], [Sequence]");
 
-            return query.CreateEntities<Transaction>();
+            var transactions = new List<Transaction>();
+            using (var reader = query.Execute())
+            {
+                while (reader.Read())
+                {
+                    transactions.Add(GetTransaction(new Guid(reader.GetString(0)), (TransactionType)reader.GetInt32(1)));
+                }
+            }
+
+            return transactions;
         }
 
         public IEnumerable<Transaction> GetTransactions(TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var query = EntityQuery.FromTable("Transactions")
+                            .Select("[Id], [Type]")
                             .Where("[Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate")
                             .OrderBy("[RecordDate], [Sequence]")
                             .WithParameter("@Type", (int)transactionType)
                             .WithParameter("@FromDate", fromDate)
                             .WithParameter("@ToDate", toDate);
 
-            return query.CreateEntities<Transaction>();
+            var transactions = new List<Transaction>();
+            using (var reader = query.Execute())
+            {
+                while (reader.Read())
+                {
+                    transactions.Add(GetTransaction(new Guid(reader.GetString(0)), (TransactionType)reader.GetInt32(1)));
+                }
+            }
+
+            return transactions;
         }
 
         public IEnumerable<Transaction> GetTransactions(string asxCode, DateTime fromDate, DateTime toDate)
         {
             var query = EntityQuery.FromTable("Transactions")
+                            .Select("[Id], [Type]")
                             .Where("[ASXCode] = @ASXCode AND [TransactionDate] BETWEEN @FromDate AND @ToDate")
                             .OrderBy("[RecordDate], [Sequence]")
                             .WithParameter("@ASXCode", asxCode)
                             .WithParameter("@FromDate", fromDate)
                             .WithParameter("@ToDate", toDate);
 
-            return query.CreateEntities<Transaction>();
+            var transactions = new List<Transaction>();
+            using (var reader = query.Execute())
+            {
+                while (reader.Read())
+                {
+                    transactions.Add(GetTransaction(new Guid(reader.GetString(0)), (TransactionType)reader.GetInt32(1)));
+                }
+            }
+
+            return transactions;
         }
 
         public IEnumerable<Transaction> GetTransactions(string asxCode, TransactionType transactionType, DateTime fromDate, DateTime toDate)
         {
             var query = EntityQuery.FromTable("Transactions")
+                .Select("[Id], [Type]")
                 .Where("[ASXCode] = @ASXCode AND [Type] = @Type AND [TransactionDate] BETWEEN @FromDate AND @ToDate")
                 .OrderBy("[RecordDate], [Sequence]")
                 .WithParameter("@ASXCode", asxCode)
@@ -150,7 +235,16 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                 .WithParameter("@FromDate", fromDate)
                 .WithParameter("@ToDate", toDate);
 
-            return query.CreateEntities<Transaction>();
+            var transactions = new List<Transaction>();
+            using (var reader = query.Execute())
+            {
+                while (reader.Read())
+                {
+                    transactions.Add(GetTransaction(new Guid(reader.GetString(0)), (TransactionType)reader.GetInt32(1)));
+                }
+            }
+
+            return transactions;
         }
 
         public decimal GetCashBalance(DateTime atDate)
@@ -221,4 +315,5 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
     }
+  
 }

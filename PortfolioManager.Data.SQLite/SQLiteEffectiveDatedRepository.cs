@@ -6,7 +6,8 @@ namespace PortfolioManager.Data.SQLite
     public abstract class SQLiteEffectiveDatedRepository<T>: SQLiteRepository<T> where T : EffectiveDatedEntity
     {
 
-        protected internal SQLiteEffectiveDatedRepository(SQLiteDatabase database, string tableName, IEntityCreator entityCreator) : base(database, tableName, entityCreator)
+        protected internal SQLiteEffectiveDatedRepository(SqliteTransaction transaction, string tableName, IEntityCreator entityCreator)
+            : base(transaction, tableName, entityCreator)
         {
         }
         
@@ -15,7 +16,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND [ToDate] = '9999-12-31'", _Connection);
+                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND [ToDate] = '9999-12-31'", _Transaction.Connection, _Transaction);
                  _GetCurrentRecordCommand.Prepare();
              }
 
@@ -27,7 +28,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetEffectiveRecordCommand == null)
             {
-                _GetEffectiveRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND @AtDate BETWEEN [FromDate] AND [ToDate]", _Connection);
+                _GetEffectiveRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND @AtDate BETWEEN [FromDate] AND [ToDate]", _Transaction.Connection, _Transaction);
                 _GetEffectiveRecordCommand.Prepare();
             }
 
@@ -39,7 +40,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetDeleteRecordCommand == null)
             {
-                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _GetDeleteRecordCommand.Prepare();
             }
 
@@ -51,7 +52,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetDeleteEffectiveRecordCommand == null)
             {
-                _GetDeleteEffectiveRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id AND [FromDate] = @FromDate", _Connection);
+                _GetDeleteEffectiveRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id AND [FromDate] = @FromDate", _Transaction.Connection, _Transaction);
                 _GetDeleteEffectiveRecordCommand.Prepare();
             }
 

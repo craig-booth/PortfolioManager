@@ -6,11 +6,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class CapitalReturnDetailRepository : ICorporateActionDetailRepository
     {
-        private SqliteConnection _Connection;
+        private SqliteTransaction _Transaction;
 
-        public CapitalReturnDetailRepository(SqliteConnection connection)
+        public CapitalReturnDetailRepository(SqliteTransaction transaction)
         {
-            _Connection = connection;
+            _Transaction = transaction;
         }
 
         private SqliteCommand _AddRecordCommand;
@@ -20,7 +20,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SqliteCommand("INSERT INTO [CapitalReturns] ([Id], [PaymentDate], [Amount]) VALUES (@Id, @PaymentDate, @Amount)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [CapitalReturns] ([Id], [PaymentDate], [Amount]) VALUES (@Id, @PaymentDate, @Amount)", _Transaction.Connection, _Transaction);
                 _AddRecordCommand.Prepare();
             }
 
@@ -35,7 +35,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SqliteCommand("UPDATE [CapitalReturns] SET [PaymentDate] = @PaymentDate, [Amount] = @Amount WHERE [Id] = @Id", _Connection);
+                _UpdateRecordCommand = new SqliteCommand("UPDATE [CapitalReturns] SET [PaymentDate] = @PaymentDate, [Amount] = @Amount WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _UpdateRecordCommand.Prepare();
             }
 
@@ -48,7 +48,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [CapitalReturns] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [CapitalReturns] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _DeleteRecordCommand.Prepare();
             }
 

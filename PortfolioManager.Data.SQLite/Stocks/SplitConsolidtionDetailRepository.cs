@@ -7,11 +7,11 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SplitConsolidtionDetailRepository : ICorporateActionDetailRepository
     {
-        private SqliteConnection _Connection;
+        private SqliteTransaction _Transaction;
 
-        public SplitConsolidtionDetailRepository(SqliteConnection connection)
+        public SplitConsolidtionDetailRepository(SqliteTransaction transaction)
         {
-            _Connection = connection;
+            _Transaction = transaction;
         }
 
         private SqliteCommand _AddRecordCommand;
@@ -21,7 +21,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_AddRecordCommand == null)
             {
-                _AddRecordCommand = new SqliteCommand("INSERT INTO [SplitConsolidations] ([Id], [OldUnits], [NewUnits]) VALUES (@Id, @OldUnits, @NewUnits)", _Connection);
+                _AddRecordCommand = new SqliteCommand("INSERT INTO [SplitConsolidations] ([Id], [OldUnits], [NewUnits]) VALUES (@Id, @OldUnits, @NewUnits)", _Transaction.Connection, _Transaction);
                 _AddRecordCommand.Prepare();
             }
 
@@ -36,7 +36,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_UpdateRecordCommand == null)
             {
-                _UpdateRecordCommand = new SqliteCommand("UPDATE [SplitConsolidations] SET [OldUnits] = @OldUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id", _Connection);
+                _UpdateRecordCommand = new SqliteCommand("UPDATE [SplitConsolidations] SET [OldUnits] = @OldUnits, [NewUnits] = @NewUnits WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
 
                 _UpdateRecordCommand.Prepare();
             }
@@ -50,7 +50,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_DeleteRecordCommand == null)
             {
-                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [SplitConsolidations] WHERE [Id] = @Id", _Connection);
+                _DeleteRecordCommand = new SqliteCommand("DELETE FROM [SplitConsolidations] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _DeleteRecordCommand.Prepare();
             }
 

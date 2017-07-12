@@ -7,15 +7,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteCorporateActionQuery: ICorporateActionQuery
     {
-        protected SQLiteStockDatabase _Database;
-        protected SqliteConnection _Connection;
+        protected SqliteTransaction _Transaction;
         private SQLiteStockEntityCreator _EntityCreator;
 
-        protected internal SQLiteCorporateActionQuery(SQLiteStockDatabase database)
+        protected internal SQLiteCorporateActionQuery(SqliteTransaction transaction)
         {
-            _Database = database;
-            _Connection = database._Connection;
-            _EntityCreator = new Stocks.SQLiteStockEntityCreator(database);
+            _Transaction = transaction;
+
+            _EntityCreator = new Stocks.SQLiteStockEntityCreator(_Transaction);
         }
 
         private SqliteCommand _GetCorporateActionById;
@@ -23,7 +22,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetCorporateActionById == null)
             {
-                _GetCorporateActionById = new SqliteCommand("SELECT * FROM [CorporateActions] WHERE [Id] = @Id", _Connection);
+                _GetCorporateActionById = new SqliteCommand("SELECT * FROM [CorporateActions] WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
                 _GetCorporateActionById.Prepare();
             }
 
@@ -50,7 +49,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
             if (_FindCorporateAction == null)
             {
-                _FindCorporateAction = new SqliteCommand("SELECT * FROM [CorporateActions] WHERE [Stock] = @Stock AND [ActionDate] BETWEEN @FromDate AND @ToDate", _Connection);
+                _FindCorporateAction = new SqliteCommand("SELECT * FROM [CorporateActions] WHERE [Stock] = @Stock AND [ActionDate] BETWEEN @FromDate AND @ToDate", _Transaction.Connection, _Transaction);
                 _FindCorporateAction.Prepare();
             }
 

@@ -18,15 +18,15 @@ namespace PortfolioManager.Data.SQLite.Stocks
     {
         private Dictionary<CorporateActionType, ICorporateActionDetailRepository> _DetailRepositories;
 
-        protected internal SQLiteCorporateActionRepository(SQLiteStockDatabase database, IEntityCreator entityCreator)
-            : base(database, "CorporateActions", entityCreator)
+        protected internal SQLiteCorporateActionRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "CorporateActions", entityCreator)
         {
             _DetailRepositories = new Dictionary<CorporateActionType, ICorporateActionDetailRepository>();
-            _DetailRepositories.Add(CorporateActionType.Dividend, new DividendDetailRepository(_Connection));
-            _DetailRepositories.Add(CorporateActionType.CapitalReturn, new CapitalReturnDetailRepository(_Connection));
-            _DetailRepositories.Add(CorporateActionType.Transformation, new TransformationDetailRepository(_Connection));
-            _DetailRepositories.Add(CorporateActionType.SplitConsolidation, new SplitConsolidtionDetailRepository(_Connection));
-            _DetailRepositories.Add(CorporateActionType.Composite, new CompositeActionDetailRepository(_Connection, _DetailRepositories));
+            _DetailRepositories.Add(CorporateActionType.Dividend, new DividendDetailRepository(transaction));
+            _DetailRepositories.Add(CorporateActionType.CapitalReturn, new CapitalReturnDetailRepository(transaction));
+            _DetailRepositories.Add(CorporateActionType.Transformation, new TransformationDetailRepository(transaction));
+            _DetailRepositories.Add(CorporateActionType.SplitConsolidation, new SplitConsolidtionDetailRepository(transaction));
+            _DetailRepositories.Add(CorporateActionType.Composite, new CompositeActionDetailRepository(transaction, _DetailRepositories));
         }
 
         private SqliteCommand _GetAddRecordCommand;
@@ -34,7 +34,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [CorporateActions] ([Id], [Stock], [ActionDate], [Description], [Type]) VALUES (@Id, @Stock, @ActionDate, @Description, @Type)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO [CorporateActions] ([Id], [Stock], [ActionDate], [Description], [Type]) VALUES (@Id, @Stock, @ActionDate, @Description, @Type)", _Transaction.Connection, _Transaction);
+
+                _GetAddRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Stock", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@ActionDate", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Description", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Type", SqliteType.Integer);
+
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -46,7 +53,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [CorporateActions] SET [ActionDate] = @ActionDate, [Description] = @Description WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE [CorporateActions] SET [ActionDate] = @ActionDate, [Description] = @Description WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+
+                _GetUpdateRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Stock", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@ActionDate", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Description", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Type", SqliteType.Integer);
+
                 _GetUpdateRecordCommand.Prepare();
             }
 
@@ -87,13 +101,13 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 detailRepository.Delete(id);
         }
 
-        protected override void AddParameters(SqliteCommand command, CorporateAction entity)
+        protected override void AddParameters(SqliteParameterCollection parameters, CorporateAction entity)
         {
-            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
-            command.Parameters.AddWithValue("@Stock", entity.Stock.ToString());
-            command.Parameters.AddWithValue("@ActionDate", entity.ActionDate.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Description", entity.Description);
-            command.Parameters.AddWithValue("@Type", entity.Type);
+            parameters["@Id"].Value = entity.Id.ToString();
+            parameters["@Stock"].Value = entity.Stock.ToString();
+            parameters["@ActionDate"].Value = entity.ActionDate.ToString("yyyy-MM-dd");
+            parameters["@Description"].Value = entity.Description;
+            parameters["@Type"].Value = entity.Type;
         }
     }
 }

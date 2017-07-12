@@ -27,7 +27,10 @@ namespace PortfolioManager.Data.Portfolios
         {
         }
 
-        protected abstract string GetDescription();
+        protected virtual string GetDescription()
+        {
+            return "";
+        }
     }
 
 }

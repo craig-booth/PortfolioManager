@@ -7,13 +7,11 @@ namespace PortfolioManager.Data.SQLite
 {
     class SQLiteStockPriceRepository: IStockPriceRepository 
     {
-        protected SQLiteDatabase _Database;
-        protected SqliteConnection _Connection;
+        protected SqliteTransaction _Transaction;
 
-        protected internal SQLiteStockPriceRepository(SQLiteDatabase database)
+        protected internal SQLiteStockPriceRepository(SqliteTransaction transaction)
         {
-            _Database = database;
-            _Connection = database._Connection;
+            _Transaction = transaction;
         }
 
         private SqliteCommand _GetCommand;
@@ -21,7 +19,7 @@ namespace PortfolioManager.Data.SQLite
         {
                     if (_GetCommand == null)
             {
-                _GetCommand = new SqliteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetCommand = new SqliteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Transaction.Connection, _Transaction);
                 _GetCommand.Prepare();
             }
 
@@ -45,7 +43,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetCommand == null)
             {
-                _GetCommand = new SqliteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Connection);
+                _GetCommand = new SqliteCommand("SELECT [Price] FROM [StockPrices] WHERE [Stock] = @Stock AND [Date] = @Date", _Transaction.Connection, _Transaction);
                 _GetCommand.Prepare();
             }
 
@@ -63,7 +61,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_AddCommand == null)
             {
-                _AddCommand = new SqliteCommand("INSERT INTO [StockPrices] ([Stock], [Date], [Price], [Current]) VALUES (@Stock, @Date, @Price, @Current)", _Connection);
+                _AddCommand = new SqliteCommand("INSERT INTO [StockPrices] ([Stock], [Date], [Price], [Current]) VALUES (@Stock, @Date, @Price, @Current)", _Transaction.Connection, _Transaction);
                 _AddCommand.Prepare();
             }
 
@@ -79,7 +77,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_UpdateCommand == null)
             {
-                _UpdateCommand = new SqliteCommand("UPDATE [StockPrices] SET [Price] = @Price, [Current] = @Current WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
+                _UpdateCommand = new SqliteCommand("UPDATE [StockPrices] SET [Price] = @Price, [Current] = @Current WHERE [Stock] = @Stock and [Date] = @Date", _Transaction.Connection, _Transaction);
                 _UpdateCommand.Prepare();
             }
 
@@ -95,7 +93,7 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_DeleteCommand == null)
             {
-                _DeleteCommand = new SqliteCommand("DELETE FROM [StockPrices] WHERE [Stock] = @Stock and [Date] = @Date", _Connection);
+                _DeleteCommand = new SqliteCommand("DELETE FROM [StockPrices] WHERE [Stock] = @Stock and [Date] = @Date", _Transaction.Connection, _Transaction);
                 _DeleteCommand.Prepare();
             }
 

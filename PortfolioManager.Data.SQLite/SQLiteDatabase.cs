@@ -7,10 +7,7 @@ namespace PortfolioManager.Data.SQLite
 {
     public abstract class SQLiteDatabase
     {
-        protected abstract int RepositoryVersion { get; }         
-
-        protected internal SqliteConnection _Connection;
-        protected internal SQLiteRepositoryTransaction _Transaction;        
+        protected abstract int RepositoryVersion { get; }              
 
         public string FileName { get; private set; }
         public SQLiteDatabaseVersion Version { get; private set; }
@@ -20,34 +17,35 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            _Connection = new SqliteConnection("Data Source=" + FileName);
-            _Connection.Open();
+            var transaction = CreateTransaction();
 
-            _Transaction = new SQLiteRepositoryTransaction(_Connection);
-
-            var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
+            var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", transaction.Connection, transaction);
             if ((long)tableCountCommand.ExecuteScalar() == 0)
             {
-                CreateDatabaseTables();
-
-                Version.Version = RepositoryVersion;
-                Version.CreationDateTime = DateTime.Today;
-                Version.UpgradeDateTime = DateTime.Today;
-
-                SetDbVersion();
+                CreateDatabase(transaction);
             }
             else
-            { 
-                LoadVersion();
+            {
+                LoadVersion(transaction);
 
                 if (UpgradeRequired())
-                    Upgrade();
-            } 
+                    Upgrade(transaction);
+            }
+
+            transaction.Commit();
         }
 
-        private void LoadVersion()
+        public SqliteTransaction CreateTransaction()
+        {
+            var connection = new SqliteConnection("Data Source=" + FileName);
+            connection.Open();
+
+            return connection.BeginTransaction();
+        }
+
+        private void LoadVersion(SqliteTransaction transaction)
         {            
-            var sql = new SqliteCommand("SELECT [Version], [CreationTime], [UpgradeTime] FROM [DbVersion]", _Connection);
+            var sql = new SqliteCommand("SELECT [Version], [CreationTime], [UpgradeTime] FROM [DbVersion]", transaction.Connection, transaction);
 
             try
             {
@@ -69,7 +67,18 @@ namespace PortfolioManager.Data.SQLite
             }                        
         }
 
-        protected abstract void CreateDatabaseTables();
+        protected abstract void CreateDatabaseTables(SqliteTransaction transaction);
+
+        protected virtual void CreateDatabase(SqliteTransaction transaction)
+        {
+            CreateDatabaseTables(transaction);
+
+            Version.Version = RepositoryVersion;
+            Version.CreationDateTime = DateTime.Today;
+            Version.UpgradeDateTime = DateTime.Today;
+
+            SetDbVersion(transaction);
+        }
 
         protected virtual bool UpgradeRequired()
         {
@@ -78,28 +87,28 @@ namespace PortfolioManager.Data.SQLite
 
         protected abstract SQLiteDatabaseUpgrade GetUpgrade(int forVersion);
         
-        protected virtual void Upgrade()
+        protected virtual void Upgrade(SqliteTransaction transaction)
         {
             // Backup the database first
-            var backupFile = Path.Combine(Path.GetDirectoryName(FileName), Path.GetFileNameWithoutExtension(FileName) + DateTime.Now.ToString("_backup-yyyy-MM-dd") +Path.GetExtension(FileName));
+            var backupFile = Path.Combine(Path.GetDirectoryName(FileName), Path.GetFileNameWithoutExtension(FileName) + DateTime.Now.ToString("_backup-yyyy-MM-dd") + Path.GetExtension(FileName));
             File.Copy(FileName, backupFile);
 
             while (UpgradeRequired())
             {
                 var databaseUpgrade = GetUpgrade(Version.Version);                
 
-                databaseUpgrade.Upgrade(this);
+                databaseUpgrade.Upgrade(this, transaction);
 
                 Version.Version = databaseUpgrade.Version;
                 Version.UpgradeDateTime = DateTime.Today;
 
-                UpdateDbVersion();
+                UpdateDbVersion(transaction);
             }
         }
 
-        protected void UpdateDbVersion()
+        protected void UpdateDbVersion(SqliteTransaction transaction)
         {
-            var updateCommand = new SqliteCommand("UPDATE [DbVersion] SET [Version] = @Version, [UpgradeTime] = @UpgradeTime", _Connection);
+            var updateCommand = new SqliteCommand("UPDATE [DbVersion] SET [Version] = @Version, [UpgradeTime] = @UpgradeTime", transaction.Connection, transaction);
             updateCommand.Prepare();
 
             updateCommand.Parameters.AddWithValue("@Version", Version.Version);
@@ -108,9 +117,9 @@ namespace PortfolioManager.Data.SQLite
             updateCommand.ExecuteNonQuery();
         }
 
-        protected void SetDbVersion()
+        protected void SetDbVersion(SqliteTransaction transaction)
         {
-            var insertCommand = new SqliteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", _Connection);
+            var insertCommand = new SqliteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", transaction.Connection, transaction);
             insertCommand.Prepare();
 
             insertCommand.Parameters.AddWithValue("@Version", Version.Version);
@@ -120,14 +129,14 @@ namespace PortfolioManager.Data.SQLite
             insertCommand.ExecuteNonQuery();
         }
 
-        protected internal void ExecuteScript(string fileName)
+        protected internal void ExecuteScript(string fileName, SqliteTransaction transaction)
         {
             /* Load SQL commands to execute */
             using (var scriptFile = File.OpenText(fileName))
             {
                 var sqlScript = scriptFile.ReadToEnd();
 
-                var sqlCommand = new SqliteCommand(sqlScript, _Connection);
+                var sqlCommand = new SqliteCommand(sqlScript, transaction.Connection, transaction);
                 sqlCommand.ExecuteNonQuery();
             }
 

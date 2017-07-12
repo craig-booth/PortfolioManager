@@ -7,8 +7,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     public class SQLiteRelativeNTARepository : SQLiteRepository<RelativeNTA>, IRelativeNTARepository
     {
-        protected internal SQLiteRelativeNTARepository(SQLiteStockDatabase database, IEntityCreator entityCreator)
-            : base(database, "RelativeNTAs", entityCreator)
+        protected internal SQLiteRelativeNTARepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "RelativeNTAs", entityCreator)
         {
         }
 
@@ -17,7 +17,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SqliteCommand("INSERT INTO RelativeNTAs ([Id], [Date], [Parent], [Child], [Percentage]) VALUES (@Id, @Date, @Parent, @Child, @Percentage)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO RelativeNTAs ([Id], [Date], [Parent], [Child], [Percentage]) VALUES (@Id, @Date, @Parent, @Child, @Percentage)", _Transaction.Connection, _Transaction);
+
+                _GetAddRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Date", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Parent", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Child", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Percentage", SqliteType.Integer);
+
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -29,20 +36,27 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SqliteCommand("UPDATE RelativeNTAs SET [Date] = @Date, [Parent] = @Parent, [Child] = @Child, [Percentage] = @Percentage WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE RelativeNTAs SET [Date] = @Date, [Parent] = @Parent, [Child] = @Child, [Percentage] = @Percentage WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+
+                _GetUpdateRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Date", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Parent", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Child", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Percentage", SqliteType.Integer);
+
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SqliteCommand command, RelativeNTA entity)
+        protected override void AddParameters(SqliteParameterCollection parameters, RelativeNTA entity)
         {
-            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
-            command.Parameters.AddWithValue("@Date", entity.Date.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Parent", entity.Parent.ToString());
-            command.Parameters.AddWithValue("@Child", entity.Child.ToString());
-            command.Parameters.AddWithValue("@Percentage", SQLiteUtils.DecimalToDB(entity.Percentage));
+            parameters["@Id"].Value = entity.Id.ToString();
+            parameters["@Date"].Value = entity.Date.ToString("yyyy-MM-dd");
+            parameters["@Parent"].Value = entity.Parent.ToString();
+            parameters["@Child"].Value = entity.Child.ToString();
+            parameters["@Percentage"].Value = SQLiteUtils.DecimalToDB(entity.Percentage);
         }
 
         private SqliteCommand _GetDeleteByDetailsCommand;
@@ -50,13 +64,18 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetDeleteByDetailsCommand == null)
             {
-                _GetDeleteByDetailsCommand = new SqliteCommand("DELETE FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child AND [Date] = @Date", _Connection);
+                _GetDeleteByDetailsCommand = new SqliteCommand("DELETE FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child AND [Date] = @Date", _Transaction.Connection, _Transaction);
+       
+                _GetDeleteByDetailsCommand.Parameters.Add("@Parent", SqliteType.Text);
+                _GetDeleteByDetailsCommand.Parameters.Add("@Child", SqliteType.Text);
+                _GetDeleteByDetailsCommand.Parameters.Add("@Date", SqliteType.Text);
+
                 _GetDeleteByDetailsCommand.Prepare();
             }
 
-            _GetDeleteByDetailsCommand.Parameters.AddWithValue("@Parent", parent.ToString());
-            _GetDeleteByDetailsCommand.Parameters.AddWithValue("@Child", child.ToString());
-            _GetDeleteByDetailsCommand.Parameters.AddWithValue("@Date", atDate.ToString("yyyy-MM-dd"));
+            _GetDeleteByDetailsCommand.Parameters["@Parent"].Value = parent.ToString();
+            _GetDeleteByDetailsCommand.Parameters["@Child"].Value = child.ToString();
+            _GetDeleteByDetailsCommand.Parameters["@Date"].Value = atDate.ToString("yyyy-MM-dd");
 
             _GetDeleteByDetailsCommand.ExecuteNonQuery();
         }
@@ -66,11 +85,14 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetDeleteAllParentCommand == null)
             {
-                _GetDeleteAllParentCommand = new SqliteCommand("DELETE FROM [RelativeNTAs] WHERE [Parent] = @Parent", _Connection);
+                _GetDeleteAllParentCommand = new SqliteCommand("DELETE FROM [RelativeNTAs] WHERE [Parent] = @Parent", _Transaction.Connection, _Transaction);
+
+                _GetDeleteAllParentCommand.Parameters.Add("@Parent", SqliteType.Text);
+
                 _GetDeleteAllParentCommand.Prepare();
             }
 
-            _GetDeleteAllParentCommand.Parameters.AddWithValue("@Parent", parent.ToString());
+            _GetDeleteAllParentCommand.Parameters["@Parent"].Value = parent.ToString();
 
             _GetDeleteAllParentCommand.ExecuteNonQuery();
         }
@@ -80,12 +102,16 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             if (_GetDeleteAllParentChildCommand == null)
             {
-                _GetDeleteAllParentChildCommand = new SqliteCommand("DELETE FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child", _Connection);
+                _GetDeleteAllParentChildCommand = new SqliteCommand("DELETE FROM [RelativeNTAs] WHERE [Parent] = @Parent AND [Child] = @Child", _Transaction.Connection, _Transaction);
+
+                _GetDeleteAllParentChildCommand.Parameters.Add("@Parent", SqliteType.Text);
+                _GetDeleteAllParentChildCommand.Parameters.Add("@Child", SqliteType.Text);
+
                 _GetDeleteAllParentChildCommand.Prepare();
             }
 
-            _GetDeleteAllParentChildCommand.Parameters.AddWithValue("@Parent", parent.ToString());
-            _GetDeleteAllParentChildCommand.Parameters.AddWithValue("@Child", child.ToString());
+            _GetDeleteAllParentChildCommand.Parameters["@Parent"].Value = parent.ToString();
+            _GetDeleteAllParentChildCommand.Parameters["@Child"].Value = child.ToString();
 
             _GetDeleteAllParentChildCommand.ExecuteNonQuery();
         }

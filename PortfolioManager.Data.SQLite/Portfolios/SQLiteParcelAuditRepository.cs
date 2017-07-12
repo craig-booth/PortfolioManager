@@ -6,10 +6,9 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     class SQLiteParcelAuditRepository : SQLiteRepository<ShareParcelAudit>, IParcelAuditRepository
     {
 
-        protected internal SQLiteParcelAuditRepository(SQLitePortfolioDatabase database)
-            :base(database, "ParcelAudit", new SQLitePortfolioEntityCreator(database))
+        protected internal SQLiteParcelAuditRepository(SqliteTransaction transaction)
+            :base(transaction, "ParcelAudit", new SQLitePortfolioEntityCreator())
         {
-            _Database = database;
         }
 
         private SqliteCommand _GetAddRecordCommand;
@@ -17,7 +16,16 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetAddRecordCommand == null)
             {
-                _GetAddRecordCommand = new SqliteCommand("INSERT INTO ParcelAudit ([Id], [Parcel], [Date], [Transaction], [UnitCount], [CostBaseChange], [AmountChange]) VALUES (@Id, @Parcel, @Date, @Transaction, @UnitCount, @CostBaseChange, @AmountChange)", _Connection);
+                _GetAddRecordCommand = new SqliteCommand("INSERT INTO ParcelAudit ([Id], [Parcel], [Date], [Transaction], [UnitCount], [CostBaseChange], [AmountChange]) VALUES (@Id, @Parcel, @Date, @Transaction, @UnitCount, @CostBaseChange, @AmountChange)", _Transaction.Connection, _Transaction);
+
+                _GetAddRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Parcel", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Date", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@Transaction", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@UnitCount", SqliteType.Integer);
+                _GetAddRecordCommand.Parameters.Add("@CostBaseChange", SqliteType.Integer);
+                _GetAddRecordCommand.Parameters.Add("@AmountChange", SqliteType.Integer);
+
                 _GetAddRecordCommand.Prepare();
             }
 
@@ -29,22 +37,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         {
             if (_GetUpdateRecordCommand == null)
             {
-                _GetUpdateRecordCommand = new SqliteCommand("UPDATE ParcelAudit SET [Parcel] = @Parcel, [Date] = @Date, [Transaction] = @Transaction, [UnitCount] = @UnitCount, [CostBaseChange] = @CostBaseChange, [AmountChange] = @AmountChange WHERE [Id] = @Id", _Connection);
+                _GetUpdateRecordCommand = new SqliteCommand("UPDATE ParcelAudit SET [Parcel] = @Parcel, [Date] = @Date, [Transaction] = @Transaction, [UnitCount] = @UnitCount, [CostBaseChange] = @CostBaseChange, [AmountChange] = @AmountChange WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+
+                _GetUpdateRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Parcel", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Date", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@Transaction", SqliteType.Text);
+                _GetUpdateRecordCommand.Parameters.Add("@UnitCount", SqliteType.Integer);
+                _GetUpdateRecordCommand.Parameters.Add("@CostBaseChange", SqliteType.Integer);
+                _GetUpdateRecordCommand.Parameters.Add("@AmountChange", SqliteType.Integer);
+
                 _GetUpdateRecordCommand.Prepare();
             }
 
             return _GetUpdateRecordCommand;
         }
 
-        protected override void AddParameters(SqliteCommand command, ShareParcelAudit entity)
+        protected override void AddParameters(SqliteParameterCollection parameters, ShareParcelAudit entity)
         {
-            command.Parameters.AddWithValue("@Id", entity.Id.ToString());
-            command.Parameters.AddWithValue("@Parcel", entity.Parcel.ToString());
-            command.Parameters.AddWithValue("@Date", entity.Date.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Transaction", entity.Transaction.ToString());
-            command.Parameters.AddWithValue("@UnitCount", SQLiteUtils.DecimalToDB(entity.UnitCount));
-            command.Parameters.AddWithValue("@CostBaseChange", SQLiteUtils.DecimalToDB(entity.CostBaseChange));
-            command.Parameters.AddWithValue("@AmountChange", SQLiteUtils.DecimalToDB(entity.AmountChange));
+            parameters["@Id"].Value = entity.Id.ToString();
+            parameters["@Parcel"].Value = entity.Parcel.ToString();
+            parameters["@Date"].Value = entity.Date.ToString("yyyy-MM-dd");
+            parameters["@Transaction"].Value = entity.Transaction.ToString();
+            parameters["@UnitCount"].Value = entity.UnitCount;
+            parameters["@CostBaseChange"].Value = SQLiteUtils.DecimalToDB(entity.CostBaseChange);
+            parameters["@AmountChange"].Value = SQLiteUtils.DecimalToDB(entity.AmountChange);
          }
 
     }

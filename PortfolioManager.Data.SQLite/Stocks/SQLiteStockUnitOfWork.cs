@@ -1,89 +1,90 @@
-﻿
+﻿using Microsoft.Data.Sqlite;
+
 using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteStockUnitOfWork : IStockUnitOfWork
     {
-        private SQLiteStockDatabase _Database;
+        private SqliteTransaction _Transaction;
         private SQLiteStockEntityCreator _EntityCreator;
 
-        SQLiteStockRepository _StockRepository;
-        SQLiteCorporateActionRepository _CorporateActionRepository;
-        SQLiteRelativeNTARepository _RelativeNTARepository;
-        SQLiteStockPriceRepository _StockPriceRepository;
-        SQLiteNonTradingDayRepository _NonTradingDayRepository;
+        protected internal SQLiteStockUnitOfWork(SqliteTransaction transaction)
+        {
+            _Transaction = transaction;
 
+            _EntityCreator = new SQLiteStockEntityCreator(transaction);
+        }
+
+
+        SQLiteStockRepository _StockRepository;
         public IStockRepository StockRepository
         {
             get
             {
                 if (_StockRepository == null)
-                    _StockRepository = new SQLiteStockRepository(_Database, _EntityCreator);
+                    _StockRepository = new SQLiteStockRepository(_Transaction, _EntityCreator);
 
                 return _StockRepository;
             }
         }
 
+        SQLiteCorporateActionRepository _CorporateActionRepository;
         public ICorporateActionRepository CorporateActionRepository
         {
             get
             {
                 if (_CorporateActionRepository == null)
-                    _CorporateActionRepository = new SQLiteCorporateActionRepository(_Database, _EntityCreator);
+                    _CorporateActionRepository = new SQLiteCorporateActionRepository(_Transaction, _EntityCreator);
 
                 return _CorporateActionRepository;
             }
         }
 
+        SQLiteRelativeNTARepository _RelativeNTARepository;
         public IRelativeNTARepository RelativeNTARepository
         {
             get
             {
                 if (_RelativeNTARepository == null)
-                    _RelativeNTARepository = new SQLiteRelativeNTARepository(_Database, _EntityCreator);
+                    _RelativeNTARepository = new SQLiteRelativeNTARepository(_Transaction, _EntityCreator);
 
                 return _RelativeNTARepository;
             }
         }
 
+        SQLiteStockPriceRepository _StockPriceRepository;
         public IStockPriceRepository StockPriceRepository
         {
             get
             {
                 if (_StockPriceRepository == null)
-                    _StockPriceRepository = new SQLiteStockPriceRepository(_Database);
+                    _StockPriceRepository = new SQLiteStockPriceRepository(_Transaction);
 
                 return _StockPriceRepository;
             }
         }
 
+        SQLiteNonTradingDayRepository _NonTradingDayRepository;
         public INonTradingDayRepository NonTradingDayRepository
         {
             get
             {
                 if (_NonTradingDayRepository == null)
-                    _NonTradingDayRepository = new SQLiteNonTradingDayRepository(_Database);
+                    _NonTradingDayRepository = new SQLiteNonTradingDayRepository(_Transaction);
 
                 return _NonTradingDayRepository;
             }
         }
 
-        protected internal SQLiteStockUnitOfWork(SQLiteStockDatabase database)
-        {
-            _Database = database;
-            _Database._Transaction.BeginTransaction();
-            _EntityCreator = new SQLiteStockEntityCreator(database);
-        }
-
         public void Save()
         {
-            _Database._Transaction.SaveOnEnd = true;
+            _Transaction.Commit();
         }
 
         public void Dispose()
         {
-            _Database._Transaction.EndTransaction();
+            _Transaction.Dispose();
         }
     }
 

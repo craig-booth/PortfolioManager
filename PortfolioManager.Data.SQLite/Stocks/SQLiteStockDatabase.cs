@@ -1,7 +1,9 @@
 ﻿using System;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Upgrade;
+
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
@@ -15,16 +17,33 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public IStockUnitOfWork CreateUnitOfWork()
         {
-            return new SQLiteStockUnitOfWork(this);
+            var transaction = CreateTransaction();
+
+            return new SQLiteStockUnitOfWork(transaction);
         }
 
-        public IStockQuery StockQuery {get; private set;}
-        public ICorporateActionQuery CorporateActionQuery { get; private set; }
-
-        public SQLiteStockDatabase(string fileName) : base(fileName)
+        public IStockQuery StockQuery
         {
-            StockQuery = new SQLiteStockQuery(this);
-            CorporateActionQuery = new SQLiteCorporateActionQuery(this);
+            get
+            {
+                var transaction = CreateTransaction();
+                return new SQLiteStockQuery(transaction);
+            }
+        }
+
+        public ICorporateActionQuery CorporateActionQuery
+        {
+            get
+            {
+                var transaction = CreateTransaction();
+                return new SQLiteCorporateActionQuery(transaction);
+            }
+        }
+
+        public SQLiteStockDatabase(string fileName) 
+            : base(fileName)
+        {
+
         }
 
         protected override SQLiteDatabaseUpgrade GetUpgrade(int forVersion)
@@ -46,9 +65,9 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 throw new NotSupportedException();
         }
 
-        protected override void CreateDatabaseTables()
+        protected override void CreateDatabaseTables(SqliteTransaction transaction)
         {
-            ExecuteScript("Stock Database.sql");
+            ExecuteScript("Stock Database.sql", transaction);
         }
     }
 
