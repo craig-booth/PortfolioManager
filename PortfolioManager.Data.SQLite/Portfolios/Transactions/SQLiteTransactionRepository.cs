@@ -11,8 +11,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios.Transactions
     {
         private Dictionary<TransactionType, SQLiteRepository<Transaction>> _DetailRepositories;
 
-        protected internal SQLiteTransactionRepository(SqliteTransaction transaction)
-            : base(transaction, "Transactions", new SQLitePortfolioEntityCreator())
+        protected internal SQLiteTransactionRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "Transactions", entityCreator)
         {
             _DetailRepositories = new Dictionary<TransactionType, SQLiteRepository<Transaction>>();
             _DetailRepositories.Add(TransactionType.Aquisition, new SQLiteAquisitionRepository(transaction));

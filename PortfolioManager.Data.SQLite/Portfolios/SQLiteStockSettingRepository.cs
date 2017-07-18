@@ -7,8 +7,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     class SQLiteStockSettingRepository : SQLiteEffectiveDatedRepository<StockSetting>, IStockSettingRepository
     {
  
-        protected internal SQLiteStockSettingRepository(SqliteTransaction transaction)
-            : base(transaction, "StockSettings", new SQLitePortfolioEntityCreator())
+        protected internal SQLiteStockSettingRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "StockSettings", entityCreator)
         {
         }
 

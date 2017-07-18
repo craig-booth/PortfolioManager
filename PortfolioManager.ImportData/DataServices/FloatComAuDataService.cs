@@ -1,32 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net;
+using System.Net.Http;
 using System.IO;
 using System.Globalization;
 using KBCsv;
 
-namespace PortfolioManager.DataImporter.DataServices
+namespace PortfolioManager.ImportData.DataServices
 {
     class FloatComAuDataService : IHistoricalStockPriceService
     {
         public async Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
         {
             List<StockPrice> data = new List<StockPrice>();
-
-            HttpWebRequest request;
-            HttpWebResponse response;
-            Stream dataStream;
             try
             {
+                var httpClient = new HttpClient();
+
                 string url = string.Format("http://www.float.com.au/download/{0}.csv", asxCode);
+                var response = await httpClient.GetAsync(url);
 
-                request = WebRequest.Create(url) as HttpWebRequest;
-                response = await request.GetResponseAsync() as HttpWebResponse;
-
-                dataStream = response.GetResponseStream();
-
+                var dataStream = await response.Content.ReadAsStreamAsync();
                 using (var textReader = new StreamReader(dataStream))
                 {
                     using (var csvReader = new CsvReader(textReader, false))

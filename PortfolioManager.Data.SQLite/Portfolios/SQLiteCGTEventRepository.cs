@@ -7,8 +7,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
     class SQLiteCGTEventRepository : SQLiteRepository<CGTEvent>, ICGTEventRepository
     {
-        protected internal SQLiteCGTEventRepository(SqliteTransaction transaction)
-            : base(transaction,  "CGTEvents", new SQLitePortfolioEntityCreator())
+        protected internal SQLiteCGTEventRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction,  "CGTEvents", entityCreator)
         {
         }
 

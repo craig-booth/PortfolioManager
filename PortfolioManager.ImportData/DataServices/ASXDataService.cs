@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Net;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Net.Http;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.DataImporter.DataServices
+namespace PortfolioManager.ImportData.DataServices
 {
     class ASXDataService : ITradingDayService
     {
@@ -31,16 +29,13 @@ namespace PortfolioManager.DataImporter.DataServices
 
         private async Task<XElement> DownloadData(int year)
         {
+            var httpClient = new HttpClient();
+
             var url = String.Format("http://www.asx.com.au/about/asx-trading-calendar-{0:d}.htm", year);
-            var request = HttpWebRequest.CreateHttp(url);
+            var response = await httpClient.GetAsync(url);
 
-            var response = (HttpWebResponse)await request.GetResponseAsync();
-
-            var stream = response.GetResponseStream();
-            var streamReader = new StreamReader(stream, Encoding.GetEncoding("utf-8"));
-
-            var text = await streamReader.ReadToEndAsync();
-
+            var text = await response.Content.ReadAsStringAsync();
+           
             // Find start of data
             var start = text.IndexOf("<!-- start content -->");
             var end = -1;
@@ -58,7 +53,7 @@ namespace PortfolioManager.DataImporter.DataServices
 
                 return XElement.Parse(data);
             }
-            else
+            else 
                 return null;
         }
 

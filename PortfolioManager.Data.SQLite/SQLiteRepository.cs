@@ -28,8 +28,9 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
-                 _GetCurrentRecordCommand.Prepare();
+                _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+                _GetCurrentRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetCurrentRecordCommand.Prepare();
              }
 
             return _GetCurrentRecordCommand;
@@ -45,6 +46,7 @@ namespace PortfolioManager.Data.SQLite
             if (_GetDeleteRecordCommand == null)
             {
                 _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+                _GetDeleteRecordCommand.Parameters.Add("@Id", SqliteType.Text);
                 _GetDeleteRecordCommand.Prepare();
             }
 
@@ -58,7 +60,7 @@ namespace PortfolioManager.Data.SQLite
             T entity;
 
             var command = GetCurrentRecordCommand();
-            command.Parameters.AddWithValue("@Id", id.ToString());
+            command.Parameters["@Id"].Value = id.ToString();
 
             using (SqliteDataReader reader = command.ExecuteReader())
             {
@@ -108,7 +110,7 @@ namespace PortfolioManager.Data.SQLite
         public virtual void Delete(Guid id)
         {
             var command = GetDeleteRecordCommand();
-            command.Parameters.AddWithValue("@Id", id.ToString());
+            command.Parameters["@Id"].Value  = id.ToString();
 
             if (command.ExecuteNonQuery() == 0)
                 throw new RecordNotFoundException(id);

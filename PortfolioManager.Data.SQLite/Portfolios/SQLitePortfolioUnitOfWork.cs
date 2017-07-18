@@ -23,7 +23,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_TransactionRepository == null)
-                    _TransactionRepository = new SQLiteTransactionRepository(_Transaction);
+                    _TransactionRepository = new SQLiteTransactionRepository(_Transaction, _EntityCreator);
 
                 return _TransactionRepository;
             }
@@ -47,7 +47,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_CGTEventRepository == null)
-                    _CGTEventRepository = new SQLiteCGTEventRepository(_Transaction);
+                    _CGTEventRepository = new SQLiteCGTEventRepository(_Transaction, _EntityCreator);
 
                 return _CGTEventRepository;
             }
@@ -71,7 +71,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_CashAccountRepository == null)
-                    _CashAccountRepository = new SQLiteCashAccountRepository(_Transaction);
+                    _CashAccountRepository = new SQLiteCashAccountRepository(_Transaction, _EntityCreator);
 
                 return _CashAccountRepository;
             }
@@ -95,7 +95,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_StockSettingRepository == null)
-                    _StockSettingRepository = new SQLiteStockSettingRepository(_Transaction);
+                    _StockSettingRepository = new SQLiteStockSettingRepository(_Transaction, _EntityCreator);
 
                 return _StockSettingRepository;
             }
@@ -107,7 +107,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get
             {
                 if (_DRPCashBalanceRepository == null)
-                    _DRPCashBalanceRepository = new SQLiteDRPCashBalanceRepository(_Transaction);
+                    _DRPCashBalanceRepository = new SQLiteDRPCashBalanceRepository(_Transaction, _EntityCreator);
 
                 return _DRPCashBalanceRepository;
             }

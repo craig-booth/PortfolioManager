@@ -4,11 +4,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Data.Stocks;
-using PortfolioManager.DataImporter.DataServices;
+using PortfolioManager.ImportData.DataServices;
 
-namespace PortfolioManager.DataImporter
+namespace PortfolioManager.ImportData
 {
-    class TradingDayImporter
+    public class TradingDayImporter
     {
         private readonly ITradingDayService _DataService;
         private readonly IStockDatabase _Database;

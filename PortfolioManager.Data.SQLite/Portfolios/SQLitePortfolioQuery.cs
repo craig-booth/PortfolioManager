@@ -121,7 +121,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             else if (typeof(T) == typeof(CashTransaction))
                 query.Join("CashTransactions", "Transactions.Id = CashTransactions.Id");
             else if (typeof(T) == typeof(CostBaseAdjustment))
-                query.Join("CostBaseAdjutments", "Transactions.Id = CostBaseAdjutments.Id");
+                query.Join("CostBaseAdjustments", "Transactions.Id = CostBaseAdjustments.Id");
             else if (typeof(T) == typeof(Disposal))
                 query.Join("Disposals", "Transactions.Id = Disposals.Id");
             else if (typeof(T) == typeof(IncomeReceived))

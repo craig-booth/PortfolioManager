@@ -9,7 +9,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
     class SQLiteStockQuery: SQLiteQuery, IStockQuery 
     {
         protected internal SQLiteStockQuery(SqliteTransaction transaction)
-            : base(transaction, new SQLiteStockEntityCreator(transaction))
+            : base(transaction, new SQLiteStockEntityCreator())
         {
         }
 

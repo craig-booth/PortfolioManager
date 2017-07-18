@@ -5,8 +5,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     class SQLiteDRPCashBalanceRepository : SQLiteEffectiveDatedRepository<DRPCashBalance>, IDRPCashBalanceRepository
     {
-        protected internal SQLiteDRPCashBalanceRepository(SqliteTransaction transaction)
-            : base(transaction, "DRPCashBalances", new SQLitePortfolioEntityCreator())
+        protected internal SQLiteDRPCashBalanceRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "DRPCashBalances", entityCreator)
         {
         }
 

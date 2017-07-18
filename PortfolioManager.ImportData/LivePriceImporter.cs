@@ -6,11 +6,11 @@ using System.Linq;
 
 using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
-using PortfolioManager.DataImporter.DataServices;
+using PortfolioManager.ImportData.DataServices;
 
-namespace PortfolioManager.DataImporter
+namespace PortfolioManager.ImportData
 {
-    class LivePriceImporter
+    public class LivePriceImporter
     {
 
         private ILiveStockPriceService _DataService;

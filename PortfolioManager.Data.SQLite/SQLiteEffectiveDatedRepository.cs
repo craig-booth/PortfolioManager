@@ -16,8 +16,9 @@ namespace PortfolioManager.Data.SQLite
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND [ToDate] = '9999-12-31'", _Transaction.Connection, _Transaction);
-                 _GetCurrentRecordCommand.Prepare();
+                _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND [ToDate] = '9999-12-31'", _Transaction.Connection, _Transaction);
+                _GetCurrentRecordCommand.Parameters.Add("@Id", SqliteType.Text);       
+                _GetCurrentRecordCommand.Prepare();
              }
 
             return _GetCurrentRecordCommand;
@@ -29,6 +30,8 @@ namespace PortfolioManager.Data.SQLite
             if (_GetEffectiveRecordCommand == null)
             {
                 _GetEffectiveRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id AND @AtDate BETWEEN [FromDate] AND [ToDate]", _Transaction.Connection, _Transaction);
+                _GetEffectiveRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetEffectiveRecordCommand.Parameters.Add("@AtDate", SqliteType.Text);
                 _GetEffectiveRecordCommand.Prepare();
             }
 
@@ -41,6 +44,7 @@ namespace PortfolioManager.Data.SQLite
             if (_GetDeleteRecordCommand == null)
             {
                 _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+                _GetDeleteRecordCommand.Parameters.Add("@Id", SqliteType.Text);
                 _GetDeleteRecordCommand.Prepare();
             }
 
@@ -53,6 +57,8 @@ namespace PortfolioManager.Data.SQLite
             if (_GetDeleteEffectiveRecordCommand == null)
             {
                 _GetDeleteEffectiveRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id AND [FromDate] = @FromDate", _Transaction.Connection, _Transaction);
+                _GetDeleteEffectiveRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetDeleteEffectiveRecordCommand.Parameters.Add("@FromDate", SqliteType.Text);
                 _GetDeleteEffectiveRecordCommand.Prepare();
             }
 
@@ -62,8 +68,8 @@ namespace PortfolioManager.Data.SQLite
         public T Get(Guid id, DateTime atDate)
         {
             var command = GetEffectiveRecordCommand();
-            command.Parameters.AddWithValue("@Id", id.ToString());
-            command.Parameters.AddWithValue("@AtDate", atDate.ToString("yyyy-MM-dd"));
+            command.Parameters["@Id"].Value = id.ToString();
+            command.Parameters["@AtDate"].Value = atDate.ToString("yyyy-MM-dd");
 
             T entity;
             using (SqliteDataReader reader = command.ExecuteReader())
@@ -87,8 +93,8 @@ namespace PortfolioManager.Data.SQLite
         public void Delete(Guid id, DateTime atDate)
         {
             var command = GetDeleteEffectiveRecordCommand();
-            command.Parameters.AddWithValue("@Id", id.ToString());
-            command.Parameters.AddWithValue("@FromDate", atDate.ToString("yyyy-MM-dd"));
+            command.Parameters["@Id"].Value = id.ToString();
+            command.Parameters["@FromDate"].Value = atDate.ToString("yyyy-MM-dd");
 
             command.ExecuteNonQuery();
         }

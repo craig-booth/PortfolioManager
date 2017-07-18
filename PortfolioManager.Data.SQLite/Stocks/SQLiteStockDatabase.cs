@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Upgrade;
-
+using PortfolioManager.Data.SQLite.Stocks.CorporateActions;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {

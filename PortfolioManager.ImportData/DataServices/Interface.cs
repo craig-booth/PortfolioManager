@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace PortfolioManager.DataImporter.DataServices
+namespace PortfolioManager.ImportData.DataServices
 {
     public interface ILiveStockPriceService
     {

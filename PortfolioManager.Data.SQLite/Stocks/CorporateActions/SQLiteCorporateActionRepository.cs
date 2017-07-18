@@ -1,32 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Microsoft.Data.Sqlite;
-
-using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 
-namespace PortfolioManager.Data.SQLite.Stocks
-{
-    interface ICorporateActionDetailRepository
-    {
-        void Add(Entity entity);
-        void Update(Entity entity);
-        void Delete(Guid id);
-    }
+using PortfolioManager.Common;
 
-    class SQLiteCorporateActionRepository : SQLiteRepository<CorporateAction>, ICorporateActionRepository 
+namespace PortfolioManager.Data.SQLite.Stocks.CorporateActions
+{
+    public class SQLiteCorporateActionRepository : SQLiteRepository<CorporateAction>, ICorporateActionRepository
     {
-        private Dictionary<CorporateActionType, ICorporateActionDetailRepository> _DetailRepositories;
+
+        private Dictionary<CorporateActionType, SQLiteRepository<CorporateAction>> _DetailRepositories;
 
         protected internal SQLiteCorporateActionRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
             : base(transaction, "CorporateActions", entityCreator)
         {
-            _DetailRepositories = new Dictionary<CorporateActionType, ICorporateActionDetailRepository>();
-            _DetailRepositories.Add(CorporateActionType.Dividend, new DividendDetailRepository(transaction));
-            _DetailRepositories.Add(CorporateActionType.CapitalReturn, new CapitalReturnDetailRepository(transaction));
-            _DetailRepositories.Add(CorporateActionType.Transformation, new TransformationDetailRepository(transaction));
-            _DetailRepositories.Add(CorporateActionType.SplitConsolidation, new SplitConsolidtionDetailRepository(transaction));
-            _DetailRepositories.Add(CorporateActionType.Composite, new CompositeActionDetailRepository(transaction, _DetailRepositories));
+            _DetailRepositories = new Dictionary<CorporateActionType, SQLiteRepository<CorporateAction>>();
+
+            _DetailRepositories.Add(CorporateActionType.Dividend, new SQLiteDividendRepository(transaction, entityCreator));
+            _DetailRepositories.Add(CorporateActionType.CapitalReturn, new SQLiteCapitalReturnRepository(transaction, entityCreator));
+            _DetailRepositories.Add(CorporateActionType.Transformation, new SQLiteTransformationRepository(transaction, entityCreator));
+            _DetailRepositories.Add(CorporateActionType.SplitConsolidation, new SQLiteSplitConsolidationRepository(transaction, entityCreator));
+            _DetailRepositories.Add(CorporateActionType.Composite, new SQLiteCompositeActionRepository(transaction, _DetailRepositories, entityCreator));
         }
 
         private SqliteCommand _GetAddRecordCommand;
@@ -67,13 +63,13 @@ namespace PortfolioManager.Data.SQLite.Stocks
             return _GetUpdateRecordCommand;
         }
 
-        public override void Add(CorporateAction entity) 
+        public override void Add(CorporateAction entity)
         {
             /* Add header record */
             base.Add(entity);
 
             _DetailRepositories[entity.Type].Add(entity);
-       }      	
+        }
 
         public override void Update(CorporateAction entity)
         {
@@ -109,5 +105,6 @@ namespace PortfolioManager.Data.SQLite.Stocks
             parameters["@Description"].Value = entity.Description;
             parameters["@Type"].Value = entity.Type;
         }
+
     }
 }

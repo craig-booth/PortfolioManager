@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
-using PortfolioManager.DataImporter.DataServices;
+using PortfolioManager.ImportData.DataServices;
 
-namespace PortfolioManager.DataImporter
+namespace PortfolioManager.ImportData
 {
-    class HistoricalPriceImporter
+    public class HistoricalPriceImporter
     {
         private IHistoricalStockPriceService _DataService;
         private readonly IStockDatabase _Database;

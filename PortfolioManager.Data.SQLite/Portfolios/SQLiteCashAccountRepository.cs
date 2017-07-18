@@ -6,8 +6,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
     class SQLiteCashAccountRepository : SQLiteRepository<CashAccountTransaction>, ICashAccountRepository
     {
   
-        protected internal SQLiteCashAccountRepository(SqliteTransaction transaction)
-            : base(transaction, "CashAccountTransactions", new SQLitePortfolioEntityCreator())
+        protected internal SQLiteCashAccountRepository(SqliteTransaction transaction, IEntityCreator entityCreator)
+            : base(transaction, "CashAccountTransactions", entityCreator)
         {
         }
 

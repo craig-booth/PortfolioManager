@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net;
-using System.IO;
-using System.Text;
+using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace PortfolioManager.DataImporter.DataServices
+namespace PortfolioManager.ImportData.DataServices
 {
     class GoogleDataService : ILiveStockPriceService
     {
@@ -32,6 +30,8 @@ namespace PortfolioManager.DataImporter.DataServices
         {
             try
             {
+                var httpClient = new HttpClient();
+
                 string url = "";
                 foreach (var asxCode in asxCodes)
                 {
@@ -40,13 +40,9 @@ namespace PortfolioManager.DataImporter.DataServices
                     else
                         url += ",ASX:" + asxCode;
                 }
-                var request = WebRequest.Create(url) as HttpWebRequest;
-                var response = await request.GetResponseAsync() as HttpWebResponse;
+                var response = await httpClient.GetAsync(url);
 
-                var stream = response.GetResponseStream();
-                var streamReader = new StreamReader(stream, Encoding.GetEncoding("utf-8"));
-
-                var text = await streamReader.ReadToEndAsync();
+                var text = await response.Content.ReadAsStringAsync();
 
                 // remove comment at start if needed
                 var start = text.IndexOfAny(new char[] { '[', '{' });
@@ -58,7 +54,7 @@ namespace PortfolioManager.DataImporter.DataServices
             catch
             {
                 return new StockPrice[0];
-            }
+            } 
         }
 
         public class GoogleStockContractResolver : DefaultContractResolver

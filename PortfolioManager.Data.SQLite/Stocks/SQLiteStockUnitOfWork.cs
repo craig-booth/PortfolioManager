@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.SQLite.Stocks.CorporateActions;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
@@ -13,7 +14,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             _Transaction = transaction;
 
-            _EntityCreator = new SQLiteStockEntityCreator(transaction);
+            _EntityCreator = new SQLiteStockEntityCreator();
         }
 
 
