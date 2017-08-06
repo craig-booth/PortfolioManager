@@ -9,19 +9,8 @@ using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Utils
 {
-    class PortfolioUtils
-    {
-        private IPortfolioQuery _PortfolioQuery;
-        private IStockQuery _StockQuery;
-        private StockUtils _StockUtils;
-
-        public PortfolioUtils(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-        {
-            _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
-            _StockUtils = new StockUtils(stockQuery);
-        }
-
+    static class PortfolioUtils
+    { 
         public static ApportionedCurrencyValue[] ApportionAmountOverParcels(IEnumerable<ShareParcel> parcels, decimal amount)
         {
             ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[parcels.Count()];
@@ -44,13 +33,13 @@ namespace PortfolioManager.Service.Utils
             return result;
         }
 
-        public ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IEnumerable<Stock> childStocks, DateTime atDate, decimal amount)
+        public static ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IEnumerable<Stock> childStocks, DateTime atDate, decimal amount, IStockQuery stockQuery)
         {
             ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[childStocks.Count()];
             int i = 0;
             foreach (Stock childStock in childStocks)
             {
-                decimal percentageOfParent = _StockQuery.PercentOfParentCost(childStock.ParentId, childStock.Id, atDate);
+                decimal percentageOfParent = stockQuery.PercentOfParentCost(childStock.ParentId, childStock.Id, atDate);
                 int relativeValue = (int)(percentageOfParent * 10000);
 
                 result[i].Units = relativeValue;
@@ -61,15 +50,15 @@ namespace PortfolioManager.Service.Utils
             return result;
         }
 
-        public IReadOnlyCollection<ShareParcel> GetStapledSecurityParcels(Stock stock, DateTime date)
+        public static IReadOnlyCollection<ShareParcel> GetStapledSecurityParcels(Stock stock, DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             var stapledParcels = new List<ShareParcel>();
 
-            var childStocks = _StockQuery.GetChildStocks(stock.Id, date);
+            var childStocks = stockQuery.GetChildStocks(stock.Id, date);
 
             foreach (var childStock in childStocks)
             {
-                var childParcels = _PortfolioQuery.GetParcelsForStock(childStock.Id, date, date);
+                var childParcels = portfolioQuery.GetParcelsForStock(childStock.Id, date, date);
 
                 foreach (var childParcel in childParcels)
                 {
@@ -93,18 +82,18 @@ namespace PortfolioManager.Service.Utils
         }
 
 
-        public DateTime GetPortfolioStartDate()
+        public static DateTime GetPortfolioStartDate(IPortfolioQuery portfolioQuery)
         {
             DateTime parcelStartDate;
             DateTime cashStartDate;
 
-            var firstParcel = _PortfolioQuery.GetAllParcels(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();
+            var firstParcel = portfolioQuery.GetAllParcels(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.FromDate).FirstOrDefault();
             if (firstParcel != null)
                 parcelStartDate = firstParcel.FromDate;
             else
                 parcelStartDate = DateTime.Today;
 
-            var firstCashTransaction = _PortfolioQuery.GetCashAccountTransactions(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.Date).FirstOrDefault();
+            var firstCashTransaction = portfolioQuery.GetCashAccountTransactions(DateUtils.NoStartDate, DateTime.Today).OrderBy(x => x.Date).FirstOrDefault();
             if (firstCashTransaction != null)
                 cashStartDate = firstCashTransaction.Date;
             else
@@ -116,16 +105,16 @@ namespace PortfolioManager.Service.Utils
                 return cashStartDate;
         }
 
-        public HoldingItem GetHolding(Guid stockId, DateTime date)
+        public static HoldingItem GetHolding(Guid stockId, DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             IEnumerable<ShareParcel> parcels;
 
-            var stock = _StockQuery.Get(stockId, date);
+            var stock = stockQuery.Get(stockId, date);
 
             if (stock.Type == StockType.StapledSecurity)
-                parcels = GetStapledSecurityParcels(stock, date);
+                parcels = GetStapledSecurityParcels(stock, date, portfolioQuery, stockQuery);
             else
-                parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, date, date);
+                parcels = portfolioQuery.GetParcelsForStock(stock.Id, date, date);
 
             var holding = new HoldingItem();
             holding.Stock = new StockItem(stock);
@@ -136,16 +125,16 @@ namespace PortfolioManager.Service.Utils
                 holding.Units += parcel.Units;
                 holding.Cost += parcel.Units * parcel.UnitPrice;
             }
-            holding.Value = holding.Units * _StockUtils.GetPrice(stock.Id, date);
+            holding.Value = holding.Units * StockUtils.GetPrice(stock.Id, date, stockQuery);
 
             return holding;
         }
 
-        public IEnumerable<HoldingItem> GetHoldings(DateTime date)
+        public static IEnumerable<HoldingItem> GetHoldings(DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             var holdings = new List<HoldingItem>();
 
-            var holdingQuery = from parcel in _PortfolioQuery.GetAllParcels(date, date)
+            var holdingQuery = from parcel in portfolioQuery.GetAllParcels(date, date)
                                 group parcel by parcel.Stock into parcelGroup
                                 select parcelGroup;
 
@@ -153,7 +142,7 @@ namespace PortfolioManager.Service.Utils
             {
                 var holding = new HoldingItem();
 
-                var stock = _StockQuery.Get(parcelGroup.Key, date);
+                var stock = stockQuery.Get(parcelGroup.Key, date);
 
                 holding.Stock = new Interface.StockItem(stock);
                 holding.Category = stock.Category;
@@ -163,7 +152,7 @@ namespace PortfolioManager.Service.Utils
                     holding.Units += parcel.Units;
                     holding.Cost += parcel.Units * parcel.UnitPrice;
                 }
-                holding.Value = holding.Units * _StockUtils.GetPrice(parcelGroup.Key, date);
+                holding.Value = holding.Units * StockUtils.GetPrice(parcelGroup.Key, date, stockQuery);
 
                 holdings.Add(holding);
             }
@@ -171,11 +160,11 @@ namespace PortfolioManager.Service.Utils
             return holdings;
         }
 
-        public IEnumerable<HoldingItem> GetTradeableHoldings(DateTime date)
+        public static IEnumerable<HoldingItem> GetTradeableHoldings(DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             var holdings = new List<HoldingItem>();
 
-            var holdingQuery = from parcel in _PortfolioQuery.GetAllParcels(date, date)
+            var holdingQuery = from parcel in portfolioQuery.GetAllParcels(date, date)
                                group parcel by parcel.Stock into parcelGroup
                                select parcelGroup;
 
@@ -183,11 +172,11 @@ namespace PortfolioManager.Service.Utils
             {
                 HoldingItem holding;
 
-                var stock = _StockQuery.Get(parcelGroup.Key, date);
+                var stock = stockQuery.Get(parcelGroup.Key, date);
 
                 if (stock.ParentId != Guid.Empty)
                 {
-                    stock = _StockQuery.Get(stock.ParentId, date);
+                    stock = stockQuery.Get(stock.ParentId, date);
 
                     // Check if the parent stock has already been added
                     holding = holdings.FirstOrDefault(x => x.Stock.Id == stock.Id);
@@ -209,7 +198,7 @@ namespace PortfolioManager.Service.Utils
                     holding.Units += parcel.Units;
                     holding.Cost += parcel.Units * parcel.UnitPrice;
                 }
-                holding.Value = holding.Units * _StockUtils.GetPrice(stock.Id, date);
+                holding.Value = holding.Units * StockUtils.GetPrice(stock.Id, date, stockQuery);
 
                 holdings.Add(holding);
             }
@@ -217,23 +206,23 @@ namespace PortfolioManager.Service.Utils
             return holdings;
         }
 
-        public decimal CalculatePortfolioIRR(DateTime startDate, DateTime endDate)
+        public static decimal CalculatePortfolioIRR(DateTime startDate, DateTime endDate, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             var cashFlows = new CashFlows();
 
             // Get the initial portfolio value
-            var initialHoldings = GetHoldings(startDate);
+            var initialHoldings = GetHoldings(startDate, portfolioQuery, stockQuery);
             var initialHoldingsValue = initialHoldings.Sum(x => x.Value);
 
             // Get initial Cash Account Balance
-            var initialCashBalance = _PortfolioQuery.GetCashBalance(startDate);
+            var initialCashBalance = portfolioQuery.GetCashBalance(startDate);
 
             // Add the initial portfolio value
             var initialValue = initialHoldingsValue + initialCashBalance;
             cashFlows.Add(startDate, -initialValue);
 
             // generate list of cashFlows
-            var transactions = _PortfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
+            var transactions = portfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
             foreach (var transaction in transactions)
             {
                 if (transaction.Type == TransactionType.CashTransaction)
@@ -246,11 +235,11 @@ namespace PortfolioManager.Service.Utils
             }
 
             // Get the final portfolio value
-            var finalHoldings = GetHoldings(endDate);
+            var finalHoldings = GetHoldings(endDate, portfolioQuery, stockQuery);
             var finalHoldingsValue = finalHoldings.Sum(x => x.Value);
 
             // Get final Cash Account Balance
-            var finalCashBalance = _PortfolioQuery.GetCashBalance(endDate);
+            var finalCashBalance = portfolioQuery.GetCashBalance(endDate);
 
             // Add the final portfolio value
             var finalValue = finalHoldingsValue + finalCashBalance;

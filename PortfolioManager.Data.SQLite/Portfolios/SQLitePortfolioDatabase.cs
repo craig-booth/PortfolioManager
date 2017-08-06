@@ -13,17 +13,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             get { return 10; }
         }
 
-        public IPortfolioQuery PortfolioQuery
-        {
-            get
-            {
-                var transaction = CreateTransaction();
-                return new SQLitePortfolioQuery(transaction);
-            }
-                
-        }
-
-        public SQLitePortfolioDatabase(string fileName) : base(fileName)
+        public SQLitePortfolioDatabase(string fileName) 
+            : base(fileName)
         {
 
         }
@@ -55,10 +46,13 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         }
 
         public IPortfolioUnitOfWork CreateUnitOfWork()
+        {         
+            return new SQLitePortfolioUnitOfWork(FileName);
+        }
+
+        public IPortfolioReadOnlyUnitOfWork CreateReadOnlyUnitOfWork()
         {
-            var transaction = CreateTransaction();
-          
-            return new SQLitePortfolioUnitOfWork(transaction);
+            return new SQLitePortfolioReadOnlyUnitOfWork(FileName);
         }
 
         protected override void CreateDatabaseTables(SqliteTransaction transaction)

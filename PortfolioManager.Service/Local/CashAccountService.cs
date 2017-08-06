@@ -9,47 +9,50 @@ namespace PortfolioManager.Service.Local
 {
     class CashAccountService : ICashAccountService
     {
-        private readonly IPortfolioQuery _PortfolioQuery;
-
-        public CashAccountService(IPortfolioQuery portfolioQuery)
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        
+        public CashAccountService(IPortfolioDatabase portfolioDatabase)
         {
-            _PortfolioQuery = portfolioQuery;
+            _PortfolioDatabase = portfolioDatabase;
         }
 
         public Task<CashAccountTransactionsResponce> GetTranasctions(DateTime fromDate, DateTime toDate)
         {
             var responce = new CashAccountTransactionsResponce();
 
-            // Get opening blance
-            responce.OpeningBalance = _PortfolioQuery.GetCashBalance(fromDate.AddDays(-1));
-
-            decimal balance = responce.OpeningBalance;
-
-            // get transactions
-            var transactions = _PortfolioQuery.GetCashAccountTransactions(fromDate, toDate);
-
-            foreach (var transaction in transactions)
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {
-                balance += transaction.Amount;
-                var newItem = new CashAccountTransactionItem()
+                // Get opening blance
+                responce.OpeningBalance = portfolioUnitOfWork.PortfolioQuery.GetCashBalance(fromDate.AddDays(-1));
+
+                decimal balance = responce.OpeningBalance;
+
+                // get transactions
+                var transactions = portfolioUnitOfWork.PortfolioQuery.GetCashAccountTransactions(fromDate, toDate);
+
+                foreach (var transaction in transactions)
                 {
-                    Date = transaction.Date,
-                    Type = transaction.Type,
-                    Description = transaction.Description,
-                    Amount = transaction.Amount,
-                    Balance = balance
-                };
+                    balance += transaction.Amount;
+                    var newItem = new CashAccountTransactionItem()
+                    {
+                        Date = transaction.Date,
+                        Type = transaction.Type,
+                        Description = transaction.Description,
+                        Amount = transaction.Amount,
+                        Balance = balance
+                    };
 
-                if ((newItem.Type == BankAccountTransactionType.Interest) &&
-                    (newItem.Description == ""))
-                    newItem.Description = "Interest";
+                    if ((newItem.Type == BankAccountTransactionType.Interest) &&
+                        (newItem.Description == ""))
+                        newItem.Description = "Interest";
 
 
-                responce.Transactions.Add(newItem);
+                    responce.Transactions.Add(newItem);
+                }
+
+                responce.ClosingBalance = balance;
+
             }
-
-            responce.ClosingBalance = balance;
-            
 
             return Task.FromResult<CashAccountTransactionsResponce>(responce);
         }

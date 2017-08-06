@@ -9,28 +9,31 @@ using PortfolioManager.Service.Interface;
 namespace PortfolioManager.Service.Local
 {
     class StockService : IStockService
-    {
-        private readonly IStockQuery _StockQuery;
+    { 
+        private readonly IStockDatabase _StockDatabase;
 
-        public StockService(IStockQuery stockQuery)
+        public StockService(IStockDatabase stockDatabase)
         {
-            _StockQuery = stockQuery;
+            _StockDatabase = stockDatabase;
         }
 
         public Task<GetStockResponce> GetStocks(DateTime date, bool includeStapledSecurities, bool includeChildStocks)
         {
             var responce = new GetStockResponce();
 
-            var stocks = _StockQuery.GetAll(date).AsEnumerable();
+            using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+            {
+                var stocks = stockUnitOfWork.StockQuery.GetAll(date).AsEnumerable();
 
-            if (!includeStapledSecurities)
-                stocks = stocks.Where(x => x.Type != StockType.StapledSecurity);
+                if (!includeStapledSecurities)
+                    stocks = stocks.Where(x => x.Type != StockType.StapledSecurity);
 
-            if (!includeChildStocks)
-                stocks = stocks.Where(x => x.ParentId == Guid.Empty);
+                if (!includeChildStocks)
+                    stocks = stocks.Where(x => x.ParentId == Guid.Empty);
 
-            responce.Stocks.AddRange(stocks.Select(x => new StockItem(x)));
+                responce.Stocks.AddRange(stocks.Select(x => new StockItem(x)));
 
+            }
 
             return Task.FromResult<GetStockResponce>(responce);
         }

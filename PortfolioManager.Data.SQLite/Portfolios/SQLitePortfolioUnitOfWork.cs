@@ -7,14 +7,31 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 {
     public class SQLitePortfolioUnitOfWork : IPortfolioUnitOfWork
     {
+        private SqliteConnection _Connection;
         private SqliteTransaction _Transaction;
         private SQLitePortfolioEntityCreator _EntityCreator;
 
-        protected internal SQLitePortfolioUnitOfWork(SqliteTransaction transaction)
+        protected internal SQLitePortfolioUnitOfWork(string fileName)
         {
-            _Transaction = transaction;
+            _Connection = new SqliteConnection("Data Source=" + fileName);
+            _Connection.Open();
 
-            _EntityCreator = new Portfolios.SQLitePortfolioEntityCreator();
+            _Transaction  = _Connection.BeginTransaction();
+
+            _EntityCreator = new SQLitePortfolioEntityCreator();
+        }
+
+        private SQLitePortfolioQuery _PortfolioQuery;
+        public IPortfolioQuery PortfolioQuery
+        {
+            get
+            {
+                if (_PortfolioQuery == null)
+                    _PortfolioQuery = new SQLitePortfolioQuery(_Transaction);
+
+                return _PortfolioQuery;
+            }
+
         }
 
         private SQLiteTransactionRepository _TransactionRepository;
@@ -121,6 +138,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
         public void Dispose()
         {
             _Transaction.Dispose();
+            _Connection.Close();
         }
 
     }

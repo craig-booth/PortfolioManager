@@ -20,48 +20,63 @@ namespace PortfolioManager.ImportData
             _DataService = new FloatComAuDataService();
         }
 
+        private class StockToImport
+        {
+            public Stock Stock;
+            public DateTime FromDate;
+            public DateTime ToDate;
+        }
+
         public async Task Import()
         {
-            var lastExpectedDate = DateTime.Today.AddDays(-1);
-            while (!_Database.StockQuery.TradingDay(lastExpectedDate))
-                lastExpectedDate = lastExpectedDate.AddDays(-1);
+            var stocksToImport = new List<StockToImport>();
 
-            var stocks = _Database.StockQuery.GetAll();
+            using (var unitOfWork = _Database.CreateReadOnlyUnitOfWork())
+            {
+                var lastExpectedDate = DateTime.Today.AddDays(-1);
+                while (!unitOfWork.StockQuery.TradingDay(lastExpectedDate))
+                    lastExpectedDate = lastExpectedDate.AddDays(-1);
 
-            using (var unitOfWork = _Database.CreateUnitOfWork())
-            {           
+                var stocks = unitOfWork.StockQuery.GetAll();
+
                 foreach (var stock in stocks)
                 {
                     if (stock.ParentId == Guid.Empty)
                     {
-                        var latestDate = _Database.StockQuery.GetLatestClosingPrice(stock.Id);
+                        var latestDate = unitOfWork.StockQuery.GetLatestClosingPrice(stock.Id);
 
                         if (latestDate < lastExpectedDate)
                         {
-                            var data = await _DataService.GetHistoricalPriceData(stock.ASXCode, latestDate.AddDays(1), lastExpectedDate);
-                            UpdateStockPrices(unitOfWork, data);
+                            stocksToImport.Add(new StockToImport()
+                            {
+                                Stock = stock,
+                                FromDate = latestDate.AddDays(1),
+                                ToDate = lastExpectedDate
+                            });
                         }
                     }
                 }
-
-                unitOfWork.Save();
             }
-        }
 
-        private void UpdateStockPrices(IStockUnitOfWork unitOfWork, IEnumerable<StockPrice> stockPrices)
-        {
-            Stock stock = null;
 
-            foreach (var stockPrice in stockPrices)
+            foreach (var stock in stocksToImport)
             {
-                if (_Database.StockQuery.TryGetByASXCode(stockPrice.ASXCode, stockPrice.Date, out stock))
+                var data = await _DataService.GetHistoricalPriceData(stock.Stock.ASXCode, stock.FromDate, stock.ToDate);
+                using (var unitOfWork = _Database.CreateUnitOfWork())
                 {
-                    if (unitOfWork.StockPriceRepository.Exists(stock.Id, stockPrice.Date))
-                        unitOfWork.StockPriceRepository.Update(stock.Id, stockPrice.Date, stockPrice.Price, false);
-                    else
-                        unitOfWork.StockPriceRepository.Add(stock.Id, stockPrice.Date, stockPrice.Price, false);
+                    foreach (var stockPrice in data)
+                    {
+                        if (unitOfWork.StockPriceRepository.Exists(stock.Stock.Id, stockPrice.Date))
+                            unitOfWork.StockPriceRepository.Update(stock.Stock.Id, stockPrice.Date, stockPrice.Price, false);
+                        else
+                            unitOfWork.StockPriceRepository.Add(stock.Stock.Id, stockPrice.Date, stockPrice.Price, false);
+                    }
+
+                    unitOfWork.Save();
                 }
             }
         }
     }
+
+
 }

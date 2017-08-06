@@ -17,27 +17,12 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public IStockUnitOfWork CreateUnitOfWork()
         {
-            var transaction = CreateTransaction();
-
-            return new SQLiteStockUnitOfWork(transaction);
+            return new SQLiteStockUnitOfWork(FileName);
         }
 
-        public IStockQuery StockQuery
+        public IStockReadOnlyUnitOfWork CreateReadOnlyUnitOfWork()
         {
-            get
-            {
-                var transaction = CreateTransaction();
-                return new SQLiteStockQuery(transaction);
-            }
-        }
-
-        public ICorporateActionQuery CorporateActionQuery
-        {
-            get
-            {
-                var transaction = CreateTransaction();
-                return new SQLiteCorporateActionQuery(transaction);
-            }
+            return new SQLiteStockReadOnlyUnitOfWork(FileName);
         }
 
         public SQLiteStockDatabase(string fileName) 

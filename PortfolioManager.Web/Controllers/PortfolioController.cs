@@ -61,7 +61,6 @@ namespace PortfolioManager.Web.Controllers
 
         // GET: /api/portfolio/capitalgains?date
         // GET: /api/portfolio/capitalgains?stock&date
-
         [Route("capitalgains")]
         [HttpGet]
         public async Task<SimpleUnrealisedGainsResponce> GetCapitalGains(Guid? stock, DateTime? date)

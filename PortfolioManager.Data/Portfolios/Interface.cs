@@ -9,11 +9,13 @@ namespace PortfolioManager.Data.Portfolios
     public interface IPortfolioDatabase
     {
         IPortfolioUnitOfWork CreateUnitOfWork();
-        IPortfolioQuery PortfolioQuery { get; }
+        IPortfolioReadOnlyUnitOfWork CreateReadOnlyUnitOfWork();
     }
 
     public interface IPortfolioUnitOfWork : IDisposable
     {
+        IPortfolioQuery PortfolioQuery { get; }
+
         IParcelRepository ParcelRepository { get; }
         ITransactionRepository TransactionRepository { get; }
         ICGTEventRepository CGTEventRepository { get; }
@@ -24,6 +26,11 @@ namespace PortfolioManager.Data.Portfolios
         IStockSettingRepository StockSettingRepository { get; }
 
         void Save();
+    }
+
+    public interface IPortfolioReadOnlyUnitOfWork : IDisposable
+    {
+        IPortfolioQuery PortfolioQuery { get; }
     }
 
     public interface IParcelRepository : IEffectiveDatedRepository<ShareParcel>

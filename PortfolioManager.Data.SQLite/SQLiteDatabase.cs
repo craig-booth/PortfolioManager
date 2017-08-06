@@ -17,7 +17,9 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            var transaction = CreateTransaction();
+            var connection = new SqliteConnection("Data Source=" + FileName);
+            connection.Open();
+            var transaction = connection.BeginTransaction();
 
             var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", transaction.Connection, transaction);
             if ((long)tableCountCommand.ExecuteScalar() == 0)
@@ -33,14 +35,7 @@ namespace PortfolioManager.Data.SQLite
             }
 
             transaction.Commit();
-        }
-
-        public SqliteTransaction CreateTransaction()
-        {
-            var connection = new SqliteConnection("Data Source=" + FileName);
-            connection.Open();
-
-            return connection.BeginTransaction();
+            connection.Close();
         }
 
         private void LoadVersion(SqliteTransaction transaction)

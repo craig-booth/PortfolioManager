@@ -9,20 +9,28 @@ namespace PortfolioManager.Service.Local
 {
     class HoldingService : IHoldingService
     {
-        private readonly PortfolioUtils _PortfolioUtils;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;
 
-        public HoldingService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public HoldingService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery);
+            _PortfolioDatabase = portfolioDatabase;
+            _StockDatabase = stockDatabase;
         }
 
         public Task<HoldingResponce> GetHolding(Guid stock, DateTime date)
         {
             var responce = new HoldingResponce();
 
-            responce.Holding = _PortfolioUtils.GetHolding(stock, date);
-         
-            responce.SetStatusToSuccessfull();
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    responce.Holding = PortfolioUtils.GetHolding(stock, date, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<HoldingResponce>(responce);
         }
@@ -31,9 +39,15 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new HoldingsResponce();
 
-            responce.Holdings.AddRange(_PortfolioUtils.GetHoldings(date));
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    responce.Holdings.AddRange(PortfolioUtils.GetHoldings(date, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery));
 
-            responce.SetStatusToSuccessfull();
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<HoldingsResponce>(responce);
         }
@@ -43,9 +57,15 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new HoldingsResponce();
 
-            responce.Holdings.AddRange(_PortfolioUtils.GetTradeableHoldings(date));
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    responce.Holdings.AddRange(PortfolioUtils.GetTradeableHoldings(date, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery));
 
-            responce.SetStatusToSuccessfull();
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<HoldingsResponce>(responce);
         }

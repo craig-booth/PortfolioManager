@@ -7,16 +7,43 @@ namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteStockUnitOfWork : IStockUnitOfWork
     {
+        private SqliteConnection _Connection;
         private SqliteTransaction _Transaction;
         private SQLiteStockEntityCreator _EntityCreator;
 
-        protected internal SQLiteStockUnitOfWork(SqliteTransaction transaction)
+        protected internal SQLiteStockUnitOfWork(string fileName)
         {
-            _Transaction = transaction;
+            _Connection = new SqliteConnection("Data Source=" + fileName);
+            _Connection.Open();
+
+            _Transaction = _Connection.BeginTransaction();
 
             _EntityCreator = new SQLiteStockEntityCreator();
         }
 
+        private SQLiteStockQuery _StockQuery;
+        public IStockQuery StockQuery
+        {
+            get
+            {
+                if (_StockQuery == null)
+                    _StockQuery = new SQLiteStockQuery(_Transaction);
+
+                return _StockQuery;
+            }
+        }
+
+        private SQLiteCorporateActionQuery _CorporateActionQuery;
+        public ICorporateActionQuery CorporateActionQuery
+        {
+            get
+            {
+                if (_CorporateActionQuery == null)
+                    _CorporateActionQuery = new SQLiteCorporateActionQuery(_Transaction);
+
+                return _CorporateActionQuery;
+            }
+        }
 
         SQLiteStockRepository _StockRepository;
         public IStockRepository StockRepository
@@ -86,6 +113,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         public void Dispose()
         {
             _Transaction.Dispose();
+            _Connection.Close();
         }
     }
 

@@ -7,12 +7,15 @@ namespace PortfolioManager.Data.Stocks
     public interface IStockDatabase
     {
         IStockUnitOfWork CreateUnitOfWork();
-        IStockQuery StockQuery { get; }
-        ICorporateActionQuery CorporateActionQuery { get; }
+        IStockReadOnlyUnitOfWork CreateReadOnlyUnitOfWork();
+
     }
 
     public interface IStockUnitOfWork : IDisposable
     {
+        IStockQuery StockQuery { get; }
+        ICorporateActionQuery CorporateActionQuery { get; }
+
         IStockRepository StockRepository { get; }
         ICorporateActionRepository CorporateActionRepository { get; }
         IRelativeNTARepository RelativeNTARepository { get; }
@@ -20,6 +23,12 @@ namespace PortfolioManager.Data.Stocks
         INonTradingDayRepository NonTradingDayRepository { get; }
 
         void Save();
+    }
+
+    public interface IStockReadOnlyUnitOfWork : IDisposable
+    {
+        IStockQuery StockQuery { get; }
+        ICorporateActionQuery CorporateActionQuery { get; }
     }
 
     public interface IStockRepository: IEffectiveDatedRepository<Stock>

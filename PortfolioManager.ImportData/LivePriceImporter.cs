@@ -24,15 +24,19 @@ namespace PortfolioManager.ImportData
 
         public async Task Import()
         {
-            var stocks = _Database.StockQuery.GetAll(DateTime.Today);
-
             var asxCodes = new List<string>();
-            foreach (var stock in stocks)
+            IEnumerable<Stock> stocks;
+            using (var unitOfWork = _Database.CreateReadOnlyUnitOfWork())
             {
-                if (stock.ParentId == Guid.Empty)
-                    asxCodes.Add(stock.ASXCode);
+                stocks = unitOfWork.StockQuery.GetAll(DateTime.Today);
+      
+                foreach (var stock in stocks)
+                {
+                    if (stock.ParentId == Guid.Empty)
+                        asxCodes.Add(stock.ASXCode);
+                }
             }
-
+                
             var stockQuotes = await _DataService.GetMultiplePrices(asxCodes);
 
             using (var unitOfWork = _Database.CreateUnitOfWork())
@@ -56,7 +60,7 @@ namespace PortfolioManager.ImportData
                             var childStocks = stocks.Where(x => x.ParentId == stock.Id);
                             foreach (var childStock in childStocks)
                             {
-                                var percentOfPrice = _Database.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
+                                var percentOfPrice = unitOfWork.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
 
                                 if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
                                 {

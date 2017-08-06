@@ -13,35 +13,37 @@ namespace PortfolioManager.Service.Local
 
     class PortfolioSummaryService : IPortfolioSummaryService
     {
-        private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly IStockQuery _StockQuery;
-        private readonly PortfolioUtils _PortfolioUtils;
-        
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;       
 
-        public PortfolioSummaryService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public PortfolioSummaryService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
-            _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
-
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery);
+            _PortfolioDatabase = portfolioDatabase;
+            _StockDatabase = stockDatabase;
         }
 
         public Task<PortfolioPropertiesResponce> GetProperties()
         {
             var responce = new PortfolioPropertiesResponce();
 
-            responce.StartDate = _PortfolioUtils.GetPortfolioStartDate();
-            responce.EndDate = DateUtils.NoEndDate;   // This is wrong !!!!
-            
-            var stocksOwned =_PortfolioQuery.GetStocksOwned(responce.StartDate, responce.EndDate);
-            foreach (var id in stocksOwned)
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {
-                var stock = _StockQuery.Get(id, responce.EndDate);
-                if (stock.ParentId == Guid.Empty)
-                    responce.StocksHeld.Add(new StockItem(stock));
-            }
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    responce.StartDate = PortfolioUtils.GetPortfolioStartDate(portfolioUnitOfWork.PortfolioQuery);
+                    responce.EndDate = DateUtils.NoEndDate;   // This is wrong !!!!
 
-            responce.SetStatusToSuccessfull();
+                    var stocksOwned = portfolioUnitOfWork.PortfolioQuery.GetStocksOwned(responce.StartDate, responce.EndDate);
+                    foreach (var id in stocksOwned)
+                    {
+                        var stock = stockUnitOfWork.StockQuery.Get(id, responce.EndDate);
+                        if (stock.ParentId == Guid.Empty)
+                            responce.StocksHeld.Add(new StockItem(stock));
+                    }
+
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<PortfolioPropertiesResponce>(responce);
         }
@@ -50,37 +52,43 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new PortfolioSummaryResponce();
 
-            var holdings = _PortfolioUtils.GetHoldings(date);
-            var cashBalance = _PortfolioQuery.GetCashBalance(date);
-
-            responce.PortfolioValue = holdings.Sum(x => x.Value) + cashBalance; 
-            responce.PortfolioCost = holdings.Sum(x => x.Cost) + cashBalance;
-
-            responce.CashBalance = cashBalance;
-
-            responce.Return1Year = CalculateIRR(date, 1);
-            responce.Return3Year = CalculateIRR(date, 3);
-            responce.Return5Year = CalculateIRR(date, 5);
-            responce.ReturnAll = CalculateIRR(date, 0);
-
-            foreach (var holding in holdings)
-                responce.Holdings.Add(new HoldingItem()
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
                 {
-                    Stock = holding.Stock,
-                    Category = holding.Category,
-                    Units = holding.Units,
-                    Value = holding.Value,
-                    Cost = holding.Cost
-                });
+                    var holdings = PortfolioUtils.GetHoldings(date, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+                    var cashBalance = portfolioUnitOfWork.PortfolioQuery.GetCashBalance(date);
 
-            responce.SetStatusToSuccessfull();
+                    responce.PortfolioValue = holdings.Sum(x => x.Value) + cashBalance;
+                    responce.PortfolioCost = holdings.Sum(x => x.Cost) + cashBalance;
+
+                    responce.CashBalance = cashBalance;
+
+                    responce.Return1Year = CalculateIRR(date, 1, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+                    responce.Return3Year = CalculateIRR(date, 3, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+                    responce.Return5Year = CalculateIRR(date, 5, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+                    responce.ReturnAll = CalculateIRR(date, 0, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+
+                    foreach (var holding in holdings)
+                        responce.Holdings.Add(new HoldingItem()
+                        {
+                            Stock = holding.Stock,
+                            Category = holding.Category,
+                            Units = holding.Units,
+                            Value = holding.Value,
+                            Cost = holding.Cost
+                        });
+
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<PortfolioSummaryResponce>(responce);
         }
 
-        private decimal? CalculateIRR(DateTime date, int years)
+        private decimal? CalculateIRR(DateTime date, int years, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
-            var portfolioStartDate = _PortfolioUtils.GetPortfolioStartDate();
+            var portfolioStartDate = PortfolioUtils.GetPortfolioStartDate(portfolioQuery);
 
             DateTime startDate;
             if (years == 0)
@@ -92,7 +100,7 @@ namespace PortfolioManager.Service.Local
             {
                 try
                 {
-                   return _PortfolioUtils.CalculatePortfolioIRR(startDate, date);
+                   return PortfolioUtils.CalculatePortfolioIRR(startDate, date, portfolioQuery, stockQuery);
                 }
                 catch
                 {

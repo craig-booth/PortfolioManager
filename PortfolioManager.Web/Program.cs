@@ -16,7 +16,7 @@ namespace PortfolioManager.Web
     {
         public static void Main(string[] args)
         {
-            ScheduleImports();
+           // ScheduleImports();
 
             var host = new WebHostBuilder()
                 .UseKestrel()
@@ -29,7 +29,7 @@ namespace PortfolioManager.Web
             host.Run();          
         }
 
-        public static void ScheduleImports()
+    /*    public static void ScheduleImports()
         {
             var fileName = @"C:\PortfolioManager\Stocks.db";
             var database = new SQLiteStockDatabase(fileName);
@@ -39,11 +39,11 @@ namespace PortfolioManager.Web
             var historicalPriceImporter = new HistoricalPriceImporter(database);
 
             var scheduler = new ActionScheduler();
-           // scheduler.AddRecurringAction(() => tradingDayImporter.Import(), DateTime.Now, new TimeSpan(24, 0, 0));
+            scheduler.AddRecurringAction(() => tradingDayImporter.Import(), DateTime.Now, new TimeSpan(24, 0, 0));
             scheduler.AddRecurringAction(() => livePriceImporter.Import(), DateTime.Now, new TimeSpan(0, 5, 0));
-          //  scheduler.AddRecurringAction(() => historicalPriceImporter.Import(), DateTime.Now, new TimeSpan(24, 0, 0));
+            scheduler.AddRecurringAction(() => historicalPriceImporter.Import(), DateTime.Now, new TimeSpan(24, 0, 0));
 
             scheduler.Start();
-        }
+        } */
     }
 }
