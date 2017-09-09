@@ -14,7 +14,7 @@ namespace PortfolioManager.Data.Portfolios
         public OpeningBalance()
             : this(Guid.NewGuid())
         {
-
+            Type = TransactionType.OpeningBalance;
         }
 
         public OpeningBalance(Guid id)

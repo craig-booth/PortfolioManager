@@ -13,7 +13,7 @@ namespace PortfolioManager.Data.Portfolios
         public ReturnOfCapital()
             : this (Guid.NewGuid())
         {
-
+            Type = TransactionType.ReturnOfCapital;
         }
 
         public ReturnOfCapital(Guid id)

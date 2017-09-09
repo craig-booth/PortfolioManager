@@ -7,7 +7,7 @@ using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Local
 {
-    class CashAccountService : ICashAccountService
+    public class CashAccountService : ICashAccountService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         

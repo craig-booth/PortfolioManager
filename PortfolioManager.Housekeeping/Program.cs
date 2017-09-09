@@ -1,34 +1,37 @@
 ﻿using System;
-using System.Threading.Tasks;
+using Microsoft.Extensions.CommandLineUtils;
 
-using PortfolioManager.Data.SQLite.Stocks;
-using PortfolioManager.ImportData;
 
 namespace PortfolioManager.Housekeeping
 {
     class Program
     {
-        static void Main(string[] args)
+
+        static int Main(string[] args)
         {
-            Console.WriteLine("Importing Data...");
-            ImportData();
-            Console.WriteLine("Done");
-            Console.ReadKey();
-        }
+            try
+            {
+                return new App().Execute(args);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+                return 1;
+            }
 
-        static async void ImportData()
-        {
-            var fileName = @"C:\PortfolioManager\Stocks.db";
-            var database = new SQLiteStockDatabase(fileName);
-
-            var tradingDayImporter = new TradingDayImporter(database);
-            var livePriceImporter = new LivePriceImporter(database);
-            var historicalPriceImporter = new HistoricalPriceImporter(database);
-
-
-            await tradingDayImporter.Import();
-            await livePriceImporter.Import();
-            await historicalPriceImporter.Import();
         }
     }
+
+    class App : CommandLineApplication
+    {
+
+        public App()
+        {
+            Commands.Add(new DownloadCommand());
+
+            HelpOption("-h | -? | --help");
+        }
+    }
+
+ 
 }

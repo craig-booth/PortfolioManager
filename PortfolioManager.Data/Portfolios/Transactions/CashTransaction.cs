@@ -12,7 +12,8 @@ namespace PortfolioManager.Data.Portfolios
         public CashTransaction()
             : this(Guid.NewGuid())
         {
-
+            ASXCode = "";
+            Type = TransactionType.CashTransaction;
         }
 
         public CashTransaction(Guid id)

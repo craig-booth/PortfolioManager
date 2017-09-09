@@ -16,7 +16,7 @@ namespace PortfolioManager.Data.Portfolios
         public Disposal()
             : this(Guid.NewGuid())
         {
-
+            Type = TransactionType.Disposal;
         }
 
         public Disposal(Guid id)

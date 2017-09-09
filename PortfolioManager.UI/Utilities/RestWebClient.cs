@@ -146,6 +146,23 @@ namespace PortfolioManager.UI.Utilities
             return await GetAsync<CashAccountTransactionsResponce>("api/portfolio/cashaccount/transactions?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
+        public async Task<ServiceResponce> AddTransaction(TransactionItem transaction)
+        {
+            return await PostAsync<ServiceResponce, TransactionItem>("api/transactions", transaction);
+        }
+
+        public async Task<ServiceResponce> UpdateTransaction(TransactionItem transaction)
+        {
+            throw new NotSupportedException();
+        }
+
+        public async Task<ServiceResponce> DeleteTransaction(Guid id)
+        {
+            throw new NotSupportedException();
+        }
+
+
+
         private async Task<T> GetAsync<T>(string url)
         {
             var httpClient = new HttpClient();
@@ -167,5 +184,29 @@ namespace PortfolioManager.UI.Utilities
 
             return responce;
         }
+
+        private async Task<T> PostAsync<T, D>(string url, D data)
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_BaseURL);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var formatter = new JsonMediaTypeFormatter
+            {
+                SerializerSettings = { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects }
+            };
+
+            T responce = default(T);
+
+            HttpResponseMessage response = await httpClient.PostAsync<D>(url, data, formatter);
+            if (response.IsSuccessStatusCode)
+            {
+                responce = await response.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { formatter });
+            }
+
+            return responce;
+        }
+
     }
 }

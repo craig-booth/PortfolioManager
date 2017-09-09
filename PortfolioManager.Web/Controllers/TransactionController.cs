@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 using PortfolioManager.Common;
-using PortfolioManager.Service.Local;
 using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Web.Controllers
@@ -11,14 +11,11 @@ namespace PortfolioManager.Web.Controllers
     [Route("api/transactions")]
     public class TransactionController : Controller
     {
-        private LocalPortfolioManagerService _PortfolioManagerService = new LocalPortfolioManagerService();
+        private IServiceProvider _ServiceProvider;
 
-        public TransactionController()
+        public TransactionController(IServiceProvider serviceProvider)
         {
-            var portfolioDatabase = @"C:\PortfolioManager\Natalies Portfolio.db";
-            var stockDatabase = @"C:\PortfolioManager\Stocks.db";
-
-            _PortfolioManagerService.Connect(portfolioDatabase, stockDatabase);
+            _ServiceProvider = serviceProvider;
         }
 
         // GET: /api/transaction/id
@@ -32,7 +29,7 @@ namespace PortfolioManager.Web.Controllers
         [HttpGet]
         public async Task<GetTransactionsResponce> Get(Guid? stock, DateTime? fromDate, DateTime? toDate)
         {
-            var service = _PortfolioManagerService.GetService<ITransactionService>();
+            var service = _ServiceProvider.GetRequiredService<ITransactionService>();
 
             if (fromDate == null)
                 fromDate = DateUtils.NoStartDate;
@@ -51,7 +48,7 @@ namespace PortfolioManager.Web.Controllers
         [HttpPost]
         public void Post([FromBody]TransactionItem value)
         {
-            var service = _PortfolioManagerService.GetService<ITransactionService>();
+            var service = _ServiceProvider.GetRequiredService<ITransactionService>();
 
             service.AddTransaction(value);
         }
@@ -60,7 +57,7 @@ namespace PortfolioManager.Web.Controllers
         [HttpPut("{id}")]
         public void Put(int Guid, [FromBody]TransactionItem value)
         {
-            var service = _PortfolioManagerService.GetService<ITransactionService>();
+            var service = _ServiceProvider.GetRequiredService<ITransactionService>();
 
             service.UpdateTransaction(value);
         }
@@ -69,7 +66,7 @@ namespace PortfolioManager.Web.Controllers
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
-            var service = _PortfolioManagerService.GetService<ITransactionService>();
+            var service = _ServiceProvider.GetRequiredService<ITransactionService>();
 
             service.DeleteTransaction(id);
         }

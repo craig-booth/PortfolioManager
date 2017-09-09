@@ -11,7 +11,7 @@ using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
-    class IncomeService : IIncomeService
+    public class IncomeService : IIncomeService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;

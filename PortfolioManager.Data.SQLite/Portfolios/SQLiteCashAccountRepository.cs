@@ -55,6 +55,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios
             parameters["@Id"].Value = entity.Id.ToString();
             parameters["@Type"].Value = entity.Type;
             parameters["@Date"].Value = entity.Date.ToString("yyyy-MM-dd");
+            parameters["@Description"].Value = entity.Description;
             parameters["@Amount"].Value = SQLiteUtils.DecimalToDB(entity.Amount);
         }
 

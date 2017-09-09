@@ -7,7 +7,7 @@ using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
-    class HoldingService : IHoldingService
+    public class HoldingService : IHoldingService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;

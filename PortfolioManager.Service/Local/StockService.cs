@@ -8,7 +8,7 @@ using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Local
 {
-    class StockService : IStockService
+    public class StockService : IStockService
     { 
         private readonly IStockDatabase _StockDatabase;
 

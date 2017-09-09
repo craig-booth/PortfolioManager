@@ -11,7 +11,7 @@ using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Local
 {
-    class CapitalGainService : ICapitalGainService
+    public class CapitalGainService : ICapitalGainService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;

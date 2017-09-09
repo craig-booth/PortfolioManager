@@ -13,7 +13,7 @@ using PortfolioManager.Service.Utils;
 namespace PortfolioManager.Service.Local
 {
 
-    class PortfolioValueService : IPortfolioValueService
+    public class PortfolioValueService : IPortfolioValueService
     {
 
         private readonly IPortfolioDatabase _PortfolioDatabase;

@@ -12,7 +12,7 @@ using PortfolioManager.Service.Interface;
 namespace PortfolioManager.Service.Local
 {
 
-    class PortfolioPerformanceService : IPortfolioPerformanceService
+    public class PortfolioPerformanceService : IPortfolioPerformanceService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;

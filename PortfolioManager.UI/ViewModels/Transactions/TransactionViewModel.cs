@@ -155,6 +155,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         private async void PopulateAvailableStocks(DateTime date)
         {
+            if (_StockSelection == TransactionStockSelection.None)
+                return;
 
             AvailableStocks.Clear();
 

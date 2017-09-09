@@ -12,7 +12,7 @@ namespace PortfolioManager.Data.Portfolios
         public UnitCountAdjustment()
             : this(Guid.NewGuid())
         {
-
+            Type = TransactionType.UnitCountAdjustment;
         }
 
         public UnitCountAdjustment(Guid id)

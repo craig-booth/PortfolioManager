@@ -18,7 +18,7 @@ namespace PortfolioManager.Data.Portfolios
         public IncomeReceived()
             : this(Guid.NewGuid())
         {
-
+            Type = TransactionType.Income;
         }
 
         public IncomeReceived(Guid id)

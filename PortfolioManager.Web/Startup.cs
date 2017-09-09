@@ -32,7 +32,9 @@ namespace PortfolioManager.Web
             // Add framework services.
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto);
-                 
+
+            var settings = Configuration.GetSection("Settings").Get<Settings>();
+            services.AddPortfolioManagerService(settings);          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PortfolioManager.Housekeeping": {
+      "commandName": "Project",
+      "commandLineArgs": "download \"C:\\PortfolioManager\\Stocks.db\" -hp"
+    }
+  }
+}

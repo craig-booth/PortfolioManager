@@ -11,7 +11,7 @@ namespace PortfolioManager.Data.Portfolios
         public CostBaseAdjustment()
             : this(Guid.NewGuid())
         {
-
+            Type = TransactionType.CostBaseAdjustment;
         }
 
         public CostBaseAdjustment(Guid id)

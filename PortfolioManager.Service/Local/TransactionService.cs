@@ -12,7 +12,7 @@ using PortfolioManager.Service.Transactions;
 
 namespace PortfolioManager.Service.Local
 {
-    class TransactionService : ITransactionService
+    public class TransactionService : ITransactionService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;
@@ -21,6 +21,9 @@ namespace PortfolioManager.Service.Local
         {
             _PortfolioDatabase = portfolioDatabase;
             _StockDatabase = stockDatabase;
+
+            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(stockDatabase)));
+            Mapper.AssertConfigurationIsValid();
         }
 
         public Task<ServiceResponce> AddTransaction(TransactionItem transactionItem)
@@ -196,6 +199,83 @@ namespace PortfolioManager.Service.Local
         public ITransactionHandler GetHandler(Transaction transaction)
         {
             return _TransactionHandlers.GetService(transaction);
+        }
+    }
+
+    class ModelToServiceMapping : Profile
+    {
+        public ModelToServiceMapping(IStockDatabase stockDatabase)
+        {
+            var stockResolver = new StockResolver(stockDatabase);
+
+            CreateMap<Transaction, TransactionItem>()
+                .ForMember(dest => dest.Stock, opts => opts.ResolveUsing(stockResolver))
+                .Include<Aquisition, AquisitionTransactionItem>()
+                .Include<CashTransaction, CashTransactionItem>()
+                .Include<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>()
+                .Include<Disposal, DisposalTransactionItem>()
+                .Include<IncomeReceived, IncomeTransactionItem>()
+                .Include<OpeningBalance, OpeningBalanceTransactionItem>()
+                .Include<ReturnOfCapital, ReturnOfCapitalTransactionItem>()
+                .Include<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+            CreateMap<Aquisition, AquisitionTransactionItem>();
+            CreateMap<CashTransaction, CashTransactionItem>();
+            CreateMap<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>();
+            CreateMap<Disposal, DisposalTransactionItem>();
+            CreateMap<IncomeReceived, IncomeTransactionItem>();
+            CreateMap<OpeningBalance, OpeningBalanceTransactionItem>();
+            CreateMap<ReturnOfCapital, ReturnOfCapitalTransactionItem>();
+            CreateMap<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+
+            CreateMap<TransactionItem, Transaction>()
+                .ForMember(dest => dest.ASXCode, opts => opts.MapFrom(src => src.Stock.ASXCode))
+                .ForMember(dest => dest.Type, opt => opt.Ignore())
+                .Include<AquisitionTransactionItem, Aquisition>()
+                .Include<CashTransactionItem, CashTransaction>()
+                .Include<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>()
+                .Include<DisposalTransactionItem, Disposal>()
+                .Include<IncomeTransactionItem, IncomeReceived>()
+                .Include<OpeningBalanceTransactionItem, OpeningBalance>()
+                .Include<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
+                .Include<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+            CreateMap<AquisitionTransactionItem, Aquisition>();
+            CreateMap<CashTransactionItem, CashTransaction>();
+            CreateMap<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>();
+            CreateMap<DisposalTransactionItem, Disposal>();
+            CreateMap<IncomeTransactionItem, IncomeReceived>();
+            CreateMap<OpeningBalanceTransactionItem, OpeningBalance>();
+            CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>();
+            CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+        }
+    }
+
+    public class StockResolver : IValueResolver<Transaction, TransactionItem, StockItem>
+    {
+        private IStockDatabase _StockDatabase;
+
+        public StockResolver(IStockDatabase stockDatabase)
+        {
+            _StockDatabase = stockDatabase;
+        }
+
+        public StockItem Resolve(Transaction source, TransactionItem destination, StockItem member, ResolutionContext context)
+        {
+            if (source.ASXCode == "")
+                return new StockItem(Guid.Empty, "", "");
+
+            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+            {
+                try
+                {
+                    var stock = unitOfWork.StockQuery.GetByASXCode(source.ASXCode, source.TransactionDate);
+                    return new StockItem(stock);
+                }
+                catch
+                {
+                    return new StockItem(Guid.Empty, source.ASXCode, "");
+                }
+            }
+               
         }
     }
 }

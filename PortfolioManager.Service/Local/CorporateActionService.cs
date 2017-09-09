@@ -14,7 +14,7 @@ using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
-    class CorporateActionService : ICorporateActionService
+    public class CorporateActionService : ICorporateActionService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;

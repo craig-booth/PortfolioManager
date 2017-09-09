@@ -14,7 +14,7 @@ namespace PortfolioManager.Data.Portfolios
         public Aquisition()
             : this (Guid.NewGuid())
         {
-            
+            Type = TransactionType.Aquisition;
         }
 
         public Aquisition(Guid id)
