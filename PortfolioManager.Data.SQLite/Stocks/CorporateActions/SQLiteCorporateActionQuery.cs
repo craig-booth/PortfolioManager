@@ -74,6 +74,7 @@ namespace PortfolioManager.Data.SQLite.Stocks.CorporateActions
         public IEnumerable<CorporateAction> Find(Guid stock, DateTime fromDate, DateTime toDate)
         {
             var query = EntityQuery.FromTable("CorporateActions")
+                                    .Select("[Id], [Type]")
                                     .Where("[Stock] = @Stock AND [ActionDate] BETWEEN @FromDate AND @ToDate")
                                     .WithParameter("@Stock", stock)
                                     .WithParameter("@FromDate", fromDate)

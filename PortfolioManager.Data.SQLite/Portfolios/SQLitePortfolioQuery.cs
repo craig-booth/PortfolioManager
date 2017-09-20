@@ -288,7 +288,11 @@ namespace PortfolioManager.Data.SQLite.Portfolios
                             .WithId(stock)
                             .EffectiveAt(atDate);
 
-            return query.CreateEntity<StockSetting>();
+            var stockSetting = query.CreateEntity<StockSetting>();
+            if (stockSetting != null)
+                return stockSetting;
+            else
+                return new StockSetting(stock, atDate, atDate);
         }
 
 

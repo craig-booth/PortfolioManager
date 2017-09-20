@@ -76,8 +76,8 @@ namespace PortfolioManager.Data.SQLite.Stocks
                                         reader.GetDateTime(2),
                                         reader.GetDateTime(6),
                                         SQLiteUtils.DBToDecimal(reader.GetInt64(7)),
-                                        SQLiteUtils.DBToDecimal(reader.GetInt64(8)),
                                         SQLiteUtils.DBToDecimal(reader.GetInt64(9)),
+                                        SQLiteUtils.DBToDecimal(reader.GetInt64(8)),
                                         SQLiteUtils.DBToDecimal(reader.GetInt64(10)),
                                         reader.GetString(3));
             return dividend;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 using AutoMapper;
 
@@ -34,6 +35,7 @@ namespace PortfolioManager.Service.Local
             {
                 using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
                 {
+                    transactionItem.Id = Guid.NewGuid();
                     var transaction = Mapper.Map<Transaction>(transactionItem);
 
                     var transactionHandlerFactory = new TransactionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
@@ -69,10 +71,11 @@ namespace PortfolioManager.Service.Local
                 {
                     var transactionHandlerFactory = new TransactionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
 
-                    var transactions = Mapper.Map<List<Transaction>>(transactionItems);
-
-                    foreach (var transaction in transactions)
+                    foreach (var transactionItem in transactionItems)
                     {
+                        transactionItem.Id = Guid.NewGuid();
+                        var transaction = Mapper.Map<Transaction>(transactionItem);
+
                         var handler = transactionHandlerFactory.GetHandler(transaction);
                         if (handler != null)
                         {
@@ -82,9 +85,8 @@ namespace PortfolioManager.Service.Local
                         else
                         {
                             throw new NotSupportedException("Transaction type not supported");
-                        }                     
-
-                    };
+                        }
+                    }
 
                     portfolioUnitOfWork.Save();
 
@@ -238,14 +240,22 @@ namespace PortfolioManager.Service.Local
                 .Include<OpeningBalanceTransactionItem, OpeningBalance>()
                 .Include<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
                 .Include<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
-            CreateMap<AquisitionTransactionItem, Aquisition>();
-            CreateMap<CashTransactionItem, CashTransaction>();
-            CreateMap<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>();
-            CreateMap<DisposalTransactionItem, Disposal>();
-            CreateMap<IncomeTransactionItem, IncomeReceived>();
-            CreateMap<OpeningBalanceTransactionItem, OpeningBalance>();
-            CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>();
-            CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+            CreateMap<AquisitionTransactionItem, Aquisition>()
+                .ConstructUsing(src => new Aquisition(src.Id));
+            CreateMap<CashTransactionItem, CashTransaction>()
+                .ConstructUsing(src => new CashTransaction(src.Id));
+            CreateMap<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>()
+                .ConstructUsing(src => new CostBaseAdjustment(src.Id));
+            CreateMap<DisposalTransactionItem, Disposal>()
+                .ConstructUsing(src => new Disposal(src.Id));
+            CreateMap<IncomeTransactionItem, IncomeReceived>()
+                .ConstructUsing(src => new IncomeReceived(src.Id));
+            CreateMap<OpeningBalanceTransactionItem, OpeningBalance>()
+                .ConstructUsing(src => new OpeningBalance(src.Id));
+            CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
+                .ConstructUsing(src => new ReturnOfCapital(src.Id));
+            CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>()
+                .ConstructUsing(src => new UnitCountAdjustment(src.Id));
         }
     }
 
