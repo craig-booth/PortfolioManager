@@ -61,43 +61,6 @@ namespace PortfolioManager.Service.Local
             return Task.FromResult<ServiceResponce>(responce); 
         }
 
-        public Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems)
-        {
-            var responce = new ServiceResponce();
-
-            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateUnitOfWork())
-            {
-                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
-                {
-                    var transactionHandlerFactory = new TransactionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
-
-                    foreach (var transactionItem in transactionItems)
-                    {
-                        transactionItem.Id = Guid.NewGuid();
-                        var transaction = Mapper.Map<Transaction>(transactionItem);
-
-                        var handler = transactionHandlerFactory.GetHandler(transaction);
-                        if (handler != null)
-                        {
-                            handler.ApplyTransaction(portfolioUnitOfWork, transaction);
-                            portfolioUnitOfWork.TransactionRepository.Add(transaction);
-                        }
-                        else
-                        {
-                            throw new NotSupportedException("Transaction type not supported");
-                        }
-                    }
-
-                    portfolioUnitOfWork.Save();
-
-                    responce.SetStatusToSuccessfull();
-                }
-
-            }
-
-            return Task.FromResult<ServiceResponce>(responce); 
-        }
-
         public Task<ServiceResponce> DeleteTransaction(Guid id)
         {
             var responce = new ServiceResponce();

@@ -9,7 +9,6 @@ namespace PortfolioManager.Service.Interface
     public interface ITransactionService : IPortfolioService
     {
         Task<ServiceResponce> AddTransaction(TransactionItem transactionItem);
-        Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
         Task<ServiceResponce> UpdateTransaction(TransactionItem transactionItem);
         Task<ServiceResponce> DeleteTransaction(Guid id);
 

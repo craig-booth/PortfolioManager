@@ -96,8 +96,8 @@ namespace PortfolioManager.UI.ViewModels
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
             OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
-            //_RestWebClient = new RestWebClient("http://portfolio.boothfamily.id.au");
-            _RestWebClient = new RestWebClient("http://localhost:54952");
+            _RestWebClient = new RestWebClient("http://portfolio.boothfamily.id.au");
+            //_RestWebClient = new RestWebClient("http://localhost:54952");
 
             ViewParameter = new ViewParameter();
             ViewParameter.Stock = _AllCompanies;

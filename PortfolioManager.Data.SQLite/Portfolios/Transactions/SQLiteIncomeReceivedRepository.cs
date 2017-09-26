@@ -44,6 +44,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios.Transactions
                 _GetAddRecordCommand.Parameters.Add("@Interest", SqliteType.Integer);
                 _GetAddRecordCommand.Parameters.Add("@TaxDeferred", SqliteType.Integer);
                 _GetAddRecordCommand.Parameters.Add("@CreateCashTransaction", SqliteType.Text);
+                _GetAddRecordCommand.Parameters.Add("@DRPCashBalance", SqliteType.Integer);
 
                 _GetAddRecordCommand.Prepare();
             }
@@ -84,6 +85,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios.Transactions
             parameters["@Interest"].Value = SQLiteUtils.DecimalToDB(income.Interest);
             parameters["@TaxDeferred"].Value = SQLiteUtils.DecimalToDB(income.TaxDeferred);
             parameters["@CreateCashTransaction"].Value = SQLiteUtils.BoolToDb(income.CreateCashTransaction);
+            parameters["@DRPCashBalance"].Value = SQLiteUtils.DecimalToDB(income.DRPCashBalance);
         }
     }
 }

@@ -140,9 +140,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 TransactionViewModel.EndEdit();
 
                 if (NewTransaction)
-                    await _RestWebClient.AddTransaction(TransactionViewModel.Transaction);
+                    await _RestWebClient.AddTransactionAsync(TransactionViewModel.Transaction);
                 else
-                    await _RestWebClient.UpdateTransaction(TransactionViewModel.Transaction);
+                    await _RestWebClient.UpdateTransactionAsync(TransactionViewModel.Transaction);
             }
 
             TransactionViewModel = null;
@@ -161,7 +161,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 _TransactionViewModel.EndEdit();
 
-                await _RestWebClient.DeleteTransaction(TransactionViewModel.Transaction.Id);
+                await _RestWebClient.DeleteTransactionAsync(TransactionViewModel.Transaction.Id);
             }
 
             TransactionViewModel = null;

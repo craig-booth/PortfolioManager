@@ -146,17 +146,17 @@ namespace PortfolioManager.UI.Utilities
             return await GetAsync<CashAccountTransactionsResponce>("api/portfolio/cashaccount/transactions?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
-        public async Task<ServiceResponce> AddTransaction(TransactionItem transaction)
+        public async Task<ServiceResponce> AddTransactionAsync(TransactionItem transaction)
         {
             return await PostAsync<ServiceResponce, TransactionItem>("api/transactions", transaction);
         }
 
-        public async Task<ServiceResponce> UpdateTransaction(TransactionItem transaction)
+        public async Task<ServiceResponce> UpdateTransactionAsync(TransactionItem transaction)
         {
             throw new NotSupportedException();
         }
 
-        public async Task<ServiceResponce> DeleteTransaction(Guid id)
+        public async Task<ServiceResponce> DeleteTransactionAsync(Guid id)
         {
             throw new NotSupportedException();
         }
