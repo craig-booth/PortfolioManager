@@ -109,7 +109,7 @@ namespace PortfolioManager.Service.Local
                 {
                     var aquisition = transaction as Aquisition;
 
-                    workItem.HoldingPerformance.Purchases = aquisition.Units * aquisition.AveragePrice;
+                    workItem.HoldingPerformance.Purchases += aquisition.Units * aquisition.AveragePrice;
                     workItem.CashFlows.Add(aquisition.TransactionDate, -(aquisition.Units * aquisition.AveragePrice));
                 }
                 else if (transaction.Type == TransactionType.OpeningBalance)

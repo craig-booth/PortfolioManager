@@ -70,7 +70,7 @@ namespace PortfolioManager.Data.SQLite.Portfolios.Transactions
             var cashTransaction = entity as CashTransaction;
 
             parameters["@Id"].Value = cashTransaction.Id.ToString();
-            parameters["@Type"].Value = cashTransaction.Type;
+            parameters["@Type"].Value = cashTransaction.CashTransactionType;
             parameters["@Amount"].Value = SQLiteUtils.DecimalToDB(cashTransaction.Amount);
         }
     }
