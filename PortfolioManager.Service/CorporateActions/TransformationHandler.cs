@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.CorporateActions
 {

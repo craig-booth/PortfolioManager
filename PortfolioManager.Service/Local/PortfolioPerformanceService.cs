@@ -1,54 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Service.Local
 {
 
-    class PortfolioPerformanceService : IPortfolioPerformanceService
+    public class PortfolioPerformanceService : IPortfolioPerformanceService
     {
-        private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly IStockQuery _StockQuery;
-        private readonly PortfolioUtils _PortfolioUtils;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;
 
-        public PortfolioPerformanceService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public PortfolioPerformanceService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
-            _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
-            _PortfolioUtils = new PortfolioUtils(portfolioQuery, stockQuery);
+            _PortfolioDatabase = portfolioDatabase;
+            _StockDatabase = stockDatabase;
         }
 
         public Task<PortfolioPerformanceResponce> GetPerformance(DateTime fromDate, DateTime toDate)
         {
             var responce = new PortfolioPerformanceResponce();
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    var cashTransactions = portfolioUnitOfWork.PortfolioQuery.GetCashAccountTransactions(fromDate, toDate);
+                    responce.OpeningCashBalance = portfolioUnitOfWork.PortfolioQuery.GetCashBalance(fromDate);
+                    responce.Deposits = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Deposit).Sum(x => x.Amount);
+                    responce.Withdrawls = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Withdrawl).Sum(x => x.Amount);
+                    responce.Interest = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Interest).Sum(x => x.Amount);
+                    responce.Fees = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Fee).Sum(x => x.Amount);
+                    responce.ClosingCashBalance = portfolioUnitOfWork.PortfolioQuery.GetCashBalance(toDate);
 
-            var cashTransactions = _PortfolioQuery.GetCashAccountTransactions(fromDate, toDate);          
-            responce.OpeningCashBalance = _PortfolioQuery.GetCashBalance(fromDate);           
-            responce.Deposits = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Deposit).Sum(x => x.Amount);
-            responce.Withdrawls = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Withdrawl).Sum(x => x.Amount);
-            responce.Interest = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Interest).Sum(x => x.Amount);
-            responce.Fees = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Fee).Sum(x => x.Amount);
-            responce.ClosingCashBalance = _PortfolioQuery.GetCashBalance(toDate);
+                    var openingHoldings = PortfolioUtils.GetHoldings(fromDate, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+                    var closingHoldings = PortfolioUtils.GetHoldings(toDate, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
 
-            var openingHoldings = _PortfolioUtils.GetHoldings(fromDate);
-            var closingHoldings = _PortfolioUtils.GetHoldings(toDate);      
-                     
-            responce.HoldingPerformance = CalculateHoldingPerformance(fromDate, toDate, openingHoldings, closingHoldings);
-            responce.OpeningBalance = openingHoldings.Sum(x => x.Value);
-            responce.Dividends = responce.HoldingPerformance.Sum(x => x.Dividends);
-            responce.ChangeInMarketValue = responce.HoldingPerformance.Sum(x => x.CapitalGain);
-            responce.OutstandingDRPAmount = -responce.HoldingPerformance.Sum(x => x.DRPCashBalance);
-            responce.ClosingBalance = closingHoldings.Sum(x => x.Value);
+                    responce.HoldingPerformance = CalculateHoldingPerformance(fromDate, toDate, openingHoldings, closingHoldings, portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+                    responce.OpeningBalance = openingHoldings.Sum(x => x.Value);
+                    responce.Dividends = responce.HoldingPerformance.Sum(x => x.Dividends);
+                    responce.ChangeInMarketValue = responce.HoldingPerformance.Sum(x => x.CapitalGain);
+                    responce.OutstandingDRPAmount = -responce.HoldingPerformance.Sum(x => x.DRPCashBalance);
+                    responce.ClosingBalance = closingHoldings.Sum(x => x.Value);
 
-            responce.SetStatusToSuccessfull();
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<PortfolioPerformanceResponce>(responce);
         }
@@ -66,9 +68,8 @@ namespace PortfolioManager.Service.Local
             }
         }
 
-        private List<HoldingPerformance> CalculateHoldingPerformance(DateTime startDate, DateTime endDate, IEnumerable<HoldingItem> openingHoldings, IEnumerable<HoldingItem> closingHoldings)
+        private List<HoldingPerformance> CalculateHoldingPerformance(DateTime startDate, DateTime endDate, IEnumerable<HoldingItem> openingHoldings, IEnumerable<HoldingItem> closingHoldings, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
-
             var workingList = new List<HoldingPerformanceWorkItem>();
             HoldingPerformanceWorkItem workItem;
 
@@ -83,7 +84,7 @@ namespace PortfolioManager.Service.Local
             }
 
             // Process transactions during the period
-            var transactions = _PortfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
+            var transactions = portfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
             foreach (var transaction in transactions)
             {
                 if ((transaction.Type != TransactionType.Aquisition) &&
@@ -93,9 +94,9 @@ namespace PortfolioManager.Service.Local
                     continue;
 
 
-                var stock = _StockQuery.GetByASXCode(transaction.ASXCode, transaction.RecordDate);
+                var stock = stockQuery.GetByASXCode(transaction.ASXCode, transaction.RecordDate);
                 if (stock.ParentId != Guid.Empty)
-                    stock = _StockQuery.Get(stock.ParentId, transaction.RecordDate);
+                    stock = stockQuery.Get(stock.ParentId, transaction.RecordDate);
 
                 workItem = workingList.FirstOrDefault(x => x.HoldingPerformance.Stock.Id == stock.Id);
                 if (workItem == null)
@@ -108,7 +109,7 @@ namespace PortfolioManager.Service.Local
                 {
                     var aquisition = transaction as Aquisition;
 
-                    workItem.HoldingPerformance.Purchases = aquisition.Units * aquisition.AveragePrice;
+                    workItem.HoldingPerformance.Purchases += aquisition.Units * aquisition.AveragePrice;
                     workItem.CashFlows.Add(aquisition.TransactionDate, -(aquisition.Units * aquisition.AveragePrice));
                 }
                 else if (transaction.Type == TransactionType.OpeningBalance)
@@ -144,7 +145,7 @@ namespace PortfolioManager.Service.Local
                     item.HoldingPerformance.ClosingBalance = holding.Value;
                     item.CashFlows.Add(endDate, holding.Value);
 
-                    item.HoldingPerformance.DRPCashBalance = _PortfolioQuery.GetDRPBalance(holding.Stock.Id, endDate);
+                    item.HoldingPerformance.DRPCashBalance = portfolioQuery.GetDRPBalance(holding.Stock.Id, endDate);
                 }
                 else
                     item.HoldingPerformance.ClosingBalance = 0.00m;

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
 
 namespace PortfolioManager.Data.SQLite
 {
@@ -18,6 +14,7 @@ namespace PortfolioManager.Data.SQLite
         IEntityQuery FromTable(string table);
         IEntityQuery Select(string fields);
         IEntityQuery Where(string condition);
+        IEntityQuery Join(string table, string on);
 
         IEntityQuery WithId(Guid id);
         IEntityQuery EffectiveAt(DateTime date);
@@ -35,8 +32,8 @@ namespace PortfolioManager.Data.SQLite
         T CreateEntity<T>() where T : Entity;
         IEnumerable<T> CreateEntities<T>() where T : Entity;
 
-        SQLiteDataReader Execute();
-        SQLiteDataReader ExecuteSingle();
+        SqliteDataReader Execute();
+        SqliteDataReader ExecuteSingle();
 
         bool ExecuteScalar(out int value);
         bool ExecuteScalar(out decimal value);
@@ -48,25 +45,29 @@ namespace PortfolioManager.Data.SQLite
 
     class SQLiteEntityQuery : IEntityQuery
     {
-        private SQLiteConnection _Connection;
+        private SqliteTransaction _Transaction;
         private IEntityCreator _EntityCreator;
+
         private string _TableName;
+        private List<string> _Join;
         private string _Where;
         private string _SQL;
         private string _Fields;
         private string _Orderby;
-        private List<SQLiteParameter> _Parameters;
 
-        public SQLiteEntityQuery(SQLiteConnection connection, IEntityCreator entityCreator)
+        private List<SqliteParameter> _Parameters;
+
+        public SQLiteEntityQuery(SqliteTransaction transaction, IEntityCreator entityCreator)
         {
-            _Connection = connection;
+            _Transaction = transaction;
             _EntityCreator = entityCreator;
             _SQL = "";
             _TableName = "";
+            _Join = new List<string>();
             _Where = "";
             _Fields = "*";
             _Orderby = "";
-            _Parameters = new List<SQLiteParameter>();
+            _Parameters = new List<SqliteParameter>();
         }
 
         public IEntityQuery SQL(string sql)
@@ -100,9 +101,16 @@ namespace PortfolioManager.Data.SQLite
             return this;
         }
 
+        public IEntityQuery Join(string table, string on)
+        {
+            _Join.Add(" JOIN [" + table + "] ON (" + on + ")");
+
+            return this;
+        }
+
         public IEntityQuery WithId(Guid id)
         {
-            Where("[Id] = @_Id");
+            Where("[" + _TableName + "].[Id] = @_Id");
             WithParameter("@_Id", id);
 
             return this;
@@ -110,7 +118,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery EffectiveAt(DateTime date)
         {
-            Where("@_Date BETWEEN [FromDate] AND [ToDate]");
+            Where("@_Date BETWEEN [" + _TableName + "].[FromDate] AND [" + _TableName + "].[ToDate]");
             WithParameter("@_Date", date);
 
             return this;
@@ -118,7 +126,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery EffectiveBetween(DateTime fromDate, DateTime toDate)
         {
-            Where("(([FromDate] <= @_FromDate) and ([ToDate] >= @_FromDate)) or (([FromDate] <= @_ToDate) and ([ToDate] >= @_FromDate))");
+            Where("(([" + _TableName + "].[FromDate] <= @_FromDate) and ([" + _TableName + "].[ToDate] >= @_FromDate)) or (([" + _TableName + "].[FromDate] <= @_ToDate) and ([" + _TableName + "].[ToDate] >= @_FromDate))");
             WithParameter("@_FromDate", fromDate);
             WithParameter("@_ToDate", toDate);
 
@@ -127,7 +135,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, string value)
         {
-            var parameter = new SQLiteParameter(name, value);
+            var parameter = new SqliteParameter(name, value);
             _Parameters.Add(parameter);
 
             return this;
@@ -135,7 +143,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, DateTime value)
         {
-            var parameter = new SQLiteParameter(name, value.ToString("yyyy-MM-dd"));
+            var parameter = new SqliteParameter(name, value.ToString("yyyy-MM-dd"));
             _Parameters.Add(parameter);
 
             return this;
@@ -143,7 +151,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, Guid value)
         {
-            var parameter = new SQLiteParameter(name, value.ToString());
+            var parameter = new SqliteParameter(name, value.ToString());
             _Parameters.Add(parameter);
 
             return this;
@@ -151,7 +159,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, int value)
         {
-            var parameter = new SQLiteParameter(name, value);
+            var parameter = new SqliteParameter(name, value);
             _Parameters.Add(parameter);
 
             return this;
@@ -159,7 +167,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, decimal value)
         {
-            var parameter = new SQLiteParameter(name, SQLiteUtils.DecimalToDB(value));
+            var parameter = new SqliteParameter(name, SQLiteUtils.DecimalToDB(value));
             _Parameters.Add(parameter);
            
             return this;
@@ -167,7 +175,7 @@ namespace PortfolioManager.Data.SQLite
 
         public IEntityQuery WithParameter(string name, bool value)
         {
-            var parameter = new SQLiteParameter(name, SQLiteUtils.BoolToDb(value));
+            var parameter = new SqliteParameter(name, SQLiteUtils.BoolToDb(value));
             _Parameters.Add(parameter);
 
             return this;
@@ -184,13 +192,13 @@ namespace PortfolioManager.Data.SQLite
         {
             T entity;
 
-            var reader = ExecuteSingle();
-            if (reader.Read())
-                entity = (T)_EntityCreator.CreateEntity<T>(reader);
-            else
-                entity = null;
-
-            reader.Close();
+            using (var reader = ExecuteSingle())
+            {
+                if (reader.Read())
+                    entity = (T)_EntityCreator.CreateEntity<T>(reader);
+                else
+                    entity = null;
+            }
 
             return entity;
         }
@@ -199,21 +207,26 @@ namespace PortfolioManager.Data.SQLite
         {
             var list = new List<T>();
 
-            var reader = Execute();
-            while (reader.Read())
+            using (var reader = Execute())
             {
-                list.Add(_EntityCreator.CreateEntity<T>(reader));
+                while (reader.Read())
+                {
+                    list.Add(_EntityCreator.CreateEntity<T>(reader));
+                }
             }
-            reader.Close();
 
             return list;
         }
 
-        private SQLiteCommand BuildQuery(bool single)
+        private SqliteCommand BuildQuery(bool single)
         {
             if (_SQL == "")
             { 
                 _SQL = "SELECT " + _Fields + " FROM [" + _TableName + "]";
+                foreach (var join in _Join)
+                {
+                    _SQL += join;
+                }
                 if (_Where != "")
                     _SQL += " WHERE " + _Where;
                 if (_Orderby != "")
@@ -222,7 +235,7 @@ namespace PortfolioManager.Data.SQLite
                     _SQL += " LIMIT 1";
             }
 
-            var query = new SQLiteCommand(_SQL, _Connection);
+            var query = new SqliteCommand(_SQL, _Transaction.Connection, _Transaction);
             query.Prepare();
 
             query.Parameters.AddRange(_Parameters.ToArray());
@@ -230,14 +243,14 @@ namespace PortfolioManager.Data.SQLite
             return query;
         }
 
-        public SQLiteDataReader Execute()
+        public SqliteDataReader Execute()
         {
             var query = BuildQuery(false);
 
             return query.ExecuteReader();
         }
 
-        public SQLiteDataReader ExecuteSingle()
+        public SqliteDataReader ExecuteSingle()
         {
             var query = BuildQuery(true);
 
@@ -347,14 +360,14 @@ namespace PortfolioManager.Data.SQLite
         }
     }
 
-    abstract class SQLiteQuery
+    abstract class SQLiteQuery : IDisposable
     {
-        protected SQLiteConnection _Connection;
+        protected SqliteTransaction _Transaction;
         protected IEntityCreator _EntityCreator;
 
-        protected internal SQLiteQuery(SQLiteConnection connection, IEntityCreator entityCreator)
+        protected internal SQLiteQuery(SqliteTransaction transaction, IEntityCreator entityCreator)
         {
-            _Connection = connection;
+            _Transaction = transaction;
             _EntityCreator = entityCreator;
         }
 
@@ -362,9 +375,13 @@ namespace PortfolioManager.Data.SQLite
         {
             get
             {
-                return new SQLiteEntityQuery(_Connection, _EntityCreator);
+                return new SQLiteEntityQuery(_Transaction, _EntityCreator);
             }
         }
 
+        public void Dispose()
+        {
+            _Transaction.Dispose();
+        }
     }
 }

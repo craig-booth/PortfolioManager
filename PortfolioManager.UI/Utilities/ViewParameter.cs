@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
@@ -12,7 +7,7 @@ namespace PortfolioManager.UI.Utilities
 {
     class ViewParameter : NotifyClass
     {
-        public IPortfolioManagerService PortfolioManagerService;
+        public RestWebClient RestWebClient;
 
         private StockItem _Stock;
         public StockItem Stock

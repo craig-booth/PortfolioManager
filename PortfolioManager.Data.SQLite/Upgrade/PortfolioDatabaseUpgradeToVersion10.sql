@@ -60,7 +60,7 @@ CREATE TABLE [StockSettings]
 	[Id] TEXT(36) NOT NULL,
     [FromDate] TEXT(10) NOT NULL,
 	[ToDate] TEXT(10) NOT NULL,
-	[ParticipateinDRP] INTEGER NOT NULL,
+	[ParticipateinDRP] TEXT(1) NOT NULL DEFAULT "N",
 	
 	PRIMARY KEY ([Id] ASC, [FromDate] ASC)
 );

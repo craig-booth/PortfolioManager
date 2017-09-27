@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
 
 using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
@@ -50,8 +45,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, IStockService stockService, IHoldingService holdingService)
-            : base(returnOfCapital, TransactionStockSelection.Holdings, stockService, holdingService)
+        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, RestWebClient restWebClient)
+            : base(returnOfCapital, TransactionStockSelection.Holdings, restWebClient)
         {
 
         }

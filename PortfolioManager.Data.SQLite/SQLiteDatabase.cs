@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Data.SQLite;
-
-using PortfolioManager.Model.Data;
+using Microsoft.Data.Sqlite;
 using PortfolioManager.Data.SQLite.Upgrade;
 
 namespace PortfolioManager.Data.SQLite
 {
     public abstract class SQLiteDatabase
     {
-        protected abstract int RepositoryVersion { get; }         
-
-        protected internal SQLiteConnection _Connection;
-        protected internal SQLiteRepositoryTransaction _Transaction;        
+        protected abstract int RepositoryVersion { get; }              
 
         public string FileName { get; private set; }
         public SQLiteDatabaseVersion Version { get; private set; }
@@ -26,47 +17,42 @@ namespace PortfolioManager.Data.SQLite
             FileName = fileName;
             Version = new SQLiteDatabaseVersion();
 
-            _Connection = new SQLiteConnection("Data Source=" + FileName + ";Version=3;foreign keys=true;");
-            _Connection.Open();
+            var connection = new SqliteConnection("Data Source=" + FileName);
+            connection.Open();
+            var transaction = connection.BeginTransaction();
 
-            _Transaction = new SQLiteRepositoryTransaction(_Connection);
+            var tableCountCommand = new SqliteCommand("SELECT count(*) FROM [sqlite_master]", transaction.Connection, transaction);
+            if ((long)tableCountCommand.ExecuteScalar() == 0)
+            {
+                CreateDatabase(transaction);
+            }
+            else
+            {
+                LoadVersion(transaction);
 
-               var tableCountCommand = new SQLiteCommand("SELECT count(*) FROM [sqlite_master]", _Connection);
-               if ((long)tableCountCommand.ExecuteScalar() == 0)
-               {
-                   CreateDatabaseTables();
+                if (UpgradeRequired())
+                    Upgrade(transaction);
+            }
 
-                   Version.Version = RepositoryVersion;
-                   Version.CreationDateTime = DateTime.Today;
-                   Version.UpgradeDateTime = DateTime.Today;
-
-                   SetDbVersion();
-               }
-               else
-               { 
-                   LoadVersion();
-
-                   if (UpgradeRequired())
-                       Upgrade();
-               } 
+            transaction.Commit();
+            connection.Close();
         }
 
-        private void LoadVersion()
+        private void LoadVersion(SqliteTransaction transaction)
         {            
-            var sql = new SQLiteCommand("SELECT [Version], [CreationTime], [UpgradeTime] FROM [DbVersion]", _Connection);
+            var sql = new SqliteCommand("SELECT [Version], [CreationTime], [UpgradeTime] FROM [DbVersion]", transaction.Connection, transaction);
 
             try
             {
-                var reader = sql.ExecuteReader();
-
-                if (reader.Read())
+                using (var reader = sql.ExecuteReader())
                 {
-                    Version.Version = reader.GetInt32(0);
-                    Version.CreationDateTime = reader.GetDateTime(1);
-                    Version.UpgradeDateTime = reader.GetDateTime(2);
+                    if (reader.Read())
+                    {
+                        Version.Version = reader.GetInt32(0);
+                        Version.CreationDateTime = reader.GetDateTime(1);
+                        Version.UpgradeDateTime = reader.GetDateTime(2);
+                    }
                 }
-
-                reader.Close();
             }
             catch
             {
@@ -76,7 +62,18 @@ namespace PortfolioManager.Data.SQLite
             }                        
         }
 
-        protected abstract void CreateDatabaseTables();
+        protected abstract void CreateDatabaseTables(SqliteTransaction transaction);
+
+        protected virtual void CreateDatabase(SqliteTransaction transaction)
+        {
+            CreateDatabaseTables(transaction);
+
+            Version.Version = RepositoryVersion;
+            Version.CreationDateTime = DateTime.Today;
+            Version.UpgradeDateTime = DateTime.Today;
+
+            SetDbVersion(transaction);
+        }
 
         protected virtual bool UpgradeRequired()
         {
@@ -85,28 +82,28 @@ namespace PortfolioManager.Data.SQLite
 
         protected abstract SQLiteDatabaseUpgrade GetUpgrade(int forVersion);
         
-        protected virtual void Upgrade()
+        protected virtual void Upgrade(SqliteTransaction transaction)
         {
             // Backup the database first
-            var backupFile = Path.Combine(Path.GetDirectoryName(FileName), Path.GetFileNameWithoutExtension(FileName) + DateTime.Now.ToString("_backup-yyyy-MM-dd") +Path.GetExtension(FileName));
+            var backupFile = Path.Combine(Path.GetDirectoryName(FileName), Path.GetFileNameWithoutExtension(FileName) + DateTime.Now.ToString("_backup-yyyy-MM-dd") + Path.GetExtension(FileName));
             File.Copy(FileName, backupFile);
 
             while (UpgradeRequired())
             {
                 var databaseUpgrade = GetUpgrade(Version.Version);                
 
-                databaseUpgrade.Upgrade(this);
+                databaseUpgrade.Upgrade(this, transaction);
 
                 Version.Version = databaseUpgrade.Version;
                 Version.UpgradeDateTime = DateTime.Today;
 
-                UpdateDbVersion();
+                UpdateDbVersion(transaction);
             }
         }
 
-        protected void UpdateDbVersion()
+        protected void UpdateDbVersion(SqliteTransaction transaction)
         {
-            var updateCommand = new SQLiteCommand("UPDATE [DbVersion] SET [Version] = @Version, [UpgradeTime] = @UpgradeTime", _Connection);
+            var updateCommand = new SqliteCommand("UPDATE [DbVersion] SET [Version] = @Version, [UpgradeTime] = @UpgradeTime", transaction.Connection, transaction);
             updateCommand.Prepare();
 
             updateCommand.Parameters.AddWithValue("@Version", Version.Version);
@@ -115,9 +112,9 @@ namespace PortfolioManager.Data.SQLite
             updateCommand.ExecuteNonQuery();
         }
 
-        protected void SetDbVersion()
+        protected void SetDbVersion(SqliteTransaction transaction)
         {
-            var insertCommand = new SQLiteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", _Connection);
+            var insertCommand = new SqliteCommand("INSERT INTO [DbVersion] ([Version], [CreationTime], [UpgradeTime]) VALUES(@Version, @CreationTime, @UpgradeTime)", transaction.Connection, transaction);
             insertCommand.Prepare();
 
             insertCommand.Parameters.AddWithValue("@Version", Version.Version);
@@ -127,15 +124,17 @@ namespace PortfolioManager.Data.SQLite
             insertCommand.ExecuteNonQuery();
         }
 
-        protected internal void ExecuteScript(string fileName)
+        protected internal void ExecuteScript(string fileName, SqliteTransaction transaction)
         {
             /* Load SQL commands to execute */
-            var scriptFile = File.OpenText(fileName);
-            var sqlScript = scriptFile.ReadToEnd();
-            scriptFile.Close();
+            using (var scriptFile = File.OpenText(fileName))
+            {
+                var sqlScript = scriptFile.ReadToEnd();
 
-            var sqlCommand = new SQLiteCommand(sqlScript, _Connection);
-            sqlCommand.ExecuteNonQuery();
+                var sqlCommand = new SqliteCommand(sqlScript, transaction.Connection, transaction);
+                sqlCommand.ExecuteNonQuery();
+            }
+
         }
     }
 

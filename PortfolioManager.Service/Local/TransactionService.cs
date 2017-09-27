@@ -1,132 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 using AutoMapper;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Data.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Transactions;
 
 namespace PortfolioManager.Service.Local
 {
-    class TransactionService : ITransactionService
+    public class TransactionService : ITransactionService
     {
-        private readonly ServiceFactory<ITransactionHandler> _TransactionHandlers;
         private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;
 
-        private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly IStockQuery _StockQuery;
-
-        public TransactionService(IPortfolioDatabase portfolioDatabase, IStockQuery stockQuery)
+        public TransactionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
             _PortfolioDatabase = portfolioDatabase;
-            _PortfolioQuery = portfolioDatabase.PortfolioQuery;
-            _StockQuery = stockQuery;
+            _StockDatabase = stockDatabase;
 
-            _TransactionHandlers = new ServiceFactory<Transactions.ITransactionHandler>();
-            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<IncomeReceived>(() => new IncomeReceivedHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<OpeningBalance>(() => new OpeningBalanceHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(_PortfolioQuery, stockQuery));
-            _TransactionHandlers.Register<CashTransaction>(() => new CashTransactionHandler());
-        }
-
-        /* TODO: This is temporary */
-        public void LoadTransaction(IPortfolioUnitOfWork unitOfWork, Transaction transaction)
-        {
-            var handler = _TransactionHandlers.GetService(transaction);
-            if (handler != null)
-            {
-                handler.ApplyTransaction(unitOfWork, transaction);
-            }
-            else
-            {
-                throw new NotSupportedException("Transaction type not supported");
-            }
+            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(stockDatabase)));
+            Mapper.AssertConfigurationIsValid();
         }
 
         public Task<ServiceResponce> AddTransaction(TransactionItem transactionItem)
         {
             var responce = new ServiceResponce();
 
-            var transaction = Mapper.Map<Transaction>(transactionItem);
-
-            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                var handler = _TransactionHandlers.GetService(transaction);
-                if (handler != null)
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
                 {
-                    handler.ApplyTransaction(unitOfWork, transaction);
-                    unitOfWork.TransactionRepository.Add(transaction);
-                }
-                else
-                {
-                    throw new NotSupportedException("Transaction type not supported"); 
-                }
+                    transactionItem.Id = Guid.NewGuid();
+                    var transaction = Mapper.Map<Transaction>(transactionItem);
 
-                unitOfWork.Save();
-            }
+                    var transactionHandlerFactory = new TransactionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
 
-            responce.SetStatusToSuccessfull();
-
-            return Task.FromResult<ServiceResponce>(responce); 
-        }
-
-        public Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems)
-        {
-            var responce = new ServiceResponce();
-
-            var transactions = Mapper.Map<List<Transaction>>(transactionItems);
-
-            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
-            {
-                
-                foreach (var transaction in transactions)
-                {
-                    var handler = _TransactionHandlers.GetService(transaction);
+                    var handler = transactionHandlerFactory.GetHandler(transaction);
                     if (handler != null)
                     {
-                        handler.ApplyTransaction(unitOfWork, transaction);
-                        unitOfWork.TransactionRepository.Add(transaction);
+                        handler.ApplyTransaction(portfolioUnitOfWork, transaction);
+                        portfolioUnitOfWork.TransactionRepository.Add(transaction);
                     }
                     else
                     {
                         throw new NotSupportedException("Transaction type not supported");
                     }
 
-                    handler.ApplyTransaction(unitOfWork, transaction);
-                    unitOfWork.TransactionRepository.Add(transaction);
+                    portfolioUnitOfWork.Save();
 
-                };
-                unitOfWork.Save();
+                    responce.SetStatusToSuccessfull();
+                }
+
             }
-
-            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<ServiceResponce>(responce); 
         }
 
-        public Task<ServiceResponce> DeleteTransaction(TransactionItem transactionItem)
+        public Task<ServiceResponce> DeleteTransaction(Guid id)
         {
             var responce = new ServiceResponce();
 
-            var transaction = Mapper.Map<Transaction>(transactionItem);
-
-            using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
-                unitOfWork.TransactionRepository.Delete(transaction);
-                unitOfWork.Save();
-            }
+                portfolioUnitOfWork.TransactionRepository.Delete(id);
+                portfolioUnitOfWork.Save();
 
-            responce.SetStatusToSuccessfull();
+                responce.SetStatusToSuccessfull();               
+            }
 
             return Task.FromResult<ServiceResponce>(responce); 
         }
@@ -148,14 +93,31 @@ namespace PortfolioManager.Service.Local
             return Task.FromResult<ServiceResponce>(responce); 
         }
 
+        public Task<GetTransactionResponce> GetTransaction(Guid id)
+        {
+            var responce = new GetTransactionResponce();
+
+            using (IPortfolioReadOnlyUnitOfWork unitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                responce.Transaction = Mapper.Map<TransactionItem>(unitOfWork.PortfolioQuery.GetTransaction(id));
+
+                responce.SetStatusToSuccessfull();
+            }
+
+            return Task.FromResult<GetTransactionResponce>(responce);
+        }
+
         public Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate)
         {       
             var responce = new GetTransactionsResponce();
 
-            var transactions = _PortfolioDatabase.PortfolioQuery.GetTransactions(fromDate, toDate);
-            responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
-            
-            responce.SetStatusToSuccessfull();
+            using (IPortfolioReadOnlyUnitOfWork unitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                var transactions = unitOfWork.PortfolioQuery.GetTransactions(fromDate, toDate);
+                responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+
+                responce.SetStatusToSuccessfull();
+            }
 
             return Task.FromResult<GetTransactionsResponce>(responce); 
         }
@@ -164,15 +126,129 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new GetTransactionsResponce();
 
-            var asxCode = _StockQuery.GetASXCode(stockId, fromDate);
+            using (IPortfolioReadOnlyUnitOfWork portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (IStockReadOnlyUnitOfWork stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    var asxCode = stockUnitOfWork.StockQuery.GetASXCode(stockId, fromDate);
 
-            var transactions = _PortfolioQuery.GetTransactions(asxCode, fromDate, toDate);
-            responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+                    var transactions = portfolioUnitOfWork.PortfolioQuery.GetTransactions(asxCode, fromDate, toDate);
+                    responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
-            responce.SetStatusToSuccessfull();
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<GetTransactionsResponce>(responce);
         }
 
+    }
+
+    class TransactionHandlerFactory
+    {
+        private readonly ServiceFactory<ITransactionHandler> _TransactionHandlers;
+   
+        public TransactionHandlerFactory(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        {
+            _TransactionHandlers = new ServiceFactory<ITransactionHandler>();
+            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<IncomeReceived>(() => new IncomeReceivedHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<OpeningBalance>(() => new OpeningBalanceHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(portfolioQuery, stockQuery));
+            _TransactionHandlers.Register<CashTransaction>(() => new CashTransactionHandler());
+        }
+
+        public ITransactionHandler GetHandler(Transaction transaction)
+        {
+            return _TransactionHandlers.GetService(transaction);
+        }
+    }
+
+    class ModelToServiceMapping : Profile
+    {
+        public ModelToServiceMapping(IStockDatabase stockDatabase)
+        {
+            var stockResolver = new StockResolver(stockDatabase);
+
+            CreateMap<Transaction, TransactionItem>()
+                .ForMember(dest => dest.Stock, opts => opts.ResolveUsing(stockResolver))
+                .Include<Aquisition, AquisitionTransactionItem>()
+                .Include<CashTransaction, CashTransactionItem>()
+                .Include<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>()
+                .Include<Disposal, DisposalTransactionItem>()
+                .Include<IncomeReceived, IncomeTransactionItem>()
+                .Include<OpeningBalance, OpeningBalanceTransactionItem>()
+                .Include<ReturnOfCapital, ReturnOfCapitalTransactionItem>()
+                .Include<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+            CreateMap<Aquisition, AquisitionTransactionItem>();
+            CreateMap<CashTransaction, CashTransactionItem>();
+            CreateMap<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>();
+            CreateMap<Disposal, DisposalTransactionItem>();
+            CreateMap<IncomeReceived, IncomeTransactionItem>();
+            CreateMap<OpeningBalance, OpeningBalanceTransactionItem>();
+            CreateMap<ReturnOfCapital, ReturnOfCapitalTransactionItem>();
+            CreateMap<UnitCountAdjustment, UnitCountAdjustmentTransactionItem>();
+
+            CreateMap<TransactionItem, Transaction>()
+                .ForMember(dest => dest.ASXCode, opts => opts.MapFrom(src => src.Stock.ASXCode))
+                .ForMember(dest => dest.Type, opt => opt.Ignore())
+                .Include<AquisitionTransactionItem, Aquisition>()
+                .Include<CashTransactionItem, CashTransaction>()
+                .Include<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>()
+                .Include<DisposalTransactionItem, Disposal>()
+                .Include<IncomeTransactionItem, IncomeReceived>()
+                .Include<OpeningBalanceTransactionItem, OpeningBalance>()
+                .Include<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
+                .Include<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>();
+            CreateMap<AquisitionTransactionItem, Aquisition>()
+                .ConstructUsing(src => new Aquisition(src.Id));
+            CreateMap<CashTransactionItem, CashTransaction>()
+                .ConstructUsing(src => new CashTransaction(src.Id));
+            CreateMap<CostBaseAdjustmentTransactionItem, CostBaseAdjustment>()
+                .ConstructUsing(src => new CostBaseAdjustment(src.Id));
+            CreateMap<DisposalTransactionItem, Disposal>()
+                .ConstructUsing(src => new Disposal(src.Id));
+            CreateMap<IncomeTransactionItem, IncomeReceived>()
+                .ConstructUsing(src => new IncomeReceived(src.Id));
+            CreateMap<OpeningBalanceTransactionItem, OpeningBalance>()
+                .ConstructUsing(src => new OpeningBalance(src.Id));
+            CreateMap<ReturnOfCapitalTransactionItem, ReturnOfCapital>()
+                .ConstructUsing(src => new ReturnOfCapital(src.Id));
+            CreateMap<UnitCountAdjustmentTransactionItem, UnitCountAdjustment>()
+                .ConstructUsing(src => new UnitCountAdjustment(src.Id));
+        }
+    }
+
+    public class StockResolver : IValueResolver<Transaction, TransactionItem, StockItem>
+    {
+        private IStockDatabase _StockDatabase;
+
+        public StockResolver(IStockDatabase stockDatabase)
+        {
+            _StockDatabase = stockDatabase;
+        }
+
+        public StockItem Resolve(Transaction source, TransactionItem destination, StockItem member, ResolutionContext context)
+        {
+            if (source.ASXCode == "")
+                return new StockItem(Guid.Empty, "", "");
+
+            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+            {
+                try
+                {
+                    var stock = unitOfWork.StockQuery.GetByASXCode(source.ASXCode, source.TransactionDate);
+                    return new StockItem(stock);
+                }
+                catch
+                {
+                    return new StockItem(Guid.Empty, source.ASXCode, "");
+                }
+            }
+               
+        }
     }
 }

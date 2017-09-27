@@ -1,74 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.CorporateActions;
 using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
-    class CorporateActionService : ICorporateActionService
+    public class CorporateActionService : ICorporateActionService
     {
-        private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly ICorporateActionQuery _CorporateActionQuery;
-        private readonly ICorporateActionHandlerFactory _CorporateActionHandlerFactory;
-        private readonly StockUtils _StockUtils;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;
 
-        public CorporateActionService(IPortfolioQuery portfolioQuery, ICorporateActionQuery corporateActionQuery, IStockQuery stockQuery, ICorporateActionHandlerFactory corporateActionHandlerFactory)
+        public CorporateActionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
-            _PortfolioQuery = portfolioQuery;
-            _CorporateActionQuery = corporateActionQuery;
-            _CorporateActionHandlerFactory = corporateActionHandlerFactory;
-            _StockUtils = new StockUtils(stockQuery);
+            _PortfolioDatabase = portfolioDatabase;
+            _StockDatabase = stockDatabase;
         }
 
         public Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions()
         {
             var responce = new UnappliedCorporateActionsResponce();
 
-            // Get a list of all stocks held
-            var allOwnedStocks = _PortfolioQuery.GetStocksOwned(DateTime.Today, DateTime.Today);
-
-            var actions = new List<CorporateAction>();
-            foreach (var ownedStock in allOwnedStocks)
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {
-                var corporateActions = _CorporateActionQuery.Find(ownedStock, DateUtils.NoStartDate, DateUtils.NoEndDate);
-                foreach (var corporateAction in corporateActions)
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
                 {
-                    if (_PortfolioQuery.StockOwned(corporateAction.Stock, corporateAction.ActionDate))
+                    var corporateActionHandlerFactory = new CorporateActionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+
+                    // Get a list of all stocks held
+                    var allOwnedStocks = portfolioUnitOfWork.PortfolioQuery.GetStocksOwned(DateTime.Today, DateTime.Today);
+
+                    var actions = new List<CorporateAction>();
+                    foreach (var ownedStock in allOwnedStocks)
                     {
-                        var handler = _CorporateActionHandlerFactory.GetHandler(corporateAction);
-                        if (handler != null)
+                        var corporateActions = stockUnitOfWork.CorporateActionQuery.Find(ownedStock, DateUtils.NoStartDate, DateUtils.NoEndDate);
+                        foreach (var corporateAction in corporateActions)
                         {
-                            if (!handler.HasBeenApplied(corporateAction))
-                                actions.Add(corporateAction);
+                            if (portfolioUnitOfWork.PortfolioQuery.StockOwned(corporateAction.Stock, corporateAction.ActionDate))
+                            {
+                                var handler = corporateActionHandlerFactory.GetHandler(corporateAction);
+                                if (handler != null)
+                                {
+                                    if (!handler.HasBeenApplied(corporateAction))
+                                        actions.Add(corporateAction);
+                                }
+                            }
                         }
                     }
+
+                    foreach (var action in actions.OrderBy(x => x.ActionDate))
+                    {
+                        var item = new CorporateActionItem()
+                        {
+                            Id = action.Id,
+                            ActionDate = action.ActionDate,
+                            Stock = StockUtils.Get(action.Stock, action.ActionDate, stockUnitOfWork.StockQuery),
+                            Description = action.Description
+                        };
+
+                        responce.CorporateActions.Add(item);
+                    }
+
+                    responce.SetStatusToSuccessfull();
                 }
-            } 
-           
-            foreach (var action in actions.OrderBy(x => x.ActionDate))
-            {
-                var item = new CorporateActionItem()
-                {
-                    Id = action.Id,
-                    ActionDate = action.ActionDate,
-                    Stock = _StockUtils.Get(action.Stock, action.ActionDate),
-                    Description = action.Description
-                };
-
-                responce.CorporateActions.Add(item);
             }
-
-            responce.SetStatusToSuccessfull();
 
             return Task.FromResult<UnappliedCorporateActionsResponce>(responce);
         }
@@ -77,14 +80,22 @@ namespace PortfolioManager.Service.Local
         {
             var responce = new TransactionsForCorparateActionsResponce();
 
-            var action = _CorporateActionQuery.Get(corporateAction);
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    var corporateActionHandlerFactory = new CorporateActionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
 
-            var handler = _CorporateActionHandlerFactory.GetHandler(action);
-            var transactions = handler.CreateTransactionList(action);
+                    var action = stockUnitOfWork.CorporateActionQuery.Get(corporateAction);
 
-            responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+                    var handler = corporateActionHandlerFactory.GetHandler(action);
+                    var transactions = handler.CreateTransactionList(action);
 
-            responce.SetStatusToSuccessfull();
+                    responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<TransactionsForCorparateActionsResponce>(responce); 
         }

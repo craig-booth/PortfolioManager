@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 
-using System.Data.SQLite;
-
-using PortfolioManager.Data.SQLite.Portfolios;
+using Microsoft.Data.Sqlite;
 
 namespace PortfolioManager.Data.SQLite.Upgrade
 {
@@ -25,18 +18,19 @@ namespace PortfolioManager.Data.SQLite.Upgrade
             _Version = version;
         }
 
-        public abstract void Upgrade(SQLiteDatabase database);
+        public abstract void Upgrade(SQLiteDatabase database, SqliteTransaction transaction);
 
-        protected void ExecuteScript(SQLiteConnection connection, string fileName)
+        protected void ExecuteScript(SqliteConnection connection, string fileName)
         {
             /* Load SQL commands to execute */
-            var scriptFile = File.OpenText(fileName);
-            var sqlCommands = scriptFile.ReadToEnd();
-            scriptFile.Close();
+            using (var scriptFile = File.OpenText(fileName))
+            {
+                var sqlCommands = scriptFile.ReadToEnd();
 
-            SQLiteCommand sqlCommand = new SQLiteCommand(sqlCommands, connection);
-            sqlCommand.ExecuteNonQuery();
-            sqlCommand.Dispose();
+                SqliteCommand sqlCommand = new SqliteCommand(sqlCommands, connection);
+                sqlCommand.ExecuteNonQuery();
+            }
+
         }
     }
 
@@ -50,9 +44,9 @@ namespace PortfolioManager.Data.SQLite.Upgrade
             _ScriptFile = scriptFile;
         }
 
-        public override void Upgrade(SQLiteDatabase database)
+        public override void Upgrade(SQLiteDatabase database, SqliteTransaction transaction)
         {
-            database.ExecuteScript(_ScriptFile);
+            database.ExecuteScript(_ScriptFile, transaction);
         }
     }
 

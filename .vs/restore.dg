@@ -1,1 +1,10 @@
-#:C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Rest\PortfolioManager.Rest.xproj
+#:C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\PortfolioManager.Web.xproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\PortfolioManager.Web.xproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Common\PortfolioManager.Common.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\PortfolioManager.Web.xproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Web\PortfolioManager.Web.xproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Service\PortfolioManager.Service.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Common\PortfolioManager.Common.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data\PortfolioManager.Data.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data\PortfolioManager.Data.csproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Common\PortfolioManager.Common.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Service\PortfolioManager.Service.csproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Common\PortfolioManager.Common.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Service\PortfolioManager.Service.csproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj
+C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Service\PortfolioManager.Service.csproj|C:\Users\Craig\Documents\GitHubVisualStudio\PortfolioManager\PortfolioManager.Data\PortfolioManager.Data.csproj

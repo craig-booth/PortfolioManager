@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
-using PortfolioManager.Common;
-using PortfolioManager.Model.Stocks;
-using PortfolioManager.Model.Data;
+using PortfolioManager.Data.Stocks;
 
 namespace PortfolioManager.Data.SQLite.Stocks
 {
     class SQLiteStockQuery: SQLiteQuery, IStockQuery 
     {
-        protected internal SQLiteStockQuery(SQLiteStockDatabase database)
-            : base(database._Connection, new SQLiteStockEntityCreator(database))
+        protected internal SQLiteStockQuery(SqliteTransaction transaction)
+            : base(transaction, new SQLiteStockEntityCreator())
         {
         }
 
@@ -202,16 +197,16 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 .WithParameter("@ToDate", toDate)
                 .OrderBy("[Date]");
 
-            var reader = query.Execute();
-            while (reader.Read())
+            using (var reader = query.Execute())
             {
-                DateTime date = reader.GetDateTime(0);
-                decimal price = SQLiteUtils.DBToDecimal(reader.GetInt32(1));
+                while (reader.Read())
+                {
+                    DateTime date = reader.GetDateTime(0);
+                    decimal price = SQLiteUtils.DBToDecimal(reader.GetInt32(1));
 
-                prices.Add(date, price);
+                    prices.Add(date, price);
+                }
             }
-
-            reader.Close();
             
             return prices;          
         }
@@ -232,19 +227,15 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public bool TradingDay(DateTime date)
         {
-            bool result;
-
             var query = EntityQuery.FromTable("NonTradingDays")
                 .Select("Date")
                 .Where("[Date] = @Date")
                 .WithParameter("@Date", date);
 
-            var reader = query.ExecuteSingle();
-            result = (!reader.HasRows);
-
-            reader.Close();
-
-            return result;
+            using (var reader = query.ExecuteSingle())
+            {
+                return !reader.HasRows;
+            }
         }
 
         public IEnumerable<DateTime> NonTradingDays()
@@ -255,15 +246,15 @@ namespace PortfolioManager.Data.SQLite.Stocks
                 .Select("Date")
                 .OrderBy("Date");
 
-            var reader = query.Execute();
-            while (reader.Read())
+            using (var reader = query.Execute())
             {
-                DateTime date = reader.GetDateTime(0);
-  
-                nonTradingDays.Add(date);
-            }
+                while (reader.Read())
+                {
+                    DateTime date = reader.GetDateTime(0);
 
-            reader.Close();
+                    nonTradingDays.Add(date);
+                }
+            }
 
             return nonTradingDays;
         }

@@ -1,55 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data;
+using PortfolioManager.Data.Stocks;
+using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Service.Local
 {
 
-    class PortfolioValueService : IPortfolioValueService
+    public class PortfolioValueService : IPortfolioValueService
     {
 
-        private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly StockUtils _StockUtils;
+        private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;
 
-        public PortfolioValueService(IPortfolioQuery portfolioQuery, IStockQuery stockQuery) 
+        public PortfolioValueService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
         {
-            _PortfolioQuery = portfolioQuery;
-            _StockUtils = new StockUtils(stockQuery);
+            _PortfolioDatabase = portfolioDatabase;
+            _StockDatabase = stockDatabase;
         }
 
         public Task<PortfolioValueResponce> GetPortfolioValue(DateTime fromDate, DateTime toDate, ValueFrequency frequency)
         {
-            var parcels = _PortfolioQuery.GetAllParcels(fromDate, toDate);
-            var responce = GetPortfolioValue(parcels, fromDate, toDate, frequency);
+            PortfolioValueResponce responce;
 
-            foreach (var date in responce.Values.Keys.ToList())
-                responce.Values[date] += _PortfolioQuery.GetCashBalance(date);
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    var parcels = portfolioUnitOfWork.PortfolioQuery.GetAllParcels(fromDate, toDate);
+                    responce = GetPortfolioValue(parcels, fromDate, toDate, frequency, stockUnitOfWork.StockQuery);
 
-            responce.SetStatusToSuccessfull();
+                    foreach (var date in responce.Values.Keys.ToList())
+                        responce.Values[date] += portfolioUnitOfWork.PortfolioQuery.GetCashBalance(date);
+
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<PortfolioValueResponce>(responce);
         }
 
         public Task<PortfolioValueResponce> GetPortfolioValue(Guid stockId, DateTime fromDate, DateTime toDate, ValueFrequency frequency)
         {
-            var parcels = _PortfolioQuery.GetParcelsForStock(stockId, fromDate, toDate);
+            PortfolioValueResponce responce;
 
-            var responce = GetPortfolioValue(parcels, fromDate, toDate, frequency);
+            using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    var parcels = portfolioUnitOfWork.PortfolioQuery.GetParcelsForStock(stockId, fromDate, toDate);
 
-            responce.SetStatusToSuccessfull();
+                    responce = GetPortfolioValue(parcels, fromDate, toDate, frequency, stockUnitOfWork.StockQuery);
+
+                    responce.SetStatusToSuccessfull();
+                }
+            }
 
             return Task.FromResult<PortfolioValueResponce>(responce);
         }
 
-        private PortfolioValueResponce GetPortfolioValue(IEnumerable<ShareParcel> parcels, DateTime fromDate, DateTime toDate, ValueFrequency frequency)
+        private PortfolioValueResponce GetPortfolioValue(IEnumerable<ShareParcel> parcels, DateTime fromDate, DateTime toDate, ValueFrequency frequency, IStockQuery stockQuery)
         {
             var responce = new PortfolioValueResponce();
 
@@ -72,12 +88,12 @@ namespace PortfolioManager.Service.Local
             var closingPrices = new Dictionary<Guid, Dictionary<DateTime, decimal>>();
             foreach (var holdingRange in holdingRanges)
             {
-                var priceData = _StockUtils.GetPrices(holdingRange.StockId, holdingRange.StartDate, holdingRange.EndDate);
+                var priceData = StockUtils.GetPrices(holdingRange.StockId, holdingRange.StartDate, holdingRange.EndDate, stockQuery);
 
                 closingPrices.Add(holdingRange.StockId, priceData);
             }
 
-            foreach (var date in DateUtils.DateRange(fromDate, toDate).Where(x => _StockUtils.TradingDay(x)))
+            foreach (var date in DateUtils.DateRange(fromDate, toDate).Where(x => StockUtils.TradingDay(x, stockQuery)))
             {
                 if ((frequency == ValueFrequency.Weekly) && (date.DayOfWeek != DayOfWeek.Friday))
                     continue;

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Service.Interface;
@@ -43,13 +40,13 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var capitalGainService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
-
             DetailedUnrealisedGainsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await capitalGainService.GetDetailedUnrealisedGains(_Parameter.Date);
+                responce = await _Parameter.RestWebClient.GetDetailedUnrealisedGainsAsync(_Parameter.Date);
             else
-                responce = await capitalGainService.GetDetailedUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await _Parameter.RestWebClient.GetDetailedUnrealisedGainsAsync(_Parameter.Stock.Id, _Parameter.Date);
+            if (responce == null)
+                return;
 
             Parcels.Clear();
             foreach (var item in responce.CGTItems.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate))

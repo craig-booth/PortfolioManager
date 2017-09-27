@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Service.Interface;
@@ -44,9 +39,9 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var cashAccountService = _Parameter.PortfolioManagerService.GetService<ICashAccountService>();
-
-            var responce = await cashAccountService.GetTranasctions(_Parameter.StartDate, _Parameter.EndDate);
+            var responce = await _Parameter.RestWebClient.GetCashAccountTransactionsAsync(_Parameter.StartDate, _Parameter.EndDate);
+            if (responce == null)
+                return;
 
             OpeningBalance = responce.OpeningBalance;
             ClosingBalance = responce.ClosingBalance;

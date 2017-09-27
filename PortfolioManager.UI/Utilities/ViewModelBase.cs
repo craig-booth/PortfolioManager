@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -10,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace PortfolioManager.UI.Utilities
 {
- 
+
     class ViewModel : NotifyClass, INotifyDataErrorInfo
     {
         private Dictionary<string, List<string>> _Errors;

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
-using PortfolioManager.Model.Stocks;
+﻿using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Transactions;
 
 namespace PortfolioManager.Service

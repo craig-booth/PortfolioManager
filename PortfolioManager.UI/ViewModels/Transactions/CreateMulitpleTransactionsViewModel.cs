@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using CBControls;
@@ -15,23 +12,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class CreateMulitpleTransactionsViewModel : PopupWindow
     {
-        private ITransactionService _TransactionService;
+        protected RestWebClient _RestWebClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
-
-        private IPortfolioManagerService _PortfolioManagerService;
-        public IPortfolioManagerService PortfolioManagerService
-        {
-            set
-            {
-                _PortfolioManagerService = value;
-                _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
-
-                var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
-                var stockService = _PortfolioManagerService.GetService<IStockService>();
-
-                _TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
-            }
-        }
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
 
@@ -52,9 +34,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CreateMulitpleTransactionsViewModel()
+        public CreateMulitpleTransactionsViewModel(RestWebClient restWebClient)
             : base()
         {
+            _RestWebClient = restWebClient;
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
             Transactions = new ObservableCollection<TransactionViewModel>();
 
             CancelCommand = new RelayCommand(Cancel);
@@ -91,12 +75,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand SaveTransactionsCommand { get; private set; }
-        private void SaveTransactions()
+        private async void SaveTransactions()
         {
             foreach (var transactionviewModel in Transactions)
+            {
                 transactionviewModel.EndEdit();
-
-            _TransactionService.AddTransactions(Transactions.Select(x => x.Transaction));
+                await _RestWebClient.AddTransactionAsync(transactionviewModel.Transaction);
+            }      
 
             IsOpen = false;
         }

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -57,8 +53,9 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var portfolioSummaryService = _Parameter.PortfolioManagerService.GetService<IPortfolioSummaryService>();
-            var responce = await portfolioSummaryService.GetSummary(_Parameter.Date);
+            var responce = await _Parameter.RestWebClient.GetPortfolioSummaryAsync(_Parameter.Date);
+            if (responce == null)
+                return;
 
             Cash[0].Value = (double)responce.CashBalance;
 

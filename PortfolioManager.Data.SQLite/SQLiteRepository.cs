@@ -1,100 +1,76 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
-
-using PortfolioManager.Model.Data;
+using Microsoft.Data.Sqlite;
 
 namespace PortfolioManager.Data.SQLite
 {
     public interface IEntityCreator
     {
-        T CreateEntity<T>(SQLiteDataReader reader) where T : Entity;
+        T CreateEntity<T>(SqliteDataReader reader) where T : Entity;
     }
 
     public abstract class SQLiteRepository<T> where T : Entity
     {
-        protected SQLiteDatabase _Database;
-        protected SQLiteConnection _Connection;
+        protected readonly SqliteTransaction _Transaction;
         protected IEntityCreator _EntityCreator;
 
         public string TableName { get; private set; }
 
-        protected internal SQLiteRepository(SQLiteDatabase database, string tableName, IEntityCreator entityCreator)
+        protected internal SQLiteRepository(SqliteTransaction transaction, string tableName, IEntityCreator entityCreator)
         {
-            _Database = database;
-            _Connection = database._Connection;
+            _Transaction = transaction;
             _EntityCreator = entityCreator;
 
             TableName = tableName;
         }
         
-        private SQLiteCommand _GetCurrentRecordCommand;
-        protected virtual SQLiteCommand GetCurrentRecordCommand()
+        private SqliteCommand _GetCurrentRecordCommand;
+        protected virtual SqliteCommand GetCurrentRecordCommand()
         {
             if (_GetCurrentRecordCommand == null)
              {
-                 _GetCurrentRecordCommand = new SQLiteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Connection);
-                 _GetCurrentRecordCommand.Prepare();
+                _GetCurrentRecordCommand = new SqliteCommand("SELECT * FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+                _GetCurrentRecordCommand.Parameters.Add("@Id", SqliteType.Text);
+                _GetCurrentRecordCommand.Prepare();
              }
 
             return _GetCurrentRecordCommand;
         }
 
-        private SQLiteCommand _GetAddRecordCommand;
-        protected virtual SQLiteCommand GetAddRecordCommand()
-        {
-            if (_GetAddRecordCommand == null)
-            {
-                _GetAddRecordCommand = new SQLiteCommand("", _Connection);
-                _GetAddRecordCommand.Prepare();
-            }
+        protected abstract SqliteCommand GetAddRecordCommand();
 
-            return _GetAddRecordCommand;
-        }
+        protected abstract SqliteCommand GetUpdateRecordCommand();
 
-        private SQLiteCommand _GetUpdateRecordCommand;
-        protected virtual SQLiteCommand GetUpdateRecordCommand()
-        {
-            if (_GetUpdateRecordCommand == null)
-            {
-                _GetUpdateRecordCommand = new SQLiteCommand("", _Connection);
-                _GetUpdateRecordCommand.Prepare();
-            }
-
-            return _GetUpdateRecordCommand;
-        }
-
-        private SQLiteCommand _GetDeleteRecordCommand;
-        protected virtual SQLiteCommand GetDeleteRecordCommand()
+        private SqliteCommand _GetDeleteRecordCommand;
+        protected virtual SqliteCommand GetDeleteRecordCommand()
         {
             if (_GetDeleteRecordCommand == null)
             {
-                _GetDeleteRecordCommand = new SQLiteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Connection);
+                _GetDeleteRecordCommand = new SqliteCommand("DELETE FROM " + TableName + " WHERE [Id] = @Id", _Transaction.Connection, _Transaction);
+                _GetDeleteRecordCommand.Parameters.Add("@Id", SqliteType.Text);
                 _GetDeleteRecordCommand.Prepare();
             }
 
             return _GetDeleteRecordCommand;
         }
 
-        protected abstract void AddParameters(SQLiteCommand command, T entity);
+        protected abstract void AddParameters(SqliteParameterCollection parameters, T entity);
 
         public virtual T Get(Guid id)
         {
-            var command = GetCurrentRecordCommand();
-            command.Parameters.AddWithValue("@Id", id.ToString());
-            SQLiteDataReader reader = command.ExecuteReader();
+            T entity;
 
-            if (!reader.Read())
+            var command = GetCurrentRecordCommand();
+            command.Parameters["@Id"].Value = id.ToString();
+
+            using (SqliteDataReader reader = command.ExecuteReader())
             {
-                reader.Close();
-                throw new RecordNotFoundException(id);
+                if (!reader.Read())
+                {
+                    throw new RecordNotFoundException(id);
+                }
+
+                entity = _EntityCreator.CreateEntity<T>(reader);
             }
-                
-            T entity = _EntityCreator.CreateEntity<T>(reader);
-            reader.Close();
 
             return entity;
         }
@@ -102,15 +78,15 @@ namespace PortfolioManager.Data.SQLite
         public virtual void Add(T entity)
         {
             var command = GetAddRecordCommand();
-            AddParameters(command, entity);
+            AddParameters(command.Parameters, entity);
 
             try
             {
                 command.ExecuteNonQuery();
             }
-            catch (SQLiteException e)
+            catch (SqliteException e)
             {
-                if (e.ResultCode == SQLiteErrorCode.Constraint)
+                if (e.SqliteErrorCode == 19)
                     throw new DuplicateRecordException(entity.Id);
                 else
                     throw;
@@ -120,7 +96,7 @@ namespace PortfolioManager.Data.SQLite
         public virtual void Update(T entity)
         {
             var command = GetUpdateRecordCommand();
-            AddParameters(command, entity);
+            AddParameters(command.Parameters, entity);
 
             if (command.ExecuteNonQuery() == 0)
                 throw new RecordNotFoundException(entity.Id);
@@ -134,7 +110,7 @@ namespace PortfolioManager.Data.SQLite
         public virtual void Delete(Guid id)
         {
             var command = GetDeleteRecordCommand();
-            command.Parameters.AddWithValue("@Id", id.ToString());
+            command.Parameters["@Id"].Value  = id.ToString();
 
             if (command.ExecuteNonQuery() == 0)
                 throw new RecordNotFoundException(id);

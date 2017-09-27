@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
-using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Model.Data;
-using PortfolioManager.Model.Portfolios;
+using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Local
 {
-    class AttachmentService : IAttachmentService
+    public class AttachmentService : IAttachmentService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
 
-        internal AttachmentService(IPortfolioDatabase portfolioDatabase)
+        public AttachmentService(IPortfolioDatabase portfolioDatabase)
         {
             _PortfolioDatabase = portfolioDatabase;
         }

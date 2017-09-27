@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
@@ -45,13 +41,13 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var capitalGainService = _Parameter.PortfolioManagerService.GetService<ICapitalGainService>();
-
             SimpleUnrealisedGainsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await capitalGainService.GetSimpleUnrealisedGains(_Parameter.Date);
+                responce = await _Parameter.RestWebClient.GetSimpleUnrealisedGainsAsync(_Parameter.Date);
             else
-                responce = await capitalGainService.GetSimpleUnrealisedGains(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await _Parameter.RestWebClient.GetSimpleUnrealisedGainsAsync(_Parameter.Stock.Id, _Parameter.Date);
+            if (responce == null)
+                return;
 
             UnrealisedGains.Clear();
             foreach (var cgtItem in responce.CGTItems.OrderBy(x => x.Stock.FormattedCompanyName()))

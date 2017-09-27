@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 using CBControls;
 
@@ -53,24 +48,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     }
 
     class EditTransactionViewModel: PopupWindow
-    { 
-        private ITransactionService _TransactionService;
+    {
+        private RestWebClient _RestWebClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
-
-        private IPortfolioManagerService _PortfolioManagerService;
-        public IPortfolioManagerService PortfolioManagerService
-        {
-            set
-            {
-                _PortfolioManagerService = value;
-                _TransactionService = _PortfolioManagerService.GetService<ITransactionService>();
-
-                var holdingService = _PortfolioManagerService.GetService<IHoldingService>();
-                var stockService = _PortfolioManagerService.GetService<IStockService>();
-
-                _TransactionViewModelFactory = new TransactionViewModelFactory(stockService, holdingService);
-            }
-        }
 
         private TransactionViewModel _TransactionViewModel;
         public TransactionViewModel TransactionViewModel
@@ -101,9 +81,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public EditTransactionViewModel()
+        public EditTransactionViewModel(RestWebClient restWebClient)
             : base()
-        {           
+        {
+            _RestWebClient = restWebClient;
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
+
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
             SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
             DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
@@ -150,16 +133,16 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand SaveTransactionCommand { get; private set; }
-        private void SaveTransaction()
+        private async void SaveTransaction()
         {
             if (TransactionViewModel != null)
             {
                 TransactionViewModel.EndEdit();
 
                 if (NewTransaction)
-                    _TransactionService.AddTransaction(TransactionViewModel.Transaction);
+                    await _RestWebClient.AddTransactionAsync(TransactionViewModel.Transaction);
                 else
-                    _TransactionService.UpdateTransaction(TransactionViewModel.Transaction);
+                    await _RestWebClient.UpdateTransactionAsync(TransactionViewModel.Transaction);
             }
 
             TransactionViewModel = null;
@@ -172,13 +155,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand DeleteTransactionCommand { get; private set; }
-        private void DeleteTransaction()
+        private async void DeleteTransaction()
         {
             if (TransactionViewModel != null)
             {
                 _TransactionViewModel.EndEdit();
 
-                _TransactionService.DeleteTransaction(TransactionViewModel.Transaction);
+                await _RestWebClient.DeleteTransactionAsync(TransactionViewModel.Transaction.Id);
             }
 
             TransactionViewModel = null;
