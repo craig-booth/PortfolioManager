@@ -11,11 +11,13 @@ namespace PortfolioManager.UI.Utilities
 {
     class RestWebClient
     {
-        private string _BaseURL;
+        private readonly string _BaseURL;
+        private readonly Guid _ApiKey;
 
-        public RestWebClient(string baseURL)
+        public RestWebClient(string baseURL, Guid apiKey)
         {
             _BaseURL = baseURL;
+            _ApiKey = apiKey;
         }
      
         public async Task<PortfolioPropertiesResponce> GetPortfolioPropertiesAsync()
@@ -167,6 +169,7 @@ namespace PortfolioManager.UI.Utilities
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(_BaseURL);
+            httpClient.DefaultRequestHeaders.Add("Api-Key", _ApiKey.ToString());
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
