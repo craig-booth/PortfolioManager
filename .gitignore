@@ -107,7 +107,7 @@ csx
 AppPackages/
 
 # .vs folder
-.vs/
+/.vs
 
 # Others
 sql/
