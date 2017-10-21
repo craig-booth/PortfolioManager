@@ -192,6 +192,7 @@ namespace PortfolioManager.UI.Utilities
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(_BaseURL);
+            httpClient.DefaultRequestHeaders.Add("Api-Key", _ApiKey.ToString());
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
