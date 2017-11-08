@@ -19,7 +19,7 @@ namespace PortfolioManager.ImportData
         public LivePriceImporter(IStockDatabase database)
         {
             _Database = database;
-            _DataService = new GoogleDataService();
+            _DataService = new ASXDataService();
         }
 
         public async Task Import()
@@ -43,32 +43,35 @@ namespace PortfolioManager.ImportData
             {
                 foreach (var stockQuote in stockQuotes)
                 {
-                    var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
-                    if (stock != null)
+                    if (stockQuote.Date == DateTime.Today)
                     {
-                        if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
+                        var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
+                        if (stock != null)
                         {
-                            unitOfWork.StockPriceRepository.Add(stock.Id, DateTime.Today, stockQuote.Price, true);
-                        }
-                        else
-                        {
-                            unitOfWork.StockPriceRepository.Update(stock.Id, DateTime.Today, stockQuote.Price, true);
-                        }
-
-                        if (stock.Type == StockType.StapledSecurity)
-                        {
-                            var childStocks = stocks.Where(x => x.ParentId == stock.Id);
-                            foreach (var childStock in childStocks)
+                            if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
                             {
-                                var percentOfPrice = unitOfWork.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
+                                unitOfWork.StockPriceRepository.Update(stock.Id, DateTime.Today, stockQuote.Price, true);
+                            }
+                            else
+                            {
+                                unitOfWork.StockPriceRepository.Add(stock.Id, DateTime.Today, stockQuote.Price, true);
+                            }
 
-                                if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
+                            if (stock.Type == StockType.StapledSecurity)
+                            {
+                                var childStocks = stocks.Where(x => x.ParentId == stock.Id);
+                                foreach (var childStock in childStocks)
                                 {
-                                    unitOfWork.StockPriceRepository.Add(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
-                                }
-                                else
-                                {
-                                    unitOfWork.StockPriceRepository.Update(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
+                                    var percentOfPrice = unitOfWork.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
+
+                                    if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
+                                    {
+                                        unitOfWork.StockPriceRepository.Update(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
+                                    }
+                                    else
+                                    {
+                                        unitOfWork.StockPriceRepository.Add(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
+                                    }
                                 }
                             }
                         }

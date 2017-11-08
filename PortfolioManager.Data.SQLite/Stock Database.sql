@@ -135,7 +135,7 @@ CREATE TABLE [StockPrices]
 	[Stock]  TEXT(36) NOT NULL,
 	[Date] TEXT(10) NOT NULL,
 	[Price] INTEGER NOT NULL,
-	[Current] INTEGER NOT NULL DEFAULT 0,
+	[Current] TEXT(1) NOT NULL DEFAULT "N",
 
 	PRIMARY KEY ([Stock], [Date])
 );
