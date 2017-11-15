@@ -11,26 +11,18 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.ImportData.DataServices
 {
-    class ASXDataService : ITradingDayService, IHistoricalStockPriceService, ILiveStockPriceService
+    class ASXDataService : ITradingDayService, ILiveStockPriceService
     {
-        public Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes)
         {
             var stockPrices = new List<StockPrice>();
 
-            foreach (var asxCode in asxCodes)
-            {
-                var stockPrice = await GetSinglePrice(asxCode);
+            var tasks = asxCodes.Select(x => GetSinglePrice(x)).ToArray();
 
-                if (stockPrice != null)
-                    stockPrices.Add(stockPrice);
-            }
+            Task.WaitAll(tasks);
 
-            return stockPrices;
+            return tasks.Where(x => x.Result != null).Select(x => x.Result);  
         }
 
         public async Task<StockPrice> GetSinglePrice(string asxCode)
