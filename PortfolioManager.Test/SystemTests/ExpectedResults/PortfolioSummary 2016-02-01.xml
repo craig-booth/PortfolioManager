@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PortfolioSummaryResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-05T14:01:03.8913787+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <PortfolioValue>0.00</PortfolioValue>
+  <PortfolioCost>0.00</PortfolioCost>
+  <Return1Year xsi:nil="true" />
+  <Return3Year xsi:nil="true" />
+  <Return5Year xsi:nil="true" />
+  <ReturnAll xsi:nil="true" />
+  <CashBalance>0.00</CashBalance>
+  <Holdings />
+</PortfolioSummaryResponce>
