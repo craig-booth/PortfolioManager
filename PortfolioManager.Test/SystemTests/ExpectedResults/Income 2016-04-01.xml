@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IncomeResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-07T11:46:35.1251883+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <Income>
+    <IncomeItem>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+      </Stock>
+      <UnfrankedAmount>0</UnfrankedAmount>
+      <FrankedAmount>667.95</FrankedAmount>
+      <FrankingCredits>286.26</FrankingCredits>
+      <TotalAmount>954.21</TotalAmount>
+    </IncomeItem>
+    <IncomeItem>
+      <Stock>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
+      </Stock>
+      <UnfrankedAmount>0</UnfrankedAmount>
+      <FrankedAmount>66</FrankedAmount>
+      <FrankingCredits>28.29</FrankingCredits>
+      <TotalAmount>94.29</TotalAmount>
+    </IncomeItem>
+  </Income>
+</IncomeResponce>

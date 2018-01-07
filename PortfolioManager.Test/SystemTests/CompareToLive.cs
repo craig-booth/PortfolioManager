@@ -29,6 +29,8 @@ namespace PortfolioManager.Test.SystemTests
         private string _ExpectedResultsPath;
         private string _ActualResultsPath;
 
+        private Type[] _TransactionTypes;
+
         [OneTimeSetUp]
         public void Init()
         {
@@ -48,6 +50,18 @@ namespace PortfolioManager.Test.SystemTests
             {
                 Directory.CreateDirectory(_ActualResultsPath);
             }
+
+            _TransactionTypes = new Type[] 
+            {
+                typeof(AquisitionTransactionItem),
+                typeof(CashTransactionItem),
+                typeof(CostBaseAdjustmentTransactionItem),
+                typeof(DisposalTransactionItem),
+                typeof(IncomeTransactionItem),
+                typeof(OpeningBalanceTransactionItem),
+                typeof(ReturnOfCapitalTransactionItem),
+                typeof(UnitCountAdjustmentTransactionItem)
+            };
         }
 
         private void SaveActualResult(ServiceResponce actual, string fileName)
@@ -56,7 +70,19 @@ namespace PortfolioManager.Test.SystemTests
 
             using (var streamWriter = new StreamWriter(actualFile))
             {
-                var serializer = new XmlSerializer(actual.GetType());
+                var serializer = new XmlSerializer(actual.GetType());   
+
+                serializer.Serialize(streamWriter, actual);
+            }
+        }
+
+        private void SaveActualResult(ServiceResponce actual, string fileName, Type[] extraTypes)
+        {
+            var actualFile = Path.Combine(_ActualResultsPath, fileName);
+
+            using (var streamWriter = new StreamWriter(actualFile))
+            {
+                var serializer = new XmlSerializer(actual.GetType(), extraTypes);
 
                 serializer.Serialize(streamWriter, actual);
             }
@@ -174,6 +200,7 @@ namespace PortfolioManager.Test.SystemTests
 
             var service = new PortfolioValueService(_PortfolioDatabase, _StockDatabase);
             var responce = await service.GetPortfolioValue(fromDate, toDate, ValueFrequency.Daily);
+
             SaveActualResult(responce, fileName);
 
             Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
@@ -187,7 +214,7 @@ namespace PortfolioManager.Test.SystemTests
 
             var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
             var responce = await service.GetTransactions(fromDate, toDate);
-            SaveActualResult(responce, fileName);
+            SaveActualResult(responce, fileName, _TransactionTypes);
 
             Assert.That(responce, Is.EquivalentTo(typeof(GetTransactionsResponce), expectedFile));
         }

@@ -36,8 +36,8 @@ namespace PortfolioManager.Service.Local
                     var parcels = portfolioUnitOfWork.PortfolioQuery.GetAllParcels(fromDate, toDate);
                     responce = GetPortfolioValue(parcels, fromDate, toDate, frequency, stockUnitOfWork.StockQuery);
 
-                    foreach (var date in responce.Values.Keys.ToList())
-                        responce.Values[date] += portfolioUnitOfWork.PortfolioQuery.GetCashBalance(date);
+                    foreach (var value in responce.Values)
+                        value.Amount += portfolioUnitOfWork.PortfolioQuery.GetCashBalance(value.Date);
 
                     responce.SetStatusToSuccessfull();
                 }
@@ -116,7 +116,7 @@ namespace PortfolioManager.Service.Local
                     }
                 }
 
-                responce.Values.Add(date, value);
+                responce.Values.Add(new DailyAmount(date, value));
             }
 
             return responce;

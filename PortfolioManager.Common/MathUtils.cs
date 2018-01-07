@@ -17,6 +17,24 @@ namespace PortfolioManager.Common
         public int Amount;
     }
 
+    public class DailyAmount
+    {
+        public DateTime Date;
+        public decimal Amount;
+
+        public DailyAmount()
+        {
+            Date = new DateTime();
+            Amount = 0.00m;
+        }
+
+        public DailyAmount(DateTime date, decimal amount)
+        {
+            Date = date;
+            Amount = amount;
+        }
+    }
+
     public static class MathUtils
     {
         public static decimal ToCurrency(this decimal value, RoundingRule rule)

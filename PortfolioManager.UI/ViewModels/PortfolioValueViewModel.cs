@@ -56,8 +56,8 @@ namespace PortfolioManager.UI.ViewModels
             var values = new List<double>();
             foreach (var value in responce.Values)
             {
-                DateValues.Add(value.Key.ToShortDateString());
-                values.Add((double)value.Value);
+                DateValues.Add(value.Date.ToShortDateString());
+                values.Add((double)value.Amount);
             }
 
             PortfolioValues.AddRange(values);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CashAccountTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-07T11:46:34.0794459+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <Transactions />
+  <OpeningBalance>0.00</OpeningBalance>
+  <ClosingBalance>0.00</ClosingBalance>
+</CashAccountTransactionsResponce>

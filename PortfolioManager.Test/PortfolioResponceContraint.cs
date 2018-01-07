@@ -27,7 +27,17 @@ namespace PortfolioManager.Test
         {
             using (var streamReader = new StreamReader(fileName))
             {
-                var serializer = new XmlSerializer(type);
+                var serializer = new XmlSerializer(type, new Type[]
+                        {
+                            typeof(AquisitionTransactionItem),
+                            typeof(CashTransactionItem),
+                            typeof(CostBaseAdjustmentTransactionItem),
+                            typeof(DisposalTransactionItem),
+                            typeof(IncomeTransactionItem),
+                            typeof(OpeningBalanceTransactionItem),
+                            typeof(ReturnOfCapitalTransactionItem),
+                            typeof(UnitCountAdjustmentTransactionItem)
+                        });
 
                 Expected = (ServiceResponce)serializer.Deserialize(streamReader);
             }
@@ -39,10 +49,11 @@ namespace PortfolioManager.Test
 
             var actualResponce = actual as ServiceResponce;
 
-            actualResponce.ShouldBeEquivalentTo(Expected, options =>
-                options.Excluding(x => x.ResponceTime)
-                );
-
+            actualResponce.ShouldBeEquivalentTo(Expected, options => options
+                       .RespectingRuntimeTypes()
+                       .Excluding(x => x.ResponceTime)
+                       ); 
+                         
             return new ConstraintResult(this, actual, true);
         }
 

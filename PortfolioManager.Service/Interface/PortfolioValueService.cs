@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using PortfolioManager.Common;
+
 namespace PortfolioManager.Service.Interface
 {
     public interface IPortfolioValueService : IPortfolioService
@@ -14,12 +16,12 @@ namespace PortfolioManager.Service.Interface
 
     public class PortfolioValueResponce  : ServiceResponce
     {
-        public Dictionary<DateTime, decimal> Values;
+        public List<DailyAmount> Values;
 
         public PortfolioValueResponce()
             : base()
         {
-            Values = new Dictionary<DateTime, decimal>();
+            Values = new List<DailyAmount>();
         }
     }
 }

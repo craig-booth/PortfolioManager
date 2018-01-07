@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CashAccountTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-07T11:46:34.1795173+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <Transactions>
+    <CashAccountTransactionItem>
+      <Date>2016-02-05T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Transfer from Craig</Description>
+      <Amount>9000</Amount>
+      <Balance>9000.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-09T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of GVF</Description>
+      <Amount>-7575</Amount>
+      <Balance>1425.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Transfer of shares from Craig</Description>
+      <Amount>102680.21</Amount>
+      <Balance>104105.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of ARG</Description>
+      <Amount>-54</Amount>
+      <Balance>104051.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of COH</Description>
+      <Amount>-54</Amount>
+      <Balance>103997.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of CSL</Description>
+      <Amount>-54</Amount>
+      <Balance>103943.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of WAM</Description>
+      <Amount>-54</Amount>
+      <Balance>103889.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of COH</Description>
+      <Amount>-5412</Amount>
+      <Balance>98477.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of CSL</Description>
+      <Amount>-28722.4</Amount>
+      <Balance>69754.81</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of ARG</Description>
+      <Amount>-32061.6</Amount>
+      <Balance>37693.21</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of WAM</Description>
+      <Amount>-36484.21</Amount>
+      <Balance>1209.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-12T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Transfer from Craig</Description>
+      <Amount>14000</Amount>
+      <Balance>15209.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-15T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VAF</Description>
+      <Amount>-7497</Amount>
+      <Balance>7712.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-15T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VAP</Description>
+      <Amount>-7527</Amount>
+      <Balance>185.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-18T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Transfer from Craig</Description>
+      <Amount>5500</Amount>
+      <Balance>5685.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-22T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Regular Deposit</Description>
+      <Amount>2000</Amount>
+      <Balance>7685.00</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-02-23T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VGS</Description>
+      <Amount>-7578.2</Amount>
+      <Balance>106.80</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-03-01T00:00:00</Date>
+      <Type>Interest</Type>
+      <Description>Interest</Description>
+      <Amount>1.29</Amount>
+      <Balance>108.09</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-03-21T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Regular Deposit</Description>
+      <Amount>2000</Amount>
+      <Balance>2108.09</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-04-01T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Distribution for COH</Description>
+      <Amount>66</Amount>
+      <Balance>2174.09</Balance>
+    </CashAccountTransactionItem>
+    <CashAccountTransactionItem>
+      <Date>2016-04-01T00:00:00</Date>
+      <Type>Interest</Type>
+      <Description>Interest</Description>
+      <Amount>0.01</Amount>
+      <Balance>2174.10</Balance>
+    </CashAccountTransactionItem>
+  </Transactions>
+  <OpeningBalance>0.00</OpeningBalance>
+  <ClosingBalance>2174.10</ClosingBalance>
+</CashAccountTransactionsResponce>

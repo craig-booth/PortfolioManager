@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GetTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-07T13:07:55.2430821+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <Transactions>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>f2a6d0ca-ce1c-470c-8b75-f3b5c0927ea5</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-02-05T00:00:00</TransactionDate>
+      <RecordDate>2016-02-05T00:00:00</RecordDate>
+      <Description>Transfer from Craig</Description>
+      <Comment>Transfer from Craig</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>9000</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>f692d692-4364-4fb7-b4f7-aac755a7e25b</Id>
+      <Stock>
+        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <ASXCode>GVF</ASXCode>
+        <Name>Global Value Fund</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-09T00:00:00</TransactionDate>
+      <RecordDate>2016-02-09T00:00:00</RecordDate>
+      <Description>Aquired 7,500 shares @ $1.01</Description>
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>7500</Units>
+      <AveragePrice>1.01</AveragePrice>
+      <TransactionCosts>0</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>00b12ac5-2a42-406b-b6a6-06a71c594a05</Id>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-10T00:00:00</TransactionDate>
+      <RecordDate>2016-02-10T00:00:00</RecordDate>
+      <Description>Aquired 4,453 shares @ $7.20</Description>
+      <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>4453</Units>
+      <AveragePrice>7.2</AveragePrice>
+      <TransactionCosts>54</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>3eb8d601-998b-4fd4-8e08-fb81fb73325e</Id>
+      <Stock>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-10T00:00:00</TransactionDate>
+      <RecordDate>2016-02-10T00:00:00</RecordDate>
+      <Description>Aquired 60 shares @ $90.20</Description>
+      <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>60</Units>
+      <AveragePrice>90.2</AveragePrice>
+      <TransactionCosts>54</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>abc63ef5-d56e-4fca-b1e8-84b99eca451a</Id>
+      <Stock>
+        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <ASXCode>CSL</ASXCode>
+        <Name>CSL Ltd</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-10T00:00:00</TransactionDate>
+      <RecordDate>2016-02-10T00:00:00</RecordDate>
+      <Description>Aquired 280 shares @ $102.58</Description>
+      <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>280</Units>
+      <AveragePrice>102.58</AveragePrice>
+      <TransactionCosts>54</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>761acc6d-ea10-4209-8b0c-d54599a0982f</Id>
+      <Stock>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <ASXCode>WAM</ASXCode>
+        <Name>WAM Capital Limited</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-10T00:00:00</TransactionDate>
+      <RecordDate>2016-02-10T00:00:00</RecordDate>
+      <Description>Aquired 16,813 shares @ $2.17</Description>
+      <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>16813</Units>
+      <AveragePrice>2.17</AveragePrice>
+      <TransactionCosts>54</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>7a2e1578-46af-4f6b-984c-61e39a1cb126</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-02-10T00:00:00</TransactionDate>
+      <RecordDate>2016-02-10T00:00:00</RecordDate>
+      <Description>Transfer of shares from Craig</Description>
+      <Comment>Transfer of shares from Craig</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>102680.21</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>665b5780-a22e-4b16-83bf-e6f2c5488e53</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-02-12T00:00:00</TransactionDate>
+      <RecordDate>2016-02-12T00:00:00</RecordDate>
+      <Description>Transfer from Craig</Description>
+      <Comment>Transfer from Craig</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>14000</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>511d065f-0f71-4bd5-914c-db27e6ce8609</Id>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-15T00:00:00</TransactionDate>
+      <RecordDate>2016-02-15T00:00:00</RecordDate>
+      <Description>Aquired 150 shares @ $49.98</Description>
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>150</Units>
+      <AveragePrice>49.98</AveragePrice>
+      <TransactionCosts>0</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>b18d7944-0a86-49cd-93d9-7e5b1b78b098</Id>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-15T00:00:00</TransactionDate>
+      <RecordDate>2016-02-15T00:00:00</RecordDate>
+      <Description>Aquired 100 shares @ $75.27</Description>
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>100</Units>
+      <AveragePrice>75.27</AveragePrice>
+      <TransactionCosts>0</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="IncomeTransactionItem">
+      <Id>6a0e9a2a-36bf-414a-b6ec-93d21d9b1039</Id>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+      </Stock>
+      <Type>Income</Type>
+      <TransactionDate>2016-03-04T00:00:00</TransactionDate>
+      <RecordDate>2016-02-15T00:00:00</RecordDate>
+      <Description>Income received $667.95</Description>
+      <Comment>Dividend $0.15</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <FrankedAmount>667.95</FrankedAmount>
+      <UnfrankedAmount>0</UnfrankedAmount>
+      <FrankingCredits>286.26</FrankingCredits>
+      <Interest>0</Interest>
+      <TaxDeferred>0</TaxDeferred>
+      <CreateCashTransaction>false</CreateCashTransaction>
+      <DRPCashBalance>0</DRPCashBalance>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>1cf2b4f0-26fe-4d83-a00e-3d94ba28a16c</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-02-18T00:00:00</TransactionDate>
+      <RecordDate>2016-02-18T00:00:00</RecordDate>
+      <Description>Transfer from Craig</Description>
+      <Comment>Transfer from Craig</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>5500</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>dad62932-0bd1-4a28-a047-6ff03118c99c</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-02-22T00:00:00</TransactionDate>
+      <RecordDate>2016-02-22T00:00:00</RecordDate>
+      <Description>Regular Deposit</Description>
+      <Comment>Regular Deposit</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>2000</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="AquisitionTransactionItem">
+      <Id>63d7148d-e686-43c8-833f-90cbeb9b7257</Id>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+      </Stock>
+      <Type>Aquisition</Type>
+      <TransactionDate>2016-02-23T00:00:00</TransactionDate>
+      <RecordDate>2016-02-23T00:00:00</RecordDate>
+      <Description>Aquired 140 shares @ $54.13</Description>
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>140</Units>
+      <AveragePrice>54.13</AveragePrice>
+      <TransactionCosts>0</TransactionCosts>
+      <CreateCashTransaction>true</CreateCashTransaction>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>85e55c31-3c53-412b-8f36-3d7540532e55</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-03-01T00:00:00</TransactionDate>
+      <RecordDate>2016-03-01T00:00:00</RecordDate>
+      <Description />
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Interest</CashTransactionType>
+      <Amount>1.29</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="OpeningBalanceTransactionItem">
+      <Id>ded69f3b-69ba-4e75-8f6b-e4566939c865</Id>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+      </Stock>
+      <Type>OpeningBalance</Type>
+      <TransactionDate>2016-03-04T00:00:00</TransactionDate>
+      <RecordDate>2016-03-04T00:00:00</RecordDate>
+      <Description>Opening balance of 93 shares</Description>
+      <Comment>DRP $7.15</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>93</Units>
+      <CostBase>667.95</CostBase>
+      <AquisitionDate>2016-03-04T00:00:00</AquisitionDate>
+      <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
+    </TransactionItem>
+    <TransactionItem xsi:type="IncomeTransactionItem">
+      <Id>7e369f3b-310b-43bf-968d-8b52994cd5f2</Id>
+      <Stock>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
+      </Stock>
+      <Type>Income</Type>
+      <TransactionDate>2016-04-01T00:00:00</TransactionDate>
+      <RecordDate>2016-03-11T00:00:00</RecordDate>
+      <Description>Income received $66.00</Description>
+      <Comment>Dividend $1.10</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <FrankedAmount>66</FrankedAmount>
+      <UnfrankedAmount>0</UnfrankedAmount>
+      <FrankingCredits>28.29</FrankingCredits>
+      <Interest>0</Interest>
+      <TaxDeferred>0</TaxDeferred>
+      <CreateCashTransaction>true</CreateCashTransaction>
+      <DRPCashBalance>0</DRPCashBalance>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>38b68428-2c42-4dea-8aa2-c81d4d961031</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-03-21T00:00:00</TransactionDate>
+      <RecordDate>2016-03-21T00:00:00</RecordDate>
+      <Description>Regular Deposit</Description>
+      <Comment>Regular Deposit</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>2000</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="IncomeTransactionItem">
+      <Id>c4de35d3-7ce9-455a-9b6f-55a66f974f92</Id>
+      <Stock>
+        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <ASXCode>CSL</ASXCode>
+        <Name>CSL Ltd</Name>
+      </Stock>
+      <Type>Income</Type>
+      <TransactionDate>2016-04-15T00:00:00</TransactionDate>
+      <RecordDate>2016-03-24T00:00:00</RecordDate>
+      <Description>Income received $228.12</Description>
+      <Comment>Dividend $0.8147</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <FrankedAmount>0</FrankedAmount>
+      <UnfrankedAmount>228.12</UnfrankedAmount>
+      <FrankingCredits>0</FrankingCredits>
+      <Interest>0</Interest>
+      <TaxDeferred>0</TaxDeferred>
+      <CreateCashTransaction>true</CreateCashTransaction>
+      <DRPCashBalance>0</DRPCashBalance>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>5db3d967-e49b-43aa-8f7a-433f06d9ca4a</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-04-01T00:00:00</TransactionDate>
+      <RecordDate>2016-04-01T00:00:00</RecordDate>
+      <Description />
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Interest</CashTransactionType>
+      <Amount>0.01</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="IncomeTransactionItem">
+      <Id>6252996d-c817-443d-a825-759bb39734b1</Id>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+      </Stock>
+      <Type>Income</Type>
+      <TransactionDate>2016-04-18T00:00:00</TransactionDate>
+      <RecordDate>2016-04-04T00:00:00</RecordDate>
+      <Description>Income received $64.05</Description>
+      <Comment>Dividend $0.427022</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <FrankedAmount>0</FrankedAmount>
+      <UnfrankedAmount>64.05</UnfrankedAmount>
+      <FrankingCredits>0</FrankingCredits>
+      <Interest>0</Interest>
+      <TaxDeferred>0</TaxDeferred>
+      <CreateCashTransaction>false</CreateCashTransaction>
+      <DRPCashBalance>28.946</DRPCashBalance>
+    </TransactionItem>
+    <TransactionItem xsi:type="IncomeTransactionItem">
+      <Id>bc2e88a3-8cf2-4f06-b3f2-a389072cba32</Id>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+      </Stock>
+      <Type>Income</Type>
+      <TransactionDate>2016-04-18T00:00:00</TransactionDate>
+      <RecordDate>2016-04-04T00:00:00</RecordDate>
+      <Description>Income received $58.73</Description>
+      <Comment>Dividend $0.587312</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <FrankedAmount>0</FrankedAmount>
+      <UnfrankedAmount>58.73</UnfrankedAmount>
+      <FrankingCredits>0</FrankingCredits>
+      <Interest>0</Interest>
+      <TaxDeferred>0</TaxDeferred>
+      <CreateCashTransaction>false</CreateCashTransaction>
+      <DRPCashBalance>58.73</DRPCashBalance>
+    </TransactionItem>
+    <TransactionItem xsi:type="IncomeTransactionItem">
+      <Id>210fa62a-3151-4fb1-b7da-29188156f9eb</Id>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+      </Stock>
+      <Type>Income</Type>
+      <TransactionDate>2016-04-18T00:00:00</TransactionDate>
+      <RecordDate>2016-04-04T00:00:00</RecordDate>
+      <Description>Income received $33.10</Description>
+      <Comment>Dividend $0.23645</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <FrankedAmount>0</FrankedAmount>
+      <UnfrankedAmount>33.1</UnfrankedAmount>
+      <FrankingCredits>0</FrankingCredits>
+      <Interest>0</Interest>
+      <TaxDeferred>0</TaxDeferred>
+      <CreateCashTransaction>false</CreateCashTransaction>
+      <DRPCashBalance>33.1</DRPCashBalance>
+    </TransactionItem>
+    <TransactionItem xsi:type="OpeningBalanceTransactionItem">
+      <Id>e43a4c41-b748-4a1d-a923-a9603e3d2f3e</Id>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+      </Stock>
+      <Type>OpeningBalance</Type>
+      <TransactionDate>2016-04-18T00:00:00</TransactionDate>
+      <RecordDate>2016-04-18T00:00:00</RecordDate>
+      <Description>Opening balance of 1 shares</Description>
+      <Comment>DRP $49.577</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <Units>1</Units>
+      <CostBase>49.58</CostBase>
+      <AquisitionDate>2016-04-18T00:00:00</AquisitionDate>
+      <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>b1d4f209-f11e-4264-a384-723ea4d45eb9</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-04-20T00:00:00</TransactionDate>
+      <RecordDate>2016-04-20T00:00:00</RecordDate>
+      <Description>Regular Deposit</Description>
+      <Comment>Regular Deposit</Comment>
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Deposit</CashTransactionType>
+      <Amount>2000</Amount>
+    </TransactionItem>
+    <TransactionItem xsi:type="CashTransactionItem">
+      <Id>26f89bb5-a15c-478b-97ae-3f6ac4046836</Id>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+      </Stock>
+      <Type>CashTransaction</Type>
+      <TransactionDate>2016-05-01T00:00:00</TransactionDate>
+      <RecordDate>2016-05-01T00:00:00</RecordDate>
+      <Description />
+      <Comment />
+      <Attachment>00000000-0000-0000-0000-000000000000</Attachment>
+      <CashTransactionType>Interest</CashTransactionType>
+      <Amount>0.02</Amount>
+    </TransactionItem>
+  </Transactions>
+</GetTransactionsResponce>
