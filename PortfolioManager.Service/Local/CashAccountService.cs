@@ -52,6 +52,7 @@ namespace PortfolioManager.Service.Local
 
                 responce.ClosingBalance = balance;
 
+                responce.SetStatusToSuccessfull();
             }
 
             return Task.FromResult<CashAccountTransactionsResponce>(responce);

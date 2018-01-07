@@ -12,7 +12,7 @@ namespace PortfolioManager.Service.Interface
     }
 
 
-    public class CashAccountTransactionsResponce
+    public class CashAccountTransactionsResponce : ServiceResponce
     {
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }

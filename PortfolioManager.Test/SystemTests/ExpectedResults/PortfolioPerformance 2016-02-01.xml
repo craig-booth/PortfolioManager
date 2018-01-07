@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PortfolioPerformanceResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-07T10:23:35.178699+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <OpeningBalance>0</OpeningBalance>
+  <Dividends>0</Dividends>
+  <ChangeInMarketValue>0</ChangeInMarketValue>
+  <OutstandingDRPAmount>0</OutstandingDRPAmount>
+  <ClosingBalance>0</ClosingBalance>
+  <OpeningCashBalance>0.00</OpeningCashBalance>
+  <Deposits>0</Deposits>
+  <Withdrawls>0</Withdrawls>
+  <Interest>0</Interest>
+  <Fees>0</Fees>
+  <ClosingCashBalance>0.00</ClosingCashBalance>
+  <HoldingPerformance />
+</PortfolioPerformanceResponce>

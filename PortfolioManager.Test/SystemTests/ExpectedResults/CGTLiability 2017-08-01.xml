@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CGTLiabilityResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-01-07T10:23:35.0606185+10:30</ResponceTime>
+  <Status>Successfull</Status>
+  <Error />
+  <CurrentYearCapitalGainsOther>0.00</CurrentYearCapitalGainsOther>
+  <CurrentYearCapitalGainsDiscounted>0.00</CurrentYearCapitalGainsDiscounted>
+  <CurrentYearCapitalGainsTotal>0.00</CurrentYearCapitalGainsTotal>
+  <CurrentYearCapitalLossesOther>0.00</CurrentYearCapitalLossesOther>
+  <CurrentYearCapitalLossesDiscounted>0.00</CurrentYearCapitalLossesDiscounted>
+  <CurrentYearCapitalLossesTotal>0.00</CurrentYearCapitalLossesTotal>
+  <GrossCapitalGainOther>0.00</GrossCapitalGainOther>
+  <GrossCapitalGainDiscounted>0.00</GrossCapitalGainDiscounted>
+  <GrossCapitalGainTotal>0.00</GrossCapitalGainTotal>
+  <Discount>0.00</Discount>
+  <NetCapitalGainOther>0.00</NetCapitalGainOther>
+  <NetCapitalGainDiscounted>0.00</NetCapitalGainDiscounted>
+  <NetCapitalGainTotal>0.00</NetCapitalGainTotal>
+  <Items />
+</CGTLiabilityResponce>

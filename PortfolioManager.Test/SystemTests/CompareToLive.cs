@@ -26,6 +26,9 @@ namespace PortfolioManager.Test.SystemTests
         private IPortfolioDatabase _PortfolioDatabase;
         private IStockDatabase _StockDatabase;
 
+        private string _ExpectedResultsPath;
+        private string _ActualResultsPath;
+
         [OneTimeSetUp]
         public void Init()
         {
@@ -33,34 +36,162 @@ namespace PortfolioManager.Test.SystemTests
             _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(path, "Natalies Portfolio.db"));
             _StockDatabase = new SQLiteStockDatabase(Path.Combine(path, "Stocks.db"));
 
-            /*      var transactionService = new TransactionService(_PortfolioDatabase, _StockDatabase);
+            _ExpectedResultsPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "ExpectedResults");
+            _ActualResultsPath = Path.Combine(TestContext.CurrentContext.WorkDirectory, "SystemTests", "ActualResults");
+            if (Directory.Exists(_ActualResultsPath))
+            {
+                var files = Directory.EnumerateFiles(_ActualResultsPath);
+                foreach (var file in files)
+                    File.Delete(file);
+            }
+            else
+            {
+                Directory.CreateDirectory(_ActualResultsPath);
+            }
+        }
 
-                  var transaction = new AquisitionTransactionItem()
-                  {
-                      Stock = new StockItem(Guid.Empty, "ABC", "ABC Company"),
-                      Comment = "Test",
-                      Units = 100,
-                      AveragePrice = 12.00m,
-                      TransactionCosts = 19.95m,
-                      CreateCashTransaction = true
-                  };
-                  transactionService.AddTransaction(transaction); */
+        private void SaveActualResult(ServiceResponce actual, string fileName)
+        {
+            var actualFile = Path.Combine(_ActualResultsPath, fileName);
+
+            using (var streamWriter = new StreamWriter(actualFile))
+            {
+                var serializer = new XmlSerializer(actual.GetType());
+
+                serializer.Serialize(streamWriter, actual);
+            }
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
+        public async Task CompareCapitalGain(DateTime date)
+        {
+            var fileName = String.Format("CapitalGain {0:yyy-MM-dd}.xml", date);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new CapitalGainService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetDetailedUnrealisedGains(date);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(DetailedUnrealisedGainsResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task CompareCGTLiability(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("CGTLiability {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new CapitalGainService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetCGTLiability(fromDate, toDate);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(CGTLiabilityResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task CompareCashTransactions(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("CashTransactions {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new CashAccountService(_PortfolioDatabase);
+            var responce = await service.GetTranasctions(fromDate, toDate);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(CashAccountTransactionsResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
+        public async Task CompareHoldings(DateTime date)
+        {
+            var fileName = String.Format("Holdings {0:yyy-MM-dd}.xml", date);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new HoldingService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetHoldings(date);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
+        public async Task CompareTradeableHoldings(DateTime date)
+        {
+            var fileName = String.Format("TradeableHoldings {0:yyy-MM-dd}.xml", date);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new HoldingService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetTradeableHoldings(date);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task CompareIncome(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new IncomeService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetIncome(fromDate, toDate);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(IncomeResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task ComparePortfolioPerformance(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("PortfolioPerformance {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new PortfolioPerformanceService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetPerformance(fromDate, toDate);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioPerformanceResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
         public async Task ComparePortfolioSummary(DateTime date)
         {
-            var service = new PortfolioSummaryService(_PortfolioDatabase, _StockDatabase);
-
-            var responce = await service.GetSummary(date);
-
             var fileName = String.Format("PortfolioSummary {0:yyy-MM-dd}.xml", date);
-            var expectedFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "ExpectedResults", fileName);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new PortfolioSummaryService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetSummary(date);
+            SaveActualResult(responce, fileName);
 
             Assert.That(responce, Is.EquivalentTo(typeof(PortfolioSummaryResponce), expectedFile));
         }
-    }
 
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task ComparePortfolioValue(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("PortfolioValue {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new PortfolioValueService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetPortfolioValue(fromDate, toDate, ValueFrequency.Daily);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+        }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task CompareTransactions(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("Transactions {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetTransactions(fromDate, toDate);
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(GetTransactionsResponce), expectedFile));
+        }
+    }
 
     public class CompareToLiveTestData
     {
@@ -71,7 +202,23 @@ namespace PortfolioManager.Test.SystemTests
                 var date = new DateTime(2016, 01, 01);
                 while (date.Year <= 2017)
                 {
-                    var testData = new TestCaseData(date);       
+                    var testData = new TestCaseData(date).SetName("{m} (" + date.ToString("yyyy-MM-dd") + ")");       
+                    date = date.AddMonths(1);
+
+                    yield return testData;
+                }
+            }
+        }
+
+        public static IEnumerable TestDateRanges
+        {
+            get
+            {
+                var date = new DateTime(2016, 01, 01);
+                while (date.Year <= 2017)
+                {
+                    var fromDate = date.AddYears(-1).AddDays(1);
+                    var testData = new TestCaseData(fromDate, date).SetName("{m} (" + fromDate.ToString("yyyy-MM-dd") + " to " + date.ToString("yyyy-MM-dd") + ")");
                     date = date.AddMonths(1);
 
                     yield return testData;
