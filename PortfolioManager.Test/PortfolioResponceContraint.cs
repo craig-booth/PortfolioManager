@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 
 using PortfolioManager.Service.Interface;
 
@@ -52,8 +53,8 @@ namespace PortfolioManager.Test
             actualResponce.ShouldBeEquivalentTo(Expected, options => options
                        .RespectingRuntimeTypes()
                        .Excluding(x => x.ResponceTime)
-                       ); 
-                         
+                       );
+
             return new ConstraintResult(this, actual, true);
         }
 

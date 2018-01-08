@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+
 using Microsoft.Data.Sqlite;
 
 using PortfolioManager.Data.Portfolios;
@@ -57,7 +59,8 @@ namespace PortfolioManager.Data.SQLite.Portfolios
 
         protected override void CreateDatabaseTables(SqliteTransaction transaction)
         {
-            ExecuteScript("Portfolio Database.sql", transaction);
+            var scriptFile = Path.Combine(AppContext.BaseDirectory, "Portfolio Database.sql");
+            ExecuteScript(scriptFile, transaction);
         }
     }
 }

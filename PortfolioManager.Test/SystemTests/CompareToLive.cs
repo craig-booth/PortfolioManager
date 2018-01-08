@@ -32,12 +32,8 @@ namespace PortfolioManager.Test.SystemTests
         private Type[] _TransactionTypes;
 
         [OneTimeSetUp]
-        public void Init()
+        public async Task Init()
         {
-            var path = @"C:\PortfolioManager\UnitTesting";
-            _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(path, "Natalies Portfolio.db"));
-            _StockDatabase = new SQLiteStockDatabase(Path.Combine(path, "Stocks.db"));
-
             _ExpectedResultsPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "ExpectedResults");
             _ActualResultsPath = Path.Combine(TestContext.CurrentContext.WorkDirectory, "SystemTests", "ActualResults");
             if (Directory.Exists(_ActualResultsPath))
@@ -62,6 +58,25 @@ namespace PortfolioManager.Test.SystemTests
                 typeof(ReturnOfCapitalTransactionItem),
                 typeof(UnitCountAdjustmentTransactionItem)
             };
+
+            _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
+            _StockDatabase = new SQLiteStockDatabase(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Stocks.db"));
+
+            await LoadTransactions();
+        }
+
+        public async Task LoadTransactions()
+        {
+            var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
+
+             using (var streamReader = new StreamReader(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml")))
+             {
+                 var serializer = new XmlSerializer(typeof(List<TransactionItem>), _TransactionTypes);
+
+                 var transactions = (List<TransactionItem>)serializer.Deserialize(streamReader);
+
+                 var responce = await service.AddTransactions(transactions);
+             } 
         }
 
         private void SaveActualResult(ServiceResponce actual, string fileName)
