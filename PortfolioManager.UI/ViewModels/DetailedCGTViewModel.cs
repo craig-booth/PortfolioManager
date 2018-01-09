@@ -58,7 +58,6 @@ namespace PortfolioManager.UI.ViewModels
 
     class ParcelCostBaseViewItem
     {
-        public Guid ParcelId { get; private set; }
         public string CompanyName { get; private set; }
         public DateTime AquisitionDate { get; private set; }
         public int Units { get; private set; }
@@ -68,7 +67,6 @@ namespace PortfolioManager.UI.ViewModels
 
         public ParcelCostBaseViewItem(DetailedUnrealisedGainsItem item)
         {           
-            ParcelId = item.Id;
             CompanyName = item.Stock.FormattedCompanyName();
             AquisitionDate = item.AquisitionDate;
             Units = item.Units;

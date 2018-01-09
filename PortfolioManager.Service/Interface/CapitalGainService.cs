@@ -29,7 +29,6 @@ namespace PortfolioManager.Service.Interface
 
     public class SimpleUnrealisedGainsItem
     {
-        public Guid Id { get; set; }
         public StockItem Stock { get; set; }
 
         public DateTime AquisitionDate { get; set; }

@@ -220,19 +220,6 @@ namespace PortfolioManager.Test.SystemTests
 
             Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
         }
-
-        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task CompareTransactions(DateTime fromDate, DateTime toDate)
-        {
-            var fileName = String.Format("Transactions {0:yyy-MM-dd}.xml", toDate);
-            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
-
-            var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
-            var responce = await service.GetTransactions(fromDate, toDate);
-            SaveActualResult(responce, fileName, _TransactionTypes);
-
-            Assert.That(responce, Is.EquivalentTo(typeof(GetTransactionsResponce), expectedFile));
-        }
     }
 
     public class CompareToLiveTestData

@@ -70,7 +70,6 @@ namespace PortfolioManager.Service.Local
 
                 var item = new SimpleUnrealisedGainsItem()
                 {
-                    Id = parcel.Id,
                     Stock = currentStock,
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
@@ -149,7 +148,6 @@ namespace PortfolioManager.Service.Local
 
                 var item = new DetailedUnrealisedGainsItem()
                 {
-                    Id = parcel.Id,
                     Stock = currentStock,
                     AquisitionDate = parcel.AquisitionDate,
                     Units = parcel.Units,
@@ -164,7 +162,7 @@ namespace PortfolioManager.Service.Local
                     item.DiscoutedGain = CGTCalculator.CGTDiscount(item.CapitalGain);
                 }
 
-                AddParcelHistory(item, date, portfolioQuery);
+                AddParcelHistory(item, parcel.Id, date, portfolioQuery);
 
                 responce.CGTItems.Add(item);
             }
@@ -174,9 +172,9 @@ namespace PortfolioManager.Service.Local
             return responce;
         }
 
-        private void AddParcelHistory(DetailedUnrealisedGainsItem parcelItem, DateTime date, IPortfolioQuery portfolioQuery)
+        private void AddParcelHistory(DetailedUnrealisedGainsItem parcelItem, Guid parcelId, DateTime date, IPortfolioQuery portfolioQuery)
         {
-            var parcelAudit = portfolioQuery.GetParcelAudit(parcelItem.Id, parcelItem.AquisitionDate, date);
+            var parcelAudit = portfolioQuery.GetParcelAudit(parcelId, parcelItem.AquisitionDate, date);
 
             decimal costBase = 0.00m;
             foreach (var auditRecord in parcelAudit)
