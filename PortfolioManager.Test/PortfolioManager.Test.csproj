@@ -46,6 +46,12 @@
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="NBench, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBench.Runner.1.0.4\lib\net452\NBench.dll</HintPath>
+    </Reference>
+    <Reference Include="NBench.Runner, Version=1.0.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\NBench.Runner.1.0.4\lib\net452\NBench.Runner.exe</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
@@ -112,6 +118,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PerformanceTests\PerformanceTestSuite.cs" />
+    <Compile Include="PerformanceTests\TestServicePerformance.cs" />
     <Compile Include="PortfolioResponceContraint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTests\CompareToLive.cs" />
@@ -140,11 +148,17 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="PerformanceTests\Stocks.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SystemTests\Stocks.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PerformanceTests\Transactions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SystemTests\ExpectedResults\CapitalGain 2016-01-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
