@@ -22,7 +22,6 @@ namespace PortfolioManager.Test.PerformanceTests
 {
     class TestServicePerformance : PerformanceTestStuite<TestServicePerformance>
     {
-        private bool _Initialized = false;
         private IPortfolioDatabase _PortfolioDatabase;
         private IStockDatabase _StockDatabase;
 
@@ -37,23 +36,18 @@ namespace PortfolioManager.Test.PerformanceTests
         [PerfSetup]
         public async void Init(BenchmarkContext context)
         {
-            if (!_Initialized)
-            {
-                _TestPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "PerformanceTests");
+            _TestPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "PerformanceTests");
 
-                _AtDate = new DateTime(2017, 06, 30);
-                _FromDate = new DateTime(2016, 07, 01);
-                _ToDate = new DateTime(2017, 06, 30);
+            _AtDate = new DateTime(2017, 06, 30);
+            _FromDate = new DateTime(2016, 07, 01);
+            _ToDate = new DateTime(2017, 06, 30);
 
-                var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
-                File.Delete(portfolioDatabaseFile);
-                _PortfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
-                _StockDatabase = new SQLiteStockDatabase(Path.Combine(_TestPath, "Stocks.db"));
+            var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
+            File.Delete(portfolioDatabaseFile);
+            _PortfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
+            _StockDatabase = new SQLiteStockDatabase(Path.Combine(_TestPath, "Stocks.db"));
 
-                await LoadTransactions();
-
-                _Initialized = true;
-            }
+            await LoadTransactions();
 
             _Counter = context.GetCounter("TestCounter");
         }

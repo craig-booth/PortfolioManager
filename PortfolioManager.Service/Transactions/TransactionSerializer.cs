@@ -15,8 +15,8 @@ namespace PortfolioManager.Service.Transactions
     interface ITransactionSerializer
     {
         string ElementName { get; }
-        Task Serialize(Transaction transaction, XmlWriter xmlWriter);
-        Task<Transaction> Deserialize(XmlReader xmlReader);
+        void Serialize(Transaction transaction, XmlWriter xmlWriter);
+        Transaction Deserialize(XmlReader xmlReader);
     }
 
     class TransactionExporter
@@ -29,36 +29,35 @@ namespace PortfolioManager.Service.Transactions
             _TransactionSerializerFactory = new TransactionSerializerFactory("pm", _NameSpace);
         }
 
-        public Task ExportTransactions(string fileName, IEnumerable<Transaction> transactions)
+        public void ExportTransactions(string fileName, IEnumerable<Transaction> transactions)
         {
             using (var fileStream = File.OpenWrite(fileName))
             {
                 using (var streamWriter = new StreamWriter(fileStream))
-                    return ExportTransactions(streamWriter, transactions);
+                    ExportTransactions(streamWriter, transactions);
             }
         }
 
-        public async Task ExportTransactions(TextWriter textWriter, IEnumerable<Transaction> transactions)
+        public void ExportTransactions(TextWriter textWriter, IEnumerable<Transaction> transactions)
         {
             var settings = new XmlWriterSettings
             {
-                Async = true,
                 Indent = true
             };
             using (var xmlWriter = XmlWriter.Create(textWriter, settings))
             {
-                await xmlWriter.WriteStartDocumentAsync();
+                xmlWriter.WriteStartDocument();
 
-                await xmlWriter.WriteStartElementAsync("pm", "transactions", _NameSpace);
+                xmlWriter.WriteStartElement("pm", "transactions", _NameSpace);
                 foreach (var transaction in transactions)
                 {
                     var transactionSerializer = _TransactionSerializerFactory.GetSerializer(transaction);
 
-                    await transactionSerializer.Serialize(transaction, xmlWriter);
+                    transactionSerializer.Serialize(transaction, xmlWriter);
                 }
-                await xmlWriter.WriteEndElementAsync();
+                xmlWriter.WriteEndElement();
 
-                await xmlWriter.WriteEndDocumentAsync();
+                xmlWriter.WriteEndDocument();
             }
         }
     }
@@ -73,7 +72,7 @@ namespace PortfolioManager.Service.Transactions
             _TransactionSerializerFactory = new TransactionSerializerFactory("pm", _NameSpace);
         }
 
-        public Task<IEnumerable<Transaction>> ImportTransactions(string fileName)
+        public IEnumerable<Transaction> ImportTransactions(string fileName)
         {
             using (var fileStream = File.OpenRead(fileName))
             {
@@ -82,24 +81,23 @@ namespace PortfolioManager.Service.Transactions
             }
         }
 
-        public async Task<IEnumerable<Transaction>> ImportTransactions(TextReader textReader)
+        public IEnumerable<Transaction> ImportTransactions(TextReader textReader)
         {
             var transactions = new List<Transaction>();
 
             var settings = new XmlReaderSettings
             {
-                Async = true,
                 IgnoreComments = true,
                 IgnoreProcessingInstructions = true,
                 IgnoreWhitespace = true
             };
             using (var xmlReader = XmlReader.Create(textReader, settings))
             {
-                while (await xmlReader.ReadAsync())
+                while (xmlReader.Read())
                 {
                     if (xmlReader.Name == "pm:transactions")
                     {
-                        while (await xmlReader.ReadAsync())
+                        while (xmlReader.Read())
                         {
                             if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.NamespaceURI == _NameSpace))
                             {
@@ -107,7 +105,7 @@ namespace PortfolioManager.Service.Transactions
 
                                 if (transactionSerializer != null)
                                 {
-                                    var transaction = await transactionSerializer.Deserialize(xmlReader);
+                                    var transaction = transactionSerializer.Deserialize(xmlReader);
                                     transactions.Add(transaction);
                                 }
                             }
@@ -173,34 +171,34 @@ namespace PortfolioManager.Service.Transactions
             ElementName = elementName;
         }
 
-        protected Task WriteProperty(string name, string value, XmlWriter xmlWriter)
+        protected void WriteProperty(string name, string value, XmlWriter xmlWriter)
         {
-            return xmlWriter.WriteElementStringAsync(Prefix, name, NameSpace, value);
+            xmlWriter.WriteElementString(Prefix, name, NameSpace, value);
         }
 
-        protected Task WriteProperty(string name, DateTime value, XmlWriter xmlWriter)
+        protected void WriteProperty(string name, DateTime value, XmlWriter xmlWriter)
         {
-            return xmlWriter.WriteElementStringAsync(Prefix, name, NameSpace, value.ToString("yyyy-MM-dd"));
+            xmlWriter.WriteElementString(Prefix, name, NameSpace, value.ToString("yyyy-MM-dd"));
         }
 
-        protected Task WriteProperty(string name, int value, XmlWriter xmlWriter)
+        protected void WriteProperty(string name, int value, XmlWriter xmlWriter)
         {
-            return xmlWriter.WriteElementStringAsync(Prefix, name, NameSpace, value.ToString());
+            xmlWriter.WriteElementString(Prefix, name, NameSpace, value.ToString());
         }
 
-        protected Task WriteProperty(string name, decimal value, XmlWriter xmlWriter)
+        protected void WriteProperty(string name, decimal value, XmlWriter xmlWriter)
         {
-            return xmlWriter.WriteElementStringAsync(Prefix, name, NameSpace, value.ToString("n5"));
+            xmlWriter.WriteElementString(Prefix, name, NameSpace, value.ToString("n5"));
         }
 
-        protected Task WriteProperty(string name, bool value, XmlWriter xmlWriter)
+        protected void WriteProperty(string name, bool value, XmlWriter xmlWriter)
         {
-            return xmlWriter.WriteElementStringAsync(Prefix, name, NameSpace, (value ? "true" : "false"));
+            xmlWriter.WriteElementString(Prefix, name, NameSpace, (value ? "true" : "false"));
         }
 
-        protected Task WriteProperty(string name, Guid value, XmlWriter xmlWriter)
+        protected void WriteProperty(string name, Guid value, XmlWriter xmlWriter)
         {
-            return xmlWriter.WriteElementStringAsync(Prefix, name, NameSpace, value.ToString());
+            xmlWriter.WriteElementString(Prefix, name, NameSpace, value.ToString());
         }
 
         protected DateTime PropertyAsDateTime(string value)
@@ -228,33 +226,33 @@ namespace PortfolioManager.Service.Transactions
              return Guid.Parse(value);
         }
 
-        protected abstract Task SerializeProperties(T transaction, XmlWriter xmlWriter);
+        protected abstract void SerializeProperties(T transaction, XmlWriter xmlWriter);
         protected abstract void SetProperty(T transaction, string propertyName, string propertyValue);
 
-        public async Task Serialize(Transaction transaction, XmlWriter xmlWriter)
+        public void Serialize(Transaction transaction, XmlWriter xmlWriter)
         {
-            await xmlWriter.WriteStartElementAsync("pm", ElementName, NameSpace);
+            xmlWriter.WriteStartElement("pm", ElementName, NameSpace);
 
-            await WriteProperty("transactiondate", transaction.TransactionDate, xmlWriter);
-            await WriteProperty("asxcode", transaction.ASXCode, xmlWriter);
-            await WriteProperty("recorddate", transaction.RecordDate, xmlWriter);
-            await WriteProperty("comment", transaction.Comment, xmlWriter);
+            WriteProperty("transactiondate", transaction.TransactionDate, xmlWriter);
+            WriteProperty("asxcode", transaction.ASXCode, xmlWriter);
+            WriteProperty("recorddate", transaction.RecordDate, xmlWriter);
+            WriteProperty("comment", transaction.Comment, xmlWriter);
 
-            await SerializeProperties((T)transaction, xmlWriter);
+            SerializeProperties((T)transaction, xmlWriter);
 
-            await xmlWriter.WriteEndElementAsync();
+            xmlWriter.WriteEndElement();
         }
 
-        public async Task<Transaction> Deserialize(XmlReader xmlReader)
+        public Transaction Deserialize(XmlReader xmlReader)
         {
             var transaction = new T();
 
-            await xmlReader.ReadAsync();
+            xmlReader.Read();
 
             while (!((xmlReader.NodeType == XmlNodeType.EndElement) && (xmlReader.LocalName == ElementName)))
             {
                 var propertyName = xmlReader.LocalName;
-                var propertyValue = await xmlReader.ReadElementContentAsStringAsync();
+                var propertyValue = xmlReader.ReadElementContentAsString();
 
                 if (propertyName == "transactiondate")
                     transaction.TransactionDate = PropertyAsDateTime(propertyValue);

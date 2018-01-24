@@ -15,10 +15,10 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        protected override async Task SerializeProperties(UnitCountAdjustment transaction, XmlWriter xmlWriter)
+        protected override void SerializeProperties(UnitCountAdjustment transaction, XmlWriter xmlWriter)
         {
-            await WriteProperty("originalunits", transaction.OriginalUnits, xmlWriter);
-            await WriteProperty("newunits", transaction.NewUnits, xmlWriter);
+            WriteProperty("originalunits", transaction.OriginalUnits, xmlWriter);
+            WriteProperty("newunits", transaction.NewUnits, xmlWriter);
         }
 
         protected override void SetProperty(UnitCountAdjustment transaction, string propertyName, string propertyValue)

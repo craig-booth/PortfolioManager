@@ -16,9 +16,9 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        protected override async Task SerializeProperties(CostBaseAdjustment transaction, XmlWriter xmlWriter)
+        protected override void SerializeProperties(CostBaseAdjustment transaction, XmlWriter xmlWriter)
         {
-            await WriteProperty("percentage", transaction.Percentage, xmlWriter);
+            WriteProperty("percentage", transaction.Percentage, xmlWriter);
         }
 
         protected override void SetProperty(CostBaseAdjustment transaction, string propertyName, string propertyValue)

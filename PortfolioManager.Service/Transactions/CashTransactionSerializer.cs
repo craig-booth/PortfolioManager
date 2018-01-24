@@ -18,10 +18,10 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        protected override async Task SerializeProperties(CashTransaction transaction, XmlWriter xmlWriter)
+        protected override void SerializeProperties(CashTransaction transaction, XmlWriter xmlWriter)
         {
-            await WriteProperty("cashtransactiontype", (int)transaction.CashTransactionType, xmlWriter);
-            await WriteProperty("amount", transaction.Amount, xmlWriter);
+            WriteProperty("cashtransactiontype", (int)transaction.CashTransactionType, xmlWriter);
+            WriteProperty("amount", transaction.Amount, xmlWriter);
         }
 
         protected override void SetProperty(CashTransaction transaction, string propertyName, string propertyValue)

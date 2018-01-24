@@ -182,32 +182,32 @@ namespace PortfolioManager.Service.Local
             return Task.FromResult<GetTransactionsResponce>(responce);
         }
 
-        public async Task<ServiceResponce> ImportTransactions(string fileName)
+        public Task<ServiceResponce> ImportTransactions(string fileName)
         {
             var responce = new ServiceResponce();
 
             var importer = new TransactionImporter();
-            var transactions = await importer.ImportTransactions(fileName);
+            var transactions = importer.ImportTransactions(fileName);
 
             ImportTransactions(transactions);
 
             responce.SetStatusToSuccessfull();
 
-            return responce;
+            return Task.FromResult<ServiceResponce>(responce);
         }
 
-        public async Task<ServiceResponce> ImportTransactions(TextReader textReader)
+        public Task<ServiceResponce> ImportTransactions(TextReader textReader)
         {
             var responce = new ServiceResponce();
 
             var importer = new TransactionImporter();
-            var transactions = await importer.ImportTransactions(textReader);
+            var transactions = importer.ImportTransactions(textReader);
 
             ImportTransactions(transactions);
 
             responce.SetStatusToSuccessfull();
 
-            return responce;
+            return Task.FromResult<ServiceResponce>(responce);
         }
 
         private void ImportTransactions(IEnumerable<Transaction> transactions)
@@ -237,7 +237,7 @@ namespace PortfolioManager.Service.Local
             }
         }      
 
-        public async Task<ServiceResponce> ExportTransactions(string fileName, DateTime fromDate, DateTime toDate)
+        public Task<ServiceResponce> ExportTransactions(string fileName, DateTime fromDate, DateTime toDate)
         {
             var responce = new ServiceResponce();
     
@@ -247,15 +247,15 @@ namespace PortfolioManager.Service.Local
 
                 var transactions = portfolioUnitOfWork.PortfolioQuery.GetTransactions(fromDate, toDate);
 
-                await exporter.ExportTransactions(fileName, transactions);
+                exporter.ExportTransactions(fileName, transactions);
 
                 responce.SetStatusToSuccessfull();
             }
 
-            return responce;
+            return Task.FromResult<ServiceResponce>(responce);
         }
 
-        public async Task<ServiceResponce> ExportTransactions(TextWriter textWriter, DateTime fromDate, DateTime toDate)
+        public Task<ServiceResponce> ExportTransactions(TextWriter textWriter, DateTime fromDate, DateTime toDate)
         {
             var responce = new ServiceResponce();
 
@@ -265,12 +265,12 @@ namespace PortfolioManager.Service.Local
 
                 var transactions = portfolioUnitOfWork.PortfolioQuery.GetTransactions(fromDate, toDate);
 
-                await exporter.ExportTransactions(textWriter, transactions);
+                exporter.ExportTransactions(textWriter, transactions);
 
                 responce.SetStatusToSuccessfull();
             }
 
-            return responce;
+            return Task.FromResult<ServiceResponce>(responce);
         }
     }
 

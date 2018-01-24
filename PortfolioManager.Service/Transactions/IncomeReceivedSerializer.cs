@@ -17,15 +17,15 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        protected override async Task SerializeProperties(IncomeReceived transaction, XmlWriter xmlWriter)
+        protected override void SerializeProperties(IncomeReceived transaction, XmlWriter xmlWriter)
         {
-            await WriteProperty("franked", transaction.FrankedAmount, xmlWriter);
-            await WriteProperty("unfranked", transaction.UnfrankedAmount, xmlWriter);
-            await WriteProperty("frankingcredits", transaction.FrankingCredits, xmlWriter);
-            await WriteProperty("interest", transaction.Interest, xmlWriter);
-            await WriteProperty("taxdeferred", transaction.TaxDeferred, xmlWriter);
-            await WriteProperty("createcashtransaction", transaction.CreateCashTransaction, xmlWriter);
-            await WriteProperty("drpcashbalance", transaction.DRPCashBalance, xmlWriter);
+            WriteProperty("franked", transaction.FrankedAmount, xmlWriter);
+            WriteProperty("unfranked", transaction.UnfrankedAmount, xmlWriter);
+            WriteProperty("frankingcredits", transaction.FrankingCredits, xmlWriter);
+            WriteProperty("interest", transaction.Interest, xmlWriter);
+            WriteProperty("taxdeferred", transaction.TaxDeferred, xmlWriter);
+            WriteProperty("createcashtransaction", transaction.CreateCashTransaction, xmlWriter);
+            WriteProperty("drpcashbalance", transaction.DRPCashBalance, xmlWriter);
         }
 
         protected override void SetProperty(IncomeReceived transaction, string propertyName, string propertyValue)

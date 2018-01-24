@@ -17,12 +17,12 @@ namespace PortfolioManager.Service.Transactions
 
         }
 
-        protected override async  Task SerializeProperties(OpeningBalance transaction, XmlWriter xmlWriter)
+        protected override void SerializeProperties(OpeningBalance transaction, XmlWriter xmlWriter)
         {
-            await WriteProperty("units", transaction.Units, xmlWriter);
-            await WriteProperty("costbase", transaction.CostBase, xmlWriter);
-            await WriteProperty("aquisitiondate", transaction.AquisitionDate, xmlWriter);
-            await WriteProperty("purchaseid", transaction.PurchaseId, xmlWriter);
+            WriteProperty("units", transaction.Units, xmlWriter);
+            WriteProperty("costbase", transaction.CostBase, xmlWriter);
+            WriteProperty("aquisitiondate", transaction.AquisitionDate, xmlWriter);
+            WriteProperty("purchaseid", transaction.PurchaseId, xmlWriter);
         }
 
         protected override void SetProperty(OpeningBalance transaction, string propertyName, string propertyValue)
