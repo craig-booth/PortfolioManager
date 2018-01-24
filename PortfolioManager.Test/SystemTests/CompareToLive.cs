@@ -29,8 +29,6 @@ namespace PortfolioManager.Test.SystemTests
         private string _ExpectedResultsPath;
         private string _ActualResultsPath;
 
-        private Type[] _TransactionTypes;
-
         [OneTimeSetUp]
         public async Task Init()
         {
@@ -47,18 +45,6 @@ namespace PortfolioManager.Test.SystemTests
                 Directory.CreateDirectory(_ActualResultsPath);
             }
 
-            _TransactionTypes = new Type[] 
-            {
-                typeof(AquisitionTransactionItem),
-                typeof(CashTransactionItem),
-                typeof(CostBaseAdjustmentTransactionItem),
-                typeof(DisposalTransactionItem),
-                typeof(IncomeTransactionItem),
-                typeof(OpeningBalanceTransactionItem),
-                typeof(ReturnOfCapitalTransactionItem),
-                typeof(UnitCountAdjustmentTransactionItem)
-            };
-
             _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
             _StockDatabase = new SQLiteStockDatabase(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Stocks.db"));
 
@@ -69,14 +55,7 @@ namespace PortfolioManager.Test.SystemTests
         {
             var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
 
-             using (var streamReader = new StreamReader(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml")))
-             {
-                 var serializer = new XmlSerializer(typeof(List<TransactionItem>), _TransactionTypes);
-
-                 var transactions = (List<TransactionItem>)serializer.Deserialize(streamReader);
-
-                 var responce = await service.AddTransactions(transactions);
-             } 
+            await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));         
         }
 
         private void SaveActualResult(ServiceResponce actual, string fileName)

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ICorporateActionService : IPortfolioService
+    public interface ICorporateActionService 
     {
         Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions();
         Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid actionId);

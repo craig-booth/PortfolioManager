@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IPortfolioSummaryService : IPortfolioService
+    public interface IPortfolioSummaryService
     {
         Task<PortfolioPropertiesResponce> GetProperties();
         Task<PortfolioSummaryResponce> GetSummary(DateTime date);

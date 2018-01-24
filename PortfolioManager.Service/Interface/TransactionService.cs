@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 
 using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ITransactionService : IPortfolioService
+    public interface ITransactionService
     {
         Task<ServiceResponce> AddTransaction(TransactionItem transactionItem);
         Task<ServiceResponce> AddTransactions(IEnumerable<TransactionItem> transactionItems);
@@ -17,6 +18,12 @@ namespace PortfolioManager.Service.Interface
         Task<GetTransactionResponce> GetTransaction(Guid id);
         Task<GetTransactionsResponce> GetTransactions(DateTime fromDate, DateTime toDate);
         Task<GetTransactionsResponce> GetTransactions(Guid stockId, DateTime fromDate, DateTime toDate);
+
+        Task<ServiceResponce> ImportTransactions(string fileName);
+        Task<ServiceResponce> ImportTransactions(TextReader reader);
+
+        Task<ServiceResponce> ExportTransactions(string fileName, DateTime fromDate, DateTime toDate);
+        Task<ServiceResponce> ExportTransactions(TextWriter writer, DateTime fromDate, DateTime toDate);
     }
 
     public class GetTransactionResponce : ServiceResponce

@@ -6,7 +6,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IPortfolioValueService : IPortfolioService
+    public interface IPortfolioValueService
     {
         Task<PortfolioValueResponce> GetPortfolioValue(DateTime fromDate, DateTime toDate, ValueFrequency frequency);
         Task<PortfolioValueResponce> GetPortfolioValue(Guid stockId, DateTime fromDate, DateTime toDate, ValueFrequency frequency);

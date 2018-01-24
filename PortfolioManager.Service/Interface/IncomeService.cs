@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IIncomeService : IPortfolioService
+    public interface IIncomeService
     {
         Task<IncomeResponce> GetIncome(DateTime fromDate, DateTime toDate);
     }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Common", "PortfolioManager.Common\PortfolioManager.Common.csproj", "{C754D5DE-F2D5-4E1D-999A-B2DEB7DDCE04}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.ImportData
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Housekeeping", "PortfolioManager.Housekeeping\PortfolioManager.Housekeeping.csproj", "{6E2A8661-6943-4768-B47D-61852DA0EDF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{9DDFABF7-6355-46A0-BF34-8FFB34D0CE71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{246A1222-9C9E-4616-BD29-2755A7CD5D20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,10 @@ Global
 		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DDFABF7-6355-46A0-BF34-8FFB34D0CE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DDFABF7-6355-46A0-BF34-8FFB34D0CE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DDFABF7-6355-46A0-BF34-8FFB34D0CE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DDFABF7-6355-46A0-BF34-8FFB34D0CE71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

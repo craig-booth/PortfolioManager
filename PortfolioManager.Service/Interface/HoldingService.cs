@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IHoldingService : IPortfolioService
+    public interface IHoldingService 
     {
         Task<HoldingResponce> GetHolding(Guid stockId, DateTime date);
         Task<HoldingsResponce> GetHoldings(DateTime date);

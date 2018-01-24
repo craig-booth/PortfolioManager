@@ -8,7 +8,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace PortfolioManager.ImportData.DataServices
 {
-    class GoogleDataService : ILiveStockPriceService
+    public class GoogleDataService : ILiveStockPriceService
     {
         private readonly JsonSerializerSettings _SerializerSettings;
 

@@ -3,56 +3,82 @@ using System.Collections.Generic;
 
 namespace PortfolioManager.Common
 {
-    public class ServiceFactory<I>
+    public class ServiceFactory<I> 
     {
-        private readonly Dictionary<Type, I> _Services;
-        private readonly Dictionary<Type, Func<I>> _ServiceFactories;
+        private class ServiceInstance
+        {
+            public I Instance;
+            public bool Created;
+            public Func<I> Factory;
+
+            public ServiceInstance(I instance)
+            {
+                Created = true;
+                Instance = instance;
+            }
+
+            public ServiceInstance(Func<I> factory)
+            {
+                Created = false;
+                Factory = factory;
+            }
+
+            public I GetInstance()
+            {
+                if (!Created)
+                {
+                    Instance = Factory();
+                    Created = true;
+                }
+
+                return Instance;
+            }
+        }
+
+        private readonly Dictionary<Type, ServiceInstance> _Services;
 
         public ServiceFactory()
         {
-            _Services = new Dictionary<Type, I>();
-            _ServiceFactories = new Dictionary<Type, Func<I>>();
+            _Services = new Dictionary<Type, ServiceInstance>();
         }
 
-        public void Register<T>(Func<I> factory)
+        public ServiceFactory<I> Register<T>(I instance)
         {
-            _ServiceFactories.Add(typeof(T), factory);
+            _Services.Add(typeof(T), new ServiceInstance(instance));
+
+            return this;
+        }
+
+        public ServiceFactory<I> Register<T>(Func<I> factory)
+        {
+            _Services.Add(typeof(T), new ServiceInstance(factory));
+
+            return this;
         }
 
         public void Clear()
         {
             _Services.Clear();
-            _ServiceFactories.Clear();
+        }
+
+        public I GetService(Type type)
+        {
+            if (_Services.TryGetValue(type, out var serviceInstance))
+            {
+                return serviceInstance.GetInstance();
+            }
+
+            return default(I);
         }
 
         public I GetService<T>()
         {
-            I service;
-
-            if (!_Services.TryGetValue(typeof(T), out service))
-            {
-                var factory = _ServiceFactories[typeof(T)];
-                service = factory();
-
-                _Services.Add(typeof(T), service);
-            }
-
-            return service;
+            return GetService(typeof(T));
         }
 
         public I GetService(object obj)
         {
-            I service;
-
-            if (!_Services.TryGetValue(obj.GetType(), out service))
-            {
-                var factory = _ServiceFactories[obj.GetType()];
-                service = factory();
-
-                _Services.Add(obj.GetType(), service);
-            }
-
-            return service;
+            return GetService(obj.GetType());
         }
     }
 }

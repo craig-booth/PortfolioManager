@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 using AutoMapper;
 
@@ -179,6 +182,96 @@ namespace PortfolioManager.Service.Local
             return Task.FromResult<GetTransactionsResponce>(responce);
         }
 
+        public async Task<ServiceResponce> ImportTransactions(string fileName)
+        {
+            var responce = new ServiceResponce();
+
+            var importer = new TransactionImporter();
+            var transactions = await importer.ImportTransactions(fileName);
+
+            ImportTransactions(transactions);
+
+            responce.SetStatusToSuccessfull();
+
+            return responce;
+        }
+
+        public async Task<ServiceResponce> ImportTransactions(TextReader textReader)
+        {
+            var responce = new ServiceResponce();
+
+            var importer = new TransactionImporter();
+            var transactions = await importer.ImportTransactions(textReader);
+
+            ImportTransactions(transactions);
+
+            responce.SetStatusToSuccessfull();
+
+            return responce;
+        }
+
+        private void ImportTransactions(IEnumerable<Transaction> transactions)
+        {
+            using (IPortfolioUnitOfWork portfolioUnitOfWork = _PortfolioDatabase.CreateUnitOfWork())
+            {
+                using (var stockUnitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+                {
+                    var transactionHandlerFactory = new TransactionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, stockUnitOfWork.StockQuery);
+
+                    foreach (var transaction in transactions)
+                    {
+                        var handler = transactionHandlerFactory.GetHandler(transaction);
+                        if (handler != null)
+                        {
+                            handler.ApplyTransaction(portfolioUnitOfWork, transaction);
+                            portfolioUnitOfWork.TransactionRepository.Add(transaction);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException("Transaction type not supported");
+                        }
+                    }
+
+                    portfolioUnitOfWork.Save();
+                }
+            }
+        }      
+
+        public async Task<ServiceResponce> ExportTransactions(string fileName, DateTime fromDate, DateTime toDate)
+        {
+            var responce = new ServiceResponce();
+    
+            using (IPortfolioReadOnlyUnitOfWork portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                var exporter = new TransactionExporter();
+
+                var transactions = portfolioUnitOfWork.PortfolioQuery.GetTransactions(fromDate, toDate);
+
+                await exporter.ExportTransactions(fileName, transactions);
+
+                responce.SetStatusToSuccessfull();
+            }
+
+            return responce;
+        }
+
+        public async Task<ServiceResponce> ExportTransactions(TextWriter textWriter, DateTime fromDate, DateTime toDate)
+        {
+            var responce = new ServiceResponce();
+
+            using (IPortfolioReadOnlyUnitOfWork portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
+            {
+                var exporter = new TransactionExporter();
+
+                var transactions = portfolioUnitOfWork.PortfolioQuery.GetTransactions(fromDate, toDate);
+
+                await exporter.ExportTransactions(textWriter, transactions);
+
+                responce.SetStatusToSuccessfull();
+            }
+
+            return responce;
+        }
     }
 
     class TransactionHandlerFactory
@@ -188,14 +281,15 @@ namespace PortfolioManager.Service.Local
         public TransactionHandlerFactory(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             _TransactionHandlers = new ServiceFactory<ITransactionHandler>();
-            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<IncomeReceived>(() => new IncomeReceivedHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<OpeningBalance>(() => new OpeningBalanceHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(portfolioQuery, stockQuery));
-            _TransactionHandlers.Register<CashTransaction>(() => new CashTransactionHandler());
+
+            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(portfolioQuery, stockQuery))
+                .Register<Disposal>(() => new DisposalHandler(portfolioQuery, stockQuery))
+                .Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(portfolioQuery, stockQuery))
+                .Register<IncomeReceived>(() => new IncomeReceivedHandler(portfolioQuery, stockQuery))
+                .Register<OpeningBalance>(() => new OpeningBalanceHandler(portfolioQuery, stockQuery))
+                .Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(portfolioQuery, stockQuery))
+                .Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(portfolioQuery, stockQuery))
+                .Register<CashTransaction>(() => new CashTransactionHandler());
         }
 
         public ITransactionHandler GetHandler(Transaction transaction)

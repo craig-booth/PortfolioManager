@@ -4,7 +4,7 @@ using System.IO;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IAttachmentService : IPortfolioService
+    public interface IAttachmentService 
     {
         Task<AddAttachmentResponse> AddAttachment(string name, Stream stream);
         Task<GetAttachmentResponse> GetAttachment(Guid id);

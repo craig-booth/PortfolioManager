@@ -11,7 +11,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.ImportData.DataServices
 {
-    class ASXDataService : ITradingDayService, ILiveStockPriceService
+    public class ASXDataService : ITradingDayService, ILiveStockPriceService
     {
 
         public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes)

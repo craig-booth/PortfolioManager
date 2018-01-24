@@ -13,10 +13,10 @@ namespace PortfolioManager.ImportData
         private readonly ITradingDayService _DataService;
         private readonly IStockDatabase _Database;
 
-        public TradingDayImporter(IStockDatabase database)
+        public TradingDayImporter(IStockDatabase database, ITradingDayService dataService)
         {
             _Database = database;
-            _DataService = new ASXDataService();
+            _DataService = dataService;
         }
 
         public async Task Import()

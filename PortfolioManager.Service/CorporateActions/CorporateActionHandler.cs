@@ -28,11 +28,11 @@ namespace PortfolioManager.Service.CorporateActions
             _PortfolioQuery = portfolioQuery;
             _StockQuery = stockQuery;
 
-            _HandlerFactory.Register<CapitalReturn>(() => new CapitalReturnHandler(_PortfolioQuery, _StockQuery));
-            _HandlerFactory.Register<CompositeAction>(() => new CompositeActionHandler(_PortfolioQuery, _StockQuery, this));
-            _HandlerFactory.Register<Dividend>(() => new DividendHandler(_PortfolioQuery, _StockQuery));
-            _HandlerFactory.Register<SplitConsolidation>(() => new SplitConsolidationHandler(_PortfolioQuery, _StockQuery));
-            _HandlerFactory.Register<Transformation>(() => new TransformationHandler(_PortfolioQuery, _StockQuery));
+            _HandlerFactory.Register<CapitalReturn>(() => new CapitalReturnHandler(_PortfolioQuery, _StockQuery))
+                .Register<CompositeAction>(() => new CompositeActionHandler(_PortfolioQuery, _StockQuery, this))
+                .Register<Dividend>(() => new DividendHandler(_PortfolioQuery, _StockQuery))
+                .Register<SplitConsolidation>(() => new SplitConsolidationHandler(_PortfolioQuery, _StockQuery))
+                .Register<Transformation>(() => new TransformationHandler(_PortfolioQuery, _StockQuery));
         }
 
         public ICorporateActionHandler GetHandler(CorporateAction corporateAction)

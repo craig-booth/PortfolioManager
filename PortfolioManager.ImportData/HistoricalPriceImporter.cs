@@ -14,10 +14,10 @@ namespace PortfolioManager.ImportData
         private IHistoricalStockPriceService _DataService;
         private readonly IStockDatabase _Database;
 
-        public HistoricalPriceImporter(IStockDatabase database)
+        public HistoricalPriceImporter(IStockDatabase database, IHistoricalStockPriceService dataService)
         {
             _Database = database;
-            _DataService = new FloatComAuDataService();
+            _DataService = dataService;
         }
 
         private class StockToImport

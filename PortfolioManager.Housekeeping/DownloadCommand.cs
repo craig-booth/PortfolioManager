@@ -6,6 +6,7 @@ using Microsoft.Extensions.CommandLineUtils;
 
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.ImportData;
+using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.Housekeeping
 {
@@ -41,19 +42,19 @@ namespace PortfolioManager.Housekeeping
 
             if (_TradingDays.HasValue())
             {
-                var tradingDayImporter = new TradingDayImporter(database);
+                var tradingDayImporter = new TradingDayImporter(database, new ASXDataService());
                 downloadTasks.Add(tradingDayImporter.Import());
             }
 
             if (_CurrentPrices.HasValue())
             {
-                var livePriceImporter = new LivePriceImporter(database);
+                var livePriceImporter = new LivePriceImporter(database, new ASXDataService());
                 downloadTasks.Add(livePriceImporter.Import());
             }
 
             if (_HistoricPrices.HasValue())
             {
-                var historicalPriceImporter = new HistoricalPriceImporter(database);
+                var historicalPriceImporter = new HistoricalPriceImporter(database, new FloatComAuDataService());
                 downloadTasks.Add(historicalPriceImporter.Import());
             }
 

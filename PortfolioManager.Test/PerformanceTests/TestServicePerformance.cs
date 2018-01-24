@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+using NUnit.Framework;
 using NBench;
 
 using PortfolioManager.Common;
@@ -21,12 +22,11 @@ namespace PortfolioManager.Test.PerformanceTests
 {
     class TestServicePerformance : PerformanceTestStuite<TestServicePerformance>
     {
+        private bool _Initialized = false;
         private IPortfolioDatabase _PortfolioDatabase;
         private IStockDatabase _StockDatabase;
 
         private string _TestPath;
-
-        private Type[] _TransactionTypes;
 
         private Counter _Counter;
 
@@ -34,49 +34,35 @@ namespace PortfolioManager.Test.PerformanceTests
         private DateTime _FromDate;
         private DateTime _ToDate;
 
-
         [PerfSetup]
         public async void Init(BenchmarkContext context)
         {
-            _TestPath = @"C:\Users\Craig\Source\Repos\PortfolioManager\PortfolioManager.Test\bin\Debug\PerformanceTests";
+            if (!_Initialized)
+            {
+                _TestPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "PerformanceTests");
 
-            _AtDate = new DateTime(2017, 06, 30);
-            _FromDate = new DateTime(2016, 07, 01);
-            _ToDate = new DateTime(2017, 06, 30);
+                _AtDate = new DateTime(2017, 06, 30);
+                _FromDate = new DateTime(2016, 07, 01);
+                _ToDate = new DateTime(2017, 06, 30);
 
-            _TransactionTypes = new Type[]
-                {
-                    typeof(AquisitionTransactionItem),
-                    typeof(CashTransactionItem),
-                    typeof(CostBaseAdjustmentTransactionItem),
-                    typeof(DisposalTransactionItem),
-                    typeof(IncomeTransactionItem),
-                    typeof(OpeningBalanceTransactionItem),
-                    typeof(ReturnOfCapitalTransactionItem),
-                    typeof(UnitCountAdjustmentTransactionItem)
-                };
+                var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
+                File.Delete(portfolioDatabaseFile);
+                _PortfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
+                _StockDatabase = new SQLiteStockDatabase(Path.Combine(_TestPath, "Stocks.db"));
+
+                await LoadTransactions();
+
+                _Initialized = true;
+            }
+
             _Counter = context.GetCounter("TestCounter");
-
-            var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
-            File.Delete(portfolioDatabaseFile);
-            _PortfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
-            _StockDatabase = new SQLiteStockDatabase(Path.Combine(_TestPath, "Stocks.db"));
-
-            await LoadTransactions();
         }
 
         public async Task LoadTransactions()
         {
             var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
 
-            using (var streamReader = new StreamReader(Path.Combine(_TestPath, "Transactions.xml")))
-            {
-                var serializer = new XmlSerializer(typeof(List<TransactionItem>), _TransactionTypes);
-
-                var transactions = (List<TransactionItem>)serializer.Deserialize(streamReader);
-
-                var responce = await service.AddTransactions(transactions);
-            } 
+            await service.ImportTransactions(Path.Combine(_TestPath, "Transactions.xml"));
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",

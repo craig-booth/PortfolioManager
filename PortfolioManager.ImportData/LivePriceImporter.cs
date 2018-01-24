@@ -16,10 +16,10 @@ namespace PortfolioManager.ImportData
         private ILiveStockPriceService _DataService;
         private readonly IStockDatabase _Database;
 
-        public LivePriceImporter(IStockDatabase database)
+        public LivePriceImporter(IStockDatabase database, ILiveStockPriceService dataService)
         {
             _Database = database;
-            _DataService = new ASXDataService();
+            _DataService = dataService;
         }
 
         public async Task Import()

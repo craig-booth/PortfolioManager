@@ -6,7 +6,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface ICapitalGainService : IPortfolioService
+    public interface ICapitalGainService 
     {
         Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(DateTime date);
         Task<SimpleUnrealisedGainsResponce> GetSimpleUnrealisedGains(Guid stockId, DateTime date);

@@ -8,7 +8,7 @@ using KBCsv;
 
 namespace PortfolioManager.ImportData.DataServices
 {
-    class FloatComAuDataService : IHistoricalStockPriceService
+    public class FloatComAuDataService : IHistoricalStockPriceService
     {
         public async Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
         {

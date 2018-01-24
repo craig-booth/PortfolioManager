@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioManager.Service.Interface
 {
-    public interface IPortfolioPerformanceService : IPortfolioService
+    public interface IPortfolioPerformanceService
     {
         Task<PortfolioPerformanceResponce> GetPerformance(DateTime fromDate, DateTime toDate);
     }
