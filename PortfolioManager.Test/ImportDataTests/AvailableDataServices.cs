@@ -15,7 +15,8 @@ namespace PortfolioManager.Test.ImportDataTests
         private static object[] _DataServices = {
             new ASXDataService(),
             new FloatComAuDataService(),
-            new GoogleDataService()
+            new GoogleDataService(),
+            new AlphaVantageService()
         };
 
         public static IEnumerable<TestCaseData> HistoricalStockPriceServices()
@@ -24,7 +25,11 @@ namespace PortfolioManager.Test.ImportDataTests
             {
                 var requestDataService = dataService as IHistoricalStockPriceService;
                 if (requestDataService != null)
-                    yield return new TestCaseData(requestDataService);
+                {
+                    var testData = new TestCaseData(requestDataService);
+                    testData.SetName(requestDataService.GetType().Name + " - Historical Data");
+                    yield return testData;
+                }
             }
         }
 
@@ -34,7 +39,11 @@ namespace PortfolioManager.Test.ImportDataTests
             {
                 var requestDataService = dataService as ILiveStockPriceService;
                 if (requestDataService != null)
-                    yield return new TestCaseData(requestDataService);
+                {
+                    var testData = new TestCaseData(requestDataService);
+                    testData.SetName(requestDataService.GetType().Name + " - Live Data");
+                    yield return testData;
+                }
             }
         }
 
@@ -44,7 +53,12 @@ namespace PortfolioManager.Test.ImportDataTests
             {
                 var requestDataService = dataService as ITradingDayService;
                 if (requestDataService != null)
-                    yield return new TestCaseData(requestDataService);
+                    if (requestDataService != null)
+                    {
+                        var testData = new TestCaseData(requestDataService);
+                        testData.SetName(requestDataService.GetType().Name + " - Trading Days");
+                        yield return testData;
+                    }
             }
         }
     }

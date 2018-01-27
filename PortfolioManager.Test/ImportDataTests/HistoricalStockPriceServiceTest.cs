@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
+using PortfolioManager.Common;
 using PortfolioManager.ImportData.DataServices;
 
 
@@ -20,7 +21,12 @@ namespace PortfolioManager.Test.ImportDataTests
         public async Task HistoricalStockPriceService(IHistoricalStockPriceService dataService)
         {
             var fromDate = DateTime.Today.AddDays(-30);
+            while (!fromDate.WeekDay())
+                fromDate = fromDate.AddDays(-1);
+
             var toDate = DateTime.Today;
+            while (!toDate.WeekDay())
+                toDate = toDate.AddDays(-1);
 
             var priceData = await dataService.GetHistoricalPriceData("BHP", fromDate, toDate);
 
@@ -30,7 +36,7 @@ namespace PortfolioManager.Test.ImportDataTests
             Assert.That(firstPrice.Date, Is.EqualTo(fromDate));
             Assert.That(firstPrice.Price, Is.Not.EqualTo(0.00m));
 
-            var lastPrice = priceData.First();
+            var lastPrice = priceData.Last();
             Assert.That(lastPrice.Date, Is.EqualTo(toDate));
             Assert.That(lastPrice.Price, Is.Not.EqualTo(0.00m));
         }
