@@ -32,7 +32,7 @@ namespace PortfolioManager.UI.Utilities
 
         public async Task<PortfolioPerformanceResponce> GetPortfolioPerformanceAsync(DateTime fromDate, DateTime toDate)
         {
-            return await GetAsync<PortfolioPerformanceResponce>("api/portfolio/performance?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate" + toDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<PortfolioPerformanceResponce>("api/portfolio/performance?fromdate=" + fromDate.ToString("yyyy-MM-dd") + "&todate=" + toDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<HoldingResponce> GetPortfolioHoldingsAsync(Guid stock, DateTime date)
