@@ -54,7 +54,7 @@ namespace PortfolioManager.Housekeeping
 
             if (_HistoricPrices.HasValue())
             {
-                var historicalPriceImporter = new HistoricalPriceImporter(database, new FloatComAuDataService());
+                var historicalPriceImporter = new HistoricalPriceImporter(database, new ASXDataService());
                 downloadTasks.Add(historicalPriceImporter.Import());
             }
 

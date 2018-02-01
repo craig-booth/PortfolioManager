@@ -35,7 +35,7 @@ namespace PortfolioManager.ImportData.DataServices
             }
             catch
             {
-                return null;
+                return result;
             }
 
             return result;

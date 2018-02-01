@@ -215,7 +215,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
         {
             var query = EntityQuery.FromTable("StockPrices")
                 .Select("Date")
-                .Where("[Stock] = @Stock and [Current] = 0")
+                .Where("[Stock] = @Stock and [Current] = 'N'")
                 .WithParameter("@Stock", stock)
                 .OrderBy("[Date] DESC");
 

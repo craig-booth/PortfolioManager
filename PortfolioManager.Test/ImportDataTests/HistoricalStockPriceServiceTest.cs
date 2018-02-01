@@ -24,7 +24,7 @@ namespace PortfolioManager.Test.ImportDataTests
             while (!fromDate.WeekDay())
                 fromDate = fromDate.AddDays(-1);
 
-            var toDate = DateTime.Today;
+            var toDate = DateTime.Today.AddDays(-1);
             while (!toDate.WeekDay())
                 toDate = toDate.AddDays(-1);
 

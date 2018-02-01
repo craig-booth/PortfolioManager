@@ -11,8 +11,35 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.ImportData.DataServices
 {
-    public class ASXDataService : ITradingDayService, ILiveStockPriceService
+    public class ASXDataService : ITradingDayService, ILiveStockPriceService, IHistoricalStockPriceService
     {
+        public async Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
+        {
+            var result = new List<StockPrice>();
+
+            try
+            {
+                var httpClient = new HttpClient();
+
+                string url = String.Format("https://www.asx.com.au/asx/1/share/{0}/prices?interval=daily&count={1}", asxCode, toDate.Subtract(fromDate).Days);
+                var response = await httpClient.GetAsync(url);
+
+                var text = await response.Content.ReadAsStringAsync();
+
+                var jsonObject = JObject.Parse(text);
+
+                var closingPrices = from item in jsonObject["data"]
+                                    select new StockPrice(asxCode, ((DateTime)item["close_date"]).AddHours(2).Date, (decimal)item["close_price"]);
+
+                result.AddRange(closingPrices.Where(x => x.Date.Between(fromDate, toDate)).OrderBy(x => x.Date));
+            }
+            catch
+            {
+                return result;
+            }
+
+            return result;
+        }
 
         public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes)
         {
@@ -32,7 +59,7 @@ namespace PortfolioManager.ImportData.DataServices
             {
                 var httpClient = new HttpClient();
 
-                string url = "http://data.asx.com.au/data/1/share/" + asxCode;         
+                string url = "https://www.asx.com.au/asx/1/share/" + asxCode;         
                 var response = await httpClient.GetAsync(url);
 
                 var text = await response.Content.ReadAsStringAsync();
