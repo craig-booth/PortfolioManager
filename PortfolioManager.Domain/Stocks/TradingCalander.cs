@@ -33,7 +33,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new NonTradingDayAddedEvent(date);
             Apply(@event);
 
-            _EventStore.StoreEvent(Guid.Empty, @event);
+            _EventStore.StoreEvent(@event);
         }
 
         public void Apply(NonTradingDayAddedEvent e)

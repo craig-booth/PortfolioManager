@@ -7,7 +7,7 @@ namespace PortfolioManager.Domain
 {
     public interface IEventStore
     {
-        void StoreEvent(Guid entityId, IEvent @event);
+        void StoreEvent(IEvent @event);
 
         IEnumerable<IEvent> RetrieveEvents();
         IEnumerable<IEvent> RetrieveEvents(Guid entityId);
@@ -17,17 +17,17 @@ namespace PortfolioManager.Domain
     {
         private Dictionary<Guid, List<IEvent>> _Store = new Dictionary<Guid, List<IEvent>>();
 
-        public void StoreEvent(Guid entityId, IEvent @event)
+        public void StoreEvent(IEvent @event)
         {
             List<IEvent> events;
-            if (_Store.ContainsKey(entityId))
+            if (_Store.ContainsKey(@event.Id))
             {
-                events = _Store[entityId];
+                events = _Store[@event.Id];
             }
             else
             {
                 events = new List<IEvent>();
-                _Store.Add(entityId, events);
+                _Store.Add(@event.Id, events);
             }
 
             events.Add(@event);

@@ -8,12 +8,8 @@ using PortfolioManager.Domain.Stocks.Events;
 
 namespace PortfolioManager.Domain.Stocks
 {
-    public interface IStock : IEffectiveEntity<StockProperties>
-    {
-        decimal GetPrice(DateTime date);
-    }
 
-    public class Stock : EffectiveEntity<StockProperties>, IStock
+    public class Stock : EffectiveEntity<StockProperties>
     {
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
 
@@ -27,8 +23,8 @@ namespace PortfolioManager.Domain.Stocks
 
         public void Apply(StockListedEvent @event)
         {
-            _CurrentProperties = new StockProperties(Id, @event.ListingDate, DateUtils.NoEndDate, @event.ASXCode, @event.Name, @event.Type, @event.Category, @event.DividendRoundingRule, @event.DRPMethod);
-            _Properties.Add(_CurrentProperties);
+            var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Type, @event.Category, false, RoundingRule.Round, DRPMethod.Round);
+            Change(@event.ListingDate, properties);
         }
 
         public void UpdateClosingPrice(DateTime date, decimal closingPrice)
@@ -40,7 +36,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPriceAddedEvent(Id, date, closingPrice);
             Apply(@event);
 
-            _EventStore.StoreEvent(Id, @event);
+            _EventStore.StoreEvent(@event);
         }
 
         public void Apply(ClosingPriceAddedEvent @event)
@@ -91,60 +87,94 @@ namespace PortfolioManager.Domain.Stocks
         } 
 
         public void ChangeName(DateTime changeDate, string newAsxCode, string newName)
-        {
+        {           
+            var properties = GetProperties(changeDate);
 
+            var @event = new StockPropertiesChangedEvent(Id,
+                changeDate,
+                newAsxCode,
+                newName,
+                properties.Type,
+                properties.Category,
+                properties.DRPActive,
+                properties.DividendRoundingRule,
+                properties.DRPMethod);
+
+            Apply(@event);
+            _EventStore.StoreEvent(@event);
         }
 
-        public void ChangeCategory(DateTime changeDate, AssetCategory assetCategory)
+        public void ChangeCategory(DateTime changeDate, AssetCategory newAssetCategory)
         {
+            var properties = GetProperties(changeDate);
 
+            var @event = new StockPropertiesChangedEvent(Id,
+                changeDate,
+                properties.ASXCode,
+                properties.Name,
+                properties.Type,
+                newAssetCategory,
+                properties.DRPActive,
+                properties.DividendRoundingRule,
+                properties.DRPMethod);
+
+            Apply(@event);
+            _EventStore.StoreEvent(@event);
         }
 
-        public void ChangeDRPRules(DateTime changeDate, bool DRPActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
+        public void ChangeDRPRules(DateTime changeDate, bool drpActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
         {
+            var properties = GetProperties(changeDate);
 
+            var @event = new StockPropertiesChangedEvent(Id,
+                changeDate,
+                properties.ASXCode,
+                properties.Name,
+                properties.Type,
+                properties.Category,
+                drpActive,
+                newDividendRoundingRule,
+                newDrpMethod);
+
+            Apply(@event);
+            _EventStore.StoreEvent(@event);
         }
 
         public void Apply(StockPropertiesChangedEvent @event)
         {
-      /*      Change(@event.ChangeDate, x => {
-                x.Name = @event.Name;
-                x.ListingDate = @event.ChangeDate;
-        public StockType Type { get; }
-        public AssetCategory Category { get; }
-        public bool DRPActive { get; }
-        public RoundingRule DividendRoundingRule { get; }
-        public DRPMethod DRPMethod { get; }) */
+            var newProperties = new StockProperties(
+                @event.ASXCode,
+                @event.Name,
+                @event.Type,
+                @event.Category,
+                @event.DRPActive,
+                @event.DividendRoundingRule,
+                @event.DRPMethod);
+
+            Change(@event.ChangeDate, newProperties);
         }
     }
 
-    public class StockProperties : EffectiveProperties
+    public struct StockProperties
     {
-        public string ASXCode { get; }
-        public string Name { get; }
-        public StockType Type { get; }
-        public AssetCategory Category { get; }
-        public bool DRPActive { get; }
-        public RoundingRule DividendRoundingRule { get; }
-        public DRPMethod DRPMethod { get; }
+        public readonly string ASXCode;
+        public readonly string Name;
+        public readonly StockType Type;
+        public readonly AssetCategory Category;
+        public readonly bool DRPActive;
+        public readonly RoundingRule DividendRoundingRule;
+        public readonly DRPMethod DRPMethod;
 
-        public StockProperties(Guid id, DateTime fromDate, string asxCode, string name, StockType type, AssetCategory category, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
-            : base(id, fromDate)
+        public StockProperties(string asxCode, string name, StockType type, AssetCategory category, bool drpActive, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
         {
             ASXCode = asxCode;
             Name = name;
             Type = type;
             Category = category;
-            DRPActive = false;
+            DRPActive = drpActive;
             DividendRoundingRule = dividendRoundingRule;
             DRPMethod = drpMethod;
         }
-
-        public override EffectiveProperties Copy(DateRange newRange)
-        {
-            var newStockProperties = new StockProperties(Id, newRange.FromDate, newRange.ToDate, ASXCode, Name, Type, Category, DividendRoundingRule, DRPMethod);
-
-            return newStockProperties;
-        }
     }
+
 }
