@@ -14,11 +14,8 @@ namespace PortfolioManager.Domain.Stocks.Events
         public string Name { get; }
         public StockType Type { get; }
         public AssetCategory Category { get; }
-        public bool DRPActive { get; }
-        public RoundingRule DividendRoundingRule { get; }
-        public DRPMethod DRPMethod { get; }
 
-        public StockPropertiesChangedEvent(Guid id, DateTime changeDate, string asxCode, string name, StockType type, AssetCategory category, bool drpActive, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
+        public StockPropertiesChangedEvent(Guid id, DateTime changeDate, string asxCode, string name, StockType type, AssetCategory category)
         {
             Id = id;
             ChangeDate = changeDate;
@@ -26,9 +23,6 @@ namespace PortfolioManager.Domain.Stocks.Events
             Name = name;
             Type = type;
             Category = category;
-            DRPActive = drpActive;
-            DividendRoundingRule = dividendRoundingRule;
-            DRPMethod = drpMethod;
         }
     }
 }

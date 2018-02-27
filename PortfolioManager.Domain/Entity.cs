@@ -6,15 +6,8 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Domain
 {
-    public interface IEntity
+    public abstract class EffectiveEntity
     {
-        Guid Id { get; }
-    }
-
-    public abstract class EffectiveEntity<T> where T : struct
-    {
-        protected Stack<EffectiveProperties<T>> _Properties = new Stack<EffectiveProperties<T>>();
-
         public Guid Id { get; }
         public DateRange EffectivePeriod { get; private set; }
 
@@ -22,16 +15,6 @@ namespace PortfolioManager.Domain
         {
             Id = id;
             EffectivePeriod = new DateRange(fromDate, DateUtils.NoEndDate);
-        }
-
-        public T GetProperties(DateTime date)
-        {
-            if (IsEffectiveAt(date))
-            {
-                return _Properties.FirstOrDefault(x => x.IsEffectiveAt(date)).Properties;
-            }
-            else
-                throw new ArgumentOutOfRangeException();
         }
 
         public bool IsEffectiveAt(DateTime date)
@@ -42,6 +25,25 @@ namespace PortfolioManager.Domain
         public bool IsEffectiveDuring(DateRange dateRange)
         {
             return EffectivePeriod.Overlaps(dateRange);
+        }
+
+        public virtual void End(DateTime date)
+        {
+            if (!EffectivePeriod.ToDate.Equals(DateUtils.NoEndDate))
+                throw new Exception("Entity is not current");
+
+            EffectivePeriod = new DateRange(EffectivePeriod.FromDate, date);
+        }
+    }
+
+    public class EffectiveProperties<T> 
+        where T :struct
+    {
+        protected Stack<EffectivePropertyValues<T>> _Properties = new Stack<EffectivePropertyValues<T>>();
+
+        public T Get(DateTime date)
+        {
+           return _Properties.First(x => x.IsEffectiveAt(date)).Properties;
         }
 
         public bool Matches(Func<T, bool> predicate)
@@ -62,11 +64,8 @@ namespace PortfolioManager.Domain
             return (match != null);
         }
 
-        protected void Change(DateTime date, T newProperties)
+        public void Change(DateTime date, T newProperties)
         {
-            if (!EffectivePeriod.Contains(date))
-                throw new Exception("Entity is not current at that time");
-
             if (_Properties.Count > 0)
             {
                 var currentProperties = _Properties.Peek();
@@ -79,34 +78,26 @@ namespace PortfolioManager.Domain
                 else
                     currentProperties.End(date.AddDays(-1));
             }
-            _Properties.Push(new EffectiveProperties<T>(Id, date, newProperties));
+            _Properties.Push(new EffectivePropertyValues<T>(date, newProperties));
         }
 
         public void End(DateTime date)
         {
-            if (! EffectivePeriod.ToDate.Equals(DateUtils.NoEndDate))
-                throw new Exception("Entity is not current");
-
-            EffectivePeriod = new DateRange(EffectivePeriod.FromDate, date);
-
             if (_Properties.Count > 0)
             {
                 var currentProperties = _Properties.Peek();
                 currentProperties.End(date);
-
-            }       
+            }
         }
     }
 
-    public class EffectiveProperties<T> where T : struct
+    public class EffectivePropertyValues<T> where T : struct
     {
-        public Guid Id { get; }
         public DateRange EffectivePeriod { get; private set; }
         public T Properties { get; }
 
-        public EffectiveProperties(Guid id, DateTime fromDate, T properties)
+        public EffectivePropertyValues(DateTime fromDate, T properties)
         {
-            Id = Guid.NewGuid();
             EffectivePeriod = new DateRange(fromDate, DateUtils.NoEndDate);
             Properties = properties;
         }

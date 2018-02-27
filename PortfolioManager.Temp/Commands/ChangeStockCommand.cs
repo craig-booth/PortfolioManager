@@ -13,13 +13,15 @@ namespace PortfolioManager.Domain.Stocks.Commands
 
         public string NewASXCode { get; }
         public string Name { get; }
+        public AssetCategory Category { get; }
 
-        public ChangeStockCommand(string asxCode, DateTime changeDate, string newASXCode, string name)
+        public ChangeStockCommand(string asxCode, DateTime changeDate, string newASXCode, string name, AssetCategory category)
         {
             ASXCode = asxCode;
             ChangeDate = changeDate;
             NewASXCode = newASXCode;
             Name = name;
+            Category = category;
         }
     }
 }

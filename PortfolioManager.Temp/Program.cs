@@ -33,7 +33,7 @@ namespace PortfolioManager.Temp
                     
                     if ((previousStock != null) && (stock.Id == previousStock.Id))
                     {
-                        commands.Add(new ChangeStockCommand(previousStock.ASXCode, stock.FromDate, stock.ASXCode, stock.Name));
+                        commands.Add(new ChangeStockCommand(previousStock.ASXCode, stock.FromDate, stock.ASXCode, stock.Name, stock.Category));
                     }
                     else
                     {
@@ -57,7 +57,7 @@ namespace PortfolioManager.Temp
                 commandHandler.Execute(c);
             }
 
-            var stockList = stockExchange.Stocks.All(DateTime.Today).Select(x => x.GetProperties(DateTime.Today)).OrderBy(x => x.ASXCode);
+            var stockList = stockExchange.Stocks.All(DateTime.Today).Select(x => x.Properties.Get(DateTime.Today)).OrderBy(x => x.ASXCode);
             foreach (var properties in stockList)
             {
                 Console.WriteLine("{0} - {1}", properties.ASXCode, properties.Name);
@@ -71,7 +71,7 @@ namespace PortfolioManager.Temp
 
         private static void Setup(IEventStore eventStore)
         {
-            var stockExchange = new StockExchange(eventStore);
+     /*       var stockExchange = new StockExchange(eventStore);
 
             var commandHandler = new StockExchangeCommandHandler(stockExchange);
 
@@ -82,14 +82,14 @@ namespace PortfolioManager.Temp
             commandHandler.Execute(new ChangeStockCommand("ARG", new DateTime(2000, 01, 04), "ARG2", "New Argo"));
             commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 04), 1.03m));
             commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 05), 1.01m));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 06), 1.06m));
+            commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 06), 1.06m)); */
         }
 
         private static void Replay(IEventStore eventStore)
         {
-            var stockExchange = new StockExchange(eventStore);
+      /*      var stockExchange = new StockExchange(eventStore);
             
-            stockExchange.Load();
+            stockExchange.Load(); */
         }
     }
 
@@ -117,7 +117,14 @@ namespace PortfolioManager.Temp
         {
             var stock = _StockExchange.Stocks.Get(command.ASXCode, command.ChangeDate);
             if (stock != null)
-                stock.ChangeName(command.ChangeDate, command.NewASXCode, command.Name);
+                stock.ChangeProperties(command.ChangeDate, command.NewASXCode, command.Name, command.Category);
+        }
+
+        public void Execute(ChangeDividendReinvestmentPlanCommand command)
+        {
+            var stock = _StockExchange.Stocks.Get(command.ASXCode, command.ChangeDate);
+            if (stock != null)
+                stock.ChangeDRPRules(command.ChangeDate, command.DRPActive, command.RoundingRule, command.Method);
         }
 
         public void Execute(DelistStockCommand command)

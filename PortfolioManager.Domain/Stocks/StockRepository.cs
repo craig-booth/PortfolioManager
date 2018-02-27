@@ -35,7 +35,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public Stock Get(string asxCode, DateTime date)
         {
-            return _Stocks.Values.FirstOrDefault(x => x.IsEffectiveAt(date) && x.Matches(date, y => y.ASXCode == asxCode));
+            return _Stocks.Values.FirstOrDefault(x => x.IsEffectiveAt(date) && x.Properties.Matches(date, y => y.ASXCode == asxCode));
         }
 
         public IEnumerable<Stock> All()
@@ -55,19 +55,19 @@ namespace PortfolioManager.Domain.Stocks
 
         public IEnumerable<Stock> Find(DateTime date, Func<StockProperties, bool> predicate)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveAt(date) && x.Matches(date, predicate));
+            return _Stocks.Values.Where(x => x.IsEffectiveAt(date) && x.Properties.Matches(date, predicate));
         }
 
         public IEnumerable<Stock> Find(DateRange dateRange, Func<StockProperties, bool> predicate)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange) && x.Matches(dateRange, predicate));
+            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange) && x.Properties.Matches(dateRange, predicate));
         }
 
         public void ListStock(string asxCode, string name, DateTime listingDate, StockType type, AssetCategory category)
         {
             // Check if stock already exists with this code
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
-            if (_Stocks.Values.Any(x => x.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
+            if (_Stocks.Values.Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
            
             var @event = new StockListedEvent(Guid.NewGuid(), asxCode, name, listingDate, type, category);
