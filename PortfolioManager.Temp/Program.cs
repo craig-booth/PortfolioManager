@@ -43,11 +43,7 @@ namespace PortfolioManager.Temp
         {
             var stockExchange = new StockExchange(eventStore);
 
-            var events = eventStore.RetrieveEvents(Guid.Empty);
-            foreach (var @event in events)
-            {
-                stockExchange.ApplyEvent(dynamic @event);
-            }
+            stockExchange.Load();
         }
     }
 
@@ -67,28 +63,33 @@ namespace PortfolioManager.Temp
 
         public void Execute(ListStockCommand command)
         {
-            throw new NotImplementedException();
+            _StockExchange.Stocks.ListStock(command.ASXCode, command.Name, command.ListingDate, command.Type, command.Category, command.DividendRoundingRule, command.DRPMethod);
         }
 
         public void Execute(DelistStockCommand command)
         {
-            throw new NotImplementedException();
+            _StockExchange.Stocks.DelistStock(command.ASXCode, command.Date);
         }
 
         public void Execute(AddClosingPriceCommand command)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Execute(AddNonTradingDayCommand command)
-        {
-            throw new NotImplementedException();
+            var stock = _StockExchange.Stocks.Get(command.ASXCode, command.Date);
+            if (stock != null)
+                stock.UpdateClosingPrice(command.Date, command.ClosingPrice);
         }
 
         public void Execute(UpdateCurrentPriceCommand command)
         {
-            throw new NotImplementedException();
+            var stock = _StockExchange.Stocks.Get(command.ASXCode, DateTime.Today);
+            if (stock != null)
+                stock.UpdateCurrentPrice(command.CurrentPrice);
         }
+
+        public void Execute(AddNonTradingDayCommand command)
+        {
+            _StockExchange.TradingCalander.AddNonTradingDay(command.Date);
+        }
+
     }
 
 }

@@ -17,7 +17,7 @@ namespace PortfolioManager.Common
 
         public bool Contains(DateTime date)
         {
-            return (FromDate <= date) && (ToDate <= date);
+            return (FromDate <= date) && (ToDate >= date);
         }
 
         public bool Overlaps(DateRange dateRange)

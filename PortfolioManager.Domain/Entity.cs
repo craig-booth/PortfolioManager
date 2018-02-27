@@ -11,15 +11,22 @@ namespace PortfolioManager.Domain
         Guid Id { get; }
     }
 
-    public interface IEffectiveEntity : IEntity
+    public interface IEffectiveEntity<T> : IEntity where T : EffectiveProperties 
     {
         DateRange EffectivePeriod { get; }
+
+        T Get(DateTime date);
+        bool IsEffectiveAt(DateTime date);
+        bool IsEffectiveDuring(DateRange dateRange);
+        bool Matches(Func<T, bool> predicate);
+        bool Matches(DateTime date, Func<T, bool> predicate);
+        bool Matches(DateRange dateRange, Func<T, bool> predicate);
     }
 
-    public abstract class EffectiveEntity<T> where T : EffectiveData
+    public abstract class EffectiveEntity<T> : IEffectiveEntity<T>  where T : EffectiveProperties
     {
-        protected List<T> _Data = new List<T>();
-        protected T _CurrentValues;
+        protected List<T> _Properties = new List<T>();
+        protected T _CurrentProperties;
 
         public Guid Id { get; }
         public DateRange EffectivePeriod { get; private set; }
@@ -28,14 +35,14 @@ namespace PortfolioManager.Domain
         {
             Id = id;
             EffectivePeriod = new DateRange(fromDate, DateUtils.NoEndDate);
-            _CurrentValues = null;
+            _CurrentProperties = null;
         }
 
         public T Get(DateTime date)
         {
             if (IsEffectiveAt(date))
             {
-                return _Data.FirstOrDefault(x => x.IsEffectiveAt(date));
+                return _Properties.FirstOrDefault(x => x.IsEffectiveAt(date));
             }
             else
                 throw new ArgumentOutOfRangeException();
@@ -53,67 +60,66 @@ namespace PortfolioManager.Domain
 
         public bool Matches(Func<T, bool> predicate)
         {
-            var match = _Data.FirstOrDefault(x => predicate(x));
+            var match = _Properties.FirstOrDefault(x => predicate(x));
             return (match != null);
         }
 
         public bool Matches(DateTime date, Func<T, bool> predicate)
         {
-            var match = _Data.FirstOrDefault(x => x.IsEffectiveAt(date) && predicate(x));
+            var match = _Properties.FirstOrDefault(x => x.IsEffectiveAt(date) && predicate(x));
             return (match != null);
         }
 
         public bool Matches(DateRange dateRange, Func<T, bool> predicate)
         {
-            var match = _Data.FirstOrDefault(x => x.IsEffectiveDuring(dateRange) && predicate(x));
+            var match = _Properties.FirstOrDefault(x => x.IsEffectiveDuring(dateRange) && predicate(x));
             return (match != null);
         }
 
-        private void Change(DateTime date, Action<T> change)
+        protected void Change(DateTime date, Action<T> change)
         {
-            if (_CurrentValues == null)
+            if (_CurrentProperties == null)
                 throw new Exception("Entity is not current");
 
-            if (!_CurrentValues.IsEffectiveAt(date))
+            if (!_CurrentProperties.IsEffectiveAt(date))
                 throw new Exception("Only the current period can be modified");
 
-
-            if (_CurrentValues.EffectivePeriod.FromDate.Equals(date))
+            if (_CurrentProperties.EffectivePeriod.FromDate.Equals(date))
             {
-                change(_CurrentValues);
+                change(_CurrentProperties);
             }
             else
             {
-                _CurrentValues.End(date.AddDays(-1));
+                _CurrentProperties.End(date.AddDays(-1));
 
-                _CurrentValues = (T)_CurrentValues.Copy(new DateRange(date, DateUtils.NoDate));
-                change(_CurrentValues);
-                _Data.Add(_CurrentValues);
+                _CurrentProperties = (T)_CurrentProperties.Copy(new DateRange(date, DateUtils.NoDate));
+                change(_CurrentProperties);
+                _Properties.Add(_CurrentProperties);
             }
 
         }
 
         public void End(DateTime date)
         {
-            if (_CurrentValues == null)
+            if (_CurrentProperties == null)
                 throw new Exception("Entity is not current");
 
-            _CurrentValues.End(date);
-            _CurrentValues = null;
+            _CurrentProperties.End(date);
+            _CurrentProperties = null;
 
             EffectivePeriod = new DateRange(EffectivePeriod.FromDate, date);
         }
     }
 
-    public abstract class EffectiveData
+    public abstract class EffectiveProperties
     {
         public Guid Id { get; }
         public DateRange EffectivePeriod { get; private set; }
 
-        public EffectiveData(Guid id, DateTime fromDate, DateTime toDate)
+        public EffectiveProperties(Guid id, DateTime fromDate)
         {
             Id = Guid.NewGuid();
-            EffectivePeriod = new DateRange(fromDate, toDate);
+            EffectivePeriod = new DateRange(fromDate, DateUtils.NoEndDate);
         }
 
         public void End(DateTime date)
@@ -131,6 +137,6 @@ namespace PortfolioManager.Domain
             return EffectivePeriod.Overlaps(dateRange);
         }
 
-        public abstract EffectiveData Copy(DateRange newRange);
+        public abstract EffectiveProperties Copy(DateRange newRange);
     }
 }

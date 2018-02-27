@@ -6,25 +6,27 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Domain.Stocks.Events
 {
-    public class StockListedEvent : IEvent
+    public class StockPropertiesChangedEvent : IEvent
     {
         public Guid Id { get; }
+        public DateTime ChangeDate { get; }
         public string ASXCode { get; }
         public string Name { get; }
-        public DateTime ListingDate { get; }
         public StockType Type { get; }
         public AssetCategory Category { get; }
+        public bool DRPActive { get; }
         public RoundingRule DividendRoundingRule { get; }
         public DRPMethod DRPMethod { get; }
 
-        public StockListedEvent(Guid id, string asxCode, string name, DateTime listingDate, StockType type, AssetCategory category, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
+        public StockPropertiesChangedEvent(Guid id, DateTime changeDate, string asxCode, string name, DateTime listingDate, StockType type, AssetCategory category, bool drpActive, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
         {
             Id = id;
+            ChangeDate = changeDate;
             ASXCode = asxCode;
             Name = name;
-            ListingDate = listingDate;
             Type = type;
             Category = category;
+            DRPActive = drpActive;
             DividendRoundingRule = dividendRoundingRule;
             DRPMethod = drpMethod;
         }

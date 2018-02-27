@@ -9,8 +9,4 @@ namespace PortfolioManager.Domain
         Guid Id { get; }
     }
 
-    public interface IEventHandler<T> where T : IEvent
-    {
-        void ApplyEvent(T @event);
-    }
 }

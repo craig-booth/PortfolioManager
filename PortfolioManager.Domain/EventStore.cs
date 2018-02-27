@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PortfolioManager.Domain
@@ -8,6 +9,7 @@ namespace PortfolioManager.Domain
     {
         void StoreEvent(Guid entityId, IEvent @event);
 
+        IEnumerable<IEvent> RetrieveEvents();
         IEnumerable<IEvent> RetrieveEvents(Guid entityId);
     }
 
@@ -31,9 +33,18 @@ namespace PortfolioManager.Domain
             events.Add(@event);
         }
 
+        public IEnumerable<IEvent> RetrieveEvents()
+        {
+            foreach(var eventList in _Store.Values)
+            {
+                foreach (var @event in eventList)
+                    yield return @event;
+            }
+        }
+
         public IEnumerable<IEvent> RetrieveEvents(Guid entityId)
         {
             return _Store[entityId];
         }
-    }
+     }
 }
