@@ -14,8 +14,16 @@ namespace PortfolioManager.Domain.Stocks
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
         private IEventStore _EventStore;
 
+        public StockType Type { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
+        public EffectiveProperties<ParentStock> Parent { get; } = new EffectiveProperties<ParentStock>();
+
+        private List<Stock> _ChildSecurities = new List<Stock>();
+        public IReadOnlyList<Stock> ChildSecurities
+        {
+            get { return _ChildSecurities; }
+        }
 
         public Stock(Guid id, DateTime listingDate, IEventStore eventStore)
             : base(id, listingDate)
@@ -25,11 +33,25 @@ namespace PortfolioManager.Domain.Stocks
 
         public void Apply(StockListedEvent @event)
         {
-            var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Type, @event.Category);
+            Type = @event.Type;
+
+            var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             Properties.Change(@event.ListingDate, properties);
 
             var drp = new DividendReinvestmentPlan(false, RoundingRule.Round, DRPMethod.Round);
             DividendReinvestmentPlan.Change(@event.ListingDate, drp);
+
+            Parent.Change(@event.ListingDate, new ParentStock(null));
+        }
+
+        public void AddChildSecurties(IEnumerable<Stock> childSecurities)
+        {
+            _ChildSecurities.AddRange(childSecurities);
+        }
+
+        public void SetParentStock(DateTime date, Stock parent)
+        {
+            Parent.Change(date, new ParentStock(parent));
         }
 
         public void UpdateClosingPrice(DateTime date, decimal closingPrice)
@@ -76,6 +98,9 @@ namespace PortfolioManager.Domain.Stocks
 
         private decimal ClosestPrice(DateTime date)
         {
+            if (_Prices.Keys.Count == 0)
+                return 0.00m;
+
             int begin = 0;
             int end = _Prices.Keys.Count;
             while (end > begin)
@@ -93,13 +118,12 @@ namespace PortfolioManager.Domain.Stocks
 
         public void ChangeProperties(DateTime changeDate, string newAsxCode, string newName, AssetCategory newAssetCategory)
         {           
-            var properties = Properties.Get(changeDate);
+            var properties = Properties[changeDate];
 
             var @event = new StockPropertiesChangedEvent(Id,
                 changeDate,
                 newAsxCode,
                 newName,
-                properties.Type,
                 newAssetCategory);
 
             Apply(@event);
@@ -108,7 +132,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public void ChangeDRPRules(DateTime changeDate, bool drpActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
         {
-            var properties = Properties.Get(changeDate);
+            var properties = Properties[changeDate];
 
             var @event = new ChangeDividendReinvestmentPlanEvent(Id,
                 changeDate,
@@ -125,7 +149,6 @@ namespace PortfolioManager.Domain.Stocks
             var newProperties = new StockProperties(
                 @event.ASXCode,
                 @event.Name,
-                @event.Type,
                 @event.Category);
 
             Properties.Change(@event.ChangeDate, newProperties);
@@ -146,14 +169,12 @@ namespace PortfolioManager.Domain.Stocks
     {
         public readonly string ASXCode;
         public readonly string Name;
-        public readonly StockType Type;
         public readonly AssetCategory Category;
 
-        public StockProperties(string asxCode, string name, StockType type, AssetCategory category)
+        public StockProperties(string asxCode, string name, AssetCategory category)
         {
             ASXCode = asxCode;
             Name = name;
-            Type = type;
             Category = category;
         }
     }
@@ -169,6 +190,16 @@ namespace PortfolioManager.Domain.Stocks
             DRPActive = drpActive;
             DividendRoundingRule = dividendRoundingRule;
             DRPMethod = drpMethod;
+        }
+    }
+
+    public struct ParentStock
+    {
+        public readonly Stock Parent;
+
+        public ParentStock(Stock parent)
+        {
+            Parent = parent;
         }
     }
 

@@ -41,6 +41,14 @@ namespace PortfolioManager.Domain
     {
         protected Stack<EffectivePropertyValues<T>> _Properties = new Stack<EffectivePropertyValues<T>>();
 
+        public T this[DateTime date]
+        {
+            get 
+            {
+                return Get(date);
+            }
+        }
+
         public T Get(DateTime date)
         {
            return _Properties.First(x => x.IsEffectiveAt(date)).Properties;

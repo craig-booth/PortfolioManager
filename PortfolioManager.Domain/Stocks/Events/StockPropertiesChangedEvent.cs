@@ -12,16 +12,14 @@ namespace PortfolioManager.Domain.Stocks.Events
         public DateTime ChangeDate { get; }
         public string ASXCode { get; }
         public string Name { get; }
-        public StockType Type { get; }
         public AssetCategory Category { get; }
 
-        public StockPropertiesChangedEvent(Guid id, DateTime changeDate, string asxCode, string name, StockType type, AssetCategory category)
+        public StockPropertiesChangedEvent(Guid id, DateTime changeDate, string asxCode, string name, AssetCategory category)
         {
             Id = id;
             ChangeDate = changeDate;
             ASXCode = asxCode;
             Name = name;
-            Type = type;
             Category = category;
         }
     }

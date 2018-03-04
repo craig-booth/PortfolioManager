@@ -40,37 +40,55 @@ namespace PortfolioManager.Domain.Stocks
 
         public IEnumerable<Stock> All()
         {
-            return _Stocks.Values;
+            return _Stocks.Values.Where(x => x.Parent.Matches(y => y.Parent == null));
         }
 
         public IEnumerable<Stock> All(DateTime date)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveAt(date));
+            return _Stocks.Values.Where(x => x.IsEffectiveAt(date) && x.Parent.Matches(date, y => y.Parent == null));
         }
 
         public IEnumerable<Stock> All(DateRange dateRange)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange));
+            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange) && x.Parent.Matches(dateRange, y => y.Parent == null));
         }
 
         public IEnumerable<Stock> Find(DateTime date, Func<StockProperties, bool> predicate)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveAt(date) && x.Properties.Matches(date, predicate));
+            return All(date).Where(x => x.Properties.Matches(date, predicate));
         }
 
         public IEnumerable<Stock> Find(DateRange dateRange, Func<StockProperties, bool> predicate)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange) && x.Properties.Matches(dateRange, predicate));
+            return All(dateRange).Where(x => x.Properties.Matches(dateRange, predicate));
         }
 
-        public void ListStock(string asxCode, string name, DateTime listingDate, StockType type, AssetCategory category)
+        public void ListStock(string asxCode, string name, DateTime listingDate, StockType type, AssetCategory category, IEnumerable<Guid> childSecurities)
         {
             // Check if stock already exists with this code
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
             if (_Stocks.Values.Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
-           
-            var @event = new StockListedEvent(Guid.NewGuid(), asxCode, name, listingDate, type, category);
+
+            // Check that type is StapledSecurity if adding child stocks
+            if (type == StockType.StapledSecurity)
+            {
+                if ((childSecurities == null) || ! childSecurities.Any())
+                    throw new Exception("Stapled Security must have child securities");
+
+                foreach (var stockId in childSecurities)
+                {
+                    if (! _Stocks.ContainsKey(stockId))
+                        throw new Exception(String.Format("Stock {0} not found", stockId));
+                }
+            }
+            else
+            {
+                if ((childSecurities != null) && childSecurities.Any())
+                    throw new Exception("Child securities can only be added to Stapled Securities");
+            }
+
+            var @event = new StockListedEvent(Guid.NewGuid(), asxCode, name, listingDate, category, type, childSecurities?.ToArray());
             Apply(@event);
 
             _EventStore.StoreEvent(@event);
@@ -80,8 +98,20 @@ namespace PortfolioManager.Domain.Stocks
         {
             var stock = new Stock(@event.Id, @event.ListingDate, _EventStore);
             stock.Apply(@event);
-        
             _Stocks.Add(@event.Id, stock);
+
+            if (@event.Type == StockType.StapledSecurity)
+            {
+                var childSecurities = new List<Stock>();
+                foreach (var stockId in @event.ChildSecurities)
+                {
+                    var childStock = _Stocks[stockId];
+                    childSecurities.Add(childStock);
+
+                    childStock.SetParentStock(@event.ListingDate, stock);
+                }
+                stock.AddChildSecurties(childSecurities);
+            }            
         }
 
         public void DelistStock(string asxCode, DateTime date)

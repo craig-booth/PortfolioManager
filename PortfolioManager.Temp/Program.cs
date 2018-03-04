@@ -18,36 +18,50 @@ namespace PortfolioManager.Temp
             var eventStore = new InMemoryEventStore();
             var stockExchange = new StockExchange(eventStore);
 
+            Load(stockExchange, eventStore);
+
+            var stocks = stockExchange.Stocks.All(DateTime.Today).OrderBy(x => x.Properties[DateTime.Today].ASXCode);
+            WritePrices(stocks);
+
+
+            Console.ReadKey();
+        }
+
+        private static void WritePrices(IEnumerable<Stock> stocks)
+        {
+            foreach (var stock in stocks)
+            {
+                var properties = stock.Properties[DateTime.Today];
+                Console.WriteLine("{0} ({1}): {2}", properties.ASXCode, properties.Name, stock.GetPrice(DateTime.Today));
+                
+                if (stock.Type == StockType.StapledSecurity)
+                {
+                    foreach (var childStock in stock.ChildSecurities)
+                    {
+                        properties = childStock.Properties[DateTime.Today];
+                        Console.WriteLine("    {0} ({1})", properties.ASXCode, properties.Name);
+                    }
+                }
+
+            }
+        }
+
+
+        private static void Load(StockExchange stockExchange, IEventStore eventStore)
+        {
             var stockDataBase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
 
             var commands = new List<ICommand>();
 
             using (var unitOfWork = stockDataBase.CreateReadOnlyUnitOfWork())
             {
-                
-                Data.Stocks.Stock previousStock = null;
-           
-                var stocks = unitOfWork.StockQuery.GetAll().OrderBy(x => x.Id).ThenBy(x => x.FromDate);
+                var stocks = unitOfWork.StockQuery.GetAll().Where(x => x.Type != StockType.StapledSecurity).Select(x => x.Id).Distinct();
                 foreach (var stock in stocks)
-                {
-                    
-                    if ((previousStock != null) && (stock.Id == previousStock.Id))
-                    {
-                        commands.Add(new ChangeStockCommand(previousStock.ASXCode, stock.FromDate, stock.ASXCode, stock.Name, stock.Category));
-                    }
-                    else
-                    {
-                        if ((previousStock != null) && (previousStock.ToDate != DateUtils.NoEndDate))
-                        {
-                            commands.Add(new DelistStockCommand(previousStock.ASXCode, previousStock.ToDate));
-                        }
+                    commands.AddRange(CommandsForStock(stock, unitOfWork.StockQuery));
 
-                        commands.Add(new ListStockCommand(stock.ASXCode, stock.Name, stock.FromDate, stock.Type, stock.Category));
-                    }
-
-                    previousStock = stock;
-                }
-                
+                stocks = unitOfWork.StockQuery.GetAll().Where(x => x.Type == StockType.StapledSecurity).OrderBy(x => x.FromDate).Select(x => x.Id).Distinct().ToList();
+                foreach (var stock in stocks)
+                    commands.AddRange(CommandsForStock(stock, unitOfWork.StockQuery));
             }
 
             var commandHandler = new StockExchangeCommandHandler(stockExchange);
@@ -57,39 +71,35 @@ namespace PortfolioManager.Temp
                 commandHandler.Execute(c);
             }
 
-            var stockList = stockExchange.Stocks.All(DateTime.Today).Select(x => x.Properties.Get(DateTime.Today)).OrderBy(x => x.ASXCode);
-            foreach (var properties in stockList)
+        }
+
+        private static IEnumerable<ICommand> CommandsForStock(Guid id, Data.Stocks.IStockQuery stockQuery)
+        {
+            var commands = new List<ICommand>();
+
+            var stockVersions = stockQuery.GetAll().Where(x => x.Id == id).OrderBy(x => x.FromDate);
+
+            var firstVersion = stockVersions.First();
+            if (firstVersion.Type == StockType.StapledSecurity)
             {
-                Console.WriteLine("{0} - {1}", properties.ASXCode, properties.Name);
+                var childSecurities = stockQuery.GetChildStocks(id, firstVersion.FromDate).Select(x => x.ASXCode);
+                commands.Add(new ListStockCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, firstVersion.Type, firstVersion.Category, childSecurities));
+            }
+            else
+                commands.Add(new ListStockCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, firstVersion.Type, firstVersion.Category, null));
+
+            foreach (var otherVersion in stockVersions.Skip(1))
+            {
+                commands.Add(new ChangeStockCommand(otherVersion.ASXCode, otherVersion.FromDate, otherVersion.ASXCode, otherVersion.Name, otherVersion.Category));
             }
 
+            var lastVersion = stockVersions.Last();
+            if (lastVersion.ToDate != DateUtils.NoEndDate)
+            {
+                commands.Add(new DelistStockCommand(lastVersion.ASXCode, lastVersion.ToDate));
+            }
 
-
-            Console.ReadKey();
-        }
-
-
-        private static void Setup(IEventStore eventStore)
-        {
-     /*       var stockExchange = new StockExchange(eventStore);
-
-            var commandHandler = new StockExchangeCommandHandler(stockExchange);
-
-            commandHandler.Execute(new ListStockCommand("ARG", "Argo", new DateTime(2000, 01, 01), StockType.Ordinary, AssetCategory.AustralianStocks));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG", new DateTime(2000, 01, 01), 1.00m));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG", new DateTime(2000, 01, 02), 1.01m));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG", new DateTime(2000, 01, 03), 1.02m));
-            commandHandler.Execute(new ChangeStockCommand("ARG", new DateTime(2000, 01, 04), "ARG2", "New Argo"));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 04), 1.03m));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 05), 1.01m));
-            commandHandler.Execute(new AddClosingPriceCommand("ARG2", new DateTime(2000, 01, 06), 1.06m)); */
-        }
-
-        private static void Replay(IEventStore eventStore)
-        {
-      /*      var stockExchange = new StockExchange(eventStore);
-            
-            stockExchange.Load(); */
+            return commands;
         }
     }
 
@@ -110,7 +120,11 @@ namespace PortfolioManager.Temp
 
         public void Execute(ListStockCommand command)
         {
-            _StockExchange.Stocks.ListStock(command.ASXCode, command.Name, command.ListingDate, command.Type, command.Category);
+            IEnumerable<Guid> childSecurities = null;
+            if (command.Type == StockType.StapledSecurity)
+                childSecurities = command.ChildSecurities.Select(x => _StockExchange.Stocks.Get(x, command.ListingDate).Id);
+
+            _StockExchange.Stocks.ListStock(command.ASXCode, command.Name, command.ListingDate, command.Type, command.Category, childSecurities);
         }
 
         public void Execute(ChangeStockCommand command)
