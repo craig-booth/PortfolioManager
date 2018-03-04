@@ -55,13 +55,10 @@ namespace PortfolioManager.Temp
 
             using (var unitOfWork = stockDataBase.CreateReadOnlyUnitOfWork())
             {
-                var stocks = unitOfWork.StockQuery.GetAll().Where(x => x.Type != StockType.StapledSecurity).Select(x => x.Id).Distinct();
-                foreach (var stock in stocks)
-                    commands.AddRange(CommandsForStock(stock, unitOfWork.StockQuery));
+                var nonTradingDays = unitOfWork.StockQuery.NonTradingDays();
+                commands.AddRange(nonTradingDays.Select(x => new AddNonTradingDayCommand(x)));
 
-                stocks = unitOfWork.StockQuery.GetAll().Where(x => x.Type == StockType.StapledSecurity).OrderBy(x => x.FromDate).Select(x => x.Id).Distinct().ToList();
-                foreach (var stock in stocks)
-                    commands.AddRange(CommandsForStock(stock, unitOfWork.StockQuery));
+                commands.AddRange(LoadStocks(unitOfWork.StockQuery));
             }
 
             var commandHandler = new StockExchangeCommandHandler(stockExchange);
@@ -71,6 +68,25 @@ namespace PortfolioManager.Temp
                 commandHandler.Execute(c);
             }
 
+        }
+
+        private static IEnumerable<ICommand> LoadStocks(Data.Stocks.IStockQuery stockQuery)
+        {
+            var commands = new List<ICommand>();
+
+            var stocks = stockQuery.GetAll().Where(x => x.Type != StockType.StapledSecurity).Select(x => x.Id).Distinct();
+            foreach (var stock in stocks)
+                commands.AddRange(CommandsForStock(stock, stockQuery));
+
+            stocks = stockQuery.GetAll().Where(x => x.Type == StockType.StapledSecurity).OrderBy(x => x.FromDate).Select(x => x.Id).Distinct().ToList();
+            foreach (var stock in stocks)
+                commands.AddRange(CommandsForStock(stock, stockQuery));
+
+            stocks = stockQuery.GetAll().Where(x => x.ParentId == Guid.Empty).Select(x => x.Id).Distinct();
+            foreach (var stock in stocks) 
+                commands.AddRange(LoadPrices(stock, stockQuery));
+
+            return commands;
         }
 
         private static IEnumerable<ICommand> CommandsForStock(Guid id, Data.Stocks.IStockQuery stockQuery)
@@ -98,6 +114,34 @@ namespace PortfolioManager.Temp
             {
                 commands.Add(new DelistStockCommand(lastVersion.ASXCode, lastVersion.ToDate));
             }
+
+            return commands;
+        }
+
+        private static IEnumerable<ICommand> LoadPrices(Guid id, Data.Stocks.IStockQuery stockQuery)
+        {
+            var commands = new List<ICommand>();
+
+            Data.Stocks.Stock stock = null;
+
+            var prices = stockQuery.GetPrices(id, DateUtils.NoStartDate, DateTime.Today.AddDays(-1));
+            foreach(var price in prices)
+            {
+                try
+                {
+                    if ((stock == null) || ! stock.IsEffectiveAt(price.Key))
+                        stock = stockQuery.Get(id, price.Key);
+
+                    var asxCode = stock.ASXCode;
+
+                    commands.Add(new AddClosingPriceCommand(asxCode, price.Key, price.Value));
+                }
+                catch
+                {
+
+                }
+            } 
+
 
             return commands;
         }

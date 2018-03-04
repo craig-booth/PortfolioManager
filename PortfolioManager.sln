@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Common", "PortfolioManager.Common\PortfolioManager.Common.csproj", "{C754D5DE-F2D5-4E1D-999A-B2DEB7DDCE04}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Test", "Po
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Domain", "PortfolioManager.Domain\PortfolioManager.Domain.csproj", "{AC9C06DE-041D-4513-8F37-B2802EA402BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Temp", "PortfolioManager.Temp\PortfolioManager.Temp.csproj", "{8510BF3D-F853-4C6E-BEBF-DEF189B07B9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Temp", "PortfolioManager.Temp\PortfolioManager.Temp.csproj", "{8510BF3D-F853-4C6E-BEBF-DEF189B07B9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
