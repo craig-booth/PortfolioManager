@@ -12,6 +12,7 @@
     <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj" />
     <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj" />
     <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj" />
+    <ProjectReference Include="..\PortfolioManager.Domain\PortfolioManager.Domain.csproj" />
   </ItemGroup>
 
 </Project>

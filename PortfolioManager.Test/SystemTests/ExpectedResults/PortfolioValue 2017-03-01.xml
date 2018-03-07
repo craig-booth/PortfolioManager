@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PortfolioValueResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T13:49:51.9077531+10:30</ResponceTime>
+  <ResponceTime>2018-03-07T19:37:21.2064439+10:30</ResponceTime>
   <Status>Successfull</Status>
   <Error />
   <Values>
@@ -14,14 +14,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-03-04T00:00:00</Date>
-      <Amount>135476.770</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-03-05T00:00:00</Date>
-      <Amount>135476.770</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-03-06T00:00:00</Date>
       <Amount>135476.770</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -45,14 +37,6 @@
       <Amount>136743.130</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-03-12T00:00:00</Date>
-      <Amount>136743.130</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-03-13T00:00:00</Date>
-      <Amount>136743.130</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-03-14T00:00:00</Date>
       <Amount>136420.290</Amount>
     </DailyAmount>
@@ -73,14 +57,6 @@
       <Amount>135021.880</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-03-19T00:00:00</Date>
-      <Amount>135021.880</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-03-20T00:00:00</Date>
-      <Amount>135021.880</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-03-21T00:00:00</Date>
       <Amount>137360.910</Amount>
     </DailyAmount>
@@ -97,14 +73,6 @@
       <Amount>138101.880</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-03-26T00:00:00</Date>
-      <Amount>138101.880</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-03-27T00:00:00</Date>
-      <Amount>138101.880</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-03-29T00:00:00</Date>
       <Amount>136679.73</Amount>
     </DailyAmount>
@@ -118,14 +86,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-04-01T00:00:00</Date>
-      <Amount>138112.610</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-02T00:00:00</Date>
-      <Amount>138112.610</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-03T00:00:00</Date>
       <Amount>138112.610</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -149,14 +109,6 @@
       <Amount>137551.79</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-04-09T00:00:00</Date>
-      <Amount>137551.79</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-10T00:00:00</Date>
-      <Amount>137551.79</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-04-11T00:00:00</Date>
       <Amount>137400.72</Amount>
     </DailyAmount>
@@ -174,14 +126,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-04-15T00:00:00</Date>
-      <Amount>138314.13</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-16T00:00:00</Date>
-      <Amount>138314.13</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-17T00:00:00</Date>
       <Amount>138314.13</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -205,14 +149,6 @@
       <Amount>142345.45</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-04-23T00:00:00</Date>
-      <Amount>142345.45</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-24T00:00:00</Date>
-      <Amount>142345.45</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-04-26T00:00:00</Date>
       <Amount>142352.95</Amount>
     </DailyAmount>
@@ -227,14 +163,6 @@
     <DailyAmount>
       <Date>2016-04-29T00:00:00</Date>
       <Amount>140309.31</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-04-30T00:00:00</Date>
-      <Amount>140309.31</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-01T00:00:00</Date>
-      <Amount>140309.33</Amount>
     </DailyAmount>
     <DailyAmount>
       <Date>2016-05-02T00:00:00</Date>
@@ -254,14 +182,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-05-06T00:00:00</Date>
-      <Amount>141905.07</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-07T00:00:00</Date>
-      <Amount>141905.07</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-08T00:00:00</Date>
       <Amount>141905.07</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -285,14 +205,6 @@
       <Amount>143215.910</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-05-14T00:00:00</Date>
-      <Amount>143215.910</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-15T00:00:00</Date>
-      <Amount>143215.910</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-05-16T00:00:00</Date>
       <Amount>144272.27</Amount>
     </DailyAmount>
@@ -310,14 +222,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-05-20T00:00:00</Date>
-      <Amount>146504.83</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-21T00:00:00</Date>
-      <Amount>146504.83</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-22T00:00:00</Date>
       <Amount>146504.83</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -341,14 +245,6 @@
       <Amount>168070.550</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-05-28T00:00:00</Date>
-      <Amount>168070.550</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-05-29T00:00:00</Date>
-      <Amount>168070.550</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-05-30T00:00:00</Date>
       <Amount>178603.56</Amount>
     </DailyAmount>
@@ -366,14 +262,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-06-03T00:00:00</Date>
-      <Amount>219384.020</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-06-04T00:00:00</Date>
-      <Amount>219384.020</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-06-05T00:00:00</Date>
       <Amount>219384.020</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -397,14 +285,6 @@
       <Amount>238244.12</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-06-11T00:00:00</Date>
-      <Amount>238244.12</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-06-12T00:00:00</Date>
-      <Amount>238244.12</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-06-14T00:00:00</Date>
       <Amount>235051.620</Amount>
     </DailyAmount>
@@ -418,14 +298,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-06-17T00:00:00</Date>
-      <Amount>234103.29</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-06-18T00:00:00</Date>
-      <Amount>234103.29</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-06-19T00:00:00</Date>
       <Amount>234103.29</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -449,14 +321,6 @@
       <Amount>236028.66</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-06-25T00:00:00</Date>
-      <Amount>236028.66</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-06-26T00:00:00</Date>
-      <Amount>236028.66</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-06-27T00:00:00</Date>
       <Amount>234546.06</Amount>
     </DailyAmount>
@@ -474,14 +338,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-07-01T00:00:00</Date>
-      <Amount>237911.43</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-02T00:00:00</Date>
-      <Amount>237911.43</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-03T00:00:00</Date>
       <Amount>237911.43</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -505,14 +361,6 @@
       <Amount>236469.790</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-07-09T00:00:00</Date>
-      <Amount>236469.790</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-10T00:00:00</Date>
-      <Amount>236469.790</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-07-11T00:00:00</Date>
       <Amount>239306.07</Amount>
     </DailyAmount>
@@ -530,14 +378,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-07-15T00:00:00</Date>
-      <Amount>239733.52</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-16T00:00:00</Date>
-      <Amount>239733.52</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-17T00:00:00</Date>
       <Amount>239733.52</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -561,14 +401,6 @@
       <Amount>248943.950</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-07-23T00:00:00</Date>
-      <Amount>248943.950</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-24T00:00:00</Date>
-      <Amount>248943.950</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-07-25T00:00:00</Date>
       <Amount>249706.90</Amount>
     </DailyAmount>
@@ -586,14 +418,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-07-29T00:00:00</Date>
-      <Amount>248514.040</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-30T00:00:00</Date>
-      <Amount>248514.040</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-07-31T00:00:00</Date>
       <Amount>248514.040</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -617,14 +441,6 @@
       <Amount>246196.910</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-08-06T00:00:00</Date>
-      <Amount>231196.910</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-08-07T00:00:00</Date>
-      <Amount>231196.910</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-08-08T00:00:00</Date>
       <Amount>232405.210</Amount>
     </DailyAmount>
@@ -642,14 +458,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-08-12T00:00:00</Date>
-      <Amount>233126.31</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-08-13T00:00:00</Date>
-      <Amount>233126.31</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-08-14T00:00:00</Date>
       <Amount>233126.31</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -673,14 +481,6 @@
       <Amount>232803.92</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-08-20T00:00:00</Date>
-      <Amount>232803.92</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-08-21T00:00:00</Date>
-      <Amount>232803.92</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-08-22T00:00:00</Date>
       <Amount>235279.94</Amount>
     </DailyAmount>
@@ -698,14 +498,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-08-26T00:00:00</Date>
-      <Amount>249149.05</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-08-27T00:00:00</Date>
-      <Amount>249149.05</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-08-28T00:00:00</Date>
       <Amount>249149.05</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -729,14 +521,6 @@
       <Amount>245844.96</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-09-03T00:00:00</Date>
-      <Amount>245844.96</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-09-04T00:00:00</Date>
-      <Amount>245844.96</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-09-05T00:00:00</Date>
       <Amount>247223.685</Amount>
     </DailyAmount>
@@ -754,14 +538,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-09-09T00:00:00</Date>
-      <Amount>245556.90</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-09-10T00:00:00</Date>
-      <Amount>245556.90</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-09-11T00:00:00</Date>
       <Amount>245556.90</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -785,14 +561,6 @@
       <Amount>244655.370</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-09-17T00:00:00</Date>
-      <Amount>244655.370</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-09-18T00:00:00</Date>
-      <Amount>244655.370</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-09-19T00:00:00</Date>
       <Amount>244552.43</Amount>
     </DailyAmount>
@@ -810,14 +578,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-09-23T00:00:00</Date>
-      <Amount>250255.10</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-09-24T00:00:00</Date>
-      <Amount>250255.10</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-09-25T00:00:00</Date>
       <Amount>250255.10</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -841,14 +601,6 @@
       <Amount>249762.860</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-10-01T00:00:00</Date>
-      <Amount>249763.660</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-02T00:00:00</Date>
-      <Amount>249763.660</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-10-03T00:00:00</Date>
       <Amount>250419.450</Amount>
     </DailyAmount>
@@ -866,14 +618,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-10-07T00:00:00</Date>
-      <Amount>249947.14</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-08T00:00:00</Date>
-      <Amount>249947.14</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-09T00:00:00</Date>
       <Amount>249947.14</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -897,14 +641,6 @@
       <Amount>248567.63</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-10-15T00:00:00</Date>
-      <Amount>248567.63</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-16T00:00:00</Date>
-      <Amount>248567.63</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-10-17T00:00:00</Date>
       <Amount>246463.64</Amount>
     </DailyAmount>
@@ -922,14 +658,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-10-21T00:00:00</Date>
-      <Amount>249355.98</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-22T00:00:00</Date>
-      <Amount>249355.98</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-23T00:00:00</Date>
       <Amount>249355.98</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -953,14 +681,6 @@
       <Amount>246449.590</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-10-29T00:00:00</Date>
-      <Amount>246449.590</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-10-30T00:00:00</Date>
-      <Amount>246449.590</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-10-31T00:00:00</Date>
       <Amount>246449.590</Amount>
     </DailyAmount>
@@ -978,14 +698,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-11-04T00:00:00</Date>
-      <Amount>246689.635</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-11-05T00:00:00</Date>
-      <Amount>246689.635</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-11-06T00:00:00</Date>
       <Amount>246689.635</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1009,14 +721,6 @@
       <Amount>247270.69</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-11-12T00:00:00</Date>
-      <Amount>247270.69</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-11-13T00:00:00</Date>
-      <Amount>247270.69</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-11-14T00:00:00</Date>
       <Amount>247546.705</Amount>
     </DailyAmount>
@@ -1034,14 +738,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-11-18T00:00:00</Date>
-      <Amount>248659.86</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-11-19T00:00:00</Date>
-      <Amount>248659.86</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-11-20T00:00:00</Date>
       <Amount>248659.86</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1065,14 +761,6 @@
       <Amount>248913.22</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-11-26T00:00:00</Date>
-      <Amount>248913.22</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-11-27T00:00:00</Date>
-      <Amount>248913.22</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-11-28T00:00:00</Date>
       <Amount>248109.70</Amount>
     </DailyAmount>
@@ -1090,14 +778,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-12-02T00:00:00</Date>
-      <Amount>247555.225</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-03T00:00:00</Date>
-      <Amount>247555.225</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-04T00:00:00</Date>
       <Amount>247555.225</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1121,14 +801,6 @@
       <Amount>250658.375</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-12-10T00:00:00</Date>
-      <Amount>250658.375</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-11T00:00:00</Date>
-      <Amount>250658.375</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-12-12T00:00:00</Date>
       <Amount>250120.485</Amount>
     </DailyAmount>
@@ -1146,14 +818,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-12-16T00:00:00</Date>
-      <Amount>252448.89</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-17T00:00:00</Date>
-      <Amount>252448.89</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-18T00:00:00</Date>
       <Amount>252448.89</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1177,14 +841,6 @@
       <Amount>258164.95</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2016-12-24T00:00:00</Date>
-      <Amount>258164.95</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-25T00:00:00</Date>
-      <Amount>258164.95</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2016-12-28T00:00:00</Date>
       <Amount>258591.41</Amount>
     </DailyAmount>
@@ -1194,14 +850,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2016-12-30T00:00:00</Date>
-      <Amount>259082.78</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2016-12-31T00:00:00</Date>
-      <Amount>259082.78</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-01T00:00:00</Date>
       <Amount>259082.78</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1218,14 +866,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2017-01-06T00:00:00</Date>
-      <Amount>259177.25</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-07T00:00:00</Date>
-      <Amount>259177.25</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-08T00:00:00</Date>
       <Amount>259177.25</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1249,14 +889,6 @@
       <Amount>258083.21</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2017-01-14T00:00:00</Date>
-      <Amount>258083.21</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-15T00:00:00</Date>
-      <Amount>258083.21</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2017-01-16T00:00:00</Date>
       <Amount>257865.345</Amount>
     </DailyAmount>
@@ -1277,14 +909,6 @@
       <Amount>263317.325</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2017-01-21T00:00:00</Date>
-      <Amount>263317.325</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-22T00:00:00</Date>
-      <Amount>263317.325</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2017-01-23T00:00:00</Date>
       <Amount>262046.465</Amount>
     </DailyAmount>
@@ -1298,14 +922,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2017-01-27T00:00:00</Date>
-      <Amount>265164.38</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-28T00:00:00</Date>
-      <Amount>265164.38</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-01-29T00:00:00</Date>
       <Amount>265164.38</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1329,14 +945,6 @@
       <Amount>263498.09</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2017-02-04T00:00:00</Date>
-      <Amount>263498.09</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-02-05T00:00:00</Date>
-      <Amount>263498.09</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2017-02-06T00:00:00</Date>
       <Amount>263654.66</Amount>
     </DailyAmount>
@@ -1354,14 +962,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2017-02-10T00:00:00</Date>
-      <Amount>267428.87</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-02-11T00:00:00</Date>
-      <Amount>267428.87</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-02-12T00:00:00</Date>
       <Amount>267428.87</Amount>
     </DailyAmount>
     <DailyAmount>
@@ -1385,14 +985,6 @@
       <Amount>269074.22</Amount>
     </DailyAmount>
     <DailyAmount>
-      <Date>2017-02-18T00:00:00</Date>
-      <Amount>269074.22</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-02-19T00:00:00</Date>
-      <Amount>269074.22</Amount>
-    </DailyAmount>
-    <DailyAmount>
       <Date>2017-02-20T00:00:00</Date>
       <Amount>270812.605</Amount>
     </DailyAmount>
@@ -1410,14 +1002,6 @@
     </DailyAmount>
     <DailyAmount>
       <Date>2017-02-24T00:00:00</Date>
-      <Amount>269162.20</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-02-25T00:00:00</Date>
-      <Amount>269162.20</Amount>
-    </DailyAmount>
-    <DailyAmount>
-      <Date>2017-02-26T00:00:00</Date>
       <Amount>269162.20</Amount>
     </DailyAmount>
     <DailyAmount>

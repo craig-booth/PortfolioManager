@@ -5,14 +5,15 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Utils;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Transactions
 {
     class IncomeReceivedHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-            : base (portfolioQuery, stockQuery)
+        public IncomeReceivedHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+            : base (portfolioQuery, stockExchange)
         {
         }
 
@@ -20,7 +21,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var incomeReceived = transaction as IncomeReceived;
 
-            var stock = _StockQuery.GetByASXCode(incomeReceived.ASXCode, incomeReceived.RecordDate);
+            var stock = _StockExchange.Stocks.Get(incomeReceived.ASXCode, incomeReceived.RecordDate);
 
             if (stock.Type == StockType.StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(incomeReceived, "Cannot have a income for stapled securities. Income should be recorded against child securities instead");

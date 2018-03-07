@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PortfolioPerformanceResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T10:23:35.6960686+10:30</ResponceTime>
+  <ResponceTime>2018-03-07T19:37:19.5232314+10:30</ResponceTime>
   <Status>Successfull</Status>
   <Error />
   <OpeningBalance>246092.195</OpeningBalance>
   <Dividends>9806.29</Dividends>
-  <ChangeInMarketValue>36290.255</ChangeInMarketValue>
+  <ChangeInMarketValue>40996.865</ChangeInMarketValue>
   <OutstandingDRPAmount>-128.876</OutstandingDRPAmount>
-  <ClosingBalance>444799.72</ClosingBalance>
+  <ClosingBalance>449506.33</ClosingBalance>
   <OpeningCashBalance>1463.03</OpeningCashBalance>
   <Deposits>161147.14</Deposits>
   <Withdrawls>-3367.8</Withdrawls>
@@ -17,163 +17,163 @@
   <HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <Id>421c8188-70be-4ebb-86b5-613d69e7825e</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
       </Stock>
       <OpeningBalance>14558.725</OpeningBalance>
       <Purchases>5442.38</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>21457.80</ClosingBalance>
+      <ClosingBalance>21274.40</ClosingBalance>
       <Dividends>426.6</Dividends>
-      <CapitalGain>1456.695</CapitalGain>
+      <CapitalGain>1273.295</CapitalGain>
       <DRPCashBalance>0.47</DRPCashBalance>
-      <TotalReturn>1883.295</TotalReturn>
-      <IRR>0.11822847554432267</IRR>
+      <TotalReturn>1699.895</TotalReturn>
+      <IRR>0.10667807523421996</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
       <OpeningBalance>49477.23</OpeningBalance>
       <Purchases>47638.73</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>103284.72</ClosingBalance>
+      <ClosingBalance>104719.23</ClosingBalance>
       <Dividends>3061.73</Dividends>
-      <CapitalGain>6168.76</CapitalGain>
+      <CapitalGain>7603.27</CapitalGain>
       <DRPCashBalance>0</DRPCashBalance>
-      <TotalReturn>9230.49</TotalReturn>
-      <IRR>0.13490244541426613</IRR>
+      <TotalReturn>10665.00</TotalReturn>
+      <IRR>0.15610146088547716</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <Id>b227ee58-7315-422c-a5a6-163170cf684a</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
       </Stock>
       <OpeningBalance>7018.20</OpeningBalance>
       <Purchases>0</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>10734.0</ClosingBalance>
+      <ClosingBalance>10843.20</ClosingBalance>
       <Dividends>162</Dividends>
-      <CapitalGain>3715.80</CapitalGain>
+      <CapitalGain>3825.00</CapitalGain>
       <DRPCashBalance>0</DRPCashBalance>
-      <TotalReturn>3877.80</TotalReturn>
-      <IRR>0.55894612156061763</IRR>
+      <TotalReturn>3987.00</TotalReturn>
+      <IRR>0.57468405166361647</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <Id>f8fdb5ef-a9ed-4dc6-90f8-14db7cb44317</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
       </Stock>
       <OpeningBalance>27462.40</OpeningBalance>
       <Purchases>0</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>39550.00</ClosingBalance>
+      <ClosingBalance>40135.20</ClosingBalance>
       <Dividends>490.84</Dividends>
-      <CapitalGain>12087.60</CapitalGain>
+      <CapitalGain>12672.80</CapitalGain>
       <DRPCashBalance>0</DRPCashBalance>
-      <TotalReturn>12578.44</TotalReturn>
-      <IRR>0.46236837670714565</IRR>
+      <TotalReturn>13163.64</TotalReturn>
+      <IRR>0.48387988768170137</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <OpeningBalance>11635.20</OpeningBalance>
       <Purchases>9997.95</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>21773.85</ClosingBalance>
+      <ClosingBalance>21907.35</ClosingBalance>
       <Dividends>260.05</Dividends>
-      <CapitalGain>140.70</CapitalGain>
+      <CapitalGain>274.20</CapitalGain>
       <DRPCashBalance>6.106</DRPCashBalance>
-      <TotalReturn>400.75</TotalReturn>
-      <IRR>0.027762989122779618</IRR>
+      <TotalReturn>534.25</TotalReturn>
+      <IRR>0.037035050342324405</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <Id>980d44d2-802f-481d-b1ce-5baba59fd635</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <OpeningBalance>21387.24</OpeningBalance>
       <Purchases>6055.14</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>29602.65</ClosingBalance>
+      <ClosingBalance>30328.65</ClosingBalance>
       <Dividends>887.74</Dividends>
-      <CapitalGain>2160.27</CapitalGain>
+      <CapitalGain>2886.27</CapitalGain>
       <DRPCashBalance>66.64</DRPCashBalance>
-      <TotalReturn>3048.01</TotalReturn>
-      <IRR>0.12119589573895721</IRR>
+      <TotalReturn>3774.01</TotalReturn>
+      <IRR>0.15014310006326323</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <Id>885b865f-3532-47b3-8ed0-1069104a4c34</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
       <OpeningBalance>60892.75</OpeningBalance>
       <Purchases>33665.91</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>105277.90</ClosingBalance>
+      <ClosingBalance>107258.20</ClosingBalance>
       <Dividends>2227.97</Dividends>
-      <CapitalGain>10719.24</CapitalGain>
+      <CapitalGain>12699.54</CapitalGain>
       <DRPCashBalance>34.32</DRPCashBalance>
-      <TotalReturn>12947.21</TotalReturn>
-      <IRR>0.17281841007627014</IRR>
+      <TotalReturn>14927.51</TotalReturn>
+      <IRR>0.19948685382263293</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <Id>594f46ef-5dbb-4788-babf-4bf6f98165ef</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
       <OpeningBalance>42198.95</OpeningBalance>
       <Purchases>28714.28</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>70270.50</ClosingBalance>
+      <ClosingBalance>69974.00</ClosingBalance>
       <Dividends>1346.78</Dividends>
-      <CapitalGain>-642.73</CapitalGain>
+      <CapitalGain>-939.23</CapitalGain>
       <DRPCashBalance>0</DRPCashBalance>
-      <TotalReturn>704.05</TotalReturn>
-      <IRR>0.014062501249693639</IRR>
+      <TotalReturn>407.55</TotalReturn>
+      <IRR>0.0081375400904052878</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
+        <Id>eb2ab6ad-5271-46d5-9285-2768e46f68f5</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
       </Stock>
       <OpeningBalance>11461.50</OpeningBalance>
       <Purchases>10673.88</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>21388.40</ClosingBalance>
+      <ClosingBalance>21335.60</ClosingBalance>
       <Dividends>759.22</Dividends>
-      <CapitalGain>-746.98</CapitalGain>
+      <CapitalGain>-799.78</CapitalGain>
       <DRPCashBalance>21.34</DRPCashBalance>
-      <TotalReturn>12.24</TotalReturn>
-      <IRR>0.00085454483242421869</IRR>
+      <TotalReturn>-40.56</TotalReturn>
+      <IRR>-0.0028309667273860488</IRR>
     </HoldingPerformance>
     <HoldingPerformance>
       <Stock>
-        <Id>e88379fa-3675-4b26-aeea-0315759ecd52</Id>
+        <Id>187bc2b4-be51-475e-8b6f-7b3647cc8797</Id>
         <ASXCode>VGE</ASXCode>
         <Name>Vanguard Emerging Markets ETF</Name>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>20229.0</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>21459.90</ClosingBalance>
+      <ClosingBalance>21730.50</ClosingBalance>
       <Dividends>183.36</Dividends>
-      <CapitalGain>1230.90</CapitalGain>
+      <CapitalGain>1501.50</CapitalGain>
       <DRPCashBalance>0</DRPCashBalance>
-      <TotalReturn>1414.26</TotalReturn>
-      <IRR>0.26030695788940639</IRR>
+      <TotalReturn>1684.86</TotalReturn>
+      <IRR>0.31506283403755286</IRR>
     </HoldingPerformance>
   </HoldingPerformance>
 </PortfolioPerformanceResponce>

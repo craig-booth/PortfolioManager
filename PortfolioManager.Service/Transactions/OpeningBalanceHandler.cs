@@ -1,14 +1,15 @@
 ﻿using System;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Transactions
 {
 
     class OpeningBalanceHandler : TransacactionHandler, ITransactionHandler
     {
-        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-            : base (portfolioQuery, stockQuery)
+        public OpeningBalanceHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+            : base (portfolioQuery, stockExchange)
         {
 
         }
@@ -17,7 +18,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var openingBalance = transaction as OpeningBalance;
 
-            var stock = _StockQuery.GetByASXCode(openingBalance.ASXCode, openingBalance.TransactionDate);
+            var stock = _StockExchange.Stocks.Get(openingBalance.ASXCode, openingBalance.TransactionDate);
 
             Guid purchaseId = openingBalance.PurchaseId;
             if (purchaseId == Guid.Empty)

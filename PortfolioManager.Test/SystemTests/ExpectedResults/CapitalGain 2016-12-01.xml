@@ -5,9 +5,8 @@
   <Error />
   <CGTItems>
     <DetailedUnrealisedGainsItem>
-      <Id>5521d451-925f-40a5-8e6d-0203ed2edb4e</Id>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <Id>421c8188-70be-4ebb-86b5-613d69e7825e</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
       </Stock>
@@ -31,9 +30,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>a6e3925b-867a-4a5c-bdcd-d93e4071bad3</Id>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -57,9 +55,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8be0783b-f1b6-4f09-ba18-35b8c4b05978</Id>
       <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <Id>b227ee58-7315-422c-a5a6-163170cf684a</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
       </Stock>
@@ -83,9 +80,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>41d14ce3-0354-4ff5-b734-f1515ee3fbcd</Id>
       <Stock>
-        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <Id>f8fdb5ef-a9ed-4dc6-90f8-14db7cb44317</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
       </Stock>
@@ -109,9 +105,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8357c770-f207-45db-9e33-d59e5e7b60a9</Id>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
@@ -135,9 +130,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8063a017-c68b-46d5-a167-b83cf0bbe6b1</Id>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <Id>980d44d2-802f-481d-b1ce-5baba59fd635</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
@@ -161,9 +155,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>2f6892db-6c54-4be1-bc7f-946dc144271e</Id>
       <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <Id>885b865f-3532-47b3-8ed0-1069104a4c34</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
@@ -187,9 +180,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>85691817-fa02-493d-8cd5-4f23a885ad58</Id>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -213,9 +205,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>d285fa17-4d04-4bda-8da9-5cca26a7a2f4</Id>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
@@ -239,9 +230,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>ea0697c3-d4dc-4fd6-a21d-523d73fa5f2c</Id>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <Id>421c8188-70be-4ebb-86b5-613d69e7825e</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
       </Stock>
@@ -265,9 +255,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>e45353d4-dfb1-477c-8b48-d9fb9b0e5bfc</Id>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <Id>594f46ef-5dbb-4788-babf-4bf6f98165ef</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
@@ -291,9 +280,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>81c213b1-bd53-4635-9315-88a17184decb</Id>
       <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <Id>885b865f-3532-47b3-8ed0-1069104a4c34</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
@@ -317,9 +305,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>a3b9c6bc-6621-4267-b953-971d16dd119c</Id>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -343,9 +330,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>b9a2796e-3e4b-4cbc-a644-7551779bc8ef</Id>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -369,9 +355,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8fc4fea0-ab6a-46b2-b0de-758c53076a0f</Id>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <Id>980d44d2-802f-481d-b1ce-5baba59fd635</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
@@ -395,9 +380,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>830571b7-11bd-4420-a8e0-4c87721608fd</Id>
       <Stock>
-        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
+        <Id>eb2ab6ad-5271-46d5-9285-2768e46f68f5</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
       </Stock>
@@ -421,9 +405,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>4fa02b7a-cec7-454c-a057-5a6861ec4d9f</Id>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
@@ -447,9 +430,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>31949361-12e5-4b6d-b8ea-edf95c423ed4</Id>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <Id>980d44d2-802f-481d-b1ce-5baba59fd635</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
@@ -473,9 +455,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>6322b30f-ff59-4210-ad5f-b3267ebb1354</Id>
       <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <Id>885b865f-3532-47b3-8ed0-1069104a4c34</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
@@ -499,9 +480,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>daea3704-a8b0-4bb9-9dae-41dbe908ebec</Id>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <Id>594f46ef-5dbb-4788-babf-4bf6f98165ef</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
@@ -534,9 +514,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>f8458819-9043-4ac2-9d82-eff5dae1b6b3</Id>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <Id>594f46ef-5dbb-4788-babf-4bf6f98165ef</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
@@ -560,9 +539,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>56119de0-af24-4171-aaec-e05070d531d6</Id>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -586,9 +564,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>37f737f1-3510-4571-bd28-a53d516c6205</Id>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
@@ -612,9 +589,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>90911f20-bce1-4abc-b955-e9ba756450de</Id>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <Id>980d44d2-802f-481d-b1ce-5baba59fd635</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
@@ -638,9 +614,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>faa37574-6c16-4ddd-84b2-ed5b5e2a447e</Id>
       <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <Id>885b865f-3532-47b3-8ed0-1069104a4c34</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
@@ -664,9 +639,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>e723d8a8-7b9e-4dcd-97ec-f2321e57e566</Id>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
@@ -690,9 +664,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>7400bb28-552a-4792-b572-d784b0ee750e</Id>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <Id>421c8188-70be-4ebb-86b5-613d69e7825e</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
       </Stock>
@@ -716,9 +689,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>74f0eb0f-1195-4e37-bf1a-a0b3f26206fc</Id>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <Id>594f46ef-5dbb-4788-babf-4bf6f98165ef</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
@@ -742,9 +714,8 @@
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>200109e3-7d41-47d2-93d5-da2e4f84d81e</Id>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <Id>421c8188-70be-4ebb-86b5-613d69e7825e</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
       </Stock>

@@ -6,6 +6,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Service.Interface;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Utils
 {
@@ -33,11 +34,11 @@ namespace PortfolioManager.Service.Utils
             return result;
         }
 
-        public static ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IEnumerable<Stock> childStocks, DateTime atDate, decimal amount, IStockQuery stockQuery)
+        public static ApportionedCurrencyValue[] ApportionAmountOverChildStocks(IEnumerable<Data.Stocks.Stock> childStocks, DateTime atDate, decimal amount, IStockQuery stockQuery)
         {
             ApportionedCurrencyValue[] result = new ApportionedCurrencyValue[childStocks.Count()];
             int i = 0;
-            foreach (Stock childStock in childStocks)
+            foreach (var childStock in childStocks)
             {
                 decimal percentageOfParent = stockQuery.PercentOfParentCost(childStock.ParentId, childStock.Id, atDate);
                 int relativeValue = (int)(percentageOfParent * 10000);
@@ -50,7 +51,7 @@ namespace PortfolioManager.Service.Utils
             return result;
         }
 
-        public static IReadOnlyCollection<ShareParcel> GetStapledSecurityParcels(Stock stock, DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public static IReadOnlyCollection<ShareParcel> GetStapledSecurityParcels(Data.Stocks.Stock stock, DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             var stapledParcels = new List<ShareParcel>();
 
@@ -130,6 +131,31 @@ namespace PortfolioManager.Service.Utils
             return holding;
         }
 
+        public static HoldingItem GetHolding(Guid stockId, DateTime date, IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+        {
+            IEnumerable<ShareParcel> parcels;
+
+            var stock = stockExchange.Stocks.Get(stockId);
+
+            /*    if (stock.Type == StockType.StapledSecurity)
+                    parcels = GetStapledSecurityParcels(stock, date, portfolioQuery, stockQuery);
+                else */
+            parcels = portfolioQuery.GetParcelsForStock(stock.Id, date, date);
+
+            var holding = new HoldingItem();
+            holding.Stock = stock.ToStockItem(date);
+            holding.Category = stock.Properties[date].Category;
+
+            foreach (var parcel in parcels)
+            {
+                holding.Units += parcel.Units;
+                holding.Cost += parcel.Units * parcel.UnitPrice;
+            }
+            holding.Value = holding.Units * stock.GetPrice(date);
+
+            return holding;
+        }
+
         public static IEnumerable<HoldingItem> GetHoldings(DateTime date, IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
         {
             var holdings = new List<HoldingItem>();
@@ -157,6 +183,35 @@ namespace PortfolioManager.Service.Utils
                 holdings.Add(holding);
             }
             
+            return holdings;
+        }
+
+        public static IEnumerable<HoldingItem> GetHoldings(DateTime date, IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+        {
+            var holdings = new List<HoldingItem>();
+
+            var holdingQuery = from parcel in portfolioQuery.GetAllParcels(date, date)
+                               group parcel by parcel.Stock into parcelGroup
+                               select parcelGroup;
+
+            foreach (var parcelGroup in holdingQuery)
+            {
+                var stock = stockExchange.Stocks.Get(parcelGroup.Key);
+
+                var holding = new HoldingItem();
+                holding.Stock = stock.ToStockItem(date);
+                holding.Category = stock.Properties[date].Category;
+
+                foreach (var parcel in parcelGroup)
+                {
+                    holding.Units += parcel.Units;
+                    holding.Cost += parcel.Units * parcel.UnitPrice;
+                }
+                holding.Value = holding.Units * stock.GetPrice(date);
+
+                holdings.Add(holding);
+            }
+
             return holdings;
         }
 
@@ -199,6 +254,52 @@ namespace PortfolioManager.Service.Utils
                     holding.Cost += parcel.Units * parcel.UnitPrice;
                 }
                 holding.Value = holding.Units * StockUtils.GetPrice(stock.Id, date, stockQuery);
+
+                holdings.Add(holding);
+            }
+
+            return holdings;
+        }
+
+        public static IEnumerable<HoldingItem> GetTradeableHoldings(DateTime date, IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+        {
+            var holdings = new List<HoldingItem>();
+
+            var holdingQuery = from parcel in portfolioQuery.GetAllParcels(date, date)
+                               group parcel by parcel.Stock into parcelGroup
+                               select parcelGroup;
+
+            foreach (var parcelGroup in holdingQuery)
+            {
+                HoldingItem holding;
+
+                var stock = stockExchange.Stocks.Get(parcelGroup.Key);
+
+                if (stock.Parent[date].Parent != null)
+                {
+                    stock = stock.Parent[date].Parent;
+
+                    // Check if the parent stock has already been added
+                    holding = holdings.FirstOrDefault(x => x.Stock.Id == stock.Id);
+                    if (holding != null)
+                    {
+                        foreach (var parcel in parcelGroup)
+                        {
+                            holding.Cost += parcel.Units * parcel.UnitPrice;
+                        }
+                        continue;
+                    }
+
+                }
+
+                holding = new HoldingItem();
+                holding.Stock = stock.ToStockItem(date);
+                foreach (var parcel in parcelGroup)
+                {
+                    holding.Units += parcel.Units;
+                    holding.Cost += parcel.Units * parcel.UnitPrice;
+                }
+                holding.Value = holding.Units * stock.GetPrice(date);
 
                 holdings.Add(holding);
             }
@@ -250,6 +351,50 @@ namespace PortfolioManager.Service.Utils
             return (decimal)Math.Round(irr, 5);
         }
 
+
+        public static decimal CalculatePortfolioIRR(DateTime startDate, DateTime endDate, IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+        {
+            var cashFlows = new CashFlows();
+
+            // Get the initial portfolio value
+            var initialHoldings = GetHoldings(startDate, portfolioQuery, stockExchange);
+            var initialHoldingsValue = initialHoldings.Sum(x => x.Value);
+
+            // Get initial Cash Account Balance
+            var initialCashBalance = portfolioQuery.GetCashBalance(startDate);
+
+            // Add the initial portfolio value
+            var initialValue = initialHoldingsValue + initialCashBalance;
+            cashFlows.Add(startDate, -initialValue);
+
+            // generate list of cashFlows
+            var transactions = portfolioQuery.GetTransactions(startDate.AddDays(1), endDate);
+            foreach (var transaction in transactions)
+            {
+                if (transaction.Type == TransactionType.CashTransaction)
+                {
+                    var cashTransaction = transaction as CashTransaction;
+                    if ((cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit) ||
+                        (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl))
+                        cashFlows.Add(cashTransaction.TransactionDate, -cashTransaction.Amount);
+                }
+            }
+
+            // Get the final portfolio value
+            var finalHoldings = GetHoldings(endDate, portfolioQuery, stockExchange);
+            var finalHoldingsValue = finalHoldings.Sum(x => x.Value);
+
+            // Get final Cash Account Balance
+            var finalCashBalance = portfolioQuery.GetCashBalance(endDate);
+
+            // Add the final portfolio value
+            var finalValue = finalHoldingsValue + finalCashBalance;
+            cashFlows.Add(endDate, finalValue);
+
+            var irr = IRRCalculator.CalculateIRR(cashFlows);
+
+            return (decimal)Math.Round(irr, 5);
+        }
     }
 
 

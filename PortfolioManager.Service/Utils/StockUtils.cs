@@ -6,10 +6,18 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Service.Interface;
 
+using PortfolioManager.Domain.Stocks;
+
 namespace PortfolioManager.Service.Utils
 {
     static class StockUtils
     {
+
+        public static StockItem ToStockItem(this Domain.Stocks.Stock stock, DateTime date)
+        {
+            var stockProperties = stock.Properties[date];
+            return new StockItem(stock.Id, stockProperties.ASXCode, stockProperties.Name);
+        }
 
         public static StockItem Get(Guid stock, DateTime date, IStockQuery stockQuery)
         {

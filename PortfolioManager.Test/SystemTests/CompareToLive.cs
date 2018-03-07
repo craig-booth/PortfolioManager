@@ -10,13 +10,12 @@ using System.Xml.Serialization;
 
 using NUnit.Framework;
 
-using PortfolioManager.Common;
+using PortfolioManager.Domain.Stocks;
+using PortfolioManager.EventStore;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.SQLite.Portfolios;
-using PortfolioManager.Data.Stocks;
-using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Service.Local;
+using PortfolioManager.Service.Services;
 
 namespace PortfolioManager.Test.SystemTests
 {
@@ -24,7 +23,7 @@ namespace PortfolioManager.Test.SystemTests
     public class CompareToLive
     {
         private IPortfolioDatabase _PortfolioDatabase;
-        private IStockDatabase _StockDatabase;
+        private StockExchange _StockExchange;
 
         private string _ExpectedResultsPath;
         private string _ActualResultsPath;
@@ -45,15 +44,18 @@ namespace PortfolioManager.Test.SystemTests
                 Directory.CreateDirectory(_ActualResultsPath);
             }
 
+            var eventStore = new SqliteEventStore(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Events.db"));
+            _StockExchange = new StockExchange(eventStore);
+            _StockExchange.Load();
+
             _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
-            _StockDatabase = new SQLiteStockDatabase(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Stocks.db"));
 
             await LoadTransactions();
         }
 
         public async Task LoadTransactions()
         {
-            var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
+            var service = new TransactionService(_PortfolioDatabase, _StockExchange);
 
             await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));         
         }
@@ -88,7 +90,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CapitalGain {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CapitalGainService(_PortfolioDatabase, _StockDatabase);
+            var service = new CapitalGainService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetDetailedUnrealisedGains(date);
             SaveActualResult(responce, fileName);
 
@@ -101,7 +103,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CGTLiability {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CapitalGainService(_PortfolioDatabase, _StockDatabase);
+            var service = new CapitalGainService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetCGTLiability(fromDate, toDate);
             SaveActualResult(responce, fileName);
 
@@ -127,7 +129,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Holdings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new HoldingService(_PortfolioDatabase, _StockDatabase);
+            var service = new HoldingService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetHoldings(date);
             SaveActualResult(responce, fileName);
 
@@ -140,7 +142,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("TradeableHoldings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new HoldingService(_PortfolioDatabase, _StockDatabase);
+            var service = new HoldingService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetTradeableHoldings(date);
             SaveActualResult(responce, fileName);
 
@@ -153,7 +155,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new IncomeService(_PortfolioDatabase, _StockDatabase);
+            var service = new IncomeService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetIncome(fromDate, toDate);
             SaveActualResult(responce, fileName);
 
@@ -166,7 +168,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioPerformance {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new PortfolioPerformanceService(_PortfolioDatabase, _StockDatabase);
+            var service = new PortfolioPerformanceService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetPerformance(fromDate, toDate);
             SaveActualResult(responce, fileName);
 
@@ -179,7 +181,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioSummary {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new PortfolioSummaryService(_PortfolioDatabase, _StockDatabase);
+            var service = new PortfolioSummaryService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetSummary(date);
             SaveActualResult(responce, fileName);
 
@@ -192,7 +194,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioValue {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new PortfolioValueService(_PortfolioDatabase, _StockDatabase);
+            var service = new PortfolioValueService(_PortfolioDatabase, _StockExchange);
             var responce = await service.GetPortfolioValue(fromDate, toDate, ValueFrequency.Daily);
 
             SaveActualResult(responce, fileName);

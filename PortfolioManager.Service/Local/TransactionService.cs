@@ -282,14 +282,14 @@ namespace PortfolioManager.Service.Local
         {
             _TransactionHandlers = new ServiceFactory<ITransactionHandler>();
 
-            _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(portfolioQuery, stockQuery))
+      /*      _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(portfolioQuery, stockQuery))
                 .Register<Disposal>(() => new DisposalHandler(portfolioQuery, stockQuery))
                 .Register<CostBaseAdjustment>(() => new CostBaseAdjustmentHandler(portfolioQuery, stockQuery))
                 .Register<IncomeReceived>(() => new IncomeReceivedHandler(portfolioQuery, stockQuery))
                 .Register<OpeningBalance>(() => new OpeningBalanceHandler(portfolioQuery, stockQuery))
                 .Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(portfolioQuery, stockQuery))
                 .Register<UnitCountAdjustment>(() => new UnitCountAdjustmentHandler(portfolioQuery, stockQuery))
-                .Register<CashTransaction>(() => new CashTransactionHandler());
+                .Register<CashTransaction>(() => new CashTransactionHandler());  */
         }
 
         public ITransactionHandler GetHandler(Transaction transaction)
