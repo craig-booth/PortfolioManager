@@ -10,9 +10,9 @@ namespace PortfolioManager.Domain.Stocks.Events
         public DateTime Date { get; }
         public decimal ClosingPrice { get; }
 
-        public ClosingPriceAddedEvent(Guid stockId, DateTime date, decimal closingPrice)
+        public ClosingPriceAddedEvent(Guid id, DateTime date, decimal closingPrice)
         {
-            Id = stockId;
+            Id = id;
             Date = date;
             ClosingPrice = closingPrice;
         }

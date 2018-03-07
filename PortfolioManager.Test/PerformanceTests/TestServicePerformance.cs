@@ -60,8 +60,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-                NumberOfIterations = 3, RunMode = RunMode.Throughput,
-                RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 60.0d)]
         public async void TestCapitalGainServicePerformance()
         {
@@ -72,8 +72,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 500.0d)]
         public async void TestCGTLiabilityServicePerformance()
         {
@@ -84,8 +84,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 700.0d)]
         public async void TestCashTransactionsServicePerformance()
         {
@@ -96,8 +96,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 250.0d)]
         public async void TestHoldingsServicePerformance()
         {
@@ -108,8 +108,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 250.0d)]
         public async void TestTradeableHoldingsServicePerformance()
         {
@@ -120,8 +120,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 200.0d)]
         public async void TestIncomeServicePerformance()
         {
@@ -132,8 +132,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 50.0d)]
         public async void TestPortfolioPerformanceServicePerformance()
         {
@@ -144,8 +144,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 35.0d)]
         public async void TestPortfolioSummaryServicePerformance()
         {
@@ -156,8 +156,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 8.0d)]
         public async void TestPortfolioValueServicePerformance()
         {
@@ -168,8 +168,8 @@ namespace PortfolioManager.Test.PerformanceTests
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
-        NumberOfIterations = 3, RunMode = RunMode.Throughput,
-        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10.0d)]
         public async void TestTransactionsServicePerformance()
         {
@@ -179,6 +179,17 @@ namespace PortfolioManager.Test.PerformanceTests
             _Counter.Increment();
         }
 
+        [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+        [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
+        public async void TestStockServicePerformance()
+        {
+            var service = new StockService(_StockDatabase);
+            var responce = await service.GetStocks(_AtDate, true, true);
+
+            _Counter.Increment();
+        }
 
     }
 }

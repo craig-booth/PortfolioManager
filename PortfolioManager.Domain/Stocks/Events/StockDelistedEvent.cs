@@ -9,9 +9,9 @@ namespace PortfolioManager.Domain.Stocks.Events
         public Guid Id { get; }
         public DateTime DelistedDate { get; }
 
-        public StockDelistedEvent(Guid stockId, DateTime delistedDate)
+        public StockDelistedEvent(Guid id, DateTime delistedDate)
         {
-            Id = stockId;
+            Id = id;
             DelistedDate = delistedDate;
         }
     }

@@ -11,9 +11,12 @@ namespace PortfolioManager.Domain.Stocks
 
     public class Stock : EffectiveEntity
     {
-        private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
+        public static readonly Guid StreamId = new Guid("19ACAEAD-E016-454D-9A7C-307C10A077A9");
+        public int Version { get; private set; } = 0;
         private IEventStore _EventStore;
 
+        private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
+        
         public StockType Type { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
@@ -63,11 +66,12 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPriceAddedEvent(Id, date, closingPrice);
             Apply(@event);
 
-            _EventStore.StoreEvent(@event);
+            _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
         public void Apply(ClosingPriceAddedEvent @event)
         {
+            Version++;
             UpdatePrice(@event.Date, @event.ClosingPrice);
         }
 
@@ -127,7 +131,7 @@ namespace PortfolioManager.Domain.Stocks
                 newAssetCategory);
 
             Apply(@event);
-            _EventStore.StoreEvent(@event);
+            _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
         public void ChangeDRPRules(DateTime changeDate, bool drpActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
@@ -141,11 +145,13 @@ namespace PortfolioManager.Domain.Stocks
                 newDrpMethod);
 
             Apply(@event);
-            _EventStore.StoreEvent(@event);
+            _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
         public void Apply(StockPropertiesChangedEvent @event)
         {
+            Version++;
+
             var newProperties = new StockProperties(
                 @event.ASXCode,
                 @event.Name,
@@ -156,6 +162,8 @@ namespace PortfolioManager.Domain.Stocks
 
         public void Apply(ChangeDividendReinvestmentPlanEvent @event)
         {
+            Version++;
+
             var newProperties = new DividendReinvestmentPlan(
                 @event.DRPActive,
                 @event.DividendRoundingRule,

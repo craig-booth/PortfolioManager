@@ -6,6 +6,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Commands;
+using PortfolioManager.EventStore;
 
 using PortfolioManager.Data.SQLite.Stocks;
 
@@ -15,10 +16,12 @@ namespace PortfolioManager.Temp
     {
         static void Main(string[] args)
         {
-            var eventStore = new InMemoryEventStore();
+            var eventStore = new SqliteEventStore(@"C:\PortfolioManager\Events.db");
             var stockExchange = new StockExchange(eventStore);
 
-            Load(stockExchange, eventStore);
+            stockExchange.Load();
+
+         //   Load(stockExchange, eventStore);
 
             var stocks = stockExchange.Stocks.All(DateTime.Today).OrderBy(x => x.Properties[DateTime.Today].ASXCode);
             WritePrices(stocks);

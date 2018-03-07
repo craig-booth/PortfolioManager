@@ -10,6 +10,9 @@ namespace PortfolioManager.Domain.Stocks
 
     public class StockExchange
     {
+        public static readonly Guid StreamId = new Guid("0C295D02-FCB3-4FBA-8134-8C53E4446972");
+
+
         private IEventStore _EventStore;
 
         public TradingCalander TradingCalander { get; private set; }
@@ -27,23 +30,20 @@ namespace PortfolioManager.Domain.Stocks
             var events = _EventStore.RetrieveEvents();
             foreach (var @event in events)
             {
-                if (@event.GetType() == typeof(NonTradingDayAddedEvent))
-                {
-                    TradingCalander.Apply(@event as NonTradingDayAddedEvent);
-                }
-                else if (@event.GetType() == typeof(StockListedEvent))
-                {
-                    Stocks.Apply(@event as StockListedEvent);
-                }
-                else if (@event.GetType() == typeof(StockDelistedEvent))
-                {
-                    Stocks.Apply(@event as StockDelistedEvent);
-                }
-                else
-                {
-                    var stock = Stocks.Get(@event.Id);
+                var streamId = @event.Item1;
+                dynamic dynamicEvent = @event.Item2;
 
-                    dynamic dynamicEvent = @event;
+                if (streamId == TradingCalander.StreamId)
+                {
+                    TradingCalander.Apply(dynamicEvent);
+                }
+                else if (streamId == StockRepository.StreamId)
+                {
+                    Stocks.Apply(dynamicEvent);
+                }
+                else if (streamId == Stock.StreamId)
+                {
+                    var stock = Stocks.Get(dynamicEvent.Id);
                     stock.Apply(dynamicEvent);
                 }
             }

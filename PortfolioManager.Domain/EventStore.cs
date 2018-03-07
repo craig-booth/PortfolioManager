@@ -7,44 +7,71 @@ namespace PortfolioManager.Domain
 {
     public interface IEventStore
     {
-        void StoreEvent(IEvent @event);
+        void StoreEvent(Guid streamId, IEvent @event, int version);
 
-        IEnumerable<IEvent> RetrieveEvents();
-        IEnumerable<IEvent> RetrieveEvents(Guid entityId);
+        IEnumerable<Tuple<Guid, IEvent>> RetrieveEvents();
+        IEnumerable<IEvent> RetrieveEvents(Guid streamId);
+        IEnumerable<IEvent> RetrieveEvents(Guid streamId, Guid entityId);
     }
 
     public class InMemoryEventStore : IEventStore
     {
-        private Dictionary<Guid, List<IEvent>> _Store = new Dictionary<Guid, List<IEvent>>();
+        private Dictionary<Guid, Dictionary<Guid, List<IEvent>>> _Store = new Dictionary<Guid, Dictionary<Guid, List<IEvent>>>();
 
-        public void StoreEvent(IEvent @event)
+        public void StoreEvent(Guid streamId, IEvent @event, int version)
         {
-            List<IEvent> events;
-            if (_Store.ContainsKey(@event.Id))
+            Dictionary<Guid, List<IEvent>> eventStream;
+            
+            if (_Store.ContainsKey(streamId))
             {
-                events = _Store[@event.Id];
+                eventStream = _Store[streamId];
             }
             else
             {
-                events = new List<IEvent>();
-                _Store.Add(@event.Id, events);
+                eventStream = new Dictionary<Guid, List<IEvent>>();
+                _Store.Add(streamId, eventStream);
             }
 
-            events.Add(@event);
+            List<IEvent> entityStream;
+            if (eventStream.ContainsKey(@event.Id))
+            {
+                entityStream = eventStream[@event.Id];
+            }
+            else
+            {
+                entityStream = new List<IEvent>();
+                eventStream.Add(@event.Id, entityStream);
+            }
+
+            entityStream.Add(@event);
         }
 
-        public IEnumerable<IEvent> RetrieveEvents()
+        public IEnumerable<Tuple<Guid, IEvent>> RetrieveEvents()
         {
-            foreach(var eventList in _Store.Values)
+            foreach (var eventStream in _Store)
             {
-                foreach (var @event in eventList)
+                foreach (var entityStream in eventStream.Value.Values)
+                {
+                    foreach (var @event in entityStream)
+                        yield return new Tuple<Guid, IEvent>(eventStream.Key, @event);
+                }
+            }
+        }
+
+        public IEnumerable<IEvent> RetrieveEvents(Guid streamId)
+        {
+            var eventStream = _Store[streamId];
+            foreach (var entityStream in eventStream.Values)
+            {
+                foreach (var @event in entityStream)
                     yield return @event;
             }
         }
 
-        public IEnumerable<IEvent> RetrieveEvents(Guid entityId)
+        public IEnumerable<IEvent> RetrieveEvents(Guid streamId, Guid entityId)
         {
-            return _Store[entityId];
+            var eventStream = _Store[streamId];
+            return eventStream[entityId];
         }
      }
 }

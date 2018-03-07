@@ -16,7 +16,10 @@ namespace PortfolioManager.Domain.Stocks
 
     public class TradingCalander : ITradingCalander
     {
+        public static readonly Guid StreamId = new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
+        public int Version { get; private set; } = 0;
         private IEventStore _EventStore;
+
         private List<DateTime> _NonTradingDays = new List<DateTime>();
 
         public TradingCalander(IEventStore eventStore)
@@ -33,11 +36,12 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new NonTradingDayAddedEvent(date);
             Apply(@event);
 
-            _EventStore.StoreEvent(@event);
+            _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
         public void Apply(NonTradingDayAddedEvent e)
         {
+            Version++;
             var index = _NonTradingDays.BinarySearch(e.Date);
             if (index < 0)
             {

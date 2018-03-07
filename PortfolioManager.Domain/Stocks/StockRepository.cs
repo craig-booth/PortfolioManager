@@ -20,7 +20,10 @@ namespace PortfolioManager.Domain.Stocks
 
     public class StockRepository : IStockRepository
     {
+        public static readonly Guid StreamId = new Guid("2FAD2856-9675-4F73-81F0-A12C60E3A9CB");
+        public int Version { get; private set; } = 0;
         private IEventStore _EventStore;
+
         private Dictionary<Guid, Stock> _Stocks = new Dictionary<Guid, Stock>();
 
         public StockRepository(IEventStore eventStore)
@@ -91,11 +94,13 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StockListedEvent(Guid.NewGuid(), asxCode, name, listingDate, category, type, childSecurities?.ToArray());
             Apply(@event);
 
-            _EventStore.StoreEvent(@event);
+            _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
         public void Apply(StockListedEvent @event)
         {
+            Version++;
+
             var stock = new Stock(@event.Id, @event.ListingDate, _EventStore);
             stock.Apply(@event);
             _Stocks.Add(@event.Id, stock);
@@ -124,11 +129,13 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StockDelistedEvent(stock.Id, date);
             Apply(@event);
 
-            _EventStore.StoreEvent(@event);
+            _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
         public void Apply(StockDelistedEvent @event)
         {
+            Version++;
+
             var stock = _Stocks[@event.Id];
             stock.End(@event.DelistedDate);
         }
