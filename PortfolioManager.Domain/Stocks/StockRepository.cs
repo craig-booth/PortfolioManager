@@ -43,17 +43,17 @@ namespace PortfolioManager.Domain.Stocks
 
         public IEnumerable<Stock> All()
         {
-            return _Stocks.Values.Where(x => x.Parent.Matches(y => y.Parent == null));
+            return _Stocks.Values.Where(x => x.Parent.Matches(y => y == Guid.Empty));
         }
 
         public IEnumerable<Stock> All(DateTime date)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveAt(date) && x.Parent.Matches(date, y => y.Parent == null));
+            return _Stocks.Values.Where(x => x.IsEffectiveAt(date) && x.Parent.Matches(date, y => y == Guid.Empty));
         }
 
         public IEnumerable<Stock> All(DateRange dateRange)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange) && x.Parent.Matches(dateRange, y => y.Parent == null));
+            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange) && x.Parent.Matches(dateRange, y => y == Guid.Empty));
         }
 
         public IEnumerable<Stock> Find(DateTime date, Func<StockProperties, bool> predicate)

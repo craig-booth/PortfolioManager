@@ -36,7 +36,7 @@ namespace PortfolioManager.Service.Services
                 foreach (var id in stocksOwned)
                 {
                     var stock = _StockExchange.Stocks.Get(id);
-                    if (stock.Parent[responce.EndDate].Parent == null)
+                    if (!stock.HasParent(responce.EndDate))
                         responce.StocksHeld.Add(stock.ToStockItem(responce.EndDate));
                 }
 

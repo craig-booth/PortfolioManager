@@ -24,7 +24,7 @@ namespace PortfolioManager.Service.Transactions
 
             var stock = _StockExchange.Stocks.Get(disposal.ASXCode, disposal.TransactionDate);
 
-            if (stock.Parent[disposal.TransactionDate].Parent != null)
+            if (! stock.HasParent(disposal.TransactionDate))
                 throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
 
             /* Determine which parcels to sell based on CGT method */

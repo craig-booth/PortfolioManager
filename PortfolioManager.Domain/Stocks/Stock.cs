@@ -20,8 +20,8 @@ namespace PortfolioManager.Domain.Stocks
         public StockType Type { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
-        public EffectiveProperties<ParentStock> Parent { get; } = new EffectiveProperties<ParentStock>();
-
+        public EffectiveProperties<Guid> Parent { get; } = new EffectiveProperties<Guid>();
+        public EffectiveProperties<RelativeNTA> RelativeNTAs { get; } = new EffectiveProperties<RelativeNTA>();
         private List<Stock> _ChildSecurities = new List<Stock>();
         public IReadOnlyList<Stock> ChildSecurities
         {
@@ -44,7 +44,7 @@ namespace PortfolioManager.Domain.Stocks
             var drp = new DividendReinvestmentPlan(false, RoundingRule.Round, DRPMethod.Round);
             DividendReinvestmentPlan.Change(@event.ListingDate, drp);
 
-            Parent.Change(@event.ListingDate, new ParentStock(null));
+            Parent.Change(@event.ListingDate, Guid.Empty);
         }
 
         public void AddChildSecurties(IEnumerable<Stock> childSecurities)
@@ -54,7 +54,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public void SetParentStock(DateTime date, Stock parent)
         {
-            Parent.Change(date, new ParentStock(parent));
+            Parent.Change(date, parent.Id);
         }
 
         public void UpdateClosingPrice(DateTime date, decimal closingPrice)
@@ -171,6 +171,11 @@ namespace PortfolioManager.Domain.Stocks
 
             DividendReinvestmentPlan.Change(@event.ChangeDate, newProperties);
         }
+
+        public bool HasParent(DateTime date)
+        {
+            return Parent[date] != Guid.Empty;
+        }
     }
 
     public struct StockProperties
@@ -201,14 +206,9 @@ namespace PortfolioManager.Domain.Stocks
         }
     }
 
-    public struct ParentStock
+    public struct RelativeNTA
     {
-        public readonly Stock Parent;
-
-        public ParentStock(Stock parent)
-        {
-            Parent = parent;
-        }
+        public readonly decimal[] Percent;
     }
 
 }

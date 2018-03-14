@@ -275,9 +275,9 @@ namespace PortfolioManager.Service.Utils
 
                 var stock = stockExchange.Stocks.Get(parcelGroup.Key);
 
-                if (stock.Parent[date].Parent != null)
+                if (stock.HasParent(date))
                 {
-                    stock = stock.Parent[date].Parent;
+                    stock = stockExchange.Stocks.Get(stock.Parent[date]);
 
                     // Check if the parent stock has already been added
                     holding = holdings.FirstOrDefault(x => x.Stock.Id == stock.Id);

@@ -93,8 +93,8 @@ namespace PortfolioManager.Service.Services
 
 
                 var stock = _StockExchange.Stocks.Get(transaction.ASXCode, transaction.RecordDate);
-                if (stock.Parent[transaction.RecordDate].Parent != null)
-                    stock = stock.Parent[transaction.RecordDate].Parent;
+                if (stock.HasParent(transaction.RecordDate))
+                    stock = _StockExchange.Stocks.Get(stock.Parent[transaction.RecordDate]);
 
                 workItem = workingList.FirstOrDefault(x => x.HoldingPerformance.Stock.Id == stock.Id);
                 if (workItem == null)
