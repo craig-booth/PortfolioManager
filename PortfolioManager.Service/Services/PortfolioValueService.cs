@@ -79,21 +79,6 @@ namespace PortfolioManager.Service.Services
                 holdingRange.Add(parcel.Units, DateUtils.Latest(fromDate, parcel.FromDate), DateUtils.Earlist(toDate, parcel.ToDate));
             }
 
-            // load closing prices
-            var closingPrices = new Dictionary<Guid, Dictionary<DateTime, decimal>>();
-            foreach (var holdingRange in holdingRanges)
-            {
-                var stock = _StockExchange.Stocks.Get(holdingRange.StockId);
-
-                var priceData = new Dictionary<DateTime, decimal>();
-                foreach (var date in _StockExchange.TradingCalander.TradingDays(new DateRange(fromDate, toDate)))
-                {
-                    priceData.Add(date, stock.GetPrice(date));
-                }
-
-                closingPrices.Add(holdingRange.StockId, priceData);
-            }
-
             foreach (var date in _StockExchange.TradingCalander.TradingDays(new DateRange(fromDate, toDate)))
             {
                 if ((frequency == ValueFrequency.Weekly) && (date.DayOfWeek != DayOfWeek.Friday))
@@ -110,9 +95,8 @@ namespace PortfolioManager.Service.Services
                         var range = holdingRange.Ranges.FirstOrDefault(x => x.IsEffectiveAt(date));
                         if (range != null)
                         {
-                            var priceData = closingPrices[holdingRange.StockId];
-
-                            value += range.Units * priceData[date];
+                            var stock = _StockExchange.Stocks.Get(holdingRange.StockId);
+                            value += range.Units * stock.GetPrice(date);
                         }
                     }
                 }

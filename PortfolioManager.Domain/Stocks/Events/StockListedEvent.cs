@@ -13,18 +13,16 @@ namespace PortfolioManager.Domain.Stocks.Events
         public readonly string Name;
         public readonly DateTime ListingDate;
         public readonly AssetCategory Category;
-        public readonly StockType Type;
-        public readonly Guid[] ChildSecurities;
+        public readonly bool Trust;
 
-        public StockListedEvent(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, StockType type, Guid[] childSecurities)
+        public StockListedEvent(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, bool trust)
         {
             Id = id;
             ASXCode = asxCode;
             Name = name;
             ListingDate = listingDate;
-            Type = type;
+            Trust = trust;
             Category = category;
-            ChildSecurities = childSecurities;
         }
     }
 }

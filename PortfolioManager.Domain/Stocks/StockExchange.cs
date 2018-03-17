@@ -31,20 +31,14 @@ namespace PortfolioManager.Domain.Stocks
             foreach (var @event in events)
             {
                 var streamId = @event.Item1;
-                dynamic dynamicEvent = @event.Item2;
 
                 if (streamId == TradingCalander.StreamId)
                 {
-                    TradingCalander.Apply(dynamicEvent);
+                    TradingCalander.Apply(@event.Item2);
                 }
                 else if (streamId == StockRepository.StreamId)
                 {
-                    Stocks.Apply(dynamicEvent);
-                }
-                else if (streamId == Stock.StreamId)
-                {
-                    var stock = Stocks.Get(dynamicEvent.Id);
-                    stock.Apply(dynamicEvent);
+                    Stocks.Apply(@event.Item2);
                 }
             }
         }

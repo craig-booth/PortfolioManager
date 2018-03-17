@@ -22,7 +22,7 @@ namespace PortfolioManager.Service.Transactions
 
             var stock = _StockExchange.Stocks.Get(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
 
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the dividend applies to */

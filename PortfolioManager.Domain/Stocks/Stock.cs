@@ -11,22 +11,14 @@ namespace PortfolioManager.Domain.Stocks
 
     public class Stock : EffectiveEntity
     {
-        public static readonly Guid StreamId = new Guid("19ACAEAD-E016-454D-9A7C-307C10A077A9");
-        public int Version { get; private set; } = 0;
-        private IEventStore _EventStore;
+        public int Version { get; protected set; } = 0;
+        protected IEventStore _EventStore;
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
         
-        public StockType Type { get; private set; }
+        public bool Trust { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
-        public EffectiveProperties<Guid> Parent { get; } = new EffectiveProperties<Guid>();
-        public EffectiveProperties<RelativeNTA> RelativeNTAs { get; } = new EffectiveProperties<RelativeNTA>();
-        private List<Stock> _ChildSecurities = new List<Stock>();
-        public IReadOnlyList<Stock> ChildSecurities
-        {
-            get { return _ChildSecurities; }
-        }
 
         public Stock(Guid id, DateTime listingDate, IEventStore eventStore)
             : base(id, listingDate)
@@ -34,27 +26,44 @@ namespace PortfolioManager.Domain.Stocks
             _EventStore = eventStore;
         }
 
+        public override string ToString()
+        {
+            var properties = Properties.ClosestTo(DateTime.Today);
+            return String.Format("{0} - {1}", properties.ASXCode, properties.Name);
+        }
+
+        public void List(string asxCode, string name, bool trust, AssetCategory category)
+        {
+            var @event = new StockListedEvent(Id, asxCode, name, EffectivePeriod.FromDate, category, trust);
+            Apply(@event);
+
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+        }
+
         public void Apply(StockListedEvent @event)
         {
-            Type = @event.Type;
+            Version++;
+            Trust = @event.Trust;
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             Properties.Change(@event.ListingDate, properties);
 
             var drp = new DividendReinvestmentPlan(false, RoundingRule.Round, DRPMethod.Round);
             DividendReinvestmentPlan.Change(@event.ListingDate, drp);
-
-            Parent.Change(@event.ListingDate, Guid.Empty);
         }
 
-        public void AddChildSecurties(IEnumerable<Stock> childSecurities)
+        public void DeList(DateTime date)
         {
-            _ChildSecurities.AddRange(childSecurities);
+            var @event = new StockDelistedEvent(Id, date);
+            Apply(@event);
+
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
         }
 
-        public void SetParentStock(DateTime date, Stock parent)
+        public void Apply(StockDelistedEvent @event)
         {
-            Parent.Change(date, parent.Id);
+            Version++;
+            End(@event.DelistedDate);
         }
 
         public void UpdateClosingPrice(DateTime date, decimal closingPrice)
@@ -66,7 +75,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPriceAddedEvent(Id, date, closingPrice);
             Apply(@event);
 
-            _EventStore.StoreEvent(StreamId, @event, Version);
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
         }
 
         public void Apply(ClosingPriceAddedEvent @event)
@@ -131,7 +140,7 @@ namespace PortfolioManager.Domain.Stocks
                 newAssetCategory);
 
             Apply(@event);
-            _EventStore.StoreEvent(StreamId, @event, Version);
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
         }
 
         public void ChangeDRPRules(DateTime changeDate, bool drpActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
@@ -145,7 +154,7 @@ namespace PortfolioManager.Domain.Stocks
                 newDrpMethod);
 
             Apply(@event);
-            _EventStore.StoreEvent(StreamId, @event, Version);
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
         }
 
         public void Apply(StockPropertiesChangedEvent @event)
@@ -170,11 +179,6 @@ namespace PortfolioManager.Domain.Stocks
                 @event.DRPMethod);
 
             DividendReinvestmentPlan.Change(@event.ChangeDate, newProperties);
-        }
-
-        public bool HasParent(DateTime date)
-        {
-            return Parent[date] != Guid.Empty;
         }
     }
 
@@ -206,9 +210,5 @@ namespace PortfolioManager.Domain.Stocks
         }
     }
 
-    public struct RelativeNTA
-    {
-        public readonly decimal[] Percent;
-    }
 
 }

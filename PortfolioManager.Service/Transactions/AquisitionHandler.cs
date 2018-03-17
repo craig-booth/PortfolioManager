@@ -22,9 +22,6 @@ namespace PortfolioManager.Service.Transactions
 
             var stock = _StockExchange.Stocks.Get(aquisition.ASXCode, aquisition.TransactionDate);
 
-            if (stock.HasParent(aquisition.TransactionDate))
-                throw new TransctionNotSupportedForChildSecurity(aquisition, "Cannot aquire child securities. Aquire stapled security instead");
-
             decimal amountPaid = (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 

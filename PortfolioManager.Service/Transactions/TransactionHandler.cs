@@ -33,10 +33,10 @@ namespace PortfolioManager.Service.Transactions
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)
         {
             /* Handle Stapled Securities */
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
             {
                 /* Get child stocks */
-                var childStocks = stock.ChildSecurities; 
+            //    var childStocks = stock.ChildSecurities; 
 
                 /* //Apportion amount and cost base */
          /*       var apportionedAmounts = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, amount, _StockQuery);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PortfolioSummaryResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-03-07T19:37:20.6601838+10:30</ResponceTime>
+  <ResponceTime>2018-03-17T16:30:57.7999324+10:30</ResponceTime>
   <Status>Successfull</Status>
   <Error />
   <PortfolioValue>455865.61</PortfolioValue>
@@ -13,7 +13,7 @@
   <Holdings>
     <HoldingItem>
       <Stock>
-        <Id>421c8188-70be-4ebb-86b5-613d69e7825e</Id>
+        <Id>609d7413-ddeb-44a0-a07b-18bcca3cc006</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
       </Stock>
@@ -24,7 +24,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>ab9861a6-70e7-4eba-bfd2-66697fbc6f65</Id>
+        <Id>be198e78-dab8-499f-8269-02709d889c6f</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -35,7 +35,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>b227ee58-7315-422c-a5a6-163170cf684a</Id>
+        <Id>82d5c315-4b64-4d94-984c-92281df3be40</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
       </Stock>
@@ -46,7 +46,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>f8fdb5ef-a9ed-4dc6-90f8-14db7cb44317</Id>
+        <Id>ddba6ddc-26b3-43e5-aff8-e942223da450</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
       </Stock>
@@ -57,7 +57,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>3fec1d66-bc43-4b24-b297-285a42fc8093</Id>
+        <Id>841f4635-a95e-4ed5-8d9f-796615a51f67</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
@@ -68,7 +68,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>980d44d2-802f-481d-b1ce-5baba59fd635</Id>
+        <Id>7d2d549a-f5d9-4ad5-bf2c-4e462c30b654</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
@@ -79,7 +79,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>885b865f-3532-47b3-8ed0-1069104a4c34</Id>
+        <Id>46bc45ce-badb-41bd-975c-433eb36c7962</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
@@ -90,7 +90,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>594f46ef-5dbb-4788-babf-4bf6f98165ef</Id>
+        <Id>9400cb3b-7ecd-4866-b5e1-d74158ef08b3</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
@@ -101,7 +101,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>eb2ab6ad-5271-46d5-9285-2768e46f68f5</Id>
+        <Id>4e626ed8-ef3e-4d3d-b457-b1ed47683330</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
       </Stock>
@@ -112,7 +112,7 @@
     </HoldingItem>
     <HoldingItem>
       <Stock>
-        <Id>187bc2b4-be51-475e-8b6f-7b3647cc8797</Id>
+        <Id>6723eadd-ef5f-4ecd-a3cf-9061481d47e0</Id>
         <ASXCode>VGE</ASXCode>
         <Name>Vanguard Emerging Markets ETF</Name>
       </Stock>

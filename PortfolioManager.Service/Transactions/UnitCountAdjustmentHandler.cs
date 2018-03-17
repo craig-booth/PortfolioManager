@@ -23,7 +23,7 @@ namespace PortfolioManager.Service.Transactions
 
             var stock = _StockExchange.Stocks.Get(unitCountAdjustment.ASXCode, unitCountAdjustment.TransactionDate);
 
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(unitCountAdjustment, "Cannot adjust unit count of stapled securities. Adjust unit count of child securities instead");
 
             /* locate parcels that the split/consolidation applies to */

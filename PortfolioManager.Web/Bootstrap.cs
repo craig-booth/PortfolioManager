@@ -12,7 +12,7 @@ using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Service.Local;
+using PortfolioManager.Service.Services;
 
 namespace PortfolioManager.Web
 {

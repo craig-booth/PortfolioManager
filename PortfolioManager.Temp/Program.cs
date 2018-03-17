@@ -37,12 +37,12 @@ namespace PortfolioManager.Temp
                 var properties = stock.Properties[DateTime.Today];
                 Console.WriteLine("{0} ({1}): {2}", properties.ASXCode, properties.Name, stock.GetPrice(DateTime.Today));
                 
-                if (stock.Type == StockType.StapledSecurity)
+                if (stock is StapledSecurity)
                 {
-                    foreach (var childStock in stock.ChildSecurities)
+                    var stapledSecurity = stock as StapledSecurity;
+                    foreach (var childSecurity in stapledSecurity.ChildSecurities)
                     {
-                        properties = childStock.Properties[DateTime.Today];
-                        Console.WriteLine("    {0} ({1})", properties.ASXCode, properties.Name);
+                        Console.WriteLine("    {0} ({1})", childSecurity.ASXCode, childSecurity.Name);
                     }
                 }
 
@@ -77,13 +77,16 @@ namespace PortfolioManager.Temp
         {
             var commands = new List<ICommand>();
 
-            var stocks = stockQuery.GetAll().Where(x => x.Type != StockType.StapledSecurity).Select(x => x.Id).Distinct();
+            var stocks = stockQuery.GetAll().Where(x => x.Type != StockType.StapledSecurity && x.ParentId == Guid.Empty).Select(x => x.Id).Distinct();
             foreach (var stock in stocks)
                 commands.AddRange(CommandsForStock(stock, stockQuery));
 
             stocks = stockQuery.GetAll().Where(x => x.Type == StockType.StapledSecurity).OrderBy(x => x.FromDate).Select(x => x.Id).Distinct().ToList();
             foreach (var stock in stocks)
+            {
                 commands.AddRange(CommandsForStock(stock, stockQuery));
+                commands.AddRange(LoadRelativeNTAs(stock, stockQuery));
+            }
 
             stocks = stockQuery.GetAll().Where(x => x.ParentId == Guid.Empty).Select(x => x.Id).Distinct();
             foreach (var stock in stocks) 
@@ -101,11 +104,14 @@ namespace PortfolioManager.Temp
             var firstVersion = stockVersions.First();
             if (firstVersion.Type == StockType.StapledSecurity)
             {
-                var childSecurities = stockQuery.GetChildStocks(id, firstVersion.FromDate).Select(x => x.ASXCode);
-                commands.Add(new ListStockCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, firstVersion.Type, firstVersion.Category, childSecurities));
+                var childSecurities = stockQuery.GetChildStocks(id, firstVersion.FromDate).Select(x => new ListStapledSecurityCommand.StapledSecurityChild(x.ASXCode, x.Name, (x.Type == StockType.Trust)));
+                commands.Add(new ListStapledSecurityCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, firstVersion.Category, childSecurities));
             }
             else
-                commands.Add(new ListStockCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, firstVersion.Type, firstVersion.Category, null));
+            {
+                var trust = (firstVersion.Type == StockType.Trust);
+                commands.Add(new ListStockCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, trust, firstVersion.Category));
+            }
 
             foreach (var otherVersion in stockVersions.Skip(1))
             {
@@ -148,14 +154,42 @@ namespace PortfolioManager.Temp
 
             return commands;
         }
+
+        private static IEnumerable<ICommand> LoadRelativeNTAs(Guid id, Data.Stocks.IStockQuery stockQuery)
+        {
+            var commands = new List<ICommand>();
+
+            var stockVersions = stockQuery.GetAll().Where(x => x.Id == id).OrderBy(x => x.FromDate);
+            var firstVersion = stockVersions.First();
+
+            var childStocks = stockQuery.GetChildStocks(id, firstVersion.FromDate);
+            var dates = stockQuery.GetRelativeNTAs(id, childStocks.First().Id).Select(x => x.Date);
+
+            var relativeNTAS = new decimal[childStocks.Count()];
+            int i;
+            foreach (var date in dates)
+            {
+                i = 0;
+                foreach (var childStock in childStocks)
+                    relativeNTAS[i++] = stockQuery.GetRelativeNTA(id, childStock.Id, date).Percentage;
+
+                commands.Add(new ChangeRelativeNTACommand(firstVersion.ASXCode, date, relativeNTAS));
+
+            }
+
+
+            return commands;
+        }
     }
 
     public class StockExchangeCommandHandler :
         ICommandHandler<ListStockCommand>,
+        ICommandHandler<ListStapledSecurityCommand>,
         ICommandHandler<DelistStockCommand>,
         ICommandHandler<AddClosingPriceCommand>,
         ICommandHandler<AddNonTradingDayCommand>,
         ICommandHandler<UpdateCurrentPriceCommand>,
+        ICommandHandler<ChangeRelativeNTACommand>,
         ICommandHandler<ChangeStockCommand>
     {
         private StockExchange _StockExchange;
@@ -167,11 +201,13 @@ namespace PortfolioManager.Temp
 
         public void Execute(ListStockCommand command)
         {
-            IEnumerable<Guid> childSecurities = null;
-            if (command.Type == StockType.StapledSecurity)
-                childSecurities = command.ChildSecurities.Select(x => _StockExchange.Stocks.Get(x, command.ListingDate).Id);
+            _StockExchange.Stocks.ListStock(command.ASXCode, command.Name, command.ListingDate, command.Trust, command.Category);
+        }
 
-            _StockExchange.Stocks.ListStock(command.ASXCode, command.Name, command.ListingDate, command.Type, command.Category, childSecurities);
+        public void Execute(ListStapledSecurityCommand command)
+        {
+            var childSecurities = command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust));
+            _StockExchange.Stocks.ListStapledSecurity(command.ASXCode, command.Name, command.ListingDate,command.Category, childSecurities);
         }
 
         public void Execute(ChangeStockCommand command)
@@ -205,6 +241,14 @@ namespace PortfolioManager.Temp
             var stock = _StockExchange.Stocks.Get(command.ASXCode, DateTime.Today);
             if (stock != null)
                 stock.UpdateCurrentPrice(command.CurrentPrice);
+        }
+
+
+        public void Execute(ChangeRelativeNTACommand command)
+        {
+            var stock = _StockExchange.Stocks.Get(command.ASXCode, command.ChangeDate);
+            if (stock != null)
+                (stock as StapledSecurity).SetRelativeNTAs(command.ChangeDate, command.Percentages);
         }
 
         public void Execute(AddNonTradingDayCommand command)

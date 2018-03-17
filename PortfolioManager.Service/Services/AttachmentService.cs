@@ -4,7 +4,7 @@ using System.IO;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Data.Portfolios;
 
-namespace PortfolioManager.Service.Local
+namespace PortfolioManager.Service.Services
 {
     public class AttachmentService : IAttachmentService
     {

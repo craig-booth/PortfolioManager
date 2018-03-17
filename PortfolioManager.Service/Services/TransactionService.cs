@@ -23,14 +23,17 @@ namespace PortfolioManager.Service.Services
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly StockExchange _StockExchange;
+        private readonly IMapper _Mapper;
 
         public TransactionService(IPortfolioDatabase portfolioDatabase, StockExchange stockExchange)
         {
             _PortfolioDatabase = portfolioDatabase;
             _StockExchange = stockExchange;
 
-            Mapper.Initialize(cfg => cfg.AddProfile(new ModelToServiceMapping(_StockExchange)));
-            Mapper.AssertConfigurationIsValid();
+            var config = new MapperConfiguration(cfg => 
+                cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
+            );
+            _Mapper = config.CreateMapper();
         }
 
         public Task<ServiceResponce> AddTransaction(TransactionItem transactionItem)
@@ -40,7 +43,7 @@ namespace PortfolioManager.Service.Services
             using (var portfolioUnitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
                 transactionItem.Id = Guid.NewGuid();
-                var transaction = Mapper.Map<Transaction>(transactionItem);
+                var transaction = _Mapper.Map<Transaction>(transactionItem);
 
                 var transactionHandlerFactory = new TransactionHandlerFactory(portfolioUnitOfWork.PortfolioQuery, _StockExchange);
 
@@ -74,7 +77,7 @@ namespace PortfolioManager.Service.Services
                 foreach (var transactionItem in transactionItems)
                 {
                     transactionItem.Id = Guid.NewGuid();
-                    var transaction = Mapper.Map<Transaction>(transactionItem);
+                    var transaction = _Mapper.Map<Transaction>(transactionItem);
 
                     var handler = transactionHandlerFactory.GetHandler(transaction);
                     if (handler != null)
@@ -116,7 +119,7 @@ namespace PortfolioManager.Service.Services
         {
             var responce = new ServiceResponce();
 
-            var transaction = Mapper.Map<Transaction>(transactionItem);
+            var transaction = _Mapper.Map<Transaction>(transactionItem);
 
             using (IPortfolioUnitOfWork unitOfWork = _PortfolioDatabase.CreateUnitOfWork())
             {
@@ -135,7 +138,7 @@ namespace PortfolioManager.Service.Services
 
             using (IPortfolioReadOnlyUnitOfWork unitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {
-                responce.Transaction = Mapper.Map<TransactionItem>(unitOfWork.PortfolioQuery.GetTransaction(id));
+                responce.Transaction = _Mapper.Map<TransactionItem>(unitOfWork.PortfolioQuery.GetTransaction(id));
 
                 responce.SetStatusToSuccessfull();
             }
@@ -150,7 +153,7 @@ namespace PortfolioManager.Service.Services
             using (IPortfolioReadOnlyUnitOfWork unitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {
                 var transactions = unitOfWork.PortfolioQuery.GetTransactions(fromDate, toDate);
-                responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+                responce.Transactions.AddRange(_Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
                 responce.SetStatusToSuccessfull();
             }
@@ -167,7 +170,7 @@ namespace PortfolioManager.Service.Services
                 var stock = _StockExchange.Stocks.Get(stockId);
 
                 var transactions = portfolioUnitOfWork.PortfolioQuery.GetTransactions(stock.Properties[toDate].ASXCode, fromDate, toDate);
-                responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+                responce.Transactions.AddRange(_Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
                 responce.SetStatusToSuccessfull();
             }

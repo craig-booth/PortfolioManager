@@ -24,7 +24,7 @@ namespace PortfolioManager.Service.Transactions
 
             var stock = _StockExchange.Stocks.Get(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
 
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the transaction applies to */

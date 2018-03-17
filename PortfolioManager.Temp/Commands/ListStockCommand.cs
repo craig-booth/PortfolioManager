@@ -12,19 +12,16 @@ namespace PortfolioManager.Domain.Stocks.Commands
         public string ASXCode { get; }
         public string Name { get; }
         public DateTime ListingDate { get; }
-        public StockType Type { get; }
+        public bool Trust { get; }
         public AssetCategory Category { get; }
-        public string[] ChildSecurities { get; }
 
-        public ListStockCommand(string asxCode, string name, DateTime listingDate, StockType type, AssetCategory category, IEnumerable<string> childSecurities)
+        public ListStockCommand(string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category)
         {
             ASXCode = asxCode;
             Name = name;
             ListingDate = listingDate;
-            Type = type;
+            Trust = trust;
             Category = category;
-            if (type == StockType.StapledSecurity)
-                ChildSecurities = childSecurities.ToArray();
         }
     }
 }

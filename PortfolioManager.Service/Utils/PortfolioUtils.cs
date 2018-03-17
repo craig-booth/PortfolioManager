@@ -275,23 +275,6 @@ namespace PortfolioManager.Service.Utils
 
                 var stock = stockExchange.Stocks.Get(parcelGroup.Key);
 
-                if (stock.HasParent(date))
-                {
-                    stock = stockExchange.Stocks.Get(stock.Parent[date]);
-
-                    // Check if the parent stock has already been added
-                    holding = holdings.FirstOrDefault(x => x.Stock.Id == stock.Id);
-                    if (holding != null)
-                    {
-                        foreach (var parcel in parcelGroup)
-                        {
-                            holding.Cost += parcel.Units * parcel.UnitPrice;
-                        }
-                        continue;
-                    }
-
-                }
-
                 holding = new HoldingItem();
                 holding.Stock = stock.ToStockItem(date);
                 foreach (var parcel in parcelGroup)

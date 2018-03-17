@@ -27,6 +27,12 @@ namespace PortfolioManager.Domain.Stocks
             _EventStore = eventStore;
         }
 
+        public void Apply(IEvent @event)
+        {
+            dynamic dynamicEvent = @event;
+            Apply(dynamicEvent);
+        }
+
         public void AddNonTradingDay(DateTime date)
         {
             // Check that the non trading day is not already defined
@@ -39,13 +45,13 @@ namespace PortfolioManager.Domain.Stocks
             _EventStore.StoreEvent(StreamId, @event, Version);
         }
 
-        public void Apply(NonTradingDayAddedEvent e)
+        public void Apply(NonTradingDayAddedEvent @event)
         {
             Version++;
-            var index = _NonTradingDays.BinarySearch(e.Date);
+            var index = _NonTradingDays.BinarySearch(@event.Date);
             if (index < 0)
             {
-                _NonTradingDays.Insert(~index, e.Date);
+                _NonTradingDays.Insert(~index, @event.Date);
             }
         }
 
