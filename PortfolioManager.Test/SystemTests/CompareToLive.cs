@@ -199,6 +199,20 @@ namespace PortfolioManager.Test.SystemTests
 
             Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
         }
+
+        [Test]
+        public async Task CompareUnappliedCorporateActions()
+        {
+            var fileName = "UnappliedCorporateActions.xml";
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetUnappliedCorporateActions();
+
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+        }
     }
 
     public class CompareToLiveTestData
