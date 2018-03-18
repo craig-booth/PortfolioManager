@@ -216,22 +216,19 @@ namespace PortfolioManager.Test.SystemTests
 
             CorporateActionsResponce responce = null;
 
-            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
-            {
-                var service = new StockService(_StockExchange, unitOfWork.CorporateActionQuery);
+            var service = new StockService(_StockExchange);
 
-                var stocks = unitOfWork.StockQuery.GetAll();
-                foreach (var stock in stocks.Where(x => x.IsWithinRange(fromDate, toDate)))
+            var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate)));
+            foreach (var stock in stocks)
+            {
+                if (responce == null)
+                    responce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
+                else
                 {
-                    if (responce == null)
-                        responce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
-                    else
-                    {
-                        var thisResponce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
-                        responce.CorporateActions.AddRange(thisResponce.CorporateActions);
-                    }
+                    var thisResponce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
+                    responce.CorporateActions.AddRange(thisResponce.CorporateActions);
                 }
-            }   
+            }
 
             SaveActualResult(responce, fileName);
 
@@ -249,7 +246,7 @@ namespace PortfolioManager.Test.SystemTests
 
             SaveActualResult(responce, fileName);
 
-          //  Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+            Assert.That(responce, Is.EquivalentTo(typeof(UnappliedCorporateActionsResponce), expectedFile));
         }
 
     }

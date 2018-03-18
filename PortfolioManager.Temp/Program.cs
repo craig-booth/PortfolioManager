@@ -7,7 +7,7 @@ using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Commands;
 using PortfolioManager.EventStore;
-
+using PortfolioManager.Service.Services;
 using PortfolioManager.Data.SQLite.Stocks;
 
 namespace PortfolioManager.Temp
@@ -21,13 +21,31 @@ namespace PortfolioManager.Temp
 
             stockExchange.Load();
 
-         //   Load(stockExchange, eventStore);
+            //  Load(stockExchange, eventStore);
+            //  LoadCorporateActions(stockExchange, eventStore);
 
-            var stocks = stockExchange.Stocks.All(DateTime.Today).OrderBy(x => x.Properties[DateTime.Today].ASXCode);
-            WritePrices(stocks);
+            //  var stocks = stockExchange.Stocks.All(DateTime.Today).OrderBy(x => x.Properties[DateTime.Today].ASXCode);
+            //  WritePrices(stocks);
+            //   Console.ReadKey();
 
+            TestCorporateActionPerformance(stockExchange);
+        }
 
-            Console.ReadKey();
+        private static async void TestCorporateActionPerformance(StockExchange stockExchange)
+        {
+            var fromDate = new DateTime(2016, 07, 01);
+            var toDate = new DateTime(2017, 06, 30);
+
+            for (var i = 0; i < 100; i++)
+            {
+                var service = new StockService(stockExchange);
+
+                var stocks = stockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate)));
+                foreach (var stock in stocks)
+                {
+                    var responce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
+                }
+            }
         }
 
         private static void WritePrices(IEnumerable<Stock> stocks)
@@ -49,6 +67,43 @@ namespace PortfolioManager.Temp
             }
         }
 
+        private static void LoadCorporateActions(StockExchange stockExchange, IEventStore eventStore)
+        {
+            var stockDataBase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
+
+            var commands = new List<ICommand>();
+
+            using (var unitOfWork = stockDataBase.CreateReadOnlyUnitOfWork())
+            {
+                foreach (var stock in stockExchange.Stocks.All())
+                {
+                    var oldStock = unitOfWork.StockQuery.GetByASXCode(stock.Properties[stock.EffectivePeriod.FromDate].ASXCode, stock.EffectivePeriod.FromDate);
+
+                    var corporateActions = unitOfWork.CorporateActionQuery.Find(oldStock.Id, DateUtils.NoStartDate, DateUtils.NoEndDate);
+                    foreach (var corporateAction in corporateActions)
+                    {
+                        if (corporateAction.Type == CorporateActionType.CapitalReturn)
+                        {
+                            var capitalReturn = corporateAction as PortfolioManager.Data.Stocks.CapitalReturn;
+                            commands.Add(new AddCapitalReturnCommand(stock.Properties[capitalReturn.ActionDate].ASXCode, capitalReturn.ActionDate, capitalReturn.Description, capitalReturn.PaymentDate, capitalReturn.Amount));
+                        }
+                        else if (corporateAction.Type == CorporateActionType.Dividend)
+                        {
+                            var dividend = corporateAction as PortfolioManager.Data.Stocks.Dividend;
+                            commands.Add(new AddDividendCommand(stock.Properties[dividend.ActionDate].ASXCode, dividend.ActionDate, dividend.Description, dividend.PaymentDate, dividend.DividendAmount, dividend.CompanyTaxRate, dividend.PercentFranked, dividend.DRPPrice));
+                        }
+                    }
+                }
+                
+            }
+
+            var commandHandler = new StockExchangeCommandHandler(stockExchange);
+            foreach (var command in commands)
+            {
+                dynamic c = command;
+                commandHandler.Execute(c);
+            } 
+        }
 
         private static void Load(StockExchange stockExchange, IEventStore eventStore)
         {
@@ -190,7 +245,9 @@ namespace PortfolioManager.Temp
         ICommandHandler<AddNonTradingDayCommand>,
         ICommandHandler<UpdateCurrentPriceCommand>,
         ICommandHandler<ChangeRelativeNTACommand>,
-        ICommandHandler<ChangeStockCommand>
+        ICommandHandler<ChangeStockCommand>,
+        ICommandHandler<AddCapitalReturnCommand>,
+        ICommandHandler<AddDividendCommand>
     {
         private StockExchange _StockExchange;
 
@@ -254,6 +311,20 @@ namespace PortfolioManager.Temp
         public void Execute(AddNonTradingDayCommand command)
         {
             _StockExchange.TradingCalander.AddNonTradingDay(command.Date);
+        }
+
+        public void Execute(AddCapitalReturnCommand command)
+        {
+            var stock = _StockExchange.Stocks.Get(command.ASXCode, command.RecordDate);
+            if (stock != null)
+                stock.AddCapitalReturn(command.RecordDate, command.Description, command.PaymentDate, command.Amount);
+        }
+
+        public void Execute(AddDividendCommand command)
+        {
+            var stock = _StockExchange.Stocks.Get(command.ASXCode, command.RecordDate);
+            if (stock != null)
+                stock.AddDividend(command.RecordDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
         }
 
     }

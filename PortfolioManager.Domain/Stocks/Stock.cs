@@ -5,6 +5,8 @@ using System.Text;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks.Events;
+using PortfolioManager.Domain.CorporateActions;
+using PortfolioManager.Domain.CorporateActions.Events;
 
 namespace PortfolioManager.Domain.Stocks
 {
@@ -19,6 +21,12 @@ namespace PortfolioManager.Domain.Stocks
         public bool Trust { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
+
+        private readonly List<ICorporateAction> _CorporateActions = new List<ICorporateAction>();
+        public IEnumerable<ICorporateAction> CorporateActions
+        {
+            get { return _CorporateActions; }
+        }
 
         public Stock(Guid id, DateTime listingDate, IEventStore eventStore)
             : base(id, listingDate)
@@ -179,6 +187,53 @@ namespace PortfolioManager.Domain.Stocks
                 @event.DRPMethod);
 
             DividendReinvestmentPlan.Change(@event.ChangeDate, newProperties);
+        }
+
+        public void AddCapitalReturn(DateTime recordDate, string description, DateTime paymentDate, decimal amount)
+        {
+             var @event = new CapitalReturnAddedEvent(Id,
+                Guid.NewGuid(),
+                recordDate,
+                description,
+                paymentDate,
+                amount);
+
+            Apply(@event);
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+        }
+
+        public void Apply(CapitalReturnAddedEvent @event)
+        {
+            Version++;
+
+            var capitalReturn = new CapitalReturn(this, @event.ActionId, @event.ActionDate, @event.Description, @event.PaymentDate, @event.Amount);
+
+            _CorporateActions.Add(capitalReturn);
+        }
+
+        public void AddDividend(DateTime recordDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
+        {
+            var @event = new DividendAddedEvent(Id,
+               Guid.NewGuid(),
+               recordDate,
+               description,
+               paymentDate,
+               dividendAmount,
+               companyTaxRate,
+               percentFranked,
+               drpPrice);
+
+            Apply(@event);
+            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+        }
+
+        public void Apply(DividendAddedEvent @event)
+        {
+            Version++;
+
+            var dividend = new Dividend(this, @event.ActionId, @event.ActionDate, @event.Description, @event.PaymentDate, @event.DividendAmount, @event.CompanyTaxRate, @event.PercentFranked, @event.DRPPrice);
+
+            _CorporateActions.Add(dividend);
         }
     }
 

@@ -6,7 +6,14 @@ using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Domain.CorporateActions
 {
-    class Transformation
+    public class Transformation : ICorporateAction
     {
+        public Guid Id => throw new NotImplementedException();
+
+        public DateTime ActionDate => throw new NotImplementedException();
+
+        public string Description => throw new NotImplementedException();
+
+        public Stock Stock => throw new NotImplementedException();
     }
 }

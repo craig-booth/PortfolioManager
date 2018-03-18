@@ -16,13 +16,11 @@ namespace PortfolioManager.Service.Services
     public class StockService : IStockService
     {
         private readonly StockExchange _StockExchange;
-        private readonly ICorporateActionQuery _CorporateActionQuery;
         private readonly IMapper _Mapper;
 
-        public StockService(StockExchange stockExchange, ICorporateActionQuery corporateActionQuery)
+        public StockService(StockExchange stockExchange)
         {
             _StockExchange = stockExchange;
-            _CorporateActionQuery = corporateActionQuery;
 
             var config = new MapperConfiguration(cfg =>
                     cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
@@ -39,11 +37,13 @@ namespace PortfolioManager.Service.Services
             return Task.FromResult<GetStockResponce>(responce); 
         }
 
-        public Task<CorporateActionsResponce> GetCorporateActions(Guid stock, DateTime fromDate, DateTime toDate)
+        public Task<CorporateActionsResponce> GetCorporateActions(Guid stockId, DateTime fromDate, DateTime toDate)
         {
             var responce = new CorporateActionsResponce();
 
-            var corporateActions = _CorporateActionQuery.Find(stock, fromDate, toDate);
+            var stock = _StockExchange.Stocks.Get(stockId);
+            var corporateActions = stock.CorporateActions.Where(x => x.ActionDate.Between(fromDate, toDate));
+        
             responce.CorporateActions.AddRange(_Mapper.Map<IEnumerable<CorporateActionItem>>(corporateActions));
 
             return Task.FromResult<CorporateActionsResponce>(responce);

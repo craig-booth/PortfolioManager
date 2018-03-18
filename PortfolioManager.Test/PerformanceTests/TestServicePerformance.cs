@@ -194,11 +194,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
         public async void TestStockServicePerformance()
         {
-            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
-            {
-                var service = new StockService(_StockExchange, unitOfWork.CorporateActionQuery);
-                var responce = await service.GetStocks(_AtDate, true, true);
-            }
+            var service = new StockService(_StockExchange);
+            var responce = await service.GetStocks(_AtDate, true, true);
 
             _Counter.Increment();
         }
@@ -209,17 +206,27 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
         public async void TestCorporateActionsForStockServicePerformance()
         {
-            
-            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
-            {
-                var service = new StockService(_StockExchange, unitOfWork.CorporateActionQuery);
 
-                var stocks = unitOfWork.StockQuery.GetAll();
-                foreach (var stock in stocks.Where(x => x.IsWithinRange(_FromDate, _ToDate)))
-                {
-                        var responce = await service.GetCorporateActions(stock.Id, _FromDate, _ToDate);
-                }
+            var service = new StockService(_StockExchange);
+
+            var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(_FromDate, _ToDate)));
+            foreach (var stock in stocks)
+            {
+                var responce = await service.GetCorporateActions(stock.Id, _FromDate, _ToDate);
             }
+
+            _Counter.Increment();
+        }
+
+
+        [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
+            NumberOfIterations = 3, RunMode = RunMode.Throughput,
+            RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+        [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
+        public async void TestUnappliedCorporateActionsServicePerformance()
+        {
+            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase, _StockExchange);
+            var responce = await service.GetUnappliedCorporateActions();
 
             _Counter.Increment();
         }

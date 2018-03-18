@@ -11,6 +11,7 @@
     <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj" />
     <ProjectReference Include="..\PortfolioManager.Domain\PortfolioManager.Domain.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
+    <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj" />
   </ItemGroup>
 
 </Project>

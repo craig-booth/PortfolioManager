@@ -1404,6 +1404,29 @@
     <pm:cashtransactiontype>4</pm:cashtransactiontype>
     <pm:amount>14.92000</pm:amount>
   </pm:cashtransaction>
+  <pm:incomereceived>
+    <pm:transactiondate>2017-10-13</pm:transactiondate>
+    <pm:asxcode>CSL</pm:asxcode>
+    <pm:recorddate>2017-09-13</pm:recorddate>
+    <pm:comment>USD $0.72 (AUD 1.00/USD 0.78665800)</pm:comment>
+    <pm:franked>0.00000</pm:franked>
+    <pm:unfranked>256.27000</pm:unfranked>
+    <pm:frankingcredits>0.00000</pm:frankingcredits>
+    <pm:interest>0.00000</pm:interest>
+    <pm:taxdeferred>0.00000</pm:taxdeferred>
+    <pm:createcashtransaction>true</pm:createcashtransaction>
+    <pm:drpcashbalance>0.00000</pm:drpcashbalance>
+  </pm:incomereceived>
+  <pm:openingbalance>
+    <pm:transactiondate>2017-09-15</pm:transactiondate>
+    <pm:asxcode>ARG</pm:asxcode>
+    <pm:recorddate>2017-09-15</pm:recorddate>
+    <pm:comment>DRP $7.63</pm:comment>
+    <pm:units>268</pm:units>
+    <pm:costbase>2,043.68000</pm:costbase>
+    <pm:aquisitiondate>2017-09-15</pm:aquisitiondate>
+    <pm:purchaseid>00000000-0000-0000-0000-000000000000</pm:purchaseid>
+  </pm:openingbalance>
   <pm:cashtransaction>
     <pm:transactiondate>2017-09-20</pm:transactiondate>
     <pm:asxcode />
@@ -1412,6 +1435,32 @@
     <pm:cashtransactiontype>0</pm:cashtransactiontype>
     <pm:amount>2,000.00000</pm:amount>
   </pm:cashtransaction>
+  <pm:incomereceived>
+    <pm:transactiondate>2017-10-11</pm:transactiondate>
+    <pm:asxcode>COH</pm:asxcode>
+    <pm:recorddate>2017-09-20</pm:recorddate>
+    <pm:comment>Dividend $1.40</pm:comment>
+    <pm:franked>84.00000</pm:franked>
+    <pm:unfranked>0.00000</pm:unfranked>
+    <pm:frankingcredits>36.00000</pm:frankingcredits>
+    <pm:interest>0.00000</pm:interest>
+    <pm:taxdeferred>0.00000</pm:taxdeferred>
+    <pm:createcashtransaction>true</pm:createcashtransaction>
+    <pm:drpcashbalance>0.00000</pm:drpcashbalance>
+  </pm:incomereceived>
+  <pm:incomereceived>
+    <pm:transactiondate>2017-10-17</pm:transactiondate>
+    <pm:asxcode>VGE</pm:asxcode>
+    <pm:recorddate>2017-10-03</pm:recorddate>
+    <pm:comment>Dividend $0.55563</pm:comment>
+    <pm:franked>0.00000</pm:franked>
+    <pm:unfranked>183.36000</pm:unfranked>
+    <pm:frankingcredits>0.00000</pm:frankingcredits>
+    <pm:interest>0.00000</pm:interest>
+    <pm:taxdeferred>0.00000</pm:taxdeferred>
+    <pm:createcashtransaction>true</pm:createcashtransaction>
+    <pm:drpcashbalance>0.00000</pm:drpcashbalance>
+  </pm:incomereceived>
   <pm:cashtransaction>
     <pm:transactiondate>2017-10-14</pm:transactiondate>
     <pm:asxcode />

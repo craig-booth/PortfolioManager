@@ -25,9 +25,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Temp", "PortfolioManager.Temp\PortfolioManager.Temp.csproj", "{8510BF3D-F853-4C6E-BEBF-DEF189B07B9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.EventStore", "PortfolioManager.EventStore\PortfolioManager.EventStore.csproj", "{22E528EF-35A3-4328-95CA-9E95DCBB87D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore", "PortfolioManager.EventStore\PortfolioManager.EventStore.csproj", "{22E528EF-35A3-4328-95CA-9E95DCBB87D2}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

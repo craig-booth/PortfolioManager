@@ -44,10 +44,14 @@ namespace PortfolioManager.Service.Services
                     var actions = new List<CorporateAction>();
                     foreach (var ownedStock in allOwnedStocks)
                     {
-                        var corporateActions = stockUnitOfWork.CorporateActionQuery.Find(ownedStock, DateUtils.NoStartDate, DateUtils.NoEndDate);
+                        //Lookup Id in stocks.db
+                        var stock = _StockExchange.Stocks.Get(ownedStock);
+                        var oldStock = stockUnitOfWork.StockQuery.GetByASXCode(stock.Properties[DateTime.Today].ASXCode, DateTime.Today);
+
+                        var corporateActions = stockUnitOfWork.CorporateActionQuery.Find(oldStock.Id, DateUtils.NoStartDate, DateUtils.NoEndDate);
                         foreach (var corporateAction in corporateActions)
                         {
-                            if (portfolioUnitOfWork.PortfolioQuery.StockOwned(corporateAction.Stock, corporateAction.ActionDate))
+                            if (portfolioUnitOfWork.PortfolioQuery.StockOwned(ownedStock, corporateAction.ActionDate))
                             {
                                 var handler = corporateActionHandlerFactory.GetHandler(corporateAction);
                                 if (handler != null)
