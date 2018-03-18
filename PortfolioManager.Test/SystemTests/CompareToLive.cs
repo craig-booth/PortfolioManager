@@ -10,10 +10,13 @@ using System.Xml.Serialization;
 
 using NUnit.Framework;
 
+using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.EventStore;
 using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
+using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
 
@@ -23,6 +26,7 @@ namespace PortfolioManager.Test.SystemTests
     public class CompareToLive
     {
         private IPortfolioDatabase _PortfolioDatabase;
+        private IStockDatabase _StockDatabase;
         private StockExchange _StockExchange;
 
         private string _ExpectedResultsPath;
@@ -49,6 +53,8 @@ namespace PortfolioManager.Test.SystemTests
             _StockExchange.Load();
 
             _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
+
+            _StockDatabase = new SQLiteStockDatabase(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Stocks.db"));
 
             await LoadTransactions();
         }
@@ -201,6 +207,51 @@ namespace PortfolioManager.Test.SystemTests
 
             Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
         }
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public async Task CompareCorporateActions(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("CorporateActions {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            CorporateActionsResponce responce = null;
+
+            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+            {
+                var service = new StockService(_StockExchange, unitOfWork.CorporateActionQuery);
+
+                var stocks = unitOfWork.StockQuery.GetAll();
+                foreach (var stock in stocks.Where(x => x.IsWithinRange(fromDate, toDate)))
+                {
+                    if (responce == null)
+                        responce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
+                    else
+                    {
+                        var thisResponce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
+                        responce.CorporateActions.AddRange(thisResponce.CorporateActions);
+                    }
+                }
+            }   
+
+            SaveActualResult(responce, fileName);
+
+            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+        }
+
+        [Test]
+        public async Task CompareUnappliedCorporateActions()
+        {
+            var fileName = "UnappliedCorporateActions.xml";
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase, _StockExchange);
+            var responce = await service.GetUnappliedCorporateActions();
+
+            SaveActualResult(responce, fileName);
+
+          //  Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+        }
+
     }
 
     public class CompareToLiveTestData

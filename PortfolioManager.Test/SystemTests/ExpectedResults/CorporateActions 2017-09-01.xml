@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CorporateActionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ResponceTime>2018-03-17T18:50:39.9500913+10:30</ResponceTime>
+  <Status>Failed</Status>
+  <Error>Not initialised</Error>
+  <CorporateActions>
+    <CorporateActionItem>
+      <Id>7a89ac6b-1d85-4516-8e27-29c514378e8c</Id>
+      <ActionDate>2017-02-20T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.15</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>5847933c-5ecd-4042-9cc0-62893366a1d9</Id>
+      <ActionDate>2017-08-28T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.16</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>9ee2a8dd-a18f-425d-b069-b9f57420c5e7</Id>
+      <ActionDate>2016-10-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.05</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>98c30ea2-f2fb-4335-843c-328da25ce883</Id>
+      <ActionDate>2016-09-14T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.8867</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>4d6c1700-fb93-4df0-8723-608a3e626c87</Id>
+      <ActionDate>2017-03-16T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>USD $0.64 @ US$1.00 = AU$1.309</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>3572c8d9-314a-47b5-bb6a-c95a9433cdec</Id>
+      <ActionDate>2016-09-08T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $1.20</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>51bb93a1-0718-47f1-a106-435d628bd68f</Id>
+      <ActionDate>2017-03-16T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $1.30</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>c8c79a4c-4a43-4a78-95fd-b7f5c38c70c5</Id>
+      <ActionDate>2016-10-18T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.0725</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>b7c9c1fa-d57c-4b2a-9a63-fbb60abf996c</Id>
+      <ActionDate>2017-04-18T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.075</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>1467628c-8f12-4d31-aee7-98c0879566a3</Id>
+      <ActionDate>2016-10-07T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.03</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>1c538082-6085-4960-ace7-2d58a172910a</Id>
+      <ActionDate>2017-04-10T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.0315</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>d95e3d78-a845-4bee-860c-2f9627acc6f5</Id>
+      <ActionDate>2016-09-16T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.0131</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>422b094f-48b0-4bbd-856f-d5594c2c859c</Id>
+      <ActionDate>2016-10-05T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.2491</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>c0a36caf-65c6-4038-9e34-f7b170c83eaf</Id>
+      <ActionDate>2017-01-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.35538</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>ab491c70-c36b-41b8-bd3b-55bb86ec585a</Id>
+      <ActionDate>2017-04-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.265</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>a03a38f0-5bfa-4118-9c30-6f168e472905</Id>
+      <ActionDate>2017-07-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.98514</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>2feb846b-de59-4027-82dc-68f63c217bc8</Id>
+      <ActionDate>2016-10-05T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.420836</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>d3b31402-7012-41b9-afa0-bfe870821704</Id>
+      <ActionDate>2017-01-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.38498</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>e0eab258-4a96-448d-928c-cd91fa48bd6f</Id>
+      <ActionDate>2017-04-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.33066</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>66aef327-bb59-4781-8810-46d40883ac6a</Id>
+      <ActionDate>2017-07-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.35919</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>cc948de6-8285-4678-aaf1-d2396e16febf</Id>
+      <ActionDate>2016-10-05T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.576054</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>a3ec79b3-b046-4410-a022-a29400e7ac56</Id>
+      <ActionDate>2017-01-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $1.16111</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>19ba0b69-4785-49b2-9c83-cd4c22bacb7f</Id>
+      <ActionDate>2017-04-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.89504</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>c2b56270-6e8c-43bc-9919-3de4e6af41d6</Id>
+      <ActionDate>2017-07-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $0.65518</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>b67b6d06-a6b2-412b-9a25-4b0554a29c6e</Id>
+      <ActionDate>2017-04-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $2.16606</Description>
+    </CorporateActionItem>
+    <CorporateActionItem>
+      <Id>e4281157-f2ef-41d1-b384-9f62515716cb</Id>
+      <ActionDate>2017-07-04T00:00:00</ActionDate>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+      </Stock>
+      <Description>Dividend $1.16179</Description>
+    </CorporateActionItem>
+  </CorporateActions>
+</CorporateActionsResponce>

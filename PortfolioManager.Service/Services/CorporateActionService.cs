@@ -18,18 +18,19 @@ namespace PortfolioManager.Service.Services
     public class CorporateActionService : ICorporateActionService
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
+        private readonly IStockDatabase _StockDatabase;
         private readonly StockExchange _StockExchange;
 
-        public CorporateActionService(IPortfolioDatabase portfolioDatabase, StockExchange stockExchange)
+        public CorporateActionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase, StockExchange stockExchange)
         {
             _PortfolioDatabase = portfolioDatabase;
+            _StockDatabase = stockDatabase;
             _StockExchange = stockExchange;
         }
 
         public Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions()
         {
-            throw new NotSupportedException();
-       /*     var responce = new UnappliedCorporateActionsResponce();
+            var responce = new UnappliedCorporateActionsResponce();
 
             using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {
@@ -75,13 +76,11 @@ namespace PortfolioManager.Service.Services
                 }
             }
 
-            return Task.FromResult<UnappliedCorporateActionsResponce>(responce); */
+            return Task.FromResult<UnappliedCorporateActionsResponce>(responce); 
         }
 
         public Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid corporateAction)
         {
-            throw new NotSupportedException();
-            /*
             var responce = new TransactionsForCorparateActionsResponce();
 
             using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
@@ -101,7 +100,7 @@ namespace PortfolioManager.Service.Services
                 }
             }
 
-            return Task.FromResult<TransactionsForCorparateActionsResponce>(responce); */
+            return Task.FromResult<TransactionsForCorparateActionsResponce>(responce); 
         }
     }
 
