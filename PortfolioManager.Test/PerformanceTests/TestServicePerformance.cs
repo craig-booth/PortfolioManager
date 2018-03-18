@@ -179,6 +179,17 @@ namespace PortfolioManager.Test.PerformanceTests
             _Counter.Increment();
         }
 
+        [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
+        NumberOfIterations = 3, RunMode = RunMode.Throughput,
+        RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
+        [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10.0d)]
+        public async void TestUnappliedCorporateActionServicePerformance()
+        {
+            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase);
+            var responce = await service.GetUnappliedCorporateActions();
+
+            _Counter.Increment();
+        }
 
     }
 }
