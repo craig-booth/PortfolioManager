@@ -8,6 +8,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+using AutoMapper;
 using NUnit.Framework;
 
 using PortfolioManager.Common;
@@ -17,6 +18,7 @@ using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Local;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Test.SystemTests
 {
@@ -25,6 +27,7 @@ namespace PortfolioManager.Test.SystemTests
     {
         private IPortfolioDatabase _PortfolioDatabase;
         private IStockDatabase _StockDatabase;
+        private IMapper _Mapper;
 
         private string _ExpectedResultsPath;
         private string _ActualResultsPath;
@@ -48,12 +51,17 @@ namespace PortfolioManager.Test.SystemTests
             _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
             _StockDatabase = new SQLiteStockDatabase(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Stocks.db"));
 
+            var config = new MapperConfiguration(cfg => 
+                cfg.AddProfile(new ModelToServiceMapping(_StockDatabase))
+            );
+            _Mapper = config.CreateMapper();
+
             await LoadTransactions();
         }
 
         public async Task LoadTransactions()
         {
-            var service = new TransactionService(_PortfolioDatabase, _StockDatabase);
+            var service = new TransactionService(_PortfolioDatabase, _StockDatabase, _Mapper);
 
             await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));         
         }
@@ -206,7 +214,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = "UnappliedCorporateActions.xml";
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase);
+            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase, _Mapper);
             var responce = await service.GetUnappliedCorporateActions();
 
             SaveActualResult(responce, fileName);

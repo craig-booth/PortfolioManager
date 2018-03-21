@@ -18,11 +18,13 @@ namespace PortfolioManager.Service.Local
     {
         private readonly IPortfolioDatabase _PortfolioDatabase;
         private readonly IStockDatabase _StockDatabase;
+        private readonly IMapper _Mapper;
 
-        public CorporateActionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase)
+        public CorporateActionService(IPortfolioDatabase portfolioDatabase, IStockDatabase stockDatabase, IMapper mapper)
         {
             _PortfolioDatabase = portfolioDatabase;
             _StockDatabase = stockDatabase;
+            _Mapper = mapper;
         }
 
         public Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions()
@@ -91,7 +93,7 @@ namespace PortfolioManager.Service.Local
                     var handler = corporateActionHandlerFactory.GetHandler(action);
                     var transactions = handler.CreateTransactionList(action);
 
-                    responce.Transactions.AddRange(Mapper.Map<IEnumerable<TransactionItem>>(transactions));
+                    responce.Transactions.AddRange(_Mapper.Map<IEnumerable<TransactionItem>>(transactions));
 
                     responce.SetStatusToSuccessfull();
                 }
