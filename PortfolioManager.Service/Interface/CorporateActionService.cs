@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using PortfolioManager.Domain.CorporateActions;
+
 namespace PortfolioManager.Service.Interface
 {
     public interface ICorporateActionService 
     {
         Task<UnappliedCorporateActionsResponce> GetUnappliedCorporateActions();
-        Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid actionId);
+        Task<TransactionsForCorparateActionsResponce> TransactionsForCorporateAction(Guid stockId, Guid actionId);
     }
 
     public class UnappliedCorporateActionsResponce : ServiceResponce

@@ -25,15 +25,11 @@ namespace PortfolioManager.Service.Services
         private readonly StockExchange _StockExchange;
         private readonly IMapper _Mapper;
 
-        public TransactionService(IPortfolioDatabase portfolioDatabase, StockExchange stockExchange)
+        public TransactionService(IPortfolioDatabase portfolioDatabase, StockExchange stockExchange, IMapper mapper)
         {
             _PortfolioDatabase = portfolioDatabase;
             _StockExchange = stockExchange;
-
-            var config = new MapperConfiguration(cfg => 
-                cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
-            );
-            _Mapper = config.CreateMapper();
+            _Mapper = mapper;
         }
 
         public Task<ServiceResponce> AddTransaction(TransactionItem transactionItem)

@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "Port
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.ImportData", "PortfolioManager.ImportData\PortfolioManager.ImportData.csproj", "{020361D4-4C03-4D69-9013-2F57F66B1B3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Housekeeping", "PortfolioManager.Housekeeping\PortfolioManager.Housekeeping.csproj", "{6E2A8661-6943-4768-B47D-61852DA0EDF3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{246A1222-9C9E-4616-BD29-2755A7CD5D20}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Domain", "PortfolioManager.Domain\PortfolioManager.Domain.csproj", "{AC9C06DE-041D-4513-8F37-B2802EA402BF}"
@@ -28,9 +26,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore", "PortfolioManager.EventStore\PortfolioManager.EventStore.csproj", "{22E528EF-35A3-4328-95CA-9E95DCBB87D2}"
 EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -64,10 +59,6 @@ Global
 		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E2A8661-6943-4768-B47D-61852DA0EDF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -90,5 +81,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C00E4DC8-4E98-4679-A500-84D42418A541}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

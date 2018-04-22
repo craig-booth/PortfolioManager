@@ -24,7 +24,7 @@ namespace PortfolioManager.ImportData
 
         public async Task Import()
         {
-            var asxCodes = new List<string>();
+  /*          var asxCodes = new List<string>();
             IEnumerable<Stock> stocks;
             using (var unitOfWork = _Database.CreateReadOnlyUnitOfWork())
             {
@@ -79,7 +79,7 @@ namespace PortfolioManager.ImportData
                 }
 
                 unitOfWork.Save();
-            } 
+            } */
         }
 
 

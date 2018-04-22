@@ -14,7 +14,7 @@ namespace PortfolioManager.Domain.Stocks
     public class Stock : EffectiveEntity
     {
         public int Version { get; protected set; } = 0;
-        protected IEventStore _EventStore;
+        protected IEventStream _EventStream;
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
         
@@ -22,16 +22,16 @@ namespace PortfolioManager.Domain.Stocks
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
 
-        private readonly List<ICorporateAction> _CorporateActions = new List<ICorporateAction>();
-        public IEnumerable<ICorporateAction> CorporateActions
+        private readonly Dictionary<Guid, ICorporateAction> _CorporateActions = new Dictionary<Guid, ICorporateAction>();
+        public IReadOnlyDictionary<Guid, ICorporateAction> CorporateActions
         {
             get { return _CorporateActions; }
         }
 
-        public Stock(Guid id, DateTime listingDate, IEventStore eventStore)
+        public Stock(Guid id, DateTime listingDate, IEventStream eventStream)
             : base(id, listingDate)
         {
-            _EventStore = eventStore;
+            _EventStream = eventStream;
         }
 
         public override string ToString()
@@ -42,10 +42,10 @@ namespace PortfolioManager.Domain.Stocks
 
         public void List(string asxCode, string name, bool trust, AssetCategory category)
         {
-            var @event = new StockListedEvent(Id, asxCode, name, EffectivePeriod.FromDate, category, trust);
+            var @event = new StockListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, trust);
             Apply(@event);
 
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(StockListedEvent @event)
@@ -62,10 +62,10 @@ namespace PortfolioManager.Domain.Stocks
 
         public void DeList(DateTime date)
         {
-            var @event = new StockDelistedEvent(Id, date);
+            var @event = new StockDelistedEvent(Id, Version, date);
             Apply(@event);
 
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(StockDelistedEvent @event)
@@ -80,10 +80,10 @@ namespace PortfolioManager.Domain.Stocks
             if (! EffectivePeriod.Contains(date))
                 throw new Exception(String.Format("Stock not active on {0}", date));
 
-            var @event = new ClosingPriceAddedEvent(Id, date, closingPrice);
+            var @event = new ClosingPriceAddedEvent(Id, Version, date, closingPrice);
             Apply(@event);
 
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(ClosingPriceAddedEvent @event)
@@ -137,32 +137,34 @@ namespace PortfolioManager.Domain.Stocks
             return _Prices.Values[end - 1];
         } 
 
+        public DateTime DateOfLastestPrice()
+        {
+            var latestPrice = _Prices.LastOrDefault(x => x.Key != DateTime.Today);
+
+            if (latestPrice.Key != null)
+                return latestPrice.Key;
+            else
+                return DateUtils.NoDate;
+        }
+
         public void ChangeProperties(DateTime changeDate, string newAsxCode, string newName, AssetCategory newAssetCategory)
         {           
             var properties = Properties[changeDate];
 
-            var @event = new StockPropertiesChangedEvent(Id,
-                changeDate,
-                newAsxCode,
-                newName,
-                newAssetCategory);
+            var @event = new StockPropertiesChangedEvent(Id, Version, changeDate, newAsxCode, newName, newAssetCategory);
 
             Apply(@event);
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void ChangeDRPRules(DateTime changeDate, bool drpActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
         {
             var properties = Properties[changeDate];
 
-            var @event = new ChangeDividendReinvestmentPlanEvent(Id,
-                changeDate,
-                drpActive,
-                newDividendRoundingRule,
-                newDrpMethod);
+            var @event = new ChangeDividendReinvestmentPlanEvent(Id, Version, changeDate,  drpActive, newDividendRoundingRule, newDrpMethod);
 
             Apply(@event);
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(StockPropertiesChangedEvent @event)
@@ -191,15 +193,10 @@ namespace PortfolioManager.Domain.Stocks
 
         public void AddCapitalReturn(DateTime recordDate, string description, DateTime paymentDate, decimal amount)
         {
-             var @event = new CapitalReturnAddedEvent(Id,
-                Guid.NewGuid(),
-                recordDate,
-                description,
-                paymentDate,
-                amount);
+             var @event = new CapitalReturnAddedEvent(Id, Version, Guid.NewGuid(), recordDate, description, paymentDate, amount);
 
             Apply(@event);
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(CapitalReturnAddedEvent @event)
@@ -208,23 +205,15 @@ namespace PortfolioManager.Domain.Stocks
 
             var capitalReturn = new CapitalReturn(this, @event.ActionId, @event.ActionDate, @event.Description, @event.PaymentDate, @event.Amount);
 
-            _CorporateActions.Add(capitalReturn);
+            _CorporateActions.Add(capitalReturn.Id, capitalReturn);
         }
 
         public void AddDividend(DateTime recordDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
         {
-            var @event = new DividendAddedEvent(Id,
-               Guid.NewGuid(),
-               recordDate,
-               description,
-               paymentDate,
-               dividendAmount,
-               companyTaxRate,
-               percentFranked,
-               drpPrice);
+            var @event = new DividendAddedEvent(Id, Version, Guid.NewGuid(), recordDate, description, paymentDate, dividendAmount, companyTaxRate, percentFranked, drpPrice);
 
             Apply(@event);
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(DividendAddedEvent @event)
@@ -233,7 +222,7 @@ namespace PortfolioManager.Domain.Stocks
 
             var dividend = new Dividend(this, @event.ActionId, @event.ActionDate, @event.Description, @event.PaymentDate, @event.DividendAmount, @event.CompanyTaxRate, @event.PercentFranked, @event.DRPPrice);
 
-            _CorporateActions.Add(dividend);
+            _CorporateActions.Add(dividend.Id, dividend);
         }
     }
 

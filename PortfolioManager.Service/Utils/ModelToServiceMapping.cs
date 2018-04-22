@@ -10,7 +10,7 @@ using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Utils
 {
-    class ModelToServiceMapping : Profile
+    public class ModelToServiceMapping : Profile
     {
         public ModelToServiceMapping(StockExchange stockExchange)
         {

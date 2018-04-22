@@ -8,7 +8,7 @@ using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.CorporateActions
 {
-    class SplitConsolidationHandler : ICorporateActionHandler
+  /*  class SplitConsolidationHandler : ICorporateActionHandler
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly IStockQuery _StockQuery;
@@ -27,7 +27,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             var stock = _StockQuery.Get(splitConsolidation.Stock, splitConsolidation.ActionDate);
 
-            /* locate parcels that the capital return applies to */
+            // locate parcels that the capital return applies to 
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
             if (!parcels.Any())
                 return transactions;
@@ -54,6 +54,6 @@ namespace PortfolioManager.Service.CorporateActions
 
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.UnitCountAdjustment, splitConsolidation.ActionDate, splitConsolidation.ActionDate);
             return (transactions.Count() > 0);
-        }
-    }
+        } 
+    } */
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -19,14 +20,14 @@ namespace PortfolioManager.ImportData.DataServices
             _SerializerSettings.ContractResolver = new GoogleStockContractResolver();
         }
 
-        public async Task<StockPrice> GetSinglePrice(string asxCode)
+        public async Task<StockPrice> GetSinglePrice(string asxCode, CancellationToken cancellationToken)
         {
-            var quotes = await GetMultiplePrices(new string[] { asxCode });
+            var quotes = await GetMultiplePrices(new string[] { asxCode }, cancellationToken);
 
             return quotes.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes)
+        public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes, CancellationToken cancellationToken)
         {
             try
             {
@@ -40,7 +41,10 @@ namespace PortfolioManager.ImportData.DataServices
                     else
                         url += ",ASX:" + asxCode;
                 }
-                var response = await httpClient.GetAsync(url);
+                var response = await httpClient.GetAsync(url, cancellationToken);
+
+                if (cancellationToken.IsCancellationRequested)
+                    return new StockPrice[0];
 
                 var text = await response.Content.ReadAsStringAsync();
 

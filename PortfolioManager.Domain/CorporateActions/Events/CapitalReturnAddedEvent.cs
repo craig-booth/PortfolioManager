@@ -6,16 +6,18 @@ namespace PortfolioManager.Domain.CorporateActions.Events
 {
     public class CapitalReturnAddedEvent : IEvent
     {
-        public Guid Id { get; private set; }
-        public Guid ActionId { get; private set; }
-        public DateTime ActionDate { get; private set; }
-        public string Description { get; private set; }
-        public DateTime PaymentDate { get; private set; }
-        public decimal Amount { get; private set; }
+        public Guid Id { get; }
+        public int Version { get; }
+        public Guid ActionId { get;  }
+        public DateTime ActionDate { get; }
+        public string Description { get;  }
+        public DateTime PaymentDate { get; }
+        public decimal Amount { get; }
 
-        public CapitalReturnAddedEvent(Guid id, Guid actionId, DateTime actionDate, string description, DateTime paymentDate, decimal amount)
+        public CapitalReturnAddedEvent(Guid id, int version, Guid actionId, DateTime actionDate, string description, DateTime paymentDate, decimal amount)
         {
             Id = id;
+            Version = version;
             ActionId = actionId;
             ActionDate = actionDate;
             Description = description;

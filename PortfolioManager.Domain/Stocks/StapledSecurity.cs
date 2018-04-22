@@ -19,17 +19,17 @@ namespace PortfolioManager.Domain.Stocks
         public EffectiveProperties<RelativeNTA> RelativeNTAs { get; } = new EffectiveProperties<RelativeNTA>();
 
 
-        public StapledSecurity(Guid id, DateTime listingDate, IEventStore eventStore)
-            : base(id, listingDate, eventStore)
+        public StapledSecurity(Guid id, DateTime listingDate, IEventStream eventStream)
+            : base(id, listingDate, eventStream)
         {
         }
 
         public void List(string asxCode, string name, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
         {
-            var @event = new StapledSecurityListedEvent(Id, asxCode, name, EffectivePeriod.FromDate, category, childSecurities?.ToArray());
+            var @event = new StapledSecurityListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, childSecurities?.ToArray());
             Apply(@event);
 
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(StapledSecurityListedEvent @event)
@@ -64,10 +64,10 @@ namespace PortfolioManager.Domain.Stocks
             if (total != 1.00m)
                 throw new Exception(String.Format("Total percentage must add up to 1.00 but was {0}", total));
 
-            var @event = new RelativeNTAChangedEvent(Id, date, percentagesArray);
+            var @event = new RelativeNTAChangedEvent(Id, Version, date, percentagesArray);
             Apply(@event);
 
-            _EventStore.StoreEvent(StockRepository.StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(RelativeNTAChangedEvent @event)

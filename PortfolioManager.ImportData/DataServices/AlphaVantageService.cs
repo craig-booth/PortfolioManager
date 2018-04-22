@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Globalization;
@@ -16,7 +17,7 @@ namespace PortfolioManager.ImportData.DataServices
     {
         private const string _ApiKey = "KVFE5MLIMDUFO2TX";
 
-        public async  Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate)
+        public async  Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate, CancellationToken cancellationToken)
         {
             var result = new List<StockPrice>();
 
@@ -25,13 +26,16 @@ namespace PortfolioManager.ImportData.DataServices
                 var httpClient = new HttpClient();
 
                 string url = String.Format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={0}.AX&apikey={1}", asxCode, _ApiKey);
-                var response = await httpClient.GetAsync(url);
+                var response = await httpClient.GetAsync(url, cancellationToken);
 
-                var text = await response.Content.ReadAsStringAsync();
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    var text = await response.Content.ReadAsStringAsync();
 
-                var jsonObject = JObject.Parse(text);
+                    var jsonObject = JObject.Parse(text);
 
-                result.AddRange(ParseResponce(jsonObject).Where(x => x.Date.Between(fromDate, toDate)).OrderBy(x => x.Date));                    
+                    result.AddRange(ParseResponce(jsonObject).Where(x => x.Date.Between(fromDate, toDate)).OrderBy(x => x.Date));
+                }
             }
             catch
             {
@@ -41,25 +45,28 @@ namespace PortfolioManager.ImportData.DataServices
             return result;
         }
 
-        public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes)
+        public async Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes, CancellationToken cancellationToken)
         {
             var stockPrices = new List<StockPrice>();
 
-            var tasks = asxCodes.Select(x => GetSinglePrice(x)).ToArray();
+            var tasks = asxCodes.Select(x => GetSinglePrice(x, cancellationToken)).ToArray();
 
-            Task.WaitAll(tasks);
+            Task.WaitAll(tasks, cancellationToken);
 
             return tasks.Where(x => x.Result != null).Select(x => x.Result);
         }
 
-        public async Task<StockPrice> GetSinglePrice(string asxCode)
+        public async Task<StockPrice> GetSinglePrice(string asxCode, CancellationToken cancellationToken)
         {
             try
             {
                 var httpClient = new HttpClient();
 
                 string url = String.Format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={0}.AX&apikey={1}", asxCode, _ApiKey);
-                var response = await httpClient.GetAsync(url);
+                var response = await httpClient.GetAsync(url, cancellationToken);
+
+                if (cancellationToken.IsCancellationRequested)
+                    return null;
 
                 var text = await response.Content.ReadAsStringAsync();
 

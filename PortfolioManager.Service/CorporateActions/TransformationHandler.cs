@@ -8,7 +8,7 @@ using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.CorporateActions
 {
-    class TransformationHandler : ICorporateActionHandler  
+  /*  class TransformationHandler : ICorporateActionHandler  
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly IStockQuery _StockQuery;
@@ -25,7 +25,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             var transactions = new List<Transaction>();
 
-            /* locate parcels that the transformation applies to */
+            // locate parcels that the transformation applies to 
             var transfomationStock = _StockQuery.Get(transformation.Stock, transformation.ActionDate);
             var ownedParcels = _PortfolioQuery.GetParcelsForStock(transfomationStock.Id, transformation.ActionDate, transformation.ActionDate);
             if (!ownedParcels.Any())
@@ -37,7 +37,7 @@ namespace PortfolioManager.Service.CorporateActions
             {
                 foreach (var parcel in ownedParcels)
                 {
-                    /* create parcels for resulting stock */
+                    // create parcels for resulting stock 
                     foreach (ResultingStock resultingStock in transformation.ResultingStocks)
                     {
                         int units = (int)Math.Ceiling(parcel.Units * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
@@ -58,7 +58,7 @@ namespace PortfolioManager.Service.CorporateActions
                     }
                 }
 
-                /* Reduce the costbase of the original parcels */
+                // Reduce the costbase of the original parcels 
                 if (transformation.ResultingStocks.Any())
                 {
                     decimal originalCostBasePercentage = 1 - transformation.ResultingStocks.Sum(x => x.CostBase);
@@ -79,7 +79,7 @@ namespace PortfolioManager.Service.CorporateActions
                 int totalUnits = ownedParcels.Sum(x => x.Units);
                 decimal capitalReturn = 0.00m;
 
-                /* create parcels for resulting stock */
+                // create parcels for resulting stock 
                 foreach (ResultingStock resultingStock in transformation.ResultingStocks)
                 {
                     int units = (int)Math.Ceiling(totalUnits * ((decimal)resultingStock.NewUnits / (decimal)resultingStock.OriginalUnits));
@@ -100,7 +100,7 @@ namespace PortfolioManager.Service.CorporateActions
                     });
                 }
 
-                /* Reduce the costbase of the original parcels */
+                // Reduce the costbase of the original parcels 
                 if (capitalReturn != 0.00m)
                 {
                     var stock = _StockQuery.Get(transformation.Stock, transformation.ImplementationDate);
@@ -118,7 +118,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             }
 
-            /* Handle disposal of original parcels */
+            // Handle disposal of original parcels 
             if (transformation.CashComponent > 0)
             {
                 var stock = _StockQuery.Get(transformation.Stock, transformation.ImplementationDate);
@@ -161,7 +161,7 @@ namespace PortfolioManager.Service.CorporateActions
             return (transactions.Count() > 0);
         }
 
-    }
+    } */
 
 
 }

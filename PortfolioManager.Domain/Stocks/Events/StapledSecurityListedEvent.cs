@@ -9,15 +9,17 @@ namespace PortfolioManager.Domain.Stocks.Events
     public class StapledSecurityListedEvent : IEvent
     {
         public Guid Id { get; }
-        public readonly string ASXCode;
-        public readonly string Name;
-        public readonly DateTime ListingDate;
-        public readonly AssetCategory Category;
-        public readonly StapledSecurityChild[] ChildSecurities;
+        public int Version { get; }
+        public string ASXCode { get; }
+        public string Name { get; }
+        public DateTime ListingDate { get; }
+        public AssetCategory Category { get; }
+        public StapledSecurityChild[] ChildSecurities { get; }
 
-        public StapledSecurityListedEvent(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, StapledSecurityChild[] childSecurities)
+        public StapledSecurityListedEvent(Guid id, int version, string asxCode, string name, DateTime listingDate, AssetCategory category, StapledSecurityChild[] childSecurities)
         {
             Id = id;
+            Version = version;
             ASXCode = asxCode;
             Name = name;
             ListingDate = listingDate;

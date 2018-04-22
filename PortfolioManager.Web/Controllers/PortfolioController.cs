@@ -136,14 +136,14 @@ namespace PortfolioManager.Web.Controllers
             return await service.GetUnappliedCorporateActions(); 
         }
 
-        // GET: /api/portfolio/corporateactions/transactions?id
+        // GET: /api/portfolio/corporateactions/transactions?stock&id
         [Route("corporateactions/transactions")]
         [HttpGet]
-        public async Task<TransactionsForCorparateActionsResponce> GetCorporateActionTransactions(Guid id)
+        public async Task<TransactionsForCorparateActionsResponce> GetCorporateActionTransactions(Guid stock, Guid id)
         {
             var service = _ServiceProvider.GetRequiredService<ICorporateActionService>();
 
-            return await service.TransactionsForCorporateAction(id); 
+            return await service.TransactionsForCorporateAction(stock, id); 
         }
 
         // GET: /api/portfolio/holding?stock&date

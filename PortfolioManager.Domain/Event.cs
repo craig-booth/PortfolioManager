@@ -7,6 +7,7 @@ namespace PortfolioManager.Domain
     public interface IEvent
     {
         Guid Id { get; }
+        int Version { get; }
     }
 
 }

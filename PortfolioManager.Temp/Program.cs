@@ -16,36 +16,42 @@ namespace PortfolioManager.Temp
     {
         static void Main(string[] args)
         {
+            ConvertToEventSourcedModel();
+            Test();
+        }
+
+        private static void ConvertToEventSourcedModel()
+        {
+            var eventStore = new MemoryEventStore();
+            var stockExchange = new StockExchange(eventStore);
+
+            Load(stockExchange);
+            LoadCorporateActions(stockExchange);
+
+            // Copy event to sqlite database 
+            var sqliteEventStore = new SqliteEventStore(@"C:\PortfolioManager\Events.db");
+            CopyEventStream(eventStore, sqliteEventStore, TradingCalander.StreamId);
+            CopyEventStream(eventStore, sqliteEventStore, StockRepository.StreamId);
+        }
+
+        private static void CopyEventStream(IEventStore sourceStore, IEventStore destinationStore, Guid streamId)
+        {
+            var sourceStream = sourceStore.GetEventStream(streamId);
+            var destinationStream = destinationStore.GetEventStream(streamId);
+
+            destinationStream.StoreEvents(sourceStream.RetrieveEvents());
+        }
+
+        private static void Test()
+        {
             var eventStore = new SqliteEventStore(@"C:\PortfolioManager\Events.db");
             var stockExchange = new StockExchange(eventStore);
 
-            stockExchange.Load();
+            stockExchange.LoadFromEventStream();
 
-            //  Load(stockExchange, eventStore);
-            //  LoadCorporateActions(stockExchange, eventStore);
-
-            //  var stocks = stockExchange.Stocks.All(DateTime.Today).OrderBy(x => x.Properties[DateTime.Today].ASXCode);
-            //  WritePrices(stocks);
-            //   Console.ReadKey();
-
-            TestCorporateActionPerformance(stockExchange);
-        }
-
-        private static async void TestCorporateActionPerformance(StockExchange stockExchange)
-        {
-            var fromDate = new DateTime(2016, 07, 01);
-            var toDate = new DateTime(2017, 06, 30);
-
-            for (var i = 0; i < 100; i++)
-            {
-                var service = new StockService(stockExchange);
-
-                var stocks = stockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate)));
-                foreach (var stock in stocks)
-                {
-                    var responce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
-                }
-            }
+            var stocks = stockExchange.Stocks.All(DateTime.Today).OrderBy(x => x.Properties[DateTime.Today].ASXCode);
+            WritePrices(stocks);
+            Console.ReadKey();
         }
 
         private static void WritePrices(IEnumerable<Stock> stocks)
@@ -67,7 +73,7 @@ namespace PortfolioManager.Temp
             }
         }
 
-        private static void LoadCorporateActions(StockExchange stockExchange, IEventStore eventStore)
+        private static void LoadCorporateActions(StockExchange stockExchange)
         {
             var stockDataBase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
 
@@ -105,7 +111,7 @@ namespace PortfolioManager.Temp
             } 
         }
 
-        private static void Load(StockExchange stockExchange, IEventStore eventStore)
+        private static void Load(StockExchange stockExchange)
         {
             var stockDataBase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
 

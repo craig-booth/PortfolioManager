@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using PortfolioManager.Common;
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.ImportData
@@ -12,11 +13,11 @@ namespace PortfolioManager.ImportData
     public class HistoricalPriceImporter
     {
         private IHistoricalStockPriceService _DataService;
-        private readonly IStockDatabase _Database;
+        private readonly StockExchange _StockExchange;
 
-        public HistoricalPriceImporter(IStockDatabase database, IHistoricalStockPriceService dataService)
+        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService)
         {
-            _Database = database;
+            _StockExchange = stockExchange;
             _DataService = dataService;
         }
 
@@ -27,52 +28,28 @@ namespace PortfolioManager.ImportData
             public DateTime ToDate;
         }
 
-        public async Task Import()
+        public async Task Import(CancellationToken cancellationToken)
         {
-            var stocksToImport = new List<StockToImport>();
+            var lastExpectedDate = DateTime.Today.AddDays(-1);
+            while (! _StockExchange.TradingCalander.IsTradingDay(lastExpectedDate))
+                lastExpectedDate = lastExpectedDate.AddDays(-1);
 
-            using (var unitOfWork = _Database.CreateReadOnlyUnitOfWork())
+            foreach (var stock in _StockExchange.Stocks.All())
             {
-                var lastExpectedDate = DateTime.Today.AddDays(-1);
-                while (!unitOfWork.StockQuery.TradingDay(lastExpectedDate))
-                    lastExpectedDate = lastExpectedDate.AddDays(-1);
+                if (cancellationToken.IsCancellationRequested)
+                    return;
 
-                var stocks = unitOfWork.StockQuery.GetAll();
+                var latestDate = stock.DateOfLastestPrice(); 
 
-                foreach (var stock in stocks)
-                {
-                    if (stock.ParentId == Guid.Empty)
-                    {
-                        var latestDate = unitOfWork.StockQuery.GetLatestClosingPrice(stock.Id);
+                if (latestDate < lastExpectedDate)
+                {                 
+                    var fromDate = latestDate.AddDays(1);
+                    var toDate = lastExpectedDate;
+                    var asxCode = stock.Properties.ClosestTo(toDate).ASXCode;
 
-                        if (latestDate < lastExpectedDate)
-                        {
-                            stocksToImport.Add(new StockToImport()
-                            {
-                                Stock = stock,
-                                FromDate = latestDate.AddDays(1),
-                                ToDate = lastExpectedDate
-                            });
-                        }
-                    }
-                }
-            }
-
-
-            foreach (var stock in stocksToImport)
-            {
-                var data = await _DataService.GetHistoricalPriceData(stock.Stock.ASXCode, stock.FromDate, stock.ToDate);
-                using (var unitOfWork = _Database.CreateUnitOfWork())
-                {
+                    var data = await _DataService.GetHistoricalPriceData(asxCode, fromDate, toDate, cancellationToken);
                     foreach (var stockPrice in data)
-                    {
-                        if (unitOfWork.StockPriceRepository.Exists(stock.Stock.Id, stockPrice.Date))
-                            unitOfWork.StockPriceRepository.Update(stock.Stock.Id, stockPrice.Date, stockPrice.Price, false);
-                        else
-                            unitOfWork.StockPriceRepository.Add(stock.Stock.Id, stockPrice.Date, stockPrice.Price, false);
-                    }
-
-                    unitOfWork.Save();
+                        stock.UpdateClosingPrice(stockPrice.Date, stockPrice.Price);
                 }
             }
         }

@@ -21,7 +21,7 @@ namespace PortfolioManager.ImportData
 
         public async Task Import()
         {
-            var nonTradingDays = await _DataService.NonTradingDays(DateTime.Today.Year);
+   /*         var nonTradingDays = await _DataService.NonTradingDays(DateTime.Today.Year);
 
             using (var unitOfWork = _Database.CreateUnitOfWork())
             {
@@ -31,7 +31,7 @@ namespace PortfolioManager.ImportData
                 }
 
                 unitOfWork.Save();
-            }
+            } */
         }
     }
 }

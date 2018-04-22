@@ -18,19 +18,23 @@ namespace PortfolioManager.Domain.Stocks
     {
         public static readonly Guid StreamId = new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
         public int Version { get; private set; } = 0;
-        private IEventStore _EventStore;
+        private IEventStream _EventStream;
 
         private List<DateTime> _NonTradingDays = new List<DateTime>();
 
-        public TradingCalander(IEventStore eventStore)
+        public TradingCalander(IEventStream eventStream)
         {
-            _EventStore = eventStore;
+            _EventStream = eventStream;
         }
 
-        public void Apply(IEvent @event)
+        public void LoadFromEventStream()
         {
-            dynamic dynamicEvent = @event;
-            Apply(dynamicEvent);
+            var events = _EventStream.RetrieveEvents();
+            foreach (var @event in events)
+            {
+                dynamic dynamicEvent = @event;
+                Apply(dynamicEvent);
+            }
         }
 
         public void AddNonTradingDay(DateTime date)
@@ -39,10 +43,10 @@ namespace PortfolioManager.Domain.Stocks
             if (!IsTradingDay(date))
                 throw new Exception("Date is already a non trading day");
 
-            var @event = new NonTradingDayAddedEvent(date);
+            var @event = new NonTradingDayAddedEvent(StreamId, Version, date);
             Apply(@event);
 
-            _EventStore.StoreEvent(StreamId, @event, Version);
+            _EventStream.StoreEvent(@event);
         }
 
         public void Apply(NonTradingDayAddedEvent @event)

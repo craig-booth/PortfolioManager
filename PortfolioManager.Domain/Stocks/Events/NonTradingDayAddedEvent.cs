@@ -7,11 +7,13 @@ namespace PortfolioManager.Domain.Stocks.Events
     public class NonTradingDayAddedEvent : IEvent
     {
         public Guid Id { get; }
+        public int Version { get; }
         public DateTime Date { get; }
 
-        public NonTradingDayAddedEvent(DateTime date)
+        public NonTradingDayAddedEvent(Guid id, int version, DateTime date)
         {
-            Id = Guid.Empty;
+            Id = id;
+            Version = version;
             Date = date;
         }
     }

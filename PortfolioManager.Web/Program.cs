@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,14 +17,12 @@ namespace PortfolioManager.Web
     {
         public static void Main(string[] args)
         {
-           // ScheduleImports();
+            // ScheduleImports();
 
             var host = new WebHostBuilder()
-                .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
+                .UseKestrel() //opts => opts.Listen(IPAddress.Any, 5001))
                 .Build();
 
             host.Run();          

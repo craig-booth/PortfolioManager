@@ -9,15 +9,17 @@ namespace PortfolioManager.Domain.Stocks.Events
     public class StockListedEvent : IEvent
     {
         public Guid Id { get; }
-        public readonly string ASXCode;
-        public readonly string Name;
-        public readonly DateTime ListingDate;
-        public readonly AssetCategory Category;
-        public readonly bool Trust;
+        public int Version { get; }
+        public string ASXCode { get; }
+        public string Name { get; }
+        public DateTime ListingDate { get; }
+        public AssetCategory Category { get; }
+        public bool Trust { get; }
 
-        public StockListedEvent(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, bool trust)
+        public StockListedEvent(Guid id, int version, string asxCode, string name, DateTime listingDate, AssetCategory category, bool trust)
         {
             Id = id;
+            Version = version;
             ASXCode = asxCode;
             Name = name;
             ListingDate = listingDate;

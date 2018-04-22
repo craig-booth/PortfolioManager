@@ -3,10 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using PortfolioManager.Common;
-using PortfolioManager.Data.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Service.Utils;
@@ -16,16 +13,10 @@ namespace PortfolioManager.Service.Services
     public class StockService : IStockService
     {
         private readonly StockExchange _StockExchange;
-        private readonly IMapper _Mapper;
 
         public StockService(StockExchange stockExchange)
         {
             _StockExchange = stockExchange;
-
-            var config = new MapperConfiguration(cfg =>
-                    cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
-            );
-            _Mapper = config.CreateMapper();
         }
 
         public Task<GetStockResponce> GetStocks(DateTime date, bool includeStapledSecurities, bool includeChildStocks)
@@ -42,9 +33,9 @@ namespace PortfolioManager.Service.Services
             var responce = new CorporateActionsResponce();
 
             var stock = _StockExchange.Stocks.Get(stockId);
-            var corporateActions = stock.CorporateActions.Where(x => x.ActionDate.Between(fromDate, toDate));
+            var corporateActions = stock.CorporateActions.Values.Where(x => x.ActionDate.Between(fromDate, toDate)).Select(x => x.ToCorporateActionItem());
         
-            responce.CorporateActions.AddRange(_Mapper.Map<IEnumerable<CorporateActionItem>>(corporateActions));
+            responce.CorporateActions.AddRange(corporateActions);
 
             return Task.FromResult<CorporateActionsResponce>(responce);
         }

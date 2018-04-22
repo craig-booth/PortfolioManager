@@ -10,37 +10,19 @@ namespace PortfolioManager.Domain.Stocks
 
     public class StockExchange
     {
-        public static readonly Guid StreamId = new Guid("0C295D02-FCB3-4FBA-8134-8C53E4446972");
-
-
-        private IEventStore _EventStore;
-
         public TradingCalander TradingCalander { get; private set; }
         public StockRepository Stocks { get; private set; }
 
         public StockExchange(IEventStore eventStore)
         {
-            _EventStore = eventStore;
-            TradingCalander = new TradingCalander(_EventStore);
-            Stocks = new StockRepository(_EventStore);
+            TradingCalander = new TradingCalander(eventStore.GetEventStream(TradingCalander.StreamId));
+            Stocks = new StockRepository(eventStore.GetEventStream(StockRepository.StreamId));
         }
 
-        public void Load()
+        public void LoadFromEventStream()
         {
-            var events = _EventStore.RetrieveEvents();
-            foreach (var @event in events)
-            {
-                var streamId = @event.Item1;
-
-                if (streamId == TradingCalander.StreamId)
-                {
-                    TradingCalander.Apply(@event.Item2);
-                }
-                else if (streamId == StockRepository.StreamId)
-                {
-                    Stocks.Apply(@event.Item2);
-                }
-            }
+            TradingCalander.LoadFromEventStream();
+            Stocks.LoadFromEventStream();
         }
     }
 }

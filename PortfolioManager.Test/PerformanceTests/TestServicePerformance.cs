@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+using AutoMapper;
 using NUnit.Framework;
 using NBench;
 
@@ -19,6 +20,7 @@ using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
+using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Test.PerformanceTests
 {
@@ -27,6 +29,7 @@ namespace PortfolioManager.Test.PerformanceTests
         private IPortfolioDatabase _PortfolioDatabase;
         private IStockDatabase _StockDatabase;
         private StockExchange _StockExchange;
+        private IMapper _Mapper;
 
         private string _TestPath;
 
@@ -47,7 +50,7 @@ namespace PortfolioManager.Test.PerformanceTests
 
             var eventStore = new SqliteEventStore(Path.Combine(_TestPath, "Events.db"));
             _StockExchange = new StockExchange(eventStore);
-            _StockExchange.Load();
+            _StockExchange.LoadFromEventStream();
 
             var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
             File.Delete(portfolioDatabaseFile);
@@ -56,6 +59,11 @@ namespace PortfolioManager.Test.PerformanceTests
             var stockDatabaseFile = Path.Combine(_TestPath, "Stocks.db");
             _StockDatabase = new SQLiteStockDatabase(stockDatabaseFile);
 
+            var config = new MapperConfiguration(cfg =>
+                cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
+            );
+            _Mapper = config.CreateMapper();
+
             await LoadTransactions();
 
             _Counter = context.GetCounter("TestCounter");
@@ -63,7 +71,7 @@ namespace PortfolioManager.Test.PerformanceTests
 
         public async Task LoadTransactions()
         {
-            var service = new TransactionService(_PortfolioDatabase, _StockExchange);
+            var service = new TransactionService(_PortfolioDatabase, _StockExchange, _Mapper);
 
             await service.ImportTransactions(Path.Combine(_TestPath, "Transactions.xml"));
         }
@@ -182,7 +190,7 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestTransactionsServicePerformance()
         {
-            var service = new TransactionService(_PortfolioDatabase, _StockExchange);
+            var service = new TransactionService(_PortfolioDatabase, _StockExchange, _Mapper);
             var responce = await service.GetTransactions(_FromDate, _ToDate);
 
             _Counter.Increment();
@@ -225,7 +233,7 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
         public async void TestUnappliedCorporateActionsServicePerformance()
         {
-            var service = new CorporateActionService(_PortfolioDatabase, _StockDatabase, _StockExchange);
+            var service = new CorporateActionService(_PortfolioDatabase, _StockExchange, _Mapper);
             var responce = await service.GetUnappliedCorporateActions();
 
             _Counter.Increment();

@@ -2,29 +2,27 @@
 using System.Linq;
 
 using PortfolioManager.Common;
-using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Domain.CorporateActions;
 
 namespace PortfolioManager.Service.CorporateActions
 {
     class CapitalReturnHandler : ICorporateActionHandler 
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly IStockQuery _StockQuery;
 
-        public CapitalReturnHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public CapitalReturnHandler(IPortfolioQuery portfolioQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
         }
 
-        public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
         {
             var capitalReturn = corporateAction as CapitalReturn;
 
             var transactions = new List<Transaction>();
 
-            var stock = _StockQuery.Get(capitalReturn.Stock, capitalReturn.ActionDate);
+            var stock = capitalReturn.Stock;
 
             /* locate parcels that the capital return applies to */
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, capitalReturn.ActionDate, capitalReturn.ActionDate);
@@ -33,7 +31,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             transactions.Add(new ReturnOfCapital()
                 {
-                    ASXCode = stock.ASXCode,
+                    ASXCode = stock.Properties[capitalReturn.ActionDate].ASXCode,
                     TransactionDate = capitalReturn.PaymentDate,
                     RecordDate = capitalReturn.ActionDate,
                     Amount = capitalReturn.Amount,
@@ -45,11 +43,11 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions.AsReadOnly();
         }
 
-        public bool HasBeenApplied(CorporateAction corporateAction)
+        public bool HasBeenApplied(ICorporateAction corporateAction)
         {
             CapitalReturn capitalReturn = corporateAction as CapitalReturn;
 
-            string asxCode = _StockQuery.Get(capitalReturn.Stock, capitalReturn.PaymentDate).ASXCode;
+            var asxCode = capitalReturn.Stock.Properties[capitalReturn.ActionDate].ASXCode;
 
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, capitalReturn.PaymentDate, capitalReturn.PaymentDate);
             return (transactions.Count() > 0);
