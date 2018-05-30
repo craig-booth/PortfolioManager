@@ -97,7 +97,7 @@ namespace PortfolioManager.UI.ViewModels
             OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
 #if DEBUG 
-            _RestWebClient = new RestWebClient("http://localhost:54952", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+            _RestWebClient = new RestWebClient("http://192.168.99.100:8080", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
 #else
             _RestWebClient = new RestWebClient("https://portfolio.boothfamily.id.au", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
 #endif

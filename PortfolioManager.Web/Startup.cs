@@ -42,8 +42,9 @@ namespace PortfolioManager.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+#if !DEBUG
             app.UseApiKeyAuthentication(Configuration.GetSection("Settings").GetValue<Guid>("ApiKey"));
+#endif
             app.UseMvc();
         }
     }
