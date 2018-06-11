@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Temp", "Po
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore", "PortfolioManager.EventStore\PortfolioManager.EventStore.csproj", "{22E528EF-35A3-4328-95CA-9E95DCBB87D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTest", "LoadTest\LoadTest.csproj", "{68438BB9-FB49-46BA-80D0-C58338618DC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{22E528EF-35A3-4328-95CA-9E95DCBB87D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22E528EF-35A3-4328-95CA-9E95DCBB87D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22E528EF-35A3-4328-95CA-9E95DCBB87D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68438BB9-FB49-46BA-80D0-C58338618DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68438BB9-FB49-46BA-80D0-C58338618DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68438BB9-FB49-46BA-80D0-C58338618DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68438BB9-FB49-46BA-80D0-C58338618DC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
