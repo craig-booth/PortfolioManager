@@ -1,87 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
 using PortfolioManager.Common;
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.ImportData
 {
     public class LivePriceImporter
     {
-
         private ILiveStockPriceService _DataService;
-        private readonly IStockDatabase _Database;
+        private readonly StockExchange _StockExchange;
 
-        public LivePriceImporter(IStockDatabase database, ILiveStockPriceService dataService)
+        public LivePriceImporter(StockExchange stockExchange, ILiveStockPriceService dataService)
         {
-            _Database = database;
+            _StockExchange = stockExchange;
             _DataService = dataService;
         }
 
-        public async Task Import()
+        public async Task Import(CancellationToken cancellationToken)
         {
-  /*          var asxCodes = new List<string>();
-            IEnumerable<Stock> stocks;
-            using (var unitOfWork = _Database.CreateReadOnlyUnitOfWork())
-            {
-                stocks = unitOfWork.StockQuery.GetAll(DateTime.Today);
-      
-                foreach (var stock in stocks)
-                {
-                    if (stock.ParentId == Guid.Empty)
-                        asxCodes.Add(stock.ASXCode);
-                }
-            }
+            var asxCodes = _StockExchange.Stocks.All(DateTime.Today).Select(x => x.Properties[DateTime.Today].ASXCode);
                 
-            var stockQuotes = await _DataService.GetMultiplePrices(asxCodes);
+            var stockQuotes = await _DataService.GetMultiplePrices(asxCodes, cancellationToken);
 
-            using (var unitOfWork = _Database.CreateUnitOfWork())
+            foreach (var stockQuote in stockQuotes)
             {
-                foreach (var stockQuote in stockQuotes)
+                if (stockQuote.Date == DateTime.Today)
                 {
-                    if (stockQuote.Date == DateTime.Today)
-                    {
-                        var stock = stocks.FirstOrDefault(x => x.ASXCode == stockQuote.ASXCode);
-                        if (stock != null)
-                        {
-                            if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
-                            {
-                                unitOfWork.StockPriceRepository.Update(stock.Id, DateTime.Today, stockQuote.Price, true);
-                            }
-                            else
-                            {
-                                unitOfWork.StockPriceRepository.Add(stock.Id, DateTime.Today, stockQuote.Price, true);
-                            }
-
-                            if (stock.Type == StockType.StapledSecurity)
-                            {
-                                var childStocks = stocks.Where(x => x.ParentId == stock.Id);
-                                foreach (var childStock in childStocks)
-                                {
-                                    var percentOfPrice = unitOfWork.StockQuery.PercentOfParentCost(stock.Id, childStock.Id, DateTime.Today);
-
-                                    if (unitOfWork.StockPriceRepository.Exists(stock.Id, DateTime.Today))
-                                    {
-                                        unitOfWork.StockPriceRepository.Update(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
-                                    }
-                                    else
-                                    {
-                                        unitOfWork.StockPriceRepository.Add(childStock.Id, DateTime.Today, stockQuote.Price * percentOfPrice, true);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    var stock = _StockExchange.Stocks.Get(stockQuote.ASXCode, stockQuote.Date);
+                    if (stock != null)
+                        stock.UpdateCurrentPrice(stockQuote.Price);
                 }
-
-                unitOfWork.Save();
-            } */
+            }      
         }
-
-
     }
 }

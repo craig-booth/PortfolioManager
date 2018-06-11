@@ -53,7 +53,7 @@ namespace PortfolioManager.Web
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
 
-          //  services.AddSingleton<IHostedService>(new DataImportBackgroundService(stockExchange, new TimeSpan(23, 0, 0)));
+            services.AddSingleton<IHostedService>(new DataImportBackgroundService(stockExchange));
         }
     }
 

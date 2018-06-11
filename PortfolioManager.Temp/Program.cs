@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
+using PortfolioManager.Common.Scheduler;
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
@@ -16,8 +18,39 @@ namespace PortfolioManager.Temp
     {
         static void Main(string[] args)
         {
-            ConvertToEventSourcedModel();
-            Test();
+            //   ConvertToEventSourcedModel();
+            //   Test();
+            TestScheduler();
+        }
+
+        private static void TestScheduler()
+        {
+            var scheduler = new Scheduler();
+
+            var t = scheduler.Run();
+
+            scheduler.Add(Job1, Schedule.Daily().Every(1, TimeUnit.Minutes), DateTime.Now);
+            scheduler.Add(Job2, Schedule.Daily().Every(2, TimeUnit.Minutes), DateTime.Now);
+            scheduler.Add(Job5, Schedule.Daily().Every(5, TimeUnit.Minutes), DateTime.Now);
+            
+            t.Wait();
+        }
+
+        private static void Job1()
+        {
+            Console.WriteLine("Job 1: " + DateTime.Now.ToShortTimeString());
+        }
+
+        private static async void Job2()
+        {
+            Console.WriteLine("Job 2 start: " + DateTime.Now.ToShortTimeString());
+            await Task.Delay(90000);
+            Console.WriteLine("Job 2 end: " + DateTime.Now.ToShortTimeString());
+        }
+
+        private static void Job5()
+        {
+            Console.WriteLine("Job 5: " + DateTime.Now.ToShortTimeString());
         }
 
         private static void ConvertToEventSourcedModel()

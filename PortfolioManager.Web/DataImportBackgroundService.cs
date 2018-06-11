@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
+using PortfolioManager.Common.Scheduler;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.ImportData;
 using PortfolioManager.ImportData.DataServices;
@@ -13,33 +14,46 @@ namespace PortfolioManager.Web
 {
     public class DataImportBackgroundService : BackgroundService
     {
+        private Scheduler _Scheduler;
 
         private readonly HistoricalPriceImporter _HistoricalPriceImporter;
-        private readonly TimeSpan _RunTime;
-        public DataImportBackgroundService(StockExchange stockExchange, TimeSpan runTime)
+        private readonly LivePriceImporter _LivePriceImporter;
+        private readonly TradingDayImporter _TradingDayImporter;
+
+        public DataImportBackgroundService(StockExchange stockExchange)
         {
             var dataService = new ASXDataService();
-
             _HistoricalPriceImporter = new HistoricalPriceImporter(stockExchange, dataService);
+            _LivePriceImporter = new LivePriceImporter(stockExchange, dataService);
+            _TradingDayImporter = new TradingDayImporter(stockExchange.TradingCalander, dataService);
 
-            _RunTime = runTime;
+            _Scheduler = new Scheduler();
+            _Scheduler.Add(ImportHistoricalPrices, Schedule.Daily().At(22, 00));
+            _Scheduler.Add(ImportLivePrices, Schedule.Daily().Every(15, TimeUnit.Minutes).From(9, 30).To(17, 00));
+            _Scheduler.Add(ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await _HistoricalPriceImporter.Import(stoppingToken);
+            await _Scheduler.Run(stoppingToken);
+        }
 
-                var nextRun = DateTime.Today.Add(_RunTime);
-                if (nextRun <= DateTime.Now)
-                    nextRun.AddDays(1);
+        private void ImportHistoricalPrices()
+        {
+            var importTask = _HistoricalPriceImporter.Import(CancellationToken.None);
+            importTask.Wait();
+        }
 
-                var delay = nextRun.Subtract(DateTime.Now);
+        private void ImportLivePrices()
+        {
+            var importTask = _LivePriceImporter.Import(CancellationToken.None);
+            importTask.Wait();
+        }
 
-                await Task.Delay(delay, stoppingToken);
-             }
-
+        private void ImportTradingDays()
+        {
+            var importTask = _TradingDayImporter.Import(CancellationToken.None);
+            importTask.Wait();
         }
     }
 }

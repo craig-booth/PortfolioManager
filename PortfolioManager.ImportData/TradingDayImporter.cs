@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.ImportData
@@ -11,27 +12,24 @@ namespace PortfolioManager.ImportData
     public class TradingDayImporter
     {
         private readonly ITradingDayService _DataService;
-        private readonly IStockDatabase _Database;
+        private readonly TradingCalander _TradingCalendar;
 
-        public TradingDayImporter(IStockDatabase database, ITradingDayService dataService)
+        public TradingDayImporter(TradingCalander tradingCalander, ITradingDayService dataService)
         {
-            _Database = database;
+            _TradingCalendar = tradingCalander;
             _DataService = dataService;
         }
 
-        public async Task Import()
+        public async Task Import(CancellationToken cancellationToken)
         {
-   /*         var nonTradingDays = await _DataService.NonTradingDays(DateTime.Today.Year);
+            var nonTradingDays = await _DataService.NonTradingDays(DateTime.Today.Year, cancellationToken);
 
-            using (var unitOfWork = _Database.CreateUnitOfWork())
+            foreach (var nonTradingDay in nonTradingDays)
             {
-                foreach (var nonTradingDay in nonTradingDays)
-                {
-                    unitOfWork.NonTradingDayRepository.Add(nonTradingDay);
-                }
-
-                unitOfWork.Save();
-            } */
+                if (!_TradingCalendar.IsTradingDay(nonTradingDay))
+                    _TradingCalendar.AddNonTradingDay(nonTradingDay);
+            }
+            
         }
     }
 }
