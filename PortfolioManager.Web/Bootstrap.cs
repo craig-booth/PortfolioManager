@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using AutoMapper;
 
 using PortfolioManager.Data.Portfolios;
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.ImportData.DataServices;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
@@ -53,7 +53,11 @@ namespace PortfolioManager.Web
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
 
-            services.AddSingleton<IHostedService>(new DataImportBackgroundService(stockExchange));
+            services.AddScoped<IHistoricalStockPriceService, ASXDataService>();
+            services.AddScoped<ILiveStockPriceService, ASXDataService>();
+            services.AddScoped<ITradingDayService, ASXDataService>();
+
+            services.AddSingleton<IHostedService, DataImportBackgroundService>();
         }
     }
 

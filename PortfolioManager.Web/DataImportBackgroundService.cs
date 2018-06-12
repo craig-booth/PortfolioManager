@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Common.Scheduler;
 using PortfolioManager.Domain.Stocks;
@@ -16,16 +17,18 @@ namespace PortfolioManager.Web
     {
         private Scheduler _Scheduler;
 
+        private readonly ILogger _Logger;
         private readonly HistoricalPriceImporter _HistoricalPriceImporter;
         private readonly LivePriceImporter _LivePriceImporter;
         private readonly TradingDayImporter _TradingDayImporter;
 
-        public DataImportBackgroundService(StockExchange stockExchange)
+        public DataImportBackgroundService(StockExchange stockExchange, IHistoricalStockPriceService historicalStockPriceService, ILiveStockPriceService liveStockPriceService, ITradingDayService tradingDayService,  ILogger<DataImportBackgroundService> logger)
         {
-            var dataService = new ASXDataService();
-            _HistoricalPriceImporter = new HistoricalPriceImporter(stockExchange, dataService);
-            _LivePriceImporter = new LivePriceImporter(stockExchange, dataService);
-            _TradingDayImporter = new TradingDayImporter(stockExchange.TradingCalander, dataService);
+            _Logger = logger;
+
+            _HistoricalPriceImporter = new HistoricalPriceImporter(stockExchange, historicalStockPriceService);
+            _LivePriceImporter = new LivePriceImporter(stockExchange, liveStockPriceService);
+            _TradingDayImporter = new TradingDayImporter(stockExchange.TradingCalander, tradingDayService);
 
             _Scheduler = new Scheduler();
             _Scheduler.Add(ImportHistoricalPrices, Schedule.Daily().At(22, 00));
@@ -40,20 +43,50 @@ namespace PortfolioManager.Web
 
         private void ImportHistoricalPrices()
         {
-            var importTask = _HistoricalPriceImporter.Import(CancellationToken.None);
-            importTask.Wait();
+            _Logger.LogInformation("{0} Importing historical prices", DateTime.Now);
+            try
+            {
+                var importTask = _HistoricalPriceImporter.Import(CancellationToken.None);
+                importTask.Wait();
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(e, "Error occurred importing historical prices");
+                return;
+            }
+            _Logger.LogInformation("Import of historical prices complete");
         }
 
         private void ImportLivePrices()
         {
-            var importTask = _LivePriceImporter.Import(CancellationToken.None);
-            importTask.Wait();
+            _Logger.LogInformation("{0} Importing live prices", DateTime.Now);
+            try
+            {
+                var importTask = _LivePriceImporter.Import(CancellationToken.None);
+                importTask.Wait();
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(e, "Error occurred importing live prices");
+                return;
+            }
+            _Logger.LogInformation("Import of live prices complete");
         }
 
         private void ImportTradingDays()
         {
-            var importTask = _TradingDayImporter.Import(CancellationToken.None);
-            importTask.Wait();
+            _Logger.LogInformation("{0} Importing trading days", DateTime.Now);
+            try
+            {
+                var importTask = _TradingDayImporter.Import(CancellationToken.None);
+                importTask.Wait();
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(e, "Error occurred import trading days");
+                return;
+            }
+            _Logger.LogInformation("Import of trading days complete");
         }
     }
 }
