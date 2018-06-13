@@ -32,7 +32,7 @@ namespace PortfolioManager.Web
 
             _Scheduler = new Scheduler();
             _Scheduler.Add(ImportHistoricalPrices, Schedule.Daily().At(22, 00));
-            _Scheduler.Add(ImportLivePrices, Schedule.Daily().Every(15, TimeUnit.Minutes).From(9, 30).To(17, 00));
+            _Scheduler.Add(ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(17, 00));
             _Scheduler.Add(ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
         }
 
