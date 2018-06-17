@@ -17,7 +17,7 @@ namespace PortfolioManager.ImportData
         private readonly StockExchange _StockExchange;
         private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService, ILogger logger)
+        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
         {
             _StockExchange = stockExchange;
             _DataService = dataService;

@@ -17,20 +17,17 @@ namespace PortfolioManager.Web
     {
         private Scheduler _Scheduler;
 
-        private readonly ILogger _Logger;
         private readonly HistoricalPriceImporter _HistoricalPriceImporter;
         private readonly LivePriceImporter _LivePriceImporter;
         private readonly TradingDayImporter _TradingDayImporter;
 
-        public DataImportBackgroundService(StockExchange stockExchange, IHistoricalStockPriceService historicalStockPriceService, ILiveStockPriceService liveStockPriceService, ITradingDayService tradingDayService,  ILogger<DataImportBackgroundService> logger)
+        public DataImportBackgroundService(Scheduler scheduler, HistoricalPriceImporter historicalPriceImporter, LivePriceImporter livePriceImporter, TradingDayImporter tradingDayImporter)
         {
-            _Logger = logger;
+            _Scheduler = scheduler;
+            _HistoricalPriceImporter = historicalPriceImporter;
+            _LivePriceImporter = livePriceImporter;
+            _TradingDayImporter = tradingDayImporter;
 
-            _HistoricalPriceImporter = new HistoricalPriceImporter(stockExchange, historicalStockPriceService, _Logger);
-            _LivePriceImporter = new LivePriceImporter(stockExchange, liveStockPriceService, _Logger);
-            _TradingDayImporter = new TradingDayImporter(stockExchange.TradingCalander, tradingDayService, _Logger);
-
-            _Scheduler = new Scheduler(_Logger);
             //        _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().At(20, 00));
             //        _Scheduler.Add("Import Live Prices", ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(17, 00));
             //        _Scheduler.Add("Import Trading Days", ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
@@ -42,60 +39,25 @@ namespace PortfolioManager.Web
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _Logger.LogInformation("Starting scheduler...");
-            try
-            {
-                await _Scheduler.Run(stoppingToken);
-            }
-            catch (Exception e)
-            {
-                _Logger.LogError(e, "Error occurred in Scheduler");
-            }
+            await _Scheduler.Run(stoppingToken);
         }
 
         private void ImportHistoricalPrices()
         {
-            try
-            {
-                var importTask = _HistoricalPriceImporter.Import(CancellationToken.None);
-                importTask.Wait();
-            }
-            catch (Exception e)
-            {
-                _Logger.LogError(e, "Error occurred importing historical prices");
-                return;
-            }
-            _Logger.LogInformation("{0} - Historical prices imported", DateTime.Now);
+            var importTask = _HistoricalPriceImporter.Import(CancellationToken.None);
+            importTask.Wait();
         }
 
         private void ImportLivePrices()
         {
-            try
-            {
-                var importTask = _LivePriceImporter.Import(CancellationToken.None);
-                importTask.Wait();
-            }
-            catch (Exception e)
-            {
-                _Logger.LogError(e, "Error occurred importing live prices");
-                return;
-            }
-            _Logger.LogInformation("{0} - Live prices imported", DateTime.Now);
+            var importTask = _LivePriceImporter.Import(CancellationToken.None);
+            importTask.Wait();
         }
 
         private void ImportTradingDays()
         {
-            try
-            {
-                var importTask = _TradingDayImporter.Import(CancellationToken.None);
-                importTask.Wait();
-            }
-            catch (Exception e)
-            {
-                _Logger.LogError(e, "Error occurred import trading days");
-                return;
-            }
-            _Logger.LogInformation("{0} Trading days imported", DateTime.Now);
+            var importTask = _TradingDayImporter.Import(CancellationToken.None);
+            importTask.Wait();
         }
     }
 }

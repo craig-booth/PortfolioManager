@@ -18,7 +18,7 @@ namespace PortfolioManager.ImportData
         private readonly StockExchange _StockExchange;
         private readonly ILogger _Logger;
 
-        public LivePriceImporter(StockExchange stockExchange, ILiveStockPriceService dataService, ILogger logger)
+        public LivePriceImporter(StockExchange stockExchange, ILiveStockPriceService dataService, ILogger<LivePriceImporter> logger)
         {
             _StockExchange = stockExchange;
             _DataService = dataService;

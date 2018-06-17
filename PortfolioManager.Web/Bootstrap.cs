@@ -7,10 +7,13 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Builder;
 
 using AutoMapper;
 
+using PortfolioManager.Common.Scheduler;
 using PortfolioManager.Data.Portfolios;
+using PortfolioManager.ImportData;
 using PortfolioManager.ImportData.DataServices;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
@@ -28,18 +31,11 @@ namespace PortfolioManager.Web
 
         public static void AddPortfolioManagerService(this IServiceCollection services, PortfolioManagerSettings settings)
         {
-            var portfolioDatabase = new SQLitePortfolioDatabase(settings.PortfolioDatabase);
-            services.AddSingleton<IPortfolioDatabase>(portfolioDatabase);
-
-            var eventStore = new SqliteEventStore(settings.EventDatabase);
-            var stockExchange = new StockExchange(eventStore);
-            stockExchange.LoadFromEventStream();
-            services.AddSingleton<StockExchange>(stockExchange);
-
-            var config = new MapperConfiguration(cfg =>
-                    cfg.AddProfile(new ModelToServiceMapping(stockExchange))
-            );
-            services.AddSingleton<IMapper>(config.CreateMapper());
+            services.AddSingleton<PortfolioManagerSettings>(settings);
+            services.AddSingleton<IPortfolioDatabase>(CreatePortfolioDatabase);
+            services.AddSingleton<IEventStore>(CreateEventStore);
+            services.AddSingleton<StockExchange>(CreateStockExchange);
+            services.AddSingleton<IMapper>(CreateMapper);
 
             services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
             services.AddScoped<IPortfolioPerformanceService, PortfolioPerformanceService>();
@@ -57,7 +53,58 @@ namespace PortfolioManager.Web
             services.AddScoped<ILiveStockPriceService, ASXDataService>();
             services.AddScoped<ITradingDayService, ASXDataService>();
 
+            services.AddScoped<HistoricalPriceImporter>();
+            services.AddScoped<LivePriceImporter>();
+            services.AddScoped<TradingDayImporter>();
+
+            services.AddSingleton<Scheduler>();
+
             services.AddSingleton<IHostedService, DataImportBackgroundService>();
+
+           // stockExchange.LoadFromEventStream();
+        }
+
+        private static IEventStore CreateEventStore(IServiceProvider serviceProvider)
+        {
+            var settings = serviceProvider.GetRequiredService<PortfolioManagerSettings>();
+
+            return new SqliteEventStore(settings.EventDatabase);
+        }
+
+        private static StockExchange CreateStockExchange(IServiceProvider serviceProvider)
+        {
+            var eventStore = serviceProvider.GetRequiredService<IEventStore>();
+
+            return new StockExchange(eventStore);
+        }
+
+        private static IPortfolioDatabase CreatePortfolioDatabase(IServiceProvider serviceProvider)
+        {
+            var settings = serviceProvider.GetRequiredService<PortfolioManagerSettings>();
+
+            return new SQLitePortfolioDatabase(settings.PortfolioDatabase);
+        }
+
+        private static IMapper CreateMapper(IServiceProvider serviceProvider)
+        {
+            var stockExchange = serviceProvider.GetRequiredService<StockExchange>();
+
+            var config = new MapperConfiguration(cfg =>
+                    cfg.AddProfile(new ModelToServiceMapping(stockExchange))
+            );
+            return config.CreateMapper(); 
+        }
+    }
+
+    public static class PortfolioManagerAppBuilderExtensions 
+    {
+        public static IApplicationBuilder InitializeStockExchange(this IApplicationBuilder app)
+        {
+            var stockExchange = app.ApplicationServices.GetRequiredService<StockExchange>();
+
+            stockExchange.LoadFromEventStream();
+
+            return app;
         }
     }
 

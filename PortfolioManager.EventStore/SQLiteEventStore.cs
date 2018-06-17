@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using PortfolioManager.Domain;
@@ -9,6 +10,7 @@ namespace PortfolioManager.EventStore
 {
     public class SqliteEventStore : IEventStore
     {
+        private readonly ILogger logger;
         private readonly SqliteEventStoreTransactionFactory _TransationFactory;
 
         public SqliteEventStore(string databaseFile)
@@ -16,6 +18,12 @@ namespace PortfolioManager.EventStore
             _TransationFactory = new SqliteEventStoreTransactionFactory(databaseFile);
 
             CreateTables();
+        }
+
+        public SqliteEventStore(string databaseFile, ILogger<SqliteEventStore> logger)
+            : this(databaseFile)
+        {
+
         }
 
         public IEventStream GetEventStream(Guid id)

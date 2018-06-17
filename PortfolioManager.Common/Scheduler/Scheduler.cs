@@ -37,7 +37,7 @@ namespace PortfolioManager.Common.Scheduler
             Running = false;
         }
 
-        public Scheduler(ILogger logger)
+        public Scheduler(ILogger<Scheduler> logger)
             : this()
         {
             _Logger = logger;

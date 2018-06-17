@@ -51,6 +51,8 @@ namespace PortfolioManager.Web
 
             app.UseApiKeyAuthentication(PortfolioManagerSettings.ApiKey);
             app.UseMvc();
+
+            app.InitializeStockExchange();
         }
     }
 }

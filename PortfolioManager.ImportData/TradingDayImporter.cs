@@ -12,13 +12,13 @@ namespace PortfolioManager.ImportData
 {
     public class TradingDayImporter
     {
+        private readonly StockExchange _StockExchange;
         private readonly ITradingDayService _DataService;
-        private readonly TradingCalander _TradingCalendar;
         private readonly ILogger _Logger;
 
-        public TradingDayImporter(TradingCalander tradingCalander, ITradingDayService dataService, ILogger logger)
+        public TradingDayImporter(StockExchange stockExchange, ITradingDayService dataService, ILogger<TradingDayImporter> logger)
         {
-            _TradingCalendar = tradingCalander;
+            _StockExchange = stockExchange;
             _DataService = dataService;
             _Logger = logger;
         }
@@ -29,10 +29,10 @@ namespace PortfolioManager.ImportData
 
             foreach (var nonTradingDay in nonTradingDays)
             {
-                if (!_TradingCalendar.IsTradingDay(nonTradingDay))
+                if (!_StockExchange.TradingCalander.IsTradingDay(nonTradingDay))
                 {
                     _Logger?.LogInformation("Adding non-trading day {0:d}", nonTradingDay);
-                    _TradingCalendar.AddNonTradingDay(nonTradingDay);
+                    _StockExchange.TradingCalander.AddNonTradingDay(nonTradingDay);
                 }
             }
             
