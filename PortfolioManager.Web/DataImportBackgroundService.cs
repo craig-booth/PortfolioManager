@@ -26,24 +26,35 @@ namespace PortfolioManager.Web
         {
             _Logger = logger;
 
-            _HistoricalPriceImporter = new HistoricalPriceImporter(stockExchange, historicalStockPriceService);
-            _LivePriceImporter = new LivePriceImporter(stockExchange, liveStockPriceService);
-            _TradingDayImporter = new TradingDayImporter(stockExchange.TradingCalander, tradingDayService);
+            _HistoricalPriceImporter = new HistoricalPriceImporter(stockExchange, historicalStockPriceService, _Logger);
+            _LivePriceImporter = new LivePriceImporter(stockExchange, liveStockPriceService, _Logger);
+            _TradingDayImporter = new TradingDayImporter(stockExchange.TradingCalander, tradingDayService, _Logger);
 
-            _Scheduler = new Scheduler();
-            _Scheduler.Add(ImportHistoricalPrices, Schedule.Daily().At(22, 00));
-            _Scheduler.Add(ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(17, 00));
-            _Scheduler.Add(ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
+            _Scheduler = new Scheduler(_Logger);
+            //        _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().At(20, 00));
+            //        _Scheduler.Add("Import Live Prices", ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(17, 00));
+            //        _Scheduler.Add("Import Trading Days", ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
+
+            _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 32).To(23, 00));
+            _Scheduler.Add("Import Live Prices", ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(23, 00));
+    //        _Scheduler.Add("Import Trading Days", ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await _Scheduler.Run(stoppingToken);
+            _Logger.LogInformation("Starting scheduler...");
+            try
+            {
+                await _Scheduler.Run(stoppingToken);
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(e, "Error occurred in Scheduler");
+            }
         }
 
         private void ImportHistoricalPrices()
         {
-            _Logger.LogInformation("{0} Importing historical prices", DateTime.Now);
             try
             {
                 var importTask = _HistoricalPriceImporter.Import(CancellationToken.None);
@@ -54,12 +65,11 @@ namespace PortfolioManager.Web
                 _Logger.LogError(e, "Error occurred importing historical prices");
                 return;
             }
-            _Logger.LogInformation("Import of historical prices complete");
+            _Logger.LogInformation("{0} - Historical prices imported", DateTime.Now);
         }
 
         private void ImportLivePrices()
         {
-            _Logger.LogInformation("{0} Importing live prices", DateTime.Now);
             try
             {
                 var importTask = _LivePriceImporter.Import(CancellationToken.None);
@@ -70,12 +80,11 @@ namespace PortfolioManager.Web
                 _Logger.LogError(e, "Error occurred importing live prices");
                 return;
             }
-            _Logger.LogInformation("Import of live prices complete");
+            _Logger.LogInformation("{0} - Live prices imported", DateTime.Now);
         }
 
         private void ImportTradingDays()
         {
-            _Logger.LogInformation("{0} Importing trading days", DateTime.Now);
             try
             {
                 var importTask = _TradingDayImporter.Import(CancellationToken.None);
@@ -86,7 +95,7 @@ namespace PortfolioManager.Web
                 _Logger.LogError(e, "Error occurred import trading days");
                 return;
             }
-            _Logger.LogInformation("Import of trading days complete");
+            _Logger.LogInformation("{0} Trading days imported", DateTime.Now);
         }
     }
 }

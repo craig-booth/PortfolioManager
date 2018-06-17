@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
@@ -12,13 +13,15 @@ namespace PortfolioManager.ImportData
 {
     public class HistoricalPriceImporter
     {
-        private IHistoricalStockPriceService _DataService;
+        private readonly IHistoricalStockPriceService _DataService;
         private readonly StockExchange _StockExchange;
+        private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService)
+        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService, ILogger logger)
         {
             _StockExchange = stockExchange;
             _DataService = dataService;
+            _Logger = logger;
         }
 
         private class StockToImport
@@ -47,9 +50,24 @@ namespace PortfolioManager.ImportData
                     var toDate = lastExpectedDate;
                     var asxCode = stock.Properties.ClosestTo(toDate).ASXCode;
 
+                    _Logger?.LogInformation("Importing closing prices for {0} between {1:d} and {2:d}", asxCode, fromDate, toDate);
+
                     var data = await _DataService.GetHistoricalPriceData(asxCode, fromDate, toDate, cancellationToken);
+
+                    _Logger?.LogInformation("{0} closing prices found", data.Count());
                     foreach (var stockPrice in data)
-                        stock.UpdateClosingPrice(stockPrice.Date, stockPrice.Price);
+                    {
+                        _Logger?.LogInformation("Updating closing price for {0:d} : {1}", stockPrice.Date, stockPrice.Price);
+                        try
+                        {
+                            stock.UpdateClosingPrice(stockPrice.Date, stockPrice.Price);
+                        }
+                        catch (Exception e)
+                        {
+                            _Logger.LogError(e, "Error occurred importing closing prices for {0} on {1:d}", asxCode, stockPrice.Date);
+                        }
+                    }
+                        
                 }
             }
         }

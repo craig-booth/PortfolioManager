@@ -10,9 +10,9 @@ namespace PortfolioManager.EventStore
     class SqliteEventStream : IEventStream
     {
         public Guid Id { get; private set; }
-        private SqliteTransactionFactory _TransactionFactory;
+        private SqliteEventStoreTransactionFactory _TransactionFactory;
 
-        public SqliteEventStream(Guid id, SqliteTransactionFactory transactionFactory)
+        public SqliteEventStream(Guid id, SqliteEventStoreTransactionFactory transactionFactory)
         {
             Id = id;
             _TransactionFactory = transactionFactory;
@@ -20,9 +20,9 @@ namespace PortfolioManager.EventStore
 
         public IEnumerable<IEvent> RetrieveEvents()
         {
-            using (var transaction = _TransactionFactory.CreateTransaction())
+            using (var transaction = _TransactionFactory.BeginTransaction())
             {
-                var command = new SqliteCommand("SELECT [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId", transaction.Connection, transaction);
+                var command = transaction.SqlCommand("SELECT [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId");
                 command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
 
                 var reader = command.ExecuteReader();
@@ -42,9 +42,9 @@ namespace PortfolioManager.EventStore
 
         public IEnumerable<IEvent> RetrieveEvents(Guid entityId)
         {
-            using (var transaction = _TransactionFactory.CreateTransaction())
+            using (var transaction = _TransactionFactory.BeginTransaction())
             {
-                var command = new SqliteCommand("SELECT [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId and [AggregateId] = @AggregateId ORDER BY [Version]", transaction.Connection, transaction);
+                var command = transaction.SqlCommand("SELECT [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId and [AggregateId] = @AggregateId ORDER BY [Version]");
                 command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
                 command.Parameters.Add("@AggregateId", SqliteType.Text).Value = entityId.ToString();
 
@@ -64,11 +64,11 @@ namespace PortfolioManager.EventStore
 
         public void StoreEvent(IEvent @event)
         {
-            using (var transaction = _TransactionFactory.CreateTransaction())
+            using (var transaction = _TransactionFactory.BeginTransaction())
             {
                 var jsonData = JsonConvert.SerializeObject(@event);
 
-                var command = new SqliteCommand("INSERT INTO [Events] ([StreamId], [AggregateId], [Version], [EventType], [EventData]) VALUES (@StreamId, @AggregateId, @Version, @EventType, @EventData)", transaction.Connection, transaction);
+                var command = transaction.SqlCommand("INSERT INTO [Events] ([StreamId], [AggregateId], [Version], [EventType], [EventData]) VALUES (@StreamId, @AggregateId, @Version, @EventType, @EventData)");
                 command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
                 command.Parameters.Add("@AggregateId", SqliteType.Text).Value = @event.Id.ToString();
                 command.Parameters.Add("@Version", SqliteType.Integer).Value = @event.Version;
@@ -83,9 +83,9 @@ namespace PortfolioManager.EventStore
 
         public void StoreEvents(IEnumerable<IEvent> events)
         {
-            using (var transaction = _TransactionFactory.CreateTransaction())
+            using (var transaction = _TransactionFactory.BeginTransaction())
             {
-                var command = new SqliteCommand("INSERT INTO [Events] ([StreamId], [AggregateId], [Version], [EventType], [EventData]) VALUES (@StreamId, @AggregateId, @Version, @EventType, @EventData)", transaction.Connection, transaction);
+                var command = transaction.SqlCommand("INSERT INTO [Events] ([StreamId], [AggregateId], [Version], [EventType], [EventData]) VALUES (@StreamId, @AggregateId, @Version, @EventType, @EventData)");
                 command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
                 command.Parameters.Add("@AggregateId", SqliteType.Text);
                 command.Parameters.Add("@Version", SqliteType.Integer);

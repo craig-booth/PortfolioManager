@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
@@ -13,13 +14,15 @@ namespace PortfolioManager.ImportData
 {
     public class LivePriceImporter
     {
-        private ILiveStockPriceService _DataService;
+        private readonly ILiveStockPriceService _DataService;
         private readonly StockExchange _StockExchange;
+        private readonly ILogger _Logger;
 
-        public LivePriceImporter(StockExchange stockExchange, ILiveStockPriceService dataService)
+        public LivePriceImporter(StockExchange stockExchange, ILiveStockPriceService dataService, ILogger logger)
         {
             _StockExchange = stockExchange;
             _DataService = dataService;
+            _Logger = logger;
         }
 
         public async Task Import(CancellationToken cancellationToken)
@@ -34,7 +37,11 @@ namespace PortfolioManager.ImportData
                 {
                     var stock = _StockExchange.Stocks.Get(stockQuote.ASXCode, stockQuote.Date);
                     if (stock != null)
+                    {
+                        _Logger?.LogInformation("Updating current price foe {0}: {1}", stockQuote.ASXCode, stockQuote.Price);
                         stock.UpdateCurrentPrice(stockQuote.Price);
+                    }
+                        
                 }
             }      
         }

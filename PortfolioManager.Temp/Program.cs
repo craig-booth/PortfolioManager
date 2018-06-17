@@ -29,9 +29,9 @@ namespace PortfolioManager.Temp
 
             var t = scheduler.Run();
 
-            scheduler.Add(Job1, Schedule.Daily().Every(1, TimeUnit.Minutes), DateTime.Now);
-            scheduler.Add(Job2, Schedule.Daily().Every(2, TimeUnit.Minutes), DateTime.Now);
-            scheduler.Add(Job5, Schedule.Daily().Every(5, TimeUnit.Minutes), DateTime.Now);
+            scheduler.Add("", Job1, Schedule.Daily().Every(1, TimeUnit.Minutes), DateTime.Now);
+            scheduler.Add("", Job2, Schedule.Daily().Every(2, TimeUnit.Minutes), DateTime.Now);
+            scheduler.Add("", Job5, Schedule.Daily().Every(5, TimeUnit.Minutes), DateTime.Now);
             
             t.Wait();
         }

@@ -3,36 +3,57 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
 namespace PortfolioManager.Common.Scheduler
 {
     public class Scheduler
     {
-        private class ScheduledAction
+        private class ScheduledTask
         {
+            public string Name;
             public Action Action;
             public ISchedule Schedule;
             public DateTime NextRunTime;
 
-            public ScheduledAction(Action action, ISchedule schedule, DateTime nextRunTime)
+            public ScheduledTask(string name, Action action, ISchedule schedule, DateTime nextRunTime)
             {
+                Name = name;
                 Action = action;
                 Schedule = schedule;
                 NextRunTime = nextRunTime;
             }
         }
 
-        private List<ScheduledAction> _ScheduledActions = new List<ScheduledAction>();
+        private List<ScheduledTask> _ScheduledTasks;
         private CancellationTokenSource _CancellationTokenSource;
+        private ILogger _Logger;
+
         public bool Running { get; private set; }
 
-        public void Add(Action action, ISchedule schedule)
+        public Scheduler()
         {
-            Add(action, schedule, DateTime.Now);
+            _ScheduledTasks  = new List<ScheduledTask>();
+            Running = false;
         }
 
-        public void Add(Action action, ISchedule schedule, DateTime start)
+        public Scheduler(ILogger logger)
+            : this()
         {
-            _ScheduledActions.Add(new ScheduledAction(action, schedule, schedule.FirstRunTime(start)));
+            _Logger = logger;
+        }
+
+        public void Add(string name, Action action, ISchedule schedule)
+        {
+            Add(name, action, schedule, DateTime.Now);
+        }
+
+        public void Add(string name, Action action, ISchedule schedule, DateTime start)
+        {
+            var task = new ScheduledTask(name, action, schedule, schedule.FirstRunTime(start));
+            _ScheduledTasks.Add(task);
+
+            _Logger.LogInformation("Task {0} added - {1}. First run time {2}", task.Name, task.Schedule.ToString(), task.NextRunTime);
 
             // Cancel delay so that new task can be checked
             if (Running)
@@ -51,26 +72,30 @@ namespace PortfolioManager.Common.Scheduler
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
+                _Logger?.LogTrace("Checking for scheduled tasks");
+
                 var nextRunTime = DateTime.Now.AddDays(1);
 
-                foreach (var scheduledAction in _ScheduledActions)
+                foreach (var scheduledTask in _ScheduledTasks)
                 {
-                    if (scheduledAction.NextRunTime <= DateTime.Now)
+                    if (scheduledTask.NextRunTime <= DateTime.Now)
                     {
-                        ExecuteAction(scheduledAction.Action);
-                        scheduledAction.NextRunTime = scheduledAction.Schedule.NextRunTime();
+                        ExecuteAction(scheduledTask);
+                        scheduledTask.NextRunTime = scheduledTask.Schedule.NextRunTime();
                     }
 
-                    if (scheduledAction.NextRunTime <= nextRunTime)
-                        nextRunTime = scheduledAction.NextRunTime;
+                    if (scheduledTask.NextRunTime <= nextRunTime)
+                        nextRunTime = scheduledTask.NextRunTime;
                 }
 
                 _CancellationTokenSource = new CancellationTokenSource();
                 Running = true;
 
-                var delay = nextRunTime.Subtract(DateTime.Now);
+                var delay = nextRunTime.AddSeconds(-5).Subtract(DateTime.Now);
                 if (delay.Milliseconds > 0)
                 {
+                    _Logger?.LogInformation("Sleeping for {0}", delay.ToString());
+
                     try
                     {
                         await Task.Delay(delay, CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _CancellationTokenSource.Token).Token);
@@ -84,9 +109,10 @@ namespace PortfolioManager.Common.Scheduler
             }
         }
 
-        private void ExecuteAction(Action action)
+        private void ExecuteAction(ScheduledTask task)
         {
-            Task.Run(action);
+            _Logger?.LogInformation("Executing task {0}", task.Name);
+            Task.Run(task.Action);
         }
     }
 }

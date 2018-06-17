@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="KBCsv" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
