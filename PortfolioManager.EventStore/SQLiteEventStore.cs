@@ -10,12 +10,12 @@ namespace PortfolioManager.EventStore
 {
     public class SqliteEventStore : IEventStore
     {
-        private readonly ILogger logger;
-        private readonly SqliteEventStoreTransactionFactory _TransationFactory;
+        private readonly ILogger _Logger;
+        private readonly string _ConnectionString;
 
         public SqliteEventStore(string databaseFile)
         {
-            _TransationFactory = new SqliteEventStoreTransactionFactory(databaseFile);
+            _ConnectionString = "Data Source=" + databaseFile;
 
             CreateTables();
         }
@@ -23,20 +23,21 @@ namespace PortfolioManager.EventStore
         public SqliteEventStore(string databaseFile, ILogger<SqliteEventStore> logger)
             : this(databaseFile)
         {
-
+            _Logger = logger;
         }
 
         public IEventStream GetEventStream(Guid id)
         {
-            return new SqliteEventStream(id, _TransationFactory);
+            return new SqliteEventStream(id, _ConnectionString, _Logger);
         }
 
         private void CreateTables()
         {
-            using (var transaction = _TransationFactory.BeginTransaction())
+            using (var connection = new SqliteConnection(_ConnectionString))
             {
-                var command = transaction.SqlCommand(
-                    "CREATE TABLE IF NOT EXISTS [Events] "
+                connection.Open();
+
+                var sql = "CREATE TABLE IF NOT EXISTS [Events] "
                         + " ("
                         + " [StreamId] TEST(36) NOT NULL, "
                         + " [AggregateId] TEXT(36) NOT NULL, "
@@ -45,60 +46,17 @@ namespace PortfolioManager.EventStore
                         + " [EventData] TEXT NOT NULL, "
 
                         + "PRIMARY KEY ([StreamId] ASC, [AggregateId] ASC, [Version] ASC)"
-                        + " )");
-                command.ExecuteNonQuery();
+                        + " )";
 
-                transaction.Commit();
+                using (var command = new SqliteCommand(sql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                connection.Close();
             }
 
         }
     }
 
-    class SqliteEventStoreTransactionFactory
-    {
-        private string _DatabaseFile;
-
-        public SqliteEventStoreTransactionFactory(string databaseFile)
-        {
-            _DatabaseFile = databaseFile;
-        }
-
-        public SQLiteEventStoreTransaction BeginTransaction()
-        {
-            return new SQLiteEventStoreTransaction(_DatabaseFile);
-        }
-    }
-
-    class SQLiteEventStoreTransaction : IDisposable
-    {
-        private SqliteConnection _Connection;
-        private SqliteTransaction _Transaction;
-
-        public SQLiteEventStoreTransaction(string databaseFile)
-        {
-            _Connection = new SqliteConnection("Data Source=" + databaseFile);
-            _Connection.Open();
-
-            _Transaction = _Connection.BeginTransaction();
-        }
-
-        public SqliteCommand SqlCommand(string sql)
-        {
-            return new SqliteCommand(sql, _Connection, _Transaction);           
-        }
-
-        public void Commit()
-        {
-            _Transaction.Commit();
-            _Transaction = null;
-        }
-
-        public void Dispose()
-        {
-            if (_Transaction != null)
-                _Transaction.Rollback();
-
-            _Connection.Close();
-        }
-    }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
 
@@ -60,15 +61,14 @@ namespace PortfolioManager.Web
             services.AddSingleton<Scheduler>();
 
             services.AddSingleton<IHostedService, DataImportBackgroundService>();
-
-           // stockExchange.LoadFromEventStream();
         }
 
         private static IEventStore CreateEventStore(IServiceProvider serviceProvider)
         {
             var settings = serviceProvider.GetRequiredService<PortfolioManagerSettings>();
+            var logger = serviceProvider.GetRequiredService<ILogger<SqliteEventStore>>();
 
-            return new SqliteEventStore(settings.EventDatabase);
+            return new SqliteEventStore(settings.EventDatabase, logger);
         }
 
         private static StockExchange CreateStockExchange(IServiceProvider serviceProvider)
