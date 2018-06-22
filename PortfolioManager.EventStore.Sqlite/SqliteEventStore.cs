@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
-using PortfolioManager.Domain;
-
-namespace PortfolioManager.EventStore
+namespace PortfolioManager.EventStore.Sqlite
 {
     public class SqliteEventStore : IEventStore
     {
@@ -58,5 +55,4 @@ namespace PortfolioManager.EventStore
 
         }
     }
-
 }

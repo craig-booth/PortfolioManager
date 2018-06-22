@@ -14,6 +14,7 @@ using NUnit.Framework;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.EventStore;
+using PortfolioManager.EventStore.Sqlite;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;

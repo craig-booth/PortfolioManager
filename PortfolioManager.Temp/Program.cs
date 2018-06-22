@@ -9,6 +9,9 @@ using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Commands;
 using PortfolioManager.EventStore;
+using PortfolioManager.EventStore.Memory;
+using PortfolioManager.EventStore.Sqlite;
+using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Service.Services;
 using PortfolioManager.Data.SQLite.Stocks;
 

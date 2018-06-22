@@ -23,6 +23,7 @@ using PortfolioManager.Service.Utils;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.EventStore;
+using PortfolioManager.EventStore.Sqlite;
 
 
 namespace PortfolioManager.Web

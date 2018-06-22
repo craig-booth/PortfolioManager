@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PortfolioManager.Common;
+using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Stocks.Events
 { 

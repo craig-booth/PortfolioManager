@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using PortfolioManager.Domain;
-
-namespace PortfolioManager.EventStore
+namespace PortfolioManager.EventStore.Memory
 {
     public class MemoryEventStore : IEventStore
     {

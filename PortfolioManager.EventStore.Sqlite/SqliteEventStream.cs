@@ -4,9 +4,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-using PortfolioManager.Domain;
-
-namespace PortfolioManager.EventStore
+namespace PortfolioManager.EventStore.Sqlite
 {
     class SqliteEventStream : IEventStream
     {
@@ -118,7 +116,7 @@ namespace PortfolioManager.EventStore
             catch (Exception e)
             {
                 _Logger?.LogError(e, "Error adding event to EventStore");
-            }     
+            }
         }
 
         public void StoreEvents(IEnumerable<IEvent> events)
@@ -162,7 +160,7 @@ namespace PortfolioManager.EventStore
             {
                 _Logger?.LogError(e, "Error adding event to EventStore");
             }
-           
+
         }
     }
 }

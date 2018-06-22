@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PortfolioManager.Domain
+namespace PortfolioManager.EventStore
 {
     public interface IEventStore
     {
