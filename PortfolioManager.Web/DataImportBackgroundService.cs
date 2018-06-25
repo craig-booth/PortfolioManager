@@ -28,11 +28,11 @@ namespace PortfolioManager.Web
             _LivePriceImporter = livePriceImporter;
             _TradingDayImporter = tradingDayImporter;
 
-            //        _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().At(20, 00));
-            //        _Scheduler.Add("Import Live Prices", ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(17, 00));
-            //        _Scheduler.Add("Import Trading Days", ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
+            _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().At(20, 00));
+            _Scheduler.Add("Import Live Prices", ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(17, 00));
+            _Scheduler.Add("Import Trading Days", ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
 
-            _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().Every(1, TimeUnit.Minutes).From(9, 32).To(23, 00));
+    //        _Scheduler.Add("Import Historical Prices", ImportHistoricalPrices, Schedule.Daily().Every(1, TimeUnit.Minutes).From(9, 32).To(23, 00));
     //        _Scheduler.Add("Import Live Prices", ImportLivePrices, Schedule.Daily().Every(5, TimeUnit.Minutes).From(9, 30).To(23, 00));
     //        _Scheduler.Add("Import Trading Days", ImportTradingDays, Schedule.Monthly().On(Occurance.Last, Day.Friday).At(18, 00));
         }

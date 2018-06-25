@@ -17,7 +17,7 @@ namespace PortfolioManager.EventStore.Sqlite
             CreateTables();
         }
 
-        public SqliteEventStore(string databaseFile, ILogger<SqliteEventStore> logger)
+        public SqliteEventStore(string databaseFile, ILogger<IEventStore> logger)
             : this(databaseFile)
         {
             _Logger = logger;

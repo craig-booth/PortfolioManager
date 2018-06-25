@@ -30,9 +30,12 @@ namespace PortfolioManager.Temp
             //   Test();
             //    TestScheduler();
 
+            // this line is needed to ensure that the assembly for events is loaded
+            var xx = new NonTradingDayAddedEvent(Guid.Empty, 0, DateTime.Today);
 
-            var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:32769");
-            CreateMongoDBEventStore(mongoEventStore, @"C:\PortfolioManager\Events.db");
+            //var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
+            var mongoEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
+            CreateMongoDBEventStore(mongoEventStore, @"C:\PortfolioManager\Database\v3_0\Events.db");
 
             Test(mongoEventStore);
         }

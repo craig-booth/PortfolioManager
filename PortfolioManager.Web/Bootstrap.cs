@@ -20,11 +20,10 @@ using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
 using PortfolioManager.Service.Utils;
-using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.EventStore;
-using PortfolioManager.EventStore.Sqlite;
-
+using PortfolioManager.EventStore.Mongodb;
 
 namespace PortfolioManager.Web
 {
@@ -67,13 +66,16 @@ namespace PortfolioManager.Web
         private static IEventStore CreateEventStore(IServiceProvider serviceProvider)
         {
             var settings = serviceProvider.GetRequiredService<PortfolioManagerSettings>();
-            var logger = serviceProvider.GetRequiredService<ILogger<SqliteEventStore>>();
+            var logger = serviceProvider.GetRequiredService<ILogger<IEventStore>>();
 
-            return new SqliteEventStore(settings.EventDatabase, logger);
+            return new MongodbEventStore(settings.EventStore, logger);
         }
 
         private static StockExchange CreateStockExchange(IServiceProvider serviceProvider)
         {
+            // Ensure that PortfolioManager.Domain assembly is loaded
+            var temp = new NonTradingDayAddedEvent(Guid.NewGuid(), 0, DateTime.Now);
+
             var eventStore = serviceProvider.GetRequiredService<IEventStore>();
 
             return new StockExchange(eventStore);
@@ -102,7 +104,6 @@ namespace PortfolioManager.Web
         public static IApplicationBuilder InitializeStockExchange(this IApplicationBuilder app)
         {
             var stockExchange = app.ApplicationServices.GetRequiredService<StockExchange>();
-
             stockExchange.LoadFromEventStream();
 
             return app;
@@ -112,8 +113,8 @@ namespace PortfolioManager.Web
     public class PortfolioManagerSettings
     {
         public Guid ApiKey { get; set; }
-        public string EventDatabase { get; set; }
         public string PortfolioDatabase { get; set; }
+        public string EventStore { get; set; }
         public int Port { get; set; }   
     }
 

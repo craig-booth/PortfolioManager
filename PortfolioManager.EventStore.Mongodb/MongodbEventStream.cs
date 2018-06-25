@@ -43,7 +43,12 @@ namespace PortfolioManager.EventStore.Mongodb
 
         public void StoreEvent(Event @event)
         {
-            throw new NotImplementedException();
+            var client = new MongoClient(_ConnectionString);
+            var database = client.GetDatabase("PortfolioManager");
+
+            var collection = database.GetCollection<Event>(Name);
+
+            collection.InsertOne(@event);
         }
 
         public void StoreEvents(IEnumerable<Event> events)
