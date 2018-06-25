@@ -6,20 +6,17 @@ using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.CorporateActions.Events
 {
-    public class CapitalReturnAddedEvent : IEvent
+    public class CapitalReturnAddedEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public Guid ActionId { get;  }
-        public DateTime ActionDate { get; }
-        public string Description { get;  }
-        public DateTime PaymentDate { get; }
-        public decimal Amount { get; }
+        public Guid ActionId { get; set; }
+        public DateTime ActionDate { get; set; }
+        public string Description { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public decimal Amount { get; set; }
 
-        public CapitalReturnAddedEvent(Guid id, int version, Guid actionId, DateTime actionDate, string description, DateTime paymentDate, decimal amount)
+        public CapitalReturnAddedEvent(Guid entityId, int version, Guid actionId, DateTime actionDate, string description, DateTime paymentDate, decimal amount)
+            : base(entityId, version)
         {
-            Id = id;
-            Version = version;
             ActionId = actionId;
             ActionDate = actionDate;
             Description = description;

@@ -6,16 +6,13 @@ using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Stocks.Events
 {
-    public class NonTradingDayAddedEvent : IEvent
+    public class NonTradingDayAddedEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public DateTime Date { get; }
+        public DateTime Date { get; set; }
 
-        public NonTradingDayAddedEvent(Guid id, int version, DateTime date)
+        public NonTradingDayAddedEvent(Guid entityId, int version, DateTime date)
+            : base(entityId, version)
         {
-            Id = id;
-            Version = version;
             Date = date;
         }
     }

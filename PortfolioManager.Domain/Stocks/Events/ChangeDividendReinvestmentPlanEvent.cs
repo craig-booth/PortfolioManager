@@ -7,19 +7,16 @@ using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Stocks.Events
 { 
-    public class ChangeDividendReinvestmentPlanEvent : IEvent
+    public class ChangeDividendReinvestmentPlanEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public DateTime ChangeDate { get; }
-        public bool DRPActive { get; }
-        public RoundingRule DividendRoundingRule { get; }
-        public DRPMethod DRPMethod { get; }
+        public DateTime ChangeDate { get; set; }
+        public bool DRPActive { get; set; }
+        public RoundingRule DividendRoundingRule { get; set; }
+        public DRPMethod DRPMethod { get; set; }
 
-        public ChangeDividendReinvestmentPlanEvent(Guid id, int version, DateTime changeDate, bool drpActive, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
+        public ChangeDividendReinvestmentPlanEvent(Guid entityId, int version, DateTime changeDate, bool drpActive, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
+            :base(entityId, version)
         {
-            Id = id;
-            Version = version;
             ChangeDate = changeDate;
             DRPActive = drpActive;
             DividendRoundingRule = dividendRoundingRule;

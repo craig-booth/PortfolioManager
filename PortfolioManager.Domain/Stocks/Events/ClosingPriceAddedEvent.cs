@@ -6,17 +6,14 @@ using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Stocks.Events
 {
-    public class ClosingPriceAddedEvent : IEvent
+    public class ClosingPriceAddedEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public DateTime Date { get; }
-        public decimal ClosingPrice { get; }
+        public DateTime Date { get; set; }
+        public decimal ClosingPrice { get; set; }
 
-        public ClosingPriceAddedEvent(Guid id, int version,  DateTime date, decimal closingPrice)
+        public ClosingPriceAddedEvent(Guid entityId, int version,  DateTime date, decimal closingPrice)
+            : base(entityId, version)
         {
-            Id = id;
-            Version = version;
             Date = date;
             ClosingPrice = closingPrice;
         }

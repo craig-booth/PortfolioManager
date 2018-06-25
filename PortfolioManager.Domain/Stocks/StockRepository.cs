@@ -39,22 +39,22 @@ namespace PortfolioManager.Domain.Stocks
                 if (@event is StockListedEvent)
                 {
                     var listingEvent = @event as StockListedEvent;
-                    var stock = new Stock(listingEvent.Id, listingEvent.ListingDate, _EventStream);
-                    _Stocks.Add(@event.Id, stock);
+                    var stock = new Stock(listingEvent.EntityId, listingEvent.ListingDate, _EventStream);
+                    _Stocks.Add(@event.EntityId, stock);
 
                     stock.Apply(listingEvent);
                 }
                 else if (@event is StapledSecurityListedEvent)
                 {
                     var listingEvent = @event as StapledSecurityListedEvent;
-                    var stock = new StapledSecurity(listingEvent.Id, listingEvent.ListingDate, _EventStream);
-                    _Stocks.Add(@event.Id, stock);
+                    var stock = new StapledSecurity(listingEvent.EntityId, listingEvent.ListingDate, _EventStream);
+                    _Stocks.Add(@event.EntityId, stock);
 
                     stock.Apply(listingEvent);
                 }
                 else
                 {
-                    var stock = _Stocks[@event.Id];
+                    var stock = _Stocks[@event.EntityId];
                     dynamic dynamicEvent = @event;
 
                     if (stock is StapledSecurity)

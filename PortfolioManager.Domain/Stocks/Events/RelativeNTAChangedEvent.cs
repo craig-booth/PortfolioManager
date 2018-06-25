@@ -7,17 +7,14 @@ using PortfolioManager.EventStore;
 namespace PortfolioManager.Domain.Stocks.Events
 {
 
-    public class RelativeNTAChangedEvent : IEvent
+    public class RelativeNTAChangedEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public DateTime Date { get; }
-        public decimal[] Percentages { get; }
+        public DateTime Date { get; set; }
+        public decimal[] Percentages { get; set; }
 
-        public RelativeNTAChangedEvent(Guid id, int version, DateTime date, IEnumerable<decimal> percentages)
+        public RelativeNTAChangedEvent(Guid entityId, int version, DateTime date, IEnumerable<decimal> percentages)
+            : base(entityId, version)
         {
-            Id = id;
-            Version = version;
             Date = date;
             Percentages = percentages.ToArray();
         }

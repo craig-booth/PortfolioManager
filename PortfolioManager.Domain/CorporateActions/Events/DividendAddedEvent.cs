@@ -6,23 +6,20 @@ using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.CorporateActions.Events
 {
-    public class DividendAddedEvent : IEvent
+    public class DividendAddedEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public Guid ActionId { get; }
-        public DateTime ActionDate { get; }
-        public string Description { get;}
-        public DateTime PaymentDate { get; }
-        public decimal DividendAmount { get; }
-        public decimal CompanyTaxRate { get; }
-        public decimal PercentFranked { get; }
-        public decimal DRPPrice { get; }
+        public Guid ActionId { get; set; }
+        public DateTime ActionDate { get; set; }
+        public string Description { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public decimal DividendAmount { get; set; }
+        public decimal CompanyTaxRate { get; set; }
+        public decimal PercentFranked { get; set; }
+        public decimal DRPPrice { get; set; }
 
-        public DividendAddedEvent(Guid id, int version, Guid actionId, DateTime actionDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
+        public DividendAddedEvent(Guid entityId, int version, Guid actionId, DateTime actionDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
+            : base(entityId, version)
         {
-            Id = id;
-            Version = version;
             ActionId = actionId;
             ActionDate = actionDate;
             Description = description;

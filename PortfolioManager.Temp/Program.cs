@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Reflection;
 
 using PortfolioManager.Common.Scheduler;
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.Domain.Stocks.Commands;
+using PortfolioManager.Domain.CorporateActions.Events;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Memory;
 using PortfolioManager.EventStore.Sqlite;
@@ -23,7 +28,21 @@ namespace PortfolioManager.Temp
         {
             //   ConvertToEventSourcedModel();
             //   Test();
-            TestScheduler();
+            //    TestScheduler();
+
+
+            var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:32769");
+            CreateMongoDBEventStore(mongoEventStore, @"C:\PortfolioManager\Events.db");
+
+            Test(mongoEventStore);
+        }
+
+        public static void CreateMongoDBEventStore(MongodbEventStore mongoEventStore, string sqliteFile)
+        {
+            var sqliteEventStore = new SqliteEventStore(sqliteFile);
+
+            mongoEventStore.CopyEventStream(sqliteEventStore, TradingCalander.StreamId);
+            mongoEventStore.CopyEventStream(sqliteEventStore, StockRepository.StreamId);
         }
 
         private static void TestScheduler()
@@ -66,21 +85,13 @@ namespace PortfolioManager.Temp
 
             // Copy event to sqlite database 
             var sqliteEventStore = new SqliteEventStore(@"C:\PortfolioManager\Events.db");
-            CopyEventStream(eventStore, sqliteEventStore, TradingCalander.StreamId);
-            CopyEventStream(eventStore, sqliteEventStore, StockRepository.StreamId);
+
+            eventStore.CopyEventStream(sqliteEventStore, TradingCalander.StreamId);
+            eventStore.CopyEventStream(sqliteEventStore, StockRepository.StreamId);
         }
 
-        private static void CopyEventStream(IEventStore sourceStore, IEventStore destinationStore, Guid streamId)
+        private static void Test(IEventStore eventStore)
         {
-            var sourceStream = sourceStore.GetEventStream(streamId);
-            var destinationStream = destinationStore.GetEventStream(streamId);
-
-            destinationStream.StoreEvents(sourceStream.RetrieveEvents());
-        }
-
-        private static void Test()
-        {
-            var eventStore = new SqliteEventStore(@"C:\PortfolioManager\Events.db");
             var stockExchange = new StockExchange(eventStore);
 
             stockExchange.LoadFromEventStream();
@@ -371,4 +382,6 @@ namespace PortfolioManager.Temp
 
     }
 
+
+ 
 }

@@ -7,7 +7,7 @@ namespace PortfolioManager.EventStore.Memory
 {
     public class MemoryEventStream : IEventStream
     {
-        private class Event
+        private class MemoryEvent
         {
             public Guid EntityId;
             public Type EventType;
@@ -15,48 +15,48 @@ namespace PortfolioManager.EventStore.Memory
         }
 
         public Guid Id { get; private set; }
-        private List<MemoryEventStream.Event> _Events;
+        private List<MemoryEvent> _Events;
 
         public MemoryEventStream(Guid id)
         {
             Id = id;
-            _Events = new List<MemoryEventStream.Event>();
+            _Events = new List<MemoryEvent>();
         }
 
-        public IEnumerable<IEvent> RetrieveEvents()
+        public IEnumerable<Event> RetrieveEvents()
         {
             foreach (var @event in _Events)
             {
                 var result = JsonConvert.DeserializeObject(@event.EventData, @event.EventType);
 
-                yield return (IEvent)result;
+                yield return (Event)result;
             }
         }
 
-        public IEnumerable<IEvent> RetrieveEvents(Guid entityId)
+        public IEnumerable<Event> RetrieveEvents(Guid entityId)
         {
             foreach (var @event in _Events.Where(x => x.EntityId == entityId))
             {
                 var result = JsonConvert.DeserializeObject(@event.EventData, @event.EventType);
 
-                yield return (IEvent)result;
+                yield return (Event)result;
             }
         }
 
-        public void StoreEvent(IEvent @event)
+        public void StoreEvent(Event @event)
         {
             var jsonData = JsonConvert.SerializeObject(@event);
 
 
-            _Events.Add(new MemoryEventStream.Event()
+            _Events.Add(new MemoryEvent()
             {
-                EntityId = @event.Id,
+                EntityId = @event.EntityId,
                 EventType = @event.GetType(),
                 EventData = jsonData
             });
         }
 
-        public void StoreEvents(IEnumerable<IEvent> events)
+        public void StoreEvents(IEnumerable<Event> events)
         {
             foreach (var @event in events)
                 StoreEvent(@event);

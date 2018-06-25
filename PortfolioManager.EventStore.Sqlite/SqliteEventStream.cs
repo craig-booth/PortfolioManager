@@ -21,13 +21,13 @@ namespace PortfolioManager.EventStore.Sqlite
             _Logger = logger;
         }
 
-        public IEnumerable<IEvent> RetrieveEvents()
+        public IEnumerable<Event> RetrieveEvents()
         {
             using (var connection = new SqliteConnection(_ConnectionString))
             {
                 connection.Open();
 
-                var sql = "SELECT [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId";
+                var sql = "SELECT [AggregateId], [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId";
                 using (var command = new SqliteCommand(sql, connection))
                 {
                     command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
@@ -36,12 +36,14 @@ namespace PortfolioManager.EventStore.Sqlite
                     {
                         while (reader.Read())
                         {
-                            var eventType = reader.GetString(0);
-                            var jsonData = reader.GetString(1);
+                            var entityId = reader.GetString(0);
+                            var eventType = reader.GetString(1);
+                            var jsonData = reader.GetString(2);
 
-                            var @event = JsonConvert.DeserializeObject(jsonData, Type.GetType(eventType));
+                            var @event = (Event)JsonConvert.DeserializeObject(jsonData, Type.GetType(eventType));
+                            @event.EntityId = new Guid(entityId);
 
-                            yield return (IEvent)@event;
+                            yield return @event;
                         }
                         reader.Close();
                         _Logger?.LogInformation("RetrieveEvents Close(1)");
@@ -52,7 +54,7 @@ namespace PortfolioManager.EventStore.Sqlite
             }
         }
 
-        public IEnumerable<IEvent> RetrieveEvents(Guid entityId)
+        public IEnumerable<Event> RetrieveEvents(Guid entityId)
         {
             using (var connection = new SqliteConnection(_ConnectionString))
             {
@@ -71,9 +73,10 @@ namespace PortfolioManager.EventStore.Sqlite
                             var eventType = reader.GetString(0);
                             var jsonData = reader.GetString(1);
 
-                            var @event = JsonConvert.DeserializeObject(jsonData, Type.GetType(eventType));
+                            var @event = (Event)JsonConvert.DeserializeObject(jsonData, Type.GetType(eventType));
+                            @event.EntityId = entityId;
 
-                            yield return (IEvent)@event;
+                            yield return @event;
                         }
                         reader.Close();
                         _Logger?.LogInformation("RetrieveEvents Close(2)");
@@ -84,7 +87,7 @@ namespace PortfolioManager.EventStore.Sqlite
             }
         }
 
-        public void StoreEvent(IEvent @event)
+        public void StoreEvent(Event @event)
         {
             try
             {
@@ -99,7 +102,7 @@ namespace PortfolioManager.EventStore.Sqlite
                         var eventType = @event.GetType().AssemblyQualifiedName;
 
                         command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
-                        command.Parameters.Add("@AggregateId", SqliteType.Text).Value = @event.Id.ToString();
+                        command.Parameters.Add("@AggregateId", SqliteType.Text).Value = @event.EntityId.ToString();
                         command.Parameters.Add("@Version", SqliteType.Integer).Value = @event.Version;
                         command.Parameters.Add("@EventType", SqliteType.Text).Value = eventType;
                         command.Parameters.Add("@EventData", SqliteType.Text).Value = jsonData;
@@ -119,7 +122,7 @@ namespace PortfolioManager.EventStore.Sqlite
             }
         }
 
-        public void StoreEvents(IEnumerable<IEvent> events)
+        public void StoreEvents(IEnumerable<Event> events)
         {
             try
             {
@@ -143,7 +146,7 @@ namespace PortfolioManager.EventStore.Sqlite
                             var jsonData = JsonConvert.SerializeObject(@event);
                             var eventType = @event.GetType().AssemblyQualifiedName;
 
-                            command.Parameters["@AggregateId"].Value = @event.Id.ToString();
+                            command.Parameters["@AggregateId"].Value = @event.EntityId.ToString();
                             command.Parameters["@Version"].Value = @event.Version;
                             command.Parameters["@EventType"].Value = eventType;
                             command.Parameters["@EventData"].Value = jsonData;

@@ -7,19 +7,16 @@ using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Stocks.Events
 {
-    public class StockPropertiesChangedEvent : IEvent
+    public class StockPropertiesChangedEvent : Event
     {
-        public Guid Id { get; }
-        public int Version { get; }
-        public DateTime ChangeDate { get; }
-        public string ASXCode { get; }
-        public string Name { get; }
-        public AssetCategory Category { get; }
+        public DateTime ChangeDate { get; set; }
+        public string ASXCode { get; set; }
+        public string Name { get; set; }
+        public AssetCategory Category { get; set; }
 
-        public StockPropertiesChangedEvent(Guid id, int version, DateTime changeDate, string asxCode, string name, AssetCategory category)
+        public StockPropertiesChangedEvent(Guid entityId, int version, DateTime changeDate, string asxCode, string name, AssetCategory category)
+            : base(entityId, version)
         {
-            Id = id;
-            Version = version;
             ChangeDate = changeDate;
             ASXCode = asxCode;
             Name = name;

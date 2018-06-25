@@ -81,9 +81,9 @@ namespace PortfolioManager.Domain.Stocks
 
     public class StapledSecurityChild
     {
-        public readonly string ASXCode;
-        public readonly string Name;
-        public readonly bool Trust;
+        public string ASXCode { get; set; }
+        public string Name { get; set; }
+        public bool Trust { get; set; }
 
         public StapledSecurityChild(string asxCode, string name, bool trust)
         {

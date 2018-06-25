@@ -4,10 +4,16 @@ using System.Text;
 
 namespace PortfolioManager.EventStore
 {
-    public interface IEvent
+    public abstract class Event
     {
-        Guid Id { get; }
-        int Version { get; }
+        public Guid EntityId { get; set; }
+        public int Version { get; set; }
+
+        public Event(Guid entityId, int version)
+        {
+            EntityId = entityId;
+            Version = version;
+        }
     }
 
 }
