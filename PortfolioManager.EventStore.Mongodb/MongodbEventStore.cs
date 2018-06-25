@@ -44,9 +44,9 @@ namespace PortfolioManager.EventStore.Mongodb
             }
         }
 
-        public IEventStream GetEventStream(Guid id)
+        public IEventStream GetEventStream(string streamName)
         {
-            return new MongodbEventStream(id, _ConnectionString, _Logger);
+            return new MongodbEventStream(streamName, _ConnectionString, _Logger);
         }
     }
 

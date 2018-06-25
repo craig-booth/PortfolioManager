@@ -8,14 +8,14 @@ namespace PortfolioManager.EventStore.Mongodb
 {
     public class MongodbEventStream : IEventStream
     {
-        public Guid Id { get; private set; }
+        public string Name { get; private set; }
 
         private readonly string _ConnectionString;
         private readonly ILogger _Logger;
 
-        public MongodbEventStream(Guid id, string connectionString, ILogger logger)
+        public MongodbEventStream(string name, string connectionString, ILogger logger)
         {
-            Id = id;
+            Name = name;
 
             _ConnectionString = connectionString;
             _Logger = logger;
@@ -26,7 +26,7 @@ namespace PortfolioManager.EventStore.Mongodb
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
-            var collection = database.GetCollection<Event>(Id.ToString());
+            var collection = database.GetCollection<Event>(Name);
 
             return collection.Find<Event>(x => true).ToList<Event>();
         }
@@ -36,7 +36,7 @@ namespace PortfolioManager.EventStore.Mongodb
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
-            var collection = database.GetCollection<Event>(Id.ToString());
+            var collection = database.GetCollection<Event>(Name);
 
             return collection.Find<Event>(x => x.EntityId == entityId).ToList<Event>();
         }
@@ -51,24 +51,9 @@ namespace PortfolioManager.EventStore.Mongodb
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
-            var collection = database.GetCollection<Event>(Id.ToString());
+            var collection = database.GetCollection<Event>(Name);
 
             collection.InsertMany(events);
-
-            /*    var mongEvents = events.Select<IEvent, MongoEvent>(x => new MongoEvent() { Id = Guid.NewGuid(), AggregateId = x.Id, Version = x.Version, EventData = x });
-
-                var collection = database.GetCollection<MongoEvent>(Id.ToString());
-
-                collection.InsertMany(mongEvents); */
         }
     }
-
-   /* class MongoEvent
-    {
-        public Guid Id { get; set; }      
-        public Guid AggregateId { get; set; }
-        public int Version { get; set; }
-        public string EventType { get; set; }
-        public IEvent EventData { get; set; }
-    } */
 }

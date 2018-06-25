@@ -23,9 +23,9 @@ namespace PortfolioManager.EventStore.Sqlite
             _Logger = logger;
         }
 
-        public IEventStream GetEventStream(Guid id)
+        public IEventStream GetEventStream(string streamName)
         {
-            return new SqliteEventStream(id, _ConnectionString, _Logger);
+            return new SqliteEventStream(streamName, _ConnectionString, _Logger);
         }
 
         private void CreateTables()

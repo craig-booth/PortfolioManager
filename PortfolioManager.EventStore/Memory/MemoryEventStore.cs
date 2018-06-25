@@ -6,21 +6,21 @@ namespace PortfolioManager.EventStore.Memory
 {
     public class MemoryEventStore : IEventStore
     {
-        private readonly Dictionary<Guid, IEventStream> _EventStreams;
+        private readonly Dictionary<string, IEventStream> _EventStreams;
 
         public MemoryEventStore()
         {
-            _EventStreams = new Dictionary<Guid, IEventStream>();
+            _EventStreams = new Dictionary<string, IEventStream>();
         }
 
-        public IEventStream GetEventStream(Guid id)
+        public IEventStream GetEventStream(string streamName)
         {
-            if (_EventStreams.ContainsKey(id))
-                return _EventStreams[id];
+            if (_EventStreams.ContainsKey(streamName))
+                return _EventStreams[streamName];
             else
             {
-                var eventStream = new MemoryEventStream(id);
-                _EventStreams.Add(id, eventStream);
+                var eventStream = new MemoryEventStream(streamName);
+                _EventStreams.Add(streamName, eventStream);
 
                 return eventStream;
             }

@@ -21,7 +21,6 @@ namespace PortfolioManager.Domain.Stocks
 
     public class StockRepository : IStockRepository
     {
-        public static readonly Guid StreamId = new Guid("2FAD2856-9675-4F73-81F0-A12C60E3A9CB");
         private IEventStream _EventStream;
 
         private Dictionary<Guid, Stock> _Stocks = new Dictionary<Guid, Stock>();

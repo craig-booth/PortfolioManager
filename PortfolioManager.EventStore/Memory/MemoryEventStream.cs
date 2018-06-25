@@ -14,12 +14,12 @@ namespace PortfolioManager.EventStore.Memory
             public string EventData;
         }
 
-        public Guid Id { get; private set; }
+        public string Name { get; private set; }
         private List<MemoryEvent> _Events;
 
-        public MemoryEventStream(Guid id)
+        public MemoryEventStream(string name)
         {
-            Id = id;
+            Name = name;
             _Events = new List<MemoryEvent>();
         }
 

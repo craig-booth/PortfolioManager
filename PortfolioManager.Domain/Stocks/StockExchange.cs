@@ -16,8 +16,8 @@ namespace PortfolioManager.Domain.Stocks
 
         public StockExchange(IEventStore eventStore)
         {
-            TradingCalander = new TradingCalander(eventStore.GetEventStream(TradingCalander.StreamId));
-            Stocks = new StockRepository(eventStore.GetEventStream(StockRepository.StreamId));
+            TradingCalander = new TradingCalander(eventStore.GetEventStream("TradingCalander"));
+            Stocks = new StockRepository(eventStore.GetEventStream("StockRepository"));
         }
 
         public void LoadFromEventStream()

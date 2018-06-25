@@ -41,8 +41,8 @@ namespace PortfolioManager.Temp
         {
             var sqliteEventStore = new SqliteEventStore(sqliteFile);
 
-            mongoEventStore.CopyEventStream(sqliteEventStore, TradingCalander.StreamId);
-            mongoEventStore.CopyEventStream(sqliteEventStore, StockRepository.StreamId);
+            mongoEventStore.CopyEventStream(sqliteEventStore, "TradingCalander");
+            mongoEventStore.CopyEventStream(sqliteEventStore, "StockRepository");
         }
 
         private static void TestScheduler()
@@ -86,8 +86,8 @@ namespace PortfolioManager.Temp
             // Copy event to sqlite database 
             var sqliteEventStore = new SqliteEventStore(@"C:\PortfolioManager\Events.db");
 
-            eventStore.CopyEventStream(sqliteEventStore, TradingCalander.StreamId);
-            eventStore.CopyEventStream(sqliteEventStore, StockRepository.StreamId);
+            eventStore.CopyEventStream(sqliteEventStore, "TradingCalander");
+            eventStore.CopyEventStream(sqliteEventStore, "StockRepository");
         }
 
         private static void Test(IEventStore eventStore)

@@ -8,14 +8,14 @@ namespace PortfolioManager.EventStore.Sqlite
 {
     class SqliteEventStream : IEventStream
     {
-        public Guid Id { get; private set; }
+        public string Name { get; private set; }
 
         private readonly string _ConnectionString;
         private readonly ILogger _Logger;
 
-        public SqliteEventStream(Guid id, string connectionString, ILogger logger)
+        public SqliteEventStream(string name, string connectionString, ILogger logger)
         {
-            Id = id;
+            Name = name;
 
             _ConnectionString = connectionString;
             _Logger = logger;
@@ -30,7 +30,7 @@ namespace PortfolioManager.EventStore.Sqlite
                 var sql = "SELECT [AggregateId], [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId";
                 using (var command = new SqliteCommand(sql, connection))
                 {
-                    command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
+                    command.Parameters.Add("@StreamId", SqliteType.Text).Value = Name;
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -63,7 +63,7 @@ namespace PortfolioManager.EventStore.Sqlite
                 var sql = "SELECT [EventType], [EventData] FROM [Events] WHERE [StreamId] = @StreamId and [AggregateId] = @AggregateId ORDER BY [Version]";
                 using (var command = new SqliteCommand(sql, connection))
                 {
-                    command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
+                    command.Parameters.Add("@StreamId", SqliteType.Text).Value = Name;
                     command.Parameters.Add("@AggregateId", SqliteType.Text).Value = entityId.ToString();
 
                     using (var reader = command.ExecuteReader())
@@ -101,7 +101,7 @@ namespace PortfolioManager.EventStore.Sqlite
                         var jsonData = JsonConvert.SerializeObject(@event);
                         var eventType = @event.GetType().AssemblyQualifiedName;
 
-                        command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
+                        command.Parameters.Add("@StreamId", SqliteType.Text).Value = Name;
                         command.Parameters.Add("@AggregateId", SqliteType.Text).Value = @event.EntityId.ToString();
                         command.Parameters.Add("@Version", SqliteType.Integer).Value = @event.Version;
                         command.Parameters.Add("@EventType", SqliteType.Text).Value = eventType;
@@ -135,7 +135,7 @@ namespace PortfolioManager.EventStore.Sqlite
                     var sql = "INSERT INTO [Events] ([StreamId], [AggregateId], [Version], [EventType], [EventData]) VALUES (@StreamId, @AggregateId, @Version, @EventType, @EventData)";
                     using (var command = new SqliteCommand(sql, connection))
                     {
-                        command.Parameters.Add("@StreamId", SqliteType.Text).Value = Id.ToString();
+                        command.Parameters.Add("@StreamId", SqliteType.Text).Value = Name;
                         command.Parameters.Add("@AggregateId", SqliteType.Text);
                         command.Parameters.Add("@Version", SqliteType.Integer);
                         command.Parameters.Add("@EventType", SqliteType.Text);

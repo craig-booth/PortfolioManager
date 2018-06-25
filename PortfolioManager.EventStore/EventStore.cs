@@ -7,12 +7,12 @@ namespace PortfolioManager.EventStore
 {
     public interface IEventStore
     {
-        IEventStream GetEventStream(Guid id);
+        IEventStream GetEventStream(string streamName);
     }
 
     public interface IEventStream
     {
-        Guid Id { get; }
+        string Name { get; }
         void StoreEvent(Event @event);
         void StoreEvents(IEnumerable<Event> events);
 
@@ -22,10 +22,10 @@ namespace PortfolioManager.EventStore
 
     public static class EventStoreExtensions
     {
-        public static void CopyEventStream(this IEventStore destinationStore, IEventStore sourceStore, Guid streamId)
+        public static void CopyEventStream(this IEventStore destinationStore, IEventStore sourceStore, string streamName)
         {
-            var sourceStream = sourceStore.GetEventStream(streamId);
-            var destinationStream = destinationStore.GetEventStream(streamId);
+            var sourceStream = sourceStore.GetEventStream(streamName);
+            var destinationStream = destinationStore.GetEventStream(streamName);
 
             destinationStream.StoreEvents(sourceStream.RetrieveEvents());
         }

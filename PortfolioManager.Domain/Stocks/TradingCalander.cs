@@ -17,7 +17,8 @@ namespace PortfolioManager.Domain.Stocks
 
     public class TradingCalander : ITradingCalander
     {
-        public static readonly Guid StreamId = new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
+        public static readonly Guid Id = new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
+
         public int Version { get; private set; } = 0;
         private IEventStream _EventStream;
 
@@ -44,7 +45,7 @@ namespace PortfolioManager.Domain.Stocks
             if (!IsTradingDay(date))
                 throw new Exception("Date is already a non trading day");
 
-            var @event = new NonTradingDayAddedEvent(StreamId, Version, date);
+            var @event = new NonTradingDayAddedEvent(Id, Version, date);
             Apply(@event);
 
             _EventStream.StoreEvent(@event);
