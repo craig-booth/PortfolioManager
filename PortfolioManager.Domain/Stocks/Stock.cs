@@ -69,28 +69,48 @@ namespace PortfolioManager.Domain.Stocks
             _EventStream.StoreEvent(@event);
         }
 
-        public void Apply(StockDelistedEvent @event)
+        public virtual void Apply(StockDelistedEvent @event)
         {
             Version++;
+
+            Properties.End(@event.DelistedDate);
+            DividendReinvestmentPlan.End(@event.DelistedDate);
+
             End(@event.DelistedDate);
         }
 
         public void UpdateClosingPrice(DateTime date, decimal closingPrice)
         {
             // Check that the date is within the effective period
-            if (! EffectivePeriod.Contains(date))
+            if (!EffectivePeriod.Contains(date))
                 throw new Exception(String.Format("Stock not active on {0}", date));
 
-            var @event = new ClosingPriceAddedEvent(Id, Version, date, closingPrice);
+            var @event = new ClosingPricesAddedEvent(Id, Version, new ClosingPricesAddedEvent.ClosingPrice[] { new ClosingPricesAddedEvent.ClosingPrice(date, closingPrice) });
             Apply(@event);
 
             _EventStream.StoreEvent(@event);
         }
 
-        public void Apply(ClosingPriceAddedEvent @event)
+        public void UpdateClosingPrices(IEnumerable<Tuple<DateTime, decimal>> closingPrices)
+        {
+            // Check that the date is within the effective period
+            foreach (var closingPrice in closingPrices)
+            {
+                if (!EffectivePeriod.Contains(closingPrice.Item1))
+                    throw new Exception(String.Format("Stock not active on {0}", closingPrice.Item1));
+            }
+
+            var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Item1, x.Item2)));
+            Apply(@event);
+
+            _EventStream.StoreEvent(@event);
+        }
+
+        public void Apply(ClosingPricesAddedEvent @event)
         {
             Version++;
-            UpdatePrice(@event.Date, @event.ClosingPrice);
+            foreach(var closingPrice in @event.ClosingPrices)
+                UpdatePrice(closingPrice.Date, closingPrice.Price);
         }
 
         public void UpdateCurrentPrice(decimal currentPrice)
@@ -116,6 +136,11 @@ namespace PortfolioManager.Domain.Stocks
                 return _Prices[date];
             else
                 return ClosestPrice(date);
+        }
+
+        public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
+        {
+            return _Prices.Where(x => dateRange.Contains(x.Key)).AsEnumerable();
         }
 
         private decimal ClosestPrice(DateTime date)

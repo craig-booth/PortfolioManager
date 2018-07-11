@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using PortfolioManager.Domain.Stocks;
+
 namespace PortfolioManager.ImportData.DataServices
 {
     public interface ILiveStockPriceService
@@ -18,7 +20,7 @@ namespace PortfolioManager.ImportData.DataServices
 
     public interface ITradingDayService
     {
-        Task<IEnumerable<DateTime>> NonTradingDays(int year, CancellationToken cancellationToken);
+        Task<IEnumerable<NonTradingDay>> NonTradingDays(int year, CancellationToken cancellationToken);
     }
 
     public class StockPrice

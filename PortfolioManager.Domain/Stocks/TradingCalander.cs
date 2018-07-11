@@ -10,9 +10,28 @@ namespace PortfolioManager.Domain.Stocks
 {
     public interface ITradingCalander
     {
-        IEnumerable<DateTime> NonTradingDays();
+        IEnumerable<NonTradingDay> NonTradingDays(int year);
         bool IsTradingDay(DateTime date);
         IEnumerable<DateTime> TradingDays(DateRange range);
+
+        void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays);
+    }
+
+    public class NonTradingDay : IComparable<NonTradingDay>
+    {
+        public DateTime Date { get; set; }
+        public string Desciption { get; set; }
+
+        public NonTradingDay(DateTime date, string description)
+        {
+            Date = date;
+            Desciption = description;
+        }
+
+        public int CompareTo(NonTradingDay other)
+        {
+            return Date.CompareTo(other.Date);
+        }
     }
 
     public class TradingCalander : ITradingCalander
@@ -22,7 +41,7 @@ namespace PortfolioManager.Domain.Stocks
         public int Version { get; private set; } = 0;
         private IEventStream _EventStream;
 
-        private List<DateTime> _NonTradingDays = new List<DateTime>();
+        private List<NonTradingDay> _NonTradingDays = new List<NonTradingDay>();
 
         public TradingCalander(IEventStream eventStream)
         {
@@ -39,36 +58,43 @@ namespace PortfolioManager.Domain.Stocks
             }
         }
 
-        public void AddNonTradingDay(DateTime date)
+        public void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays)
         {
-            // Check that the non trading day is not already defined
-            if (!IsTradingDay(date))
-                throw new Exception("Date is already a non trading day");
+            // Check that each day is in the correct year
+            var invalidDate = nonTradingDays.FirstOrDefault(x => x.Date.Year != year);
+            if (invalidDate != null)
+                throw new Exception(String.Format("Date {0} is not in calander year {1}", invalidDate, year));
 
-            var @event = new NonTradingDayAddedEvent(Id, Version, date);
+            var @event = new NonTradingDaysSetEvent(Id, Version, year, nonTradingDays);
             Apply(@event);
 
             _EventStream.StoreEvent(@event);
         }
 
-        public void Apply(NonTradingDayAddedEvent @event)
+        public void Apply(NonTradingDaysSetEvent @event)
         {
             Version++;
-            var index = _NonTradingDays.BinarySearch(@event.Date);
-            if (index < 0)
+
+            // Remove any existing non trading days for the year
+            _NonTradingDays.RemoveAll(x => x.Date.Year == @event.Year);
+
+            foreach (var nonTradingDay in @event.NonTradingDays)
             {
-                _NonTradingDays.Insert(~index, @event.Date);
+                var newNonTradingDay = new NonTradingDay(nonTradingDay.Date, nonTradingDay.Desciption);
+                var index = _NonTradingDays.BinarySearch(newNonTradingDay);
+                if (index < 0)
+                    _NonTradingDays.Insert(~index, newNonTradingDay);
             }
         }
 
-        public IEnumerable<DateTime> NonTradingDays()
+        public IEnumerable<NonTradingDay> NonTradingDays(int year)
         {
-            return _NonTradingDays;
+            return _NonTradingDays.Where(x => x.Date.Year == year);
         }
 
         public bool IsTradingDay(DateTime date)
         {
-            return (_NonTradingDays.BinarySearch(date) < 0);
+            return (_NonTradingDays.BinarySearch(new NonTradingDay(date,"")) > 0);
         }
 
         public IEnumerable<DateTime> TradingDays(DateRange range)

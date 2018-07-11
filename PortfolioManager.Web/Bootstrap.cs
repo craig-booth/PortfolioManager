@@ -32,10 +32,17 @@ namespace PortfolioManager.Web
 
         public static void AddPortfolioManagerService(this IServiceCollection services, PortfolioManagerSettings settings)
         {
+            // Ensure that PortfolioManager.Domain assembly is loaded
+            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+
             services.AddSingleton<PortfolioManagerSettings>(settings);
             services.AddSingleton<IPortfolioDatabase>(CreatePortfolioDatabase);
             services.AddSingleton<IEventStore>(CreateEventStore);
             services.AddSingleton<StockExchange>(CreateStockExchange);
+
+            services.AddSingleton<IStockRepository>(x => x.GetRequiredService<StockExchange>().Stocks);
+            services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<StockExchange>().TradingCalander);
+
             services.AddSingleton<IMapper>(CreateMapper);
 
             services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
@@ -73,9 +80,6 @@ namespace PortfolioManager.Web
 
         private static StockExchange CreateStockExchange(IServiceProvider serviceProvider)
         {
-            // Ensure that PortfolioManager.Domain assembly is loaded
-            var temp = new NonTradingDayAddedEvent(Guid.NewGuid(), 0, DateTime.Now);
-
             var eventStore = serviceProvider.GetRequiredService<IEventStore>();
 
             return new StockExchange(eventStore);

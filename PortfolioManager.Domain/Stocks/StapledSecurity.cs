@@ -53,6 +53,13 @@ namespace PortfolioManager.Domain.Stocks
             RelativeNTAs.Change(@event.ListingDate, new RelativeNTA(percentages));
         }
 
+        public override void Apply(StockDelistedEvent @event)
+        {
+            base.Apply(@event);
+
+            RelativeNTAs.End(@event.DelistedDate);
+        }
+
         public void SetRelativeNTAs(DateTime date, IEnumerable<decimal> percentages)
         {
             var percentagesArray = percentages.ToArray();

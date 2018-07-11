@@ -17,6 +17,10 @@ namespace PortfolioManager.Domain.Stocks
         IEnumerable<Stock> All(DateRange dateRange);
         IEnumerable<Stock> Find(DateTime date, Func<StockProperties, bool> predicate);
         IEnumerable<Stock> Find(DateRange dateRange, Func<StockProperties, bool> predicate);
+
+        void ListStock(Guid id, string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category);
+        void ListStapledSecurity(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities);
+        void DelistStock(Guid id, DateTime date);
     }
 
     public class StockRepository : IStockRepository
@@ -66,7 +70,10 @@ namespace PortfolioManager.Domain.Stocks
 
         public Stock Get(Guid id)
         {
-            return _Stocks[id];
+            if (_Stocks.ContainsKey(id))
+                return _Stocks[id];
+            else
+                return null;
         }
 
         public Stock Get(string asxCode, DateTime date)
@@ -99,36 +106,44 @@ namespace PortfolioManager.Domain.Stocks
             return All(dateRange).Where(x => x.Properties.Matches(dateRange, predicate));
         }
 
-        public void ListStock(string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category)
+        public void ListStock(Guid id, string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category)
         {
+            // Check that id is unique
+            if (_Stocks.ContainsKey(id))
+                throw new Exception("Id not unique");
+
             // Check if stock already exists with this code
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
             if (_Stocks.Values.Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            var stock = new Stock(Guid.NewGuid(), listingDate, _EventStream);
+            var stock = new Stock(id, listingDate, _EventStream);
             _Stocks.Add(stock.Id, stock);
 
             stock.List(asxCode, name, trust, category);
         }
 
-        public void ListStapledSecurity(string asxCode, string name, DateTime listingDate, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
-        {
+        public void ListStapledSecurity(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
+        {   
+            // Check that id is unique
+            if (_Stocks.ContainsKey(id))
+                throw new Exception("Id not unique");
+
             // Check if stock already exists with this code
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
             if (_Stocks.Values.Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            var stapledSecurity = new StapledSecurity(Guid.NewGuid(), listingDate, _EventStream);
+            var stapledSecurity = new StapledSecurity(id, listingDate, _EventStream);
             _Stocks.Add(stapledSecurity.Id, stapledSecurity);
 
             stapledSecurity.List(asxCode, name, category, childSecurities);
         }
 
-        public void DelistStock(string asxCode, DateTime date)
+        public void DelistStock(Guid id, DateTime date)
         {
             // Check that stock exists
-            var stock = Get(asxCode, date);
+            var stock = Get(id);
             if (stock == null)
                 throw new Exception("Stock not found");
 

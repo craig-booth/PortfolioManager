@@ -96,11 +96,11 @@ namespace PortfolioManager.UI.ViewModels
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
             OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
-#if DEBUG 
-            _RestWebClient = new RestWebClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
-#else
+//#if DEBUG 
+//            _RestWebClient = new RestWebClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+//#else
             _RestWebClient = new RestWebClient("https://portfolio.boothfamily.id.au", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
-#endif
+//#endif
             
 
             ViewParameter = new ViewParameter();

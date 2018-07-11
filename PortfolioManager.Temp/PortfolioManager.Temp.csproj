@@ -13,6 +13,8 @@
     <ProjectReference Include="..\PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore.Sqlite\PortfolioManager.EventStore.Sqlite.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
+    <ProjectReference Include="..\PortfolioManager.ImportData\PortfolioManager.ImportData.csproj" />
+    <ProjectReference Include="..\PortfolioManager.RestApi\PortfolioManager.RestApi.csproj" />
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj" />
   </ItemGroup>
 

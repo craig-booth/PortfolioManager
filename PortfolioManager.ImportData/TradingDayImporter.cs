@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -25,17 +25,15 @@ namespace PortfolioManager.ImportData
 
         public async Task Import(CancellationToken cancellationToken)
         {
-            var nonTradingDays = await _DataService.NonTradingDays(DateTime.Today.Year, cancellationToken);
+            int year = DateTime.Today.Year;
 
-            foreach (var nonTradingDay in nonTradingDays)
+            var nonTradingDays = await _DataService.NonTradingDays(year, cancellationToken);
+
+            if (nonTradingDays.Any())
             {
-                if (!_StockExchange.TradingCalander.IsTradingDay(nonTradingDay))
-                {
-                    _Logger?.LogInformation("Adding non-trading day {0:d}", nonTradingDay);
-                    _StockExchange.TradingCalander.AddNonTradingDay(nonTradingDay);
-                }
-            }
-            
+                _Logger?.LogInformation("Adding {0} non-trading days for {1}", nonTradingDays.Count(), year);
+                _StockExchange.TradingCalander.SetNonTradingDays(year, nonTradingDays);
+            }           
         }
     }
 }

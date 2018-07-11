@@ -27,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTest", "LoadTest\LoadTest.csproj", "{68438BB9-FB49-46BA-80D0-C58338618DC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.EventStore.Sqlite", "PortfolioManager.EventStore.Sqlite\PortfolioManager.EventStore.Sqlite.csproj", "{BC02BDC3-96E0-422E-BE7F-346ECDDBA08F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore.Sqlite", "PortfolioManager.EventStore.Sqlite\PortfolioManager.EventStore.Sqlite.csproj", "{BC02BDC3-96E0-422E-BE7F-346ECDDBA08F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.EventStore.Mongodb", "PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj", "{47B02CD8-78C4-4EA6-A2E1-17419A115CF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore.Mongodb", "PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj", "{47B02CD8-78C4-4EA6-A2E1-17419A115CF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.RestApi", "PortfolioManager.RestApi\PortfolioManager.RestApi.csproj", "{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{47B02CD8-78C4-4EA6-A2E1-17419A115CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47B02CD8-78C4-4EA6-A2E1-17419A115CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47B02CD8-78C4-4EA6-A2E1-17419A115CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

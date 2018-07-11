@@ -19,6 +19,8 @@ using PortfolioManager.EventStore.Sqlite;
 using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Service.Services;
 using PortfolioManager.Data.SQLite.Stocks;
+using PortfolioManager.RestApi.Commands;
+using PortfolioManager.RestApi.Responses;
 
 namespace PortfolioManager.Temp
 {
@@ -31,13 +33,24 @@ namespace PortfolioManager.Temp
             //    TestScheduler();
 
             // this line is needed to ensure that the assembly for events is loaded
-            var xx = new NonTradingDayAddedEvent(Guid.Empty, 0, DateTime.Today);
+            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+
+            MigrateDatabase();
 
             //var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
-            var mongoEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
-            CreateMongoDBEventStore(mongoEventStore, @"C:\PortfolioManager\Database\v3_0\Events.db");
+            //      var mongoEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
+            //      CreateMongoDBEventStore(mongoEventStore, @"C:\PortfolioManager\Database\v3_0\Events.db");
 
-            Test(mongoEventStore);
+            //      Test(mongoEventStore);
+        }
+
+        public static void MigrateDatabase()
+        {
+            var migrator = new MigrateDatabase();
+
+       //     var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
+            var loadTask = migrator.LoadTradingCalander();
+            Task.WaitAll(loadTask);
         }
 
         public static void CreateMongoDBEventStore(MongodbEventStore mongoEventStore, string sqliteFile)
@@ -165,7 +178,7 @@ namespace PortfolioManager.Temp
         {
             var stockDataBase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
 
-            var commands = new List<ICommand>();
+            var commands = new List<object>();
 
             using (var unitOfWork = stockDataBase.CreateReadOnlyUnitOfWork())
             {
@@ -184,9 +197,9 @@ namespace PortfolioManager.Temp
 
         }
 
-        private static IEnumerable<ICommand> LoadStocks(Data.Stocks.IStockQuery stockQuery)
+        private static IEnumerable<object> LoadStocks(Data.Stocks.IStockQuery stockQuery)
         {
-            var commands = new List<ICommand>();
+            var commands = new List<object>();
 
             var stocks = stockQuery.GetAll().Where(x => x.Type != StockType.StapledSecurity && x.ParentId == Guid.Empty).Select(x => x.Id).Distinct();
             foreach (var stock in stocks)
@@ -206,34 +219,34 @@ namespace PortfolioManager.Temp
             return commands;
         }
 
-        private static IEnumerable<ICommand> CommandsForStock(Guid id, Data.Stocks.IStockQuery stockQuery)
+        private static IEnumerable<object> CommandsForStock(Guid id, Data.Stocks.IStockQuery stockQuery)
         {
-            var commands = new List<ICommand>();
+            var commands = new List<object>();
 
             var stockVersions = stockQuery.GetAll().Where(x => x.Id == id).OrderBy(x => x.FromDate);
-
+            /*
             var firstVersion = stockVersions.First();
             if (firstVersion.Type == StockType.StapledSecurity)
             {
-                var childSecurities = stockQuery.GetChildStocks(id, firstVersion.FromDate).Select(x => new ListStapledSecurityCommand.StapledSecurityChild(x.ASXCode, x.Name, (x.Type == StockType.Trust)));
-                commands.Add(new ListStapledSecurityCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, firstVersion.Category, childSecurities));
+                var childSecurities = stockQuery.GetChildStocks(id, firstVersion.FromDate).Select(x => new CreateStapledSecurityCommand.StapledSecurityChild(x.ASXCode, x.Name, (x.Type == StockType.Trust)));
+                commands.Add(new CreateStapledSecurityCommand(id, firstVersion.FromDate, firstVersion.ASXCode, firstVersion.Name, firstVersion.Category, childSecurities));
             }
             else
             {
                 var trust = (firstVersion.Type == StockType.Trust);
-                commands.Add(new ListStockCommand(firstVersion.ASXCode, firstVersion.Name, firstVersion.FromDate, trust, firstVersion.Category));
+                commands.Add(new CreateStockCommand(id, firstVersion.FromDate, firstVersion.ASXCode, firstVersion.Name, trust, firstVersion.Category));
             }
 
             foreach (var otherVersion in stockVersions.Skip(1))
             {
-                commands.Add(new ChangeStockCommand(otherVersion.ASXCode, otherVersion.FromDate, otherVersion.ASXCode, otherVersion.Name, otherVersion.Category));
+                commands.Add(new ChangeStockCommand(id, otherVersion.FromDate, otherVersion.ASXCode, otherVersion.Name, otherVersion.Category));
             }
 
             var lastVersion = stockVersions.Last();
             if (lastVersion.ToDate != DateUtils.NoEndDate)
             {
-                commands.Add(new DelistStockCommand(lastVersion.ASXCode, lastVersion.ToDate));
-            }
+                commands.Add(new DelistStockCommand(id, lastVersion.ToDate));
+            } */
 
             return commands;
         }
@@ -293,17 +306,7 @@ namespace PortfolioManager.Temp
         }
     }
 
-    public class StockExchangeCommandHandler :
-        ICommandHandler<ListStockCommand>,
-        ICommandHandler<ListStapledSecurityCommand>,
-        ICommandHandler<DelistStockCommand>,
-        ICommandHandler<AddClosingPriceCommand>,
-        ICommandHandler<AddNonTradingDayCommand>,
-        ICommandHandler<UpdateCurrentPriceCommand>,
-        ICommandHandler<ChangeRelativeNTACommand>,
-        ICommandHandler<ChangeStockCommand>,
-        ICommandHandler<AddCapitalReturnCommand>,
-        ICommandHandler<AddDividendCommand>
+    public class StockExchangeCommandHandler 
     {
         private StockExchange _StockExchange;
 
@@ -312,22 +315,22 @@ namespace PortfolioManager.Temp
             _StockExchange = stockExchange;
         }
 
-        public void Execute(ListStockCommand command)
+        public void Execute(CreateStockCommand command)
         {
-            _StockExchange.Stocks.ListStock(command.ASXCode, command.Name, command.ListingDate, command.Trust, command.Category);
+            _StockExchange.Stocks.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
         }
 
-        public void Execute(ListStapledSecurityCommand command)
+  /*      public void Execute(CreateStapledSecurityCommand command)
         {
             var childSecurities = command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust));
-            _StockExchange.Stocks.ListStapledSecurity(command.ASXCode, command.Name, command.ListingDate,command.Category, childSecurities);
+            _StockExchange.Stocks.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, childSecurities);
         }
-
-        public void Execute(ChangeStockCommand command)
+        */
+    /*    public void Execute(ChangeStockCommand command)
         {
-            var stock = _StockExchange.Stocks.Get(command.ASXCode, command.ChangeDate);
+            var stock = _StockExchange.Stocks.Get(command.Id);
             if (stock != null)
-                stock.ChangeProperties(command.ChangeDate, command.NewASXCode, command.Name, command.Category);
+                stock.ChangeProperties(command.ChangeDate, command.AsxCode, command.Name, command.Category);
         }
 
         public void Execute(ChangeDividendReinvestmentPlanCommand command)
@@ -339,7 +342,7 @@ namespace PortfolioManager.Temp
 
         public void Execute(DelistStockCommand command)
         {
-            _StockExchange.Stocks.DelistStock(command.ASXCode, command.Date);
+            _StockExchange.Stocks.DelistStock(command.Id, command.DelistingDate);
         }
 
         public void Execute(AddClosingPriceCommand command)
@@ -362,13 +365,13 @@ namespace PortfolioManager.Temp
             var stock = _StockExchange.Stocks.Get(command.ASXCode, command.ChangeDate);
             if (stock != null)
                 (stock as StapledSecurity).SetRelativeNTAs(command.ChangeDate, command.Percentages);
-        }
+        } */
 
-        public void Execute(AddNonTradingDayCommand command)
+      /*  public void Execute(AddNonTradingDayCommand command)
         {
             _StockExchange.TradingCalander.AddNonTradingDay(command.Date);
         }
-
+        */
         public void Execute(AddCapitalReturnCommand command)
         {
             var stock = _StockExchange.Stocks.Get(command.ASXCode, command.RecordDate);

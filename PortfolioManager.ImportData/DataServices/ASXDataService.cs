@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.ImportData.DataServices
 {
@@ -86,9 +87,9 @@ namespace PortfolioManager.ImportData.DataServices
             }
         }
 
-        public async Task<IEnumerable<DateTime>> NonTradingDays(int year, CancellationToken cancellationToken)
+        public async Task<IEnumerable<NonTradingDay>> NonTradingDays(int year, CancellationToken cancellationToken)
         {
-            var days = new List<DateTime>();
+            var days = new List<NonTradingDay>();
 
             var data = await DownloadData(year, cancellationToken);
             if (cancellationToken.IsCancellationRequested)
@@ -96,9 +97,9 @@ namespace PortfolioManager.ImportData.DataServices
 
             foreach (var tableRow in data.Descendants("tr"))
             {
-                var date = ParseRow(tableRow as XElement, year);
-                if (date != DateUtils.NoDate)
-                    days.Add(date);
+                var nonTradingDay = ParseRow(tableRow as XElement, year);
+                if (nonTradingDay != null)
+                    days.Add(nonTradingDay);
             }
 
             return days;
@@ -137,7 +138,7 @@ namespace PortfolioManager.ImportData.DataServices
                 return null;
         }
 
-        private DateTime ParseRow(XElement row, int year)
+        private NonTradingDay ParseRow(XElement row, int year)
         {
             DateTime date = DateUtils.NoDate;
 
@@ -145,13 +146,16 @@ namespace PortfolioManager.ImportData.DataServices
             if (cells.Count >= 4)
             {              
                 if (cells[3].Value.Trim() == "CLOSED")
-                {                   
+                {
+                    var description = cells[0].Value.Trim();
+
                     var dateText = cells[1].Value + " " + year;
-                    DateTime.TryParse(dateText, out date);
+                    if (DateTime.TryParse(dateText, out date))
+                        return new NonTradingDay(date, description);
                 }
             }
 
-            return date;
+            return null;
         }
 
     }

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
-using MongoDB.Driver.Core;
-using MongoDB.Driver.Core.Configuration;
 using MongoDB.Bson.Serialization.Conventions;
 
 using PortfolioManager.Common;
-using PortfolioManager.EventStore;
 
 namespace PortfolioManager.EventStore.Mongodb
 {
@@ -31,12 +26,13 @@ namespace PortfolioManager.EventStore.Mongodb
 
         private void RegisterEventTypes() 
         {
+            BsonSerializer.RegisterSerializer(typeof(DateTime), new DateOnlySerializer());
             var conventionPack = new ConventionPack()
             {
-                new IgnoreExtraElementsConvention(true)
+                new IgnoreExtraElementsConvention(true),
             };
             ConventionRegistry.Register("PortfolioManager.Events", conventionPack, t => t.IsSubclassOf(typeof(Event)));
-     
+
             var eventTypes = typeof(Event).GetSubclassesOf(true);
             foreach (var eventType in eventTypes)
                 BsonClassMap.LookupClassMap(eventType);

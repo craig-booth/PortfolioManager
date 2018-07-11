@@ -40,6 +40,10 @@ namespace PortfolioManager.Domain
         where T :struct
     {
         protected Stack<EffectivePropertyValues<T>> _Properties = new Stack<EffectivePropertyValues<T>>();
+        public IEnumerable<EffectivePropertyValues<T>> Values
+        {
+            get { return _Properties.AsEnumerable(); }
+        }
 
         public T this[DateTime date]
         {
