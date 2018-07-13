@@ -33,7 +33,7 @@ namespace PortfolioManager.Service.Services
             var responce = new CorporateActionsResponce();
 
             var stock = _StockExchange.Stocks.Get(stockId);
-            var corporateActions = stock.CorporateActions.Values.Where(x => x.ActionDate.Between(fromDate, toDate)).Select(x => x.ToCorporateActionItem());
+            var corporateActions = stock.CorporateActions().Where(x => x.ActionDate.Between(fromDate, toDate)).Select(x => x.ToCorporateActionItem());
         
             responce.CorporateActions.AddRange(corporateActions);
 

@@ -6,8 +6,6 @@ using System.Net.Http.Headers;
 using System.Net.Http.Formatting;
 
 using PortfolioManager.Common;
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
 
 namespace PortfolioManager.RestApi.Client
 {

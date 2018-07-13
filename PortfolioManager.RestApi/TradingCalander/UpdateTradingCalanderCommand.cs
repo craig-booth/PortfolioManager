@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PortfolioManager.RestApi.Responses
+namespace PortfolioManager.RestApi.TradingCalander
 {
-    public class TradingCalanderResponse
+    public class UpdateTradingCalanderCommand
     {
         public int Year { get; set; }
         public List<NonTradingDay> NonTradingDays { get; }
+
+        public UpdateTradingCalanderCommand()
+        {
+            NonTradingDays = new List<NonTradingDay>();
+        }
+
 
         public class NonTradingDay
         {
@@ -20,5 +26,5 @@ namespace PortfolioManager.RestApi.Responses
                 Desciption = description;
             }
         }
-    }
+    }    
 }

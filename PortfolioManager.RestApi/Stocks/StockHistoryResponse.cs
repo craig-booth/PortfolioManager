@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.RestApi.Responses
+namespace PortfolioManager.RestApi.Stocks
 {
     public class StockHistoryResponse 
     {

@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
+using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Domain.CorporateActions
 {
-    public class SplitConsolidation : ICorporateAction
-    {
-        public Guid Id => throw new NotImplementedException();
-
-        public DateTime ActionDate => throw new NotImplementedException();
-
-        public string Description => throw new NotImplementedException();
-
-        public Stock Stock => throw new NotImplementedException();
+    public class SplitConsolidation : CorporateAction
+    { 
+        public SplitConsolidation(Guid id, Stock stock, DateTime actionDate, string description)
+            : base(id, stock, CorporateActionType.SplitConsolidation, actionDate, description)
+        {
+        }
     }
 }

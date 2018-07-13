@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
+using PortfolioManager.RestApi.Stocks;
+using PortfolioManager.RestApi.TradingCalander;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.Temp

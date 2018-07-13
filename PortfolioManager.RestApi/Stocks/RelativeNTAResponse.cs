@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PortfolioManager.RestApi.Responses
+namespace PortfolioManager.RestApi.Stocks
 {
     public class RelativeNTAResponse
     {

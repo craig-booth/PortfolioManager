@@ -4,7 +4,7 @@ using System.Text;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.RestApi.Commands
+namespace PortfolioManager.RestApi.Stocks
 {
     public class ChangeDividendReinvestmentPlanCommand
     {

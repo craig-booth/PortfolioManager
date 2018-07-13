@@ -17,7 +17,7 @@ namespace PortfolioManager.Service.CorporateActions
             _PortfolioQuery = portfolioQuery;
         }
 
-        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
         {
             var dividend = corporateAction as Dividend;
 
@@ -107,7 +107,7 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions;
         }
 
-        public bool HasBeenApplied(ICorporateAction corporateAction)
+        public bool HasBeenApplied(CorporateAction corporateAction)
         {
             Dividend dividend = corporateAction as Dividend;
 

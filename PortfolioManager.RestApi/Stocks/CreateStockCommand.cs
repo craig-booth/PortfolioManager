@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.RestApi.Commands
+namespace PortfolioManager.RestApi.Stocks
 {
     public class CreateStockCommand
     {

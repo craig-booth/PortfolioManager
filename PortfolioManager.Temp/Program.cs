@@ -19,8 +19,8 @@ using PortfolioManager.EventStore.Sqlite;
 using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Service.Services;
 using PortfolioManager.Data.SQLite.Stocks;
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
+using PortfolioManager.RestApi.Stocks;
+using PortfolioManager.RestApi.TradingCalander;
 
 namespace PortfolioManager.Temp
 {
@@ -372,7 +372,7 @@ namespace PortfolioManager.Temp
             _StockExchange.TradingCalander.AddNonTradingDay(command.Date);
         }
         */
-        public void Execute(AddCapitalReturnCommand command)
+   /*     public void Execute(AddCapitalReturnCommand command)
         {
             var stock = _StockExchange.Stocks.Get(command.ASXCode, command.RecordDate);
             if (stock != null)
@@ -384,7 +384,7 @@ namespace PortfolioManager.Temp
             var stock = _StockExchange.Stocks.Get(command.ASXCode, command.RecordDate);
             if (stock != null)
                 stock.AddDividend(command.RecordDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
-        }
+        } */
 
     }
 

@@ -8,13 +8,13 @@ namespace PortfolioManager.Service.CorporateActions
 {
     interface ICorporateActionHandler
     {
-        IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction);
-        bool HasBeenApplied(ICorporateAction corporateAction);
+        IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction);
+        bool HasBeenApplied(CorporateAction corporateAction);
     }
 
     interface ICorporateActionHandlerFactory
     {
-        ICorporateActionHandler GetHandler(ICorporateAction corporateAction);
+        ICorporateActionHandler GetHandler(CorporateAction corporateAction);
     }
 
     class CorporateActionHandlerFactory : ICorporateActionHandlerFactory
@@ -33,7 +33,7 @@ namespace PortfolioManager.Service.CorporateActions
            //     .Register<Transformation>(() => new TransformationHandler(_PortfolioQuery, _StockQuery));
         }
 
-        public ICorporateActionHandler GetHandler(ICorporateAction corporateAction)
+        public ICorporateActionHandler GetHandler(CorporateAction corporateAction)
         {
             return _HandlerFactory.GetService(corporateAction);
         }

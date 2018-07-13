@@ -40,11 +40,11 @@ namespace PortfolioManager.Service.Services
                 // Get a list of all stocks held
                 var allOwnedStocks = portfolioUnitOfWork.PortfolioQuery.GetStocksOwned(DateTime.Today, DateTime.Today);
 
-                var actions = new List<ICorporateAction>();
+                var actions = new List<CorporateAction>();
                 foreach (var ownedStock in allOwnedStocks)
                 {
                     var stock = _StockExchange.Stocks.Get(ownedStock);
-                    var corporateActions = stock.CorporateActions.Values; 
+                    var corporateActions = stock.CorporateActions(); 
 
                     foreach (var corporateAction in corporateActions)
                     {
@@ -73,7 +73,7 @@ namespace PortfolioManager.Service.Services
             var responce = new TransactionsForCorparateActionsResponce();
 
             var stock = _StockExchange.Stocks.Get(stockId);
-            var corporateAction = stock.CorporateActions[actionId];
+            var corporateAction = stock.CorporateAction(actionId);
 
             using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
+using PortfolioManager.RestApi.TradingCalander;
 
 namespace PortfolioManager.RestApi.Client
 {

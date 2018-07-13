@@ -7,8 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
+using PortfolioManager.Domain.CorporateActions;
+using PortfolioManager.RestApi.Stocks;
+using PortfolioManager.RestApi.CorporateActions;
 
 namespace PortfolioManager.Web.Controllers
 {
@@ -295,16 +296,94 @@ namespace PortfolioManager.Web.Controllers
 
             return Ok();
         }
-        
 
         // GET : /api/stocks/{id}/corporateactions
+        [Route("{id}/corporateactions")]
+        [HttpGet]
+        public ActionResult GetCorporateActions([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            return Ok(stock.CorporateActions(dateRange).Select(x => x.ToCorporateActionResponse()));
+        }
 
         // GET : /api/stocks/{id}/corporateactions/{id}
+        [Route("{id}/corporateactions/{actionid}")]
+        [HttpGet]
+        public ActionResult GetCorporateAction([FromRoute]Guid id, [FromRoute]Guid actionId)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
 
-        // POST : /api/stocks/{id}/corporateactions/{id}
+            var corporateAction = stock.CorporateAction(actionId);
+            if (corporateAction == null)
+                return NotFound();
 
+            if (corporateAction.Type == CorporateActionType.Dividend)
+                return Ok((corporateAction as Dividend).ToDividendResponse());
+            else
+                return BadRequest("Unkown corporate action type");
+        }
 
+        // GET : /api/stocks/{id}/corporateactions/dividends
+        [Route("{id}/corporateactions/dividends")]
+        [HttpGet]
+        public ActionResult GetDividends([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
 
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            return Ok(stock.CorporateActions<Dividend>(dateRange).Select(x => x.ToDividendResponse()));
+        }
+
+        // GET : /api/stocks/{id}/corporateactions/dividends/{id}
+        [Route("{id}/corporateactions/{actionid}")]
+        [HttpGet]
+        public ActionResult GetDividend([FromRoute]Guid id, [FromRoute]Guid actionId)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            var corporateAction = stock.CorporateAction<Dividend>(actionId);
+            if (corporateAction == null)
+                return NotFound();
+
+            return Ok(corporateAction.ToDividendResponse());
+        } 
+
+        // POST : /api/stocks/{id}/corporateactions/dividends
+        [Route("{id}/corporateactions/dividends")]
+        [HttpPost]
+        public ActionResult AddDividend([FromRoute]Guid id, [FromBody] AddDividendCommand command)
+        {
+            // Check id in URL and id in command match
+            if (id != command.Stock)
+                return BadRequest("Id in command doesn't match id on URL");
+
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            try
+            {
+                stock.AddDividend(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
+        }
 
         private bool MatchesQuery(StockProperties stock, string query)
         {

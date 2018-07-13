@@ -16,7 +16,7 @@ namespace PortfolioManager.Service.CorporateActions
             _PortfolioQuery = portfolioQuery;
         }
 
-        public IReadOnlyCollection<Transaction> CreateTransactionList(ICorporateAction corporateAction)
+        public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
         {
             var capitalReturn = corporateAction as CapitalReturn;
 
@@ -43,7 +43,7 @@ namespace PortfolioManager.Service.CorporateActions
             return transactions.AsReadOnly();
         }
 
-        public bool HasBeenApplied(ICorporateAction corporateAction)
+        public bool HasBeenApplied(CorporateAction corporateAction)
         {
             CapitalReturn capitalReturn = corporateAction as CapitalReturn;
 

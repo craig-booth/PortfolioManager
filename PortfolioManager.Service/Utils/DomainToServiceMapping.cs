@@ -16,7 +16,7 @@ namespace PortfolioManager.Service.Utils
             return new StockItem(stock.Id, stockProperties.ASXCode, stockProperties.Name);
         }
 
-        public static CorporateActionItem ToCorporateActionItem(this ICorporateAction corporateAction)
+        public static CorporateActionItem ToCorporateActionItem(this CorporateAction corporateAction)
         {
             return new CorporateActionItem()
             {

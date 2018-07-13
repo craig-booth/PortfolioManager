@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.CorporateActions;
+using PortfolioManager.RestApi.Stocks;
+using PortfolioManager.RestApi.CorporateActions;
 
 namespace PortfolioManager.Web
 {
@@ -122,6 +123,35 @@ namespace PortfolioManager.Web
             }
        
             return response;
+        }
+
+        public static CorporateActionResponse ToCorporateActionResponse(this CorporateAction corporateAction)
+        {
+            return new CorporateActionResponse()
+            {
+                Id = corporateAction.Id,
+                Stock = corporateAction.Stock.Id,
+                Type = corporateAction.Type,
+                ActionDate = corporateAction.ActionDate,
+                Description = corporateAction.Description
+            };
+        }
+
+        public static DividendResponse ToDividendResponse(this Dividend dividend)
+        {
+            return new DividendResponse()
+            {
+                Id = dividend.Id,
+                Stock = dividend.Stock.Id,
+                Type = dividend.Type,
+                ActionDate = dividend.ActionDate,
+                Description = dividend.Description,
+                PaymentDate = dividend.PaymentDate,
+                DividendAmount = dividend.DividendAmount,
+                CompanyTaxRate = dividend.CompanyTaxRate,
+                PercentFranked = dividend.PercentFranked,
+                DRPPrice = dividend.DRPPrice
+            };
         }
     }
 }

@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 
 using PortfolioManager.Common;
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
+using PortfolioManager.RestApi.Stocks;
 
 namespace PortfolioManager.RestApi.Client
 {

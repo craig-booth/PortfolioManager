@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PortfolioManager.RestApi.Commands
+namespace PortfolioManager.RestApi.Stocks
 {
     public class UpdateClosingPricesCommand
     {

@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using PortfolioManager.RestApi.Commands;
-using PortfolioManager.RestApi.Responses;
+using PortfolioManager.RestApi.TradingCalander;
 
 namespace PortfolioManager.Web.Controllers
 {
@@ -22,7 +21,7 @@ namespace PortfolioManager.Web.Controllers
         // GET: api/tradingcalander/{year}
         [HttpGet]
         [Route("{year}")]
-        public ActionResult<IEnumerable<NonTradingDay>> Get([FromRoute]int year)
+        public ActionResult<TradingCalanderResponse> Get([FromRoute]int year)
         {
             var nonTradingDays = _TradingCalander.NonTradingDays(year);
 

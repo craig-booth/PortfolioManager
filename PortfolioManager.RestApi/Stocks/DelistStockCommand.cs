@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PortfolioManager.RestApi.Commands
+namespace PortfolioManager.RestApi.Stocks
 {
     public class DelistStockCommand
     {
