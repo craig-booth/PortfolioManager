@@ -20,7 +20,7 @@ namespace PortfolioManager.Web.Controllers
 
         // GET: api/tradingcalander/{year}
         [HttpGet]
-        [Route("{year}")]
+        [Route("{year:int}")]
         public ActionResult<TradingCalanderResponse> Get([FromRoute]int year)
         {
             var nonTradingDays = _TradingCalander.NonTradingDays(year);
@@ -30,7 +30,7 @@ namespace PortfolioManager.Web.Controllers
 
         // POST: api/tradingcalander/{year}
         [HttpPost]
-        [Route("{year}")]
+        [Route("{year:int}")]
         public ActionResult Post([FromRoute]int year, [FromBody] UpdateTradingCalanderCommand command)
         {
             if (year != command.Year)

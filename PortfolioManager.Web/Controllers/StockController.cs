@@ -56,7 +56,7 @@ namespace PortfolioManager.Web.Controllers
 
         // GET: api/stocks/{id}
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:guid}")]
         public ActionResult<StockResponse> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
             var stock = _StockRepository.Get(id);
@@ -71,7 +71,7 @@ namespace PortfolioManager.Web.Controllers
 
         // GET : /api/stocks/{id}/history
         [HttpGet]
-        [Route("{id}/history")]
+        [Route("{id:guid}/history")]
         public ActionResult<StockHistoryResponse> GetHistory([FromRoute]Guid id)
         {
             var stock = _StockRepository.Get(id);
@@ -83,7 +83,7 @@ namespace PortfolioManager.Web.Controllers
 
         // GET : /api/stocks/{id}/closingprices
         [HttpGet]
-        [Route("{id}/closingprices")]
+        [Route("{id:guid}/closingprices")]
         public ActionResult<StockPriceResponse> GetClosingPrices([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             var stock = _StockRepository.Get(id);
@@ -128,7 +128,7 @@ namespace PortfolioManager.Web.Controllers
         }
 
         // POST : /api/stocks/{id}/change
-        [Route("{id}/change")]
+        [Route("{id:guid}/change")]
         [HttpPost]
         public ActionResult ChangeStock([FromRoute]Guid id, [FromBody] ChangeStockCommand command)
         {
@@ -153,7 +153,7 @@ namespace PortfolioManager.Web.Controllers
         }
 
         // POST : /api/stocks/{id}/delist
-        [Route("{id}/delist")]
+        [Route("{id:guid}/delist")]
         [HttpPost]
         public ActionResult DelistStock([FromRoute]Guid id, [FromBody] DelistStockCommand command)
         {
@@ -178,7 +178,7 @@ namespace PortfolioManager.Web.Controllers
         }
 
         // POST : /api/stocks/{id}/closingprices
-        [Route("{id}/closingprices")]
+        [Route("{id:guid}/closingprices")]
         [HttpPost]
         public ActionResult UpdateClosingPrices([FromRoute]Guid id, [FromBody] UpdateClosingPricesCommand command)
         {
@@ -232,7 +232,7 @@ namespace PortfolioManager.Web.Controllers
         }
 
         // GET : /api/stocks/{id}/relativenta
-        [Route("{id}/relativenta")]
+        [Route("{id:guid}/relativenta")]
         [HttpGet]
         public ActionResult GetRelativeNTA([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
@@ -252,7 +252,7 @@ namespace PortfolioManager.Web.Controllers
         }
 
         // POST : /api/stocks/{id}/relativenta
-        [Route("{id}/relativenta")]
+        [Route("{id:guid}/relativenta")]
         [HttpPost]
         public ActionResult ChangeRelativeNTA([FromRoute]Guid id, [FromBody] ChangeRelativeNTAsCommand command)
         {
@@ -288,94 +288,6 @@ namespace PortfolioManager.Web.Controllers
             try
             {
                 stapledSecurity.SetRelativeNTAs(command.ChangeDate, ntas);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            return Ok();
-        }
-
-        // GET : /api/stocks/{id}/corporateactions
-        [Route("{id}/corporateactions")]
-        [HttpGet]
-        public ActionResult GetCorporateActions([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
-        {
-            var stock = _StockRepository.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
-
-            return Ok(stock.CorporateActions(dateRange).Select(x => x.ToCorporateActionResponse()));
-        }
-
-        // GET : /api/stocks/{id}/corporateactions/{id}
-        [Route("{id}/corporateactions/{actionid}")]
-        [HttpGet]
-        public ActionResult GetCorporateAction([FromRoute]Guid id, [FromRoute]Guid actionId)
-        {
-            var stock = _StockRepository.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            var corporateAction = stock.CorporateAction(actionId);
-            if (corporateAction == null)
-                return NotFound();
-
-            if (corporateAction.Type == CorporateActionType.Dividend)
-                return Ok((corporateAction as Dividend).ToDividendResponse());
-            else
-                return BadRequest("Unkown corporate action type");
-        }
-
-        // GET : /api/stocks/{id}/corporateactions/dividends
-        [Route("{id}/corporateactions/dividends")]
-        [HttpGet]
-        public ActionResult GetDividends([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
-        {
-            var stock = _StockRepository.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
-
-            return Ok(stock.CorporateActions<Dividend>(dateRange).Select(x => x.ToDividendResponse()));
-        }
-
-        // GET : /api/stocks/{id}/corporateactions/dividends/{id}
-        [Route("{id}/corporateactions/{actionid}")]
-        [HttpGet]
-        public ActionResult GetDividend([FromRoute]Guid id, [FromRoute]Guid actionId)
-        {
-            var stock = _StockRepository.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            var corporateAction = stock.CorporateAction<Dividend>(actionId);
-            if (corporateAction == null)
-                return NotFound();
-
-            return Ok(corporateAction.ToDividendResponse());
-        } 
-
-        // POST : /api/stocks/{id}/corporateactions/dividends
-        [Route("{id}/corporateactions/dividends")]
-        [HttpPost]
-        public ActionResult AddDividend([FromRoute]Guid id, [FromBody] AddDividendCommand command)
-        {
-            // Check id in URL and id in command match
-            if (id != command.Stock)
-                return BadRequest("Id in command doesn't match id on URL");
-
-            var stock = _StockRepository.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            try
-            {
-                stock.AddDividend(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
             }
             catch (Exception e)
             {
