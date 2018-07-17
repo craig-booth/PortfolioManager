@@ -10,7 +10,7 @@ namespace PortfolioManager.RestApi.Stocks
     public class ChangeStockCommand
     {
         public Guid Id { get; set; }
-        public DateTime ChangeDate { get; }
+        public DateTime ChangeDate { get; set; }
         public string AsxCode { get; set; }
         public string Name { get; set; }
         public AssetCategory Category { get; set; }

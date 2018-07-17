@@ -36,10 +36,13 @@ namespace PortfolioManager.Web
             else
                 response.StapledSecurity = false;
 
-            var drp = stock.DividendReinvestmentPlan[date];
-            response.DRP.Active = drp.DRPActive;
-            response.DRP.DividendRoundingRule = drp.DividendRoundingRule;
-            response.DRP.DRPMethod = drp.DRPMethod;
+            if (stock.IsEffectiveAt(date))
+            {
+                var drp = stock.DividendReinvestmentPlan[date];
+                response.DRP.Active = drp.DRPActive;
+                response.DRP.DividendRoundingRule = drp.DividendRoundingRule;
+                response.DRP.DRPMethod = drp.DRPMethod;
+            }
 
             return response;
         }

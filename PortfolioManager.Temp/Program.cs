@@ -46,11 +46,19 @@ namespace PortfolioManager.Temp
 
         public static void MigrateDatabase()
         {
-            var migrator = new MigrateDatabase();
+            var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
+            var migrator = new MigrateDatabase(stockDatabase);
 
-       //     var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
-            var loadTask = migrator.LoadTradingCalander();
-            Task.WaitAll(loadTask);
+            var loadCalanderTask = migrator.LoadTradingCalander();
+            Task.WaitAll(loadCalanderTask);
+
+            var stocks = migrator.ListStocks();
+            foreach (var stock in stocks)
+            {
+                var loadStockTask = migrator.LoadStock(stock);
+                Task.WaitAll(loadStockTask);
+            }
+
         }
 
         public static void CreateMongoDBEventStore(MongodbEventStore mongoEventStore, string sqliteFile)
