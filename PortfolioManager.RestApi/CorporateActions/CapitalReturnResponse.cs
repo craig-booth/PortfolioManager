@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PortfolioManager.RestApi.CorporateActions
 {
-    public class AddCapitalReturnCommand : AddCorporateActionCommand
+    public class CapitalReturnResponse : CorporateActionResponse
     {
         public DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }

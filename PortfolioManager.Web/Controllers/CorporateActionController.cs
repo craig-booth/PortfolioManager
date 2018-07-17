@@ -53,8 +53,10 @@ namespace PortfolioManager.Web.Controllers
 
             if (corporateAction.Type == CorporateActionType.Dividend)
                 return Ok((corporateAction as Dividend).ToDividendResponse());
+            else if (corporateAction.Type == CorporateActionType.CapitalReturn)
+                return Ok((corporateAction as CapitalReturn).ToCapitalReturnResponse());
             else
-                return BadRequest("Unkown corporate action type");
+                return BadRequest("Unknown corporate action type");
         }
 
         // GET : /api/stocks/{id}/corporateactions/dividends
@@ -103,6 +105,61 @@ namespace PortfolioManager.Web.Controllers
             try
             {
                 stock.AddDividend(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
+        }
+
+        // GET : /api/stocks/{id}/corporateactions/capitalreturn
+        [Route("capitalreturns")]
+        [HttpGet]
+        public ActionResult GetCapitalReturns([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            return Ok(stock.CorporateActions<CapitalReturn>(dateRange).Select(x => x.ToCapitalReturnResponse()));
+        }
+
+        // GET : /api/stocks/{id}/corporateactions/capitalreturns/{id}
+        [Route("capitalreturns/{actionid:guid}")]
+        [HttpGet]
+        public ActionResult GetCapitalReturn([FromRoute]Guid id, [FromRoute]Guid actionId)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            var corporateAction = stock.CorporateAction<CapitalReturn>(actionId);
+            if (corporateAction == null)
+                return NotFound();
+
+            return Ok(corporateAction.ToCapitalReturnResponse());
+        }
+
+        // POST : /api/stocks/{id}/corporateactions/capitalreturns
+        [Route("capitalreturns")]
+        [HttpPost]
+        public ActionResult AddCapitalReturn([FromRoute]Guid id, [FromBody] AddCapitalReturnCommand command)
+        {
+            // Check id in URL and id in command match
+            if (id != command.Stock)
+                return BadRequest("Id in command doesn't match id on URL");
+
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            try
+            {
+                stock.AddCapitalReturn(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.Amount);
             }
             catch (Exception e)
             {

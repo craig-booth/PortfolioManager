@@ -153,5 +153,19 @@ namespace PortfolioManager.Web
                 DRPPrice = dividend.DRPPrice
             };
         }
+
+        public static CapitalReturnResponse ToCapitalReturnResponse(this CapitalReturn capitalReturn)
+        {
+            return new CapitalReturnResponse()
+            {
+                Id = capitalReturn.Id,
+                Stock = capitalReturn.Stock.Id,
+                Type = capitalReturn.Type,
+                ActionDate = capitalReturn.ActionDate,
+                Description = capitalReturn.Description,
+                PaymentDate = capitalReturn.PaymentDate,
+                Amount = capitalReturn.Amount
+            };
+        }
     }
 }
