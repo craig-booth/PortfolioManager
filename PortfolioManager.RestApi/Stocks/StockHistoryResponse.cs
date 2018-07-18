@@ -28,21 +28,21 @@ namespace PortfolioManager.RestApi.Stocks
 
         public List<HistoricProperties> History { get; set; }
 
-        public class HistoricDRP
+        public class HistoricDividendRules
         {
             public DateTime FromDate { get; set; }
             public DateTime ToDate { get; set; }
-            public bool Active { get; set; }
-            public DRPMethod DRPMethod { get; set; }
             public RoundingRule DividendRoundingRule { get; set; }
+            public bool DRPActive { get; set; }
+            public DRPMethod DRPMethod { get; set; }
         }
 
-        public List<HistoricDRP> DRP { get; set; }
+        public List<HistoricDividendRules> DividendRules { get; set; }
 
         public StockHistoryResponse()
         {
             History = new List<HistoricProperties>();
-            DRP = new List<HistoricDRP>();
+            DividendRules = new List<HistoricDividendRules>();
         }
 
     }

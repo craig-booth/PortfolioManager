@@ -28,7 +28,7 @@ namespace PortfolioManager.Service.CorporateActions
             if (!parcels.Any())
                 return transactions;
 
-            var dividendRoundingRule = dividend.Stock.DividendReinvestmentPlan[dividend.ActionDate].DividendRoundingRule;
+            var dividendRoundingRule = dividend.Stock.DividendRules[dividend.ActionDate].DividendRoundingRule;
 
             var unitsHeld = parcels.Sum(x => x.Units);
             var amountPaid = (unitsHeld * dividend.DividendAmount).ToCurrency(dividendRoundingRule);
@@ -61,7 +61,7 @@ namespace PortfolioManager.Service.CorporateActions
                     int drpUnits;
                     decimal costBase;
 
-                    var drpMethod = dividend.Stock.DividendReinvestmentPlan[dividend.ActionDate].DRPMethod;
+                    var drpMethod = dividend.Stock.DividendRules[dividend.ActionDate].DRPMethod;
                     if (drpMethod == DRPMethod.RoundUp)
                     {
                         drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);

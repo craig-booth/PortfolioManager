@@ -11,7 +11,6 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
-using PortfolioManager.Domain.Stocks.Commands;
 using PortfolioManager.Domain.CorporateActions.Events;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Memory;
@@ -48,7 +47,7 @@ namespace PortfolioManager.Temp
         public static void MigrateDatabase()
         {
             var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
-            RestClient restClient = null; // new RestClient("http://localhost", Guid.Empty);
+            RestClient restClient = new RestClient("http://localhost", Guid.Empty);
             var migrator = new MigrateDatabase(stockDatabase, restClient);
 
             var loadCalanderTask = migrator.LoadTradingCalander();
@@ -101,7 +100,7 @@ namespace PortfolioManager.Temp
             Console.WriteLine("Job 5: " + DateTime.Now.ToShortTimeString());
         }
 
-        private static void ConvertToEventSourcedModel()
+    /*    private static void ConvertToEventSourcedModel()
         {
             var eventStore = new MemoryEventStore();
             var stockExchange = new StockExchange(eventStore);
@@ -114,7 +113,7 @@ namespace PortfolioManager.Temp
 
             eventStore.CopyEventStream(sqliteEventStore, "TradingCalander");
             eventStore.CopyEventStream(sqliteEventStore, "StockRepository");
-        }
+        } */
 
         private static void Test(IEventStore eventStore)
         {
@@ -145,7 +144,7 @@ namespace PortfolioManager.Temp
 
             }
         }
-
+/*
         private static void LoadCorporateActions(StockExchange stockExchange)
         {
             var stockDataBase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
@@ -256,7 +255,7 @@ namespace PortfolioManager.Temp
             if (lastVersion.ToDate != DateUtils.NoEndDate)
             {
                 commands.Add(new DelistStockCommand(id, lastVersion.ToDate));
-            } */
+            } 
 
             return commands;
         }
@@ -313,7 +312,7 @@ namespace PortfolioManager.Temp
 
 
             return commands;
-        }
+        } */
     }
 
     public class StockExchangeCommandHandler 

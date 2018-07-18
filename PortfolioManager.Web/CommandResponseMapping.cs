@@ -40,10 +40,11 @@ namespace PortfolioManager.Web
 
             if (stock.IsEffectiveAt(date))
             {
-                var drp = stock.DividendReinvestmentPlan[date];
-                response.DRP.Active = drp.DRPActive;
-                response.DRP.DividendRoundingRule = drp.DividendRoundingRule;
-                response.DRP.DRPMethod = drp.DRPMethod;
+                var drp = stock.DividendRules[date];
+
+                response.DividendRoundingRule = drp.DividendRoundingRule;
+                response.DRPActive = drp.DRPActive;
+                response.DRPMethod = drp.DRPMethod;
             }
 
             return response;
@@ -74,15 +75,15 @@ namespace PortfolioManager.Web
                     })
             );
 
-            response.DRP.AddRange(
-                stock.DividendReinvestmentPlan.Values.Select(x =>
-                    new StockHistoryResponse.HistoricDRP()
+            response.DividendRules.AddRange(
+                stock.DividendRules.Values.Select(x =>
+                    new StockHistoryResponse.HistoricDividendRules()
                     {
                         FromDate = x.EffectivePeriod.FromDate,
                         ToDate = x.EffectivePeriod.ToDate,
-                        Active = x.Properties.DRPActive,
-                        DRPMethod = x.Properties.DRPMethod,
-                        DividendRoundingRule = x.Properties.DividendRoundingRule
+                        DividendRoundingRule = x.Properties.DividendRoundingRule,
+                        DRPActive = x.Properties.DRPActive,
+                        DRPMethod = x.Properties.DRPMethod
                     })
             );
 

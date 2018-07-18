@@ -22,7 +22,10 @@ namespace PortfolioManager.RestApi.Stocks
 
         public decimal LastPrice { get; set; }
 
-        public DividendReinvestmentPlan DRP { get; set; }
+        public RoundingRule DividendRoundingRule { get; set; }
+
+        public bool DRPActive { get; set; }
+        public DRPMethod DRPMethod { get; set; }
 
         public class StapledSecurityChild
         {
@@ -31,19 +34,11 @@ namespace PortfolioManager.RestApi.Stocks
             public bool Trust { get; set; }
         }
 
-        public class DividendReinvestmentPlan
-        {
-            public bool Active { get; set; }
-            public DRPMethod DRPMethod { get; set; }
-            public RoundingRule DividendRoundingRule { get; set; }
-        }
-
         public List<StapledSecurityChild> ChildSecurities { get; set; }
 
         public StockResponse()
         {
             ChildSecurities = new List<StapledSecurityChild>();
-            DRP = new DividendReinvestmentPlan() { Active = false };
         }
     }
 }

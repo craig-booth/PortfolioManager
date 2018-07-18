@@ -71,9 +71,9 @@ namespace PortfolioManager.RestApi.Client
             await PostAsync<UpdateClosingPricesCommand>("/api/stocks/" + command.Id.ToString() + "/closingprices", command);
         }
 
-        public async Task ChangeDRP(ChangeDividendReinvestmentPlanCommand command)
+        public async Task ChangeDividendRules(ChangeDividendRulesCommand command)
         {
-            await PostAsync<ChangeDividendReinvestmentPlanCommand>("/api/stocks/" + command.Id.ToString() + "/changedrp", command);
+            await PostAsync<ChangeDividendRulesCommand>("/api/stocks/" + command.Id.ToString() + "/changedividendrules", command);
         }
 
         public async Task ChangeReleativeNTAs(ChangeRelativeNTAsCommand command)

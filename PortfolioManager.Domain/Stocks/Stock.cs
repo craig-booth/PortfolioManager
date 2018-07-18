@@ -21,7 +21,7 @@ namespace PortfolioManager.Domain.Stocks
         
         public bool Trust { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
-        public EffectiveProperties<DividendReinvestmentPlan> DividendReinvestmentPlan { get; } = new EffectiveProperties<DividendReinvestmentPlan>();
+        public EffectiveProperties<DividendRules> DividendRules { get; } = new EffectiveProperties<DividendRules>();
 
         private readonly Dictionary<Guid, CorporateAction> _CorporateActions = new Dictionary<Guid, CorporateAction>();
 
@@ -53,8 +53,8 @@ namespace PortfolioManager.Domain.Stocks
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             Properties.Change(@event.ListingDate, properties);
 
-            var drp = new DividendReinvestmentPlan(false, RoundingRule.Round, DRPMethod.Round);
-            DividendReinvestmentPlan.Change(@event.ListingDate, drp);
+            var dividendRules = new DividendRules(RoundingRule.Round, false, DRPMethod.Round);
+            DividendRules.Change(@event.ListingDate, dividendRules);
         }
 
         public void DeList(DateTime date)
@@ -70,7 +70,7 @@ namespace PortfolioManager.Domain.Stocks
             Version++;
 
             Properties.End(@event.DelistedDate);
-            DividendReinvestmentPlan.End(@event.DelistedDate);
+            DividendRules.End(@event.DelistedDate);
 
             End(@event.DelistedDate);
         }
@@ -179,11 +179,11 @@ namespace PortfolioManager.Domain.Stocks
             _EventStream.StoreEvent(@event);
         }
 
-        public void ChangeDRPRules(DateTime changeDate, bool drpActive, RoundingRule newDividendRoundingRule, DRPMethod newDrpMethod)
+        public void ChangeDividendRules(DateTime changeDate, RoundingRule newDividendRoundingRule, bool drpActive, DRPMethod newDrpMethod)
         {
             var properties = Properties[changeDate];
 
-            var @event = new ChangeDividendReinvestmentPlanEvent(Id, Version, changeDate,  drpActive, newDividendRoundingRule, newDrpMethod);
+            var @event = new ChangeDividendRulesEvent(Id, Version, changeDate, newDividendRoundingRule, drpActive, newDrpMethod);
 
             Apply(@event);
             _EventStream.StoreEvent(@event);
@@ -201,16 +201,16 @@ namespace PortfolioManager.Domain.Stocks
             Properties.Change(@event.ChangeDate, newProperties);
         }
 
-        public void Apply(ChangeDividendReinvestmentPlanEvent @event)
+        public void Apply(ChangeDividendRulesEvent @event)
         {
             Version++;
 
-            var newProperties = new DividendReinvestmentPlan(
-                @event.DRPActive,
+            var newProperties = new DividendRules(
                 @event.DividendRoundingRule,
+                @event.DRPActive,
                 @event.DRPMethod);
 
-            DividendReinvestmentPlan.Change(@event.ChangeDate, newProperties);
+            DividendRules.Change(@event.ChangeDate, newProperties);
         }
 
         public CorporateAction CorporateAction(Guid id)
@@ -304,16 +304,17 @@ namespace PortfolioManager.Domain.Stocks
         }
     }
 
-    public struct DividendReinvestmentPlan
+    public struct DividendRules
     {
-        public readonly bool DRPActive;
         public readonly RoundingRule DividendRoundingRule;
+
+        public readonly bool DRPActive;       
         public readonly DRPMethod DRPMethod;
 
-        public DividendReinvestmentPlan(bool drpActive, RoundingRule dividendRoundingRule, DRPMethod drpMethod)
+        public DividendRules(RoundingRule dividendRoundingRule, bool drpActive, DRPMethod drpMethod)
         {
-            DRPActive = drpActive;
             DividendRoundingRule = dividendRoundingRule;
+            DRPActive = drpActive;
             DRPMethod = drpMethod;
         }
     }

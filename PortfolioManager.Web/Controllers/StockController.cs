@@ -206,10 +206,10 @@ namespace PortfolioManager.Web.Controllers
             return Ok();
         }
 
-        // POST : /api/stocks/{id}/changedrp
-        [Route("{id}/changedrp")]
+        // POST : /api/stocks/{id}/changedividendrules
+        [Route("{id}/changedividendrules")]
         [HttpPost]
-        public ActionResult ChangeDRP([FromRoute]Guid id, [FromBody] ChangeDividendReinvestmentPlanCommand command)
+        public ActionResult ChangeDividendRules([FromRoute]Guid id, [FromBody] ChangeDividendRulesCommand command)
         {
             // Check id in URL and id in command match
             if (id != command.Id)
@@ -221,7 +221,7 @@ namespace PortfolioManager.Web.Controllers
 
             try
             {
-                stock.ChangeDRPRules(command.ChangeDate, command.DRPActive, command.DividendRoundingRule, command.DRPMethod);
+                stock.ChangeDividendRules(command.ChangeDate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
             }
             catch (Exception e)
             {

@@ -124,18 +124,18 @@ namespace PortfolioManager.Temp
                 }
 
                 // DRP
-                if (firstRecord.DRPMethod != 0)
+                if ((firstRecord.DividendRoundingRule != 0) || (firstRecord.DRPMethod != 0))
                 {
-                    var changeDRPCommand = new ChangeDividendReinvestmentPlanCommand()
+                    var changeDividendRulesCommand = new ChangeDividendRulesCommand()
                     {
                         Id = id,
                         ChangeDate = firstRecord.FromDate,
-                        DRPActive = true,
                         DividendRoundingRule = firstRecord.DividendRoundingRule,
+                        DRPActive = (firstRecord.DRPMethod != 0),
                         DRPMethod = firstRecord.DRPMethod
                     };
                     if (_RestClient != null)
-                        await _RestClient.Stocks.ChangeDRP(changeDRPCommand);
+                        await _RestClient.Stocks.ChangeDividendRules(changeDividendRulesCommand);
                 }
 
 
