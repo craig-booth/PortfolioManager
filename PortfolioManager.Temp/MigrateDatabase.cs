@@ -56,6 +56,7 @@ namespace PortfolioManager.Temp
                 var stockRecords = unitOfWork.StockQuery.GetAll().Where(x => x.Id == id);
 
                 var firstRecord = stockRecords.First();
+                var lastRecord = stockRecords.Last();
 
                 // List Stock
                 if (firstRecord.Type != StockType.StapledSecurity)
@@ -160,9 +161,23 @@ namespace PortfolioManager.Temp
                 // Add Capital Returns
 
                 // Add closing prices
+                var prices = unitOfWork.StockQuery.GetPrices(id, firstRecord.FromDate, new DateTime(2018, 05, 29));
+                var years = prices.Keys.Select(x => x.Year).Distinct();
+                foreach (var year in years)
+                {
+                    var updateClosingPricesCommand = new UpdateClosingPricesCommand()
+                    {
+                        Id = id
+                    };
+                    updateClosingPricesCommand.Prices.AddRange(
+                        prices.Where(x => x.Key.Year == year).Select(x => new UpdateClosingPricesCommand.ClosingPrice(x.Key, x.Value))
+                    );
+
+                    if (_RestClient != null)
+                        await _RestClient.Stocks.UpdateClosingPrices(updateClosingPricesCommand);
+                }
 
                 // Delist Stock
-                var lastRecord = stockRecords.Last();
                 if (lastRecord.ToDate != DateUtils.NoEndDate)
                 {
                     var delistCommand = new DelistStockCommand()
