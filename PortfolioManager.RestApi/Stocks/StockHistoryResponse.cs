@@ -13,6 +13,9 @@ namespace PortfolioManager.RestApi.Stocks
         public string ASXCode { get; set; }
         public string Name { get; set; }
 
+        public DateTime ListingDate { get; set; }
+        public DateTime DelistedDate { get; set; }
+
         public class HistoricProperties
         {
             public DateTime FromDate { get; set; }

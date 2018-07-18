@@ -17,6 +17,9 @@ namespace PortfolioManager.RestApi.Stocks
         public bool Trust { get; set; }
         public bool StapledSecurity { get; set; }
 
+        public DateTime ListingDate { get; set; }
+        public DateTime DelistedDate { get; set; }
+
         public decimal LastPrice { get; set; }
 
         public DividendReinvestmentPlan DRP { get; set; }

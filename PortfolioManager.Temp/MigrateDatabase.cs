@@ -18,11 +18,11 @@ namespace PortfolioManager.Temp
         private IStockDatabase _StockDatabase;
         private RestClient _RestClient;
 
-        public MigrateDatabase(IStockDatabase stockDatabase)
+        public MigrateDatabase(IStockDatabase stockDatabase, RestClient restClient)
         {
             _StockDatabase = stockDatabase;
 
-            _RestClient = new RestClient("http://localhost", Guid.Empty);
+            _RestClient = restClient;
         }
 
         public async Task LoadTradingCalander()
@@ -36,7 +36,8 @@ namespace PortfolioManager.Temp
                 var command = new UpdateTradingCalanderCommand();
                 command.Year = year;
                 command.NonTradingDays.AddRange(nonTradingDays.Select(x => new UpdateTradingCalanderCommand.NonTradingDay(x.Date, x.Desciption)));
-                await _RestClient.TradingCalander.Update(command);
+                if (_RestClient != null)
+                    await _RestClient.TradingCalander.Update(command);
             }           
         }
 
@@ -69,12 +70,74 @@ namespace PortfolioManager.Temp
                         Category = firstRecord.Category
                     };
 
-                    await _RestClient.Stocks.CreateStock(createCommand);
+                    if (_RestClient != null)
+                        await _RestClient.Stocks.CreateStock(createCommand);
                 }
                 else
                 {
+                    var createCommand = new CreateStockCommand()
+                    {
+                        Id = id,
+                        ListingDate = firstRecord.FromDate,
+                        AsxCode = firstRecord.ASXCode,
+                        Name = firstRecord.Name,
+                        Trust = false,
+                        Category = firstRecord.Category,
+                    };
+
+                    var childSecurities = unitOfWork.StockQuery.GetChildStocks(id, firstRecord.FromDate);
+                    createCommand.ChildSecurities.AddRange(
+                        childSecurities.Select(
+                            x => new CreateStockCommand.StapledSecurityChild(x.ASXCode, x.Name, x.Type == StockType.Trust)
+                        )
+                    );
+
+                    if (_RestClient != null)
+                        await _RestClient.Stocks.CreateStock(createCommand);
+
                     // Add Relative NTAs
+                    var dates = unitOfWork.StockQuery.GetRelativeNTAs(id, childSecurities.First().Id).Select(x => x.Date);
+                    foreach (var date in dates)
+                    {
+                        var changeRelativeNTAsCommnad = new ChangeRelativeNTAsCommand()
+                        {
+                            Id = id,
+                            ChangeDate = date
+                        };
+
+                        foreach (var childSecurity in childSecurities)
+                        {
+                            var nta = unitOfWork.StockQuery.GetRelativeNTA(id, childSecurity.Id, date);
+                            changeRelativeNTAsCommnad.RelativeNTAs.Add(
+                                new ChangeRelativeNTAsCommand.RelativeNTA()
+                                {
+                                    ChildSecurity = childSecurity.ASXCode,
+                                    Percentage = nta.Percentage
+                                }
+                            );
+                        }
+
+                        if (_RestClient != null)
+                            await _RestClient.Stocks.ChangeReleativeNTAs(changeRelativeNTAsCommnad);
+                    }
+
                 }
+
+                // DRP
+                if (firstRecord.DRPMethod != 0)
+                {
+                    var changeDRPCommand = new ChangeDividendReinvestmentPlanCommand()
+                    {
+                        Id = id,
+                        ChangeDate = firstRecord.FromDate,
+                        DRPActive = true,
+                        DividendRoundingRule = firstRecord.DividendRoundingRule,
+                        DRPMethod = firstRecord.DRPMethod
+                    };
+                    if (_RestClient != null)
+                        await _RestClient.Stocks.ChangeDRP(changeDRPCommand);
+                }
+
 
                 // Property changes
                 foreach (var stockRecord in stockRecords.Skip(1))
@@ -88,7 +151,8 @@ namespace PortfolioManager.Temp
                         Category = stockRecord.Category
                     };
 
-                    await _RestClient.Stocks.ChangeStock(changeCommand);
+                    if (_RestClient != null)
+                        await _RestClient.Stocks.ChangeStock(changeCommand);
                 }
 
                 // Add Dividends
@@ -107,8 +171,9 @@ namespace PortfolioManager.Temp
                         DelistingDate = lastRecord.ToDate
                     };
 
-                    await _RestClient.Stocks.DelistStock(delistCommand);
-                }
+                    if (_RestClient != null)
+                        await _RestClient.Stocks.DelistStock(delistCommand);
+                }           
             }
         }
     }

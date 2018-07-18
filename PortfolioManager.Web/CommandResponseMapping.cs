@@ -25,6 +25,8 @@ namespace PortfolioManager.Web
                 Name = properties.Name,
                 Category = properties.Category,
                 Trust = stock.Trust,
+                ListingDate = stock.EffectivePeriod.FromDate,
+                DelistedDate = stock.EffectivePeriod.ToDate,
                 LastPrice = stock.GetPrice(DateTime.Now)
             };
 
@@ -56,6 +58,8 @@ namespace PortfolioManager.Web
                 Id = stock.Id,
                 ASXCode = properties.ASXCode,
                 Name = properties.Name,
+                ListingDate = stock.EffectivePeriod.FromDate,
+                DelistedDate = stock.EffectivePeriod.ToDate
             };
 
             response.History.AddRange(

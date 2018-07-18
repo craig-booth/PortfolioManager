@@ -19,6 +19,7 @@ using PortfolioManager.EventStore.Sqlite;
 using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Service.Services;
 using PortfolioManager.Data.SQLite.Stocks;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Stocks;
 using PortfolioManager.RestApi.TradingCalander;
 
@@ -47,7 +48,8 @@ namespace PortfolioManager.Temp
         public static void MigrateDatabase()
         {
             var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
-            var migrator = new MigrateDatabase(stockDatabase);
+            RestClient restClient = null; // new RestClient("http://localhost", Guid.Empty);
+            var migrator = new MigrateDatabase(stockDatabase, restClient);
 
             var loadCalanderTask = migrator.LoadTradingCalander();
             Task.WaitAll(loadCalanderTask);
