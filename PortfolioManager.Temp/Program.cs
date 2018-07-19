@@ -47,7 +47,9 @@ namespace PortfolioManager.Temp
         public static void MigrateDatabase()
         {
             var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
-            RestClient restClient = new RestClient("http://localhost", Guid.Empty);
+            // RestClient restClient = null;
+            // RestClient restClient = new RestClient("http://localhost", Guid.Empty);
+            RestClient restClient = new RestClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
             var migrator = new MigrateDatabase(stockDatabase, restClient);
 
             var loadCalanderTask = migrator.LoadTradingCalander();

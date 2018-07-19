@@ -94,7 +94,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public bool IsTradingDay(DateTime date)
         {
-            return (_NonTradingDays.BinarySearch(new NonTradingDay(date,"")) > 0);
+            return (_NonTradingDays.BinarySearch(new NonTradingDay(date,"")) < 0);
         }
 
         public IEnumerable<DateTime> TradingDays(DateRange range)
