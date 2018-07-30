@@ -58,17 +58,27 @@ namespace PortfolioManager.Temp
 
             var portfolio = new Portfolio(Guid.NewGuid(), "Test Portfolio", null);
 
+            portfolio.CashAccount.Deposit(new DateTime(2018, 01, 01), 40000.00m, "Initial deposit");
+
             portfolio.PurchaseStock(stock, new DateTime(2018, 01, 01), 1000, 7.00m, 19.95m);
+            portfolio.CashAccount.Withdraw(new DateTime(2018, 01, 01), 1000 * 7.00m, "Purchase 1,000 ARG @ $7.00");
+            portfolio.CashAccount.FeeDeducted(new DateTime(2018, 01, 01), 19.95m, "Brokerage for ARG purchase");
 
             portfolio.PurchaseStock(stock, new DateTime(2018, 03, 01), 500, 7.50m, 19.95m);
+            portfolio.CashAccount.Withdraw(new DateTime(2018, 03, 01), 500 * 7.50m, "Purchase 500 ARG @ $7.50");
+            portfolio.CashAccount.FeeDeducted(new DateTime(2018, 03, 01), 19.95m, "Brokerage for ARG purchase");
 
             portfolio.PurchaseStock(stock, new DateTime(2018, 06, 01), 200, 7.20m, 19.95m);
+            portfolio.CashAccount.Withdraw(new DateTime(2018, 06, 01), 200 * 7.20m, "Purchase 200 ARG @ $7.20");
+            portfolio.CashAccount.FeeDeducted(new DateTime(2018, 06, 01), 19.95m, "Brokerage for ARG purchase");
 
             var holding = portfolio.GetHolding(stock);
 
-            foreach (var property in holding.Properties.Values)
+            foreach (var property in holding.Properties.Values.Reverse())
             {
                 Console.WriteLine("{0} : {1}, {2}", property.EffectivePeriod.FromDate, property.Properties.Units, property.Properties.CostBase);
+                var balance = portfolio.CashAccount[property.EffectivePeriod.FromDate];
+                Console.WriteLine("   {0}", balance);
             }
 
             Console.ReadKey();

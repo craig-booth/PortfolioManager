@@ -17,6 +17,8 @@ namespace PortfolioManager.Domain.Portfolios
 
         private Dictionary<Guid, Holding> _Holdings;
 
+        public CashAccount CashAccount { get; private set; } 
+
         public Portfolio(Guid id, string name, IEventStream eventStream)
         {
             Id = id;
@@ -24,6 +26,8 @@ namespace PortfolioManager.Domain.Portfolios
             _EventStream = eventStream;
 
             _Holdings = new Dictionary<Guid, Holding>();
+
+            CashAccount = new CashAccount();
         }
 
         public Holding GetHolding(Stock stock)
