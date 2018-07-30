@@ -11,6 +11,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
+using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.CorporateActions.Events;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Memory;
@@ -35,13 +36,42 @@ namespace PortfolioManager.Temp
             // this line is needed to ensure that the assembly for events is loaded
             var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
-            MigrateDatabase();
+            //MigrateDatabase();
 
             //var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
             //      var mongoEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
             //      CreateMongoDBEventStore(mongoEventStore, @"C:\PortfolioManager\Database\v3_0\Events.db");
 
             //      Test(mongoEventStore);
+
+            var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
+            PortfolioTest(mongoEventStore);
+        }
+
+        public static void PortfolioTest(IEventStore eventStore)
+        {
+            var stockExchange = new StockExchange(eventStore);
+
+            stockExchange.LoadFromEventStream();
+
+            var stock = stockExchange.Stocks.Get("ARG", DateTime.Today);
+
+            var portfolio = new Portfolio(Guid.NewGuid(), "Test Portfolio", null);
+
+            portfolio.PurchaseStock(stock, new DateTime(2018, 01, 01), 1000, 7.00m, 19.95m);
+
+            portfolio.PurchaseStock(stock, new DateTime(2018, 03, 01), 500, 7.50m, 19.95m);
+
+            portfolio.PurchaseStock(stock, new DateTime(2018, 06, 01), 200, 7.20m, 19.95m);
+
+            var holding = portfolio.GetHolding(stock);
+
+            foreach (var property in holding.Properties.Values)
+            {
+                Console.WriteLine("{0} : {1}, {2}", property.EffectivePeriod.FromDate, property.Properties.Units, property.Properties.CostBase);
+            }
+
+            Console.ReadKey();
         }
 
         public static void MigrateDatabase()
