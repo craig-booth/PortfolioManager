@@ -14,7 +14,7 @@ using NUnit.Framework;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.EventStore;
-using PortfolioManager.EventStore.Sqlite;
+using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
@@ -29,7 +29,6 @@ namespace PortfolioManager.Test.SystemTests
     public class CompareToLive
     {
         private IPortfolioDatabase _PortfolioDatabase;
-        private IStockDatabase _StockDatabase;
         private StockExchange _StockExchange;
         private IMapper _Mapper;
 
@@ -52,13 +51,11 @@ namespace PortfolioManager.Test.SystemTests
                 Directory.CreateDirectory(_ActualResultsPath);
             }
 
-            var eventStore = new SqliteEventStore(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Events.db"));
+            var eventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
             _StockExchange = new StockExchange(eventStore);
             _StockExchange.LoadFromEventStream();
 
             _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
-
-            _StockDatabase = new SQLiteStockDatabase(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Stocks.db"));
 
             var config = new MapperConfiguration(cfg =>
                 cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
@@ -227,7 +224,7 @@ namespace PortfolioManager.Test.SystemTests
 
             var service = new StockService(_StockExchange);
 
-            var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate)));
+            var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate))).OrderBy(x => x, new StockComparer());
             foreach (var stock in stocks)
             {
                 if (responce == null)
@@ -291,6 +288,29 @@ namespace PortfolioManager.Test.SystemTests
                     yield return testData;
                 }
             }
+        }
+    }
+
+    class StockComparer : IComparer<Domain.Stocks.Stock>
+    {
+        static List<string> Codes = new List<string>() { "ARG", "AMP", "NAB", "TLS", "AGI", "TWE", "CSL" , "BHP", "COH", "WAM", "GVF", "S32", "VGS", "VAF", "VAP", "VCF"};
+
+        public int Compare(Domain.Stocks.Stock stock1, Domain.Stocks.Stock stock2)
+        {
+            var code1 = stock1.Properties.ClosestTo(DateTime.Today).ASXCode;
+            var code2 = stock2.Properties.ClosestTo(DateTime.Today).ASXCode;
+
+            var i1 = Codes.IndexOf(code1);
+            var i2 = Codes.IndexOf(code2);
+
+            if ((i1 == -1) && (i2 == -1))
+                return code1.CompareTo(code2);
+            else if (i1 == -1)
+                return 1;
+            else if (i2 == -1)
+                return -1;
+            else
+                return i1.CompareTo(i2);
         }
     }
 }

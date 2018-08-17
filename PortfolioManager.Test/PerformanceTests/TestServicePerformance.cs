@@ -14,10 +14,9 @@ using NBench;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.EventStore;
-using PortfolioManager.EventStore.Sqlite;
+using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Data.Stocks;
-using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
@@ -28,7 +27,6 @@ namespace PortfolioManager.Test.PerformanceTests
     class TestServicePerformance : PerformanceTestStuite<TestServicePerformance>
     {
         private IPortfolioDatabase _PortfolioDatabase;
-        private IStockDatabase _StockDatabase;
         private StockExchange _StockExchange;
         private IMapper _Mapper;
 
@@ -49,16 +47,13 @@ namespace PortfolioManager.Test.PerformanceTests
             _FromDate = new DateTime(2016, 07, 01);
             _ToDate = new DateTime(2017, 06, 30);
 
-            var eventStore = new SqliteEventStore(Path.Combine(_TestPath, "Events.db"));
+            var eventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
             _StockExchange = new StockExchange(eventStore);
             _StockExchange.LoadFromEventStream();
 
             var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
             File.Delete(portfolioDatabaseFile);
             _PortfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
-
-            var stockDatabaseFile = Path.Combine(_TestPath, "Stocks.db");
-            _StockDatabase = new SQLiteStockDatabase(stockDatabaseFile);
 
             var config = new MapperConfiguration(cfg =>
                 cfg.AddProfile(new ModelToServiceMapping(_StockExchange))

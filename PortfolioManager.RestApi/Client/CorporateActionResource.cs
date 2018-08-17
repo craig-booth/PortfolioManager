@@ -48,7 +48,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task AddDividend(AddDividendCommand command)
         {
-            await PostAsync<AddDividendCommand>("/api/stocks/" + command.Stock.ToString() + "/corporateactions/dividends" + command.Id.ToString(), command);
+            await PostAsync<AddDividendCommand>("/api/stocks/" + command.Stock.ToString() + "/corporateactions/dividends", command);
         }
 
 
@@ -67,11 +67,30 @@ namespace PortfolioManager.RestApi.Client
             return await GetAsync<CapitalReturnResponse>("/api/stocks/" + stockid.ToString() + "/corporateactions/capitalreturns" + id.ToString());
         }
 
-        public async Task AddGetCapitalReturn(AddCapitalReturnCommand command)
+        public async Task AddCapitalReturn(AddCapitalReturnCommand command)
         {
-            await PostAsync<AddCapitalReturnCommand>("/api/stocks/" + command.Stock.ToString() + "/corporateactions/capitalreturns" + command.Id.ToString(), command);
+            await PostAsync<AddCapitalReturnCommand>("/api/stocks/" + command.Stock.ToString() + "/corporateactions/capitalreturns", command);
         }
 
-        
+
+        public async Task<IEnumerable<TransformationResponse>> GetTransformations(Guid stockid)
+        {
+            return await GetAsync<IEnumerable<TransformationResponse>>("/api/stocks/" + stockid.ToString() + "/corporateactions/transformations");
+        }
+
+        public async Task<IEnumerable<TransformationResponse>> GetTransformations(Guid stockid, DateRange dateRange)
+        {
+            return await GetAsync<IEnumerable<TransformationResponse>>("/api/stocks/" + stockid.ToString() + "/corporateactions/transformations?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+        }
+
+        public async Task<TransformationResponse> GetTransformation(Guid stockid, Guid id)
+        {
+            return await GetAsync<TransformationResponse>("/api/stocks/" + stockid.ToString() + "/corporateactions/transformations" + id.ToString());
+        }
+
+        public async Task AddTransformation(AddTransformationCommand command)
+        {
+            await PostAsync<AddTransformationCommand>("/api/stocks/" + command.Stock.ToString() + "/corporateactions/transformations", command);
+        }
     }
 }

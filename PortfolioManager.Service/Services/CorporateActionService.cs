@@ -44,9 +44,8 @@ namespace PortfolioManager.Service.Services
                 foreach (var ownedStock in allOwnedStocks)
                 {
                     var stock = _StockExchange.Stocks.Get(ownedStock);
-                    var corporateActions = stock.CorporateActions(); 
 
-                    foreach (var corporateAction in corporateActions)
+                    foreach (var corporateAction in stock.CorporateActions)
                     {
                         if (portfolioUnitOfWork.PortfolioQuery.StockOwned(stock.Id, corporateAction.ActionDate))
                         {
@@ -73,7 +72,7 @@ namespace PortfolioManager.Service.Services
             var responce = new TransactionsForCorparateActionsResponce();
 
             var stock = _StockExchange.Stocks.Get(stockId);
-            var corporateAction = stock.CorporateAction(actionId);
+            var corporateAction = stock.CorporateActions[actionId];
 
             using (var portfolioUnitOfWork = _PortfolioDatabase.CreateReadOnlyUnitOfWork())
             {

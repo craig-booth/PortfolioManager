@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CorporateActionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-03-17T18:50:38.7836509+10:30</ResponceTime>
-  <Status>Failed</Status>
-  <Error>Not initialised</Error>
   <CorporateActions>
     <CorporateActionItem>
       <Id>d392c892-67de-4d84-ba3b-8adb86ad8b85</Id>
       <ActionDate>2015-02-16T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
       </Stock>
       <Description>Dividend $0.14</Description>
     </CorporateActionItem>
@@ -16,7 +15,9 @@
       <Id>80c824bb-1a23-4039-94a3-d41308cea8cd</Id>
       <ActionDate>2015-08-19T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
       </Stock>
       <Description>Dividend $0.155</Description>
     </CorporateActionItem>
@@ -24,7 +25,9 @@
       <Id>f06176dc-e5e9-4d79-8daf-b5b2c5b0e849</Id>
       <ActionDate>2015-03-05T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>7c1da28b-dd85-46d5-a4e4-c2820d4b6de2</Id>
+        <ASXCode>AMP</ASXCode>
+        <Name>AMP Limited</Name>
       </Stock>
       <Description>Dividend $0.135</Description>
     </CorporateActionItem>
@@ -32,7 +35,9 @@
       <Id>0c59cb5b-95d1-4666-b88e-657b1375c89b</Id>
       <ActionDate>2015-05-19T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>666870cb-ce77-4faa-9f30-a4ebbb322029</Id>
+        <ASXCode>NAB</ASXCode>
+        <Name>National Australia Bank</Name>
       </Stock>
       <Description>Dividend $0.99</Description>
     </CorporateActionItem>
@@ -40,7 +45,9 @@
       <Id>bfb3791c-850c-4cc0-b3fd-cae8f86aea6e</Id>
       <ActionDate>2015-02-27T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>25a7ce67-9053-46fd-a230-a7a928c97aa1</Id>
+        <ASXCode>TLS</ASXCode>
+        <Name>Telstra</Name>
       </Stock>
       <Description>Dividend $0.15</Description>
     </CorporateActionItem>
@@ -48,7 +55,9 @@
       <Id>68c98d21-690a-4fb5-97df-a1d2e07975db</Id>
       <ActionDate>2015-03-25T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>a7acf7f9-1cf9-4541-865e-d27231bdb6b3</Id>
+        <ASXCode>AGI</ASXCode>
+        <Name>Ainsworth Game Tech</Name>
       </Stock>
       <Description>Dividend $0.05</Description>
     </CorporateActionItem>
@@ -56,7 +65,9 @@
       <Id>485ccb09-8f96-4454-adbf-ee6ad2b60748</Id>
       <ActionDate>2015-09-10T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>a7acf7f9-1cf9-4541-865e-d27231bdb6b3</Id>
+        <ASXCode>AGI</ASXCode>
+        <Name>Ainsworth Game Tech</Name>
       </Stock>
       <Description>Dividend $0.05</Description>
     </CorporateActionItem>
@@ -64,7 +75,9 @@
       <Id>0af4533c-fc0b-4552-93be-6dc31c11e2a3</Id>
       <ActionDate>2015-03-11T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>ba594390-2f59-460e-9a5d-e2f42b8b079a</Id>
+        <ASXCode>TWE</ASXCode>
+        <Name>Treasury Wine Estate</Name>
       </Stock>
       <Description>Dividend $0.06</Description>
     </CorporateActionItem>
@@ -72,7 +85,9 @@
       <Id>6353eb12-c66a-4302-a0c9-4b3a4d342709</Id>
       <ActionDate>2015-03-18T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <ASXCode>CSL</ASXCode>
+        <Name>CSL Ltd</Name>
       </Stock>
       <Description>Dividend $0.74385</Description>
     </CorporateActionItem>
@@ -80,7 +95,9 @@
       <Id>91ef0a6f-c755-4407-acc7-fc36edf98fd6</Id>
       <ActionDate>2015-09-09T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <ASXCode>CSL</ASXCode>
+        <Name>CSL Ltd</Name>
       </Stock>
       <Description>USD 0.62c (1USD = 1.3635AUD)</Description>
     </CorporateActionItem>
@@ -88,7 +105,9 @@
       <Id>3c4f72d6-da6b-457f-b940-e6e85c579fff</Id>
       <ActionDate>2015-03-13T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>15def383-18f9-4c51-bde5-d34cf15c9899</Id>
+        <ASXCode>BHP</ASXCode>
+        <Name>BHP Billiton Limited</Name>
       </Stock>
       <Description>Dividend $0.80824</Description>
     </CorporateActionItem>
@@ -104,7 +123,9 @@
       <Id>b7ab1dfc-cf1b-45ca-9605-eb7543a72dbe</Id>
       <ActionDate>2015-09-11T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>15def383-18f9-4c51-bde5-d34cf15c9899</Id>
+        <ASXCode>BHP</ASXCode>
+        <Name>BHP Billiton Limited</Name>
       </Stock>
       <Description>Dividend $0.87781</Description>
     </CorporateActionItem>
@@ -112,7 +133,9 @@
       <Id>b9ab2936-53fa-4968-9264-8286492aa074</Id>
       <ActionDate>2015-03-05T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
       </Stock>
       <Description>Dividend $0.90</Description>
     </CorporateActionItem>
@@ -120,7 +143,9 @@
       <Id>d70bfe2c-7ace-4f5c-8de1-0d33b05e0ccd</Id>
       <ActionDate>2015-09-10T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
       </Stock>
       <Description>Dividend $1.00</Description>
     </CorporateActionItem>
@@ -128,7 +153,9 @@
       <Id>631bd104-2620-4671-a96b-0ea9cd8b2b74</Id>
       <ActionDate>2015-04-22T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <ASXCode>WAM</ASXCode>
+        <Name>WAM Capital Limited</Name>
       </Stock>
       <Description>Dividend $0.07</Description>
     </CorporateActionItem>
@@ -136,7 +163,9 @@
       <Id>d15a27e8-fd7b-488d-9713-31432d19e888</Id>
       <ActionDate>2015-10-21T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <ASXCode>WAM</ASXCode>
+        <Name>WAM Capital Limited</Name>
       </Stock>
       <Description>Dividend $0.07</Description>
     </CorporateActionItem>
@@ -144,7 +173,9 @@
       <Id>672206d7-f465-4e9b-b203-4e5f00e6467f</Id>
       <ActionDate>2015-10-23T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <ASXCode>GVF</ASXCode>
+        <Name>Global Value Fund</Name>
       </Stock>
       <Description>Dividend $0.02</Description>
     </CorporateActionItem>
@@ -224,7 +255,9 @@
       <Id>807d78e6-61eb-45ea-96be-d334a1c11f9c</Id>
       <ActionDate>2015-01-06T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.5437</Description>
     </CorporateActionItem>
@@ -232,7 +265,9 @@
       <Id>c70e8c9c-773f-483b-97bf-c7da872281f4</Id>
       <ActionDate>2015-04-07T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.4366</Description>
     </CorporateActionItem>
@@ -240,7 +275,9 @@
       <Id>af5b18d5-c4ae-4f51-b22e-58587c57001b</Id>
       <ActionDate>2015-07-03T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.4762</Description>
     </CorporateActionItem>
@@ -248,7 +285,9 @@
       <Id>75ebd38b-a467-43bc-9e92-876fc5c296fe</Id>
       <ActionDate>2015-10-06T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.5285</Description>
     </CorporateActionItem>
@@ -256,7 +295,9 @@
       <Id>f429ec63-1fdc-4103-8df5-1ac2c805458d</Id>
       <ActionDate>2015-01-06T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <Description>Dividend $1.0868</Description>
     </CorporateActionItem>
@@ -264,7 +305,9 @@
       <Id>9e20543a-e46a-4dc5-b884-556a69221bb6</Id>
       <ActionDate>2015-04-07T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <Description>Dividend $0.5627</Description>
     </CorporateActionItem>
@@ -272,7 +315,9 @@
       <Id>6309bce7-6832-49c3-8078-9e2251af07ac</Id>
       <ActionDate>2015-07-03T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <Description>Dividend $1.2769</Description>
     </CorporateActionItem>
@@ -280,7 +325,9 @@
       <Id>33d51844-37fb-4244-bb0e-b376133f02eb</Id>
       <ActionDate>2015-10-06T00:00:00</ActionDate>
       <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <Description>Dividend $0.5691</Description>
     </CorporateActionItem>

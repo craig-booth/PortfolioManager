@@ -28,7 +28,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
             var collection = database.GetCollection<Event>(Name);
 
-            return collection.Find<Event>(x => true).ToList<Event>();
+            return collection.Find<Event>(x => true).SortBy(x => x.EntityId).ThenBy(x => x.Version).ToList<Event>();
         }
 
         public IEnumerable<Event> RetrieveEvents(Guid entityId)
@@ -38,7 +38,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
             var collection = database.GetCollection<Event>(Name);
 
-            return collection.Find<Event>(x => x.EntityId == entityId).ToList<Event>();
+            return collection.Find<Event>(x => x.EntityId == entityId).SortBy(x => x.Version).ToList<Event>();
         }
 
         public void StoreEvent(Event @event)

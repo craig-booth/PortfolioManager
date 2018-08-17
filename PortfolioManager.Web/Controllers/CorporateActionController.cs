@@ -35,7 +35,7 @@ namespace PortfolioManager.Web.Controllers
 
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return Ok(stock.CorporateActions(dateRange).Select(x => x.ToCorporateActionResponse()));
+            return Ok(stock.CorporateActions.Get(dateRange).Select(x => x.ToCorporateActionResponse()));
         }
 
         // GET : /api/stocks/{id}/corporateactions/{id}
@@ -47,7 +47,7 @@ namespace PortfolioManager.Web.Controllers
             if (stock == null)
                 return NotFound();
 
-            var corporateAction = stock.CorporateAction(actionId);
+            var corporateAction = stock.CorporateActions[actionId];
             if (corporateAction == null)
                 return NotFound();
 
@@ -55,6 +55,8 @@ namespace PortfolioManager.Web.Controllers
                 return Ok((corporateAction as Dividend).ToDividendResponse());
             else if (corporateAction.Type == CorporateActionType.CapitalReturn)
                 return Ok((corporateAction as CapitalReturn).ToCapitalReturnResponse());
+            else if (corporateAction.Type == CorporateActionType.Transformation)
+                return Ok((corporateAction as Transformation).ToTransformationResponse());
             else
                 return BadRequest("Unknown corporate action type");
         }
@@ -70,7 +72,7 @@ namespace PortfolioManager.Web.Controllers
 
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return Ok(stock.CorporateActions<Dividend>(dateRange).Select(x => x.ToDividendResponse()));
+            return Ok(stock.CorporateActions.Get<Dividend>(dateRange).Select(x => x.ToDividendResponse()));
         }
 
         // GET : /api/stocks/{id}/corporateactions/dividends/{id}
@@ -82,7 +84,7 @@ namespace PortfolioManager.Web.Controllers
             if (stock == null)
                 return NotFound();
 
-            var corporateAction = stock.CorporateAction<Dividend>(actionId);
+            var corporateAction = stock.CorporateActions.Get<Dividend>(actionId);
             if (corporateAction == null)
                 return NotFound();
 
@@ -104,7 +106,7 @@ namespace PortfolioManager.Web.Controllers
 
             try
             {
-                stock.AddDividend(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
+                stock.CorporateActions.AddDividend(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.DividendAmount, command.CompanyTaxRate, command.PercentFranked, command.DRPPrice);
             }
             catch (Exception e)
             {
@@ -125,7 +127,7 @@ namespace PortfolioManager.Web.Controllers
 
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return Ok(stock.CorporateActions<CapitalReturn>(dateRange).Select(x => x.ToCapitalReturnResponse()));
+            return Ok(stock.CorporateActions.Get<CapitalReturn>(dateRange).Select(x => x.ToCapitalReturnResponse()));
         }
 
         // GET : /api/stocks/{id}/corporateactions/capitalreturns/{id}
@@ -137,7 +139,7 @@ namespace PortfolioManager.Web.Controllers
             if (stock == null)
                 return NotFound();
 
-            var corporateAction = stock.CorporateAction<CapitalReturn>(actionId);
+            var corporateAction = stock.CorporateActions.Get<CapitalReturn>(actionId);
             if (corporateAction == null)
                 return NotFound();
 
@@ -159,7 +161,64 @@ namespace PortfolioManager.Web.Controllers
 
             try
             {
-                stock.AddCapitalReturn(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.Amount);
+                stock.CorporateActions.AddCapitalReturn(command.Id, command.ActionDate, command.Description, command.PaymentDate, command.Amount);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
+        }
+
+
+        // GET : /api/stocks/{id}/corporateactions/transformations
+        [Route("transformations")]
+        [HttpGet]
+        public ActionResult GetTransformations([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            return Ok(stock.CorporateActions.Get<Transformation>(dateRange).Select(x => x.ToTransformationResponse()));
+        }
+
+        // GET : /api/stocks/{id}/corporateactions/transformations/{id}
+        [Route("transformations/{actionid:guid}")]
+        [HttpGet]
+        public ActionResult GetTransformation([FromRoute]Guid id, [FromRoute]Guid actionId)
+        {
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            var corporateAction = stock.CorporateActions.Get<Transformation>(actionId);
+            if (corporateAction == null)
+                return NotFound();
+
+            return Ok(corporateAction.ToTransformationResponse());
+        }
+
+        // POST : /api/stocks/{id}/corporateactions/transformations
+        [Route("transformations")]
+        [HttpPost]
+        public ActionResult AddTransformation([FromRoute]Guid id, [FromBody] AddTransformationCommand command)
+        {
+            // Check id in URL and id in command match
+            if (id != command.Stock)
+                return BadRequest("Id in command doesn't match id on URL");
+
+            var stock = _StockRepository.Get(id);
+            if (stock == null)
+                return NotFound();
+
+            try
+            {
+                var resultingStocks = command.ResultingStocks.Select(x => new Transformation.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate));
+                stock.CorporateActions.AddTransformation(command.Id, command.ActionDate, command.Description, command.ImplementationDate, command.CashComponent, command.RolloverRefliefApplies, resultingStocks);
             }
             catch (Exception e)
             {

@@ -22,6 +22,7 @@ using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Stocks;
 using PortfolioManager.RestApi.TradingCalander;
+using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.Temp
 {
@@ -34,9 +35,9 @@ namespace PortfolioManager.Temp
             //    TestScheduler();
 
             // this line is needed to ensure that the assembly for events is loaded
-            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+            //var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
-            //MigrateDatabase();
+            MigrateDatabase();
 
             //var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
             //      var mongoEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
@@ -44,8 +45,8 @@ namespace PortfolioManager.Temp
 
             //      Test(mongoEventStore);
 
-            var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
-            PortfolioTest(mongoEventStore);
+            //  var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
+            //  PortfolioTest(mongoEventStore);
         }
 
         public static void PortfolioTest(IEventStore eventStore)
@@ -89,7 +90,8 @@ namespace PortfolioManager.Temp
             var stockDatabase = new SQLiteStockDatabase(@"C:\PortfolioManager\Stocks.db");
             // RestClient restClient = null;
             // RestClient restClient = new RestClient("http://localhost", Guid.Empty);
-            RestClient restClient = new RestClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+        //    RestClient restClient = new RestClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+            RestClient restClient = new RestClient("https://portfolio.boothfamily.id.au", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
             var migrator = new MigrateDatabase(stockDatabase, restClient);
 
             var loadCalanderTask = migrator.LoadTradingCalander();

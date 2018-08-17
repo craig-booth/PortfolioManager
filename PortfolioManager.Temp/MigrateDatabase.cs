@@ -8,6 +8,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Stocks;
+using PortfolioManager.RestApi.CorporateActions;
 using PortfolioManager.RestApi.TradingCalander;
 using PortfolioManager.ImportData.DataServices;
 
@@ -156,9 +157,8 @@ namespace PortfolioManager.Temp
                         await _RestClient.Stocks.ChangeStock(changeCommand);
                 }
 
-                // Add Dividends
-
-                // Add Capital Returns
+                // Add Corporate Actions
+                await LoadCorporateActions(id, unitOfWork);
 
                 // Add closing prices
                 var prices = unitOfWork.StockQuery.GetPrices(id, firstRecord.FromDate, new DateTime(2018, 05, 29));
@@ -175,7 +175,7 @@ namespace PortfolioManager.Temp
 
                     if (_RestClient != null)
                         await _RestClient.Stocks.UpdateClosingPrices(updateClosingPricesCommand);
-                }
+                } 
 
                 // Delist Stock
                 if (lastRecord.ToDate != DateUtils.NoEndDate)
@@ -189,6 +189,75 @@ namespace PortfolioManager.Temp
                     if (_RestClient != null)
                         await _RestClient.Stocks.DelistStock(delistCommand);
                 }           
+            }
+        }
+
+        public async Task LoadCorporateActions(Guid id, IStockReadOnlyUnitOfWork unitOfWork)
+        {
+            var corporateActions = unitOfWork.CorporateActionQuery.Find(id, DateUtils.NoStartDate, DateUtils.NoEndDate);
+            foreach (var corporateAction in corporateActions)
+            {
+                if (corporateAction.Type == CorporateActionType.Dividend)
+                {
+                    var dividend = (Dividend)corporateAction;
+                    var dividendCommand = new AddDividendCommand()
+                    {
+                        Id = dividend.Id,
+                        Stock = id,
+                        ActionDate = dividend.ActionDate,
+                        Description = dividend.Description,
+                        PaymentDate = dividend.PaymentDate,
+                        DividendAmount = dividend.DividendAmount,
+                        CompanyTaxRate = dividend.CompanyTaxRate,
+                        PercentFranked = dividend.PercentFranked,
+                        DRPPrice = dividend.DRPPrice
+                    };
+                    if (_RestClient != null)
+                        await _RestClient.CorporateActions.AddDividend(dividendCommand); 
+                }
+                else if (corporateAction.Type == CorporateActionType.CapitalReturn)
+                {
+                    var capitalReturn = (CapitalReturn)corporateAction;
+                    var capitalReturnCommand = new AddCapitalReturnCommand()
+                    {
+                        Id = capitalReturn.Id,
+                        Stock = id,
+                        ActionDate = capitalReturn.ActionDate,
+                        Description = capitalReturn.Description,
+                        PaymentDate = capitalReturn.PaymentDate,
+                        Amount = capitalReturn.Amount
+                    };
+                    if (_RestClient != null)
+                        await _RestClient.CorporateActions.AddCapitalReturn(capitalReturnCommand); 
+                }
+                else if (corporateAction.Type == CorporateActionType.SplitConsolidation)
+                {
+                    var splitConsolidation = (SplitConsolidation)corporateAction;
+                }
+                else if (corporateAction.Type == CorporateActionType.Composite)
+                {
+                    var compositeAction = (CompositeAction)corporateAction;
+                }
+                else if (corporateAction.Type == CorporateActionType.Transformation)
+                {
+                    var transformation = (Transformation)corporateAction;
+
+                    var transformationCommand = new AddTransformationCommand()
+                    {
+                        Id = transformation.Id,
+                        Stock = id,
+                        ActionDate = transformation.ActionDate,
+                        Description = transformation.Description,
+                        ImplementationDate = transformation.ImplementationDate,
+                        CashComponent = transformation.CashComponent,
+                        RolloverRefliefApplies = transformation.RolloverRefliefApplies
+                    };
+                    foreach (var resultingStock in transformation.ResultingStocks)
+                        transformationCommand.ResultingStocks.Add(new AddTransformationCommand.ResultingStock(resultingStock.Stock, resultingStock.OriginalUnits, resultingStock.NewUnits, resultingStock.CostBase, resultingStock.AquisitionDate));
+
+                    if (_RestClient != null)
+                        await _RestClient.CorporateActions.AddTransformation(transformationCommand);
+                }
             }
         }
     }

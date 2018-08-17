@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CGTLiabilityResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-03-17T16:30:43.0035339+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
   <CurrentYearCapitalGainsOther>507.57</CurrentYearCapitalGainsOther>
   <CurrentYearCapitalGainsDiscounted>0.00</CurrentYearCapitalGainsDiscounted>
   <CurrentYearCapitalGainsTotal>507.57</CurrentYearCapitalGainsTotal>
@@ -19,7 +16,7 @@
   <Items>
     <CGTLiabilityItem>
       <Stock>
-        <Id>9400cb3b-7ecd-4866-b5e1-d74158ef08b3</Id>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
       </Stock>

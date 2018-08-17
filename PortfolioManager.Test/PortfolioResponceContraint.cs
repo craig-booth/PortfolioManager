@@ -52,7 +52,7 @@ namespace PortfolioManager.Test
 
             actualResponce.Should().BeEquivalentTo(Expected, options => options
                        .RespectingRuntimeTypes()
-                       .Excluding(x => x.ResponceTime)
+                      // .Excluding(x => x.ResponceTime)
                        );
 
             return new ConstraintResult(this, actual, true);

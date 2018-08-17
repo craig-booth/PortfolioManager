@@ -18,17 +18,19 @@ namespace PortfolioManager.Domain.Stocks
         protected IEventStream _EventStream;
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
-        
+
         public bool Trust { get; private set; }
         public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
         public EffectiveProperties<DividendRules> DividendRules { get; } = new EffectiveProperties<DividendRules>();
 
-        private readonly Dictionary<Guid, CorporateAction> _CorporateActions = new Dictionary<Guid, CorporateAction>();
+        public CorporateActionCollection CorporateActions { get; }
 
         public Stock(Guid id, DateTime listingDate, IEventStream eventStream)
             : base(id, listingDate)
         {
             _EventStream = eventStream;
+
+            CorporateActions = new CorporateActionCollection(this, _EventStream);
         }
 
         public override string ToString()
@@ -73,6 +75,14 @@ namespace PortfolioManager.Domain.Stocks
             DividendRules.End(@event.DelistedDate);
 
             End(@event.DelistedDate);
+        }
+
+        public virtual void Apply(CorporateActionAddedEvent @event)
+        {
+            Version++;
+
+            dynamic dynamicEvent = @event;
+            CorporateActions.Apply(dynamicEvent);
         }
 
         public void UpdateClosingPrice(DateTime date, decimal closingPrice)
@@ -213,81 +223,6 @@ namespace PortfolioManager.Domain.Stocks
             DividendRules.Change(@event.ChangeDate, newProperties);
         }
 
-        public CorporateAction CorporateAction(Guid id)
-        {
-            if (_CorporateActions.ContainsKey(id))
-                return _CorporateActions[id];
-            else
-                return null;
-        }
-
-        public T CorporateAction<T>(Guid id) where T : CorporateAction
-        {
-            if (_CorporateActions.ContainsKey(id))
-                return _CorporateActions[id] as T;
-            else
-                return null;
-        }
-
-        public IEnumerable<CorporateAction> CorporateActions()
-        {
-            return _CorporateActions.Values;
-        }
-
-        public IEnumerable<CorporateAction> CorporateActions(DateRange dateRange)
-        {
-            return _CorporateActions.Values.Where(x => dateRange.Contains(x.ActionDate));
-        }
-
-        public IEnumerable<T> CorporateActions<T>() where T : CorporateAction
-        {
-            return _CorporateActions.Values.Where(x => x is T).Select(x => x as T);
-        }
-
-        public IEnumerable<T> CorporateActions<T>(DateRange dateRange) where T : CorporateAction
-        {
-            return _CorporateActions.Values.Where(x => x is T && dateRange.Contains(x.ActionDate)).Select(x => x as T);
-        }
-
-        public void AddCapitalReturn(Guid id, DateTime recordDate, string description, DateTime paymentDate, decimal amount)
-        {
-            if (description == "")
-                description = "Capital Return " + amount.ToString("$#,##0.00###");
-
-            var @event = new CapitalReturnAddedEvent(Id, Version, id, recordDate, description, paymentDate, amount);
-
-            Apply(@event);
-            _EventStream.StoreEvent(@event);
-        }
-
-        public void Apply(CapitalReturnAddedEvent @event)
-        {
-            Version++;
-
-            var capitalReturn = new CapitalReturn(@event.ActionId, this, @event.ActionDate, @event.Description, @event.PaymentDate, @event.Amount);
-
-            _CorporateActions.Add(capitalReturn.Id, capitalReturn);
-        }
-
-        public void AddDividend(Guid id, DateTime recordDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
-        {
-            if (description == "")
-                description = "Dividend " + MathUtils.FormatCurrency(dividendAmount, false, true);
-
-            var @event = new DividendAddedEvent(Id, Version, id, recordDate, description, paymentDate, dividendAmount, companyTaxRate, percentFranked, drpPrice);
-
-            Apply(@event);
-            _EventStream.StoreEvent(@event);
-        }
-
-        public void Apply(DividendAddedEvent @event)
-        {
-            Version++;
-
-            var dividend = new Dividend(@event.ActionId, this, @event.ActionDate, @event.Description, @event.PaymentDate, @event.DividendAmount, @event.CompanyTaxRate, @event.PercentFranked, @event.DRPPrice);
-
-            _CorporateActions.Add(dividend.Id, dividend);
-        }
     }
 
     public struct StockProperties

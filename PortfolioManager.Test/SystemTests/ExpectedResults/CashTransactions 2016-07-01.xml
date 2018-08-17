@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CashAccountTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-03-17T16:30:41.3512112+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
   <Transactions>
     <CashAccountTransactionItem>
       <Date>2016-02-05T00:00:00</Date>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -145,17 +146,26 @@ namespace PortfolioManager.ImportData.DataServices
             var cells = row.Descendants("td").ToList();
             if (cells.Count >= 4)
             {              
-                if (cells[3].Value.Trim() == "CLOSED")
+                if (GetCellValue(cells[3])== "CLOSED")
                 {
-                    var description = cells[0].Value.Trim();
+                    var description = GetCellValue(cells[0]);
 
-                    var dateText = cells[1].Value + " " + year;
+                    var dateText = GetCellValue(cells[1]) + " " + year;
                     if (DateTime.TryParse(dateText, out date))
                         return new NonTradingDay(date, description);
                 }
             }
 
             return null;
+        }
+
+        private string GetCellValue(XElement cell)
+        {
+            var sups = cell.Descendants("sup").ToArray();
+            for (var i = 0; i < sups.Length; i++)
+                sups[i].Remove();
+
+            return cell.Value.Trim();
         }
 
     }

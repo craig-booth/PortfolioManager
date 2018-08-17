@@ -45,27 +45,27 @@ namespace PortfolioManager.Service.Interface
 
     public class ServiceResponce
     {
-        public DateTime ResponceTime { get; set; }
-        public ResponceStatus Status { get; set; }
-        public string Error { get; set; }
+     //   public DateTime ResponceTime { get; set; }
+    //    public ResponceStatus Status { get; set; }
+    //    public string Error { get; set; }
 
         public ServiceResponce()
         {
-            ResponceTime = DateTime.Now;
-            Status = ResponceStatus.Failed;
-            Error = "Not initialised";
+    //        ResponceTime = DateTime.Now;
+    //        Status = ResponceStatus.Failed;
+    //        Error = "Not initialised";
         }
 
         public void SetStatusToSuccessfull()
         {
-            Status = ResponceStatus.Successfull;
-            Error = "";
+     //       Status = ResponceStatus.Successfull;
+     //       Error = "";
         }
 
         public void SetStatusToFailed(string errorMessage)
         {
-            Status = ResponceStatus.Failed;
-            Error = errorMessage;
+     //       Status = ResponceStatus.Failed;
+     //       Error = errorMessage;
         }
     }
 }

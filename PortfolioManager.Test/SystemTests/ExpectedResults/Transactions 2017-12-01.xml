@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GetTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T13:07:58.3282894+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
   <Transactions>
     <TransactionItem xsi:type="CashTransactionItem">
       <Id>9184631d-06c1-4c10-86a2-d0294078e6b5</Id>

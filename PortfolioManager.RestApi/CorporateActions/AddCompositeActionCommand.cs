@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PortfolioManager.RestApi.CorporateActions
 {
-    class AddCompositeActionCommand
+    public class AddCompositeActionCommand
     {
     }
 }

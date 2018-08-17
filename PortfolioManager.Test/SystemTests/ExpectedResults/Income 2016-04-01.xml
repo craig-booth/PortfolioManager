@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <IncomeResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-03-17T16:30:47.3278492+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
   <Income>
     <IncomeItem>
       <Stock>
-        <Id>be198e78-dab8-499f-8269-02709d889c6f</Id>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
       </Stock>
@@ -17,7 +14,7 @@
     </IncomeItem>
     <IncomeItem>
       <Stock>
-        <Id>82d5c315-4b64-4d94-984c-92281df3be40</Id>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
       </Stock>

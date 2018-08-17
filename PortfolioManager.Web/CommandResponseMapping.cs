@@ -175,5 +175,24 @@ namespace PortfolioManager.Web
                 Amount = capitalReturn.Amount
             };
         }
+
+        public static TransformationResponse ToTransformationResponse(this Transformation transformation)
+        {
+            var response = new TransformationResponse()
+            {
+                Id = transformation.Id,
+                Stock = transformation.Stock.Id,
+                Type = transformation.Type,
+                ActionDate = transformation.ActionDate,
+                Description = transformation.Description,
+                ImplementationDate = transformation.ImplementationDate,
+                CashComponent = transformation.CashComponent,
+                RolloverRefliefApplies = transformation.RolloverRefliefApplies,
+            };
+
+            response.ResultingStocks.AddRange(transformation.ResultingStocks.Select(x => new TransformationResponse.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate)));
+
+            return response;
+        }
     }
 }

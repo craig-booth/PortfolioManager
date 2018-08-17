@@ -17,7 +17,7 @@
     <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj" />
     <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj" />
     <ProjectReference Include="..\PortfolioManager.Domain\PortfolioManager.Domain.csproj" />
-    <ProjectReference Include="..\PortfolioManager.EventStore.Sqlite\PortfolioManager.EventStore.Sqlite.csproj" />
+    <ProjectReference Include="..\PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
     <ProjectReference Include="..\PortfolioManager.ImportData\PortfolioManager.ImportData.csproj" />
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj" />
@@ -25,9 +25,6 @@
 
   <ItemGroup>
     <None Update="PerformanceTests\Events.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="PerformanceTests\Stocks.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="PerformanceTests\Transactions.xml">
@@ -829,9 +826,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SystemTests\ExpectedResults\UnappliedCorporateActions.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\Stocks.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SystemTests\Transactions.xml">
