@@ -1,5 +1,6 @@
 ﻿
 using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -24,8 +25,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, RestWebClient restWebClient)
-            : base(costBaseAdjustment, TransactionStockSelection.Holdings, restWebClient)
+        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, RestClient restClient)
+            : base(costBaseAdjustment, TransactionStockSelection.Holdings, restClient)
         {
 
         }

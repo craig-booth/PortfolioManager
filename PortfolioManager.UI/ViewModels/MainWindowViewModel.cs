@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
@@ -18,6 +18,7 @@ namespace PortfolioManager.UI.ViewModels
         private readonly StockItem _AllCompanies = new StockItem(Guid.Empty, "", "All Companies");
 
         private RestWebClient _RestWebClient;
+        private RestClient _RestClient;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -98,18 +99,20 @@ namespace PortfolioManager.UI.ViewModels
 
 #if DEBUG 
             _RestWebClient = new RestWebClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+            _RestClient = new RestClient("https://docker.local:8443", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
 #else
             _RestWebClient = new RestWebClient("https://portfolio.boothfamily.id.au", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+            _RestClient = new RestClient("https://portfolio.boothfamily.id.au", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
 #endif
-            
+
 
             ViewParameter = new ViewParameter();
             ViewParameter.Stock = _AllCompanies;
             ViewParameter.FinancialYear = DateTime.Today.FinancialYear();
             ViewParameter.RestWebClient = _RestWebClient;
 
-            EditTransactionWindow = new EditTransactionViewModel(_RestWebClient);
-            CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel(_RestWebClient);
+            EditTransactionWindow = new EditTransactionViewModel(_RestClient);
+            CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel(_RestClient);
 
             _Settings = new ApplicationSettings();
             _Settings.DatabaseChanged += LoadPortfolio;

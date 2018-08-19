@@ -1,5 +1,6 @@
 ﻿
 using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -45,8 +46,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransactionItem unitCostAdjustment, RestWebClient restWebClient)
-            : base(unitCostAdjustment, TransactionStockSelection.Holdings, restWebClient)
+        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransactionItem unitCostAdjustment, RestClient restClient)
+            : base(unitCostAdjustment, TransactionStockSelection.Holdings, restClient)
         {
 
         }

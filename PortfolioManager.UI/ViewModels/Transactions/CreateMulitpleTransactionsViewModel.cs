@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using CBControls;
 
 using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -12,7 +13,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class CreateMulitpleTransactionsViewModel : PopupWindow
     {
-        protected RestWebClient _RestWebClient;
+        protected RestClient _RestClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
@@ -34,11 +35,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CreateMulitpleTransactionsViewModel(RestWebClient restWebClient)
+        public CreateMulitpleTransactionsViewModel(RestClient restClient)
             : base()
         {
-            _RestWebClient = restWebClient;
-            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
+            _RestClient = restClient;
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restClient);
             Transactions = new ObservableCollection<TransactionViewModel>();
 
             CancelCommand = new RelayCommand(Cancel);
@@ -77,12 +78,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public RelayCommand SaveTransactionsCommand { get; private set; }
         private async void SaveTransactions()
         {
-            foreach (var transactionviewModel in Transactions)
+        /*    foreach (var transactionviewModel in Transactions)
             {
                 transactionviewModel.EndEdit();
-                await _RestWebClient.AddTransactionAsync(transactionviewModel.Transaction);
+                await _RestClient.AddTransactionAsync(transactionviewModel.Transaction);
             }      
-
+             */
             IsOpen = false;
         }
         

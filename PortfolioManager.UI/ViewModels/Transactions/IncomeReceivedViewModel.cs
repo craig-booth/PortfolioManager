@@ -2,6 +2,7 @@
 
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
+using PortfolioManager.RestApi.Client;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
@@ -118,8 +119,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public IncomeReceivedViewModel(IncomeTransactionItem incomeReceived, RestWebClient restWebClient)
-            : base(incomeReceived, TransactionStockSelection.Holdings, restWebClient)
+        public IncomeReceivedViewModel(IncomeTransactionItem incomeReceived, RestClient restClient)
+            : base(incomeReceived, TransactionStockSelection.Holdings, restClient)
         {
 
         }

@@ -1,5 +1,6 @@
 ﻿
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -10,8 +11,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransactionItem cashTransaction, RestWebClient restWebClient)
-            : base(cashTransaction, TransactionStockSelection.None, restWebClient)
+        public CashTransactionViewModel(CashTransactionItem cashTransaction, RestClient restClient)
+            : base(cashTransaction, TransactionStockSelection.None, restClient)
         {
             
         }
