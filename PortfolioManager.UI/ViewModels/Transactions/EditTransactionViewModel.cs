@@ -4,7 +4,6 @@ using CBControls;
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 
 
@@ -50,7 +49,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class EditTransactionViewModel: PopupWindow
     {
-        private RestClient _RestClient;
+        private RestWebClient _RestWebClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
         private TransactionViewModel _TransactionViewModel;
@@ -82,11 +81,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public EditTransactionViewModel(RestClient restClient)
+        public EditTransactionViewModel(RestWebClient restWebClient)
             : base()
         {
-            _RestClient = restClient;
-            _TransactionViewModelFactory = new TransactionViewModelFactory(restClient);
+            _RestWebClient = restWebClient;
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
 
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
             SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
@@ -140,10 +139,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 TransactionViewModel.EndEdit();
 
-       /*         if (NewTransaction)
-                    await _RestClient.AddTransactionAsync(TransactionViewModel.Transaction);
+                if (NewTransaction)
+                    await _RestWebClient.AddTransactionAsync(TransactionViewModel.Transaction);
                 else
-                    await _RestClient.UpdateTransactionAsync(TransactionViewModel.Transaction); */
+                    await _RestWebClient.UpdateTransactionAsync(TransactionViewModel.Transaction);
             }
 
             TransactionViewModel = null;
@@ -162,7 +161,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 _TransactionViewModel.EndEdit();
 
-//                await _RestClient.DeleteTransactionAsync(TransactionViewModel.Transaction.Id);
+                await _RestWebClient.DeleteTransactionAsync(TransactionViewModel.Transaction.Id);
             }
 
             TransactionViewModel = null;

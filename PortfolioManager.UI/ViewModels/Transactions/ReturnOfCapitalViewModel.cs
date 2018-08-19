@@ -1,7 +1,6 @@
 ﻿using System;
 
 using PortfolioManager.Service.Interface;
-using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -46,8 +45,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, RestClient restClient)
-            : base(returnOfCapital, TransactionStockSelection.Holdings, restClient)
+        public ReturnOfCapitalViewModel(ReturnOfCapitalTransactionItem returnOfCapital, RestWebClient restWebClient)
+            : base(returnOfCapital, TransactionStockSelection.Holdings, restWebClient)
         {
 
         }

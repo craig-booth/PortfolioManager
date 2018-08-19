@@ -51,7 +51,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (_Parameter != null)
             {
-                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestClient);
+                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestWebClient);
             }
 
             base.Activate();

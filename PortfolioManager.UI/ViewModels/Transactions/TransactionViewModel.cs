@@ -5,8 +5,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.RestApi.Stocks;
-using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -18,13 +16,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     {
         protected bool _BeingEdited;
         protected TransactionStockSelection _StockSelection;
-        protected RestClient _RestClient;
+        protected RestWebClient _RestWebClient;
 
         public TransactionItem Transaction { get; protected set; }
         public string Description { get; private set; }    
 
-        private TransactionStock _Stock;
-        public TransactionStock Stock
+        private StockItem _Stock;
+        public StockItem Stock
         {
             get
             {
@@ -75,7 +73,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
         public string Comment { get; set; }
 
-        public ObservableCollection<TransactionStock> AvailableStocks { get; private set; }
+        public ObservableCollection<StockItem> AvailableStocks { get; private set; }
 
         public bool IsStockEditable
         {
@@ -85,15 +83,15 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, RestClient restClient)
+        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, RestWebClient restWebClient)
         {
             _StockSelection = stockSeletion;
-            _RestClient = restClient;
+            _RestWebClient = restWebClient;
 
             Transaction = transaction;
 
             if (_StockSelection != TransactionStockSelection.None)
-                AvailableStocks = new ObservableCollection<TransactionStock>();                   
+                AvailableStocks = new ObservableCollection<StockItem>();                   
 
             CopyTransactionToFields();
         }
@@ -164,30 +162,30 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (_StockSelection == TransactionStockSelection.Holdings)
             {
-                var responce = await _RestClient.Holdings.Get(date);
+                var responce = await _RestWebClient.GetPortfolioHoldingsAsync(date);
 
-                foreach (var stock in responce.Select(x => x.Stock).ToTransactionStock(true).OrderBy(x => x.ToString()))
-                    AvailableStocks.Add(stock);
+                foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.FormattedCompanyName()))
+                    AvailableStocks.Add(holding.Stock);
             }
             else if (_StockSelection == TransactionStockSelection.TradeableHoldings)
             {
-                var responce = await _RestClient.Holdings.Get(date);
-
-                foreach (var stock in responce.Select(x => x.Stock).ToTransactionStock(false).OrderBy(x => x.ToString()))
-                    AvailableStocks.Add(stock);
+                var responce = await _RestWebClient.GetPortfolioTradeableHoldingsAsync(date);
+        
+                foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.FormattedCompanyName()))
+                    AvailableStocks.Add(holding.Stock);
             }
             else if (_StockSelection == TransactionStockSelection.Stocks)
             {
-                var response = await _RestClient.Stocks.Get(date);
+                var responce = await _RestWebClient.GetStocksAsync(date, true, true);
 
-                foreach (var stock in response.ToTransactionStock(true).OrderBy(x => x.ToString()))
+                foreach (var stock in responce.Stocks.OrderBy(x => x.FormattedCompanyName()))
                     AvailableStocks.Add(stock);
             }
             else if (_StockSelection == TransactionStockSelection.TradeableStocks)
             {
-                var response = await _RestClient.Stocks.Get(date);
+                var responce = await _RestWebClient.GetStocksAsync(date, true, false);
 
-                foreach (var stock in response.ToTransactionStock(false).OrderBy(x => x.ToString()))
+                foreach (var stock in responce.Stocks.OrderBy(x => x.FormattedCompanyName()))
                     AvailableStocks.Add(stock);
             }
         }
@@ -195,13 +193,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class TransactionViewModelFactory
     {
-        private RestClient _RestClient;
+        private RestWebClient _RestWebClient;
 
         public Dictionary<string, TransactionType> TransactionTypes { get; private set; }
 
-        public TransactionViewModelFactory(RestClient restClient)
+        public TransactionViewModelFactory(RestWebClient restWebClient)
         {
-            _RestClient = restClient;
+            _RestWebClient = restWebClient;
 
             TransactionTypes = new Dictionary<string, TransactionType>();
             TransactionTypes.Add("Buy", TransactionType.Aquisition);
@@ -217,21 +215,21 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public TransactionViewModel CreateTransactionViewModel(TransactionType type)
         {
             if (type == TransactionType.Aquisition)
-                return new AquisitionViewModel(null, _RestClient);
+                return new AquisitionViewModel(null, _RestWebClient);
             else if (type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(null, _RestClient);
+                return new CashTransactionViewModel(null, _RestWebClient);
             else if (type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(null, _RestClient);
+                return new CostBaseAdjustmentViewModel(null, _RestWebClient);
             else if (type == TransactionType.Disposal)
-                return new DisposalViewModel(null, _RestClient);
+                return new DisposalViewModel(null, _RestWebClient);
             else if (type == TransactionType.Income)
-                return new IncomeReceivedViewModel(null, _RestClient);
+                return new IncomeReceivedViewModel(null, _RestWebClient);
             else if (type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(null, _RestClient);
+                return new OpeningBalanceViewModel(null, _RestWebClient);
             else if (type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(null, _RestClient);
+                return new ReturnOfCapitalViewModel(null, _RestWebClient);
             else if (type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(null, _RestClient);
+                return new UnitCountAdjustmentViewModel(null, _RestWebClient);
             else
                 throw new NotSupportedException();
         }
@@ -239,80 +237,23 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public TransactionViewModel CreateTransactionViewModel(TransactionItem transaction)
         {
             if (transaction.Type == TransactionType.Aquisition)
-                return new AquisitionViewModel(transaction as AquisitionTransactionItem, _RestClient);
+                return new AquisitionViewModel(transaction as AquisitionTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(transaction as CashTransactionItem, _RestClient);
+                return new CashTransactionViewModel(transaction as CashTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _RestClient);
+                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.Disposal)
-                return new DisposalViewModel(transaction as DisposalTransactionItem, _RestClient);
+                return new DisposalViewModel(transaction as DisposalTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.Income)
-                return new IncomeReceivedViewModel(transaction as IncomeTransactionItem, _RestClient);
+                return new IncomeReceivedViewModel(transaction as IncomeTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransactionItem, _RestClient);
+                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransactionItem, _RestClient);
+                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransactionItem, _RestWebClient);
             else if (transaction.Type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransactionItem, _RestClient);
+                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransactionItem, _RestWebClient);
             else
                 throw new NotSupportedException();
-        }
-    }
-
-    class TransactionStock
-    {
-        public Guid Id;
-        public string AsxCode;
-        public string Name;
-
-        public string ChildCode;
-        public string ChildName;
-
-        public override string ToString()
-        {
-            if (ChildCode != "")
-                return string.Format("{0} {1}", Name, AsxCode);
-            else
-                return string.Format("{0} {1} - {2} {3}", Name, AsxCode, ChildCode, ChildName);
-        }
-    }
-
-    static class StockResponseExtensions
-    {
-        public static IEnumerable<TransactionStock> ToTransactionStock(this IEnumerable<StockResponse> stockResponses, bool includeChildSecurities)
-        {
-            var transactionStocks = new List<TransactionStock>();
-
-            foreach (var stockResponse in stockResponses)
-            {
-                if ((! stockResponse.StapledSecurity) || ! includeChildSecurities)
-                {
-                    transactionStocks.Add(new TransactionStock()
-                    {
-                        Id = stockResponse.Id,
-                        AsxCode = stockResponse.ASXCode,
-                        Name = stockResponse.Name,
-                        ChildCode = "",
-                        ChildName = ""
-                    });
-                }
-                else
-                {
-                    foreach (var childSecurity in stockResponse.ChildSecurities)
-                    {
-                        transactionStocks.Add(new TransactionStock()
-                        {
-                            Id = stockResponse.Id,
-                            AsxCode = stockResponse.ASXCode,
-                            Name = stockResponse.Name,
-                            ChildCode = childSecurity.ASXCode,
-                            ChildName = childSecurity.Name
-                        });
-                    }
-                }
-            }
-
-            return transactionStocks;
         }
     }
 }

@@ -16,7 +16,6 @@ namespace PortfolioManager.RestApi.Client
         public StockResouce Stocks { get; }
         public TradingCalanderResource TradingCalander { get; }
         public CorporateActionResource CorporateActions { get; }
-        public HoldingResource Holdings { get; }
 
         public RestClient(string baseURL, Guid apiKey)
         {
@@ -29,7 +28,6 @@ namespace PortfolioManager.RestApi.Client
             Stocks = new StockResouce(_HttpClient);
             TradingCalander = new TradingCalanderResource(_HttpClient);
             CorporateActions = new CorporateActionResource(_HttpClient);
-            Holdings = new HoldingResource(_HttpClient);
         }
     }
 }

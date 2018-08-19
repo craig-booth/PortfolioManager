@@ -2,7 +2,6 @@
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -33,9 +32,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         private async void CheckEnoughUnitsOwned()
         {
-            var responce = await _RestClient.Holdings.Get(Stock.Id, RecordDate);
+            var responce = await _RestWebClient.GetPortfolioHoldingsAsync(Stock.Id, RecordDate);
 
-            var availableUnits = responce.Units;
+            var availableUnits = responce.Holding.Units;
             if (Transaction != null)
                 availableUnits += ((DisposalTransactionItem)Transaction).Units;
 
@@ -84,8 +83,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(DisposalTransactionItem disposal, RestClient restClient)
-            : base(disposal, TransactionStockSelection.TradeableHoldings, restClient)
+        public DisposalViewModel(DisposalTransactionItem disposal, RestWebClient restWebClient)
+            : base(disposal, TransactionStockSelection.TradeableHoldings, restWebClient)
         {
             
         }
