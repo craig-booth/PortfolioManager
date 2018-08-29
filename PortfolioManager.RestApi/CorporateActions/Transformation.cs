@@ -4,8 +4,12 @@ using System.Text;
 
 namespace PortfolioManager.RestApi.CorporateActions
 {
-    public class AddTransformationCommand : AddCorporateActionCommand
+    public class Transformation : CorporateAction
     {
+        public override string Type
+        {
+            get { return "capitalreturn"; }
+        }
         public DateTime ImplementationDate { get; set; }
         public decimal CashComponent { get; set; }
         public bool RolloverRefliefApplies { get; set; }

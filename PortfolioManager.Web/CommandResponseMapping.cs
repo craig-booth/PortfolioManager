@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.Domain.CorporateActions;
 using PortfolioManager.RestApi.Stocks;
-using PortfolioManager.RestApi.CorporateActions;
 
 namespace PortfolioManager.Web
 {
@@ -124,34 +122,21 @@ namespace PortfolioManager.Web
             foreach (var nta in ntas)
             {
                 //if (nta.EffectivePeriod.FromDate < dateRange.FromDate)
-                for (var i = 0; i < childNTAs.Length; i ++)
+                for (var i = 0; i < childNTAs.Length; i++)
                     childNTAs[i].Percentage = nta.Properties.Percentages[i];
 
                 response.RelativeNTAs.Add(new RelativeNTAResponse.RelativeNTA(nta.EffectivePeriod.FromDate, nta.EffectivePeriod.ToDate, childNTAs));
             }
-       
+
             return response;
         }
 
-        public static CorporateActionResponse ToCorporateActionResponse(this CorporateAction corporateAction)
+        public static RestApi.CorporateActions.Dividend ToResponse(this Domain.CorporateActions.Dividend dividend)
         {
-            return new CorporateActionResponse()
-            {
-                Id = corporateAction.Id,
-                Stock = corporateAction.Stock.Id,
-                Type = corporateAction.Type,
-                ActionDate = corporateAction.ActionDate,
-                Description = corporateAction.Description
-            };
-        }
-
-        public static DividendResponse ToDividendResponse(this Dividend dividend)
-        {
-            return new DividendResponse()
+            return new RestApi.CorporateActions.Dividend()
             {
                 Id = dividend.Id,
                 Stock = dividend.Stock.Id,
-                Type = dividend.Type,
                 ActionDate = dividend.ActionDate,
                 Description = dividend.Description,
                 PaymentDate = dividend.PaymentDate,
@@ -160,15 +145,14 @@ namespace PortfolioManager.Web
                 PercentFranked = dividend.PercentFranked,
                 DRPPrice = dividend.DRPPrice
             };
-        }
+        } 
 
-        public static CapitalReturnResponse ToCapitalReturnResponse(this CapitalReturn capitalReturn)
+        public static RestApi.CorporateActions.CapitalReturn ToResponse(this Domain.CorporateActions.CapitalReturn capitalReturn)
         {
-            return new CapitalReturnResponse()
+            return new RestApi.CorporateActions.CapitalReturn()
             {
                 Id = capitalReturn.Id,
                 Stock = capitalReturn.Stock.Id,
-                Type = capitalReturn.Type,
                 ActionDate = capitalReturn.ActionDate,
                 Description = capitalReturn.Description,
                 PaymentDate = capitalReturn.PaymentDate,
@@ -176,13 +160,12 @@ namespace PortfolioManager.Web
             };
         }
 
-        public static TransformationResponse ToTransformationResponse(this Transformation transformation)
+        public static RestApi.CorporateActions.Transformation ToResponse(this Domain.CorporateActions.Transformation transformation)
         {
-            var response = new TransformationResponse()
+            var response = new RestApi.CorporateActions.Transformation()
             {
                 Id = transformation.Id,
                 Stock = transformation.Stock.Id,
-                Type = transformation.Type,
                 ActionDate = transformation.ActionDate,
                 Description = transformation.Description,
                 ImplementationDate = transformation.ImplementationDate,
@@ -190,9 +173,9 @@ namespace PortfolioManager.Web
                 RolloverRefliefApplies = transformation.RolloverRefliefApplies,
             };
 
-            response.ResultingStocks.AddRange(transformation.ResultingStocks.Select(x => new TransformationResponse.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate)));
+            response.ResultingStocks.AddRange(transformation.ResultingStocks.Select(x => new RestApi.CorporateActions.Transformation.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate)));
 
             return response;
-        }
+        } 
     }
 }

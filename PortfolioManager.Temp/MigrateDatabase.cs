@@ -197,9 +197,9 @@ namespace PortfolioManager.Temp
             var corporateActions = unitOfWork.CorporateActionQuery.Find(id, DateUtils.NoStartDate, DateUtils.NoEndDate);
             foreach (var corporateAction in corporateActions)
             {
-                if (corporateAction.Type == CorporateActionType.Dividend)
+            /*    if (corporateAction.Type == CorporateActionType.Dividend)
                 {
-                    var dividend = (Dividend)corporateAction;
+                    var dividend = (Data.Stocks.Dividend)corporateAction;
                     var dividendCommand = new AddDividendCommand()
                     {
                         Id = dividend.Id,
@@ -217,7 +217,7 @@ namespace PortfolioManager.Temp
                 }
                 else if (corporateAction.Type == CorporateActionType.CapitalReturn)
                 {
-                    var capitalReturn = (CapitalReturn)corporateAction;
+                    var capitalReturn = (Data.Stocks.CapitalReturn)corporateAction;
                     var capitalReturnCommand = new AddCapitalReturnCommand()
                     {
                         Id = capitalReturn.Id,
@@ -232,15 +232,15 @@ namespace PortfolioManager.Temp
                 }
                 else if (corporateAction.Type == CorporateActionType.SplitConsolidation)
                 {
-                    var splitConsolidation = (SplitConsolidation)corporateAction;
+                    var splitConsolidation = (Data.Stocks.SplitConsolidation)corporateAction;
                 }
                 else if (corporateAction.Type == CorporateActionType.Composite)
                 {
-                    var compositeAction = (CompositeAction)corporateAction;
+                    var compositeAction = (Data.Stocks.CompositeAction)corporateAction;
                 }
                 else if (corporateAction.Type == CorporateActionType.Transformation)
                 {
-                    var transformation = (Transformation)corporateAction;
+                    var transformation = (Data.Stocks.Transformation)corporateAction;
 
                     var transformationCommand = new AddTransformationCommand()
                     {
@@ -257,7 +257,7 @@ namespace PortfolioManager.Temp
 
                     if (_RestClient != null)
                         await _RestClient.CorporateActions.AddTransformation(transformationCommand);
-                }
+                }*/
             }
         }
     }

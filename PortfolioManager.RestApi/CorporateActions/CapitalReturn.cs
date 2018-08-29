@@ -4,9 +4,15 @@ using System.Text;
 
 namespace PortfolioManager.RestApi.CorporateActions
 {
-    public class AddCapitalReturnCommand : AddCorporateActionCommand
+    public class CapitalReturn : CorporateAction
     {
+        public override string Type
+        {
+            get { return "capitalreturn"; }
+        }
         public DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }
     }
 }
+
+
