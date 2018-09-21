@@ -6,9 +6,9 @@ using System.Linq;
 
 using PortfolioManager.RestApi.TradingCalander;
 
-namespace PortfolioManager.Web.Controllers
+namespace PortfolioManager.Web.Controllers.v2
 {
-    [Route("api/tradingcalander")]
+    [Route("api/v2/tradingcalander")]
     public class TradingCalanderController : Controller
     {
         private ITradingCalander _TradingCalander;

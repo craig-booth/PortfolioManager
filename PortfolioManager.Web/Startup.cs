@@ -40,6 +40,7 @@ namespace PortfolioManager.Web
             services.AddMvc()
                 .AddJsonOptions(x =>
                 {
+                    x.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
                     x.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
                     x.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
                 });

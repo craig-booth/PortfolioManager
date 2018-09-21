@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -17,6 +18,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected bool _BeingEdited;
         protected TransactionStockSelection _StockSelection;
         protected RestWebClient _RestWebClient;
+        protected RestClient _RestClient;
 
         public TransactionItem Transaction { get; protected set; }
         public string Description { get; private set; }    
@@ -83,10 +85,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, RestWebClient restWebClient)
+        public TransactionViewModel(TransactionItem transaction, TransactionStockSelection stockSeletion, RestWebClient restWebClient, RestClient restClient)
         {
             _StockSelection = stockSeletion;
             _RestWebClient = restWebClient;
+            _RestClient = restClient;
 
             Transaction = transaction;
 
@@ -176,17 +179,31 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else if (_StockSelection == TransactionStockSelection.Stocks)
             {
-                var responce = await _RestWebClient.GetStocksAsync(date, true, true);
-
-                foreach (var stock in responce.Stocks.OrderBy(x => x.FormattedCompanyName()))
-                    AvailableStocks.Add(stock);
+                var stocks = await _RestClient.Stocks.Get(date);
+                
+                foreach (var stock in stocks)
+                {
+                    var stockItem = new StockItem(stock.Id, stock.ASXCode, stock.Name);
+                    AvailableStocks.Add(stockItem);
+                    if (!stock.StapledSecurity)
+                    {
+                        foreach (var childSecurity in stock.ChildSecurities)
+                        {
+                            stockItem = new StockItem(stock.Id, childSecurity.ASXCode, childSecurity.Name);
+                            AvailableStocks.Add(stockItem);
+                        }
+                    }
+                }
             }
             else if (_StockSelection == TransactionStockSelection.TradeableStocks)
             {
-                var responce = await _RestWebClient.GetStocksAsync(date, true, false);
+                var stocks = await _RestClient.Stocks.Get(date);
 
-                foreach (var stock in responce.Stocks.OrderBy(x => x.FormattedCompanyName()))
-                    AvailableStocks.Add(stock);
+                foreach (var stock in stocks)
+                {
+                    var stockItem = new StockItem(stock.Id, stock.ASXCode, stock.Name);
+                    AvailableStocks.Add(stockItem);
+                }
             }
         }
     }
@@ -194,12 +211,14 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class TransactionViewModelFactory
     {
         private RestWebClient _RestWebClient;
+        private RestClient _RestClient;
 
         public Dictionary<string, TransactionType> TransactionTypes { get; private set; }
 
-        public TransactionViewModelFactory(RestWebClient restWebClient)
+        public TransactionViewModelFactory(RestWebClient restWebClient, RestClient restClient)
         {
             _RestWebClient = restWebClient;
+            _RestClient = restClient;
 
             TransactionTypes = new Dictionary<string, TransactionType>();
             TransactionTypes.Add("Buy", TransactionType.Aquisition);
@@ -215,21 +234,21 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public TransactionViewModel CreateTransactionViewModel(TransactionType type)
         {
             if (type == TransactionType.Aquisition)
-                return new AquisitionViewModel(null, _RestWebClient);
+                return new AquisitionViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(null, _RestWebClient);
+                return new CashTransactionViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(null, _RestWebClient);
+                return new CostBaseAdjustmentViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.Disposal)
-                return new DisposalViewModel(null, _RestWebClient);
+                return new DisposalViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.Income)
-                return new IncomeReceivedViewModel(null, _RestWebClient);
+                return new IncomeReceivedViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(null, _RestWebClient);
+                return new OpeningBalanceViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(null, _RestWebClient);
+                return new ReturnOfCapitalViewModel(null, _RestWebClient, _RestClient);
             else if (type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(null, _RestWebClient);
+                return new UnitCountAdjustmentViewModel(null, _RestWebClient, _RestClient);
             else
                 throw new NotSupportedException();
         }
@@ -237,21 +256,21 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public TransactionViewModel CreateTransactionViewModel(TransactionItem transaction)
         {
             if (transaction.Type == TransactionType.Aquisition)
-                return new AquisitionViewModel(transaction as AquisitionTransactionItem, _RestWebClient);
+                return new AquisitionViewModel(transaction as AquisitionTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(transaction as CashTransactionItem, _RestWebClient);
+                return new CashTransactionViewModel(transaction as CashTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _RestWebClient);
+                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.Disposal)
-                return new DisposalViewModel(transaction as DisposalTransactionItem, _RestWebClient);
+                return new DisposalViewModel(transaction as DisposalTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.Income)
-                return new IncomeReceivedViewModel(transaction as IncomeTransactionItem, _RestWebClient);
+                return new IncomeReceivedViewModel(transaction as IncomeTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransactionItem, _RestWebClient);
+                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransactionItem, _RestWebClient);
+                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransactionItem, _RestWebClient, _RestClient);
             else if (transaction.Type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransactionItem, _RestWebClient);
+                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransactionItem, _RestWebClient, _RestClient);
             else
                 throw new NotSupportedException();
         }

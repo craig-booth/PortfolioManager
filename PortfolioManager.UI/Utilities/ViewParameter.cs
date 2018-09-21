@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.Utilities
@@ -8,6 +9,7 @@ namespace PortfolioManager.UI.Utilities
     class ViewParameter : NotifyClass
     {
         public RestWebClient RestWebClient;
+        public RestClient RestClient;
 
         private StockItem _Stock;
         public StockItem Stock

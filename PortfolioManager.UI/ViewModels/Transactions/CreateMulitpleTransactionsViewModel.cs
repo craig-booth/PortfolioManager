@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 
 using CBControls;
 
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -13,6 +14,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class CreateMulitpleTransactionsViewModel : PopupWindow
     {
         protected RestWebClient _RestWebClient;
+        protected RestClient _RestClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
@@ -34,11 +36,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CreateMulitpleTransactionsViewModel(RestWebClient restWebClient)
+        public CreateMulitpleTransactionsViewModel(RestWebClient restWebClient, RestClient restClient)
             : base()
         {
             _RestWebClient = restWebClient;
-            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient, restClient);
             Transactions = new ObservableCollection<TransactionViewModel>();
 
             CancelCommand = new RelayCommand(Cancel);

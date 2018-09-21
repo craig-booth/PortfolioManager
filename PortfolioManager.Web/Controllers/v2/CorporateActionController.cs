@@ -7,14 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.Domain.CorporateActions;
-using PortfolioManager.RestApi.Stocks;
 using PortfolioManager.RestApi.CorporateActions;
 
-namespace PortfolioManager.Web.Controllers
+namespace PortfolioManager.Web.Controllers.v2
 {
 
-    [Route("api/stocks/{id:guid}/corporateactions")]
+    [Route("api/v2/stocks/{stockId:guid}/corporateactions")]
     public class CorporateActionController : Controller
     {
         private IStockRepository _StockRepository;
@@ -24,30 +22,30 @@ namespace PortfolioManager.Web.Controllers
             _StockRepository = stockRepository;
         }
 
-        // GET : /api/stocks/{id}/corporateactions
+        // GET : /api/stocks/{stockId}/corporateactions
         [Route("")]
         [HttpGet]
-        public ActionResult GetCorporateActions([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        public ActionResult<List<CorporateAction>> GetCorporateActions([FromRoute]Guid stockId, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
-            var stock = _StockRepository.Get(id);
+            var stock = _StockRepository.Get(stockId);
             if (stock == null)
                 return NotFound();
 
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return Ok(stock.CorporateActions.Get(dateRange).Select(x => CorporateActionResponse(x)));
+            return stock.CorporateActions.Get(dateRange).Select(x => CorporateActionResponse(x)).ToList();
         }
 
-        // GET : /api/stocks/{id}/corporateactions/{id}
-        [Route("{actionid:guid}")]
+        // GET : /api/stocks/{stockId}/corporateactions/{id}
+        [Route("{id:guid}")]
         [HttpGet]
-        public ActionResult GetCorporateAction([FromRoute]Guid id, [FromRoute]Guid actionId)
+        public ActionResult<CorporateAction> GetCorporateAction([FromRoute]Guid stockId, [FromRoute]Guid id)
         {
-            var stock = _StockRepository.Get(id);
+            var stock = _StockRepository.Get(stockId);
             if (stock == null)
                 return NotFound();
 
-            var corporateAction = stock.CorporateActions[actionId];
+            var corporateAction = stock.CorporateActions[id];
             if (corporateAction == null)
                 return NotFound();
 
@@ -55,10 +53,10 @@ namespace PortfolioManager.Web.Controllers
             if (response == null)
                 return BadRequest("Unknown corporate action type");
 
-            return Ok(response);       
+            return response;       
         }
 
-        private RestApi.CorporateActions.CorporateAction CorporateActionResponse(Domain.CorporateActions.CorporateAction corporateAction)
+        private CorporateAction CorporateActionResponse(Domain.CorporateActions.CorporateAction corporateAction)
         {
             if (corporateAction.Type == CorporateActionType.Dividend)
                 return (corporateAction as Domain.CorporateActions.Dividend).ToResponse();
@@ -70,19 +68,19 @@ namespace PortfolioManager.Web.Controllers
                 return null;
         }
 
-        // POST : /api/stocks/{id}/corporateactions
+        // POST : /api/stocks/{stockId}/corporateactions
         [Route("")]
         [HttpPost]
-        public ActionResult AddCorporateAction([FromRoute]Guid id, [FromBody] RestApi.CorporateActions.CorporateAction corporateAction)
+        public ActionResult AddCorporateAction([FromRoute]Guid stockId, [FromBody] RestApi.CorporateActions.CorporateAction corporateAction)
         {
             if (corporateAction == null)
                 return BadRequest("Unknown Corporate Action type");
 
             // Check id in URL and id in command match
-            if (id != corporateAction.Stock)
+            if (stockId != corporateAction.Stock)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(id);
+            var stock = _StockRepository.Get(stockId);
             if (stock == null)
                 return NotFound();
 

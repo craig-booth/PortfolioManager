@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 
-namespace PortfolioManager.Web.Controllers
+namespace PortfolioManager.Web.Controllers.v1
 {
-    [Route("api/portfolio")]
+    [Route("api/v1/portfolio")]
     public class PortfolioController : Controller
     {
         private IServiceProvider _ServiceProvider;

@@ -18,17 +18,22 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<IEnumerable<CorporateAction>> GetAll(Guid stockid)
         {
-            return await GetAsync<IEnumerable<CorporateAction>>("/api/stocks/" + stockid.ToString() + "/corporateactions");
+            return await GetAsync<IEnumerable<CorporateAction>>("/api/v2/stocks/" + stockid.ToString() + "/corporateactions");
         }
 
         public async Task<IEnumerable<CorporateAction>> GetAll(Guid stockid, DateRange dateRange)
         {
-            return await GetAsync<IEnumerable<CorporateAction>>("/api/stocks/" + stockid.ToString() + "/corporateactions?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<IEnumerable<CorporateAction>>("/api/v2/stocks/" + stockid.ToString() + "/corporateactions?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<CorporateAction> Get<CorporateAction>(Guid stockid, Guid id)
         {
-            return await GetAsync<CorporateAction>("/api/stocks/" + stockid.ToString() + "/corporateactions/" + id.ToString());
+            return await GetAsync<CorporateAction>("/api/v2/stocks/" + stockid.ToString() + "/corporateactions/" + id.ToString());
+        }
+
+        public async Task Add(Guid stockid, CorporateAction corporateAction)
+        {
+            await PostAsync<CorporateAction>("/api/v2/stocks/" + stockid.ToString() + "/corporateactions/", corporateAction);
         }
     }
 }

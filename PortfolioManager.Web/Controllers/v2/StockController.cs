@@ -7,13 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.Domain.CorporateActions;
 using PortfolioManager.RestApi.Stocks;
-using PortfolioManager.RestApi.CorporateActions;
 
-namespace PortfolioManager.Web.Controllers
+namespace PortfolioManager.Web.Controllers.v2
 {
-    [Route("api/stocks")]
+    [Route("api/v2/stocks")]
     public class StockController : Controller
     {
         private IStockRepository _StockRepository;

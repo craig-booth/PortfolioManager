@@ -1,5 +1,6 @@
 ﻿using System;
 
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -61,8 +62,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public OpeningBalanceViewModel(OpeningBalanceTransactionItem openingBalance, RestWebClient restWebClient)
-            : base(openingBalance, TransactionStockSelection.Stocks, restWebClient)
+        public OpeningBalanceViewModel(OpeningBalanceTransactionItem openingBalance, RestWebClient restWebClient, RestClient restClient)
+            : base(openingBalance, TransactionStockSelection.Stocks, restWebClient, restClient)
         {
         }
 

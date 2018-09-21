@@ -43,6 +43,8 @@ namespace PortfolioManager.Web
             services.AddSingleton<IStockRepository>(x => x.GetRequiredService<StockExchange>().Stocks);
             services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<StockExchange>().TradingCalander);
 
+            services.AddSingleton<IPortfolioCache>(new PortfolioCache());
+
             services.AddSingleton<IMapper>(CreateMapper);
 
             services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();

@@ -264,6 +264,10 @@
       <Project>{c754d5de-f2d5-4e1d-999a-b2deb7ddce04}</Project>
       <Name>PortfolioManager.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PortfolioManager.RestApi\PortfolioManager.RestApi.csproj">
+      <Project>{aaac69bf-4b0b-4d23-ad83-6c53d6676740}</Project>
+      <Name>PortfolioManager.RestApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj">
       <Project>{6f59be81-1e14-4454-9c3e-6cc0a586a6c2}</Project>
       <Name>PortfolioManager.Service</Name>

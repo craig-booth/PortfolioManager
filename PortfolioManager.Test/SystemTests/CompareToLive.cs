@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 
 using AutoMapper;
 using NUnit.Framework;
@@ -22,6 +23,8 @@ using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
 using PortfolioManager.Service.Utils;
+using PortfolioManager.Web.Controllers.v1;
+using PortfolioManager.Web.Controllers.v2;
 
 namespace PortfolioManager.Test.SystemTests
 {
@@ -31,6 +34,7 @@ namespace PortfolioManager.Test.SystemTests
         private IPortfolioDatabase _PortfolioDatabase;
         private StockExchange _StockExchange;
         private IMapper _Mapper;
+        private ServiceProvider _ServiceProvider; 
 
         private string _ExpectedResultsPath;
         private string _ActualResultsPath;
@@ -61,6 +65,24 @@ namespace PortfolioManager.Test.SystemTests
                 cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
             );
             _Mapper = config.CreateMapper();
+
+
+            IServiceCollection services = new ServiceCollection();
+            services.AddSingleton<IPortfolioDatabase>(_PortfolioDatabase);
+            services.AddSingleton<StockExchange>(_StockExchange);
+            services.AddSingleton<IMapper>(_Mapper);
+            services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
+            services.AddScoped<IPortfolioPerformanceService, PortfolioPerformanceService>();
+            services.AddScoped<ICapitalGainService, CapitalGainService>();
+            services.AddScoped<IPortfolioValueService, PortfolioValueService>();
+            services.AddScoped<ICorporateActionService, CorporateActionService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IHoldingService, HoldingService>();
+            services.AddScoped<ICashAccountService, CashAccountService>();
+            services.AddScoped<IIncomeService, IncomeService>();
+            services.AddScoped<IStockService, StockService>();
+
+            _ServiceProvider = services.BuildServiceProvider();
 
             await LoadTransactions();
         }
@@ -102,11 +124,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CapitalGain {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CapitalGainService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetDetailedUnrealisedGains(date);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetDetailedCapitalGains(null, date);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(DetailedUnrealisedGainsResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(DetailedUnrealisedGainsResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -115,11 +137,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CGTLiability {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CapitalGainService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetCGTLiability(fromDate, toDate);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetCGTLiability(fromDate, toDate);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(CGTLiabilityResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(CGTLiabilityResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -128,11 +150,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CashTransactions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CashAccountService(_PortfolioDatabase);
-            var responce = await service.GetTranasctions(fromDate, toDate);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetCashAccountTransactions(fromDate, toDate);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(CashAccountTransactionsResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(CashAccountTransactionsResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -141,11 +163,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Holdings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new HoldingService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetHoldings(date);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);    
+            var response = await controller.GetHoldings(date, false);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -154,11 +176,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("TradeableHoldings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new HoldingService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetTradeableHoldings(date);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetHoldings(date, true);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -167,11 +189,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new IncomeService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetIncome(fromDate, toDate);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetIncome(fromDate, toDate);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(IncomeResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(IncomeResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -180,11 +202,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioPerformance {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new PortfolioPerformanceService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetPerformance(fromDate, toDate);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetPerformance(fromDate, toDate);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioPerformanceResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(PortfolioPerformanceResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -193,11 +215,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioSummary {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new PortfolioSummaryService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetSummary(date);
-            SaveActualResult(responce, fileName);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetSummary(date);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioSummaryResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(PortfolioSummaryResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -206,39 +228,48 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioValue {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new PortfolioValueService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetPortfolioValue(fromDate, toDate, ValueFrequency.Daily);
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetPortfolioValue(null, fromDate, toDate, ValueFrequency.Daily);
+            SaveActualResult(response, fileName);
 
-            SaveActualResult(responce, fileName);
-
-            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task CompareCorporateActions(DateTime fromDate, DateTime toDate)
+        public void CompareCorporateActions(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("CorporateActions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            CorporateActionsResponce responce = null;
+            CorporateActionsResponce response = new CorporateActionsResponce();
 
-            var service = new StockService(_StockExchange);
+            var controller = new CorporateActionController(_StockExchange.Stocks);
 
             var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate))).OrderBy(x => x, new StockComparer());
             foreach (var stock in stocks)
             {
-                if (responce == null)
-                    responce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
-                else
+                var stockItem = new StockItem(stock.Id, stock.Properties.ClosestTo(toDate).ASXCode, stock.Properties.ClosestTo(toDate).Name);
+
+                var result = controller.GetCorporateActions(stock.Id, fromDate, toDate);
+
+                if (result.Value != null)
                 {
-                    var thisResponce = await service.GetCorporateActions(stock.Id, fromDate, toDate);
-                    responce.CorporateActions.AddRange(thisResponce.CorporateActions);
+                    var corporateActions = result.Value.Select(x => new CorporateActionItem()
+                    {
+                        Id = x.Id,
+                        ActionDate = x.ActionDate,
+                        Stock = stockItem,
+                        Description = x.Description
+                    });
+
+                    response.CorporateActions.AddRange(corporateActions);
                 }
+
             }
 
-            SaveActualResult(responce, fileName);
+            SaveActualResult(response, fileName);
 
-            Assert.That(responce, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(CorporateActionsResponce), expectedFile));
         }
 
         [Test]
@@ -247,12 +278,11 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = "UnappliedCorporateActions.xml";
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var service = new CorporateActionService(_PortfolioDatabase, _StockExchange, _Mapper);
-            var responce = await service.GetUnappliedCorporateActions();
+            var controller = new PortfolioController(_ServiceProvider);
+            var response = await controller.GetUnappliedCorporateActions();
+            SaveActualResult(response, fileName);
 
-            SaveActualResult(responce, fileName);
-
-            Assert.That(responce, Is.EquivalentTo(typeof(UnappliedCorporateActionsResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(UnappliedCorporateActionsResponce), expectedFile));
         }
 
     }

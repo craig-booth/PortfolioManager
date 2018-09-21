@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using PortfolioManager.Common;
 using PortfolioManager.Service.Interface;
 
-namespace PortfolioManager.Web.Controllers
+namespace PortfolioManager.Web.Controllers.v1
 {
-    [Route("api/transactions")]
+    [Route("api/v1/transactions")]
     public class TransactionController : Controller
     {
         private IServiceProvider _ServiceProvider;

@@ -18,67 +18,67 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<IEnumerable<StockResponse>> Get()
         {
-            return await GetAsync<IEnumerable<StockResponse>>("/api/stocks");
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks");
         }
 
         public async Task<IEnumerable<StockResponse>> Get(DateTime date)
         {
-            return await GetAsync<IEnumerable<StockResponse>>("/api/stocks?date=" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<IEnumerable<StockResponse>> Get(DateRange dateRange)
         {
-            return await GetAsync<IEnumerable<StockResponse>>("/api/stocks?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task<StockResponse> Get(Guid id)
         {
-            return await GetAsync<StockResponse>("/api/stocks/" + id.ToString());
+            return await GetAsync<StockResponse>("/api/v2/stocks/" + id.ToString());
         }
 
         public async Task<StockResponse> Get(Guid id, DateTime date)
         {
-            return await GetAsync<StockResponse>("/api/stocks/" + id.ToString() + "?date=" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<StockResponse>("/api/v2/stocks/" + id.ToString() + "?date=" + date.ToString("yyyy-MM-dd"));
         }
 
         public async Task<StockHistoryResponse> GetHistory(Guid id)
         {
-            return await GetAsync<StockHistoryResponse>("/api/stocks/" + id.ToString() + "/history");
+            return await GetAsync<StockHistoryResponse>("/api/v2/stocks/" + id.ToString() + "/history");
         }
 
         public async Task<StockHistoryResponse> GetPrices(Guid id, DateRange dateRange)
         {
-            return await GetAsync<StockHistoryResponse>("/api/stocks/" + id.ToString() + "/closingprices?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<StockHistoryResponse>("/api/v2/stocks/" + id.ToString() + "/closingprices?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
         }
 
         public async Task CreateStock(CreateStockCommand command)
         {
-            await PostAsync<CreateStockCommand>("/api/stocks", command);
+            await PostAsync<CreateStockCommand>("/api/v2/stocks", command);
         }
 
         public async Task ChangeStock(ChangeStockCommand command)
         {
-            await PostAsync<ChangeStockCommand>("/api/stocks/" + command.Id.ToString() + "/change", command);
+            await PostAsync<ChangeStockCommand>("/api/v2/stocks/" + command.Id.ToString() + "/change", command);
         }
 
         public async Task DelistStock(DelistStockCommand command)
         {
-            await PostAsync<DelistStockCommand>("/api/stocks/" + command.Id.ToString() + "/delist", command);
+            await PostAsync<DelistStockCommand>("/api/v2/stocks/" + command.Id.ToString() + "/delist", command);
         }
 
         public async Task UpdateClosingPrices(UpdateClosingPricesCommand command)
         {
-            await PostAsync<UpdateClosingPricesCommand>("/api/stocks/" + command.Id.ToString() + "/closingprices", command);
+            await PostAsync<UpdateClosingPricesCommand>("/api/v2/stocks/" + command.Id.ToString() + "/closingprices", command);
         }
 
         public async Task ChangeDividendRules(ChangeDividendRulesCommand command)
         {
-            await PostAsync<ChangeDividendRulesCommand>("/api/stocks/" + command.Id.ToString() + "/changedividendrules", command);
+            await PostAsync<ChangeDividendRulesCommand>("/api/v2/stocks/" + command.Id.ToString() + "/changedividendrules", command);
         }
 
         public async Task ChangeReleativeNTAs(ChangeRelativeNTAsCommand command)
         {
-            await PostAsync<ChangeRelativeNTAsCommand>("/api/stocks/" + command.Id.ToString() + "/relativenta", command);
+            await PostAsync<ChangeRelativeNTAsCommand>("/api/v2/stocks/" + command.Id.ToString() + "/relativenta", command);
         }
     }
 }
