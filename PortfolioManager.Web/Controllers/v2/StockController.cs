@@ -9,6 +9,8 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
 
+using PortfolioManager.Web.Mapping;
+
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/stocks")]

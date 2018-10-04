@@ -3,8 +3,12 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Linq;
+
+using AutoMapper;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Transactions;
 
@@ -14,11 +18,17 @@ namespace PortfolioManager.Web.Controllers.v2
     public class TransactionController : Controller
     {
         private IPortfolioCache _PortfolioCache;
+        private IStockRepository _StockRepository;
+        private IMapper _Mapper;
         private Portfolio _Portfolio;
+        private FunkyHandler _TransactionHandler;
 
-        public TransactionController(IPortfolioCache portfolioCache)
+        public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper, FunkyTransactionService transactionService)
         {
             _PortfolioCache = portfolioCache;
+            _StockRepository = stockRepository;
+            _Mapper = mapper;
+            _TransactionHandler = transactionService.TransactionHandler();
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -32,26 +42,49 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:  transactions/id
         [HttpGet("{id:guid}")]
-        public ActionResult Get(Guid id)
+        public ActionResult<Transaction> Get(Guid id)
         {
-            return NotFound();
+            var transaction = _Portfolio.Transactions.FirstOrDefault(x => x.Id == id);
+
+            if (transaction == null)
+                return NotFound();
+
+            return _Mapper.Map<Transaction>(transaction);
         }
 
         // GET: transactions?stock&fromDate&toDate
         [HttpGet]
-        public ActionResult Get(Guid? stock, DateTime? fromDate, DateTime? toDate)
+        public ActionResult<List<Transaction>> Get(Guid? stock, DateTime? fromDate, DateTime? toDate)
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return NotFound();
+            var transactions = _Portfolio.Transactions.Where(x => dateRange.Contains(x.TransactionDate));
+            if (stock != null)
+                transactions = transactions.Where(x => x.Stock.Id == stock);
+
+            return _Mapper.Map<List<Transaction>>(transactions);
         }
 
 
         // POST: transactions
         [HttpPost]
-        public ActionResult Post([FromBody]Transaction transaction)
+        public ActionResult AddTransaction([FromBody]Transaction transaction)
         {
-            return NotFound();
-        } 
+            if (transaction == null)
+                return BadRequest("Unknown Transaction type");
+
+            try
+            {
+                var domainTransaction = _Mapper.Map<Domain.Transactions.Transaction>(transaction);
+
+                _TransactionHandler.Handle(domainTransaction, _Portfolio);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
+        }
     }
 }

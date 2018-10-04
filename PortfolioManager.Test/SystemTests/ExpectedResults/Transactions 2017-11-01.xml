@@ -2,7 +2,7 @@
 <GetTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Transactions>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>f7c43abf-81c7-46aa-96f0-b66c93ba761f</Id>
+      <Id>626c5c60-5fbe-4414-96c3-2c00a95735fa</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
@@ -23,7 +23,7 @@
       <DRPCashBalance>0.25</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>a2a08c10-84cb-42c9-8407-10558f64967d</Id>
+      <Id>38741b58-4cf8-41c9-8ba1-854e8f52104b</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
@@ -41,7 +41,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>ba3cdc28-255a-4520-9fe7-4e3a3ab760c1</Id>
+      <Id>db45a6c9-a9b9-45ca-b5ff-c30f6bb4dc16</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -57,7 +57,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>64e2b7fe-bc95-46e3-8390-2a8667df0363</Id>
+      <Id>3123e258-8c02-444e-abd3-fadc533a93d1</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -73,7 +73,7 @@
       <Amount>-3200.7</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>9ee78f70-917c-4373-9923-26c40824e120</Id>
+      <Id>13486110-786c-4c3c-b1a1-9fdddfe175db</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -89,7 +89,7 @@
       <Amount>0.09</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>9184631d-06c1-4c10-86a2-d0294078e6b5</Id>
+      <Id>b2e9b4a2-416a-4094-b126-06f4e754e08c</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -105,7 +105,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>3358d8f0-a1d9-4729-b67a-c9bdfbeb2e87</Id>
+      <Id>f2a842b5-92f7-48a8-934b-364badc8fbf4</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -126,7 +126,7 @@
       <DRPCashBalance>60.49</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>3e45c17a-5f46-4218-827e-1b7603cd7c72</Id>
+      <Id>889392e9-b81d-4903-b4ca-4290f3933f3c</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -147,7 +147,7 @@
       <DRPCashBalance>8.68</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>18210afa-32cd-46f0-a58e-d287cd0f6d42</Id>
+      <Id>12d3cb42-9319-4ba0-a0e3-a4db19511146</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -168,7 +168,7 @@
       <DRPCashBalance>32.536</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>e596aa56-bc29-4f64-9c32-44a4ee5ec06f</Id>
+      <Id>1da7de05-db2f-417a-aa97-bd0a97247ecd</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -186,7 +186,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>de2c4e7d-0cd3-4e05-a809-a54e0f616e96</Id>
+      <Id>de96016d-2d80-4f37-baec-2617f5a9df69</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -204,7 +204,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>1ac5220d-ddcf-4c21-aebf-737cf9cefbea</Id>
+      <Id>08645b22-02f9-4765-a057-1822cb65d045</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -222,7 +222,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>5f009531-8022-4904-896c-2b23eaba05bc</Id>
+      <Id>6cad0ee4-ee99-4192-8106-410bf4a6f5a8</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -238,7 +238,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>b6dd1472-17de-4964-adff-715da8754b5b</Id>
+      <Id>ff5b2d7e-ef82-4217-a914-b9865bd58460</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -254,7 +254,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>cc2a4155-e3a0-44f9-86c1-780a1f1739ae</Id>
+      <Id>2fbc4fc4-8b45-44ef-9cad-ad060f6e09ec</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
@@ -275,7 +275,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>8bada2ee-729c-492a-9785-5ad386970b33</Id>
+      <Id>75e010ad-2da2-452d-b88f-4e35eef5ab06</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -293,7 +293,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>af8a4af1-dcd3-4a14-96fe-24ecefe199c1</Id>
+      <Id>0c07c5dc-e63c-4e77-9d55-e4d0c3f47dbc</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
@@ -311,7 +311,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>36e573cb-b839-4519-a920-81dd19756c23</Id>
+      <Id>8bb04fc6-2bb8-4bc9-b248-718ed7b6a2c8</Id>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
@@ -332,7 +332,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>2a312251-5ea2-4d98-8588-21322855d58a</Id>
+      <Id>bf5af0ad-34fe-4d42-bc5e-8d984e7c5f06</Id>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
@@ -353,7 +353,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>fb3397ea-4a8d-46a8-82ea-1cdb7e6d835e</Id>
+      <Id>585b8261-a0f3-41e2-87f9-233389f7f9ee</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -369,7 +369,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>0d2bcd65-ec63-4a9c-a4dd-0dd5a99e57f3</Id>
+      <Id>31262c86-abca-4810-9657-1117b86421c5</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -390,7 +390,7 @@
       <DRPCashBalance>56.24</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>8a427b33-f892-4e9a-86b4-b8f326cef906</Id>
+      <Id>6d26a779-3465-44be-843a-444cadc6a28c</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -411,7 +411,7 @@
       <DRPCashBalance>15.616</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>a80ead1b-e569-43fc-a39d-b5dfc9fcdd7a</Id>
+      <Id>1432c401-8ed4-42ce-97cc-ca71e30e9ed1</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -432,7 +432,7 @@
       <DRPCashBalance>60.44</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>bd6cfa9c-ec70-408c-8095-d8a75ff6aebd</Id>
+      <Id>f8582362-1864-46e2-8d63-40de0912210a</Id>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
@@ -453,7 +453,7 @@
       <DRPCashBalance>43.42</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>b5a2f938-9ef2-4363-bfa4-8c6e9ba0a40f</Id>
+      <Id>73735434-072d-4ca5-a89a-2a0c7d7ab238</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
@@ -474,7 +474,7 @@
       <DRPCashBalance>0.47</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>36e8f03d-435d-4da3-a17f-9998341871f5</Id>
+      <Id>c5811809-2bca-4883-8c90-7eed3accebe9</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
@@ -495,7 +495,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>1eea48c4-b9ce-4f3b-bc12-66c90782c360</Id>
+      <Id>690d493c-74d5-4931-bc1e-888dfced5cdd</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -511,7 +511,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>15ba341b-b8a1-474b-857f-015a216217e2</Id>
+      <Id>d4430ee7-faf4-481a-8935-7a9c4dd58093</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -529,7 +529,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>19132a87-9600-4cf0-81c0-e3c1114ea92f</Id>
+      <Id>198af272-6b40-4cb2-ab97-28a7ac7702d5</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -547,7 +547,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>4eb37eb0-d6fa-49cc-bab9-c95e83c7d5ca</Id>
+      <Id>00889748-d15e-4a62-827d-b07fabeedaf9</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -565,7 +565,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>5bf14cc3-7b26-405f-be9b-9e8affea3756</Id>
+      <Id>93f5694e-fe43-433f-86f3-4557901dc9af</Id>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
@@ -583,7 +583,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>2f05507e-026b-4ac6-9d37-dbd3d99ce2f5</Id>
+      <Id>5a762f01-f400-4079-b4ce-5fb7c3ffab59</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
@@ -601,7 +601,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>0d6fcd96-c24b-4f48-aeee-c1a04dd4d551</Id>
+      <Id>20b34ba8-aa86-41e7-a49b-ced3cfb8cf61</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -619,7 +619,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>430ea75f-2bf9-4be5-8e84-bb181919bb5c</Id>
+      <Id>50910927-78d2-4684-aeb0-7f5d785e6e5a</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
@@ -637,7 +637,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>92a3b6be-1564-4959-ac9f-38818f4ff137</Id>
+      <Id>3633feb4-e24d-481f-943f-71bd5caa4d11</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -653,7 +653,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>53da868f-e6a6-4bef-b5e1-f142e5e963c6</Id>
+      <Id>d138f402-1b2a-485d-936b-ac7b48bd2d40</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -669,7 +669,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>bf30fc41-cdc9-488f-9433-80c3150c3f60</Id>
+      <Id>d8191834-c1cc-43bc-8755-a0ffb032b111</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -685,7 +685,7 @@
       <Amount>65763</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>54ebf190-f094-4409-9e7d-1edf77874e42</Id>
+      <Id>f3683dc0-350a-47ed-9a08-c60b651a899e</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -703,7 +703,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>f970e66a-922a-4701-8d88-70ff21454f4a</Id>
+      <Id>a386972e-9ecb-4d18-899f-23a7a21c8ce8</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
@@ -721,7 +721,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>c2bcb5b6-24a8-4b35-a8cd-46204f394c3b</Id>
+      <Id>150da76c-3628-4b8b-b475-9c8e07fd92cd</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -737,7 +737,7 @@
       <Amount>7.69</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>47cfee89-1d19-480f-a32f-c619bf9afdd4</Id>
+      <Id>7ec55502-2e0f-4c3d-889a-be3c72d40b15</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -758,7 +758,7 @@
       <DRPCashBalance>6.106</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>214a7a13-edb7-440f-8b75-61979e5e99b8</Id>
+      <Id>cb740fb6-51d9-4cab-b51a-631982905d63</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -779,7 +779,7 @@
       <DRPCashBalance>66.64</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>0c4c7d17-3e4d-47c8-a04e-ae9b380909fd</Id>
+      <Id>3b2775f0-8a7e-4245-9570-299ac9872fa0</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -800,7 +800,7 @@
       <DRPCashBalance>34.32</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>015cf13f-7049-4179-a45c-66baed2db1b8</Id>
+      <Id>f40c5a46-70d2-4105-a8f9-f60d157b77a2</Id>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
@@ -821,7 +821,7 @@
       <DRPCashBalance>21.34</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>b7d3d2b4-e9f2-441c-9970-c35ad0c69e78</Id>
+      <Id>5fc76631-f1a7-4282-8a2c-2b871d9b4863</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -839,7 +839,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>9b99482f-07f3-4ab1-96b5-ff9d6ceff39b</Id>
+      <Id>8fa0ec5a-4917-43e1-8baf-d1c7190f26eb</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
@@ -857,7 +857,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>2e04a8d1-dd69-4fed-873b-f3dc22dd3c1f</Id>
+      <Id>d8663c23-5865-4f1e-929d-0c75216a5b87</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
@@ -875,7 +875,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>06a5a5c7-f217-4b15-80bd-1757ea0e7847</Id>
+      <Id>e36ac0fe-ac0a-4812-b043-aaf2fd840646</Id>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
@@ -893,7 +893,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>353962c1-5dff-41c9-a9d6-48b47c798400</Id>
+      <Id>18a57ec8-87c7-4456-884e-515b72d4e7b9</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -909,7 +909,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>68c85dbc-572d-4436-8c5d-e270a1aa612b</Id>
+      <Id>74e750d9-c4b8-44b2-b615-88237716951d</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -925,7 +925,7 @@
       <Amount>73384.14</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>9116d941-c68d-43a2-9a4a-b849c8472d09</Id>
+      <Id>6a71d155-4ec5-43e5-aa63-da95b0c56627</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
@@ -943,7 +943,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>b42be281-2f4d-421b-b7d8-81a9e9b9ff41</Id>
+      <Id>48eab482-fd80-4ffa-8ad4-20127582a098</Id>
       <Stock>
         <Id>e88379fa-3675-4b26-aeea-0315759ecd52</Id>
         <ASXCode>VGE</ASXCode>
@@ -961,7 +961,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>a5a6140e-5a4b-42a4-b711-70aa7be3e836</Id>
+      <Id>0e539fc5-5735-44fe-a7bf-a44eec1e0caf</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
@@ -979,7 +979,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>8ccf4de1-b2ef-47ad-9d93-b09b70758a3d</Id>
+      <Id>fdd1ec3c-a3f5-4693-93af-abbf3bd12f3f</Id>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
@@ -997,7 +997,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="AquisitionTransactionItem">
-      <Id>7f346379-7f38-496c-aa22-6c532d8c196b</Id>
+      <Id>5fe23c09-e675-494e-8625-623c84b540f6</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
@@ -1015,7 +1015,7 @@
       <CreateCashTransaction>true</CreateCashTransaction>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>bcbb397e-2fd8-4bbf-91e5-29ac54b1f18c</Id>
+      <Id>7b408764-31ae-4d8d-9b91-5f102b567f53</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -1031,7 +1031,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>04ef48e2-4bc6-4bce-9dec-5c2588c5776d</Id>
+      <Id>877031bb-eef9-4486-a66a-4f53811969d9</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
@@ -1052,7 +1052,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>cac0afe8-f6a6-494a-9dcd-3ec236afa511</Id>
+      <Id>f8247625-cb41-4218-a02d-d09b8af4329a</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -1068,7 +1068,7 @@
       <Amount>14.92</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>9a09c7b0-d87a-4ea3-80a0-5c5edcad6f7c</Id>
+      <Id>9fb2e673-8b2c-45a4-8796-d80b67c7bd5f</Id>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
@@ -1089,7 +1089,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="OpeningBalanceTransactionItem">
-      <Id>07cdfa0b-b45d-4b4d-952d-0867a89b5dac</Id>
+      <Id>8ef5e4cc-01df-469e-a2b1-27e7a01619da</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
@@ -1107,7 +1107,7 @@
       <PurchaseId>00000000-0000-0000-0000-000000000000</PurchaseId>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>b84b5175-bea4-441f-9258-ce3e180e3801</Id>
+      <Id>64a3c4b5-49e5-499d-a94e-69e31317dc4b</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -1123,7 +1123,7 @@
       <Amount>2000</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>c197f69f-3114-47b7-878f-576d3b1388c1</Id>
+      <Id>1220bf4c-9795-4ffa-9cf8-5b849b9f8599</Id>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
@@ -1144,7 +1144,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="IncomeTransactionItem">
-      <Id>1325811b-37d9-4f20-a332-ae68315227eb</Id>
+      <Id>2ba67ab0-f696-409b-8d9c-c47f1c8361ca</Id>
       <Stock>
         <Id>e88379fa-3675-4b26-aeea-0315759ecd52</Id>
         <ASXCode>VGE</ASXCode>
@@ -1165,7 +1165,7 @@
       <DRPCashBalance>0</DRPCashBalance>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>51047329-0b4c-430a-9189-1128221e19e6</Id>
+      <Id>3fe10a93-c213-41d8-a10a-50e7a0ca727b</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
@@ -1181,7 +1181,7 @@
       <Amount>-3367.8</Amount>
     </TransactionItem>
     <TransactionItem xsi:type="CashTransactionItem">
-      <Id>bf5a08fb-f2e6-4a8d-bc9b-3e636f72b1bd</Id>
+      <Id>cdecf155-6e78-42bc-b04e-54fb9af75a6d</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />

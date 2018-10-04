@@ -9,6 +9,8 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.CorporateActions;
 
+using PortfolioManager.Web.Mapping;
+
 namespace PortfolioManager.Web.Controllers.v2
 {
 

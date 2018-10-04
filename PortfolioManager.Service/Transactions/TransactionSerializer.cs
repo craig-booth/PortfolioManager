@@ -12,14 +12,14 @@ using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.Transactions
 {
-    interface ITransactionSerializer
+    public interface ITransactionSerializer
     {
         string ElementName { get; }
         void Serialize(Transaction transaction, XmlWriter xmlWriter);
         Transaction Deserialize(XmlReader xmlReader);
     }
 
-    class TransactionExporter
+    public class TransactionExporter
     {
         private static string _NameSpace = @"http://portfolio.boothfamily.id.au";
         private TransactionSerializerFactory _TransactionSerializerFactory;
@@ -62,7 +62,7 @@ namespace PortfolioManager.Service.Transactions
         }
     }
 
-    class TransactionImporter
+    public class TransactionImporter
     {
         private static string _NameSpace = @"http://portfolio.boothfamily.id.au";
         private TransactionSerializerFactory _TransactionSerializerFactory;

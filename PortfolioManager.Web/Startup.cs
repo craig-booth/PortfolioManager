@@ -10,7 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Server;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace PortfolioManager.Web
 {
@@ -37,16 +40,20 @@ namespace PortfolioManager.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc()
-                .AddJsonOptions(x =>
+            services.AddMvc();
+         /*       .AddJsonOptions(  (x =>
                 {
-                    x.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
+                    x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     x.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
+                    x.SerializerSettings.Converters.Add(new TransactionJsonConverter());
                     x.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
-                });
+                }); */
 
             services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
-                .AddPortfolioManagerService(PortfolioManagerSettings);          
+                .AddPortfolioManagerService(PortfolioManagerSettings)
+                .AddDataImportService();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

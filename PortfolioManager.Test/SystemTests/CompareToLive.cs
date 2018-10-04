@@ -5,12 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+
 
 using AutoMapper;
 using NUnit.Framework;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
@@ -21,19 +32,17 @@ using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Service.Services;
-using PortfolioManager.Service.Utils;
+using PortfolioManager.Web;
 using PortfolioManager.Web.Controllers.v1;
 using PortfolioManager.Web.Controllers.v2;
+
 
 namespace PortfolioManager.Test.SystemTests
 {
     [TestFixture]
     public class CompareToLive
     {
-        private IPortfolioDatabase _PortfolioDatabase;
-        private StockExchange _StockExchange;
-        private IMapper _Mapper;
+        private Guid _PortfolioId = Guid.NewGuid();
         private ServiceProvider _ServiceProvider; 
 
         private string _ExpectedResultsPath;
@@ -55,46 +64,60 @@ namespace PortfolioManager.Test.SystemTests
                 Directory.CreateDirectory(_ActualResultsPath);
             }
 
-            var eventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
-            _StockExchange = new StockExchange(eventStore);
-            _StockExchange.LoadFromEventStream();
+            var settings = new PortfolioManagerSettings()
+            {
+                ApiKey = Guid.Empty,
+                PortfolioDatabase = Path.Combine(_ActualResultsPath, "Portfolio.db"),
+                EventStore = "mongodb://192.168.99.100:27017",
+                Port = 0
+            };
+            ServiceCollection services = new ServiceCollection();
+            services.AddLogging();
+            services.AddPortfolioManagerService(settings);
 
-            _PortfolioDatabase = new SQLitePortfolioDatabase(Path.Combine(_ActualResultsPath, "Portfolio.db"));
-
-            var config = new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
-            );
-            _Mapper = config.CreateMapper();
-
-
-            IServiceCollection services = new ServiceCollection();
-            services.AddSingleton<IPortfolioDatabase>(_PortfolioDatabase);
-            services.AddSingleton<StockExchange>(_StockExchange);
-            services.AddSingleton<IMapper>(_Mapper);
-            services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
-            services.AddScoped<IPortfolioPerformanceService, PortfolioPerformanceService>();
-            services.AddScoped<ICapitalGainService, CapitalGainService>();
-            services.AddScoped<IPortfolioValueService, PortfolioValueService>();
-            services.AddScoped<ICorporateActionService, CorporateActionService>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IHoldingService, HoldingService>();
-            services.AddScoped<ICashAccountService, CashAccountService>();
-            services.AddScoped<IIncomeService, IncomeService>();
-            services.AddScoped<IStockService, StockService>();
+            services.AddSingleton<Web.Controllers.v2.TransactionController>();
+            services.AddSingleton<Web.Controllers.v2.CorporateActionController>();
 
             _ServiceProvider = services.BuildServiceProvider();
+
+            var stockExchange = _ServiceProvider.GetRequiredService<StockExchange>();
+            stockExchange.LoadFromEventStream();
 
             await LoadTransactions();
         }
 
         public async Task LoadTransactions()
         {
-            var service = new TransactionService(_PortfolioDatabase, _StockExchange, _Mapper);
+            var service = _ServiceProvider.GetRequiredService<ITransactionService>();
+            var transactionService = _ServiceProvider.GetRequiredService<FunkyTransactionService>();
 
-            await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));         
+            await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));
+
+            var settings = new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            settings.Converters.Add(transactionService.JsonConverter());
+            settings.Converters.Add(new CorporateActionJsonConverter());
+            var serializer = JsonSerializer.Create(settings);
+
+            var jsonFile = File.OpenText(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.json"));
+            var jsonReader = new JsonTextReader(jsonFile);
+            var transactions = serializer.Deserialize<List<RestApi.Transactions.Transaction>>(jsonReader);
+            jsonFile.Close();
+
+         //   var portfolioCache = _ServiceProvider.GetRequiredService<PortfolioCache>();
+          //  var stockRepository = _ServiceProvider.GetRequiredService<StockRepository>();
+          //  var mapper = _ServiceProvider.GetRequiredService<IMapper>();
+
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); // new Web.Controllers.v2.TransactionController(portfolioCache, stockRepository, mapper);
+            SetControllerContext(controller);
+
+            foreach (var transaction in transactions)
+                controller.AddTransaction(transaction);
         }
 
-        private void SaveActualResult(ServiceResponce actual, string fileName)
+        private void SaveActualResult(object actual, string fileName)
         {
             var actualFile = Path.Combine(_ActualResultsPath, fileName);
 
@@ -106,7 +129,7 @@ namespace PortfolioManager.Test.SystemTests
             }
         }
 
-        private void SaveActualResult(ServiceResponce actual, string fileName, Type[] extraTypes)
+        private void SaveActualResult(object actual, string fileName, Type[] extraTypes)
         {
             var actualFile = Path.Combine(_ActualResultsPath, fileName);
 
@@ -116,6 +139,68 @@ namespace PortfolioManager.Test.SystemTests
 
                 serializer.Serialize(streamWriter, actual);
             }
+        }
+
+        private void SetControllerContext(Controller controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var routeData = new RouteData();
+            routeData.Values["portfolioId"] = _PortfolioId.ToString();
+            var actionDescription = new ActionDescriptor();
+            var actionContext = new ActionContext(httpContext, routeData, actionDescription);
+            var context = new ActionExecutingContext(actionContext, new List<IFilterMetadata>(), new Dictionary<string, object>(), controller);
+
+            controller.OnActionExecuting(context);
+        } 
+
+        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
+        public void CompareTransactions(DateTime fromDate, DateTime toDate)
+        {
+            var fileName = String.Format("Transactions {0:yyy-MM-dd}.xml", toDate);
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>();
+          //  var controller = new Web.Controllers.v2.TransactionController(_PortfolioCache, _StockExchange.Stocks, _Mapper);
+            SetControllerContext(controller);
+
+            var response = controller.Get(null, fromDate, toDate);
+            SaveActualResult(response.Value, fileName, new Type[]
+                        {
+                            typeof(RestApi.Transactions.Aquisition),
+                            typeof(RestApi.Transactions.CashTransaction),
+                            typeof(RestApi.Transactions.CostBaseAdjustment),
+                            typeof(RestApi.Transactions.Disposal),
+                            typeof(RestApi.Transactions.IncomeReceived),
+                            typeof(RestApi.Transactions.OpeningBalance),
+                            typeof(RestApi.Transactions.ReturnOfCapital),
+                            typeof(RestApi.Transactions.UnitCountAdjustment)
+                        });
+
+            UpdateExpected(expectedFile);
+
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(List<RestApi.Transactions.Transaction>), expectedFile));
+        }
+
+        private void UpdateExpected(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(GetTransactionsResponce), expectedFile);
+            var expected = constraint.Expected as GetTransactionsResponce;
+
+            var mapper = _ServiceProvider.GetRequiredService<IMapper>();
+            var newTransactions = mapper.Map<List<RestApi.Transactions.Transaction>>(expected.Transactions);
+            SaveActualResult(newTransactions, expectedFile, new Type[]
+                        {
+                            typeof(RestApi.Transactions.Aquisition),
+                            typeof(RestApi.Transactions.CashTransaction),
+                            typeof(RestApi.Transactions.CostBaseAdjustment),
+                            typeof(RestApi.Transactions.Disposal),
+                            typeof(RestApi.Transactions.IncomeReceived),
+                            typeof(RestApi.Transactions.OpeningBalance),
+                            typeof(RestApi.Transactions.ReturnOfCapital),
+                            typeof(RestApi.Transactions.UnitCountAdjustment)
+                        });
+
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -243,9 +328,11 @@ namespace PortfolioManager.Test.SystemTests
 
             CorporateActionsResponce response = new CorporateActionsResponce();
 
-            var controller = new CorporateActionController(_StockExchange.Stocks);
 
-            var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate))).OrderBy(x => x, new StockComparer());
+            var controller = _ServiceProvider.GetRequiredService<CorporateActionController>();
+
+            var stockRepository = _ServiceProvider.GetRequiredService<Domain.Stocks.IStockRepository>();
+            var stocks = stockRepository.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate))).OrderBy(x => x, new StockComparer());
             foreach (var stock in stocks)
             {
                 var stockItem = new StockItem(stock.Id, stock.Properties.ClosestTo(toDate).ASXCode, stock.Properties.ClosestTo(toDate).Name);
@@ -341,6 +428,31 @@ namespace PortfolioManager.Test.SystemTests
                 return -1;
             else
                 return i1.CompareTo(i2);
+        }
+    }
+
+    public class ConvertExpectedResults : Profile
+    {
+        public ConvertExpectedResults()
+        {
+            CreateMap<TransactionItem, RestApi.Transactions.Transaction>() 
+                .ForMember(x => x.Stock, x => x.MapFrom(y => y.Stock.Id))
+                .Include<AquisitionTransactionItem, RestApi.Transactions.Aquisition>()
+                .Include<CashTransactionItem, RestApi.Transactions.CashTransaction>()
+                .Include<CostBaseAdjustmentTransactionItem, RestApi.Transactions.CostBaseAdjustment>()
+                .Include<DisposalTransactionItem, RestApi.Transactions.Disposal>()
+                .Include<IncomeTransactionItem, RestApi.Transactions.IncomeReceived>()
+                .Include<OpeningBalanceTransactionItem, RestApi.Transactions.OpeningBalance>()
+                .Include<ReturnOfCapitalTransactionItem, RestApi.Transactions.ReturnOfCapital>()
+                .Include<UnitCountAdjustmentTransactionItem, RestApi.Transactions.UnitCountAdjustment>();
+            CreateMap<AquisitionTransactionItem, RestApi.Transactions.Aquisition>();
+            CreateMap<CashTransactionItem, RestApi.Transactions.CashTransaction>();
+            CreateMap<CostBaseAdjustmentTransactionItem, RestApi.Transactions.CostBaseAdjustment>();
+            CreateMap<DisposalTransactionItem, RestApi.Transactions.Disposal>();
+            CreateMap<IncomeTransactionItem, RestApi.Transactions.IncomeReceived>();
+            CreateMap<OpeningBalanceTransactionItem, RestApi.Transactions.OpeningBalance>();
+            CreateMap<ReturnOfCapitalTransactionItem, RestApi.Transactions.ReturnOfCapital>();
+            CreateMap<UnitCountAdjustmentTransactionItem, RestApi.Transactions.UnitCountAdjustment>();
         }
     }
 }

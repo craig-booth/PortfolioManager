@@ -5,6 +5,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.IO;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 using PortfolioManager.Common.Scheduler;
 using PortfolioManager.Common;
@@ -23,6 +28,7 @@ using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Stocks;
 using PortfolioManager.RestApi.TradingCalander;
 using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.Service.Transactions;
 
 namespace PortfolioManager.Temp
 {
@@ -30,6 +36,8 @@ namespace PortfolioManager.Temp
     {
         static void Main(string[] args)
         {
+
+
             //   ConvertToEventSourcedModel();
             //   Test();
             //    TestScheduler();
@@ -37,7 +45,7 @@ namespace PortfolioManager.Temp
             // this line is needed to ensure that the assembly for events is loaded
             //var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
-            MigrateDatabase();
+            //MigrateDatabase();
 
             //var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
             //      var mongoEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
@@ -47,6 +55,162 @@ namespace PortfolioManager.Temp
 
             //  var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
             //  PortfolioTest(mongoEventStore);
+
+            ConvertTransactionsFile();
+        }
+
+        public static void ConvertTransactionsFile()
+        {
+            var mongoEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
+            var stockExchange = new StockExchange(mongoEventStore);
+            stockExchange.LoadFromEventStream();
+
+            var importer = new TransactionImporter();
+
+            var fileName = @"C:\Users\Craig\Source\Repos\PortfolioManager\PortfolioManager.Test\SystemTests\Transactions.xml";
+            var oldTransactions = importer.ImportTransactions(fileName);
+         
+            var newTransactions = new List<RestApi.Transactions.Transaction>();
+            foreach (var oldTransaction in oldTransactions)
+            {
+                RestApi.Transactions.Transaction newTransaction = null;
+                if (oldTransaction.Type == TransactionType.Aquisition)
+                {
+                    var aquisition = oldTransaction as Data.Portfolios.Aquisition;
+                    newTransaction = new RestApi.Transactions.Aquisition()
+                    {
+                        Units = aquisition.Units,
+                        AveragePrice = aquisition.AveragePrice,
+                        TransactionCosts = aquisition.TransactionCosts,
+                        CreateCashTransaction = aquisition.CreateCashTransaction
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.CashTransaction)
+                {
+                    var cashTransaction = oldTransaction as Data.Portfolios.CashTransaction;
+
+                    string type = "";
+                    if (cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit)
+                        type = "deposit";
+                    else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Fee)
+                        type = "fee";
+                    else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Interest)
+                        type = "interest";
+                    else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Transfer)
+                        type = "transfer";
+                    else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl)
+                        type = "withdrawl";
+
+                    newTransaction = new RestApi.Transactions.CashTransaction()
+                    {
+                        CashTransactionType = type,
+                        Amount = cashTransaction.Amount
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.CostBaseAdjustment)
+                {
+                    var adjustment = oldTransaction as Data.Portfolios.CostBaseAdjustment;
+                    newTransaction = new RestApi.Transactions.CostBaseAdjustment()
+                    {
+                        Percentage = adjustment.Percentage
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.Disposal)
+                {
+                    var disposal = oldTransaction as Data.Portfolios.Disposal;
+
+                    string method = "";
+                    if (disposal.CGTMethod == CGTCalculationMethod.FirstInFirstOut)
+                        method = "fifo";
+                    else if (disposal.CGTMethod == CGTCalculationMethod.LastInFirstOut)
+                        method = "lifo";
+                    else if (disposal.CGTMethod == CGTCalculationMethod.MaximizeGain)
+                        method = "maximise";
+                    else if (disposal.CGTMethod == CGTCalculationMethod.MinimizeGain)
+                        method = "minimize";
+
+                    newTransaction = new RestApi.Transactions.Disposal()
+                    {
+                        Units = disposal.Units,
+                        AveragePrice = disposal.Units,
+                        TransactionCosts = disposal.TransactionCosts,
+                        CGTMethod = method,
+                        CreateCashTransaction = disposal.CreateCashTransaction
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.Income)
+                {
+                    var income = oldTransaction as Data.Portfolios.IncomeReceived;
+                    newTransaction = new RestApi.Transactions.IncomeReceived()
+                    {
+                        FrankedAmount = income.FrankedAmount,
+                        UnfrankedAmount = income.UnfrankedAmount,
+                        FrankingCredits = income.FrankingCredits,
+                        Interest = income.Interest,
+                        TaxDeferred = income.TaxDeferred,
+                        CreateCashTransaction = income.CreateCashTransaction,
+                        DRPCashBalance = income.DRPCashBalance
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.OpeningBalance)
+                {
+                    var openingBalance = oldTransaction as Data.Portfolios.OpeningBalance;
+                    newTransaction = new RestApi.Transactions.OpeningBalance()
+                    {
+                        Units = openingBalance.Units,
+                        CostBase = openingBalance.CostBase,
+                        AquisitionDate = openingBalance.AquisitionDate
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.ReturnOfCapital)
+                {
+                    var capitalReturn = oldTransaction as Data.Portfolios.ReturnOfCapital;
+                    newTransaction = new RestApi.Transactions.ReturnOfCapital()
+                    {
+                        Amount = capitalReturn.Amount,
+                        CreateCashTransaction = capitalReturn.CreateCashTransaction
+                    };
+                }
+                else if (oldTransaction.Type == TransactionType.UnitCountAdjustment)
+                {
+                    var adjustment = oldTransaction as Data.Portfolios.UnitCountAdjustment;
+                    newTransaction = new RestApi.Transactions.UnitCountAdjustment()
+                    {
+                        OriginalUnits = adjustment.OriginalUnits,
+                        NewUnits = adjustment.NewUnits
+                    };
+                }
+
+                Guid stockId;
+                if (oldTransaction.Type != TransactionType.CashTransaction)
+                {
+                    var stock = stockExchange.Stocks.Get(oldTransaction.ASXCode, oldTransaction.TransactionDate);
+                    stockId = stock.Id;
+                }
+                else
+                    stockId = Guid.Empty;
+
+                newTransaction.Id = oldTransaction.Id;
+                newTransaction.Stock = stockId;
+                newTransaction.RecordDate = oldTransaction.RecordDate;
+                newTransaction.TransactionDate = oldTransaction.TransactionDate;
+                newTransaction.Comment = oldTransaction.Comment;
+
+                newTransactions.Add(newTransaction);
+            }
+
+            var settings = new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+
+            var json = JsonConvert.SerializeObject(newTransactions, settings);
+
+            var newFile = @"C:\Users\Craig\Source\Repos\PortfolioManager\PortfolioManager.Test\SystemTests\Transactions2.json";
+            var jsonFile = File.CreateText(newFile);
+            jsonFile.Write(json);
+            jsonFile.Close();
         }
 
         public static void PortfolioTest(IEventStore eventStore)

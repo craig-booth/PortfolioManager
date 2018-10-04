@@ -18,6 +18,8 @@ namespace PortfolioManager.Web
     {
         private IEventStore _EventStore;
 
+        private Portfolio _Portfolio;
+
         public PortfolioCache()
         {
             _EventStore = new MemoryEventStore();
@@ -26,9 +28,10 @@ namespace PortfolioManager.Web
 
         public Portfolio Get(Guid id)
         {
-            var portfolio = new Portfolio(id, "Test", _EventStore.GetEventStream("Portfolios"));
+            if (_Portfolio == null)
+                _Portfolio = new Portfolio(id, "Test", _EventStore.GetEventStream("Portfolios"));
 
-            return portfolio;
+            return _Portfolio;
         }
 
     }

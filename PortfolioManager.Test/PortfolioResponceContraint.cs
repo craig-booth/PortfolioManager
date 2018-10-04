@@ -17,7 +17,7 @@ namespace PortfolioManager.Test
 { 
     public class PortfolioResponceContraint : Constraint
     {
-        private ServiceResponce Expected;
+        public ServiceResponce Expected;
 
         public PortfolioResponceContraint(ServiceResponce expected)
         {

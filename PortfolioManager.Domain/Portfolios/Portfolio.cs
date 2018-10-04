@@ -17,6 +17,9 @@ namespace PortfolioManager.Domain.Portfolios
 
         private Dictionary<Guid, Holding> _Holdings;
 
+        // Temporary just for initial testing
+        public List<Transactions.Transaction> Transactions = new List<Transactions.Transaction>();
+
         public CashAccount CashAccount { get; private set; } 
 
         public Portfolio(Guid id, string name, IEventStream eventStream)

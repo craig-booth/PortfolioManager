@@ -7,7 +7,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
 
-namespace PortfolioManager.Web
+namespace PortfolioManager.Web.Mapping
 {
     public static class CommandResponseMapping
     {
@@ -177,5 +177,6 @@ namespace PortfolioManager.Web
 
             return response;
         } 
+
     }
 }
