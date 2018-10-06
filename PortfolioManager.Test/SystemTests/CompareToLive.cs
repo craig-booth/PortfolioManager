@@ -35,7 +35,7 @@ using PortfolioManager.Service.Interface;
 using PortfolioManager.Web;
 using PortfolioManager.Web.Controllers.v1;
 using PortfolioManager.Web.Controllers.v2;
-
+using PortfolioManager.Web.Converters;
 
 namespace PortfolioManager.Test.SystemTests
 {
@@ -89,7 +89,7 @@ namespace PortfolioManager.Test.SystemTests
         public async Task LoadTransactions()
         {
             var service = _ServiceProvider.GetRequiredService<ITransactionService>();
-            var transactionService = _ServiceProvider.GetRequiredService<FunkyTransactionService>();
+            var transactionConverter = _ServiceProvider.GetRequiredService<TransactionJsonConverter>();
 
             await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));
 
@@ -97,7 +97,7 @@ namespace PortfolioManager.Test.SystemTests
             settings.NullValueHandling = NullValueHandling.Ignore;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
-            settings.Converters.Add(transactionService.JsonConverter());
+            settings.Converters.Add(transactionConverter);
             settings.Converters.Add(new CorporateActionJsonConverter());
             var serializer = JsonSerializer.Create(settings);
 

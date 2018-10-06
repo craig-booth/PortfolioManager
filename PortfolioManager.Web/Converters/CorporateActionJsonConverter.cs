@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 using PortfolioManager.RestApi.CorporateActions;
 
-namespace PortfolioManager.Web
+namespace PortfolioManager.Web.Converters
 {
     public class CorporateActionJsonConverter : JsonConverter
     {

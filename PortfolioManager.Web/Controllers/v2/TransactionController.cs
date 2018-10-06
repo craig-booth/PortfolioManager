@@ -12,6 +12,8 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Transactions;
 
+using PortfolioManager.Web.Mapping;
+
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/transactions")]
@@ -21,14 +23,14 @@ namespace PortfolioManager.Web.Controllers.v2
         private IStockRepository _StockRepository;
         private IMapper _Mapper;
         private Portfolio _Portfolio;
-        private FunkyHandler _TransactionHandler;
+        private TransactionHandler _TransactionHandler;
 
-        public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper, FunkyTransactionService transactionService)
+        public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper, TransactionHandler transactionHandler)
         {
             _PortfolioCache = portfolioCache;
             _StockRepository = stockRepository;
             _Mapper = mapper;
-            _TransactionHandler = transactionService.TransactionHandler();
+            _TransactionHandler = transactionHandler;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
