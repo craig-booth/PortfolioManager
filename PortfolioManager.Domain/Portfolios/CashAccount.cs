@@ -64,7 +64,7 @@ namespace PortfolioManager.Domain.Portfolios
             AddTransaction(date, amount, description, BankAccountTransactionType.Interest);
         }
 
-        private void AddTransaction(DateTime date, decimal amount, string description, BankAccountTransactionType type)
+        public void AddTransaction(DateTime date, decimal amount, string description, BankAccountTransactionType type)
         {
             if ((_LastTransaction != null) && (_LastTransaction.Date > date))
                 throw new Exception("Transactions already after this date");

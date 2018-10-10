@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 using PortfolioManager.EventStore;
-using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Transactions;
+
 
 namespace PortfolioManager.Domain.Portfolios
 {
@@ -15,46 +16,17 @@ namespace PortfolioManager.Domain.Portfolios
         public int Version { get; private set; } = 0;
         protected IEventStream _EventStream;
 
-        private Dictionary<Guid, Holding> _Holdings;
+        public IHoldingCollection Holdings { get; } = new HoldingCollection();
+        public ITransactionCollection Transactions { get; } = new TransactionCollection();
 
-        // Temporary just for initial testing
-        public List<Transactions.Transaction> Transactions = new List<Transactions.Transaction>();
-
-        public CashAccount CashAccount { get; private set; } 
+        public CashAccount CashAccount { get; } = new CashAccount(); 
 
         public Portfolio(Guid id, string name, IEventStream eventStream)
         {
             Id = id;
             Name = name;
             _EventStream = eventStream;
-
-            _Holdings = new Dictionary<Guid, Holding>();
-
-            CashAccount = new CashAccount();
         }
 
-        public Holding GetHolding(Stock stock)
-        {
-            if (_Holdings.ContainsKey(stock.Id))
-                return _Holdings[stock.Id];
-            else
-                return null;
-        }
-
-        public void PurchaseStock(Stock stock, DateTime purchaseDate, int units, decimal averagePrice, decimal transactionCosts)
-        {
-            if (! _Holdings.TryGetValue(stock.Id, out var holding))
-            {
-                holding = new Holding(stock, purchaseDate);
-                _Holdings.Add(stock.Id, holding);
-            }
-
-            decimal amountPaid = (units * averagePrice) + transactionCosts;
-            decimal costBase = amountPaid;
-
-            holding.AddParcel(purchaseDate, purchaseDate, units, averagePrice, amountPaid, costBase);
-        }
     }
-
-
 }

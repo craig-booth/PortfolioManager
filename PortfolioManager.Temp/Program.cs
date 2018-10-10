@@ -223,7 +223,7 @@ namespace PortfolioManager.Temp
 
             var portfolio = new Portfolio(Guid.NewGuid(), "Test Portfolio", null);
 
-            portfolio.CashAccount.Deposit(new DateTime(2018, 01, 01), 40000.00m, "Initial deposit");
+    /*        portfolio.CashAccount.Deposit(new DateTime(2018, 01, 01), 40000.00m, "Initial deposit");
 
             portfolio.PurchaseStock(stock, new DateTime(2018, 01, 01), 1000, 7.00m, 19.95m);
             portfolio.CashAccount.Withdraw(new DateTime(2018, 01, 01), 1000 * 7.00m, "Purchase 1,000 ARG @ $7.00");
@@ -246,7 +246,7 @@ namespace PortfolioManager.Temp
                 Console.WriteLine("   {0}", balance);
             }
 
-            Console.ReadKey();
+            Console.ReadKey(); */
         }
 
         public static void MigrateDatabase()

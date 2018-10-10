@@ -19,6 +19,30 @@ namespace PortfolioManager.Web.Mapping
 
                 CreateMap(item.DomainTransactionType, item.RestApiTransactionType);
             }
+
+            CreateMap<Domain.Portfolios.Holding, RestApi.Portfolios.Holding>();
+        }
+
+    }
+
+    public class StockTypeConverter : ITypeConverter<Domain.Stocks.Stock, RestApi.Portfolios.Stock>
+    {
+        public RestApi.Portfolios.Stock Convert(Domain.Stocks.Stock source, RestApi.Portfolios.Stock destination, ResolutionContext context)
+        {
+            DateTime date;
+            if (context.Items.ContainsKey("date"))
+                date = (DateTime)context.Items["date"];
+            else
+                date = DateTime.Today;
+
+            var properties = source.Properties.ClosestTo(date);
+            return new RestApi.Portfolios.Stock()
+            {
+                Id = source.Id,
+                ASXCode = properties.ASXCode,
+                Name = properties.Name,
+                AssetCategory = properties.Category
+            };
         }
     }
 }

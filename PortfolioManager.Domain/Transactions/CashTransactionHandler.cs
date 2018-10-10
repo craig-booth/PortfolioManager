@@ -12,6 +12,8 @@ namespace PortfolioManager.Domain.Transactions
         {
             var cashTransaction = transaction as CashTransaction;
 
+            portfolio.CashAccount.AddTransaction(cashTransaction.TransactionDate, cashTransaction.Amount, cashTransaction.Description, cashTransaction.CashTransactionType);
+
             portfolio.Transactions.Add(cashTransaction);
         }
     }

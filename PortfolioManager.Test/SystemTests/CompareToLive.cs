@@ -76,6 +76,7 @@ namespace PortfolioManager.Test.SystemTests
             services.AddPortfolioManagerService(settings);
 
             services.AddSingleton<Web.Controllers.v2.TransactionController>();
+            services.AddSingleton<Web.Controllers.v2.HoldingController>();
             services.AddSingleton<Web.Controllers.v2.CorporateActionController>();
 
             _ServiceProvider = services.BuildServiceProvider();
@@ -106,11 +107,7 @@ namespace PortfolioManager.Test.SystemTests
             var transactions = serializer.Deserialize<List<RestApi.Transactions.Transaction>>(jsonReader);
             jsonFile.Close();
 
-         //   var portfolioCache = _ServiceProvider.GetRequiredService<PortfolioCache>();
-          //  var stockRepository = _ServiceProvider.GetRequiredService<StockRepository>();
-          //  var mapper = _ServiceProvider.GetRequiredService<IMapper>();
-
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); // new Web.Controllers.v2.TransactionController(portfolioCache, stockRepository, mapper);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); 
             SetControllerContext(controller);
 
             foreach (var transaction in transactions)
@@ -160,7 +157,6 @@ namespace PortfolioManager.Test.SystemTests
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
             var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>();
-          //  var controller = new Web.Controllers.v2.TransactionController(_PortfolioCache, _StockExchange.Stocks, _Mapper);
             SetControllerContext(controller);
 
             var response = controller.Get(null, fromDate, toDate);
@@ -243,14 +239,16 @@ namespace PortfolioManager.Test.SystemTests
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
-        public async Task CompareHoldings(DateTime date)
+        public void CompareHoldings(DateTime date)
         {
             var fileName = String.Format("Holdings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);    
-            var response = await controller.GetHoldings(date, false);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.HoldingController>();
+            SetControllerContext(controller);
+
+            var response = controller.Get(null, date);
+            SaveActualResult(response.Value, fileName);
 
             Assert.That(response, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
         }

@@ -46,8 +46,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet("{id:guid}")]
         public ActionResult<Transaction> Get(Guid id)
         {
-            var transaction = _Portfolio.Transactions.FirstOrDefault(x => x.Id == id);
-
+            var transaction = _Portfolio.Transactions.Get(id);
             if (transaction == null)
                 return NotFound();
 
@@ -60,7 +59,7 @@ namespace PortfolioManager.Web.Controllers.v2
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            var transactions = _Portfolio.Transactions.Where(x => dateRange.Contains(x.TransactionDate));
+            var transactions = _Portfolio.Transactions.All(dateRange);
             if (stock != null)
                 transactions = transactions.Where(x => x.Stock.Id == stock);
 
