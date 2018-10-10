@@ -68,7 +68,7 @@ namespace PortfolioManager.Test.SystemTests
             {
                 ApiKey = Guid.Empty,
                 PortfolioDatabase = Path.Combine(_ActualResultsPath, "Portfolio.db"),
-                EventStore = "mongodb://192.168.99.100:27017",
+                EventStore = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017",
                 Port = 0
             };
             ServiceCollection services = new ServiceCollection();
@@ -176,18 +176,23 @@ namespace PortfolioManager.Test.SystemTests
                             typeof(RestApi.Transactions.UnitCountAdjustment)
                         });
 
-            UpdateExpected(expectedFile);
+            UpdateExpectedTransactions(expectedFile);
 
 
             Assert.That(response.Value, Is.EquivalentTo(typeof(List<RestApi.Transactions.Transaction>), expectedFile));
         }
 
-        private void UpdateExpected(string expectedFile)
+        private void UpdateExpectedTransactions(string expectedFile)
         {
             var constraint = new PortfolioResponceContraint(typeof(GetTransactionsResponce), expectedFile);
             var expected = constraint.Expected as GetTransactionsResponce;
 
-            var mapper = _ServiceProvider.GetRequiredService<IMapper>();
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
             var newTransactions = mapper.Map<List<RestApi.Transactions.Transaction>>(expected.Transactions);
             SaveActualResult(newTransactions, expectedFile, new Type[]
                         {
@@ -304,7 +309,27 @@ namespace PortfolioManager.Test.SystemTests
             var response = await controller.GetSummary(date);
             SaveActualResult(response, fileName);
 
+            UpdateExpectedPortfolioSummary(expectedFile);
+
             Assert.That(response, Is.EquivalentTo(typeof(PortfolioSummaryResponce), expectedFile));
+        }
+
+        private void UpdateExpectedPortfolioSummary(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(PortfolioSummaryResponce), expectedFile);
+            var expected = constraint.Expected as PortfolioSummaryResponce;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
+            var newResponse = mapper.Map<RestApi.Portfolios.PortfolioSummaryResponse>(expected);
+            var newHoldings = mapper.Map<List<RestApi.Portfolios.Holding>>(expected.Holdings);
+            newResponse.Holdings.AddRange(newHoldings);
+            SaveActualResult(newResponse, expectedFile);
+
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -317,7 +342,25 @@ namespace PortfolioManager.Test.SystemTests
             var response = await controller.GetPortfolioValue(null, fromDate, toDate, ValueFrequency.Daily);
             SaveActualResult(response, fileName);
 
+            UpdateExpectedPortfolioValue(expectedFile);
+
             Assert.That(response, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+        }
+
+        private void UpdateExpectedPortfolioValue(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(PortfolioValueResponce), expectedFile);
+            var expected = constraint.Expected as PortfolioValueResponce;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
+            var newResponse = mapper.Map<RestApi.Portfolios.PortfolioValueResponse>(expected);
+            SaveActualResult(newResponse, expectedFile);
+
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -435,7 +478,7 @@ namespace PortfolioManager.Test.SystemTests
     {
         public ConvertExpectedResults()
         {
-            CreateMap<TransactionItem, RestApi.Transactions.Transaction>() 
+            CreateMap<TransactionItem, RestApi.Transactions.Transaction>()
                 .ForMember(x => x.Stock, x => x.MapFrom(y => y.Stock.Id))
                 .Include<AquisitionTransactionItem, RestApi.Transactions.Aquisition>()
                 .Include<CashTransactionItem, RestApi.Transactions.CashTransaction>()
@@ -453,6 +496,15 @@ namespace PortfolioManager.Test.SystemTests
             CreateMap<OpeningBalanceTransactionItem, RestApi.Transactions.OpeningBalance>();
             CreateMap<ReturnOfCapitalTransactionItem, RestApi.Transactions.ReturnOfCapital>();
             CreateMap<UnitCountAdjustmentTransactionItem, RestApi.Transactions.UnitCountAdjustment>();
+
+
+            CreateMap<PortfolioSummaryResponce, RestApi.Portfolios.PortfolioSummaryResponse>();
+            CreateMap<HoldingItem, RestApi.Portfolios.Holding>()
+                .AfterMap((src, dest) => dest.Stock.Category = src.Category);
+            CreateMap<StockItem, RestApi.Portfolios.Stock>();
+
+            CreateMap<PortfolioValueResponce, RestApi.Portfolios.PortfolioValueResponse>();
+
         }
     }
 }
