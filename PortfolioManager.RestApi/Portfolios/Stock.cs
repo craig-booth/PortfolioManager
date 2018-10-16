@@ -11,6 +11,6 @@ namespace PortfolioManager.RestApi.Portfolios
         public Guid Id { get; set; }
         public string ASXCode { get; set; }
         public string Name { get; set; }
-        public AssetCategory AssetCategory { get; set; }
+        public AssetCategory Category { get; set; }
     }
 }
