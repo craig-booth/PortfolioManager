@@ -25,12 +25,6 @@ using Newtonsoft.Json.Serialization;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.EventStore;
-using PortfolioManager.EventStore.Mongodb;
-using PortfolioManager.Data.Portfolios;
-using PortfolioManager.Data.Stocks;
-using PortfolioManager.Data.SQLite.Portfolios;
-using PortfolioManager.Data.SQLite.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Web;
 using PortfolioManager.Web.Controllers.v1;
@@ -78,6 +72,7 @@ namespace PortfolioManager.Test.SystemTests
             services.AddSingleton<Web.Controllers.v2.TransactionController>();
             services.AddSingleton<Web.Controllers.v2.HoldingController>();
             services.AddSingleton<Web.Controllers.v2.CorporateActionController>();
+            services.AddSingleton<Web.Controllers.v2.PortfolioController>();
 
             _ServiceProvider = services.BuildServiceProvider();
 
@@ -205,29 +200,77 @@ namespace PortfolioManager.Test.SystemTests
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
-        public async Task CompareCapitalGain(DateTime date)
+        public void CompareCapitalGain(DateTime date)
         {
             var fileName = String.Format("CapitalGain {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
-            var response = await controller.GetDetailedCapitalGains(null, date);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            Assert.That(response, Is.EquivalentTo(typeof(DetailedUnrealisedGainsResponce), expectedFile));
+            var response = controller.GetDetailedCapitalGains(null, date);
+            SaveActualResult(response.Value, fileName);
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.DetailedUnrealisedGainsResponse), expectedFile));
+        }
+
+        private void UpdateExpectedCapitalGain(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(DetailedUnrealisedGainsResponce), expectedFile);
+            var expected = constraint.Expected as DetailedUnrealisedGainsResponce;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
+            var newResponse = mapper.Map<RestApi.Portfolios.DetailedUnrealisedGainsResponse>(expected);
+            foreach (var item in expected.CGTItems)
+            {
+                var newItem = mapper.Map<RestApi.Portfolios.DetailedUnrealisedGainsItem>(item);
+                foreach (var cgtEvent in item.CGTEvents)
+                {
+                    var newEvent = mapper.Map<RestApi.Portfolios.CGTEventItem>(cgtEvent);
+                    newItem.CGTEvents.Add(newEvent);
+                }
+                newResponse.UnrealisedGains.Add(newItem);
+            }
+
+            SaveActualResult(newResponse, expectedFile);
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task CompareCGTLiability(DateTime fromDate, DateTime toDate)
+        public void CompareCGTLiability(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("CGTLiability {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
-            var response = await controller.GetCGTLiability(fromDate, toDate);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            Assert.That(response, Is.EquivalentTo(typeof(CGTLiabilityResponce), expectedFile));
+            var response = controller.GetCGTLiability(fromDate, toDate);
+            SaveActualResult(response.Value, fileName);
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.CGTLiabilityResponse), expectedFile));
+        }
+
+        private void UpdateExpectedCGTLiability(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(CGTLiabilityResponce), expectedFile);
+            var expected = constraint.Expected as CGTLiabilityResponce;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
+            var newResponse = mapper.Map<RestApi.Portfolios.CGTLiabilityResponse>(expected);
+            var newEvents = mapper.Map<List<RestApi.Portfolios.CGTLiabilityResponse.CGTLiabilityEvents>>(expected.Items);
+            newResponse.Events.AddRange(newEvents);
+
+            SaveActualResult(newResponse, expectedFile);
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -236,11 +279,29 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CashTransactions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
             var response = await controller.GetCashAccountTransactions(fromDate, toDate);
             SaveActualResult(response, fileName);
 
             Assert.That(response, Is.EquivalentTo(typeof(CashAccountTransactionsResponce), expectedFile));
+        }
+
+        private void UpdateExpectedCashTransactions(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(CashAccountTransactionsResponce), expectedFile);
+            var expected = constraint.Expected as CashAccountTransactionsResponce;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
+            var newResponse = mapper.Map<RestApi.Portfolios.CashAccountTransactionsResponse>(expected);
+            var newTransactions = mapper.Map<List<RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>>(expected.Transactions);
+            newResponse.Transactions.AddRange(newTransactions);
+
+            SaveActualResult(newResponse, expectedFile);
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -255,7 +316,7 @@ namespace PortfolioManager.Test.SystemTests
             var response = controller.Get(null, date);
             SaveActualResult(response.Value, fileName);
 
-            Assert.That(response, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
+            Assert.That(response.Value, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -264,7 +325,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("TradeableHoldings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
             var response = await controller.GetHoldings(date, true);
             SaveActualResult(response, fileName);
 
@@ -277,7 +338,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
             var response = await controller.GetIncome(fromDate, toDate);
             SaveActualResult(response, fileName);
 
@@ -285,31 +346,50 @@ namespace PortfolioManager.Test.SystemTests
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task ComparePortfolioPerformance(DateTime fromDate, DateTime toDate)
+        public void ComparePortfolioPerformance(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("PortfolioPerformance {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
-            var response = await controller.GetPerformance(fromDate, toDate);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            Assert.That(response, Is.EquivalentTo(typeof(PortfolioPerformanceResponce), expectedFile));
+            var response = controller.GetPerformance(fromDate, toDate);
+            SaveActualResult(response.Value, fileName);
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.PortfolioPerformanceResponse), expectedFile));
+        }
+
+        private void UpdateExpectedPortfolioPerformance(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(PortfolioPerformanceResponce), expectedFile);
+            var expected = constraint.Expected as PortfolioPerformanceResponce;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ConvertExpectedResults());
+            });
+            var mapper = config.CreateMapper();
+
+            var newResponse = mapper.Map<RestApi.Portfolios.PortfolioPerformanceResponse>(expected);
+            var holdingPerformance = mapper.Map<List<RestApi.Portfolios.PortfolioPerformanceResponse.HoldingPerformanceItem>>(expected.HoldingPerformance);
+            newResponse.HoldingPerformance.AddRange(holdingPerformance);
+            SaveActualResult(newResponse, expectedFile);
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
-        public async Task ComparePortfolioSummary(DateTime date)
+        public void ComparePortfolioSummary(DateTime date)
         {
             var fileName = String.Format("PortfolioSummary {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
-            var response = await controller.GetSummary(date);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            UpdateExpectedPortfolioSummary(expectedFile);
+            var response = controller.GetSummary(date);
+            SaveActualResult(response.Value, fileName);
 
-            Assert.That(response, Is.EquivalentTo(typeof(PortfolioSummaryResponce), expectedFile));
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.PortfolioSummaryResponse), expectedFile));
         }
 
         private void UpdateExpectedPortfolioSummary(string expectedFile)
@@ -327,22 +407,21 @@ namespace PortfolioManager.Test.SystemTests
             var newHoldings = mapper.Map<List<RestApi.Portfolios.Holding>>(expected.Holdings);
             newResponse.Holdings.AddRange(newHoldings);
             SaveActualResult(newResponse, expectedFile);
-
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task ComparePortfolioValue(DateTime fromDate, DateTime toDate)
+        public void ComparePortfolioValue(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("PortfolioValue {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
-            var response = await controller.GetPortfolioValue(null, fromDate, toDate, ValueFrequency.Daily);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            UpdateExpectedPortfolioValue(expectedFile);
+            var response = controller.GetValue(fromDate, toDate);
+            SaveActualResult(response.Value, fileName);
 
-            Assert.That(response, Is.EquivalentTo(typeof(PortfolioValueResponce), expectedFile));
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.PortfolioValueResponse), expectedFile));
         }
 
         private void UpdateExpectedPortfolioValue(string expectedFile)
@@ -406,7 +485,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = "UnappliedCorporateActions.xml";
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new PortfolioController(_ServiceProvider);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
             var response = await controller.GetUnappliedCorporateActions();
             SaveActualResult(response, fileName);
 
@@ -503,6 +582,18 @@ namespace PortfolioManager.Test.SystemTests
 
             CreateMap<PortfolioValueResponce, RestApi.Portfolios.PortfolioValueResponse>();
 
+            CreateMap<PortfolioPerformanceResponce, RestApi.Portfolios.PortfolioPerformanceResponse>();
+            CreateMap<HoldingPerformance, RestApi.Portfolios.PortfolioPerformanceResponse.HoldingPerformanceItem>();
+
+            CreateMap<CashAccountTransactionsResponce, RestApi.Portfolios.CashAccountTransactionsResponse>();
+            CreateMap<CashAccountTransactionItem, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>();
+
+            CreateMap<DetailedUnrealisedGainsResponce, RestApi.Portfolios.DetailedUnrealisedGainsResponse>();
+            CreateMap<DetailedUnrealisedGainsItem, RestApi.Portfolios.DetailedUnrealisedGainsItem>();
+            CreateMap<CGTEventItem, RestApi.Portfolios.CGTEventItem>();
+
+            CreateMap<CGTLiabilityResponce, RestApi.Portfolios.CGTLiabilityResponse>();
+            CreateMap<CGTLiabilityItem, RestApi.Portfolios.CGTLiabilityResponse.CGTLiabilityEvents>();
         }
     }
 }

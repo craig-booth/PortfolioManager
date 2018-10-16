@@ -1,39 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Linq;
 
 using AutoMapper;
 
 using PortfolioManager.Common;
-using PortfolioManager.RestApi.Portfolios;
-using PortfolioManager.Domain.Portfolios;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/holdings")]
-    public class HoldingController : Controller
+    public class HoldingController : BasePortfolioController
     {
-        private IPortfolioCache _PortfolioCache;
-        private Portfolio _Portfolio;
         private IMapper _Mapper;
 
         public HoldingController(IPortfolioCache portfolioCache, IMapper mapper)
+            : base(portfolioCache)
         {
-            _PortfolioCache = portfolioCache;
             _Mapper = mapper;
-        }
-
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            base.OnActionExecuting(filterContext);
-
-            var portfolioId = (string)filterContext.RouteData.Values["portfolioId"];
-
-            _Portfolio = _PortfolioCache.Get(Guid.Parse(portfolioId));
         }
 
         // GET:  holdings/id

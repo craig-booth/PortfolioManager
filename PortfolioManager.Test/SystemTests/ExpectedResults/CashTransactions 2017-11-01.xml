@@ -1,301 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CashAccountTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CashAccountTransactionsResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OpeningBalance>2663.64</OpeningBalance>
+  <ClosingBalance>6359.28</ClosingBalance>
   <Transactions>
-    <CashAccountTransactionItem>
+    <TransactionItem>
       <Date>2016-11-21T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>4663.64</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-11-23T00:00:00</Date>
       <Type>Withdrawl</Type>
       <Description>Tax - Craig</Description>
       <Amount>-3200.7</Amount>
       <Balance>1462.94</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-12-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>0.09</Amount>
       <Balance>1463.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-12-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>3463.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-01-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>5463.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-02-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>7463.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-03-02T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VAP</Description>
       <Amount>-19.95</Amount>
       <Balance>7443.08</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-03-02T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAP</Description>
       <Amount>-5185.05</Amount>
       <Balance>2258.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-03-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>4258.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-04-06T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for COH</Description>
       <Amount>78</Amount>
       <Balance>4336.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-04-13T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for CSL</Description>
       <Amount>234.57</Amount>
       <Balance>4570.60</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-04-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>6570.60</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-05-02T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VGS</Description>
       <Amount>-19.95</Amount>
       <Balance>6550.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-05-02T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGS</Description>
       <Amount>-6173</Amount>
       <Balance>377.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-05-22T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>2377.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-06-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>4377.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-06-21T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Transfer from BT Wrap</Description>
       <Amount>65763</Amount>
       <Balance>70140.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-06-22T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VGS</Description>
       <Amount>-30.31</Amount>
       <Balance>70110.34</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-06-22T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of ARG</Description>
       <Amount>-53.49</Amount>
       <Balance>70056.85</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-06-22T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGS</Description>
       <Amount>-25256</Amount>
       <Balance>44800.85</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-06-22T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of ARG</Description>
       <Amount>-44577</Amount>
       <Balance>223.85</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-07-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>7.69</Amount>
       <Balance>231.54</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-07-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>2231.54</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-09T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Transfer from BT Wrap</Description>
       <Amount>73384.14</Amount>
       <Balance>75615.68</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of GVF</Description>
       <Amount>-19.95</Amount>
       <Balance>75595.73</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VCF</Description>
       <Amount>-19.95</Amount>
       <Balance>75575.78</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VAF</Description>
       <Amount>-19.95</Amount>
       <Balance>75555.83</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VGE</Description>
       <Amount>-29.95</Amount>
       <Balance>75525.88</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of WAM</Description>
       <Amount>-32.85</Amount>
       <Balance>75493.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of GVF</Description>
       <Amount>-5016</Amount>
       <Balance>70477.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAF</Description>
       <Amount>-9756</Amount>
       <Balance>60721.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VCF</Description>
       <Amount>-9936</Amount>
       <Balance>50785.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGE</Description>
       <Amount>-20229</Amount>
       <Balance>30556.03</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of WAM</Description>
       <Amount>-27367.5</Amount>
       <Balance>3188.53</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-08-21T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>5188.53</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-09-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>14.92</Amount>
       <Balance>5203.45</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-09-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>7203.45</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-10-11T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for COH</Description>
       <Amount>84</Amount>
       <Balance>7287.45</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-10-13T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for CSL</Description>
       <Amount>256.27</Amount>
       <Balance>7543.72</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-10-14T00:00:00</Date>
       <Type>Withdrawl</Type>
       <Description>Natalie Tax</Description>
       <Amount>-3367.8</Amount>
       <Balance>4175.92</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-10-17T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for VGE</Description>
       <Amount>183.36</Amount>
       <Balance>4359.28</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2017-10-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>6359.28</Balance>
-    </CashAccountTransactionItem>
+    </TransactionItem>
   </Transactions>
-  <OpeningBalance>2663.64</OpeningBalance>
-  <ClosingBalance>6359.28</ClosingBalance>
-</CashAccountTransactionsResponce>
+</CashAccountTransactionsResponse>

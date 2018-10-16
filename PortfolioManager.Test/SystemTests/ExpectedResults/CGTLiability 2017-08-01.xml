@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CGTLiabilityResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CGTLiabilityResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CurrentYearCapitalGainsOther>0.00</CurrentYearCapitalGainsOther>
   <CurrentYearCapitalGainsDiscounted>0.00</CurrentYearCapitalGainsDiscounted>
   <CurrentYearCapitalGainsTotal>0.00</CurrentYearCapitalGainsTotal>
@@ -13,5 +13,5 @@
   <NetCapitalGainOther>0.00</NetCapitalGainOther>
   <NetCapitalGainDiscounted>0.00</NetCapitalGainDiscounted>
   <NetCapitalGainTotal>0.00</NetCapitalGainTotal>
-  <Items />
-</CGTLiabilityResponce>
+  <Events />
+</CGTLiabilityResponse>

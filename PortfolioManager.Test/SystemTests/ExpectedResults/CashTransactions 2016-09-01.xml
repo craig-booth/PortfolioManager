@@ -1,399 +1,399 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CashAccountTransactionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CashAccountTransactionsResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OpeningBalance>0.00</OpeningBalance>
+  <ClosingBalance>8573.56</ClosingBalance>
   <Transactions>
-    <CashAccountTransactionItem>
+    <TransactionItem>
       <Date>2016-02-05T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Transfer from Craig</Description>
       <Amount>9000</Amount>
       <Balance>9000.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-09T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of GVF</Description>
       <Amount>-7575</Amount>
       <Balance>1425.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Transfer of shares from Craig</Description>
       <Amount>102680.21</Amount>
       <Balance>104105.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of ARG</Description>
       <Amount>-54</Amount>
       <Balance>104051.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of COH</Description>
       <Amount>-54</Amount>
       <Balance>103997.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of CSL</Description>
       <Amount>-54</Amount>
       <Balance>103943.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of WAM</Description>
       <Amount>-54</Amount>
       <Balance>103889.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of COH</Description>
       <Amount>-5412</Amount>
       <Balance>98477.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of CSL</Description>
       <Amount>-28722.4</Amount>
       <Balance>69754.81</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of ARG</Description>
       <Amount>-32061.6</Amount>
       <Balance>37693.21</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of WAM</Description>
       <Amount>-36484.21</Amount>
       <Balance>1209.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-12T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Transfer from Craig</Description>
       <Amount>14000</Amount>
       <Balance>15209.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-15T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAF</Description>
       <Amount>-7497</Amount>
       <Balance>7712.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-15T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAP</Description>
       <Amount>-7527</Amount>
       <Balance>185.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-18T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Transfer from Craig</Description>
       <Amount>5500</Amount>
       <Balance>5685.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-22T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>7685.00</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-02-23T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGS</Description>
       <Amount>-7578.2</Amount>
       <Balance>106.80</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-03-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>1.29</Amount>
       <Balance>108.09</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-03-21T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>2108.09</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-04-01T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for COH</Description>
       <Amount>66</Amount>
       <Balance>2174.09</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-04-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>0.01</Amount>
       <Balance>2174.10</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-04-15T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for CSL</Description>
       <Amount>228.12</Amount>
       <Balance>2402.22</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-04-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>4402.22</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-05-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>0.02</Amount>
       <Balance>4402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-05-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>6402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-05-26T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>16402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-05-27T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>26402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-05-30T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>36402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-05-31T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>46402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>56402.24</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>3.45</Amount>
       <Balance>56405.69</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VGS</Description>
       <Amount>-62.87</Amount>
       <Balance>56342.82</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGS</Description>
       <Amount>-52389</Amount>
       <Balance>3953.82</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-02T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>13953.82</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-03T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>23953.82</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-03T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of ARG</Description>
       <Amount>-10.74</Amount>
       <Balance>23943.08</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-03T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of ARG</Description>
       <Amount>-19.21</Amount>
       <Balance>23923.87</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-03T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of ARG</Description>
       <Amount>-5466.78</Amount>
       <Balance>18457.09</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-03T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of ARG</Description>
       <Amount>-9792.69</Amount>
       <Balance>8664.40</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-06T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>18664.40</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-06T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Inheritance</Description>
       <Amount>10000</Amount>
       <Balance>28664.40</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-06T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VAP</Description>
       <Amount>-29.95</Amount>
       <Balance>28634.45</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-06T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VCF</Description>
       <Amount>-29.95</Amount>
       <Balance>28604.50</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-06T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VCF</Description>
       <Amount>-11900.25</Amount>
       <Balance>16704.25</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-06T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAP</Description>
       <Amount>-15105.6</Amount>
       <Balance>1598.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-06-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>3598.65</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-07-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>6.5</Amount>
       <Balance>3605.15</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-07-18T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Distribution for VCF</Description>
       <Amount>478.81</Amount>
       <Balance>4083.96</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-07-18T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Withholding tax for VCF</Description>
       <Amount>-234</Amount>
       <Balance>3849.96</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-07-20T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>5849.96</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-07-27T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Sale of WAM</Description>
       <Amount>15750</Amount>
       <Balance>21599.96</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-07-27T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for sale of WAM</Description>
       <Amount>-29.95</Amount>
       <Balance>21570.01</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-08-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>1.33</Amount>
       <Balance>21571.34</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-08-06T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>WAM Share Purchase Plan</Description>
       <Amount>-15000</Amount>
       <Balance>6571.34</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-08-22T00:00:00</Date>
       <Type>Deposit</Type>
       <Description>Regular Deposit</Description>
       <Amount>2000</Amount>
       <Balance>8571.34</Balance>
-    </CashAccountTransactionItem>
-    <CashAccountTransactionItem>
+    </TransactionItem>
+    <TransactionItem>
       <Date>2016-09-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>2.22</Amount>
       <Balance>8573.56</Balance>
-    </CashAccountTransactionItem>
+    </TransactionItem>
   </Transactions>
-  <OpeningBalance>0.00</OpeningBalance>
-  <ClosingBalance>8573.56</ClosingBalance>
-</CashAccountTransactionsResponce>
+</CashAccountTransactionsResponse>

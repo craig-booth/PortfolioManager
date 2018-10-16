@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PortfolioSummaryResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<PortfolioSummaryResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PortfolioValue>197955.150</PortfolioValue>
   <PortfolioCost>191361.41215</PortfolioCost>
   <Return1Year xsi:nil="true" />
@@ -8,93 +8,101 @@
   <ReturnAll>0.22576</ReturnAll>
   <CashBalance>3953.82</CashBalance>
   <Holdings>
-    <HoldingItem>
+    <Holding>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
-      <Category>InternationalStocks</Category>
       <Units>7722</Units>
       <Value>7683.390</Value>
       <Cost>7799.71062</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>4546</Units>
       <Value>32731.2</Value>
       <Cost>32729.55018</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>60</Units>
       <Value>7272.0</Value>
       <Cost>5412.0</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>280</Units>
       <Value>32676.0</Value>
       <Cost>28722.40</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>17390</Units>
       <Value>37214.60</Value>
       <Cost>37703.15135</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
-      <Category>AustralianFixedInterest</Category>
       <Units>151</Units>
       <Value>7601.34</Value>
       <Cost>7546.58</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
       </Stock>
-      <Category>AustralianProperty</Category>
       <Units>100</Units>
       <Value>8274.00</Value>
       <Cost>7527.00</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
-      <Category>InternationalStocks</Category>
       <Units>1040</Units>
       <Value>60548.80</Value>
       <Cost>59967.20</Cost>
-    </HoldingItem>
+      <CostBase>0</CostBase>
+    </Holding>
   </Holdings>
-</PortfolioSummaryResponce>
+</PortfolioSummaryResponse>

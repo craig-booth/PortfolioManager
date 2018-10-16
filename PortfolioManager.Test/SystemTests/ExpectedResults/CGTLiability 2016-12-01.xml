@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CGTLiabilityResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CGTLiabilityResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CurrentYearCapitalGainsOther>507.57</CurrentYearCapitalGainsOther>
   <CurrentYearCapitalGainsDiscounted>0.00</CurrentYearCapitalGainsDiscounted>
   <CurrentYearCapitalGainsTotal>507.57</CurrentYearCapitalGainsTotal>
@@ -13,18 +13,19 @@
   <NetCapitalGainOther>507.57</NetCapitalGainOther>
   <NetCapitalGainDiscounted>0.00</NetCapitalGainDiscounted>
   <NetCapitalGainTotal>507.57</NetCapitalGainTotal>
-  <Items>
-    <CGTLiabilityItem>
+  <Events>
+    <CGTLiabilityEvents>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <EventDate>2016-07-27T00:00:00</EventDate>
       <CostBase>15212.48</CostBase>
       <AmountReceived>15720.05</AmountReceived>
       <CapitalGain>507.57</CapitalGain>
       <Method>Other</Method>
-    </CGTLiabilityItem>
-  </Items>
-</CGTLiabilityResponce>
+    </CGTLiabilityEvents>
+  </Events>
+</CGTLiabilityResponse>

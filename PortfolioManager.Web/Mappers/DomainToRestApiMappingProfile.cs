@@ -41,7 +41,7 @@ namespace PortfolioManager.Web.Mapping
                 Id = source.Id,
                 ASXCode = properties.ASXCode,
                 Name = properties.Name,
-                AssetCategory = properties.Category
+                Category = properties.Category
             };
         }
     }

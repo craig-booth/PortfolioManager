@@ -17,29 +17,18 @@ using PortfolioManager.Web.Mapping;
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/transactions")]
-    public class TransactionController : Controller
+    public class TransactionController : BasePortfolioController
     {
-        private IPortfolioCache _PortfolioCache;
         private IStockRepository _StockRepository;
         private IMapper _Mapper;
-        private Portfolio _Portfolio;
         private TransactionHandler _TransactionHandler;
 
         public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper, TransactionHandler transactionHandler)
+            : base(portfolioCache)
         {
-            _PortfolioCache = portfolioCache;
             _StockRepository = stockRepository;
             _Mapper = mapper;
             _TransactionHandler = transactionHandler;
-        }
-
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            base.OnActionExecuting(filterContext);
-
-            var portfolioId = (string)filterContext.RouteData.Values["portfolioId"];
-
-            _Portfolio = _PortfolioCache.Get(Guid.Parse(portfolioId));
         }
 
         // GET:  transactions/id
