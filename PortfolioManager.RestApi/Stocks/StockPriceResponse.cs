@@ -20,7 +20,7 @@ namespace PortfolioManager.RestApi.Stocks
 
             public ClosingPrice(DateTime date, decimal price)
             {
-                Date = date.ToString("yyyy-MM-dd");
+                Date = date.ToIsoDateString();
                 Price = price;
             }
         }

@@ -8,9 +8,9 @@ using PortfolioManager.RestApi.Stocks;
 
 namespace PortfolioManager.RestApi.Client
 {
-    public class StockResouce : RestResource
+    public class StockResource : RestResource
     {
-        public StockResouce(HttpClient httpClient)
+        public StockResource(HttpClient httpClient)
             : base(httpClient)
         {
 
@@ -23,12 +23,12 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<IEnumerable<StockResponse>> Get(DateTime date)
         {
-            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?date=" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?date=" + date.ToIsoDateString());
         }
 
         public async Task<IEnumerable<StockResponse>> Get(DateRange dateRange)
         {
-            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<StockResponse> Get(Guid id)
@@ -38,7 +38,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<StockResponse> Get(Guid id, DateTime date)
         {
-            return await GetAsync<StockResponse>("/api/v2/stocks/" + id.ToString() + "?date=" + date.ToString("yyyy-MM-dd"));
+            return await GetAsync<StockResponse>("/api/v2/stocks/" + id.ToString() + "?date=" + date.ToIsoDateString());
         }
 
         public async Task<StockHistoryResponse> GetHistory(Guid id)
@@ -48,7 +48,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<StockHistoryResponse> GetPrices(Guid id, DateRange dateRange)
         {
-            return await GetAsync<StockHistoryResponse>("/api/v2/stocks/" + id.ToString() + "/closingprices?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<StockHistoryResponse>("/api/v2/stocks/" + id.ToString() + "/closingprices?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task CreateStock(CreateStockCommand command)

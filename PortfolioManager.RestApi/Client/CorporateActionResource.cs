@@ -23,7 +23,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<IEnumerable<CorporateAction>> GetAll(Guid stockid, DateRange dateRange)
         {
-            return await GetAsync<IEnumerable<CorporateAction>>("/api/v2/stocks/" + stockid.ToString() + "/corporateactions?fromdate=" + dateRange.FromDate.ToString("yyyy-MM-dd") + "?todate=" + dateRange.ToDate.ToString("yyyy-MM-dd"));
+            return await GetAsync<IEnumerable<CorporateAction>>("/api/v2/stocks/" + stockid.ToString() + "/corporateactions?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<CorporateAction> Get<CorporateAction>(Guid stockid, Guid id)

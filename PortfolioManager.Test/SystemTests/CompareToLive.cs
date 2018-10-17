@@ -105,8 +105,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); 
             SetControllerContext(controller);
 
-            foreach (var transaction in transactions)
-                controller.AddTransaction(transaction);
+            controller.AddTransactions(transactions);
         }
 
         private void SaveActualResult(object actual, string fileName)

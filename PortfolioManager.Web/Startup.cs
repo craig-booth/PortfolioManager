@@ -41,14 +41,6 @@ namespace PortfolioManager.Web
         {
             // Add framework services.
             services.AddMvc();
-         /*       .AddJsonOptions(  (x =>
-                {
-                    x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                    x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    x.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
-                    x.SerializerSettings.Converters.Add(new TransactionJsonConverter());
-                    x.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
-                }); */
 
             services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
                 .AddPortfolioManagerService(PortfolioManagerSettings)

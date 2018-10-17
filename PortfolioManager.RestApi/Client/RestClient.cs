@@ -13,9 +13,10 @@ namespace PortfolioManager.RestApi.Client
     {
         private readonly HttpClient _HttpClient;
 
-        public StockResouce Stocks { get; }
+        public StockResource Stocks { get; }
         public TradingCalanderResource TradingCalander { get; }
         public CorporateActionResource CorporateActions { get; }
+        public PortfolioResource Portfolio { get; }
 
         public RestClient(string baseURL, Guid apiKey)
         {
@@ -25,9 +26,10 @@ namespace PortfolioManager.RestApi.Client
             _HttpClient.DefaultRequestHeaders.Accept.Clear();
             _HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            Stocks = new StockResouce(_HttpClient);
+            Stocks = new StockResource(_HttpClient);
             TradingCalander = new TradingCalanderResource(_HttpClient);
             CorporateActions = new CorporateActionResource(_HttpClient);
+            Portfolio = new PortfolioResource(Guid.Empty, _HttpClient);
         }
     }
 }

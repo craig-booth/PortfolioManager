@@ -68,5 +68,10 @@ namespace PortfolioManager.Common
             return date1 >= date2 ? date1 : date2;
         }
 
+        public static string ToIsoDateString(this DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd");
+        }
+
     }
 }

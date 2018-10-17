@@ -76,5 +76,26 @@ namespace PortfolioManager.Web.Controllers.v2
 
             return Ok();
         }
+
+        // POST: transactions
+        [HttpPost]
+        public ActionResult AddTransactions([FromBody]List<Transaction> transactions)
+        {
+            if (transactions == null)
+                return BadRequest("Unknown Transaction type");
+
+            try
+            {
+                var domainTransactions = _Mapper.Map<List<Domain.Transactions.Transaction>>(transactions);
+
+                _TransactionHandler.Handle(domainTransactions, _Portfolio);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
+        }
     }
 }

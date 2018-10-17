@@ -18,10 +18,19 @@ namespace PortfolioManager.Web.Mapping
                 _Handlers.Add(item.DomainTransactionType, item.Handler);
         }
 
-        public void Handle(Domain.Transactions.Transaction transaction, Portfolio portfolio)
+        public void Handle(Transaction transaction, Portfolio portfolio)
         {
             if (_Handlers.TryGetValue(transaction.GetType(), out var handler))
                 handler.ApplyTransaction(transaction, portfolio);
+        }
+
+        public void Handle(IEnumerable<Transaction> transactions, Portfolio portfolio)
+        {
+            foreach (var transaction in transactions)
+            {
+                if (_Handlers.TryGetValue(transaction.GetType(), out var handler))
+                    handler.ApplyTransaction(transaction, portfolio);
+            }
         }
     }
 }
