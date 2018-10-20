@@ -39,7 +39,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestWebClient.GetCashAccountTransactionsAsync(_Parameter.StartDate, _Parameter.EndDate);
+            var responce = await _Parameter.RestWebClient.GetCashAccountTransactionsAsync(_Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
             if (responce == null)
                 return;
 

@@ -5,7 +5,8 @@ using LiveCharts;
 
 using PortfolioManager.UI.Utilities;
 
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Portfolios;
+using PortfolioManager.RestApi.Client;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -38,17 +39,17 @@ namespace PortfolioManager.UI.ViewModels
 
             // Determine frequency to use
             var valueFrequency = ValueFrequency.Daily;
-            var timeSpan = _Parameter.EndDate - _Parameter.StartDate;
+            var timeSpan = _Parameter.DateRange.ToDate - _Parameter.DateRange.FromDate;
             if (timeSpan.Days > 365 * 5)
                 valueFrequency = ValueFrequency.Monthly;
             else if (timeSpan.Days > 365)
                 valueFrequency = ValueFrequency.Weekly;
 
-            PortfolioValueResponce responce;
+            PortfolioValueResponse responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestWebClient.GetPortfolioValueAsync(_Parameter.StartDate, _Parameter.EndDate, valueFrequency);
+                responce = await _Parameter.RestClient.Portfolio.GetValue(_Parameter.DateRange, valueFrequency);
             else
-                responce = await _Parameter.RestWebClient.GetPortfolioValueAsync(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate, valueFrequency);
+                responce = await _Parameter.RestClient.Portfolio.GetValue(_Parameter.Stock.Id, _Parameter.DateRange, valueFrequency);
             if (responce == null)
                 return;
 

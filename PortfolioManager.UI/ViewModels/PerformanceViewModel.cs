@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Collections.ObjectModel;
 
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -64,7 +64,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestWebClient.GetPortfolioPerformanceAsync(_Parameter.StartDate, _Parameter.EndDate);
+            var responce = await _Parameter.RestClient.Portfolio.GetPerformance(_Parameter.DateRange);
             if (responce == null)
                 return;
 
@@ -78,8 +78,8 @@ namespace PortfolioManager.UI.ViewModels
             OutstandingDRPAmount = responce.OutstandingDRPAmount;
 
             StockPerformance.Clear();
-            foreach (var stockPerformance in responce.HoldingPerformance.OrderBy(x => x.Stock.Name))
-                StockPerformance.Add(new StockPerformanceItem(stockPerformance));
+            foreach (var holdingPerformance in responce.HoldingPerformance.OrderBy(x => x.Stock.Name))
+                StockPerformance.Add(new StockPerformanceItem(holdingPerformance));
 
             StockPerformance.Add(new StockPerformanceItem("Cash")
             {
@@ -112,18 +112,18 @@ namespace PortfolioManager.UI.ViewModels
             CompanyName = companyName;
         }
 
-        public StockPerformanceItem(HoldingPerformance stockPerformance)
+        public StockPerformanceItem(PortfolioPerformanceResponse.HoldingPerformanceItem holdingPerformance)
         {
-            CompanyName = stockPerformance.Stock.FormattedCompanyName();
-            OpeningBalance = stockPerformance.OpeningBalance;
-            Purchases = stockPerformance.Purchases;
-            Sales = stockPerformance.Sales;
-            Dividends = stockPerformance.Dividends;
-            CapitalGain = stockPerformance.CapitalGain;
-            ClosingBalance = stockPerformance.ClosingBalance;
-            DRPCashBalance = stockPerformance.DRPCashBalance;
-            TotalReturn = stockPerformance.TotalReturn;
-            IRR = stockPerformance.IRR;
+            CompanyName = holdingPerformance.Stock.FormattedCompanyName();
+            OpeningBalance = holdingPerformance.OpeningBalance;
+            Purchases = holdingPerformance.Purchases;
+            Sales = holdingPerformance.Sales;
+            Dividends = holdingPerformance.Dividends;
+            CapitalGain = holdingPerformance.CapitalGain;
+            ClosingBalance = holdingPerformance.ClosingBalance;
+            DRPCashBalance = holdingPerformance.DRPCashBalance;
+            TotalReturn = holdingPerformance.TotalReturn;
+            IRR = holdingPerformance.IRR;
         }
 
 

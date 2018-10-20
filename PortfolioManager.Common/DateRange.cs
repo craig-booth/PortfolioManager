@@ -25,5 +25,20 @@ namespace PortfolioManager.Common
             return (FromDate <= dateRange.FromDate && ToDate >= dateRange.FromDate) ||
                    (FromDate > dateRange.FromDate && FromDate <= dateRange.ToDate);
         }
+
+        public static bool operator ==(DateRange a, DateRange b)
+        {
+            return (a.FromDate == b.FromDate) && (a.ToDate == b.ToDate);
+        }
+
+        public static bool operator !=(DateRange a, DateRange b)
+        {
+            return (a.FromDate != b.FromDate) || (a.ToDate != b.ToDate);
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} - {1}", FromDate, ToDate);
+        }
     }
 }

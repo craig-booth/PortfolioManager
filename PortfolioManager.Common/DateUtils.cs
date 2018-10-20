@@ -32,6 +32,11 @@ namespace PortfolioManager.Common
                 return  date.Year + 1;
         }
 
+        public static DateRange FinancialYear(int financialYear)
+        {
+            return new DateRange(StartOfFinancialYear(financialYear), EndOfFinancialYear(financialYear));
+        }
+
         public static DateTime StartOfFinancialYear(int financialYear)
         {
             return  new DateTime(financialYear - 1, 7, 1);

@@ -13,7 +13,6 @@ namespace PortfolioManager.RestApi.Portfolios
 
         public List<TransactionItem> Transactions { get; } = new List<TransactionItem>();
 
-
         public class TransactionItem
         {
             public DateTime Date { get; set; }

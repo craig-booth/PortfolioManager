@@ -22,9 +22,9 @@ namespace PortfolioManager.RestApi.Portfolios
         public decimal NetCapitalGainDiscounted { get; set; }
         public decimal NetCapitalGainTotal { get; set; }
 
-        public List<CGTLiabilityEvents> Events { get; } = new List<CGTLiabilityEvents>();
+        public List<CGTLiabilityEvent> Events { get; } = new List<CGTLiabilityEvent>();
 
-        public class CGTLiabilityEvents
+        public class CGTLiabilityEvent
         {
             public Stock Stock { get; set; }
             public DateTime EventDate { get; set; }

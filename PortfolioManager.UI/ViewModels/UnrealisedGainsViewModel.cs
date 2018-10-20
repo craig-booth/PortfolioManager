@@ -3,8 +3,8 @@ using System.Linq;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -41,16 +41,16 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            SimpleUnrealisedGainsResponce responce;
+            SimpleUnrealisedGainsResponse responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestWebClient.GetSimpleUnrealisedGainsAsync(_Parameter.Date);
+                responce = await _Parameter.RestClient.Portfolio.GetCapitalGains(_Parameter.Date);
             else
-                responce = await _Parameter.RestWebClient.GetSimpleUnrealisedGainsAsync(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await _Parameter.RestClient.Portfolio.GetCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
             if (responce == null)
                 return;
 
             UnrealisedGains.Clear();
-            foreach (var cgtItem in responce.CGTItems.OrderBy(x => x.Stock.FormattedCompanyName()))
+            foreach (var cgtItem in responce.UnrealisedGains.OrderBy(x => x.Stock.FormattedCompanyName()))
             {
                 var viewItem = new UnrealisedGainViewItem(cgtItem);
                 UnrealisedGains.Add(viewItem);

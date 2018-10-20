@@ -6,9 +6,8 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
-using PortfolioManager.Service.Interface;
-
 
 namespace PortfolioManager.UI.ViewModels
 {
@@ -53,7 +52,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestWebClient.GetPortfolioSummaryAsync(_Parameter.Date);
+            var responce = await _Parameter.RestClient.Portfolio.GetSummary(_Parameter.Date);
             if (responce == null)
                 return;
 
@@ -102,12 +101,12 @@ namespace PortfolioManager.UI.ViewModels
             IndividualStocks.Add(series); 
         }
 
-        private decimal AddAssetCategory(IEnumerable<HoldingItem> holdings, AssetCategory category)
+        private decimal AddAssetCategory(IEnumerable<Holding> holdings, AssetCategory category)
         {
             decimal total = 0m;
             foreach (var holding in holdings)
             {
-                if (holding.Category == category)
+                if (holding.Stock.Category == category)
                 {
                     var series = new PieSeries()
                     {

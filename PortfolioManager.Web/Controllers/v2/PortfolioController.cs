@@ -86,6 +86,19 @@ namespace PortfolioManager.Web.Controllers.v2
             return response;
         }
 
+        // GET: transactions?fromDate&toDate
+        // GET: transactions?stock&fromDate&toDate
+        [Route("transactions")]
+        [HttpGet]
+        public ActionResult<TransactionsResponse> GetTransactions(Guid? Stock, DateTime? fromDate, DateTime? toDate)
+        {
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            var response = new TransactionsResponse();
+
+            return response;
+        }
+
         // GET: capitalgains?date
         // GET: capitalgains?stock&date
         [Route("capitalgains")]
@@ -122,6 +135,18 @@ namespace PortfolioManager.Web.Controllers.v2
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
             var response = new CGTLiabilityResponse();
+
+            return response;
+        }
+
+        // GET: cashaccount?fromDate&toDate
+        [Route("cashaccount")]
+        [HttpGet]
+        public ActionResult<CashAccountTransactionsResponse> GetCashAccountTransactions(DateTime? fromDate, DateTime? toDate)
+        {
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            var response = new CashAccountTransactionsResponse();
 
             return response;
         }

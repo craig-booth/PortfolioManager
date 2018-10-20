@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
@@ -30,7 +30,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestWebClient.GetPortfolioSummaryAsync(_Parameter.Date);
+            var responce = await _Parameter.RestClient.Portfolio.GetSummary(_Parameter.Date);
             if (responce == null)
                 return;
 
@@ -99,14 +99,14 @@ namespace PortfolioManager.UI.ViewModels
         public int Units { get; private set; }
         public ChangeInValue ChangeInValue { get; private set; }
 
-        public HoldingItemViewModel( string companyName, int units, decimal cost, decimal marketValue)
+        public HoldingItemViewModel(string companyName, int units, decimal cost, decimal marketValue)
         {           
             CompanyName = companyName;
             Units = units;
             ChangeInValue = new ChangeInValue(cost, marketValue);
         }
 
-        public HoldingItemViewModel(HoldingItem holding)
+        public HoldingItemViewModel(Holding holding)
         {
             CompanyName = holding.Stock.FormattedCompanyName();
             Units = holding.Units;

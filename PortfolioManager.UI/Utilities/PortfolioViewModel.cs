@@ -20,9 +20,7 @@ namespace PortfolioManager.UI.Utilities
                 RefreshView();
             else if ((e.PropertyName == "Date") && (Options.DateSelection == DateSelectionType.Single))
                 RefreshView();
-            else if ((e.PropertyName == "StartDate") && (Options.DateSelection == DateSelectionType.Range))
-                RefreshView();
-            else if ((e.PropertyName == "EndDate") && (Options.DateSelection == DateSelectionType.Range))
+            else if ((e.PropertyName == "DateRange") && (Options.DateSelection == DateSelectionType.Range))
                 RefreshView();
             else if ((e.PropertyName == "FinancialYear") && (Options.DateSelection == DateSelectionType.FinancialYear))
                 RefreshView();
