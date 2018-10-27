@@ -28,7 +28,7 @@ namespace PortfolioManager.Test
         {
             using (var streamReader = new StreamReader(fileName))
             {
-                var serializer = new XmlSerializer(type, new Type[]
+               /* var serializer = new XmlSerializer(type, new Type[]
                         {
                             typeof(AquisitionTransactionItem),
                             typeof(CashTransactionItem),
@@ -38,8 +38,8 @@ namespace PortfolioManager.Test
                             typeof(OpeningBalanceTransactionItem),
                             typeof(ReturnOfCapitalTransactionItem),
                             typeof(UnitCountAdjustmentTransactionItem)
-                        });
-
+                        }); */
+                var serializer = new XmlSerializer(type);
                 Expected = (ServiceResponce)serializer.Deserialize(streamReader);
             }
         }

@@ -8,7 +8,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
     public abstract class BasePortfolioController : Controller
     {
-        protected IPortfolioCache _PortfolioCache { get; private set; }
+        private IPortfolioCache _PortfolioCache;
         protected Portfolio _Portfolio { get; private set; }
 
         public BasePortfolioController(IPortfolioCache portfolioCache)

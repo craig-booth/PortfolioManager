@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+using AutoMapper;
+
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
+using PortfolioManager.Web.Mapping;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
@@ -16,11 +19,13 @@ namespace PortfolioManager.Web.Controllers.v2
     public class PortfolioController : BasePortfolioController
     {
         private IStockRepository _StockRepository;
+        private IMapper _Mapper;
 
-        public PortfolioController(IPortfolioCache portfolioCache, IStockRepository stockRepository)
+        public PortfolioController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper)
             : base(portfolioCache)
         {
             _StockRepository = stockRepository;
+            _Mapper = mapper;
         }
 
         // GET: summary?date
@@ -28,21 +33,31 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet]
         public ActionResult<PortfolioSummaryResponse> GetSummary(DateTime? date)
         {
-            if (date == null)
-                date = DateTime.Today;
+            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
 
-            var response = new PortfolioSummaryResponse()
+            var response = new PortfolioSummaryResponse();
+
+            foreach (var holding in _Portfolio.Holdings.All(requestedDate))
             {
-                PortfolioValue = 0.00m,
-                PortfolioCost = 0.00m,
+                var properties = holding.Properties[requestedDate];
+                response.Holdings.Add(new RestApi.Portfolios.Holding()
+                {
+                    Stock = holding.Stock.Convert(requestedDate),
+                    Units = properties.Units,
+                    Cost = properties.Amount,
+                    CostBase = properties.CostBase,
+                    Value = properties.Units * _StockRepository.Get(holding.Stock.Id).GetPrice(requestedDate)
+                });
+            }
+            response.CashBalance = _Portfolio.CashAccount[requestedDate];
 
-                Return1Year = null,
-                Return3Year = null,
-                Return5Year = null,
-                ReturnAll = null,
+            response.PortfolioValue = response.Holdings.Sum(x => x.Value) + response.CashBalance;
+            response.PortfolioCost = response.Holdings.Sum(x => x.Cost) + response.CashBalance;
 
-                CashBalance = 0.00m
-            };
+            response.Return1Year = null;
+            response.Return3Year = null;
+            response.Return5Year = null;
+            response.ReturnAll = null;       
 
             return response;
         }
@@ -95,6 +110,12 @@ namespace PortfolioManager.Web.Controllers.v2
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
             var response = new TransactionsResponse();
+
+            foreach (var transaction in _Portfolio.Transactions.All(dateRange))
+            {
+                var t = _Mapper.Map<TransactionsResponse.TransactionItem>(transaction, opts => opts.Items["date"] = dateRange.ToDate);
+                response.Transactions.Add(t);
+            }
 
             return response;
         }

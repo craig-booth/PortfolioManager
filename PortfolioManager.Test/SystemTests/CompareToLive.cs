@@ -107,7 +107,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); 
             SetControllerContext(controller);
 
-            controller.AddTransactions(transactions);
+            controller.AddTransactions(transactions.Where(x => x != null).ToList());
         }
 
         private void SaveActualResult(object actual, string fileName)
@@ -168,7 +168,7 @@ namespace PortfolioManager.Test.SystemTests
                             typeof(RestApi.Transactions.UnitCountAdjustment)
                         });
 
-            _ResultsConverter.UpdateExpectedTransactions(expectedFile);
+            //_ResultsConverter.UpdateExpectedTransactions(expectedFile);
 
 
             Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.TransactionsResponse), expectedFile));

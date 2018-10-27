@@ -11,7 +11,6 @@ namespace PortfolioManager.RestApi.Portfolios
         public class TransactionItem
         {
             public Stock Stock { get; set; }
-            public string Type { get; set; }
             public DateTime TransactionDate { get; set; }
             public DateTime RecordDate { get; set; }
             public string Description { get; set; }
