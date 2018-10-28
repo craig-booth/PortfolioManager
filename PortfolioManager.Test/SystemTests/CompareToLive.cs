@@ -205,16 +205,18 @@ namespace PortfolioManager.Test.SystemTests
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task CompareCashTransactions(DateTime fromDate, DateTime toDate)
+        public void CompareCashTransactions(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("CashTransactions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
-            var response = await controller.GetCashAccountTransactions(fromDate, toDate);
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            Assert.That(response, Is.EquivalentTo(typeof(CashAccountTransactionsResponce), expectedFile));
+            var response = controller.GetCashAccountTransactions(fromDate, toDate);
+            SaveActualResult(response.Value, fileName);
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.CashAccountTransactionsResponse), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]

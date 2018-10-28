@@ -18,9 +18,7 @@ namespace PortfolioManager.Domain.Transactions
                 holding = portfolio.Holdings.Add(openingBalance.Stock, openingBalance.TransactionDate);
             }
 
-            var averagePrice = Math.Round(openingBalance.CostBase / openingBalance.Units, 5, MidpointRounding.AwayFromZero);
-
-            holding.AddParcel(openingBalance.TransactionDate, openingBalance.AquisitionDate, openingBalance.Units, averagePrice, openingBalance.CostBase, openingBalance.CostBase);
+            holding.AddParcel(openingBalance.TransactionDate, openingBalance.AquisitionDate, openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase);
 
             portfolio.Transactions.Add(openingBalance); 
         }

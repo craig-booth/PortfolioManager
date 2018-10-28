@@ -25,9 +25,9 @@ namespace PortfolioManager.Web.Mapping
             CreateMap<Domain.Stocks.Stock, RestApi.Portfolios.Stock>().ConvertUsing<StockTypeConverter>();
             CreateMap<Domain.Transactions.Transaction, RestApi.Portfolios.TransactionsResponse.TransactionItem>();
                 
-        
-
             CreateMap<Domain.Portfolios.Holding, RestApi.Portfolios.Holding>();
+
+            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>();
         }
 
     }

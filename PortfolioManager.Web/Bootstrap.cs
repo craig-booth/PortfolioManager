@@ -51,6 +51,7 @@ namespace PortfolioManager.Web
             config.RegisterTransaction<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>("aquisition", new AquisitionHandler());
             config.RegisterTransaction<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>("cashtransaction", new CashTransactionHandler());
             config.RegisterTransaction<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>("openingbalance", new OpeningBalanceHandler());
+            config.RegisterTransaction<Domain.Transactions.IncomeReceived, RestApi.Transactions.IncomeReceived>("incomereceived", new IncomeReceivedHandler());
             services.AddSingleton<TransactionConfiguration>(config);
 
             services.AddSingleton<PortfolioManagerSettings>(settings);

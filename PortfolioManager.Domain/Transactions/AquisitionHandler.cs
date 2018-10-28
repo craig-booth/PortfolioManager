@@ -22,13 +22,15 @@ namespace PortfolioManager.Domain.Transactions
             decimal amountPaid = cost + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 
-            holding.AddParcel(aquisition.TransactionDate, aquisition.TransactionDate, aquisition.Units, aquisition.AveragePrice, amountPaid, costBase);
+            holding.AddParcel(aquisition.TransactionDate, aquisition.TransactionDate, aquisition.Units, amountPaid, costBase);
         
             if (aquisition.CreateCashTransaction)
             {
                 var asxCode = aquisition.Stock.Properties[aquisition.TransactionDate].ASXCode;
                 portfolio.CashAccount.Transfer(aquisition.TransactionDate, cost, String.Format("Purchase of {0}", asxCode));
-                portfolio.CashAccount.FeeDeducted(aquisition.TransactionDate, aquisition.TransactionCosts, String.Format("Brokerage for purchase of {0}", asxCode));
+
+                if (aquisition.TransactionCosts > 0.00m)
+                    portfolio.CashAccount.FeeDeducted(aquisition.TransactionDate, aquisition.TransactionCosts, String.Format("Brokerage for purchase of {0}", asxCode));
             }
 
             portfolio.Transactions.Add(aquisition);

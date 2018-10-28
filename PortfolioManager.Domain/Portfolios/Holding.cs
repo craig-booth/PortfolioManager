@@ -22,9 +22,9 @@ namespace PortfolioManager.Domain.Portfolios
             Properties.Change(fromDate, new HoldingProperties(0, 0.00m, 0.00m));
         }
 
-        public void AddParcel(DateTime date, DateTime aquisitionDate, int units, decimal unitPrice, decimal amount, decimal costBase)
+        public void AddParcel(DateTime date, DateTime aquisitionDate, int units, decimal amount, decimal costBase)
         {
-            var parcel = new Parcel(Guid.NewGuid(), date, aquisitionDate, new ParcelProperties(units, unitPrice, amount, costBase));
+            var parcel = new Parcel(Guid.NewGuid(), date, aquisitionDate, new ParcelProperties(units, amount, costBase));
 
             _Parcels.Add(parcel.Id, parcel);
 

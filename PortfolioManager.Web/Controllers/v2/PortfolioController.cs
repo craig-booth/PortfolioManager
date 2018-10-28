@@ -169,6 +169,13 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var response = new CashAccountTransactionsResponse();
 
+            var transactions = _Portfolio.CashAccount.Transactions(dateRange);
+
+            response.OpeningBalance = _Portfolio.CashAccount[dateRange.FromDate];
+            response.ClosingBalance = _Portfolio.CashAccount[dateRange.ToDate];
+
+            response.Transactions.AddRange(_Mapper.Map<IEnumerable<CashAccountTransactionsResponse.TransactionItem>>(transactions));
+
             return response;
         }
     }

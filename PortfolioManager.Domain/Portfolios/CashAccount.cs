@@ -11,9 +11,10 @@ namespace PortfolioManager.Domain.Portfolios
         private Transaction _LastTransaction;
 
         private List<Transaction> _Transactions = new List<Transaction>();
-        public IEnumerable<Transaction> Transactions
+
+        public IEnumerable<Transaction> Transactions(DateRange dateRange)
         {
-            get { return _Transactions; }
+            return _Transactions.Where(x => dateRange.Contains(x.Date));
         }
 
         public decimal Balance
@@ -60,7 +61,7 @@ namespace PortfolioManager.Domain.Portfolios
         }
 
         public void InterestPaid(DateTime date, decimal amount, string description)
-        {
+        { 
             AddTransaction(date, amount, description, BankAccountTransactionType.Interest);
         }
 
@@ -68,6 +69,9 @@ namespace PortfolioManager.Domain.Portfolios
         {
             if ((_LastTransaction != null) && (_LastTransaction.Date > date))
                 throw new Exception("Transactions already after this date");
+
+            if ((type == BankAccountTransactionType.Interest) && (description == ""))
+                description = "Interest";
 
             _LastTransaction = new Transaction(date, description, amount, type, Balance + amount);
             _Transactions.Add(_LastTransaction);

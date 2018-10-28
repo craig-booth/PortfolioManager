@@ -14,70 +14,70 @@
       <Date>2016-02-09T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of GVF</Description>
-      <Amount>-7575</Amount>
+      <Amount>-7575.00</Amount>
       <Balance>1425.00</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Deposit</Type>
-      <Description>Transfer of shares from Craig</Description>
-      <Amount>102680.21</Amount>
-      <Balance>104105.21</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of ARG</Description>
-      <Amount>-54</Amount>
-      <Balance>104051.21</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of COH</Description>
-      <Amount>-54</Amount>
-      <Balance>103997.21</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of CSL</Description>
-      <Amount>-54</Amount>
-      <Balance>103943.21</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of WAM</Description>
-      <Amount>-54</Amount>
-      <Balance>103889.21</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of COH</Description>
-      <Amount>-5412</Amount>
-      <Balance>98477.21</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-02-10T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of CSL</Description>
-      <Amount>-28722.4</Amount>
-      <Balance>69754.81</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of ARG</Description>
       <Amount>-32061.6</Amount>
-      <Balance>37693.21</Balance>
+      <Balance>-30636.60</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of ARG</Description>
+      <Amount>-54</Amount>
+      <Balance>-30690.60</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of COH</Description>
+      <Amount>-5412.0</Amount>
+      <Balance>-36102.60</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of COH</Description>
+      <Amount>-54</Amount>
+      <Balance>-36156.60</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of CSL</Description>
+      <Amount>-28722.40</Amount>
+      <Balance>-64879.00</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of CSL</Description>
+      <Amount>-54</Amount>
+      <Balance>-64933.00</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2016-02-10T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of WAM</Description>
       <Amount>-36484.21</Amount>
+      <Balance>-101417.21</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of WAM</Description>
+      <Amount>-54</Amount>
+      <Balance>-101471.21</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-02-10T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Transfer of shares from Craig</Description>
+      <Amount>102680.21</Amount>
       <Balance>1209.00</Balance>
     </TransactionItem>
     <TransactionItem>
@@ -91,14 +91,14 @@
       <Date>2016-02-15T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAF</Description>
-      <Amount>-7497</Amount>
+      <Amount>-7497.00</Amount>
       <Balance>7712.00</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2016-02-15T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAP</Description>
-      <Amount>-7527</Amount>
+      <Amount>-7527.00</Amount>
       <Balance>185.00</Balance>
     </TransactionItem>
     <TransactionItem>
@@ -119,7 +119,7 @@
       <Date>2016-02-23T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGS</Description>
-      <Amount>-7578.2</Amount>
+      <Amount>-7578.20</Amount>
       <Balance>106.80</Balance>
     </TransactionItem>
     <TransactionItem>
