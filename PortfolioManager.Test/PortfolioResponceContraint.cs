@@ -17,9 +17,9 @@ namespace PortfolioManager.Test
 { 
     public class PortfolioResponceContraint : Constraint
     {
-        public ServiceResponce Expected;
+        public object Expected;
 
-        public PortfolioResponceContraint(ServiceResponce expected)
+        public PortfolioResponceContraint(object expected)
         {
             Expected = expected;
         }
@@ -28,19 +28,8 @@ namespace PortfolioManager.Test
         {
             using (var streamReader = new StreamReader(fileName))
             {
-               /* var serializer = new XmlSerializer(type, new Type[]
-                        {
-                            typeof(AquisitionTransactionItem),
-                            typeof(CashTransactionItem),
-                            typeof(CostBaseAdjustmentTransactionItem),
-                            typeof(DisposalTransactionItem),
-                            typeof(IncomeTransactionItem),
-                            typeof(OpeningBalanceTransactionItem),
-                            typeof(ReturnOfCapitalTransactionItem),
-                            typeof(UnitCountAdjustmentTransactionItem)
-                        }); */
                 var serializer = new XmlSerializer(type);
-                Expected = (ServiceResponce)serializer.Deserialize(streamReader);
+                Expected = serializer.Deserialize(streamReader);
             }
         }
 
@@ -48,11 +37,8 @@ namespace PortfolioManager.Test
         {
             var result = new ConstraintResult(this, actual);
 
-            var actualResponce = actual as ServiceResponce;
-
-            actualResponce.Should().BeEquivalentTo(Expected, options => options
+            actual.Should().BeEquivalentTo(Expected, options => options
                        .RespectingRuntimeTypes()
-                      // .Excluding(x => x.ResponceTime)
                        );
 
             return new ConstraintResult(this, actual, true);
@@ -62,7 +48,7 @@ namespace PortfolioManager.Test
 
     public class Is : NUnit.Framework.Is
     {
-        public static PortfolioResponceContraint EquivalentTo(ServiceResponce expected)
+        public static PortfolioResponceContraint EquivalentTo(object expected)
         {
             return new PortfolioResponceContraint(expected);
         }
