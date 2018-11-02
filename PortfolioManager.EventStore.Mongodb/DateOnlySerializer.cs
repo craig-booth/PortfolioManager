@@ -2,6 +2,7 @@
 using System.Globalization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
 
 
@@ -9,6 +10,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.EventStore.Mongodb
 {
+    [BsonSerializer(typeof(DateOnlySerializer))]
     class DateOnlySerializer : SerializerBase<DateTime>
     {
         public override DateTime Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)

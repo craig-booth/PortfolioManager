@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 using AutoMapper;
 using NUnit.Framework;
@@ -16,7 +23,6 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.Data.Portfolios;
-using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.SQLite.Portfolios;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Service.Services;
@@ -24,52 +30,81 @@ using PortfolioManager.Service.Utils;
 
 namespace PortfolioManager.Test.PerformanceTests
 {
+
+    static class TestServicePerformanceEnvironment
+    {
+        private static ServiceProvider _ServiceProvider;
+        public static ServiceProvider GetServiceProvider(string testPath, string eventStorePath)
+        {
+            if (_ServiceProvider == null)
+            {
+                var portfolioDatabaseFile = Path.Combine(testPath, "Portfolio.db");
+                File.Delete(portfolioDatabaseFile);
+                var portfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
+
+                var eventStore = new MongodbEventStore(eventStorePath);
+                var stockExchange = new StockExchange(eventStore);
+                stockExchange.LoadFromEventStream();
+
+                var config = new MapperConfiguration(cfg =>
+                    cfg.AddProfile(new ModelToServiceMapping(stockExchange))
+                );
+                var mapper = config.CreateMapper();
+
+                ServiceCollection services = new ServiceCollection();
+                services.AddLogging();
+
+                services.AddSingleton<IPortfolioDatabase>(portfolioDatabase);
+                services.AddSingleton<StockExchange>(stockExchange);
+                services.AddSingleton<IStockRepository>(stockExchange.Stocks);
+                services.AddSingleton<IMapper>(mapper);
+                services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
+                services.AddScoped<IPortfolioPerformanceService, PortfolioPerformanceService>();
+                services.AddScoped<ICapitalGainService, CapitalGainService>();
+                services.AddScoped<IPortfolioValueService, PortfolioValueService>();
+                services.AddScoped<ICorporateActionService, CorporateActionService>();
+                services.AddScoped<IHoldingService, HoldingService>();
+                services.AddScoped<ICashAccountService, CashAccountService>();
+                services.AddScoped<IIncomeService, IncomeService>();
+                services.AddScoped<ITransactionService, TransactionService>();
+
+                _ServiceProvider = services.BuildServiceProvider();
+
+                // Load transactions into Portfolio Database
+                var service = _ServiceProvider.GetRequiredService<ITransactionService>();
+                var importTask = service.ImportTransactions(Path.Combine(testPath, "Transactions.xml"));
+                importTask.Wait();
+            }
+
+            return _ServiceProvider;
+        }
+
+    }
+
     class TestServicePerformance : PerformanceTestStuite<TestServicePerformance>
     {
-        private IPortfolioDatabase _PortfolioDatabase;
-        private StockExchange _StockExchange;
-        private IMapper _Mapper;
-
-        private string _TestPath;
-
         private Counter _Counter;
 
         private DateTime _AtDate;
         private DateTime _FromDate;
         private DateTime _ToDate;
 
+        private ServiceProvider _ServiceProvider;
+
         [PerfSetup]
-        public async void Init(BenchmarkContext context)
+        public void Init(BenchmarkContext context)
         {
-            _TestPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "PerformanceTests");
+            var testPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "PerformanceTests");
+            //  var eventStorePath = "mongodb://192.168.99.100:27017";
+            var eventStorePath = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017";
+
+            _ServiceProvider = TestServicePerformanceEnvironment.GetServiceProvider(testPath, eventStorePath);
 
             _AtDate = new DateTime(2017, 06, 30);
             _FromDate = new DateTime(2016, 07, 01);
             _ToDate = new DateTime(2017, 06, 30);
 
-            var eventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
-            _StockExchange = new StockExchange(eventStore);
-            _StockExchange.LoadFromEventStream();
-
-            var portfolioDatabaseFile = Path.Combine(_TestPath, "Portfolio.db");
-            File.Delete(portfolioDatabaseFile);
-            _PortfolioDatabase = new SQLitePortfolioDatabase(portfolioDatabaseFile);
-
-            var config = new MapperConfiguration(cfg =>
-                cfg.AddProfile(new ModelToServiceMapping(_StockExchange))
-            );
-            _Mapper = config.CreateMapper();
-
-            await LoadTransactions();
-
             _Counter = context.GetCounter("TestCounter");
-        }
-
-        public async Task LoadTransactions()
-        {
-            var service = new TransactionService(_PortfolioDatabase, _StockExchange, _Mapper);
-
-            await service.ImportTransactions(Path.Combine(_TestPath, "Transactions.xml"));
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",
@@ -78,8 +113,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestCapitalGainServicePerformance()
         {
-            var service = new CapitalGainService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetDetailedUnrealisedGains(_AtDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetDetailedCapitalGains(null, _AtDate);
 
             _Counter.Increment();
         }
@@ -90,8 +125,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestCGTLiabilityServicePerformance()
         {
-            var service = new CapitalGainService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetCGTLiability(_FromDate, _ToDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetCGTLiability(_FromDate, _ToDate);
 
             _Counter.Increment();
         }
@@ -102,8 +137,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestCashTransactionsServicePerformance()
         {
-            var service = new CashAccountService(_PortfolioDatabase);
-            var responce = await service.GetTranasctions(_FromDate, _ToDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetCashAccountTransactions(_FromDate, _ToDate);
 
             _Counter.Increment();
         }
@@ -114,8 +149,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestHoldingsServicePerformance()
         {
-            var service = new HoldingService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetHoldings(_AtDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetHoldings(_AtDate, false);
 
             _Counter.Increment();
         }
@@ -126,8 +161,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestTradeableHoldingsServicePerformance()
         {
-            var service = new HoldingService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetTradeableHoldings(_AtDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetHoldings(_AtDate, true);
 
             _Counter.Increment();
         }
@@ -138,8 +173,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestIncomeServicePerformance()
         {
-            var service = new IncomeService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetIncome(_FromDate, _ToDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetIncome(_FromDate, _ToDate);
 
             _Counter.Increment();
         }
@@ -150,8 +185,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestPortfolioPerformanceServicePerformance()
         {
-            var service = new PortfolioPerformanceService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetPerformance(_FromDate, _ToDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetPerformance(_FromDate, _ToDate);
 
             _Counter.Increment();
         }
@@ -162,8 +197,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestPortfolioSummaryServicePerformance()
         {
-            var service = new PortfolioSummaryService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetSummary(_AtDate);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetSummary(_AtDate);
 
             _Counter.Increment();
         }
@@ -174,8 +209,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestPortfolioValueServicePerformance()
         {
-            var service = new PortfolioValueService(_PortfolioDatabase, _StockExchange);
-            var responce = await service.GetPortfolioValue(_FromDate, _ToDate, ValueFrequency.Daily);
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = await controller.GetPortfolioValue(null, _FromDate, _ToDate, ValueFrequency.Daily);
 
             _Counter.Increment();
         }
@@ -186,8 +221,8 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 10000.0d)]
         public async void TestTransactionsServicePerformance()
         {
-            var service = new TransactionService(_PortfolioDatabase, _StockExchange, _Mapper);
-            var responce = await service.GetTransactions(_FromDate, _ToDate);
+            var controller = new Web.Controllers.v1.TransactionController(_ServiceProvider);
+            var response = await controller.Get(null, _FromDate, _ToDate);
 
             _Counter.Increment();
         }
@@ -196,10 +231,11 @@ namespace PortfolioManager.Test.PerformanceTests
             NumberOfIterations = 3, RunMode = RunMode.Throughput,
             RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
-        public async void TestStockServicePerformance()
+        public void TestStockServicePerformance()
         {
-            var service = new StockService(_StockExchange);
-            var responce = await service.GetStocks(_AtDate, true, true);
+            var stockRepository = _ServiceProvider.GetRequiredService<IStockRepository>();
+            var controller = new Web.Controllers.v1.StockController(stockRepository);
+            var response = controller.Get(null, _AtDate, null, null);
 
             _Counter.Increment();
         }
@@ -208,16 +244,20 @@ namespace PortfolioManager.Test.PerformanceTests
             NumberOfIterations = 3, RunMode = RunMode.Throughput,
             RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
-        public async void TestCorporateActionsForStockServicePerformance()
+        public void TestCorporateActionsForStockServicePerformance()
         {
+            var stockExchange = _ServiceProvider.GetRequiredService<StockExchange>();
+            var stockRepository = _ServiceProvider.GetRequiredService<IStockRepository>();
 
-            var service = new StockService(_StockExchange);
+            var controller = new Web.Controllers.v1.StockController(stockRepository);
 
-            var stocks = _StockExchange.Stocks.All().Where(x => x.IsEffectiveDuring(new DateRange(_FromDate, _ToDate)));
+            var service = new StockService(stockExchange);
+
+            var stocks = stockRepository.All().Where(x => x.IsEffectiveDuring(new DateRange(_FromDate, _ToDate)));
             foreach (var stock in stocks)
             {
-                var responce = await service.GetCorporateActions(stock.Id, _FromDate, _ToDate);
-            }
+                //var responce = controller.co await service.GetCorporateActions(stock.Id, _FromDate, _ToDate);
+            } 
 
             _Counter.Increment();
         }
@@ -227,10 +267,10 @@ namespace PortfolioManager.Test.PerformanceTests
             NumberOfIterations = 3, RunMode = RunMode.Throughput,
             RunTimeMilliseconds = 1000, TestMode = TestMode.Test)]
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
-        public async void TestUnappliedCorporateActionsServicePerformance()
+        public void TestUnappliedCorporateActionsServicePerformance()
         {
-            var service = new CorporateActionService(_PortfolioDatabase, _StockExchange, _Mapper);
-            var responce = await service.GetUnappliedCorporateActions();
+            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
+            var response = controller.GetUnappliedCorporateActions();
 
             _Counter.Increment();
         }

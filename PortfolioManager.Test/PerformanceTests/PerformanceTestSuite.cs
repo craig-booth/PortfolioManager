@@ -16,6 +16,7 @@ namespace PortfolioManager.Test.PerformanceTests
             Benchmark.PrepareForRun();
             benchmark.Run();
             benchmark.Finish();
+           
         }
 
         public static IEnumerable Benchmarks()

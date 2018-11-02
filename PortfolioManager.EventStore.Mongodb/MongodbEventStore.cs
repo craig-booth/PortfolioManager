@@ -26,7 +26,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
         private void RegisterEventTypes() 
         {
-            BsonSerializer.RegisterSerializer(typeof(DateTime), new DateOnlySerializer());
+         //   BsonSerializer.RegisterSerializer(typeof(DateTime), new DateOnlySerializer());
             var conventionPack = new ConventionPack()
             {
                 new IgnoreExtraElementsConvention(true),
