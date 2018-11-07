@@ -39,6 +39,7 @@
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>64.05</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
@@ -50,6 +51,7 @@
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>58.73</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
@@ -61,6 +63,7 @@
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>33.1</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
@@ -72,6 +75,7 @@
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>225</FrankedAmount>
