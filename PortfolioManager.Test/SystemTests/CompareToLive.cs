@@ -253,6 +253,8 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
+            _ResultsConverter.UpdateExpectedIncome(expectedFile);
+
             var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
             var response = await controller.GetIncome(fromDate, toDate);
             SaveActualResult(response, fileName);

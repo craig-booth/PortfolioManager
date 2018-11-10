@@ -163,6 +163,18 @@ namespace PortfolioManager.Test.SystemTests
             var newResponse = _Mapper.Map<RestApi.Portfolios.PortfolioValueResponse>(expected);
             SaveResult(newResponse, expectedFile);
         }
+
+        public void UpdateExpectedIncome(string expectedFile)
+        {
+            var constraint = new PortfolioResponceContraint(typeof(IncomeResponce), expectedFile);
+            var expected = constraint.Expected as IncomeResponce;
+
+            var newResponse = _Mapper.Map<RestApi.Portfolios.IncomeResponse>(expected);
+            var newIncome = _Mapper.Map<List<RestApi.Portfolios.IncomeResponse.IncomeItem>>(expected.Income);
+            newResponse.Income.AddRange(newIncome);
+            SaveResult(newResponse, expectedFile);
+        }
+
     }
 
     public class ConvertExpectedResults : Profile
@@ -210,6 +222,9 @@ namespace PortfolioManager.Test.SystemTests
 
             CreateMap<CGTLiabilityResponce, RestApi.Portfolios.CGTLiabilityResponse>();
             CreateMap<CGTLiabilityItem, RestApi.Portfolios.CGTLiabilityResponse.CGTLiabilityEvent>();
+
+            CreateMap<IncomeResponce, RestApi.Portfolios.IncomeResponse>();
+            CreateMap<IncomeItem, RestApi.Portfolios.IncomeResponse.IncomeItem>();
         }
     }
 }
