@@ -14,7 +14,7 @@ namespace PortfolioManager.Domain.Portfolios
 
         public IEnumerable<Transaction> Transactions(DateRange dateRange)
         {
-            return _Transactions.SkipWhile(x => x.Date < dateRange.FromDate).TakeWhile(x => x.Date <= dateRange.ToDate);
+            return _Transactions.Where(x => dateRange.Contains(x.Date));
         }
 
         public decimal Balance
@@ -32,66 +32,12 @@ namespace PortfolioManager.Domain.Portfolios
         {
             get
             {
-                // No transactions
-                if (_Transactions.Count == 0)
+                var transaction = _Transactions.LastOrDefault(x => x.Date <= date);
+                if (transaction != null)
+                    return transaction.Balance;
+                else
                     return 0.00m;
-
-                // On or after last transaction
-                if ((_LastTransaction != null) && (date >= _LastTransaction.Date))
-                    return _LastTransaction.Balance;
-
-                // Otherwise search for transaction
-                var dummyTransaction = new Transaction(date, "", 0.00m, BankAccountTransactionType.Deposit, 0.00m);
-                var index = _Transactions.BinarySearch(dummyTransaction);
-                if (index < 0)
-                {
-                    index = ~index;
-
-                    while (_Transactions[index].Date > date)
-                    {
-                        index--;
-
-                        if (index < 0)
-                            return 0.00m;
-                    }
-                }
-                else
-                {
-                    while (_Transactions[index + 1].Date == date)
-                        index++;
-                }
-
-                return _Transactions[index].Balance;
             }
-        }
-
-        public IEnumerable<EffectiveBalance> EffectiveBalances(DateRange dateRange)
-        {
-            var transactions = Transactions(dateRange);
-
-            var fromDate = dateRange.FromDate;
-            var toDate = DateUtils.NoEndDate;
-            var balance = 0.00m;
-
-            foreach (var transaction in transactions)
-            {
-                if (fromDate == transaction.Date)
-                {
-                    balance = transaction.Balance;
-                }
-                else
-                {
-                    toDate = transaction.Date.AddDays(-1);
-
-                    yield return new EffectiveBalance(fromDate, toDate, balance);
-
-                    fromDate = transaction.Date;
-                    toDate = transaction.Date;
-                    balance = transaction.Balance;
-                }
-            }
-
-            yield return new EffectiveBalance(fromDate, dateRange.ToDate, balance);
         }
 
         public void Deposit(DateTime date, decimal amount, string description)
@@ -106,7 +52,7 @@ namespace PortfolioManager.Domain.Portfolios
 
         public void Transfer(DateTime date, decimal amount, string description)
         {
-            AddTransaction(date, amount, description, BankAccountTransactionType.Transfer);
+            AddTransaction(date, -amount, description, BankAccountTransactionType.Transfer);
         }
 
         public void FeeDeducted(DateTime date, decimal amount, string description)
@@ -115,50 +61,29 @@ namespace PortfolioManager.Domain.Portfolios
         }
 
         public void InterestPaid(DateTime date, decimal amount, string description)
-        {
+        { 
             AddTransaction(date, amount, description, BankAccountTransactionType.Interest);
         }
 
         public void AddTransaction(DateTime date, decimal amount, string description, BankAccountTransactionType type)
         {
+            if ((_LastTransaction != null) && (_LastTransaction.Date > date))
+                throw new Exception("Transactions already after this date");
+
             if ((type == BankAccountTransactionType.Interest) && (description == ""))
                 description = "Interest";
 
-            if ((_LastTransaction == null) || (date >= _LastTransaction.Date))
-            {
-                _LastTransaction = new Transaction(date, description, amount, type, Balance + amount);
-                _Transactions.Add(_LastTransaction);
-            }
-            else
-            {
-                var newTransaction = new Transaction(date, description, amount, type, 0.00m);
-
-                var index = _Transactions.BinarySearch(newTransaction);
-                if (index < 0)
-                {
-                    index = ~index;
-                }
-                else
-                {
-                    while (_Transactions[index].Date == date)
-                        index++;
-                }
-
-                newTransaction.Balance = (_Transactions[index].Balance - _Transactions[index].Amount) + amount;
-                _Transactions.Insert(index, newTransaction);
-
-                for (var i = index + 1; i < _Transactions.Count; i++)
-                    _Transactions[i].Balance += amount;
-            }
+            _LastTransaction = new Transaction(date, description, amount, type, Balance + amount);
+            _Transactions.Add(_LastTransaction);
         }
 
-        public class Transaction : IComparable<Transaction>
+        public class Transaction
         {
             public readonly DateTime Date;
             public readonly string Description;
             public readonly decimal Amount;
             public readonly BankAccountTransactionType Type;
-            public decimal Balance;
+            public readonly decimal Balance;
 
             public Transaction(DateTime date, string description, decimal amount, BankAccountTransactionType type, decimal balance)
             {
@@ -168,24 +93,7 @@ namespace PortfolioManager.Domain.Portfolios
                 Type = type;
                 Balance = balance;
             }
-
-            public int CompareTo(Transaction other)
-            {
-                return Date.CompareTo(other.Date);
-            }
         }
 
-
-        public class EffectiveBalance
-        {
-            public DateRange EffectivePeriod { get; set; }
-            public decimal Balance { get; set; }
-
-            public EffectiveBalance(DateTime fromDate, DateTime toDate, decimal balance)
-            {
-                EffectivePeriod = new DateRange(fromDate, toDate);
-                Balance = balance;
-            }
-        }
     }
 }

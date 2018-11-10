@@ -208,6 +208,13 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
+      <Type>Deposit</Type>
+      <Description>Inheritance</Description>
+      <Amount>10000</Amount>
+      <Balance>56402.24</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-06-01T00:00:00</Date>
       <Type>Interest</Type>
       <Description>Interest</Description>
       <Amount>3.45</Amount>
@@ -215,23 +222,16 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
-      <Type>Deposit</Type>
-      <Description>Inheritance</Description>
-      <Amount>10000</Amount>
-      <Balance>56405.69</Balance>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of VGS</Description>
+      <Amount>-62.87</Amount>
+      <Balance>56342.82</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2016-06-01T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGS</Description>
-      <Amount>-52389.00</Amount>
-      <Balance>4016.69</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-06-01T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of VGS</Description>
-      <Amount>-62.87</Amount>
+      <Amount>-52389</Amount>
       <Balance>3953.82</Balance>
     </TransactionItem>
   </Transactions>

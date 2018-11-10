@@ -38,10 +38,8 @@ namespace PortfolioManager.Domain.Transactions
             }
 
             if (incomeReceived.CreateCashTransaction)
-            {
-                var asxCode = incomeReceived.Stock.Properties[incomeReceived.RecordDate].ASXCode;
-                portfolio.CashAccount.Transfer(incomeReceived.TransactionDate, incomeReceived.CashIncome, String.Format("Distribution for {0}", asxCode));
-            }  
+                portfolio.CashAccount.Transfer(incomeReceived.TransactionDate, incomeReceived.CashIncome, incomeReceived.Stock.Properties[incomeReceived.RecordDate].Name);
+                
 
            // UpdateDRPCashBalance(unitOfWork, stock, incomeReceived.TransactionDate, incomeReceived.DRPCashBalance);
         }
