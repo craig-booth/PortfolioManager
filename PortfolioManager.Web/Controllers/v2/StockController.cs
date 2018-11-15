@@ -25,7 +25,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET: api/stocks
         [HttpGet]
-        public ActionResult<IEnumerable<StockResponse>> Get([FromQuery]string query, [FromQuery]DateTime? date, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        public ActionResult<List<StockResponse>> Get([FromQuery]string query, [FromQuery]DateTime? date, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             IEnumerable<Stock> stocks;
             DateTime resultDate;
@@ -51,7 +51,7 @@ namespace PortfolioManager.Web.Controllers.v2
                 resultDate = dateRange.ToDate;
             }
 
-            return Ok(stocks.Select(x => x.ToResponse(resultDate)));
+            return Ok(stocks.Select(x => x.ToResponse(resultDate)).ToList());
         }
 
         // GET: api/stocks/{id}
