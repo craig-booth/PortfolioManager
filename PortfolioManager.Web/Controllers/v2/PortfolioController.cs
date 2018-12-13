@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using AutoMapper;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mapping;
 
@@ -66,10 +67,28 @@ namespace PortfolioManager.Web.Controllers.v2
             response.PortfolioValue = response.Holdings.Sum(x => x.Value) + response.CashBalance;
             response.PortfolioCost = response.Holdings.Sum(x => x.Cost) + response.CashBalance;
 
-            response.Return1Year = null;
-            response.Return3Year = null;
-            response.Return5Year = null;
-            response.ReturnAll = null;       
+            var fromDate = requestedDate.AddYears(-1).AddDays(1);
+            if (fromDate >= _Portfolio.StartDate)
+                response.Return1Year = _Portfolio.CalculateIRR(new DateRange(fromDate, requestedDate));
+            else
+                response.Return1Year = null;
+
+            fromDate = requestedDate.AddYears(-3).AddDays(1);
+            if (fromDate >= _Portfolio.StartDate)
+                response.Return3Year = _Portfolio.CalculateIRR(new DateRange(fromDate, requestedDate));
+            else
+                response.Return3Year = null;
+
+            fromDate = requestedDate.AddYears(-5).AddDays(1);
+            if (fromDate >= _Portfolio.StartDate)
+                response.Return5Year = _Portfolio.CalculateIRR(new DateRange(fromDate, requestedDate));
+            else
+                response.Return5Year = null;
+
+            if (requestedDate >= _Portfolio.StartDate)
+                response.ReturnAll = _Portfolio.CalculateIRR(new DateRange(_Portfolio.StartDate, requestedDate));
+            else
+                response.ReturnAll = null;
 
             return response;
         }
