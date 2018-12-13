@@ -32,6 +32,14 @@ namespace PortfolioManager.Domain.Portfolios
             var newProperties = new HoldingProperties(exisingProperties.Units + units, exisingProperties.Amount + amount, exisingProperties.CostBase + costBase);
             Properties.Change(date, newProperties);
         }
+
+        public decimal Value(DateTime date)
+        {
+            if (EffectivePeriod.Contains(date))
+                return Properties[date].Units * Stock.GetPrice(date);
+            else
+                return 0.00m;
+        }
     }
 
     public struct HoldingProperties

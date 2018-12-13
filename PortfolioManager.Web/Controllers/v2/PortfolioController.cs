@@ -59,7 +59,7 @@ namespace PortfolioManager.Web.Controllers.v2
                     Units = properties.Units,
                     Cost = properties.Amount,
                     CostBase = properties.CostBase,
-                    Value = properties.Units * holding.Stock.GetPrice(requestedDate)
+                    Value = holding.Value(requestedDate)
                 });
             }
             response.CashBalance = _Portfolio.CashAccount.Balance(requestedDate);

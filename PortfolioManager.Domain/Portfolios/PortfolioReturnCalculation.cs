@@ -16,7 +16,7 @@ namespace PortfolioManager.Domain.Portfolios
 
             // Get the initial portfolio value         
             var initialHoldings = portfolio.Holdings.All(dateRange.FromDate);
-            var initialHoldingsValue = initialHoldings.Sum(x => x.Properties[dateRange.FromDate].Amount);
+            var initialHoldingsValue = initialHoldings.Sum(x => x.Value(dateRange.FromDate));
 
             // Get initial Cash Account Balance
             var initialCashBalance = portfolio.CashAccount.Balance(dateRange.FromDate);
@@ -26,7 +26,8 @@ namespace PortfolioManager.Domain.Portfolios
             cashFlows.Add(dateRange.FromDate, -initialValue);
 
             // generate list of cashFlows
-            var transactions = portfolio.Transactions.InDateRange(dateRange);
+            var transactionRange = new DateRange(dateRange.FromDate.AddDays(1), dateRange.ToDate.AddDays(-1));
+            var transactions = portfolio.Transactions.InDateRange(transactionRange);
             foreach (var transaction in transactions)
             {
                 if (transaction is CashTransaction)
@@ -40,7 +41,7 @@ namespace PortfolioManager.Domain.Portfolios
 
             // Get the final portfolio value
             var finalHoldings = portfolio.Holdings.All(dateRange.ToDate);
-            var finalHoldingsValue = initialHoldings.Sum(x => x.Properties[dateRange.ToDate].Amount);
+            var finalHoldingsValue = finalHoldings.Sum(x => x.Value(dateRange.ToDate));
 
             // Get final Cash Account Balance
             var finalCashBalance = portfolio.CashAccount.Balance(dateRange.ToDate);
