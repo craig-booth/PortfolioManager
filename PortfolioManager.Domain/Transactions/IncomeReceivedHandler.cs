@@ -7,11 +7,20 @@ namespace PortfolioManager.Domain.Transactions
 {
     public class IncomeReceivedHandler : ITransactionHandler
     {
-        public void ApplyTransaction(Transaction transaction, Portfolio portfolio)
+        private HoldingCollection _Holdings;
+        private CashAccount _CashAccount;
+
+        public IncomeReceivedHandler(HoldingCollection holdings, CashAccount cashAccount)
+        {
+            _Holdings = holdings;
+            _CashAccount = cashAccount;
+        }
+
+        public void ApplyTransaction(Transaction transaction)
         {
             var incomeReceived = transaction as IncomeReceived;
 
-            var holding = portfolio.Holdings.Get(incomeReceived.Stock.Id);
+            var holding = _Holdings.Get(incomeReceived.Stock.Id);
             if ((holding == null) || (!holding.IsEffectiveAt(incomeReceived.RecordDate)))
                 throw new NoParcelsForTransaction(incomeReceived, "No parcels found for transaction");
 
@@ -38,10 +47,12 @@ namespace PortfolioManager.Domain.Transactions
             }
 
             if (incomeReceived.CreateCashTransaction)
-                portfolio.CashAccount.Transfer(incomeReceived.TransactionDate, incomeReceived.CashIncome, incomeReceived.Stock.Properties[incomeReceived.RecordDate].Name);
-                
+            {
+                var asxCode = incomeReceived.Stock.Properties[incomeReceived.RecordDate].ASXCode;
+                _CashAccount.Transfer(incomeReceived.TransactionDate, incomeReceived.CashIncome, String.Format("Distribution for {0}", asxCode));
+            }
 
-           // UpdateDRPCashBalance(unitOfWork, stock, incomeReceived.TransactionDate, incomeReceived.DRPCashBalance);
+            // UpdateDRPCashBalance(unitOfWork, stock, incomeReceived.TransactionDate, incomeReceived.DRPCashBalance);
         }
     }
 }

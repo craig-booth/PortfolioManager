@@ -539,6 +539,9 @@
     <None Update="SystemTests\ExpectedResults\PortfolioPerformance 2017-12-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SystemTests\ExpectedResults\PortfolioProperties.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SystemTests\ExpectedResults\PortfolioSummary 2016-01-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

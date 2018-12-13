@@ -95,8 +95,8 @@ namespace PortfolioManager.Test.PerformanceTests
         public void Init(BenchmarkContext context)
         {
             var testPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "PerformanceTests");
-            //  var eventStorePath = "mongodb://192.168.99.100:27017";
-            var eventStorePath = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017";
+            var eventStorePath = "mongodb://192.168.99.100:27017";
+            //var eventStorePath = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017";
 
             _ServiceProvider = TestServicePerformanceEnvironment.GetServiceProvider(testPath, eventStorePath);
 

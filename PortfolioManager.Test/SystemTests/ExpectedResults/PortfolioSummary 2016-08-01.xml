@@ -17,8 +17,8 @@
       </Stock>
       <Units>7722</Units>
       <Value>8378.370</Value>
-      <Cost>7799.71062</Cost>
-      <CostBase>0</CostBase>
+      <Cost>7799.71</Cost>
+      <CostBase>7799.71</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -29,8 +29,8 @@
       </Stock>
       <Units>6646</Units>
       <Value>50177.30</Value>
-      <Cost>47989.02018</Cost>
-      <CostBase>0</CostBase>
+      <Cost>48072.97</Cost>
+      <CostBase>48072.97</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -41,8 +41,8 @@
       </Stock>
       <Units>60</Units>
       <Value>7886.40</Value>
-      <Cost>5412.0</Cost>
-      <CostBase>0</CostBase>
+      <Cost>5466.00</Cost>
+      <CostBase>5466.00</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -53,44 +53,8 @@
       </Stock>
       <Units>280</Units>
       <Value>32925.20</Value>
-      <Cost>28722.40</Cost>
-      <CostBase>0</CostBase>
-    </Holding>
-    <Holding>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-        <Category>AustralianFixedInterest</Category>
-      </Stock>
-      <Units>154</Units>
-      <Value>7789.32</Value>
-      <Cost>7696.64999</Cost>
-      <CostBase>0</CostBase>
-    </Holding>
-    <Holding>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-        <Category>AustralianProperty</Category>
-      </Stock>
-      <Units>285</Units>
-      <Value>25498.95</Value>
-      <Cost>23054.790</Cost>
-      <CostBase>0</CostBase>
-    </Holding>
-    <Holding>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-        <Category>InternationalStocks</Category>
-      </Stock>
-      <Units>1068</Units>
-      <Value>59893.44</Value>
-      <Cost>61498.14004</Cost>
-      <CostBase>0</CostBase>
+      <Cost>28776.40</Cost>
+      <CostBase>28776.40</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -106,6 +70,42 @@
     </Holding>
     <Holding>
       <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <Units>154</Units>
+      <Value>7789.32</Value>
+      <Cost>7696.65</Cost>
+      <CostBase>7696.65</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <Units>285</Units>
+      <Value>25498.95</Value>
+      <Cost>23084.74</Cost>
+      <CostBase>23084.74</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <Units>1068</Units>
+      <Value>59893.44</Value>
+      <Cost>61561.01</Cost>
+      <CostBase>61561.01</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
@@ -113,8 +113,8 @@
       </Stock>
       <Units>225</Units>
       <Value>11700.0</Value>
-      <Cost>11900.25</Cost>
-      <CostBase>0</CostBase>
+      <Cost>11930.20</Cost>
+      <CostBase>11930.20</CostBase>
     </Holding>
   </Holdings>
 </PortfolioSummaryResponse>

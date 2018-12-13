@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using AutoMapper;
 
 using PortfolioManager.Common;
-using PortfolioManager.Domain.Stocks;
-using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mapping;
 
@@ -18,14 +16,28 @@ namespace PortfolioManager.Web.Controllers.v2
     [Route("api/v2/portfolio/{portfolioId:guid}")]
     public class PortfolioController : BasePortfolioController
     {
-        private IStockRepository _StockRepository;
         private IMapper _Mapper;
 
-        public PortfolioController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper)
+        public PortfolioController(IPortfolioCache portfolioCache, IMapper mapper)
             : base(portfolioCache)
         {
-            _StockRepository = stockRepository;
             _Mapper = mapper;
+        }
+
+        // GET: properties
+        [Route("properties")]
+        [HttpGet]
+        public ActionResult<PortfolioPropertiesResponse> GetProperties()
+        {
+            var response = new PortfolioPropertiesResponse();
+
+            foreach (var holding in _Portfolio.Holdings.All())
+                response.StocksHeld.Add(holding.Stock.Convert(DateTime.Now));
+
+            response.StartDate = _Portfolio.StartDate;
+            response.EndDate = _Portfolio.EndDate;
+
+            return response;
         }
 
         // GET: summary?date
@@ -46,10 +58,10 @@ namespace PortfolioManager.Web.Controllers.v2
                     Units = properties.Units,
                     Cost = properties.Amount,
                     CostBase = properties.CostBase,
-                    Value = properties.Units * _StockRepository.Get(holding.Stock.Id).GetPrice(requestedDate)
+                    Value = properties.Units * holding.Stock.GetPrice(requestedDate)
                 });
             }
-            response.CashBalance = _Portfolio.CashAccount[requestedDate];
+            response.CashBalance = _Portfolio.CashAccount.Balance(requestedDate);
 
             response.PortfolioValue = response.Holdings.Sum(x => x.Value) + response.CashBalance;
             response.PortfolioCost = response.Holdings.Sum(x => x.Cost) + response.CashBalance;
@@ -111,7 +123,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var response = new TransactionsResponse();
 
-            foreach (var transaction in _Portfolio.Transactions.All(dateRange))
+            foreach (var transaction in _Portfolio.Transactions.InDateRange(dateRange))
             {
                 var t = _Mapper.Map<TransactionsResponse.TransactionItem>(transaction, opts => opts.Items["date"] = dateRange.ToDate);
                 response.Transactions.Add(t);
@@ -169,10 +181,10 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var response = new CashAccountTransactionsResponse();
 
-            var transactions = _Portfolio.CashAccount.Transactions(dateRange);
+            var transactions = _Portfolio.CashAccount.Transactions.InDateRange(dateRange);
 
-            response.OpeningBalance = _Portfolio.CashAccount[dateRange.FromDate];
-            response.ClosingBalance = _Portfolio.CashAccount[dateRange.ToDate];
+            response.OpeningBalance = _Portfolio.CashAccount.Balance(dateRange.FromDate);
+            response.ClosingBalance = _Portfolio.CashAccount.Balance(dateRange.ToDate);
 
             response.Transactions.AddRange(_Mapper.Map<IEnumerable<CashAccountTransactionsResponse.TransactionItem>>(transactions));
 

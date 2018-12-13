@@ -13,7 +13,24 @@ namespace PortfolioManager.Domain.Transactions
 
         public override string Description
         {
-            get { return Comment; }
+            get
+            {
+                switch (CashTransactionType)
+                {
+                    case BankAccountTransactionType.Deposit:
+                        return String.Format("Deposit {0:c}", Amount);
+                    case BankAccountTransactionType.Fee:
+                        return String.Format("Fee {0:c}", Amount);
+                    case BankAccountTransactionType.Interest:
+                        return String.Format("Interest {0:c}", Amount);
+                    case BankAccountTransactionType.Transfer:
+                        return String.Format("Transfer {0:c}", Amount);
+                    case BankAccountTransactionType.Withdrawl:
+                        return String.Format("Withdrawl {0:c}", Amount);
+                }
+
+                return "";
+            }
         }
     }
 }

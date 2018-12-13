@@ -21,21 +21,19 @@ namespace PortfolioManager.Web.Controllers.v2
     {
         private IStockRepository _StockRepository;
         private IMapper _Mapper;
-        private TransactionHandler _TransactionHandler;
 
-        public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper, TransactionHandler transactionHandler)
+        public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper)
             : base(portfolioCache)
         {
             _StockRepository = stockRepository;
             _Mapper = mapper;
-            _TransactionHandler = transactionHandler;
         }
 
         // GET:  transactions/id
         [HttpGet("{id:guid}")]
         public ActionResult<Transaction> Get(Guid id)
         {
-            var transaction = _Portfolio.Transactions.Get(id);
+            var transaction = _Portfolio.Transactions[id];
             if (transaction == null)
                 return NotFound();
 
@@ -48,7 +46,7 @@ namespace PortfolioManager.Web.Controllers.v2
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            var transactions = _Portfolio.Transactions.All(dateRange);
+            var transactions = _Portfolio.Transactions.InDateRange(dateRange);
             if (stock != null)
                 transactions = transactions.Where(x => x.Stock.Id == stock);
 
@@ -67,7 +65,7 @@ namespace PortfolioManager.Web.Controllers.v2
             {
                 var domainTransaction = _Mapper.Map<Domain.Transactions.Transaction>(transaction);
 
-                _TransactionHandler.Handle(domainTransaction, _Portfolio);
+                _Portfolio.Transactions.Apply(domainTransaction);
             }
             catch (Exception e)
             {
@@ -88,7 +86,7 @@ namespace PortfolioManager.Web.Controllers.v2
             {
                 var domainTransactions = _Mapper.Map<List<Domain.Transactions.Transaction>>(transactions);
 
-                _TransactionHandler.Handle(domainTransactions, _Portfolio);
+                _Portfolio.Transactions.Apply(domainTransactions);
             }
             catch (Exception e)
             {

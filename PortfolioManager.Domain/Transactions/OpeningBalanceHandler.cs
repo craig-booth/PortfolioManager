@@ -8,19 +8,26 @@ namespace PortfolioManager.Domain.Transactions
 {
     public class OpeningBalanceHandler : ITransactionHandler
     {
-        public void ApplyTransaction(Transaction transaction, Portfolio portfolio)
+        private HoldingCollection _Holdings;
+        private CashAccount _CashAccount;
+
+        public OpeningBalanceHandler(HoldingCollection holdings, CashAccount cashAccount)
+        {
+            _Holdings = holdings;
+            _CashAccount = cashAccount;
+        }
+
+        public void ApplyTransaction(Transaction transaction)
         {
             var openingBalance = transaction as OpeningBalance;
 
-            var holding = portfolio.Holdings.Get(openingBalance.Stock.Id);
+            var holding = _Holdings.Get(openingBalance.Stock.Id);
             if (holding == null)
             {
-                holding = portfolio.Holdings.Add(openingBalance.Stock, openingBalance.TransactionDate);
+                holding = _Holdings.Add(openingBalance.Stock, openingBalance.TransactionDate);
             }
 
             holding.AddParcel(openingBalance.TransactionDate, openingBalance.AquisitionDate, openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase);
-
-            portfolio.Transactions.Add(openingBalance); 
         }
     }
 }

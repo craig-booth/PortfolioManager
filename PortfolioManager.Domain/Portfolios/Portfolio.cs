@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+using PortfolioManager.Common;
 using PortfolioManager.EventStore;
 using PortfolioManager.Domain.Transactions;
 
@@ -16,16 +17,34 @@ namespace PortfolioManager.Domain.Portfolios
         public int Version { get; private set; } = 0;
         protected IEventStream _EventStream;
 
-        public IHoldingCollection Holdings { get; } = new HoldingCollection();
-        public ITransactionCollection Transactions { get; } = new TransactionCollection();
+        private HoldingCollection _Holdings;
+        public IHoldingCollection Holdings => _Holdings;
 
-        public CashAccount CashAccount { get; } = new CashAccount(); 
+        private TransactionService _Transactions;
+        public ITransactionService Transactions => _Transactions;
+
+        private CashAccount _CashAccount;
+        public ICashAccount CashAccount => _CashAccount;
+
+        public DateTime StartDate
+        {
+            get { return DateUtils.Earlist(_Transactions.Earliest, _CashAccount.Transactions.Earliest); }
+        }
+
+        public DateTime EndDate
+        {
+            get { return DateUtils.NoEndDate; }
+        }
 
         public Portfolio(Guid id, string name, IEventStream eventStream)
         {
             Id = id;
             Name = name;
             _EventStream = eventStream;
+
+            _Holdings = new HoldingCollection();
+            _CashAccount = new CashAccount();
+            _Transactions = new TransactionService(_Holdings, _CashAccount);
         }
 
     }

@@ -48,10 +48,10 @@ namespace PortfolioManager.Web
             var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
             var config = new TransactionConfiguration();
-            config.RegisterTransaction<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>("aquisition", new AquisitionHandler());
-            config.RegisterTransaction<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>("cashtransaction", new CashTransactionHandler());
-            config.RegisterTransaction<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>("openingbalance", new OpeningBalanceHandler());
-            config.RegisterTransaction<Domain.Transactions.IncomeReceived, RestApi.Transactions.IncomeReceived>("incomereceived", new IncomeReceivedHandler());
+            config.RegisterTransaction<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>("aquisition");
+            config.RegisterTransaction<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>("cashtransaction");
+            config.RegisterTransaction<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>("openingbalance");
+            config.RegisterTransaction<Domain.Transactions.IncomeReceived, RestApi.Transactions.IncomeReceived>("incomereceived");
             services.AddSingleton<TransactionConfiguration>(config);
 
             services.AddSingleton<PortfolioManagerSettings>(settings);
@@ -70,14 +70,12 @@ namespace PortfolioManager.Web
             services.AddSingleton<TransactionJsonConverter, TransactionJsonConverter>();
             services.AddSingleton<IConfigureOptions<MvcJsonOptions>, JsonMvcConfiguration>();
 
-            services.AddSingleton<TransactionHandler, TransactionHandler>();
-
             services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
             services.AddScoped<IPortfolioPerformanceService, PortfolioPerformanceService>();
             services.AddScoped<ICapitalGainService, CapitalGainService>();
             services.AddScoped<IPortfolioValueService, PortfolioValueService>();
             services.AddScoped<ICorporateActionService, CorporateActionService>();
-            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<PortfolioManager.Service.Interface.ITransactionService, PortfolioManager.Service.Services.TransactionService>();
             services.AddScoped<IHoldingService, HoldingService>();
             services.AddScoped<ICashAccountService, CashAccountService>();
             services.AddScoped<IIncomeService, IncomeService>();

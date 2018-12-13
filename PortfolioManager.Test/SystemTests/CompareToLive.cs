@@ -63,6 +63,7 @@ namespace PortfolioManager.Test.SystemTests
                 ApiKey = Guid.Empty,
                 PortfolioDatabase = Path.Combine(_ActualResultsPath, "Portfolio.db"),
                 EventStore = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017",
+                //EventStore = "mongodb://192.168.99.100:27017",
                 Port = 0
             };
             ServiceCollection services = new ServiceCollection();
@@ -344,6 +345,21 @@ namespace PortfolioManager.Test.SystemTests
             SaveActualResult(response, fileName);
 
             Assert.That(response, Is.EquivalentTo(typeof(CorporateActionsResponce), expectedFile));
+        }
+
+        [Test]
+        public void ComparePortfolioProperties()
+        {
+            var fileName = "PortfolioProperties.xml";
+            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
+
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
+
+            var response = controller.GetProperties();
+            SaveActualResult(response.Value, fileName);
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.PortfolioPropertiesResponse), expectedFile));
         }
 
         [Test]

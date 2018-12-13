@@ -27,7 +27,8 @@ namespace PortfolioManager.Web.Mapping
                 
             CreateMap<Domain.Portfolios.Holding, RestApi.Portfolios.Holding>();
 
-            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>();
+            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>()
+                .ForMember(x => x.Date, x => x.MapFrom(y => y.TransactionDate));
         }
 
     }

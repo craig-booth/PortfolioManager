@@ -11,7 +11,6 @@ namespace PortfolioManager.Domain.Portfolios
     public interface IHoldingCollection
     {
         Holding Get(Guid stockId);
-        Holding Add(Stock stock, DateTime fromDate);
 
         IEnumerable<Holding> All();
         IEnumerable<Holding> All(DateTime date);

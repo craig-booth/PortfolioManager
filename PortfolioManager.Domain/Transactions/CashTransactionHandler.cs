@@ -2,19 +2,39 @@
 using System.Collections.Generic;
 using System.Text;
 
+using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 
 namespace PortfolioManager.Domain.Transactions
 {
     public class CashTransactionHandler : ITransactionHandler
     {
-        public void ApplyTransaction(Transaction transaction, Portfolio portfolio)
+        private CashAccount _CashAccount;
+
+        public CashTransactionHandler(CashAccount cashAccount)
+        {
+            _CashAccount = cashAccount;
+        }
+
+        public void ApplyTransaction(Transaction transaction)
         {
             var cashTransaction = transaction as CashTransaction;
 
-            portfolio.CashAccount.AddTransaction(cashTransaction.TransactionDate, cashTransaction.Amount, cashTransaction.Description, cashTransaction.CashTransactionType);
+            var description = "";
+            if (cashTransaction.Comment != "")
+                description = cashTransaction.Comment;
+            else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit)
+                description = "Deposit";
+            else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Fee)
+                description = "Fee";
+            else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Interest)
+                description = "Interest";
+            else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Transfer)
+                description = "Transfer";
+            else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl)
+                description = "Withdrawl";
 
-            portfolio.Transactions.Add(cashTransaction);
+            _CashAccount.AddTransaction(cashTransaction.TransactionDate, cashTransaction.Amount, description, cashTransaction.CashTransactionType);
         }
     }
 }

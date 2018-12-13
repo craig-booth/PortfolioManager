@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PortfolioSummaryResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PortfolioValue>134525.89</PortfolioValue>
-  <PortfolioCost>132965.50</PortfolioCost>
+  <PortfolioCost>133181.50</PortfolioCost>
   <Return1Year xsi:nil="true" />
   <Return3Year xsi:nil="true" />
   <Return5Year xsi:nil="true" />
@@ -18,7 +18,7 @@
       <Units>7500</Units>
       <Value>7575.00</Value>
       <Cost>7575.00</Cost>
-      <CostBase>0</CostBase>
+      <CostBase>7575.00</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -29,8 +29,8 @@
       </Stock>
       <Units>4453</Units>
       <Value>32150.66</Value>
-      <Cost>32061.6</Cost>
-      <CostBase>0</CostBase>
+      <Cost>32115.60</Cost>
+      <CostBase>32115.60</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -41,8 +41,8 @@
       </Stock>
       <Units>60</Units>
       <Value>6120.0</Value>
-      <Cost>5412.0</Cost>
-      <CostBase>0</CostBase>
+      <Cost>5466.00</Cost>
+      <CostBase>5466.00</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -53,8 +53,8 @@
       </Stock>
       <Units>280</Units>
       <Value>28924.0</Value>
-      <Cost>28722.40</Cost>
-      <CostBase>0</CostBase>
+      <Cost>28776.40</Cost>
+      <CostBase>28776.40</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -65,8 +65,8 @@
       </Stock>
       <Units>16813</Units>
       <Value>36652.34</Value>
-      <Cost>36484.21</Cost>
-      <CostBase>0</CostBase>
+      <Cost>36538.21</Cost>
+      <CostBase>36538.21</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -78,7 +78,7 @@
       <Units>150</Units>
       <Value>7545.0</Value>
       <Cost>7497.00</Cost>
-      <CostBase>0</CostBase>
+      <CostBase>7497.00</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -90,7 +90,7 @@
       <Units>100</Units>
       <Value>7804.00</Value>
       <Cost>7527.00</Cost>
-      <CostBase>0</CostBase>
+      <CostBase>7527.00</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -102,7 +102,7 @@
       <Units>140</Units>
       <Value>7646.80</Value>
       <Cost>7578.20</Cost>
-      <CostBase>0</CostBase>
+      <CostBase>7578.20</CostBase>
     </Holding>
   </Holdings>
 </PortfolioSummaryResponse>

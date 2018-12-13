@@ -1,44 +1,81 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain.Transactions;
 
 namespace PortfolioManager.Domain.Portfolios
 {
-    public class CashAccount
+    public interface ICashAccount
     {
-        private Transaction _LastTransaction;
+        ITransactionList<CashAccount.Transaction> Transactions { get; }
 
-        private List<Transaction> _Transactions = new List<Transaction>();
+        decimal Balance();
+        decimal Balance(DateTime date);
 
-        public IEnumerable<Transaction> Transactions(DateRange dateRange)
+        IEnumerable<CashAccount.EffectiveBalance> EffectiveBalances(DateRange dateRange);
+    }
+
+
+    public class CashAccount : ICashAccount
+    {
+        private TransactionList<Transaction> _Transactions = new TransactionList<Transaction>();
+        public ITransactionList<Transaction> Transactions
         {
-            return _Transactions.Where(x => dateRange.Contains(x.Date));
+            get { return _Transactions; }
         }
 
-        public decimal Balance
+        public decimal Balance()
         {
-            get
+            if (_Transactions.Count > 0)
+                return _Transactions[_Transactions.Count - 1].Balance;
+            else
+                return 0.00m;
+        }
+
+        public decimal Balance(DateTime date)
+        {
             {
-                if (_LastTransaction != null)
-                    return _LastTransaction.Balance;
-                else
+                if ((_Transactions.Count == 0) || (date < _Transactions.Earliest))
                     return 0.00m;
+
+                var index = _Transactions.IndexOf(date, TransationListPosition.Last);
+                if (index < 0)
+                    index = ~index - 1;
+
+                return _Transactions[index].Balance;
             }
+
         }
 
-        public decimal this[DateTime date]
+        public IEnumerable<EffectiveBalance> EffectiveBalances(DateRange dateRange)
         {
-            get
+            var fromDate = dateRange.FromDate;
+            var toDate = DateUtils.NoEndDate;
+            var balance = 0.00m;
+
+            foreach (var transaction in _Transactions.InDateRange(dateRange))
             {
-                var transaction = _Transactions.LastOrDefault(x => x.Date <= date);
-                if (transaction != null)
-                    return transaction.Balance;
+                if (fromDate == transaction.TransactionDate)
+                {
+                    balance = transaction.Balance;
+                }
                 else
-                    return 0.00m;
+                {
+                    toDate = transaction.TransactionDate.AddDays(-1);
+
+                    yield return new EffectiveBalance(fromDate, toDate, balance);
+
+                    fromDate = transaction.TransactionDate;
+                    toDate = transaction.TransactionDate;
+                    balance = transaction.Balance;
+                }
             }
-        }
+
+            yield return new EffectiveBalance(fromDate, dateRange.ToDate, balance);
+        } 
 
         public void Deposit(DateTime date, decimal amount, string description)
         {
@@ -52,7 +89,7 @@ namespace PortfolioManager.Domain.Portfolios
 
         public void Transfer(DateTime date, decimal amount, string description)
         {
-            AddTransaction(date, -amount, description, BankAccountTransactionType.Transfer);
+            AddTransaction(date, amount, description, BankAccountTransactionType.Transfer);
         }
 
         public void FeeDeducted(DateTime date, decimal amount, string description)
@@ -61,33 +98,42 @@ namespace PortfolioManager.Domain.Portfolios
         }
 
         public void InterestPaid(DateTime date, decimal amount, string description)
-        { 
+        {
             AddTransaction(date, amount, description, BankAccountTransactionType.Interest);
-        }
-
+        } 
+        
         public void AddTransaction(DateTime date, decimal amount, string description, BankAccountTransactionType type)
         {
-            if ((_LastTransaction != null) && (_LastTransaction.Date > date))
-                throw new Exception("Transactions already after this date");
-
-            if ((type == BankAccountTransactionType.Interest) && (description == ""))
-                description = "Interest";
-
-            _LastTransaction = new Transaction(date, description, amount, type, Balance + amount);
-            _Transactions.Add(_LastTransaction);
-        }
-
-        public class Transaction
-        {
-            public readonly DateTime Date;
-            public readonly string Description;
-            public readonly decimal Amount;
-            public readonly BankAccountTransactionType Type;
-            public readonly decimal Balance;
-
-            public Transaction(DateTime date, string description, decimal amount, BankAccountTransactionType type, decimal balance)
+            if ((_Transactions.Count == 0) || (date >= _Transactions.Latest))
             {
-                Date = date;
+                var transaction = new Transaction(Guid.NewGuid(), date, description, amount, type, Balance() + amount);
+                _Transactions.Add(transaction);
+            }
+            else
+            {
+                var transaction = new Transaction(Guid.NewGuid(), date, description, amount, type, Balance(date) + amount);
+                _Transactions.Add(transaction);
+
+                // Update balance on subsequent transactions
+                var index = _Transactions.IndexOf(date, TransationListPosition.Last);
+                for (var i = index + 1; i < _Transactions.Count; i++)
+                    _Transactions[i].Balance += amount;
+            }
+        } 
+
+        public class Transaction : ITransaction
+        {
+            public Guid Id { get; }
+            public DateTime TransactionDate { get; }
+            public string Description { get; }
+            public decimal Amount { get; }
+            public BankAccountTransactionType Type { get; }
+            public decimal Balance { get; internal set; }
+
+            public Transaction(Guid id, DateTime date, string description, decimal amount, BankAccountTransactionType type, decimal balance)
+            {
+                Id = id;
+                TransactionDate = date;
                 Description = description;
                 Amount = amount;
                 Type = type;
@@ -95,5 +141,17 @@ namespace PortfolioManager.Domain.Portfolios
             }
         }
 
+
+        public class EffectiveBalance
+        {
+            public DateRange EffectivePeriod { get; set; }
+            public decimal Balance { get; set; }
+
+            public EffectiveBalance(DateTime fromDate, DateTime toDate, decimal balance)
+            {
+                EffectivePeriod = new DateRange(fromDate, toDate);
+                Balance = balance;
+            }
+        }
     }
 }

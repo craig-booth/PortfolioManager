@@ -16,11 +16,11 @@ namespace PortfolioManager.Web
             get { return _Items; }
         }
 
-        public void RegisterTransaction<D, R>(string name, ITransactionHandler handler)
+        public void RegisterTransaction<D, R>(string name)
             where D : Domain.Transactions.Transaction
             where R : RestApi.Transactions.Transaction
         {
-            _Items.Add(new TransactionConfigurationItem(name, typeof(D), typeof(R), handler));
+            _Items.Add(new TransactionConfigurationItem(name, typeof(D), typeof(R)));
         }
 
         public class TransactionConfigurationItem
@@ -28,14 +28,12 @@ namespace PortfolioManager.Web
             public string Name;
             public Type DomainTransactionType;
             public Type RestApiTransactionType;
-            public ITransactionHandler Handler;
 
-            public TransactionConfigurationItem(string name, Type domainType, Type restApiType, ITransactionHandler handler)
+            public TransactionConfigurationItem(string name, Type domainType, Type restApiType)
             {
                 Name = name;
                 DomainTransactionType = domainType;
                 RestApiTransactionType = restApiType;
-                Handler = handler;
             }
         }
     }
