@@ -665,7 +665,7 @@
   {
     "type": "disposal",
     "units": 7000,
-    "averagePrice": 7000.0,
+    "averagePrice": 2.25,
     "transactionCosts": 29.95000,
     "cgtMethod": "minimize",
     "createCashTransaction": true,

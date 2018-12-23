@@ -50,20 +50,8 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var response = new PortfolioSummaryResponse();
 
-            foreach (var holding in _Portfolio.Holdings.All(requestedDate))
-            {
-                var properties = holding.Properties[requestedDate];
-                response.Holdings.Add(new RestApi.Portfolios.Holding()
-                {
-                    Stock = holding.Stock.Convert(requestedDate),
-                    Units = properties.Units,
-                    Cost = properties.Amount,
-                    CostBase = properties.CostBase,
-                    Value = holding.Value(requestedDate)
-                });
-            }
+            response.Holdings.AddRange(_Portfolio.Holdings.All(requestedDate).Select(x => x.Convert(requestedDate)));
             response.CashBalance = _Portfolio.CashAccount.Balance(requestedDate);
-
             response.PortfolioValue = response.Holdings.Sum(x => x.Value) + response.CashBalance;
             response.PortfolioCost = response.Holdings.Sum(x => x.Cost) + response.CashBalance;
 

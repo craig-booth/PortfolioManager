@@ -47,13 +47,6 @@ namespace PortfolioManager.Web
             // Ensure that PortfolioManager.Domain assembly is loaded
             var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
-            var config = new TransactionConfiguration();
-            config.RegisterTransaction<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>("aquisition");
-            config.RegisterTransaction<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>("cashtransaction");
-            config.RegisterTransaction<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>("openingbalance");
-            config.RegisterTransaction<Domain.Transactions.IncomeReceived, RestApi.Transactions.IncomeReceived>("incomereceived");
-            services.AddSingleton<TransactionConfiguration>(config);
-
             services.AddSingleton<PortfolioManagerSettings>(settings);
             services.AddSingleton<IPortfolioDatabase>(x => new SQLitePortfolioDatabase(settings.PortfolioDatabase));
             services.AddSingleton<IEventStore>(CreateEventStore);

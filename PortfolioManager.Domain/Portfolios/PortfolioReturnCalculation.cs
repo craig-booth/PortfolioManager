@@ -26,7 +26,7 @@ namespace PortfolioManager.Domain.Portfolios
             cashFlows.Add(dateRange.FromDate, -initialValue);
 
             // generate list of cashFlows
-            var transactionRange = new DateRange(dateRange.FromDate.AddDays(1), dateRange.ToDate.AddDays(-1));
+            var transactionRange = new DateRange(dateRange.FromDate.AddDays(1), dateRange.ToDate);
             var transactions = portfolio.Transactions.InDateRange(transactionRange);
             foreach (var transaction in transactions)
             {

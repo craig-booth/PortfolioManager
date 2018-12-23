@@ -28,6 +28,7 @@ namespace PortfolioManager.Domain.Transactions
         public TransactionService(HoldingCollection holdings, CashAccount cashAccount)
         {
             _Handlers.Add(typeof(Aquisition), new AquisitionHandler(holdings, cashAccount));
+            _Handlers.Add(typeof(Disposal), new DisposalHandler(holdings, cashAccount));
             _Handlers.Add(typeof(CashTransaction), new CashTransactionHandler(cashAccount));
             _Handlers.Add(typeof(OpeningBalance), new OpeningBalanceHandler(holdings, cashAccount));
             _Handlers.Add(typeof(IncomeReceived), new IncomeReceivedHandler(holdings, cashAccount));

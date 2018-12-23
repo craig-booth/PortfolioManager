@@ -123,18 +123,6 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-        <Category>AustralianStocks</Category>
-      </Stock>
-      <TransactionDate>2016-03-04T00:00:00</TransactionDate>
-      <RecordDate>2016-02-15T00:00:00</RecordDate>
-      <Description>Income received $667.95</Description>
-      <Comment>Dividend $0.15</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
         <Name />
@@ -189,9 +177,33 @@
         <Category>AustralianStocks</Category>
       </Stock>
       <TransactionDate>2016-03-04T00:00:00</TransactionDate>
+      <RecordDate>2016-02-15T00:00:00</RecordDate>
+      <Description>Income received $667.95</Description>
+      <Comment>Dividend $0.15</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <TransactionDate>2016-03-04T00:00:00</TransactionDate>
       <RecordDate>2016-03-04T00:00:00</RecordDate>
       <Description>Opening balance of 93 shares</Description>
       <Comment>DRP $7.15</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+        <Category>Cash</Category>
+      </Stock>
+      <TransactionDate>2016-03-21T00:00:00</TransactionDate>
+      <RecordDate>2016-03-21T00:00:00</RecordDate>
+      <Description>Deposit $2,000.00</Description>
+      <Comment>Regular Deposit</Comment>
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -212,10 +224,10 @@
         <Name />
         <Category>Cash</Category>
       </Stock>
-      <TransactionDate>2016-03-21T00:00:00</TransactionDate>
-      <RecordDate>2016-03-21T00:00:00</RecordDate>
-      <Description>Deposit $2,000.00</Description>
-      <Comment>Regular Deposit</Comment>
+      <TransactionDate>2016-04-01T00:00:00</TransactionDate>
+      <RecordDate>2016-04-01T00:00:00</RecordDate>
+      <Description>Interest $0.01</Description>
+      <Comment />
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -228,18 +240,6 @@
       <RecordDate>2016-03-24T00:00:00</RecordDate>
       <Description>Income received $228.12</Description>
       <Comment>Dividend $0.8147</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
-        <Name />
-        <Category>Cash</Category>
-      </Stock>
-      <TransactionDate>2016-04-01T00:00:00</TransactionDate>
-      <RecordDate>2016-04-01T00:00:00</RecordDate>
-      <Description>Interest $0.01</Description>
-      <Comment />
     </TransactionItem>
     <TransactionItem>
       <Stock>

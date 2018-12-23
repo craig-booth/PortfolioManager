@@ -123,18 +123,6 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-        <Category>AustralianStocks</Category>
-      </Stock>
-      <TransactionDate>2016-03-04T00:00:00</TransactionDate>
-      <RecordDate>2016-02-15T00:00:00</RecordDate>
-      <Description>Income received $667.95</Description>
-      <Comment>Dividend $0.15</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
         <Name />
@@ -189,9 +177,33 @@
         <Category>AustralianStocks</Category>
       </Stock>
       <TransactionDate>2016-03-04T00:00:00</TransactionDate>
+      <RecordDate>2016-02-15T00:00:00</RecordDate>
+      <Description>Income received $667.95</Description>
+      <Comment>Dividend $0.15</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <TransactionDate>2016-03-04T00:00:00</TransactionDate>
       <RecordDate>2016-03-04T00:00:00</RecordDate>
       <Description>Opening balance of 93 shares</Description>
       <Comment>DRP $7.15</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>00000000-0000-0000-0000-000000000000</Id>
+        <ASXCode />
+        <Name />
+        <Category>Cash</Category>
+      </Stock>
+      <TransactionDate>2016-03-21T00:00:00</TransactionDate>
+      <RecordDate>2016-03-21T00:00:00</RecordDate>
+      <Description>Deposit $2,000.00</Description>
+      <Comment>Regular Deposit</Comment>
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -212,10 +224,10 @@
         <Name />
         <Category>Cash</Category>
       </Stock>
-      <TransactionDate>2016-03-21T00:00:00</TransactionDate>
-      <RecordDate>2016-03-21T00:00:00</RecordDate>
-      <Description>Deposit $2,000.00</Description>
-      <Comment>Regular Deposit</Comment>
+      <TransactionDate>2016-04-01T00:00:00</TransactionDate>
+      <RecordDate>2016-04-01T00:00:00</RecordDate>
+      <Description>Interest $0.01</Description>
+      <Comment />
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -228,18 +240,6 @@
       <RecordDate>2016-03-24T00:00:00</RecordDate>
       <Description>Income received $228.12</Description>
       <Comment>Dividend $0.8147</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
-        <Name />
-        <Category>Cash</Category>
-      </Stock>
-      <TransactionDate>2016-04-01T00:00:00</TransactionDate>
-      <RecordDate>2016-04-01T00:00:00</RecordDate>
-      <Description>Interest $0.01</Description>
-      <Comment />
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -279,18 +279,6 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
-        <Name>Global Value Fund</Name>
-        <Category>InternationalStocks</Category>
-      </Stock>
-      <TransactionDate>2016-05-06T00:00:00</TransactionDate>
-      <RecordDate>2016-04-08T00:00:00</RecordDate>
-      <Description>Income received $225.00</Description>
-      <Comment>Dividend $0.03</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
@@ -315,18 +303,6 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
-        <Name>WAM Capital Limited</Name>
-        <Category>AustralianStocks</Category>
-      </Stock>
-      <TransactionDate>2016-05-13T00:00:00</TransactionDate>
-      <RecordDate>2016-04-28T00:00:00</RecordDate>
-      <Description>Income received $1,218.94</Description>
-      <Comment>Dividend $0.0725</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
         <Name />
@@ -345,9 +321,33 @@
         <Category>InternationalStocks</Category>
       </Stock>
       <TransactionDate>2016-05-06T00:00:00</TransactionDate>
+      <RecordDate>2016-04-08T00:00:00</RecordDate>
+      <Description>Income received $225.00</Description>
+      <Comment>Dividend $0.03</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <ASXCode>GVF</ASXCode>
+        <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <TransactionDate>2016-05-06T00:00:00</TransactionDate>
       <RecordDate>2016-05-06T00:00:00</RecordDate>
       <Description>Opening balance of 222 shares</Description>
       <Comment>DRP $1.0122</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <ASXCode>WAM</ASXCode>
+        <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <TransactionDate>2016-05-13T00:00:00</TransactionDate>
+      <RecordDate>2016-04-28T00:00:00</RecordDate>
+      <Description>Income received $1,218.94</Description>
+      <Comment>Dividend $0.0725</Comment>
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -687,6 +687,18 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <ASXCode>WAM</ASXCode>
+        <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <TransactionDate>2016-07-27T00:00:00</TransactionDate>
+      <RecordDate>2016-07-27T00:00:00</RecordDate>
+      <Description>Disposed of 7,000 shares @ $2.25</Description>
+      <Comment />
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
         <ASXCode />
         <Name />
@@ -723,18 +735,6 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-        <Category>AustralianStocks</Category>
-      </Stock>
-      <TransactionDate>2016-09-09T00:00:00</TransactionDate>
-      <RecordDate>2016-08-24T00:00:00</RecordDate>
-      <Description>Income received $1,030.13</Description>
-      <Comment>Dividend $0.155</Comment>
-    </TransactionItem>
-    <TransactionItem>
-      <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
@@ -759,15 +759,15 @@
     </TransactionItem>
     <TransactionItem>
       <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
-        <Name>Cochlear Limited</Name>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
-      <TransactionDate>2016-09-29T00:00:00</TransactionDate>
-      <RecordDate>2016-09-08T00:00:00</RecordDate>
-      <Description>Income received $72.00</Description>
-      <Comment>Dividend $1.20</Comment>
+      <TransactionDate>2016-09-09T00:00:00</TransactionDate>
+      <RecordDate>2016-08-24T00:00:00</RecordDate>
+      <Description>Income received $1,030.13</Description>
+      <Comment>Dividend $0.155</Comment>
     </TransactionItem>
     <TransactionItem>
       <Stock>
@@ -792,6 +792,18 @@
       <RecordDate>2016-09-20T00:00:00</RecordDate>
       <Description>Deposit $2,000.00</Description>
       <Comment>Regular Deposit</Comment>
+    </TransactionItem>
+    <TransactionItem>
+      <Stock>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <TransactionDate>2016-09-29T00:00:00</TransactionDate>
+      <RecordDate>2016-09-08T00:00:00</RecordDate>
+      <Description>Income received $72.00</Description>
+      <Comment>Dividend $1.20</Comment>
     </TransactionItem>
     <TransactionItem>
       <Stock>

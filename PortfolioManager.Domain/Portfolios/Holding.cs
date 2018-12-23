@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
+using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Domain.Portfolios
@@ -22,6 +23,11 @@ namespace PortfolioManager.Domain.Portfolios
             Properties.Change(fromDate, new HoldingProperties(0, 0.00m, 0.00m));
         }
 
+        public IEnumerable<Parcel> Parcels(DateTime date)
+        {
+            return _Parcels.Values.Where(x => x.IsEffectiveAt(date));
+        }
+
         public void AddParcel(DateTime date, DateTime aquisitionDate, int units, decimal amount, decimal costBase)
         {
             var parcel = new Parcel(Guid.NewGuid(), date, aquisitionDate, new ParcelProperties(units, amount, costBase));
@@ -31,6 +37,47 @@ namespace PortfolioManager.Domain.Portfolios
             var exisingProperties = Properties[date];
             var newProperties = new HoldingProperties(exisingProperties.Units + units, exisingProperties.Amount + amount, exisingProperties.CostBase + costBase);
             Properties.Change(date, newProperties);
+        }
+
+        public void DisposeOfParcel(Guid id, DateTime date, int units, decimal amount)
+        {
+            var parcel = _Parcels[id];
+            var parcelProperties = parcel.Properties[date];
+
+            if (units > parcelProperties.Units)
+                throw new Exception("Not enough shares in parcel");
+
+            var costBase = 0.00m;
+            if (units == parcelProperties.Units)
+            {
+                costBase = parcelProperties.CostBase;
+                parcel.End(date);
+            }
+            else
+            {
+                var costBases = new ApportionedCurrencyValue[2]
+                {
+                        new ApportionedCurrencyValue() { Units = units },
+                        new ApportionedCurrencyValue() { Units = parcelProperties.Units - units}
+                 };
+                MathUtils.ApportionAmount(parcelProperties.CostBase, costBases);
+
+                costBase = costBases[0].Amount;
+
+                var newParcelProperties = new ParcelProperties(parcelProperties.Units - units, parcelProperties.Amount - amount, parcelProperties.CostBase - costBase);
+                parcel.Properties.Change(date, newParcelProperties);
+            }
+
+            var existingProperties = Properties[date];
+            if (units == existingProperties.Units)
+            {
+                End(date);
+            }
+            else
+            {                
+                var newProperties = new HoldingProperties(existingProperties.Units - units, existingProperties.Amount - amount, existingProperties.CostBase - costBase);
+                Properties.Change(date, newProperties);
+            }
         }
 
         public decimal Value(DateTime date)

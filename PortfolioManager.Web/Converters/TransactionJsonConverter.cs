@@ -14,10 +14,13 @@ namespace PortfolioManager.Web.Converters
     {
         private Dictionary<string, Type> _TransactionTypes = new Dictionary<string, Type>();
 
-        public TransactionJsonConverter(TransactionConfiguration configuration)
+        public TransactionJsonConverter()
         {
-            foreach (var item in configuration.Items)
-                _TransactionTypes.Add(item.Name, item.RestApiTransactionType);
+            _TransactionTypes.Add("aquisition", typeof(Aquisition));
+            _TransactionTypes.Add("disposal", typeof(Disposal));
+            _TransactionTypes.Add("cashtransaction", typeof(CashTransaction));
+            _TransactionTypes.Add("openingbalance", typeof(OpeningBalance));
+            _TransactionTypes.Add("incomereceived", typeof(IncomeReceived));
         }
 
         public override bool CanConvert(Type objectType)

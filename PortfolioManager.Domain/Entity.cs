@@ -27,7 +27,7 @@ namespace PortfolioManager.Domain
             return EffectivePeriod.Overlaps(dateRange);
         }
 
-        protected virtual void End(DateTime date)
+        public virtual void End(DateTime date)
         {
             if (!EffectivePeriod.ToDate.Equals(DateUtils.NoEndDate))
                 throw new Exception("Entity is not current");
@@ -55,9 +55,9 @@ namespace PortfolioManager.Domain
 
         public T ClosestTo(DateTime date)
         {
-           if (date <= _Properties.First().EffectivePeriod.ToDate)
+           if (date >= _Properties.First().EffectivePeriod.FromDate)
                 return _Properties.First().Properties;
-           else if (date >= _Properties.Last().EffectivePeriod.FromDate)
+           else if (date <= _Properties.Last().EffectivePeriod.ToDate)
                 return _Properties.Last().Properties;
            else
                 return _Properties.First(x => x.IsEffectiveAt(date)).Properties;
