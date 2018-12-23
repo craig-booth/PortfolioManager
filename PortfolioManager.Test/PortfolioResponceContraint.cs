@@ -50,7 +50,7 @@ namespace PortfolioManager.Test
 
             var actualResponce = actual as ServiceResponce;
 
-            actualResponce.ShouldBeEquivalentTo(Expected, options => options
+            actualResponce.Should().BeEquivalentTo(Expected, options => options
                        .RespectingRuntimeTypes()
                        .Excluding(x => x.ResponceTime)
                        );

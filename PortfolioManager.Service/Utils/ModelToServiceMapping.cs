@@ -19,7 +19,7 @@ namespace PortfolioManager.Service.Utils
             var stockResolver = new StockResolver(stockDatabase);
 
             CreateMap<Transaction, TransactionItem>()
-                .ForMember(dest => dest.Stock, opts => opts.ResolveUsing(stockResolver))
+                .ForMember(dest => dest.Stock, opts => opts.MapFrom(stockResolver))
                 .Include<Aquisition, AquisitionTransactionItem>()
                 .Include<CashTransaction, CashTransactionItem>()
                 .Include<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>()
