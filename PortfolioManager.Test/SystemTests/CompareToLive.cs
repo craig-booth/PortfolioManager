@@ -302,7 +302,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
             SetControllerContext(controller);
 
-            var response = controller.GetValue(fromDate, toDate);
+            var response = controller.GetValue(fromDate, toDate, RestApi.Portfolios.ValueFrequency.Daily);
             SaveActualResult(response.Value, fileName);
 
             Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.PortfolioValueResponse), expectedFile));

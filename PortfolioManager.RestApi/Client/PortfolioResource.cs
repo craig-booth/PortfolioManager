@@ -9,8 +9,6 @@ using PortfolioManager.RestApi.Portfolios;
 namespace PortfolioManager.RestApi.Client
 {
 
-    public enum ValueFrequency { Daily, Weekly, Monthly };
-
     public class PortfolioResource : RestResource
     {
         public Guid PortfolioId { get; }
@@ -36,11 +34,11 @@ namespace PortfolioManager.RestApi.Client
             var url = "/api/v2/portfolio/" + PortfolioId + "/value?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString();
 
             if (frequency == ValueFrequency.Weekly)
-                url += "&frequency=week";
+                url += "&frequency=weekly";
             else if (frequency == ValueFrequency.Monthly)
-                url += "&frequency=month";
+                url += "&frequency=monthly";
             else
-                url += "&frequency=day";
+                url += "&frequency=daily";
 
             return await GetAsync<PortfolioValueResponse>(url);
         }

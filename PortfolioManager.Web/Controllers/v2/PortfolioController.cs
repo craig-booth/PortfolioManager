@@ -9,6 +9,7 @@ using AutoMapper;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mapping;
 
@@ -18,11 +19,13 @@ namespace PortfolioManager.Web.Controllers.v2
     public class PortfolioController : BasePortfolioController
     {
         private IMapper _Mapper;
+        private ITradingCalander _TradingCalander;
 
-        public PortfolioController(IPortfolioCache portfolioCache, IMapper mapper)
+        public PortfolioController(IPortfolioCache portfolioCache, ITradingCalander tradingCalander,  IMapper mapper)
             : base(portfolioCache)
         {
             _Mapper = mapper;
+            _TradingCalander = tradingCalander;
         }
 
         // GET: properties
@@ -111,11 +114,48 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: value?fromDate&toDate
         [Route("value")]
         [HttpGet]
-        public ActionResult<PortfolioValueResponse> GetValue(DateTime? fromDate, DateTime? toDate)
+        public ActionResult<PortfolioValueResponse> GetValue(DateTime? fromDate, DateTime? toDate, ValueFrequency? frequency)
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
             var response = new PortfolioValueResponse();
+
+            IEnumerable<DateTime> dates = null;
+            if ((frequency == null) || (frequency == ValueFrequency.Daily))
+                dates = _TradingCalander.TradingDays(dateRange);
+            else if (frequency == ValueFrequency.Weekly)
+                dates = DateUtils.WeekEndingDays(dateRange.FromDate, dateRange.ToDate);
+            else if (frequency == ValueFrequency.Monthly)
+                dates = DateUtils.MonthEndingDays(dateRange.FromDate, dateRange.ToDate);
+
+            var holdings = _Portfolio.Holdings.All(dateRange);
+            var closingBalances = _Portfolio.CashAccount.EffectiveBalances(dateRange);
+            var closingBalanceEnumerator = closingBalances.GetEnumerator();
+            closingBalanceEnumerator.MoveNext();
+
+            foreach (var date in dates)
+            {
+                var amount = 0.00m;
+
+                // Add holding values
+                foreach (var holding in holdings)
+                    amount += holding.Value(date);
+
+                // Add cash account balances
+                if (date > closingBalanceEnumerator.Current.EffectivePeriod.ToDate)
+                    closingBalanceEnumerator.MoveNext();
+                amount += closingBalanceEnumerator.Current.Balance;
+
+                var value = new PortfolioValueResponse.ValueItem()
+                {
+                    Date = date,
+                    Amount = amount
+                };
+
+                response.Values.Add(value);
+            }
+
+            
 
             return response;
         }

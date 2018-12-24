@@ -4,20 +4,16 @@ using System.Text;
 
 namespace PortfolioManager.RestApi.Portfolios
 {
+    public enum ValueFrequency { Daily, Weekly, Monthly };
+
     public class PortfolioValueResponse
     {
-        public struct ValueItem
+        public List<ValueItem> Values { get; } = new List<ValueItem>();
+
+        public class ValueItem
         {
-            public DateTime Date;
-            public decimal Amount;
-
-            public ValueItem(DateTime date, decimal amount)
-            {
-                Date = date;
-                Amount = amount;
-            }
-        }
-
-        public ValueItem[] Values { get; set; }
+            public DateTime Date { get; set; }
+            public decimal Amount { get; set; }
+        }     
     }
 }

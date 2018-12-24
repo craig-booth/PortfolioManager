@@ -99,7 +99,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public IEnumerable<DateTime> TradingDays(DateRange range)
         {
-            return DateUtils.DateRange(range.FromDate, range.ToDate).Where(x => x.WeekDay() && IsTradingDay(x));
+            return DateUtils.Days(range.FromDate, range.ToDate).Where(x => x.WeekDay() && IsTradingDay(x));
         }
     }
 }

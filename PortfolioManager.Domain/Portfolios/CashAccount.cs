@@ -54,7 +54,7 @@ namespace PortfolioManager.Domain.Portfolios
         {
             var fromDate = dateRange.FromDate;
             var toDate = DateUtils.NoEndDate;
-            var balance = 0.00m;
+            var balance = Balance(fromDate);
 
             foreach (var transaction in _Transactions.InDateRange(dateRange))
             {
