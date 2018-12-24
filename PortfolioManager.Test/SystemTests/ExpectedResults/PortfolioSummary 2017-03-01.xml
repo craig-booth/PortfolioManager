@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PortfolioSummaryResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PortfolioValue>270283.86</PortfolioValue>
-  <PortfolioCost>253092.44047</PortfolioCost>
-  <Return1Year>0.11799</Return1Year>
+  <PortfolioCost>252970.9800</PortfolioCost>
+  <Return1Year>0.11424</Return1Year>
   <Return3Year xsi:nil="true" />
   <Return5Year xsi:nil="true" />
   <ReturnAll>0.1208</ReturnAll>
@@ -17,8 +17,8 @@
       </Stock>
       <Units>13543</Units>
       <Value>15439.02</Value>
-      <Cost>14023.41144</Cost>
-      <CostBase>0</CostBase>
+      <Cost>14043.36</Cost>
+      <CostBase>14043.36</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -29,8 +29,8 @@
       </Stock>
       <Units>6787</Units>
       <Value>51106.11</Value>
-      <Cost>49019.15067</Cost>
-      <CostBase>0</CostBase>
+      <Cost>49103.10</Cost>
+      <CostBase>49103.10</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -41,8 +41,8 @@
       </Stock>
       <Units>60</Units>
       <Value>7874.40</Value>
-      <Cost>5412.0</Cost>
-      <CostBase>0</CostBase>
+      <Cost>5466.00</Cost>
+      <CostBase>5466.00</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -53,44 +53,8 @@
       </Stock>
       <Units>280</Units>
       <Value>33073.60</Value>
-      <Cost>28722.40</Cost>
-      <CostBase>0</CostBase>
-    </Holding>
-    <Holding>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-        <Category>AustralianFixedInterest</Category>
-      </Stock>
-      <Units>242</Units>
-      <Value>11739.42</Value>
-      <Cost>12044.54999</Cost>
-      <CostBase>0</CostBase>
-    </Holding>
-    <Holding>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-        <Category>AustralianProperty</Category>
-      </Stock>
-      <Units>291</Units>
-      <Value>23221.8</Value>
-      <Cost>23542.2800</Cost>
-      <CostBase>0</CostBase>
-    </Holding>
-    <Holding>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-        <Category>InternationalStocks</Category>
-      </Stock>
-      <Units>1080</Units>
-      <Value>64000.80</Value>
-      <Cost>62190.76007</Cost>
-      <CostBase>0</CostBase>
+      <Cost>28776.40</Cost>
+      <CostBase>28776.40</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -101,8 +65,44 @@
       </Stock>
       <Units>17957</Units>
       <Value>44712.93</Value>
-      <Cost>38774.60830</Cost>
-      <CostBase>0</CostBase>
+      <Cost>38298.5300</Cost>
+      <CostBase>38806.1000</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <Units>242</Units>
+      <Value>11739.42</Value>
+      <Cost>12064.50</Cost>
+      <CostBase>12064.50</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <Units>291</Units>
+      <Value>23221.8</Value>
+      <Cost>23572.23</Cost>
+      <CostBase>23572.23</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <Units>1080</Units>
+      <Value>64000.80</Value>
+      <Cost>62253.63</Cost>
+      <CostBase>62253.63</CostBase>
     </Holding>
     <Holding>
       <Stock>
@@ -113,8 +113,8 @@
       </Stock>
       <Units>225</Units>
       <Value>11652.75</Value>
-      <Cost>11900.25</Cost>
-      <CostBase>0</CostBase>
+      <Cost>11930.20</Cost>
+      <CostBase>11930.20</CostBase>
     </Holding>
   </Holdings>
 </PortfolioSummaryResponse>

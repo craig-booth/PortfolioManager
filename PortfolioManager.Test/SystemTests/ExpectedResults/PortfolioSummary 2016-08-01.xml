@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PortfolioSummaryResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PortfolioValue>249093.920</PortfolioValue>
-  <PortfolioCost>238157.45218</PortfolioCost>
+  <PortfolioCost>237996.1225</PortfolioCost>
   <Return1Year xsi:nil="true" />
   <Return3Year xsi:nil="true" />
   <Return5Year xsi:nil="true" />
@@ -65,8 +65,8 @@
       </Stock>
       <Units>10390</Units>
       <Value>23273.60</Value>
-      <Cost>22513.15135</Cost>
-      <CostBase>0</CostBase>
+      <Cost>22037.1025</Cost>
+      <CostBase>22544.6725</CostBase>
     </Holding>
     <Holding>
       <Stock>

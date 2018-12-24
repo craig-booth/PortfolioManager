@@ -55,14 +55,7 @@ namespace PortfolioManager.Domain.Portfolios
             }
             else
             {
-                var costBases = new ApportionedCurrencyValue[2]
-                {
-                        new ApportionedCurrencyValue() { Units = units },
-                        new ApportionedCurrencyValue() { Units = parcelProperties.Units - units}
-                 };
-                MathUtils.ApportionAmount(parcelProperties.CostBase, costBases);
-
-                costBase = costBases[0].Amount;
+                costBase = (parcelProperties.CostBase * ((decimal)units / parcelProperties.Units)).ToCurrency(RoundingRule.Round);
 
                 var newParcelProperties = new ParcelProperties(parcelProperties.Units - units, parcelProperties.Amount - amount, parcelProperties.CostBase - costBase);
                 parcel.Properties.Change(date, newParcelProperties);

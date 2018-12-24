@@ -357,7 +357,7 @@
       <Date>2016-07-27T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Sale of WAM</Description>
-      <Amount>15750</Amount>
+      <Amount>15750.00</Amount>
       <Balance>21599.96</Balance>
     </TransactionItem>
     <TransactionItem>

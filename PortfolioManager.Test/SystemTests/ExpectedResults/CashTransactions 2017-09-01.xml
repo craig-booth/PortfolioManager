@@ -40,30 +40,30 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2016-10-28T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VAF</Description>
+      <Amount>-4201.55</Amount>
+      <Balance>8693.07</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-10-28T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VAF</Description>
       <Amount>-19.95</Amount>
-      <Balance>12874.67</Balance>
+      <Balance>8673.12</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2016-10-28T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of GVF</Description>
+      <Amount>-5992.00</Amount>
+      <Balance>2681.12</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2016-10-28T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of GVF</Description>
       <Amount>-19.95</Amount>
-      <Balance>12854.72</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-10-28T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of VAF</Description>
-      <Amount>-4201.55</Amount>
-      <Balance>8653.17</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2016-10-28T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of GVF</Description>
-      <Amount>-5992</Amount>
       <Balance>2661.17</Balance>
     </TransactionItem>
     <TransactionItem>
@@ -117,16 +117,16 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2017-03-02T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of VAP</Description>
-      <Amount>-19.95</Amount>
-      <Balance>7443.08</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-03-02T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VAP</Description>
       <Amount>-5185.05</Amount>
+      <Balance>2277.98</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-03-02T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of VAP</Description>
+      <Amount>-19.95</Amount>
       <Balance>2258.03</Balance>
     </TransactionItem>
     <TransactionItem>
@@ -159,16 +159,16 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2017-05-02T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of VGS</Description>
-      <Amount>-19.95</Amount>
-      <Balance>6550.65</Balance>
+      <Type>Transfer</Type>
+      <Description>Purchase of VGS</Description>
+      <Amount>-6173.00</Amount>
+      <Balance>397.60</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2017-05-02T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of VGS</Description>
-      <Amount>-6173</Amount>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of VGS</Description>
+      <Amount>-19.95</Amount>
       <Balance>377.65</Balance>
     </TransactionItem>
     <TransactionItem>
@@ -194,30 +194,30 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2017-06-22T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VGS</Description>
+      <Amount>-25256.00</Amount>
+      <Balance>44884.65</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-06-22T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of VGS</Description>
       <Amount>-30.31</Amount>
-      <Balance>70110.34</Balance>
+      <Balance>44854.34</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-06-22T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of ARG</Description>
+      <Amount>-44577.00</Amount>
+      <Balance>277.34</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2017-06-22T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of ARG</Description>
       <Amount>-53.49</Amount>
-      <Balance>70056.85</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-06-22T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of VGS</Description>
-      <Amount>-25256</Amount>
-      <Balance>44800.85</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-06-22T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of ARG</Description>
-      <Amount>-44577</Amount>
       <Balance>223.85</Balance>
     </TransactionItem>
     <TransactionItem>
@@ -243,72 +243,72 @@
     </TransactionItem>
     <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of GVF</Description>
-      <Amount>-19.95</Amount>
-      <Balance>75595.73</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-08-16T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of VCF</Description>
-      <Amount>-19.95</Amount>
-      <Balance>75575.78</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-08-16T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of VAF</Description>
-      <Amount>-19.95</Amount>
-      <Balance>75555.83</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-08-16T00:00:00</Date>
-      <Type>Fee</Type>
-      <Description>Brokerage for purchase of VGE</Description>
-      <Amount>-29.95</Amount>
-      <Balance>75525.88</Balance>
+      <Type>Transfer</Type>
+      <Description>Purchase of WAM</Description>
+      <Amount>-27367.50</Amount>
+      <Balance>48248.18</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Fee</Type>
       <Description>Brokerage for purchase of WAM</Description>
       <Amount>-32.85</Amount>
-      <Balance>75493.03</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-08-16T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of GVF</Description>
-      <Amount>-5016</Amount>
-      <Balance>70477.03</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-08-16T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of VAF</Description>
-      <Amount>-9756</Amount>
-      <Balance>60721.03</Balance>
-    </TransactionItem>
-    <TransactionItem>
-      <Date>2017-08-16T00:00:00</Date>
-      <Type>Transfer</Type>
-      <Description>Purchase of VCF</Description>
-      <Amount>-9936</Amount>
-      <Balance>50785.03</Balance>
+      <Balance>48215.33</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
       <Description>Purchase of VGE</Description>
-      <Amount>-20229</Amount>
-      <Balance>30556.03</Balance>
+      <Amount>-20229.0</Amount>
+      <Balance>27986.33</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-08-16T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of VGE</Description>
+      <Amount>-29.95</Amount>
+      <Balance>27956.38</Balance>
     </TransactionItem>
     <TransactionItem>
       <Date>2017-08-16T00:00:00</Date>
       <Type>Transfer</Type>
-      <Description>Purchase of WAM</Description>
-      <Amount>-27367.5</Amount>
+      <Description>Purchase of GVF</Description>
+      <Amount>-5016.00</Amount>
+      <Balance>22940.38</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-08-16T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of GVF</Description>
+      <Amount>-19.95</Amount>
+      <Balance>22920.43</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-08-16T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VCF</Description>
+      <Amount>-9936.00</Amount>
+      <Balance>12984.43</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-08-16T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of VCF</Description>
+      <Amount>-19.95</Amount>
+      <Balance>12964.48</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-08-16T00:00:00</Date>
+      <Type>Transfer</Type>
+      <Description>Purchase of VAF</Description>
+      <Amount>-9756.00</Amount>
+      <Balance>3208.48</Balance>
+    </TransactionItem>
+    <TransactionItem>
+      <Date>2017-08-16T00:00:00</Date>
+      <Type>Fee</Type>
+      <Description>Brokerage for purchase of VAF</Description>
+      <Amount>-19.95</Amount>
       <Balance>3188.53</Balance>
     </TransactionItem>
     <TransactionItem>

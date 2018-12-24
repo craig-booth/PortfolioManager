@@ -68,7 +68,7 @@ namespace PortfolioManager.Domain.Transactions
                 var cost = disposal.Units * disposal.AveragePrice;
 
                 var asxCode = disposal.Stock.Properties[disposal.TransactionDate].ASXCode;
-                _CashAccount.Transfer(disposal.TransactionDate, -cost, String.Format("Sale of {0}", asxCode));
+                _CashAccount.Transfer(disposal.TransactionDate, cost, String.Format("Sale of {0}", asxCode));
 
                 if (disposal.TransactionCosts > 0.00m)
                     _CashAccount.FeeDeducted(disposal.TransactionDate, disposal.TransactionCosts, String.Format("Brokerage for sale of {0}", asxCode));

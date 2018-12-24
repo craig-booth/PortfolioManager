@@ -70,14 +70,9 @@ namespace PortfolioManager.Domain.Utils
                     totalCostBase += parcelSold.CostBase;
                 else
                 {
-                    var costBases = new ApportionedCurrencyValue[2]
-                    {
-                        new ApportionedCurrencyValue() { Units = parcelSold.UnitsSold },
-                        new ApportionedCurrencyValue() { Units = parcelSold.UnitsOwned - parcelSold.UnitsSold}
-                    };
-                    MathUtils.ApportionAmount(parcelSold.CostBase, costBases);
+                    var costBase = (parcelSold.CostBase * ((decimal)parcelSold.UnitsSold / parcelSold.UnitsOwned)).ToCurrency(RoundingRule.Round);
 
-                    totalCostBase += costBases[0].Amount;
+                    totalCostBase += costBase;
                 }
                 
             }
