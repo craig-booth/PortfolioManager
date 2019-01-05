@@ -34,7 +34,7 @@ namespace PortfolioManager.Domain.Transactions
             else if (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl)
                 description = "Withdrawl";
 
-            _CashAccount.AddTransaction(cashTransaction.TransactionDate, cashTransaction.Amount, description, cashTransaction.CashTransactionType);
+            _CashAccount.AddTransaction(cashTransaction.Date, cashTransaction.Amount, description, cashTransaction.CashTransactionType);
         }
     }
 }

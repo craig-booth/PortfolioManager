@@ -12,11 +12,13 @@ namespace PortfolioManager.Domain.Transactions
     { 
         private HoldingCollection _Holdings;
         private CashAccount _CashAccount;
+        private CgtEventCollection _CgtEvents;
 
-        public DisposalHandler(HoldingCollection holdings, CashAccount cashAccount)
+        public DisposalHandler(HoldingCollection holdings, CashAccount cashAccount, CgtEventCollection cgtEvents)
         {
             _Holdings = holdings;
             _CashAccount = cashAccount;
+            _CgtEvents = cgtEvents;
         }
 
         public void ApplyTransaction(Transaction transaction)
@@ -27,7 +29,7 @@ namespace PortfolioManager.Domain.Transactions
 
             // Determine which parcels to sell based on CGT method 
             decimal amountReceived = (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
-            var cgtCalculation = CGTCalculator.CalculateCapitalGain(holding.Parcels(disposal.TransactionDate), disposal.TransactionDate, disposal.Units, amountReceived, disposal.CGTMethod);
+            var cgtCalculation = CgtCalculator.CalculateCapitalGain(holding.Parcels(disposal.Date), disposal.Date, disposal.Units, amountReceived, disposal.CGTMethod);
 
             if (cgtCalculation.UnitsSold == 0)
                 throw new NoParcelsForTransaction(disposal, "No parcels found for transaction");
@@ -60,18 +62,32 @@ namespace PortfolioManager.Domain.Transactions
             else
             {
                 foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
-                    holding.DisposeOfParcel(parcelSold.Id, disposal.TransactionDate, parcelSold.UnitsSold, parcelSold.AmountReceived);
+                {
+                    holding.DisposeOfParcel(parcelSold.Parcel, disposal.Date, parcelSold.UnitsSold, parcelSold.AmountReceived, transaction);
+
+                    _CgtEvents.Add(new CgtEvent()
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = disposal.Date,
+                        Stock = disposal.Stock,
+                        Units = parcelSold.UnitsSold,
+                        CostBase = parcelSold.CostBase,
+                        AmountReceived = parcelSold.AmountReceived,
+                        CapitalGain = parcelSold.CapitalGain,
+                        CgtMethod = parcelSold.CgtMethod
+                    });
+                }
             } 
             
             if (disposal.CreateCashTransaction)
             {
                 var cost = disposal.Units * disposal.AveragePrice;
 
-                var asxCode = disposal.Stock.Properties[disposal.TransactionDate].ASXCode;
-                _CashAccount.Transfer(disposal.TransactionDate, cost, String.Format("Sale of {0}", asxCode));
+                var asxCode = disposal.Stock.Properties[disposal.Date].ASXCode;
+                _CashAccount.Transfer(disposal.Date, cost, String.Format("Sale of {0}", asxCode));
 
                 if (disposal.TransactionCosts > 0.00m)
-                    _CashAccount.FeeDeducted(disposal.TransactionDate, disposal.TransactionCosts, String.Format("Brokerage for sale of {0}", asxCode));
+                    _CashAccount.FeeDeducted(disposal.Date, disposal.TransactionCosts, String.Format("Brokerage for sale of {0}", asxCode));
             }
         }
     }

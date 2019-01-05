@@ -24,10 +24,10 @@ namespace PortfolioManager.Domain.Transactions
             var holding = _Holdings.Get(openingBalance.Stock.Id);
             if (holding == null)
             {
-                holding = _Holdings.Add(openingBalance.Stock, openingBalance.TransactionDate);
+                holding = _Holdings.Add(openingBalance.Stock, openingBalance.Date);
             }
 
-            holding.AddParcel(openingBalance.TransactionDate, openingBalance.AquisitionDate, openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase);
+            holding.AddParcel(openingBalance.Date, openingBalance.AquisitionDate, openingBalance.Units, openingBalance.CostBase, openingBalance.CostBase, transaction);
         }
     }
 }

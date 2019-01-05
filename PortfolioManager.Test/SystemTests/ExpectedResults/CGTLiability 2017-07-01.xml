@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CGTLiabilityResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CgtLiabilityResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CurrentYearCapitalGainsOther>507.57</CurrentYearCapitalGainsOther>
-  <CurrentYearCapitalGainsDiscounted>0.00</CurrentYearCapitalGainsDiscounted>
+  <CurrentYearCapitalGainsDiscounted>0</CurrentYearCapitalGainsDiscounted>
   <CurrentYearCapitalGainsTotal>507.57</CurrentYearCapitalGainsTotal>
-  <CurrentYearCapitalLossesOther>0.00</CurrentYearCapitalLossesOther>
+  <CurrentYearCapitalLossesOther>0</CurrentYearCapitalLossesOther>
   <CurrentYearCapitalLossesDiscounted>0.00</CurrentYearCapitalLossesDiscounted>
-  <CurrentYearCapitalLossesTotal>0.00</CurrentYearCapitalLossesTotal>
+  <CurrentYearCapitalLossesTotal>0</CurrentYearCapitalLossesTotal>
   <GrossCapitalGainOther>507.57</GrossCapitalGainOther>
   <GrossCapitalGainDiscounted>0.00</GrossCapitalGainDiscounted>
   <GrossCapitalGainTotal>507.57</GrossCapitalGainTotal>
@@ -14,7 +14,7 @@
   <NetCapitalGainDiscounted>0.00</NetCapitalGainDiscounted>
   <NetCapitalGainTotal>507.57</NetCapitalGainTotal>
   <Events>
-    <CGTLiabilityEvents>
+    <CgtLiabilityEvent>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
@@ -26,6 +26,6 @@
       <AmountReceived>15720.05</AmountReceived>
       <CapitalGain>507.57</CapitalGain>
       <Method>Other</Method>
-    </CGTLiabilityEvents>
+    </CgtLiabilityEvent>
   </Events>
-</CGTLiabilityResponse>
+</CgtLiabilityResponse>

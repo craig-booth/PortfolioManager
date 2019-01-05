@@ -88,7 +88,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal CapitalGain { get; private set; }
         public string Method { get; private set; }
 
-        public CGTEventViewModel(CGTLiabilityResponse.CGTLiabilityEvent cgtEvent)
+        public CGTEventViewModel(CgtLiabilityResponse.CgtLiabilityEvent cgtEvent)
         {
             CompanyName = cgtEvent.Stock.FormattedCompanyName();
             EventDate = cgtEvent.EventDate;

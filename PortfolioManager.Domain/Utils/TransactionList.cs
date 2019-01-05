@@ -5,13 +5,18 @@ using System.Linq;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.Domain.Transactions
+namespace PortfolioManager.Domain.Utils
 {
     public enum TransationListPosition { First, Last };
 
+    public interface ITransaction
+    {
+        Guid Id { get; }
+        DateTime Date { get; }
+    }
+
     public interface ITransactionList<T>
     : IEnumerable<T>
-
     {
         int Count { get; }
         T this[int index] { get; }
@@ -92,20 +97,20 @@ namespace PortfolioManager.Domain.Transactions
         {
             _IdLookup.Add(transaction.Id, transaction);
 
-            if ((_Dates.Count == 0) || (transaction.TransactionDate >= Latest))
+            if ((_Dates.Count == 0) || (transaction.Date >= Latest))
             {
-                _Dates.Add(transaction.TransactionDate);
+                _Dates.Add(transaction.Date);
                 _Transactions.Add(transaction);
             }
             else
             {
-                var index = IndexOf(transaction.TransactionDate, TransationListPosition.Last);
+                var index = IndexOf(transaction.Date, TransationListPosition.Last);
                 if (index < 0)
                     index = ~index;
                 else
                     index = index + 1;
 
-                _Dates.Insert(index, transaction.TransactionDate);
+                _Dates.Insert(index, transaction.Date);
                 _Transactions.Insert(index, transaction);
             }
         }

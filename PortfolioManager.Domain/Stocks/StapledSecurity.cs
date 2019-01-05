@@ -16,8 +16,8 @@ namespace PortfolioManager.Domain.Stocks
             get { return _ChildSecurities; }
         }
 
-        public EffectiveProperties<RelativeNTA> RelativeNTAs { get; } = new EffectiveProperties<RelativeNTA>();
-
+        private EffectiveProperties<RelativeNTA> _RelativeNTAs = new EffectiveProperties<RelativeNTA>();
+        public IEffectiveProperties<RelativeNTA> RelativeNTAs => _RelativeNTAs;
 
         public StapledSecurity(Guid id, DateTime listingDate, IEventStream eventStream)
             : base(id, listingDate, eventStream)
@@ -37,27 +37,27 @@ namespace PortfolioManager.Domain.Stocks
             Version++;
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
-            Properties.Change(@event.ListingDate, properties);
+            _Properties.Change(@event.ListingDate, properties);
 
             _ChildSecurities = new StapledSecurityChild[@event.ChildSecurities.Length];
             for (var i = 0; i < @event.ChildSecurities.Length; i++)
                 _ChildSecurities[i] = new StapledSecurityChild(@event.ChildSecurities[i].ASXCode, @event.ChildSecurities[i].Name, @event.ChildSecurities[i].Trust);
             
             var dividendRules = new DividendRules(RoundingRule.Round, false, DRPMethod.Round);
-            DividendRules.Change(@event.ListingDate, dividendRules);
+            _DividendRules.Change(@event.ListingDate, dividendRules);
 
             var percentages = new decimal[_ChildSecurities.Length];
             for (var i = 0; i < @event.ChildSecurities.Length; i++)
                 percentages[i] = 1 / _ChildSecurities.Length;
 
-            RelativeNTAs.Change(@event.ListingDate, new RelativeNTA(percentages));
+            _RelativeNTAs.Change(@event.ListingDate, new RelativeNTA(percentages));
         }
 
         public override void Apply(StockDelistedEvent @event)
         {
             base.Apply(@event);
 
-            RelativeNTAs.End(@event.DelistedDate);
+            _RelativeNTAs.End(@event.DelistedDate);
         }
 
         public void SetRelativeNTAs(DateTime date, IEnumerable<decimal> percentages)
@@ -81,7 +81,7 @@ namespace PortfolioManager.Domain.Stocks
         {
             Version++;
 
-            RelativeNTAs.Change(@event.Date, new RelativeNTA(@event.Percentages));
+            _RelativeNTAs.Change(@event.Date, new RelativeNTA(@event.Percentages));
         }
 
     }

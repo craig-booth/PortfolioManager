@@ -35,7 +35,7 @@ namespace PortfolioManager.Domain.Portfolios
                     var cashTransaction = transaction as CashTransaction;
                     if ((cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit) ||
                         (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl))
-                        cashFlows.Add(cashTransaction.TransactionDate, -cashTransaction.Amount);
+                        cashFlows.Add(cashTransaction.Date, -cashTransaction.Amount);
                 }
             }
 

@@ -169,8 +169,6 @@ namespace PortfolioManager.Test.SystemTests
                             typeof(RestApi.Transactions.UnitCountAdjustment)
                         });
 
-            //_ResultsConverter.UpdateExpectedTransactions(expectedFile);
-
 
             Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.TransactionsResponse), expectedFile));
         }
@@ -202,7 +200,7 @@ namespace PortfolioManager.Test.SystemTests
             var response = controller.GetCGTLiability(fromDate, toDate);
             SaveActualResult(response.Value, fileName);
 
-            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.CGTLiabilityResponse), expectedFile));
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.CgtLiabilityResponse), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
@@ -232,7 +230,7 @@ namespace PortfolioManager.Test.SystemTests
             var response = controller.Get(null, date);
             SaveActualResult(response.Value, fileName);
 
-            Assert.That(response.Value, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
+            Assert.That(response.Value, Is.EquivalentTo(typeof(List<RestApi.Portfolios.Holding>), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
@@ -249,18 +247,18 @@ namespace PortfolioManager.Test.SystemTests
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
-        public async Task CompareIncome(DateTime fromDate, DateTime toDate)
+        public void CompareIncome(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            _ResultsConverter.UpdateExpectedIncome(expectedFile);
+            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            SetControllerContext(controller);
 
-            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
-            var response = await controller.GetIncome(fromDate, toDate);
-            SaveActualResult(response, fileName);
+            var response = controller.GetIncome(fromDate, toDate);
+            SaveActualResult(response.Value, fileName);
 
-            Assert.That(response, Is.EquivalentTo(typeof(IncomeResponce), expectedFile));
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.IncomeResponse), expectedFile));
         }
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]

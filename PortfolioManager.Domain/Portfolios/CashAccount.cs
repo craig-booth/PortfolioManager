@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
-using PortfolioManager.Domain.Transactions;
+using PortfolioManager.Domain.Utils;
 
 namespace PortfolioManager.Domain.Portfolios
 {
@@ -58,18 +58,18 @@ namespace PortfolioManager.Domain.Portfolios
 
             foreach (var transaction in _Transactions.InDateRange(dateRange))
             {
-                if (fromDate == transaction.TransactionDate)
+                if (fromDate == transaction.Date)
                 {
                     balance = transaction.Balance;
                 }
                 else
                 {
-                    toDate = transaction.TransactionDate.AddDays(-1);
+                    toDate = transaction.Date.AddDays(-1);
 
                     yield return new EffectiveBalance(fromDate, toDate, balance);
 
-                    fromDate = transaction.TransactionDate;
-                    toDate = transaction.TransactionDate;
+                    fromDate = transaction.Date;
+                    toDate = transaction.Date;
                     balance = transaction.Balance;
                 }
             }
@@ -124,7 +124,7 @@ namespace PortfolioManager.Domain.Portfolios
         public class Transaction : ITransaction
         {
             public Guid Id { get; }
-            public DateTime TransactionDate { get; }
+            public DateTime Date { get; }
             public string Description { get; }
             public decimal Amount { get; }
             public BankAccountTransactionType Type { get; }
@@ -133,7 +133,7 @@ namespace PortfolioManager.Domain.Portfolios
             public Transaction(Guid id, DateTime date, string description, decimal amount, BankAccountTransactionType type, decimal balance)
             {
                 Id = id;
-                TransactionDate = date;
+                Date = date;
                 Description = description;
                 Amount = amount;
                 Type = type;

@@ -16,6 +16,7 @@ namespace PortfolioManager.Web.Mapping
         {
             CreateMap<RestApi.Transactions.Transaction, Domain.Transactions.Transaction>()
                 .ForMember(dest => dest.Stock, opts => opts.ResolveUsing(stockResolver))
+                .ForMember(dest => dest.Date, opts => opts.MapFrom(y => y.TransactionDate))
                 .Include<RestApi.Transactions.Aquisition, Domain.Transactions.Aquisition>()
                 .Include<RestApi.Transactions.Disposal, Domain.Transactions.Disposal>()
                 .Include<RestApi.Transactions.CashTransaction, Domain.Transactions.CashTransaction>()

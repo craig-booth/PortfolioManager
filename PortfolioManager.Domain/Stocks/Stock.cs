@@ -20,8 +20,12 @@ namespace PortfolioManager.Domain.Stocks
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
 
         public bool Trust { get; private set; }
-        public EffectiveProperties<StockProperties> Properties { get; } = new EffectiveProperties<StockProperties>();
-        public EffectiveProperties<DividendRules> DividendRules { get; } = new EffectiveProperties<DividendRules>();
+
+        protected EffectiveProperties<StockProperties> _Properties { get; } = new EffectiveProperties<StockProperties>();
+        public IEffectiveProperties<StockProperties> Properties => _Properties;
+
+        protected EffectiveProperties<DividendRules> _DividendRules { get; } = new EffectiveProperties<DividendRules>();
+        public IEffectiveProperties<DividendRules> DividendRules => _DividendRules;
 
         public CorporateActionCollection CorporateActions { get; }
 
@@ -53,10 +57,10 @@ namespace PortfolioManager.Domain.Stocks
             Trust = @event.Trust;
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
-            Properties.Change(@event.ListingDate, properties);
+            _Properties.Change(@event.ListingDate, properties);
 
             var dividendRules = new DividendRules(RoundingRule.Round, false, DRPMethod.Round);
-            DividendRules.Change(@event.ListingDate, dividendRules);
+            _DividendRules.Change(@event.ListingDate, dividendRules);
         }
 
         public void DeList(DateTime date)
@@ -71,8 +75,8 @@ namespace PortfolioManager.Domain.Stocks
         {
             Version++;
 
-            Properties.End(@event.DelistedDate);
-            DividendRules.End(@event.DelistedDate);
+            _Properties.End(@event.DelistedDate);
+            _DividendRules.End(@event.DelistedDate);
 
             End(@event.DelistedDate);
         }
@@ -208,7 +212,7 @@ namespace PortfolioManager.Domain.Stocks
                 @event.Name,
                 @event.Category);
 
-            Properties.Change(@event.ChangeDate, newProperties);
+            _Properties.Change(@event.ChangeDate, newProperties);
         }
 
         public void Apply(ChangeDividendRulesEvent @event)
@@ -220,7 +224,7 @@ namespace PortfolioManager.Domain.Stocks
                 @event.DRPActive,
                 @event.DRPMethod);
 
-            DividendRules.Change(@event.ChangeDate, newProperties);
+            _DividendRules.Change(@event.ChangeDate, newProperties);
         }
 
     }

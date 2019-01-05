@@ -9,24 +9,38 @@ namespace PortfolioManager.Domain.Utils
 {
     public class ParcelSold
     {
-        public Guid Id { get; private set; }
-        public int UnitsOwned { get; private set; }
-        public decimal CostBase { get; private set; }
+        public Parcel Parcel { get; private set; }
 
+        public DateTime DisposalDate { get; private set; }
         public int UnitsSold { get; private set; }   
+        public decimal CostBase { get; private set; }
+        public decimal AmountReceived { get; private set; }
+        public decimal CapitalGain { get; private set; }
+        public CGTMethod CgtMethod { get; private set; }
 
-        public decimal AmountReceived { get; internal set; }
-
-        public ParcelSold(int unitsSold, Guid id, ParcelProperties parcel)
+        public ParcelSold(Parcel parcel, int unitsSold, DateTime disposalDate)
         {
-            Id = id;
+            Parcel = parcel;
             UnitsSold = unitsSold;
-            UnitsOwned = parcel.Units;
-            CostBase = parcel.CostBase;
+            DisposalDate = disposalDate;   
+        }
+
+        public void CalculateCapitalGain(decimal amountReceived)
+        {
+            AmountReceived = amountReceived;
+            CgtMethod = CgtCalculator.CgtMethodForParcel(Parcel.AquisitionDate, DisposalDate);
+
+            var properties = Parcel.Properties[DisposalDate];
+            if (UnitsSold == properties.Units)
+                CostBase = properties.CostBase;                
+            else
+                CostBase = (properties.CostBase * ((decimal)UnitsSold / properties.Units)).ToCurrency(RoundingRule.Round);
+
+            CapitalGain = amountReceived - CostBase;
         }
     }
 
-    public class CGTCalculation
+    public class CgtCalculation
     {
         private List<ParcelSold> _ParcelsSold;
 
@@ -43,7 +57,7 @@ namespace PortfolioManager.Domain.Utils
             }
         }
 
-        public CGTCalculation(DateTime disposalDate, decimal amountReceived, List<ParcelSold> parcelsSold, CGTCalculationMethod method)
+        public CgtCalculation(DateTime disposalDate, decimal amountReceived, List<ParcelSold> parcelsSold, CGTCalculationMethod method)
         {
             DisposalDate = disposalDate;
             AmountReceived = amountReceived;
@@ -59,32 +73,23 @@ namespace PortfolioManager.Domain.Utils
 
 
             // Calculate units sold and capital gain
-            decimal totalCostBase = 0.00M;
             i = 0;
             foreach (ParcelSold parcelSold in _ParcelsSold)
             {
-                parcelSold.AmountReceived = apportionedAmountReceived[i++].Amount;
+                parcelSold.CalculateCapitalGain(apportionedAmountReceived[i++].Amount);
 
                 UnitsSold += parcelSold.UnitsSold;
-                if (parcelSold.UnitsSold == parcelSold.UnitsOwned)
-                    totalCostBase += parcelSold.CostBase;
-                else
-                {
-                    var costBase = (parcelSold.CostBase * ((decimal)parcelSold.UnitsSold / parcelSold.UnitsOwned)).ToCurrency(RoundingRule.Round);
-
-                    totalCostBase += costBase;
-                }
-                
+                CapitalGain += parcelSold.CapitalGain;
             }
 
-            CapitalGain = amountReceived - totalCostBase;
+            
         }
 
     }
 
-    public static class CGTCalculator
+    public static class CgtCalculator
     {
-        private class CGTComparer : Comparer<Parcel>
+        private class CgtComparer : Comparer<Parcel>
         {
             public DateTime DisposalDate { get; private set; }
             public CGTCalculationMethod Method { get; private set; }
@@ -97,8 +102,8 @@ namespace PortfolioManager.Domain.Utils
                     return b.AquisitionDate.CompareTo(a.AquisitionDate);
                 else
                 {
-                    var discountAppliesA = (CGTMethodForParcel(a, DisposalDate) == CGTMethod.Discount);
-                    var discountAppliesB = (CGTMethodForParcel(b, DisposalDate) == CGTMethod.Discount);
+                    var discountAppliesA = (CgtMethodForParcel(a.AquisitionDate, DisposalDate) == CGTMethod.Discount);
+                    var discountAppliesB = (CgtMethodForParcel(b.AquisitionDate, DisposalDate) == CGTMethod.Discount);
 
                     if (discountAppliesA && !discountAppliesB)
                         return -1;
@@ -133,26 +138,26 @@ namespace PortfolioManager.Domain.Utils
 
             }
 
-            public CGTComparer(DateTime disposalDate, CGTCalculationMethod method)
+            public CgtComparer(DateTime disposalDate, CGTCalculationMethod method)
             {
                 DisposalDate = disposalDate;
                 Method = method;
             }
         }
 
-        public static DateTime IndexationendDate = new DateTime(1999, 09, 21);
+        public static DateTime IndexationEndDate = new DateTime(1999, 09, 21);
 
-        public static CGTMethod CGTMethodForParcel(Parcel parcel, DateTime eventDate)
+        public static CGTMethod CgtMethodForParcel(DateTime aquisitionDate, DateTime eventDate)
         {
-            if (parcel.AquisitionDate < IndexationendDate)
+            if (aquisitionDate < IndexationEndDate)
                 return CGTMethod.Indexation;
-            else if ((eventDate - parcel.AquisitionDate).Days > 365)
+            else if ((eventDate - aquisitionDate).Days > 365)
                 return CGTMethod.Discount;
             else
                 return CGTMethod.Other;
         }
 
-        public static decimal CGTDiscount(decimal cgtAmount)
+        public static decimal CgtDiscount(decimal cgtAmount)
         {
             if (cgtAmount > 0)
                 return 0.50m * cgtAmount;
@@ -160,10 +165,10 @@ namespace PortfolioManager.Domain.Utils
                 return 0.00m;
         }
 
-        public static CGTCalculation CalculateCapitalGain(IEnumerable<Parcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
+        public static CgtCalculation CalculateCapitalGain(IEnumerable<Parcel> parcelsOwned, DateTime saleDate, int unitsToSell, decimal amountReceived, CGTCalculationMethod method)
         {
             // Sort in prefered sell order
-            var sortedParcels = parcelsOwned.Where(x => x.EffectivePeriod.ToDate == DateUtils.NoEndDate).OrderBy(x => x, new CGTComparer(saleDate, method));
+            var sortedParcels = parcelsOwned.Where(x => x.EffectivePeriod.ToDate == DateUtils.NoEndDate).OrderBy(x => x, new CgtComparer(saleDate, method));
 
             /* Create list of parcels sold */
             var parcelsSold = new List<ParcelSold>();
@@ -172,14 +177,14 @@ namespace PortfolioManager.Domain.Utils
                 var parcelProperties = parcel.Properties[saleDate];
                 var units = Math.Min(parcelProperties.Units, unitsToSell);
 
-                parcelsSold.Add(new ParcelSold(units, parcel.Id, parcelProperties));
+                parcelsSold.Add(new ParcelSold(parcel, units, saleDate));
                 unitsToSell -= units;
                 if (unitsToSell == 0)
                     break;
             }
 
 
-            return new CGTCalculation(saleDate, amountReceived, parcelsSold, method);
+            return new CgtCalculation(saleDate, amountReceived, parcelsSold, method);
         }
 
     }

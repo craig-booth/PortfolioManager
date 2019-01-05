@@ -26,6 +26,9 @@ namespace PortfolioManager.Domain.Portfolios
         private CashAccount _CashAccount;
         public ICashAccount CashAccount => _CashAccount;
 
+        private CgtEventCollection _CgtEvents;
+        public ICgtEventCollection CgtEvents => _CgtEvents;
+
         public DateTime StartDate
         {
             get { return DateUtils.Earlist(_Transactions.Earliest, _CashAccount.Transactions.Earliest); }
@@ -44,7 +47,8 @@ namespace PortfolioManager.Domain.Portfolios
 
             _Holdings = new HoldingCollection();
             _CashAccount = new CashAccount();
-            _Transactions = new TransactionService(_Holdings, _CashAccount);
+            _CgtEvents = new CgtEventCollection();
+            _Transactions = new TransactionService(_Holdings, _CashAccount, _CgtEvents);           
         }
 
     }

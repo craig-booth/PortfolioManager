@@ -98,7 +98,7 @@ namespace PortfolioManager.Test.SystemTests
                 var newItem = _Mapper.Map<RestApi.Portfolios.DetailedUnrealisedGainsItem>(item);
                 foreach (var cgtEvent in item.CGTEvents)
                 {
-                    var newEvent = _Mapper.Map<RestApi.Portfolios.CGTEventItem>(cgtEvent);
+                    var newEvent = _Mapper.Map<RestApi.Portfolios.DetailedUnrealisedGainsItem.CGTEventItem>(cgtEvent);
                     newItem.CGTEvents.Add(newEvent);
                 }
                 newResponse.UnrealisedGains.Add(newItem);
@@ -112,8 +112,8 @@ namespace PortfolioManager.Test.SystemTests
             var constraint = new PortfolioResponceContraint(typeof(CGTLiabilityResponce), expectedFile);
             var expected = constraint.Expected as CGTLiabilityResponce;
 
-            var newResponse = _Mapper.Map<RestApi.Portfolios.CGTLiabilityResponse>(expected);
-            var newEvents = _Mapper.Map<List<RestApi.Portfolios.CGTLiabilityResponse.CGTLiabilityEvent>>(expected.Items);
+            var newResponse = _Mapper.Map<RestApi.Portfolios.CgtLiabilityResponse>(expected);
+            var newEvents = _Mapper.Map<List<RestApi.Portfolios.CgtLiabilityResponse.CgtLiabilityEvent>>(expected.Items);
             newResponse.Events.AddRange(newEvents);
 
             SaveResult(newResponse, expectedFile);
@@ -218,10 +218,10 @@ namespace PortfolioManager.Test.SystemTests
 
             CreateMap<DetailedUnrealisedGainsResponce, RestApi.Portfolios.DetailedUnrealisedGainsResponse>();
             CreateMap<DetailedUnrealisedGainsItem, RestApi.Portfolios.DetailedUnrealisedGainsItem>();
-            CreateMap<CGTEventItem, RestApi.Portfolios.CGTEventItem>();
+            CreateMap<CGTEventItem, RestApi.Portfolios.DetailedUnrealisedGainsItem.CGTEventItem>();
 
-            CreateMap<CGTLiabilityResponce, RestApi.Portfolios.CGTLiabilityResponse>();
-            CreateMap<CGTLiabilityItem, RestApi.Portfolios.CGTLiabilityResponse.CGTLiabilityEvent>();
+            CreateMap<CGTLiabilityResponce, RestApi.Portfolios.CgtLiabilityResponse>();
+            CreateMap<CGTLiabilityItem, RestApi.Portfolios.CgtLiabilityResponse.CgtLiabilityEvent>();
 
             CreateMap<IncomeResponce, RestApi.Portfolios.IncomeResponse>();
             CreateMap<IncomeItem, RestApi.Portfolios.IncomeResponse.IncomeItem>();

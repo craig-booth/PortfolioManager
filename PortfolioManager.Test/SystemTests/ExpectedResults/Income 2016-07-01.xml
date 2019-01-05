@@ -11,7 +11,8 @@
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>667.95</FrankedAmount>
       <FrankingCredits>286.26</FrankingCredits>
-      <TotalAmount>954.21</TotalAmount>
+      <NettIncome>667.95</NettIncome>
+      <GrossIncome>954.21</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
@@ -23,7 +24,8 @@
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>66</FrankedAmount>
       <FrankingCredits>28.29</FrankingCredits>
-      <TotalAmount>94.29</TotalAmount>
+      <NettIncome>66</NettIncome>
+      <GrossIncome>94.29</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
@@ -35,55 +37,60 @@
       <UnfrankedAmount>228.12</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>228.12</TotalAmount>
+      <NettIncome>228.12</NettIncome>
+      <GrossIncome>228.12</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <UnfrankedAmount>64.05</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>64.05</TotalAmount>
+      <NettIncome>64.05</NettIncome>
+      <GrossIncome>64.05</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>AustralianProperty</Category>
       </Stock>
       <UnfrankedAmount>58.73</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>58.73</TotalAmount>
+      <NettIncome>58.73</NettIncome>
+      <GrossIncome>58.73</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>33.1</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>33.1</TotalAmount>
+      <NettIncome>33.1</NettIncome>
+      <GrossIncome>33.1</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>225</FrankedAmount>
       <FrankingCredits>96.43</FrankingCredits>
-      <TotalAmount>321.43</TotalAmount>
+      <NettIncome>225</NettIncome>
+      <GrossIncome>321.43</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
@@ -95,7 +102,8 @@
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>1218.94</FrankedAmount>
       <FrankingCredits>522.4</FrankingCredits>
-      <TotalAmount>1741.34</TotalAmount>
+      <NettIncome>1218.94</NettIncome>
+      <GrossIncome>1741.34</GrossIncome>
     </IncomeItem>
   </Income>
 </IncomeResponse>

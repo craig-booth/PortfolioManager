@@ -16,6 +16,7 @@ namespace PortfolioManager.Web.Mapping
         {
             CreateMap<Domain.Transactions.Transaction, RestApi.Transactions.Transaction>()
                 .ForMember(x => x.Stock, x => x.MapFrom(y => y.Stock.Id))
+                .ForMember(x => x.TransactionDate, x => x.MapFrom(y => y.Date))
                 .Include<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>()
                 .Include<Domain.Transactions.Disposal, RestApi.Transactions.Disposal>()
                 .Include<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>()
@@ -25,17 +26,18 @@ namespace PortfolioManager.Web.Mapping
             CreateMap<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>();
             CreateMap<Domain.Transactions.Disposal, RestApi.Transactions.Disposal>()
                 .ForMember(x => x.CGTMethod, x => x.MapFrom(y => CGTMethodMapping.ToRest(y.CGTMethod)));
-            CreateMap<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>();
+            CreateMap<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>()
+                .ForMember(x => x.TransactionDate, x => x.MapFrom(y => y.Date));
             CreateMap<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>();
             CreateMap<Domain.Transactions.IncomeReceived, RestApi.Transactions.IncomeReceived>();
 
             CreateMap<Domain.Stocks.Stock, RestApi.Portfolios.Stock>().ConvertUsing<StockTypeConverter>();
-            CreateMap<Domain.Transactions.Transaction, RestApi.Portfolios.TransactionsResponse.TransactionItem>();
+            CreateMap<Domain.Transactions.Transaction, RestApi.Portfolios.TransactionsResponse.TransactionItem>()
+                .ForMember(x => x.TransactionDate, x => x.MapFrom(y => y.Date));
 
             CreateMap<Domain.Portfolios.Holding, RestApi.Portfolios.Holding>().ConvertUsing<HoldingConverter>();
 
-            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>()
-                .ForMember(x => x.Date, x => x.MapFrom(y => y.TransactionDate));
+            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>();
         }
 
     }

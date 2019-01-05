@@ -11,55 +11,60 @@
       <UnfrankedAmount>476.38</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>476.38</TotalAmount>
+      <NettIncome>476.38</NettIncome>
+      <GrossIncome>476.38</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <UnfrankedAmount>364.06</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>364.06</TotalAmount>
+      <NettIncome>364.06</NettIncome>
+      <GrossIncome>364.06</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>AustralianProperty</Category>
       </Stock>
       <UnfrankedAmount>916.26</UnfrankedAmount>
       <FrankedAmount>53.91</FrankedAmount>
       <FrankingCredits>23.11</FrankingCredits>
-      <TotalAmount>993.28</TotalAmount>
+      <NettIncome>970.17</NettIncome>
+      <GrossIncome>993.28</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>2232.24</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>2232.24</TotalAmount>
+      <NettIncome>2232.24</NettIncome>
+      <GrossIncome>2232.24</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>456.66</FrankedAmount>
       <FrankingCredits>195.71</FrankingCredits>
-      <TotalAmount>652.37</TotalAmount>
+      <NettIncome>456.66</NettIncome>
+      <GrossIncome>652.37</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
@@ -71,19 +76,21 @@
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>2480.37</FrankedAmount>
       <FrankingCredits>1063.01</FrankingCredits>
-      <TotalAmount>3543.38</TotalAmount>
+      <NettIncome>2480.37</NettIncome>
+      <GrossIncome>3543.38</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationlFixedInterest</Category>
       </Stock>
       <UnfrankedAmount>478.81</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>478.81</TotalAmount>
+      <NettIncome>478.81</NettIncome>
+      <GrossIncome>478.81</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
@@ -95,7 +102,8 @@
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>2048.18</FrankedAmount>
       <FrankingCredits>877.79</FrankingCredits>
-      <TotalAmount>2925.97</TotalAmount>
+      <NettIncome>2048.18</NettIncome>
+      <GrossIncome>2925.97</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
@@ -107,7 +115,8 @@
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>72</FrankedAmount>
       <FrankingCredits>30.86</FrankingCredits>
-      <TotalAmount>102.86</TotalAmount>
+      <NettIncome>72</NettIncome>
+      <GrossIncome>102.86</GrossIncome>
     </IncomeItem>
   </Income>
 </IncomeResponse>

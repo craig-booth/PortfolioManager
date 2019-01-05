@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+using PortfolioManager.Domain.Utils;
 using PortfolioManager.Domain.Portfolios;
 
 namespace PortfolioManager.Domain.Transactions
@@ -25,10 +26,10 @@ namespace PortfolioManager.Domain.Transactions
     {
         private Dictionary<Type, ITransactionHandler> _Handlers = new Dictionary<Type, ITransactionHandler>();
 
-        public TransactionService(HoldingCollection holdings, CashAccount cashAccount)
+        public TransactionService(HoldingCollection holdings, CashAccount cashAccount, CgtEventCollection cgtEvents)
         {
             _Handlers.Add(typeof(Aquisition), new AquisitionHandler(holdings, cashAccount));
-            _Handlers.Add(typeof(Disposal), new DisposalHandler(holdings, cashAccount));
+            _Handlers.Add(typeof(Disposal), new DisposalHandler(holdings, cashAccount, cgtEvents));
             _Handlers.Add(typeof(CashTransaction), new CashTransactionHandler(cashAccount));
             _Handlers.Add(typeof(OpeningBalance), new OpeningBalanceHandler(holdings, cashAccount));
             _Handlers.Add(typeof(IncomeReceived), new IncomeReceivedHandler(holdings, cashAccount));

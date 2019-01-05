@@ -12,7 +12,8 @@ namespace PortfolioManager.RestApi.Portfolios
             public decimal UnfrankedAmount { get; set; }
             public decimal FrankedAmount { get; set; }
             public decimal FrankingCredits { get; set; }
-            public decimal TotalAmount { get; set; }
+            public decimal NettIncome { get; set; }
+            public decimal GrossIncome { get; set; }
         }
 
         public List<IncomeItem> Income { get; } = new List<IncomeItem>();

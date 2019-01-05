@@ -78,12 +78,11 @@ namespace PortfolioManager.UI.ViewModels
             {
                 var parcelAuditItem = new ParcelCostBaseAuditViewItem()
                 {
-                    TransactionType = cgtEvent.TransactionType.ToString(),
                     Date = cgtEvent.Date,
+                    Description = cgtEvent.Description,
                     Units = cgtEvent.Units,
                     Amount = cgtEvent.CostBaseChange,
-                    CostBase = cgtEvent.CostBase,
-                    Comment = cgtEvent.Comment
+                    CostBase = cgtEvent.CostBase
                 };
 
                 ParcelAudit.Add(parcelAuditItem);
@@ -93,11 +92,11 @@ namespace PortfolioManager.UI.ViewModels
 
     class ParcelCostBaseAuditViewItem
     {
-        public string TransactionType { get; set; }
         public DateTime Date { get; set; }
+        public string Description { get; set; }
         public int Units { get; set; }
         public decimal Amount { get; set; }
         public decimal CostBase { get; set; }
-        public string Comment { get; set; }
+        
     }
 }

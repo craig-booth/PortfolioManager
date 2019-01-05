@@ -6,7 +6,7 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.RestApi.Portfolios
 {
-    public class CGTLiabilityResponse
+    public class CgtLiabilityResponse
     {
         public decimal CurrentYearCapitalGainsOther { get; set; }
         public decimal CurrentYearCapitalGainsDiscounted { get; set; }
@@ -22,9 +22,9 @@ namespace PortfolioManager.RestApi.Portfolios
         public decimal NetCapitalGainDiscounted { get; set; }
         public decimal NetCapitalGainTotal { get; set; }
 
-        public List<CGTLiabilityEvent> Events { get; } = new List<CGTLiabilityEvent>();
+        public List<CgtLiabilityEvent> Events { get; } = new List<CgtLiabilityEvent>();
 
-        public class CGTLiabilityEvent
+        public class CgtLiabilityEvent
         {
             public Stock Stock { get; set; }
             public DateTime EventDate { get; set; }

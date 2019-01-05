@@ -24,22 +24,22 @@ namespace PortfolioManager.Domain.Transactions
             var holding = _Holdings.Get(aquisition.Stock.Id);
             if (holding == null)
             {
-                holding = _Holdings.Add(aquisition.Stock, aquisition.TransactionDate);
+                holding = _Holdings.Add(aquisition.Stock, aquisition.Date);
             }
 
             decimal cost = aquisition.Units * aquisition.AveragePrice;
             decimal amountPaid = cost + aquisition.TransactionCosts;
             decimal costBase = amountPaid;
 
-            holding.AddParcel(aquisition.TransactionDate, aquisition.TransactionDate, aquisition.Units, amountPaid, costBase);
+            holding.AddParcel(aquisition.Date, aquisition.Date, aquisition.Units, amountPaid, costBase, transaction);
 
             if (aquisition.CreateCashTransaction)
             {
-                var asxCode = aquisition.Stock.Properties[aquisition.TransactionDate].ASXCode;
-                _CashAccount.Transfer(aquisition.TransactionDate, -cost, String.Format("Purchase of {0}", asxCode));
+                var asxCode = aquisition.Stock.Properties[aquisition.Date].ASXCode;
+                _CashAccount.Transfer(aquisition.Date, -cost, String.Format("Purchase of {0}", asxCode));
 
                 if (aquisition.TransactionCosts > 0.00m)
-                    _CashAccount.FeeDeducted(aquisition.TransactionDate, aquisition.TransactionCosts, String.Format("Brokerage for purchase of {0}", asxCode));
+                    _CashAccount.FeeDeducted(aquisition.Date, aquisition.TransactionCosts, String.Format("Brokerage for purchase of {0}", asxCode));
             }
         }
 

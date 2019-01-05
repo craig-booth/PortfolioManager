@@ -10,6 +10,8 @@ using AutoMapper;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Transactions;
+using PortfolioManager.Domain.Utils;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mapping;
 
@@ -185,10 +187,37 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet]
         public ActionResult<SimpleUnrealisedGainsResponse> GetCapitalGains(Guid? stock, DateTime? date)
         {
-            if (date == null)
-                date = DateTime.Today;
+            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
 
             var response = new SimpleUnrealisedGainsResponse();
+
+            foreach (var holding in _Portfolio.Holdings.All(requestedDate))
+            {
+                foreach (var parcel in holding.Parcels(requestedDate))
+                {
+                    var properties = parcel.Properties[requestedDate];
+
+                    var value = properties.Units * holding.Stock.GetPrice(requestedDate);
+                    var capitalGain = value - properties.CostBase;
+                    var discountMethod = CgtCalculator.CgtMethodForParcel(parcel.AquisitionDate, requestedDate);
+                    var discoutedGain = (discountMethod == CGTMethod.Discount) ? CgtCalculator.CgtDiscount(capitalGain) : capitalGain;
+
+                    var unrealisedGain = new SimpleUnrealisedGainsItem()
+                    {
+                        Stock = holding.Stock.Convert(requestedDate),
+                        AquisitionDate = parcel.AquisitionDate,
+                        Units = properties.Units,
+                        CostBase = properties.CostBase,
+                        MarketValue = value,
+                        CapitalGain = capitalGain,
+                        DiscoutedGain = discoutedGain,
+                        DiscountMethod = discountMethod
+                    };
+
+                    response.UnrealisedGains.Add(unrealisedGain);
+
+                }
+            }
 
             return response;
         }
@@ -199,10 +228,56 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet]
         public ActionResult<DetailedUnrealisedGainsResponse> GetDetailedCapitalGains(Guid? stock, DateTime? date)
         {
-            if (date == null)
-                date = DateTime.Today;
+            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
 
             var response = new DetailedUnrealisedGainsResponse();
+
+            foreach (var holding in _Portfolio.Holdings.All(requestedDate))
+            {
+                foreach (var parcel in holding.Parcels(requestedDate))
+                {
+                    var properties = parcel.Properties[requestedDate];
+
+                    var value = properties.Units * holding.Stock.GetPrice(requestedDate);
+                    var capitalGain = value - properties.CostBase;
+                    var discountMethod = CgtCalculator.CgtMethodForParcel(parcel.AquisitionDate, requestedDate);
+                    var discoutedGain = (discountMethod == CGTMethod.Discount) ? CgtCalculator.CgtDiscount(capitalGain) : capitalGain;
+
+                    var unrealisedGain = new DetailedUnrealisedGainsItem()
+                    {
+                        Stock = holding.Stock.Convert(requestedDate),
+                        AquisitionDate = parcel.AquisitionDate,
+                        Units = properties.Units,
+                        CostBase = properties.CostBase,
+                        MarketValue = value,
+                        CapitalGain = capitalGain,
+                        DiscoutedGain = discoutedGain,
+                        DiscountMethod = discountMethod
+                    };
+
+                    int units = 0;
+                    decimal costBase = 0.00m;
+                    foreach (var auditRecord in parcel.Audit.TakeWhile(x => x.Date <= date))
+                    {
+                        units += auditRecord.UnitCountChange;
+                        costBase += auditRecord.CostBaseChange;
+
+                        var cgtEvent = new DetailedUnrealisedGainsItem.CGTEventItem()
+                        {                           
+                            Date = auditRecord.Date,
+                            Description = auditRecord.Transaction.Description,
+                            Units = units,
+                            CostBaseChange = auditRecord.CostBaseChange,
+                            CostBase = costBase,
+                        };
+
+                        unrealisedGain.CGTEvents.Add(cgtEvent);
+                    }
+
+                    response.UnrealisedGains.Add(unrealisedGain);
+
+                }
+            }
 
             return response;
         }
@@ -210,11 +285,59 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: cgtliability?fromDate&toDate
         [Route("cgtliability")]
         [HttpGet]
-        public ActionResult<CGTLiabilityResponse> GetCGTLiability(DateTime? fromDate, DateTime? toDate)
+        public ActionResult<CgtLiabilityResponse> GetCGTLiability(DateTime? fromDate, DateTime? toDate)
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            var response = new CGTLiabilityResponse();
+            var response = new CgtLiabilityResponse();
+
+            // Get a list of all the cgt events for the year
+            var cgtEvents = _Portfolio.CgtEvents.InDateRange(dateRange);
+            foreach (var cgtEvent in cgtEvents)
+            {
+                var item = new CgtLiabilityResponse.CgtLiabilityEvent()
+                {
+                    Stock = cgtEvent.Stock.Convert(cgtEvent.Date),
+                    EventDate = cgtEvent.Date,
+                    CostBase = cgtEvent.CostBase,
+                    AmountReceived = cgtEvent.AmountReceived,
+                    CapitalGain = cgtEvent.CapitalGain,
+                    Method = cgtEvent.CgtMethod
+                };
+
+                response.Events.Add(item);
+            
+                // Apportion capital gains
+                if (cgtEvent.CapitalGain < 0)
+                    response.CurrentYearCapitalLossesTotal += -cgtEvent.CapitalGain;
+                else if (cgtEvent.CgtMethod == CGTMethod.Discount)
+                    response.CurrentYearCapitalGainsDiscounted += cgtEvent.CapitalGain;
+                else
+                    response.CurrentYearCapitalGainsOther += cgtEvent.CapitalGain;
+            }
+
+            response.CurrentYearCapitalGainsTotal = response.CurrentYearCapitalGainsOther + response.CurrentYearCapitalGainsDiscounted;
+
+            if (response.CurrentYearCapitalGainsOther > response.CurrentYearCapitalLossesTotal)
+                response.CurrentYearCapitalLossesOther = response.CurrentYearCapitalLossesTotal;
+            else
+                response.CurrentYearCapitalLossesOther = response.CurrentYearCapitalGainsOther;
+
+            if (response.CurrentYearCapitalGainsOther > response.CurrentYearCapitalLossesTotal)
+                response.CurrentYearCapitalLossesDiscounted = 0.00m;
+            else
+                response.CurrentYearCapitalLossesDiscounted = response.CurrentYearCapitalLossesTotal - response.CurrentYearCapitalGainsOther;
+
+            response.GrossCapitalGainOther = response.CurrentYearCapitalGainsOther - response.CurrentYearCapitalLossesOther;
+            response.GrossCapitalGainDiscounted = response.CurrentYearCapitalGainsDiscounted - response.CurrentYearCapitalLossesDiscounted;
+            response.GrossCapitalGainTotal = response.GrossCapitalGainOther + response.GrossCapitalGainDiscounted;
+            if (response.GrossCapitalGainDiscounted > 0)
+                response.Discount = (response.GrossCapitalGainDiscounted / 2).ToCurrency(RoundingRule.Round);
+            else
+                response.Discount = 0.00m;
+            response.NetCapitalGainOther = response.GrossCapitalGainOther;
+            response.NetCapitalGainDiscounted = response.GrossCapitalGainDiscounted - response.Discount;
+            response.NetCapitalGainTotal = response.NetCapitalGainOther + response.NetCapitalGainDiscounted;
 
             return response;
         }
@@ -234,6 +357,35 @@ namespace PortfolioManager.Web.Controllers.v2
             response.ClosingBalance = _Portfolio.CashAccount.Balance(dateRange.ToDate);
 
             response.Transactions.AddRange(_Mapper.Map<IEnumerable<CashAccountTransactionsResponse.TransactionItem>>(transactions));
+
+            return response;
+        }
+
+        // GET: income?fromDate&toDate
+        [Route("income")]
+        [HttpGet]
+        public ActionResult<IncomeResponse> GetIncome(DateTime? fromDate, DateTime? toDate)
+        {
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            var response = new IncomeResponse();
+
+            var incomes = _Portfolio.Transactions.InDateRange(dateRange)
+                .Where(x => x is IncomeReceived)
+                .Select(x => x as IncomeReceived)
+                .GroupBy(x => x.Stock,
+                        x => x,
+                        (key, result) => new IncomeResponse.IncomeItem()
+                        {
+                            Stock = key.Convert(dateRange.ToDate),
+                            UnfrankedAmount = result.Sum(x => x.UnfrankedAmount),
+                            FrankedAmount = result.Sum(x => x.FrankedAmount),
+                            FrankingCredits = result.Sum(x => x.FrankingCredits),
+                            NettIncome = result.Sum(x => x.CashIncome),
+                            GrossIncome = result.Sum(x => x.TotalIncome)
+                        });
+
+            response.Income.AddRange(incomes);
 
             return response;
         }

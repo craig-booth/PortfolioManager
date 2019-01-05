@@ -77,9 +77,9 @@ namespace PortfolioManager.RestApi.Client
             return await GetAsync<DetailedUnrealisedGainsResponse>("/api/v2/portfolio/" + PortfolioId + "/capitalgains?stock=" + stock.ToString() + "&date=" + date.ToIsoDateString());
         }
 
-        public async Task<CGTLiabilityResponse> GetCGTLiability(DateRange dateRange)
+        public async Task<CgtLiabilityResponse> GetCGTLiability(DateRange dateRange)
         {
-            return await GetAsync<CGTLiabilityResponse>("/api/v2/portfolio/" + PortfolioId + "/cgtliability?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<CgtLiabilityResponse>("/api/v2/portfolio/" + PortfolioId + "/cgtliability?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<CashAccountTransactionsResponse> GetCashAccount(DateRange dateRange)

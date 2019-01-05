@@ -4,6 +4,7 @@ using System.Linq;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Transactions;
 
 namespace PortfolioManager.Domain.Portfolios
 {
@@ -11,7 +12,8 @@ namespace PortfolioManager.Domain.Portfolios
     {
         public Stock Stock { get; set; }
 
-        public EffectiveProperties<HoldingProperties> Properties = new EffectiveProperties<HoldingProperties>();
+        private EffectiveProperties<HoldingProperties> _Properties = new EffectiveProperties<HoldingProperties>();
+        public IEffectiveProperties<HoldingProperties> Properties => _Properties;
 
         private Dictionary<Guid, Parcel> _Parcels = new Dictionary<Guid, Parcel>();
 
@@ -20,7 +22,7 @@ namespace PortfolioManager.Domain.Portfolios
         {
             Stock = stock;
             
-            Properties.Change(fromDate, new HoldingProperties(0, 0.00m, 0.00m));
+            _Properties.Change(fromDate, new HoldingProperties(0, 0.00m, 0.00m));
         }
 
         public IEnumerable<Parcel> Parcels(DateTime date)
@@ -28,20 +30,19 @@ namespace PortfolioManager.Domain.Portfolios
             return _Parcels.Values.Where(x => x.IsEffectiveAt(date));
         }
 
-        public void AddParcel(DateTime date, DateTime aquisitionDate, int units, decimal amount, decimal costBase)
+        public void AddParcel(DateTime date, DateTime aquisitionDate, int units, decimal amount, decimal costBase, Transaction transaction)
         {
-            var parcel = new Parcel(Guid.NewGuid(), date, aquisitionDate, new ParcelProperties(units, amount, costBase));
+            var parcel = new Parcel(Guid.NewGuid(), date, aquisitionDate, new ParcelProperties(units, amount, costBase), transaction);
 
             _Parcels.Add(parcel.Id, parcel);
 
             var exisingProperties = Properties[date];
             var newProperties = new HoldingProperties(exisingProperties.Units + units, exisingProperties.Amount + amount, exisingProperties.CostBase + costBase);
-            Properties.Change(date, newProperties);
+            _Properties.Change(date, newProperties);
         }
 
-        public void DisposeOfParcel(Guid id, DateTime date, int units, decimal amount)
-        {
-            var parcel = _Parcels[id];
+        public void DisposeOfParcel(Parcel parcel, DateTime date, int units, decimal amount, Transaction transaction)
+        {        
             var parcelProperties = parcel.Properties[date];
 
             if (units > parcelProperties.Units)
@@ -49,17 +50,11 @@ namespace PortfolioManager.Domain.Portfolios
 
             var costBase = 0.00m;
             if (units == parcelProperties.Units)
-            {
                 costBase = parcelProperties.CostBase;
-                parcel.End(date);
-            }
             else
-            {
                 costBase = (parcelProperties.CostBase * ((decimal)units / parcelProperties.Units)).ToCurrency(RoundingRule.Round);
 
-                var newParcelProperties = new ParcelProperties(parcelProperties.Units - units, parcelProperties.Amount - amount, parcelProperties.CostBase - costBase);
-                parcel.Properties.Change(date, newParcelProperties);
-            }
+            parcel.Change(date, -units, -amount, -costBase, transaction);
 
             var existingProperties = Properties[date];
             if (units == existingProperties.Units)
@@ -69,7 +64,7 @@ namespace PortfolioManager.Domain.Portfolios
             else
             {                
                 var newProperties = new HoldingProperties(existingProperties.Units - units, existingProperties.Amount - amount, existingProperties.CostBase - costBase);
-                Properties.Change(date, newProperties);
+                _Properties.Change(date, newProperties);
             }
         }
 

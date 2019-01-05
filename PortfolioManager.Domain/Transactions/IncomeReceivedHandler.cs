@@ -49,7 +49,7 @@ namespace PortfolioManager.Domain.Transactions
             if (incomeReceived.CreateCashTransaction)
             {
                 var asxCode = incomeReceived.Stock.Properties[incomeReceived.RecordDate].ASXCode;
-                _CashAccount.Transfer(incomeReceived.TransactionDate, incomeReceived.CashIncome, String.Format("Distribution for {0}", asxCode));
+                _CashAccount.Transfer(incomeReceived.Date, incomeReceived.CashIncome, String.Format("Distribution for {0}", asxCode));
             }
 
             // UpdateDRPCashBalance(unitOfWork, stock, incomeReceived.TransactionDate, incomeReceived.DRPCashBalance);
