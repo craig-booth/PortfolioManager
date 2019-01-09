@@ -19,6 +19,11 @@ namespace PortfolioManager.RestApi.Client
             PortfolioId = portfolioId;
         }
 
+        public async Task<PortfolioPropertiesResponse> GetProperties()
+        {
+            return await GetAsync<PortfolioPropertiesResponse>("/api/v2/portfolio/" + PortfolioId + "/properties");
+        }
+
         public async Task<PortfolioSummaryResponse> GetSummary(DateTime date)
         {
             return await GetAsync<PortfolioSummaryResponse>("/api/v2/portfolio/" + PortfolioId + "/summary?date=" + date.ToIsoDateString());
@@ -43,18 +48,9 @@ namespace PortfolioManager.RestApi.Client
             return await GetAsync<PortfolioValueResponse>(url);
         }
 
-        public async Task<PortfolioValueResponse> GetValue(Guid stock, DateRange dateRange, ValueFrequency frequency)
+        public async Task<TransactionsResponse> GetTransactions(DateRange dateRange)
         {
-            var url = "/api/v2/portfolio/" + PortfolioId + "/value?stock=" + stock.ToString() + "&fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString();
-
-            if (frequency == ValueFrequency.Weekly)
-                url += "&frequency=week";
-            else if (frequency == ValueFrequency.Monthly)
-                url += "&frequency=month";
-            else
-                url += "&frequency=day";
-
-            return await GetAsync<PortfolioValueResponse>(url);
+            return await GetAsync<TransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/transactions?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<SimpleUnrealisedGainsResponse> GetCapitalGains(DateTime date)
@@ -62,19 +58,9 @@ namespace PortfolioManager.RestApi.Client
             return await GetAsync<SimpleUnrealisedGainsResponse>("/api/v2/portfolio/" + PortfolioId + "/capitalgains?date=" + date.ToIsoDateString());
         }
 
-        public async Task<SimpleUnrealisedGainsResponse> GetCapitalGains(Guid stock, DateTime date)
-        {
-            return await GetAsync<SimpleUnrealisedGainsResponse>("/api/v2/portfolio/" + PortfolioId + "/capitalgains?stock=" + stock.ToString() + "&date=" + date.ToIsoDateString());
-        }
-
         public async Task<DetailedUnrealisedGainsResponse> GetDetailedCapitalGains(DateTime date)
         {
             return await GetAsync<DetailedUnrealisedGainsResponse>("/api/v2/portfolio/" + PortfolioId + "/detailedcapitalgains?date=" + date.ToIsoDateString());
-        }
-
-        public async Task<DetailedUnrealisedGainsResponse> GetDetailedCapitalGains(Guid stock, DateTime date)
-        {
-            return await GetAsync<DetailedUnrealisedGainsResponse>("/api/v2/portfolio/" + PortfolioId + "/capitalgains?stock=" + stock.ToString() + "&date=" + date.ToIsoDateString());
         }
 
         public async Task<CgtLiabilityResponse> GetCGTLiability(DateRange dateRange)

@@ -156,7 +156,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
             SetControllerContext(controller);
 
-            var response = controller.GetTransactions(null, fromDate, toDate);
+            var response = controller.GetTransactions(fromDate, toDate);
             SaveActualResult(response.Value, fileName, new Type[]
                         {
                             typeof(RestApi.Transactions.Aquisition),
@@ -182,7 +182,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
             SetControllerContext(controller);
 
-            var response = controller.GetDetailedCapitalGains(null, date);
+            var response = controller.GetDetailedCapitalGains(date);
             SaveActualResult(response.Value, fileName);
 
             Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.DetailedUnrealisedGainsResponse), expectedFile));

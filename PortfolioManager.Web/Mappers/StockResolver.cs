@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using PortfolioManager.Domain.Stocks;
 
-namespace PortfolioManager.Web.Mapping
+namespace PortfolioManager.Web.Mappers
 {
     public class StockResolver : IValueResolver<RestApi.Transactions.Transaction, Domain.Transactions.Transaction, Stock>
     {

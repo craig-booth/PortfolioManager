@@ -34,7 +34,7 @@ using PortfolioManager.Domain.Transactions;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Mongodb;
 
-using PortfolioManager.Web.Mapping;
+using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Converters;
 
 namespace PortfolioManager.Web

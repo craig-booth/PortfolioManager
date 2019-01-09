@@ -8,7 +8,7 @@ using AutoMapper;
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Transactions;
 
-namespace PortfolioManager.Web.Mapping
+namespace PortfolioManager.Web.Mappers
 {
     public class DomainToRestApiMappingProfile : Profile
     {
