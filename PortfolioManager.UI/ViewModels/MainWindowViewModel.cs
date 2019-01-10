@@ -7,8 +7,8 @@ using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
 
+using PortfolioManager.UI.Models;
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
@@ -16,7 +16,7 @@ namespace PortfolioManager.UI.ViewModels
 {
     class MainWindowViewModel : NotifyClass
     {
-        private readonly StockItem _AllCompanies = new StockItem(Guid.Empty, "", "All Companies");
+        private readonly Stock _AllCompanies = new Stock(Guid.Empty, "", "All Companies");
 
         private RestWebClient _RestWebClient;
         private RestClient _RestClient;
@@ -73,7 +73,7 @@ namespace PortfolioManager.UI.ViewModels
         public ViewParameter ViewParameter { get; set; }
 
         public ObservableCollection<DescribedObject<int>> FinancialYears { get; set; }
-        public ObservableCollection<DescribedObject<StockItem>> OwnedStocks { get; set; }
+        public ObservableCollection<DescribedObject<Stock>> OwnedStocks { get; set; }
 
         private ApplicationSettings _Settings;
         public ApplicationSettings Settings
@@ -96,7 +96,7 @@ namespace PortfolioManager.UI.ViewModels
             _Modules = new List<Module>();
 
             FinancialYears = new ObservableCollection<DescribedObject<int>>();
-            OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
+            OwnedStocks = new ObservableCollection<DescribedObject<Stock>>();
 
 #if DEBUG 
             var url = "https://docker.local:8443";
@@ -182,10 +182,10 @@ namespace PortfolioManager.UI.ViewModels
             if (!Path.IsPathRooted(portfolioDatabasePath))
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
 
-            var responce = await _RestWebClient.GetPortfolioPropertiesAsync();
+            var response = await _RestClient.Portfolio.GetProperties();
           
-            PopulateFinancialYearList(responce.StartDate);
-            PopulateStockList(responce.StocksHeld);
+            PopulateFinancialYearList(response.StartDate);
+            PopulateStockList(response.StocksHeld);
         }
    
         private void PopulateFinancialYearList(DateTime startDate)
@@ -212,16 +212,16 @@ namespace PortfolioManager.UI.ViewModels
             ViewParameter.FinancialYear = currentFinancialYear;
         }
 
-        private void PopulateStockList(IEnumerable<StockItem> stocks)
+        private void PopulateStockList(IEnumerable<RestApi.Portfolios.Stock> stocks)
         {
             OwnedStocks.Clear();
 
             // Add entry to entire portfolio
-            OwnedStocks.Add(new DescribedObject<StockItem>(_AllCompanies, "All Companies"));
+            OwnedStocks.Add(new DescribedObject<Stock>(_AllCompanies, "All Companies"));
 
-            foreach (var stock in stocks.OrderBy(x => x.FormattedCompanyName()))
+            foreach (var stock in stocks.Select(x => new Stock(x)).OrderBy(x => x.FormattedCompanyName))
             {
-                OwnedStocks.Add(new DescribedObject<StockItem>(stock, stock.FormattedCompanyName()));
+                OwnedStocks.Add(new DescribedObject<Stock>(stock, stock.FormattedCompanyName));
             }
 
             ViewParameter.Stock = _AllCompanies;

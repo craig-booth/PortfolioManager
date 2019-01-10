@@ -1,7 +1,7 @@
 ﻿
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Models;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -11,7 +11,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransactionItem cashTransaction, RestWebClient restWebClient, RestClient restClient)
+        public CashTransactionViewModel(CashTransaction cashTransaction, RestWebClient restWebClient, RestClient restClient)
             : base(cashTransaction, TransactionStockSelection.None, restWebClient, restClient)
         {
             
@@ -23,8 +23,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                TransactionType = ((CashTransactionItem)Transaction).CashTransactionType;
-                Amount = ((CashTransactionItem)Transaction).Amount;
+                TransactionType = ((CashTransaction)Transaction).CashTransactionType;
+                Amount = ((CashTransaction)Transaction).Amount;
              }
             else
             {
@@ -36,11 +36,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new CashTransactionItem();
+                Transaction = new CashTransaction();
 
             base.CopyFieldsToTransaction();
 
-            var cashTransaction = (CashTransactionItem)Transaction;
+            var cashTransaction = (CashTransaction)Transaction;
             cashTransaction.TransactionDate = RecordDate;
             cashTransaction.CashTransactionType = TransactionType;
             cashTransaction.Amount = Amount;

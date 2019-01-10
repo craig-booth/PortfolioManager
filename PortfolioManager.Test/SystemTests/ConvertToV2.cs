@@ -27,7 +27,6 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Web;
-using PortfolioManager.Web.Controllers.v1;
 using PortfolioManager.Web.Controllers.v2;
 using PortfolioManager.Web.Converters;
 

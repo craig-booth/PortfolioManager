@@ -1,8 +1,8 @@
 ﻿using System;
 
 using PortfolioManager.Common;
+using PortfolioManager.UI.Models;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.Utilities
 {
@@ -11,8 +11,8 @@ namespace PortfolioManager.UI.Utilities
         public RestWebClient RestWebClient;
         public RestClient RestClient;
 
-        private StockItem _Stock;
-        public StockItem Stock
+        private Stock _Stock;
+        public Stock Stock
         {
             get
             {

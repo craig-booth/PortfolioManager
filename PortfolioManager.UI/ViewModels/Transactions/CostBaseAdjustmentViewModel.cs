@@ -1,6 +1,6 @@
 ﻿
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Models;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -25,7 +25,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransactionItem costBaseAdjustment, RestWebClient restWebClient, RestClient restClient)
+        public CostBaseAdjustmentViewModel(CostBaseAdjustmentTransaction costBaseAdjustment, RestWebClient restWebClient, RestClient restClient)
             : base(costBaseAdjustment, TransactionStockSelection.Holdings, restWebClient, restClient)
         {
 
@@ -36,7 +36,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             base.CopyTransactionToFields();
 
             if (Transaction != null)
-                Percentage = ((CostBaseAdjustmentTransactionItem)Transaction).Percentage;
+                Percentage = ((CostBaseAdjustmentTransaction)Transaction).Percentage;
             else
                 Percentage = 0.00m;
         }
@@ -44,11 +44,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new CostBaseAdjustmentTransactionItem();
+                Transaction = new CostBaseAdjustmentTransaction();
 
             base.CopyFieldsToTransaction();
 
-            var costBaseAdjustment = (CostBaseAdjustmentTransactionItem)Transaction;
+            var costBaseAdjustment = (CostBaseAdjustmentTransaction)Transaction;
             costBaseAdjustment.TransactionDate = RecordDate;
             costBaseAdjustment.Percentage = Percentage;
         }

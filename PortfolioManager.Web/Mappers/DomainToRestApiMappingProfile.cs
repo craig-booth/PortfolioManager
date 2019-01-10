@@ -51,7 +51,7 @@ namespace PortfolioManager.Web.Mappers
                 return new RestApi.Portfolios.Stock()
                 {
                     Id = Guid.Empty,
-                    ASXCode = "",
+                    AsxCode = "",
                     Name = "",
                     Category = AssetCategory.Cash
                 };
@@ -92,7 +92,7 @@ namespace PortfolioManager.Web.Mappers
             return new RestApi.Portfolios.Stock()
             {
                 Id = source.Id,
-                ASXCode = properties.ASXCode,
+                AsxCode = properties.ASXCode,
                 Name = properties.Name,
                 Category = properties.Category
             };

@@ -24,8 +24,8 @@ namespace PortfolioManager.UI.Utilities
 
         public static string FormattedCompanyName(this Stock stock)
         {
-            if (stock.ASXCode != "")
-                return string.Format("{0} ({1})", stock.Name, stock.ASXCode);
+            if (stock.AsxCode != "")
+                return string.Format("{0} ({1})", stock.Name, stock.AsxCode);
             else
                 return stock.Name;
         }
@@ -33,9 +33,9 @@ namespace PortfolioManager.UI.Utilities
         public static string FormattedASXCode(this Stock stock)
         {
             if (stock.Name != "")
-                return string.Format("{0} ({1})", stock.ASXCode, stock.Name);
+                return string.Format("{0} ({1})", stock.AsxCode, stock.Name);
             else
-                return stock.ASXCode;
+                return stock.AsxCode;
         }
     }
 }

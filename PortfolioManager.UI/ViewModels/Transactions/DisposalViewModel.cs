@@ -2,7 +2,7 @@
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Models;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -37,7 +37,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             var availableUnits = responce.Holding.Units;
             if (Transaction != null)
-                availableUnits += ((DisposalTransactionItem)Transaction).Units;
+                availableUnits += ((DisposalTransaction)Transaction).Units;
 
             if (_Units > availableUnits)
                 AddError(String.Format("Only {0} units available", availableUnits), "Units");
@@ -84,7 +84,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(DisposalTransactionItem disposal, RestWebClient restWebClient, RestClient restClient)
+        public DisposalViewModel(DisposalTransaction disposal, RestWebClient restWebClient, RestClient restClient)
             : base(disposal, TransactionStockSelection.TradeableHoldings, restWebClient, restClient)
         {
             
@@ -96,11 +96,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                Units = ((DisposalTransactionItem)Transaction).Units;
-                AveragePrice = ((DisposalTransactionItem)Transaction).AveragePrice;
-                TransactionCosts = ((DisposalTransactionItem)Transaction).TransactionCosts;
-                CGTMethod = ((DisposalTransactionItem)Transaction).CGTMethod;
-                CreateCashTransaction = ((DisposalTransactionItem)Transaction).CreateCashTransaction;
+                Units = ((DisposalTransaction)Transaction).Units;
+                AveragePrice = ((DisposalTransaction)Transaction).AveragePrice;
+                TransactionCosts = ((DisposalTransaction)Transaction).TransactionCosts;
+                CGTMethod = ((DisposalTransaction)Transaction).CGTMethod;
+                CreateCashTransaction = ((DisposalTransaction)Transaction).CreateCashTransaction;
             }
             else
             {
@@ -115,11 +115,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new DisposalTransactionItem();
+                Transaction = new DisposalTransaction();
 
             base.CopyFieldsToTransaction();
 
-            var disposal = (DisposalTransactionItem)Transaction;
+            var disposal = (DisposalTransaction)Transaction;
             disposal.TransactionDate = RecordDate;
             disposal.Units = Units;
             disposal.AveragePrice = AveragePrice;

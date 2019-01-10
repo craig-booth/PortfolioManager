@@ -1,6 +1,6 @@
 ﻿
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.UI.Models;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -46,7 +46,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransactionItem unitCostAdjustment, RestWebClient restWebClient, RestClient restClient)
+        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransaction unitCostAdjustment, RestWebClient restWebClient, RestClient restClient)
             : base(unitCostAdjustment, TransactionStockSelection.Holdings, restWebClient, restClient)
         {
 
@@ -58,8 +58,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (Transaction != null)
             {
-                OriginalUnits = ((UnitCountAdjustmentTransactionItem)Transaction).OriginalUnits;
-                NewUnits = ((UnitCountAdjustmentTransactionItem)Transaction).NewUnits;
+                OriginalUnits = ((UnitCountAdjustmentTransaction)Transaction).OriginalUnits;
+                NewUnits = ((UnitCountAdjustmentTransaction)Transaction).NewUnits;
             }
             else
             {
@@ -71,11 +71,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected override void CopyFieldsToTransaction()
         {
             if (Transaction == null)
-                Transaction = new UnitCountAdjustmentTransactionItem();
+                Transaction = new UnitCountAdjustmentTransaction();
 
             base.CopyFieldsToTransaction();
 
-            var unitCountAdjustment = (UnitCountAdjustmentTransactionItem)Transaction;
+            var unitCountAdjustment = (UnitCountAdjustmentTransaction)Transaction;
             unitCountAdjustment.TransactionDate = RecordDate;
             unitCountAdjustment.OriginalUnits = OriginalUnits;
             unitCountAdjustment.NewUnits = NewUnits;

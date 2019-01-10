@@ -89,6 +89,16 @@
     <Compile Include="Controls\MarginSetter.cs" />
     <Compile Include="Controls\PieChartLegend.xaml.cs" />
     <Compile Include="Controls\SelectionChangedCommand.cs" />
+    <Compile Include="Models\AquisitionTransaction.cs" />
+    <Compile Include="Models\CashTransaction.cs" />
+    <Compile Include="Models\CostBaseAdjustmentTransaction.cs" />
+    <Compile Include="Models\DisposalTransaction.cs" />
+    <Compile Include="Models\IncomeTransaction.cs" />
+    <Compile Include="Models\OpeningBalanceTransaction.cs" />
+    <Compile Include="Models\ReturnOfCapitalTransaction.cs" />
+    <Compile Include="Models\Stock.cs" />
+    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\UnitCountAdjustmentTransaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
