@@ -114,6 +114,20 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCapitalGainsService(_Portfolio);
 
             return service.GetDetailedCapitalGains(holding, requestedDate);
-        } 
+        }
+
+        // GET: corporateactions
+        [Route("{id: guid}/corporateactions")]
+        [HttpGet]
+        public ActionResult<CorporateActionsResponse> GetCorporateActions()
+        {
+            var holding = _Portfolio.Holdings.Get(id);
+            if (holding == null)
+                return NotFound();
+
+            var service = new PortfolioCorporateActionsService(_Portfolio);
+
+            return service.GetCorporateActions(holding);
+        }
     }
 }
