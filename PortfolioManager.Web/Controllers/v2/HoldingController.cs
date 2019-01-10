@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using AutoMapper;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain.Stocks;
+using PortfolioManager.RestApi.Portfolios;
+using PortfolioManager.Web.Services;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
@@ -14,16 +17,29 @@ namespace PortfolioManager.Web.Controllers.v2
     public class HoldingController : BasePortfolioController
     {
         private IMapper _Mapper;
+        private ITradingCalander _TradingCalander;
 
-        public HoldingController(IPortfolioCache portfolioCache, IMapper mapper)
+        public HoldingController(IPortfolioCache portfolioCache, ITradingCalander tradingCalander, IMapper mapper)
             : base(portfolioCache)
         {
             _Mapper = mapper;
+            _TradingCalander = tradingCalander;
         }
 
-        // GET:  holdings/id
+        // GET:
+        [HttpGet]
+        public ActionResult<List<Holding>> Get([FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        {
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+            var holdings = _Portfolio.Holdings.All(dateRange);
+
+            return _Mapper.Map<List<RestApi.Portfolios.Holding>>(holdings, opts => opts.Items["date"] = dateRange.ToDate);
+        }
+
+        // GET:  id
         [HttpGet("{id:guid}")]
-        public ActionResult<RestApi.Portfolios.Holding> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
+        public ActionResult<Holding> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
             var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
 
@@ -35,15 +51,69 @@ namespace PortfolioManager.Web.Controllers.v2
             return _Mapper.Map<RestApi.Portfolios.Holding>(holding, opts => opts.Items["date"] = requestedDate);
         }
 
-        // GET:  holdings
+        // GET: id/value?fromDate&toDate
+        [Route("{id: guid}/value")]
         [HttpGet]
-        public ActionResult<List<RestApi.Portfolios.Holding>> Get([FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        public ActionResult<PortfolioValueResponse> GetValue(Guid id, DateTime? fromDate, DateTime? toDate, ValueFrequency? frequency)
         {
+            var holding = _Portfolio.Holdings.Get(id);
+            if (holding == null)
+                return NotFound();
+
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+            var requestedFrequency = (frequency != null) ? (ValueFrequency)frequency : ValueFrequency.Daily;
+
+            var service = new PortfolioValueService(_Portfolio, _TradingCalander);
+
+            return service.GetValue(holding, dateRange, requestedFrequency);
+        } 
+
+        // GET: transactions?fromDate&toDate
+        [Route("{id: guid}/transactions")]
+        [HttpGet]
+        public ActionResult<TransactionsResponse> GetTransactions(Guid id, DateTime? fromDate, DateTime? toDate)
+        {
+            var holding = _Portfolio.Holdings.Get(id);
+            if (holding == null)
+                return NotFound();
+
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            var holdings = _Portfolio.Holdings.All(dateRange);
+            var service = new PortfolioTransactionService(_Portfolio, _Mapper);
 
-            return _Mapper.Map<List<RestApi.Portfolios.Holding>>(holdings, opts => opts.Items["date"] = dateRange.ToDate);
-        }
+            return service.GetTransactions(holding, dateRange);
+        } 
+
+        // GET: capitalgains?date
+        [Route("{id: guid}/capitalgains")]
+        [HttpGet]
+        public ActionResult<SimpleUnrealisedGainsResponse> GetCapitalGains(Guid id, DateTime? date)
+        {
+            var holding = _Portfolio.Holdings.Get(id);
+            if (holding == null)
+                return NotFound();
+
+            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
+
+            var service = new PortfolioCapitalGainsService(_Portfolio);
+
+            return service.GetCapitalGains(holding, requestedDate);
+        } 
+
+        // GET: detailedcapitalgains?date
+        [Route("{id: guid}/detailedcapitalgains")]
+        [HttpGet]
+        public ActionResult<DetailedUnrealisedGainsResponse> GetDetailedCapitalGains(Guid id, DateTime? date)
+        {
+            var holding = _Portfolio.Holdings.Get(id);
+            if (holding == null)
+                return NotFound();
+
+            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
+
+            var service = new PortfolioCapitalGainsService(_Portfolio);
+
+            return service.GetDetailedCapitalGains(holding, requestedDate);
+        } 
     }
 }

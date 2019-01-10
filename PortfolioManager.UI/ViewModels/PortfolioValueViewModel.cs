@@ -49,7 +49,7 @@ namespace PortfolioManager.UI.ViewModels
             if (_Parameter.Stock.Id == Guid.Empty)
                 responce = await _Parameter.RestClient.Portfolio.GetValue(_Parameter.DateRange, valueFrequency);
             else
-                responce = await _Parameter.RestClient.Portfolio.GetValue(_Parameter.Stock.Id, _Parameter.DateRange, valueFrequency);
+                responce = await _Parameter.RestClient.Holdings.GetValue(_Parameter.Stock.Id, _Parameter.DateRange, valueFrequency);
             if (responce == null)
                 return;
 

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Formatting;
-
-using PortfolioManager.Common;
 
 namespace PortfolioManager.RestApi.Client
 {
@@ -17,6 +14,7 @@ namespace PortfolioManager.RestApi.Client
         public TradingCalanderResource TradingCalander { get; }
         public CorporateActionResource CorporateActions { get; }
         public PortfolioResource Portfolio { get; }
+        public HoldingResource Holdings { get; }
 
         public RestClient(string baseURL, Guid apiKey)
         {
@@ -30,6 +28,7 @@ namespace PortfolioManager.RestApi.Client
             TradingCalander = new TradingCalanderResource(_HttpClient);
             CorporateActions = new CorporateActionResource(_HttpClient);
             Portfolio = new PortfolioResource(Guid.Empty, _HttpClient);
-        }
+            Holdings = new HoldingResource(Guid.Empty, _HttpClient);
+    }
     }
 }

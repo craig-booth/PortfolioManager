@@ -12,8 +12,6 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Transactions;
 
-using PortfolioManager.Web.Mapping;
-
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/transactions")]

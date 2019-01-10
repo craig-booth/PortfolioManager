@@ -45,7 +45,7 @@ namespace PortfolioManager.UI.ViewModels
             if (_Parameter.Stock.Id == Guid.Empty)
                 responce = await _Parameter.RestClient.Portfolio.GetCapitalGains(_Parameter.Date);
             else
-                responce = await _Parameter.RestClient.Portfolio.GetCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await _Parameter.RestClient.Holdings.GetCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
             if (responce == null)
                 return;
 
