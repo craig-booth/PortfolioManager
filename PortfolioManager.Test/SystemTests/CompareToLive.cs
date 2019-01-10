@@ -25,7 +25,6 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Web;
-using PortfolioManager.Web.Controllers.v1;
 using PortfolioManager.Web.Controllers.v2;
 using PortfolioManager.Web.Converters;
 
@@ -70,10 +69,10 @@ namespace PortfolioManager.Test.SystemTests
             services.AddLogging();
             services.AddPortfolioManagerService(settings);
 
-            services.AddSingleton<Web.Controllers.v2.TransactionController>();
-            services.AddSingleton<Web.Controllers.v2.HoldingController>();
-            services.AddSingleton<Web.Controllers.v2.CorporateActionController>();
-            services.AddSingleton<Web.Controllers.v2.PortfolioController>();
+            services.AddSingleton<TransactionController>();
+            services.AddSingleton<HoldingController>();
+            services.AddSingleton<CorporateActionController>();
+            services.AddSingleton<PortfolioController>();
 
             _ServiceProvider = services.BuildServiceProvider();
 
@@ -105,7 +104,7 @@ namespace PortfolioManager.Test.SystemTests
             var transactions = serializer.Deserialize<List<RestApi.Transactions.Transaction>>(jsonReader);
             jsonFile.Close();
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); 
+            var controller = _ServiceProvider.GetRequiredService<TransactionController>(); 
             SetControllerContext(controller);
 
             controller.AddTransactions(transactions.Where(x => x != null).ToList());
@@ -153,7 +152,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Transactions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetTransactions(null, fromDate, toDate);
@@ -179,7 +178,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CapitalGain {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetDetailedCapitalGains(null, date);
@@ -194,7 +193,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CGTLiability {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetCGTLiability(fromDate, toDate);
@@ -209,7 +208,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CashTransactions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetCashAccountTransactions(fromDate, toDate);
@@ -224,7 +223,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("Holdings {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.HoldingController>();
+            var controller = _ServiceProvider.GetRequiredService<HoldingController>();
             SetControllerContext(controller);
 
             var response = controller.Get(null, date);
@@ -233,26 +232,13 @@ namespace PortfolioManager.Test.SystemTests
             Assert.That(response.Value, Is.EquivalentTo(typeof(List<RestApi.Portfolios.Holding>), expectedFile));
         }
 
-        [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDates")]
-        public async Task CompareTradeableHoldings(DateTime date)
-        {
-            var fileName = String.Format("TradeableHoldings {0:yyy-MM-dd}.xml", date);
-            var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
-
-            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
-            var response = await controller.GetHoldings(date, true);
-            SaveActualResult(response, fileName);
-
-            Assert.That(response, Is.EquivalentTo(typeof(HoldingsResponce), expectedFile));
-        }
-
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]
         public void CompareIncome(DateTime fromDate, DateTime toDate)
         {
             var fileName = String.Format("Income {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetIncome(fromDate, toDate);
@@ -267,7 +253,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioPerformance {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetPerformance(fromDate, toDate);
@@ -282,7 +268,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioSummary {0:yyy-MM-dd}.xml", date);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetSummary(date);
@@ -297,7 +283,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("PortfolioValue {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetValue(fromDate, toDate, RestApi.Portfolios.ValueFrequency.Daily);
@@ -351,7 +337,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = "PortfolioProperties.xml";
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.PortfolioController>();
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
             SetControllerContext(controller);
 
             var response = controller.GetProperties();
@@ -361,16 +347,18 @@ namespace PortfolioManager.Test.SystemTests
         }
 
         [Test]
-        public async Task CompareUnappliedCorporateActions()
+        public void CompareUnappliedCorporateActions()
         {
             var fileName = "UnappliedCorporateActions.xml";
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            var controller = new Web.Controllers.v1.PortfolioController(_ServiceProvider);
-            var response = await controller.GetUnappliedCorporateActions();
-            SaveActualResult(response, fileName);
+            var controller = _ServiceProvider.GetRequiredService<PortfolioController>();
+            SetControllerContext(controller);
 
-            Assert.That(response, Is.EquivalentTo(typeof(UnappliedCorporateActionsResponce), expectedFile));
+            var response = controller.GetCorporateActions();
+            SaveActualResult(response.Value, fileName);
+
+            Assert.That(response.Value, Is.EquivalentTo(typeof(RestApi.Portfolios.CorporateActionsResponse), expectedFile));
         }
 
     }

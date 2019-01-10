@@ -17,6 +17,9 @@ namespace PortfolioManager.Domain.Portfolios
 
         private Dictionary<Guid, Parcel> _Parcels = new Dictionary<Guid, Parcel>();
 
+        private CashAccount _DrpAccount = new CashAccount();
+        public ICashAccount DrpAccount => _DrpAccount;
+
         public Holding(Stock stock, DateTime fromDate)
             : base(stock.Id, fromDate)
         {
@@ -74,6 +77,14 @@ namespace PortfolioManager.Domain.Portfolios
                 return Properties[date].Units * Stock.GetPrice(date);
             else
                 return 0.00m;
+        }
+
+        public void AddDrpAccountAmount(DateTime date, decimal amount)
+        {
+            if (amount > 0.00m)
+                _DrpAccount.Deposit(date, amount, "");
+            else if (amount < 0.00m)
+                _DrpAccount.Withdraw(date, -amount, "");
         }
     }
 
