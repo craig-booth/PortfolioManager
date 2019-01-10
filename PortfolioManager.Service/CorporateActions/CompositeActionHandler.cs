@@ -6,7 +6,7 @@ using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.CorporateActions
 {
-    class CompositeActionHandler : ICorporateActionHandler
+ /*   class CompositeActionHandler : ICorporateActionHandler
     {
         private readonly IPortfolioQuery _PortfolioQuery;
         private readonly IStockQuery _StockQuery;
@@ -27,7 +27,7 @@ namespace PortfolioManager.Service.CorporateActions
 
             var stock = _StockQuery.Get(compositeAction.Stock, compositeAction.ActionDate);
 
-            /* locate parcels that the capital return applies to */
+            // locate parcels that the capital return applies to 
             var parcels = _PortfolioQuery.GetParcelsForStock(stock.Id, compositeAction.ActionDate, compositeAction.ActionDate);
             if (!parcels.Any())
                 return transactions;
@@ -51,5 +51,5 @@ namespace PortfolioManager.Service.CorporateActions
             return handler.HasBeenApplied(childAction);
         }
 
-    }
+    } */
 }

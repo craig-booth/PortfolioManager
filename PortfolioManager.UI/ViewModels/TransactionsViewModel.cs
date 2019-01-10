@@ -51,7 +51,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (_Parameter != null)
             {
-                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestWebClient);
+                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestWebClient, _Parameter.RestClient);
             }
 
             base.Activate();
@@ -61,9 +61,9 @@ namespace PortfolioManager.UI.ViewModels
         {
             GetTransactionsResponce responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.StartDate, _Parameter.EndDate);
+                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
             else
-                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.Stock.Id, _Parameter.StartDate, _Parameter.EndDate);
+                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.Stock.Id, _Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
             if (responce == null)
                 return;
 

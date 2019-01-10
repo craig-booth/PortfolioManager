@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -22,7 +23,7 @@ namespace PortfolioManager.Test.ImportDataTests
             var newYearsDay = new DateTime(year, 01, 01);
             var christmasDay = new DateTime(year, 12, 25);
 
-            var tradingDays = await dataService.NonTradingDays(year);
+            var tradingDays = await dataService.NonTradingDays(year, CancellationToken.None);
 
             Assert.That(tradingDays, Is.Not.Empty);
 

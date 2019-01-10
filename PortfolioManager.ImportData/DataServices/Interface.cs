@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.ImportData.DataServices
 {
     public interface ILiveStockPriceService
     {
-        Task<StockPrice> GetSinglePrice(string asxCode);
-        Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes);
+        Task<StockPrice> GetSinglePrice(string asxCode, CancellationToken cancellationToken);
+        Task<IEnumerable<StockPrice>> GetMultiplePrices(IEnumerable<string> asxCodes, CancellationToken cancellationToken);
     }
 
     public interface IHistoricalStockPriceService
     {
-        Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate, CancellationToken cancellationToken);
     }
 
     public interface ITradingDayService
     {
-        Task<IEnumerable<DateTime>> NonTradingDays(int year);
+        Task<IEnumerable<NonTradingDay>> NonTradingDays(int year, CancellationToken cancellationToken);
     }
 
     public class StockPrice

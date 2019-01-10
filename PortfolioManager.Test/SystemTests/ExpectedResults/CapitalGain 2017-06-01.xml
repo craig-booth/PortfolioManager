@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DetailedUnrealisedGainsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T10:23:34.6783083+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
-  <CGTItems>
+<DetailedUnrealisedGainsResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UnrealisedGains>
     <DetailedUnrealisedGainsItem>
-      <Id>5521d451-925f-40a5-8e6d-0203ed2edb4e</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-09T00:00:00</AquisitionDate>
       <Units>7500</Units>
-      <CostBase>7575</CostBase>
+      <CostBase>7575.00</CostBase>
       <MarketValue>8362.500</MarketValue>
       <CapitalGain>787.500</CapitalGain>
       <DiscoutedGain>393.75000</DiscoutedGain>
@@ -21,229 +18,20 @@
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-09T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 7,500 shares @ $1.01</Description>
           <UnitChange>0</UnitChange>
           <Units>7500</Units>
-          <CostBaseChange>7575</CostBaseChange>
+          <CostBaseChange>7575.00</CostBaseChange>
           <CostBase>7575.00</CostBase>
-          <Comment>Aquired 7,500 shares @ $1.01</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>a6e3925b-867a-4a5c-bdcd-d93e4071bad3</Id>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-      </Stock>
-      <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
-      <Units>4453</Units>
-      <CostBase>32115.6</CostBase>
-      <MarketValue>33709.21</MarketValue>
-      <CapitalGain>1593.61</CapitalGain>
-      <DiscoutedGain>796.8050</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>4453</Units>
-          <CostBaseChange>32115.6</CostBaseChange>
-          <CostBase>32115.60</CostBase>
-          <Comment>Aquired 4,453 shares @ $7.20</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>8be0783b-f1b6-4f09-ba18-35b8c4b05978</Id>
-      <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
-        <Name>Cochlear Limited</Name>
-      </Stock>
-      <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
-      <Units>60</Units>
-      <CostBase>5466</CostBase>
-      <MarketValue>8983.20</MarketValue>
-      <CapitalGain>3517.20</CapitalGain>
-      <DiscoutedGain>1758.6000</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>60</Units>
-          <CostBaseChange>5466</CostBaseChange>
-          <CostBase>5466.00</CostBase>
-          <Comment>Aquired 60 shares @ $90.20</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>41d14ce3-0354-4ff5-b734-f1515ee3fbcd</Id>
-      <Stock>
-        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <ASXCode>CSL</ASXCode>
-        <Name>CSL Ltd</Name>
-      </Stock>
-      <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
-      <Units>280</Units>
-      <CostBase>28776.4</CostBase>
-      <MarketValue>36769.60</MarketValue>
-      <CapitalGain>7993.20</CapitalGain>
-      <DiscoutedGain>3996.6000</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>280</Units>
-          <CostBaseChange>28776.4</CostBaseChange>
-          <CostBase>28776.40</CostBase>
-          <Comment>Aquired 280 shares @ $102.58</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>8357c770-f207-45db-9e33-d59e5e7b60a9</Id>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-02-15T00:00:00</AquisitionDate>
-      <Units>150</Units>
-      <CostBase>7497</CostBase>
-      <MarketValue>7416.00</MarketValue>
-      <CapitalGain>-81.00</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-02-15T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>150</Units>
-          <CostBaseChange>7497</CostBaseChange>
-          <CostBase>7497.00</CostBase>
-          <Comment>Aquired 150 shares @ $49.98</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>8063a017-c68b-46d5-a167-b83cf0bbe6b1</Id>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-02-15T00:00:00</AquisitionDate>
-      <Units>100</Units>
-      <CostBase>7527</CostBase>
-      <MarketValue>8180.0</MarketValue>
-      <CapitalGain>653.0</CapitalGain>
-      <DiscoutedGain>326.500</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-02-15T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>100</Units>
-          <CostBaseChange>7527</CostBaseChange>
-          <CostBase>7527.00</CostBase>
-          <Comment>Aquired 100 shares @ $75.27</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>2f6892db-6c54-4be1-bc7f-946dc144271e</Id>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-02-23T00:00:00</AquisitionDate>
-      <Units>140</Units>
-      <CostBase>7578.2</CostBase>
-      <MarketValue>8964.20</MarketValue>
-      <CapitalGain>1386.00</CapitalGain>
-      <DiscoutedGain>693.0000</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-02-23T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>140</Units>
-          <CostBaseChange>7578.2</CostBaseChange>
-          <CostBase>7578.20</CostBase>
-          <Comment>Aquired 140 shares @ $54.13</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>85691817-fa02-493d-8cd5-4f23a885ad58</Id>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-      </Stock>
-      <AquisitionDate>2016-03-04T00:00:00</AquisitionDate>
-      <Units>93</Units>
-      <CostBase>667.95</CostBase>
-      <MarketValue>704.01</MarketValue>
-      <CapitalGain>36.06</CapitalGain>
-      <DiscoutedGain>18.0300</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-03-04T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>93</Units>
-          <CostBaseChange>667.95</CostBaseChange>
-          <CostBase>667.95</CostBase>
-          <Comment>Opening balance of 93 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>d285fa17-4d04-4bda-8da9-5cca26a7a2f4</Id>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-04-18T00:00:00</AquisitionDate>
-      <Units>1</Units>
-      <CostBase>49.58</CostBase>
-      <MarketValue>49.44</MarketValue>
-      <CapitalGain>-0.14</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-04-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>1</Units>
-          <CostBaseChange>49.58</CostBaseChange>
-          <CostBase>49.58</CostBase>
-          <Comment>Opening balance of 1 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>ea0697c3-d4dc-4fd6-a21d-523d73fa5f2c</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <AquisitionDate>2016-05-06T00:00:00</AquisitionDate>
       <Units>222</Units>
@@ -255,255 +43,295 @@
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-05-06T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Description>Opening balance of 222 shares</Description>
           <UnitChange>0</UnitChange>
           <Units>222</Units>
           <CostBaseChange>224.71</CostBaseChange>
           <CostBase>224.71</CostBase>
-          <Comment>Opening balance of 222 shares</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>e45353d4-dfb1-477c-8b48-d9fb9b0e5bfc</Id>
       <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
-        <Name>WAM Capital Limited</Name>
+        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <ASXCode>GVF</ASXCode>
+        <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
-      <AquisitionDate>2016-05-13T00:00:00</AquisitionDate>
-      <Units>577</Units>
-      <CostBase>1218.9425</CostBase>
-      <MarketValue>1321.33</MarketValue>
-      <CapitalGain>102.3875</CapitalGain>
-      <DiscoutedGain>51.193750</DiscoutedGain>
-      <DiscountMethod>Discount</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-05-13T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>577</Units>
-          <CostBaseChange>1218.9425</CostBaseChange>
-          <CostBase>1218.9425</CostBase>
-          <Comment>Opening balance of 577 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>81c213b1-bd53-4635-9315-88a17184decb</Id>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-06-01T00:00:00</AquisitionDate>
-      <Units>900</Units>
-      <CostBase>52451.87</CostBase>
-      <MarketValue>57627.00</MarketValue>
-      <CapitalGain>5175.13</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <AquisitionDate>2016-10-28T00:00:00</AquisitionDate>
+      <Units>5600</Units>
+      <CostBase>6011.95</CostBase>
+      <MarketValue>6244.000</MarketValue>
+      <CapitalGain>232.050</CapitalGain>
+      <DiscoutedGain>232.050</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
-          <Date>2016-06-01T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Date>2016-10-28T00:00:00</Date>
+          <Description>Aquired 5,600 shares @ $1.07</Description>
           <UnitChange>0</UnitChange>
-          <Units>900</Units>
-          <CostBaseChange>52451.87</CostBaseChange>
-          <CostBase>52451.87</CostBase>
-          <Comment>Aquired 900 shares @ $58.21</Comment>
+          <Units>5600</Units>
+          <CostBaseChange>6011.95</CostBaseChange>
+          <CostBase>6011.95</CostBase>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>a3b9c6bc-6621-4267-b953-971d16dd119c</Id>
+      <Stock>
+        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <ASXCode>GVF</ASXCode>
+        <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-11-04T00:00:00</AquisitionDate>
+      <Units>221</Units>
+      <CostBase>231.7</CostBase>
+      <MarketValue>246.415</MarketValue>
+      <CapitalGain>14.715</CapitalGain>
+      <DiscoutedGain>14.715</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-11-04T00:00:00</Date>
+          <Description>Opening balance of 221 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>221</Units>
+          <CostBaseChange>231.7</CostBaseChange>
+          <CostBase>231.70</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+        <ASXCode>GVF</ASXCode>
+        <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2017-05-10T00:00:00</AquisitionDate>
+      <Units>397</Units>
+      <CostBase>426.38</CostBase>
+      <MarketValue>442.655</MarketValue>
+      <CapitalGain>16.275</CapitalGain>
+      <DiscoutedGain>16.275</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-05-10T00:00:00</Date>
+          <Description>Opening balance of 397 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>397</Units>
+          <CostBaseChange>426.38</CostBaseChange>
+          <CostBase>426.38</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
+      <Units>4453</Units>
+      <CostBase>32115.6</CostBase>
+      <MarketValue>33709.21</MarketValue>
+      <CapitalGain>1593.61</CapitalGain>
+      <DiscoutedGain>796.8050</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-02-10T00:00:00</Date>
+          <Description>Aquired 4,453 shares @ $7.20</Description>
+          <UnitChange>0</UnitChange>
+          <Units>4453</Units>
+          <CostBaseChange>32115.6</CostBaseChange>
+          <CostBase>32115.60</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-03-04T00:00:00</AquisitionDate>
+      <Units>93</Units>
+      <CostBase>667.95</CostBase>
+      <MarketValue>704.01</MarketValue>
+      <CapitalGain>36.06</CapitalGain>
+      <DiscoutedGain>18.0300</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-03-04T00:00:00</Date>
+          <Description>Opening balance of 93 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>93</Units>
+          <CostBaseChange>667.95</CostBaseChange>
+          <CostBase>667.95</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-06-03T00:00:00</AquisitionDate>
       <Units>1347</Units>
-      <CostBase>9811.9</CostBase>
+      <CostBase>9811.90</CostBase>
       <MarketValue>10196.79</MarketValue>
       <CapitalGain>384.89</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>384.89</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-06-03T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 1,347 shares @ $7.27</Description>
           <UnitChange>0</UnitChange>
           <Units>1347</Units>
-          <CostBaseChange>9811.9</CostBaseChange>
+          <CostBaseChange>9811.90</CostBaseChange>
           <CostBase>9811.90</CostBase>
-          <Comment>Aquired 1,347 shares @ $7.27</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>b9a2796e-3e4b-4cbc-a644-7551779bc8ef</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-06-03T00:00:00</AquisitionDate>
       <Units>753</Units>
       <CostBase>5477.52</CostBase>
       <MarketValue>5700.21</MarketValue>
       <CapitalGain>222.69</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>222.69</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-06-03T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 753 shares @ $7.26</Description>
           <UnitChange>0</UnitChange>
           <Units>753</Units>
           <CostBaseChange>5477.52</CostBaseChange>
           <CostBase>5477.52</CostBase>
-          <Comment>Aquired 753 shares @ $7.26</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8fc4fea0-ab6a-46b2-b0de-758c53076a0f</Id>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <AquisitionDate>2016-06-06T00:00:00</AquisitionDate>
-      <Units>180</Units>
-      <CostBase>15135.55</CostBase>
-      <MarketValue>14724.0</MarketValue>
-      <CapitalGain>-411.55</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <AquisitionDate>2016-09-09T00:00:00</AquisitionDate>
+      <Units>141</Units>
+      <CostBase>1030.13</CostBase>
+      <MarketValue>1067.37</MarketValue>
+      <CapitalGain>37.24</CapitalGain>
+      <DiscoutedGain>37.24</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
-          <Date>2016-06-06T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Date>2016-09-09T00:00:00</Date>
+          <Description>Opening balance of 141 shares</Description>
           <UnitChange>0</UnitChange>
-          <Units>180</Units>
-          <CostBaseChange>15135.55</CostBaseChange>
-          <CostBase>15135.55</CostBase>
-          <Comment>Aquired 180 shares @ $83.92</Comment>
+          <Units>141</Units>
+          <CostBaseChange>1030.13</CostBaseChange>
+          <CostBase>1030.13</CostBase>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>830571b7-11bd-4420-a8e0-4c87721608fd</Id>
       <Stock>
-        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
-        <ASXCode>VCF</ASXCode>
-        <Name>Vangaurd International Fixed Interest ETF</Name>
+        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+        <ASXCode>ARG</ASXCode>
+        <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <AquisitionDate>2016-06-06T00:00:00</AquisitionDate>
-      <Units>225</Units>
-      <CostBase>11930.2</CostBase>
-      <MarketValue>11335.50</MarketValue>
-      <CapitalGain>-594.70</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <AquisitionDate>2017-03-10T00:00:00</AquisitionDate>
+      <Units>136</Units>
+      <CostBase>1018.05</CostBase>
+      <MarketValue>1029.52</MarketValue>
+      <CapitalGain>11.47</CapitalGain>
+      <DiscoutedGain>11.47</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
-          <Date>2016-06-06T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Date>2017-03-10T00:00:00</Date>
+          <Description>Opening balance of 136 shares</Description>
           <UnitChange>0</UnitChange>
-          <Units>225</Units>
-          <CostBaseChange>11930.2</CostBaseChange>
-          <CostBase>11930.20</CostBase>
-          <Comment>Aquired 225 shares @ $52.89</Comment>
+          <Units>136</Units>
+          <CostBaseChange>1018.05</CostBaseChange>
+          <CostBase>1018.05</CostBase>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>4fa02b7a-cec7-454c-a057-5a6861ec4d9f</Id>
       <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+        <ASXCode>COH</ASXCode>
+        <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <AquisitionDate>2016-07-18T00:00:00</AquisitionDate>
-      <Units>3</Units>
-      <CostBase>150.07</CostBase>
-      <MarketValue>148.32</MarketValue>
-      <CapitalGain>-1.75</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
+      <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
+      <Units>60</Units>
+      <CostBase>5466.0</CostBase>
+      <MarketValue>8983.20</MarketValue>
+      <CapitalGain>3517.20</CapitalGain>
+      <DiscoutedGain>1758.6000</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
-          <Date>2016-07-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Date>2016-02-10T00:00:00</Date>
+          <Description>Aquired 60 shares @ $90.20</Description>
           <UnitChange>0</UnitChange>
-          <Units>3</Units>
-          <CostBaseChange>150.07</CostBaseChange>
-          <CostBase>150.07</CostBase>
-          <Comment>Opening balance of 3 shares</Comment>
+          <Units>60</Units>
+          <CostBaseChange>5466.0</CostBaseChange>
+          <CostBase>5466.00</CostBase>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>31949361-12e5-4b6d-b8ea-edf95c423ed4</Id>
       <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
+        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+        <ASXCode>CSL</ASXCode>
+        <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <AquisitionDate>2016-07-18T00:00:00</AquisitionDate>
-      <Units>5</Units>
-      <CostBase>422.19</CostBase>
-      <MarketValue>409.0</MarketValue>
-      <CapitalGain>-13.19</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
+      <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
+      <Units>280</Units>
+      <CostBase>28776.40</CostBase>
+      <MarketValue>36769.60</MarketValue>
+      <CapitalGain>7993.20</CapitalGain>
+      <DiscoutedGain>3996.6000</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
-          <Date>2016-07-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Date>2016-02-10T00:00:00</Date>
+          <Description>Aquired 280 shares @ $102.58</Description>
           <UnitChange>0</UnitChange>
-          <Units>5</Units>
-          <CostBaseChange>422.19</CostBaseChange>
-          <CostBase>422.19</CostBase>
-          <Comment>Opening balance of 5 shares</Comment>
+          <Units>280</Units>
+          <CostBaseChange>28776.40</CostBaseChange>
+          <CostBase>28776.40</CostBase>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>6322b30f-ff59-4210-ad5f-b3267ebb1354</Id>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-07-18T00:00:00</AquisitionDate>
-      <Units>28</Units>
-      <CostBase>1530.94</CostBase>
-      <MarketValue>1792.84</MarketValue>
-      <CapitalGain>261.90</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-07-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>28</Units>
-          <CostBaseChange>1530.94</CostBaseChange>
-          <CostBase>1530.94</CostBase>
-          <Comment>Opening balance of 28 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>daea3704-a8b0-4bb9-9dae-41dbe908ebec</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
       <Units>9813</Units>
@@ -515,569 +343,696 @@
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 16,813 shares @ $2.17</Description>
           <UnitChange>0</UnitChange>
           <Units>16813</Units>
           <CostBaseChange>36538.21</CostBaseChange>
           <CostBase>36538.21</CostBase>
-          <Comment>Aquired 16,813 shares @ $2.17</Comment>
         </CGTEventItem>
         <CGTEventItem>
           <Date>2016-07-27T00:00:00</Date>
-          <TransactionType>Disposal</TransactionType>
+          <Description>Disposed of 7,000 shares @ $2.25</Description>
           <UnitChange>0</UnitChange>
           <Units>9813</Units>
           <CostBaseChange>-15212.48</CostBaseChange>
           <CostBase>21325.73</CostBase>
-          <Comment>Disposed of 7,000 shares @ $2.25</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>f8458819-9043-4ac2-9d82-eff5dae1b6b3</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-05-13T00:00:00</AquisitionDate>
+      <Units>577</Units>
+      <CostBase>1218.9425</CostBase>
+      <MarketValue>1321.33</MarketValue>
+      <CapitalGain>102.3875</CapitalGain>
+      <DiscoutedGain>51.193750</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-05-13T00:00:00</Date>
+          <Description>Opening balance of 577 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>577</Units>
+          <CostBaseChange>1218.9425</CostBaseChange>
+          <CostBase>1218.9425</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+        <ASXCode>WAM</ASXCode>
+        <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-08-26T00:00:00</AquisitionDate>
       <Units>7009</Units>
       <CostBase>15000</CostBase>
       <MarketValue>16050.61</MarketValue>
       <CapitalGain>1050.61</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>1050.61</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-08-26T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Description>Opening balance of 7,009 shares</Description>
           <UnitChange>0</UnitChange>
           <Units>7009</Units>
           <CostBaseChange>15000</CostBaseChange>
           <CostBase>15000.00</CostBase>
-          <Comment>Opening balance of 7,009 shares</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>56119de0-af24-4171-aaec-e05070d531d6</Id>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-      </Stock>
-      <AquisitionDate>2016-09-09T00:00:00</AquisitionDate>
-      <Units>141</Units>
-      <CostBase>1030.13</CostBase>
-      <MarketValue>1067.37</MarketValue>
-      <CapitalGain>37.24</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-09-09T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>141</Units>
-          <CostBaseChange>1030.13</CostBaseChange>
-          <CostBase>1030.13</CostBase>
-          <Comment>Opening balance of 141 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>37f737f1-3510-4571-bd28-a53d516c6205</Id>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-10-19T00:00:00</AquisitionDate>
-      <Units>1</Units>
-      <CostBase>49.92</CostBase>
-      <MarketValue>49.44</MarketValue>
-      <CapitalGain>-0.48</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-10-19T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>1</Units>
-          <CostBaseChange>49.92</CostBaseChange>
-          <CostBase>49.92</CostBase>
-          <Comment>Opening balance of 1 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>90911f20-bce1-4abc-b955-e9ba756450de</Id>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-10-19T00:00:00</AquisitionDate>
-      <Units>2</Units>
-      <CostBase>165.74</CostBase>
-      <MarketValue>163.6</MarketValue>
-      <CapitalGain>-2.14</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-10-19T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>2</Units>
-          <CostBaseChange>165.74</CostBaseChange>
-          <CostBase>165.74</CostBase>
-          <Comment>Opening balance of 2 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>faa37574-6c16-4ddd-84b2-ed5b5e2a447e</Id>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-10-19T00:00:00</AquisitionDate>
-      <Units>5</Units>
-      <CostBase>276.72</CostBase>
-      <MarketValue>320.15</MarketValue>
-      <CapitalGain>43.43</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-10-19T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>5</Units>
-          <CostBaseChange>276.72</CostBaseChange>
-          <CostBase>276.72</CostBase>
-          <Comment>Opening balance of 5 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>e723d8a8-7b9e-4dcd-97ec-f2321e57e566</Id>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2016-10-28T00:00:00</AquisitionDate>
-      <Units>85</Units>
-      <CostBase>4221.5</CostBase>
-      <MarketValue>4202.40</MarketValue>
-      <CapitalGain>-19.10</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-10-28T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>85</Units>
-          <CostBaseChange>4221.5</CostBaseChange>
-          <CostBase>4221.50</CostBase>
-          <Comment>Aquired 85 shares @ $49.43</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>7400bb28-552a-4792-b572-d784b0ee750e</Id>
-      <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
-        <Name>Global Value Fund</Name>
-      </Stock>
-      <AquisitionDate>2016-10-28T00:00:00</AquisitionDate>
-      <Units>5600</Units>
-      <CostBase>6011.95</CostBase>
-      <MarketValue>6244.000</MarketValue>
-      <CapitalGain>232.050</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-10-28T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>5600</Units>
-          <CostBaseChange>6011.95</CostBaseChange>
-          <CostBase>6011.95</CostBase>
-          <Comment>Aquired 5,600 shares @ $1.07</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>74f0eb0f-1195-4e37-bf1a-a0b3f26206fc</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-10-28T00:00:00</AquisitionDate>
       <Units>558</Units>
       <CostBase>1261.4275</CostBase>
       <MarketValue>1277.82</MarketValue>
       <CapitalGain>16.3925</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>16.3925</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-10-28T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Description>Opening balance of 558 shares</Description>
           <UnitChange>0</UnitChange>
           <Units>558</Units>
           <CostBaseChange>1261.4275</CostBaseChange>
           <CostBase>1261.4275</CostBase>
-          <Comment>Opening balance of 558 shares</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>200109e3-7d41-47d2-93d5-da2e4f84d81e</Id>
-      <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
-        <Name>Global Value Fund</Name>
-      </Stock>
-      <AquisitionDate>2016-11-04T00:00:00</AquisitionDate>
-      <Units>221</Units>
-      <CostBase>231.7</CostBase>
-      <MarketValue>246.415</MarketValue>
-      <CapitalGain>14.715</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2016-11-04T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>221</Units>
-          <CostBaseChange>231.7</CostBaseChange>
-          <CostBase>231.70</CostBase>
-          <Comment>Opening balance of 221 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>183db53b-121b-4130-bab1-1f319b1433e9</Id>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-01-18T00:00:00</AquisitionDate>
-      <Units>4</Units>
-      <CostBase>321.75</CostBase>
-      <MarketValue>327.2</MarketValue>
-      <CapitalGain>5.45</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-01-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>4</Units>
-          <CostBaseChange>321.75</CostBaseChange>
-          <CostBase>321.75</CostBase>
-          <Comment>Opening balance of 4 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>fe63c0be-5968-4829-b3da-7cfb3e18db03</Id>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-01-18T00:00:00</AquisitionDate>
-      <Units>7</Units>
-      <CostBase>415.9</CostBase>
-      <MarketValue>448.21</MarketValue>
-      <CapitalGain>32.31</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-01-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>7</Units>
-          <CostBaseChange>415.9</CostBaseChange>
-          <CostBase>415.90</CostBase>
-          <Comment>Opening balance of 7 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>a9876a7d-d0a1-46f2-9947-439686a91226</Id>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-01-18T00:00:00</AquisitionDate>
-      <Units>2</Units>
-      <CostBase>96.43</CostBase>
-      <MarketValue>98.88</MarketValue>
-      <CapitalGain>2.45</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-01-18T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>2</Units>
-          <CostBaseChange>96.43</CostBaseChange>
-          <CostBase>96.43</CostBase>
-          <Comment>Opening balance of 2 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>e6ddc03d-d335-4022-bafe-6f9aef43a57a</Id>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-03-02T00:00:00</AquisitionDate>
-      <Units>65</Units>
-      <CostBase>5205</CostBase>
-      <MarketValue>5317.0</MarketValue>
-      <CapitalGain>112.0</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-03-02T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>65</Units>
-          <CostBaseChange>5205</CostBaseChange>
-          <CostBase>5205.00</CostBase>
-          <Comment>Aquired 65 shares @ $79.77</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>cf0b2cf1-c5f7-41d5-b523-d360a3a68346</Id>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-      </Stock>
-      <AquisitionDate>2017-03-10T00:00:00</AquisitionDate>
-      <Units>136</Units>
-      <CostBase>1018.05</CostBase>
-      <MarketValue>1029.52</MarketValue>
-      <CapitalGain>11.47</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-03-10T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>136</Units>
-          <CostBaseChange>1018.05</CostBaseChange>
-          <CostBase>1018.05</CostBase>
-          <Comment>Opening balance of 136 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>6437e618-ae9e-4907-8989-22fd012bce0a</Id>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
-      <Units>4</Units>
-      <CostBase>238.64</CostBase>
-      <MarketValue>256.12</MarketValue>
-      <CapitalGain>17.48</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-04-20T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>4</Units>
-          <CostBaseChange>238.64</CostBaseChange>
-          <CostBase>238.64</CostBase>
-          <Comment>Opening balance of 4 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>bda48bc5-eaa0-43bc-9883-9d64bce63d27</Id>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
-      <Units>2</Units>
-      <CostBase>96.94</CostBase>
-      <MarketValue>98.88</MarketValue>
-      <CapitalGain>1.94</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-04-20T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>2</Units>
-          <CostBaseChange>96.94</CostBaseChange>
-          <CostBase>96.94</CostBase>
-          <Comment>Opening balance of 2 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>4a922216-5b6e-4e9a-82c7-a90903cf808f</Id>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
-      <Units>4</Units>
-      <CostBase>318.68</CostBase>
-      <MarketValue>327.2</MarketValue>
-      <CapitalGain>8.52</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-04-20T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>4</Units>
-          <CostBaseChange>318.68</CostBaseChange>
-          <CostBase>318.68</CostBase>
-          <Comment>Opening balance of 4 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>2a6d1da5-a68a-405f-b2d5-9f0be29dbd24</Id>
-      <Stock>
-        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
-        <ASXCode>VCF</ASXCode>
-        <Name>Vangaurd International Fixed Interest ETF</Name>
-      </Stock>
-      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
-      <Units>9</Units>
-      <CostBase>443.94</CostBase>
-      <MarketValue>453.42</MarketValue>
-      <CapitalGain>9.48</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
-      <DiscountMethod>Other</DiscountMethod>
-      <CGTEvents>
-        <CGTEventItem>
-          <Date>2017-04-20T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
-          <UnitChange>0</UnitChange>
-          <Units>9</Units>
-          <CostBaseChange>443.94</CostBaseChange>
-          <CostBase>443.94</CostBase>
-          <Comment>Opening balance of 9 shares</Comment>
-        </CGTEventItem>
-      </CGTEvents>
-    </DetailedUnrealisedGainsItem>
-    <DetailedUnrealisedGainsItem>
-      <Id>06222d18-7ce5-4cba-abb7-3c20a1a049e8</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2017-04-28T00:00:00</AquisitionDate>
       <Units>568</Units>
       <CostBase>1346.78</CostBase>
       <MarketValue>1300.72</MarketValue>
       <CapitalGain>-46.06</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>-46.06</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2017-04-28T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Description>Opening balance of 568 shares</Description>
           <UnitChange>0</UnitChange>
           <Units>568</Units>
           <CostBaseChange>1346.78</CostBaseChange>
           <CostBase>1346.78</CostBase>
-          <Comment>Opening balance of 568 shares</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>69b8635d-744a-4fc7-84ed-9481397ad0a4</Id>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2016-02-15T00:00:00</AquisitionDate>
+      <Units>150</Units>
+      <CostBase>7497.00</CostBase>
+      <MarketValue>7416.00</MarketValue>
+      <CapitalGain>-81.00</CapitalGain>
+      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-02-15T00:00:00</Date>
+          <Description>Aquired 150 shares @ $49.98</Description>
+          <UnitChange>0</UnitChange>
+          <Units>150</Units>
+          <CostBaseChange>7497.00</CostBaseChange>
+          <CostBase>7497.00</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2016-04-18T00:00:00</AquisitionDate>
+      <Units>1</Units>
+      <CostBase>49.58</CostBase>
+      <MarketValue>49.44</MarketValue>
+      <CapitalGain>-0.14</CapitalGain>
+      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-04-18T00:00:00</Date>
+          <Description>Opening balance of 1 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>1</Units>
+          <CostBaseChange>49.58</CostBaseChange>
+          <CostBase>49.58</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2016-07-18T00:00:00</AquisitionDate>
+      <Units>3</Units>
+      <CostBase>150.07</CostBase>
+      <MarketValue>148.32</MarketValue>
+      <CapitalGain>-1.75</CapitalGain>
+      <DiscoutedGain>-1.75</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-07-18T00:00:00</Date>
+          <Description>Opening balance of 3 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>3</Units>
+          <CostBaseChange>150.07</CostBaseChange>
+          <CostBase>150.07</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2016-10-19T00:00:00</AquisitionDate>
+      <Units>1</Units>
+      <CostBase>49.92</CostBase>
+      <MarketValue>49.44</MarketValue>
+      <CapitalGain>-0.48</CapitalGain>
+      <DiscoutedGain>-0.48</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-10-19T00:00:00</Date>
+          <Description>Opening balance of 1 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>1</Units>
+          <CostBaseChange>49.92</CostBaseChange>
+          <CostBase>49.92</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2016-10-28T00:00:00</AquisitionDate>
+      <Units>85</Units>
+      <CostBase>4221.50</CostBase>
+      <MarketValue>4202.40</MarketValue>
+      <CapitalGain>-19.10</CapitalGain>
+      <DiscoutedGain>-19.10</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-10-28T00:00:00</Date>
+          <Description>Aquired 85 shares @ $49.43</Description>
+          <UnitChange>0</UnitChange>
+          <Units>85</Units>
+          <CostBaseChange>4221.50</CostBaseChange>
+          <CostBase>4221.50</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2017-01-18T00:00:00</AquisitionDate>
+      <Units>2</Units>
+      <CostBase>96.43</CostBase>
+      <MarketValue>98.88</MarketValue>
+      <CapitalGain>2.45</CapitalGain>
+      <DiscoutedGain>2.45</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-01-18T00:00:00</Date>
+          <Description>Opening balance of 2 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>2</Units>
+          <CostBaseChange>96.43</CostBaseChange>
+          <CostBase>96.43</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
+      <Units>2</Units>
+      <CostBase>96.94</CostBase>
+      <MarketValue>98.88</MarketValue>
+      <CapitalGain>1.94</CapitalGain>
+      <DiscoutedGain>1.94</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-04-20T00:00:00</Date>
+          <Description>Opening balance of 2 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>2</Units>
+          <CostBaseChange>96.94</CostBaseChange>
+          <CostBase>96.94</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2016-02-15T00:00:00</AquisitionDate>
+      <Units>100</Units>
+      <CostBase>7527.00</CostBase>
+      <MarketValue>8180.0</MarketValue>
+      <CapitalGain>653.00</CapitalGain>
+      <DiscoutedGain>326.5000</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-02-15T00:00:00</Date>
+          <Description>Aquired 100 shares @ $75.27</Description>
+          <UnitChange>0</UnitChange>
+          <Units>100</Units>
+          <CostBaseChange>7527.00</CostBaseChange>
+          <CostBase>7527.00</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2016-06-06T00:00:00</AquisitionDate>
+      <Units>180</Units>
+      <CostBase>15135.55</CostBase>
+      <MarketValue>14724.0</MarketValue>
+      <CapitalGain>-411.55</CapitalGain>
+      <DiscoutedGain>-411.55</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-06-06T00:00:00</Date>
+          <Description>Aquired 180 shares @ $83.92</Description>
+          <UnitChange>0</UnitChange>
+          <Units>180</Units>
+          <CostBaseChange>15135.55</CostBaseChange>
+          <CostBase>15135.55</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2016-07-18T00:00:00</AquisitionDate>
+      <Units>5</Units>
+      <CostBase>422.19</CostBase>
+      <MarketValue>409.0</MarketValue>
+      <CapitalGain>-13.19</CapitalGain>
+      <DiscoutedGain>-13.19</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-07-18T00:00:00</Date>
+          <Description>Opening balance of 5 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>5</Units>
+          <CostBaseChange>422.19</CostBaseChange>
+          <CostBase>422.19</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2016-10-19T00:00:00</AquisitionDate>
+      <Units>2</Units>
+      <CostBase>165.74</CostBase>
+      <MarketValue>163.6</MarketValue>
+      <CapitalGain>-2.14</CapitalGain>
+      <DiscoutedGain>-2.14</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-10-19T00:00:00</Date>
+          <Description>Opening balance of 2 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>2</Units>
+          <CostBaseChange>165.74</CostBaseChange>
+          <CostBase>165.74</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2017-01-18T00:00:00</AquisitionDate>
+      <Units>4</Units>
+      <CostBase>321.75</CostBase>
+      <MarketValue>327.2</MarketValue>
+      <CapitalGain>5.45</CapitalGain>
+      <DiscoutedGain>5.45</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-01-18T00:00:00</Date>
+          <Description>Opening balance of 4 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>4</Units>
+          <CostBaseChange>321.75</CostBaseChange>
+          <CostBase>321.75</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2017-03-02T00:00:00</AquisitionDate>
+      <Units>65</Units>
+      <CostBase>5205.00</CostBase>
+      <MarketValue>5317.0</MarketValue>
+      <CapitalGain>112.00</CapitalGain>
+      <DiscoutedGain>112.00</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-03-02T00:00:00</Date>
+          <Description>Aquired 65 shares @ $79.77</Description>
+          <UnitChange>0</UnitChange>
+          <Units>65</Units>
+          <CostBaseChange>5205.00</CostBaseChange>
+          <CostBase>5205.00</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
+      <Units>4</Units>
+      <CostBase>318.68</CostBase>
+      <MarketValue>327.2</MarketValue>
+      <CapitalGain>8.52</CapitalGain>
+      <DiscoutedGain>8.52</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-04-20T00:00:00</Date>
+          <Description>Opening balance of 4 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>4</Units>
+          <CostBaseChange>318.68</CostBaseChange>
+          <CostBase>318.68</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-02-23T00:00:00</AquisitionDate>
+      <Units>140</Units>
+      <CostBase>7578.20</CostBase>
+      <MarketValue>8964.20</MarketValue>
+      <CapitalGain>1386.00</CapitalGain>
+      <DiscoutedGain>693.0000</DiscoutedGain>
+      <DiscountMethod>Discount</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-02-23T00:00:00</Date>
+          <Description>Aquired 140 shares @ $54.13</Description>
+          <UnitChange>0</UnitChange>
+          <Units>140</Units>
+          <CostBaseChange>7578.20</CostBaseChange>
+          <CostBase>7578.20</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-06-01T00:00:00</AquisitionDate>
+      <Units>900</Units>
+      <CostBase>52451.87</CostBase>
+      <MarketValue>57627.00</MarketValue>
+      <CapitalGain>5175.13</CapitalGain>
+      <DiscoutedGain>5175.13</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-06-01T00:00:00</Date>
+          <Description>Aquired 900 shares @ $58.21</Description>
+          <UnitChange>0</UnitChange>
+          <Units>900</Units>
+          <CostBaseChange>52451.87</CostBaseChange>
+          <CostBase>52451.87</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-07-18T00:00:00</AquisitionDate>
+      <Units>28</Units>
+      <CostBase>1530.94</CostBase>
+      <MarketValue>1792.84</MarketValue>
+      <CapitalGain>261.90</CapitalGain>
+      <DiscoutedGain>261.90</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-07-18T00:00:00</Date>
+          <Description>Opening balance of 28 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>28</Units>
+          <CostBaseChange>1530.94</CostBaseChange>
+          <CostBase>1530.94</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2016-10-19T00:00:00</AquisitionDate>
+      <Units>5</Units>
+      <CostBase>276.72</CostBase>
+      <MarketValue>320.15</MarketValue>
+      <CapitalGain>43.43</CapitalGain>
+      <DiscoutedGain>43.43</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2016-10-19T00:00:00</Date>
+          <Description>Opening balance of 5 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>5</Units>
+          <CostBaseChange>276.72</CostBaseChange>
+          <CostBase>276.72</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2017-01-18T00:00:00</AquisitionDate>
+      <Units>7</Units>
+      <CostBase>415.9</CostBase>
+      <MarketValue>448.21</MarketValue>
+      <CapitalGain>32.31</CapitalGain>
+      <DiscoutedGain>32.31</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-01-18T00:00:00</Date>
+          <Description>Opening balance of 7 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>7</Units>
+          <CostBaseChange>415.9</CostBaseChange>
+          <CostBase>415.90</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
+      <Units>4</Units>
+      <CostBase>238.64</CostBase>
+      <MarketValue>256.12</MarketValue>
+      <CapitalGain>17.48</CapitalGain>
+      <DiscoutedGain>17.48</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-04-20T00:00:00</Date>
+          <Description>Opening balance of 4 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>4</Units>
+          <CostBaseChange>238.64</CostBaseChange>
+          <CostBase>238.64</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <AquisitionDate>2017-05-02T00:00:00</AquisitionDate>
       <Units>100</Units>
       <CostBase>6192.95</CostBase>
       <MarketValue>6403.00</MarketValue>
       <CapitalGain>210.05</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>210.05</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2017-05-02T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 100 shares @ $61.73</Description>
           <UnitChange>0</UnitChange>
           <Units>100</Units>
           <CostBaseChange>6192.95</CostBaseChange>
           <CostBase>6192.95</CostBase>
-          <Comment>Aquired 100 shares @ $61.73</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>b9e7e1e5-0f4f-40e2-9583-6e1d1513085d</Id>
       <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
-        <Name>Global Value Fund</Name>
+        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
+        <ASXCode>VCF</ASXCode>
+        <Name>Vangaurd International Fixed Interest ETF</Name>
+        <Category>InternationlFixedInterest</Category>
       </Stock>
-      <AquisitionDate>2017-05-10T00:00:00</AquisitionDate>
-      <Units>397</Units>
-      <CostBase>426.38</CostBase>
-      <MarketValue>442.655</MarketValue>
-      <CapitalGain>16.275</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <AquisitionDate>2016-06-06T00:00:00</AquisitionDate>
+      <Units>225</Units>
+      <CostBase>11930.20</CostBase>
+      <MarketValue>11335.50</MarketValue>
+      <CapitalGain>-594.70</CapitalGain>
+      <DiscoutedGain>-594.70</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
-          <Date>2017-05-10T00:00:00</Date>
-          <TransactionType>OpeningBalance</TransactionType>
+          <Date>2016-06-06T00:00:00</Date>
+          <Description>Aquired 225 shares @ $52.89</Description>
           <UnitChange>0</UnitChange>
-          <Units>397</Units>
-          <CostBaseChange>426.38</CostBaseChange>
-          <CostBase>426.38</CostBase>
-          <Comment>Opening balance of 397 shares</Comment>
+          <Units>225</Units>
+          <CostBaseChange>11930.20</CostBaseChange>
+          <CostBase>11930.20</CostBase>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
-  </CGTItems>
-</DetailedUnrealisedGainsResponce>
+    <DetailedUnrealisedGainsItem>
+      <Stock>
+        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
+        <ASXCode>VCF</ASXCode>
+        <Name>Vangaurd International Fixed Interest ETF</Name>
+        <Category>InternationlFixedInterest</Category>
+      </Stock>
+      <AquisitionDate>2017-04-20T00:00:00</AquisitionDate>
+      <Units>9</Units>
+      <CostBase>443.94</CostBase>
+      <MarketValue>453.42</MarketValue>
+      <CapitalGain>9.48</CapitalGain>
+      <DiscoutedGain>9.48</DiscoutedGain>
+      <DiscountMethod>Other</DiscountMethod>
+      <CGTEvents>
+        <CGTEventItem>
+          <Date>2017-04-20T00:00:00</Date>
+          <Description>Opening balance of 9 shares</Description>
+          <UnitChange>0</UnitChange>
+          <Units>9</Units>
+          <CostBaseChange>443.94</CostBaseChange>
+          <CostBase>443.94</CostBase>
+        </CGTEventItem>
+      </CGTEvents>
+    </DetailedUnrealisedGainsItem>
+  </UnrealisedGains>
+</DetailedUnrealisedGainsResponse>

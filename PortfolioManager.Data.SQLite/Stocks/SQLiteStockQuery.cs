@@ -83,7 +83,7 @@ namespace PortfolioManager.Data.SQLite.Stocks
 
         public IEnumerable<RelativeNTA> GetRelativeNTAs(Guid parent, Guid child)
         {
-            var query = EntityQuery.FromTable("ReleativeNTAs")
+            var query = EntityQuery.FromTable("RelativeNTAs")
                 .Where("[Parent] = @Parent AND [Child] = @Child")
                 .WithParameter("@Parent", parent)
                 .WithParameter("@Child", child);

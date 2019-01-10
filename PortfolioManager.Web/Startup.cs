@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Server;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace PortfolioManager.Web
 {
@@ -25,16 +31,21 @@ namespace PortfolioManager.Web
         }
 
         public IConfigurationRoot Configuration { get; }
+        public PortfolioManagerSettings PortfolioManagerSettings
+        {
+            get {  return Configuration.GetSection("Settings").Get<PortfolioManagerSettings>(); }
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc()
-                .AddJsonOptions(x => x.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto);
+            services.AddMvc();
 
-            var settings = Configuration.GetSection("Settings").Get<Settings>();
-            services.AddPortfolioManagerService(settings);          
+            services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
+                .AddPortfolioManagerService(PortfolioManagerSettings)
+                .AddDataImportService();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +53,11 @@ namespace PortfolioManager.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-#if !DEBUG
-            app.UseApiKeyAuthentication(Configuration.GetSection("Settings").GetValue<Guid>("ApiKey"));
-#endif
+
+            app.UseApiKeyAuthentication(PortfolioManagerSettings.ApiKey);
             app.UseMvc();
+
+            app.InitializeStockExchange();
         }
     }
 }

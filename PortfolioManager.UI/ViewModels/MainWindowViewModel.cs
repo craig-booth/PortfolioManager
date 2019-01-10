@@ -6,6 +6,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 
 using PortfolioManager.UI.Utilities;
@@ -18,6 +19,7 @@ namespace PortfolioManager.UI.ViewModels
         private readonly StockItem _AllCompanies = new StockItem(Guid.Empty, "", "All Companies");
 
         private RestWebClient _RestWebClient;
+        private RestClient _RestClient;
 
         private Module _SelectedModule;
         public Module SelectedModule
@@ -97,19 +99,24 @@ namespace PortfolioManager.UI.ViewModels
             OwnedStocks = new ObservableCollection<DescribedObject<StockItem>>();
 
 #if DEBUG 
-            _RestWebClient = new RestWebClient("http://192.168.99.100:8080", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+            var url = "https://docker.local:8443";
+          //  url = "http://localhost";
+            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #else
-            _RestWebClient = new RestWebClient("https://portfolio.boothfamily.id.au", new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D"));
+            var url = "https://portfolio.boothfamily.id.au";
+            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #endif
-            
+            _RestWebClient = new RestWebClient(url, apiKey);
+            _RestClient = new RestClient(url, apiKey);
 
             ViewParameter = new ViewParameter();
             ViewParameter.Stock = _AllCompanies;
             ViewParameter.FinancialYear = DateTime.Today.FinancialYear();
             ViewParameter.RestWebClient = _RestWebClient;
+            ViewParameter.RestClient = _RestClient;
 
-            EditTransactionWindow = new EditTransactionViewModel(_RestWebClient);
-            CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel(_RestWebClient);
+            EditTransactionWindow = new EditTransactionViewModel(_RestWebClient, _RestClient);
+            CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel(_RestWebClient, _RestClient);
 
             _Settings = new ApplicationSettings();
             _Settings.DatabaseChanged += LoadPortfolio;

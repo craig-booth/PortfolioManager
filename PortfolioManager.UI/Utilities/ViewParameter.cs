@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.UI.Utilities
@@ -8,6 +9,7 @@ namespace PortfolioManager.UI.Utilities
     class ViewParameter : NotifyClass
     {
         public RestWebClient RestWebClient;
+        public RestClient RestClient;
 
         private StockItem _Stock;
         public StockItem Stock
@@ -44,41 +46,59 @@ namespace PortfolioManager.UI.Utilities
                 }
             }
         }
-        private DateTime _StartDate;
-        public DateTime StartDate
+
+        private DateRange _DateRange;
+        public DateRange DateRange
         {
             get
             {
-                return _StartDate;
+                return _DateRange;
             }
 
             set
             {
-                if (_StartDate != value)
+                if (_DateRange != value)
                 {
-                    _StartDate = value;
+                    DateRange = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private DateTime _EndDate;
-        public DateTime EndDate
+        public DateTime FromDate
         {
             get
             {
-                return _EndDate;
+                return _DateRange.FromDate;
             }
 
             set
             {
-                if (_EndDate != value)
+                if (_DateRange.FromDate != value)
                 {
-                    _EndDate = value;
-                    OnPropertyChanged();
+                    _DateRange = new DateRange(value, _DateRange.ToDate);
+                    OnPropertyChanged("DateRange");
                 }
             }
         }
+
+        public DateTime ToDate
+        {
+            get
+            {
+                return _DateRange.ToDate;
+            }
+
+            set
+            {
+                if (_DateRange.ToDate != value)
+                {
+                    _DateRange = new DateRange(_DateRange.FromDate, value);
+                    OnPropertyChanged("DateRange");
+                }
+            }
+        }
+
 
         private int _FinancialYear;
         public int FinancialYear
@@ -101,10 +121,7 @@ namespace PortfolioManager.UI.Utilities
         public ViewParameter()
         {
             _Date = DateTime.Now;
-
-            _StartDate = DateTime.Now.AddYears(-1).AddDays(1);
-            _EndDate = DateTime.Now;
-
+            _DateRange = new DateRange(DateTime.Now.AddYears(-1).AddDays(1), DateTime.Now);
             _FinancialYear = DateTime.Today.FinancialYear();
         }
 

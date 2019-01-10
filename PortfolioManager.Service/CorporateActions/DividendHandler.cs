@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.CorporateActions;
 using PortfolioManager.Data.Portfolios;
 
 namespace PortfolioManager.Service.CorporateActions
@@ -11,12 +11,10 @@ namespace PortfolioManager.Service.CorporateActions
     class DividendHandler : ICorporateActionHandler 
     {
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly IStockQuery _StockQuery;
 
-        public DividendHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public DividendHandler(IPortfolioQuery portfolioQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
         }
 
         public IReadOnlyCollection<Transaction> CreateTransactionList(CorporateAction corporateAction)
@@ -26,23 +24,22 @@ namespace PortfolioManager.Service.CorporateActions
             var transactions = new List<Transaction>();
 
             /* locate parcels that the dividend applies to */
-            var dividendStock = _StockQuery.Get(dividend.Stock, dividend.ActionDate);
-            var parcels = _PortfolioQuery.GetParcelsForStock(dividendStock.Id, dividend.ActionDate, dividend.ActionDate);
+            var parcels = _PortfolioQuery.GetParcelsForStock(dividend.Stock.Id, dividend.ActionDate, dividend.ActionDate);
             if (!parcels.Any())
                 return transactions;
 
-            var stock = _StockQuery.Get(dividend.Stock, dividend.PaymentDate);
+            var dividendRoundingRule = dividend.Stock.DividendRules[dividend.ActionDate].DividendRoundingRule;
 
             var unitsHeld = parcels.Sum(x => x.Units);
-            var amountPaid = (unitsHeld * dividend.DividendAmount).ToCurrency(stock.DividendRoundingRule);
-            var franked = (amountPaid * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
-            var unFranked = (amountPaid * (1 - dividend.PercentFranked)).ToCurrency(stock.DividendRoundingRule);
-            var frankingCredits = (((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked).ToCurrency(stock.DividendRoundingRule);
+            var amountPaid = (unitsHeld * dividend.DividendAmount).ToCurrency(dividendRoundingRule);
+            var franked = (amountPaid * dividend.PercentFranked).ToCurrency(dividendRoundingRule);
+            var unFranked = (amountPaid * (1 - dividend.PercentFranked)).ToCurrency(dividendRoundingRule);
+            var frankingCredits = (((amountPaid / (1 - dividend.CompanyTaxRate)) - amountPaid) * dividend.PercentFranked).ToCurrency(dividendRoundingRule);
 
             var incomeReceived = new IncomeReceived()
             {
                 TransactionDate = dividend.PaymentDate,
-                ASXCode = stock.ASXCode,
+                ASXCode = dividend.Stock.Properties[dividend.PaymentDate].ASXCode,
                 RecordDate = dividend.ActionDate,
                 FrankedAmount = franked,
                 UnfrankedAmount = unFranked,
@@ -56,7 +53,7 @@ namespace PortfolioManager.Service.CorporateActions
             /* Handle Dividend Reinvestment Plan */
             if (dividend.DRPPrice != 0.00m)
             {
-                var stockSetting = _PortfolioQuery.GetStockSetting(stock.Id, dividend.ActionDate);
+                var stockSetting = _PortfolioQuery.GetStockSetting(dividend.Stock.Id, dividend.ActionDate);
                 if (stockSetting.ParticipateinDRP)
                 {
                     incomeReceived.CreateCashTransaction = false;
@@ -64,22 +61,23 @@ namespace PortfolioManager.Service.CorporateActions
                     int drpUnits;
                     decimal costBase;
 
-                    if (stock.DRPMethod == DRPMethod.RoundUp)
+                    var drpMethod = dividend.Stock.DividendRules[dividend.ActionDate].DRPMethod;
+                    if (drpMethod == DRPMethod.RoundUp)
                     {
                         drpUnits = (int)Math.Ceiling(amountPaid / dividend.DRPPrice);
                         costBase = amountPaid;
                     }
-                    else if (stock.DRPMethod == DRPMethod.RoundDown)
+                    else if (drpMethod == DRPMethod.RoundDown)
                     {
                         drpUnits = (int)Math.Floor(amountPaid / dividend.DRPPrice);
                         costBase = amountPaid;
                     }
-                    else if (stock.DRPMethod == DRPMethod.RetainCashBalance)
+                    else if (drpMethod == DRPMethod.RetainCashBalance)
                     {
-                        var drpCashBalance = _PortfolioQuery.GetDRPBalance(stock.Id, dividend.PaymentDate);
+                        var drpCashBalance = _PortfolioQuery.GetDRPBalance(dividend.Stock.Id, dividend.PaymentDate);
                         var availableAmount = amountPaid + drpCashBalance;
                         drpUnits = (int)Math.Floor(availableAmount / dividend.DRPPrice);
-                        costBase = (drpUnits * dividend.DRPPrice).ToCurrency(stock.DividendRoundingRule);
+                        costBase = (drpUnits * dividend.DRPPrice).ToCurrency(dividendRoundingRule);
                         incomeReceived.DRPCashBalance = availableAmount - costBase;
                     }
                     else
@@ -93,7 +91,7 @@ namespace PortfolioManager.Service.CorporateActions
                         transactions.Add(new OpeningBalance()
                         {
                             TransactionDate = dividend.PaymentDate,
-                            ASXCode = stock.ASXCode,
+                            ASXCode = dividend.Stock.Properties[dividend.PaymentDate].ASXCode,
                             Units = drpUnits,
                             CostBase = costBase,
                             AquisitionDate = dividend.PaymentDate,
@@ -113,7 +111,7 @@ namespace PortfolioManager.Service.CorporateActions
         {
             Dividend dividend = corporateAction as Dividend;
 
-            string asxCode = _StockQuery.Get(dividend.Stock, dividend.PaymentDate).ASXCode;
+            var asxCode = dividend.Stock.Properties[dividend.PaymentDate].ASXCode;
            
             var transactions = _PortfolioQuery.GetTransactions(asxCode, TransactionType.Income, dividend.PaymentDate, dividend.PaymentDate);
             return (transactions.Count() > 0); 

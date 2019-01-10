@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Portfolios;
 
 using PortfolioManager.UI.Utilities;
 
@@ -40,16 +40,16 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            DetailedUnrealisedGainsResponce responce;
+            DetailedUnrealisedGainsResponse responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestWebClient.GetDetailedUnrealisedGainsAsync(_Parameter.Date);
+                responce = await _Parameter.RestClient.Portfolio.GetDetailedCapitalGains(_Parameter.Date);
             else
-                responce = await _Parameter.RestWebClient.GetDetailedUnrealisedGainsAsync(_Parameter.Stock.Id, _Parameter.Date);
+                responce = await _Parameter.RestClient.Portfolio.GetDetailedCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
             if (responce == null)
                 return;
 
             Parcels.Clear();
-            foreach (var item in responce.CGTItems.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate))
+            foreach (var item in responce.UnrealisedGains.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate))
                  Parcels.Add(new ParcelCostBaseViewItem(item));
  
             OnPropertyChanged("");
@@ -78,12 +78,11 @@ namespace PortfolioManager.UI.ViewModels
             {
                 var parcelAuditItem = new ParcelCostBaseAuditViewItem()
                 {
-                    TransactionType = cgtEvent.TransactionType.ToString(),
                     Date = cgtEvent.Date,
+                    Description = cgtEvent.Description,
                     Units = cgtEvent.Units,
                     Amount = cgtEvent.CostBaseChange,
-                    CostBase = cgtEvent.CostBase,
-                    Comment = cgtEvent.Comment
+                    CostBase = cgtEvent.CostBase
                 };
 
                 ParcelAudit.Add(parcelAuditItem);
@@ -93,11 +92,11 @@ namespace PortfolioManager.UI.ViewModels
 
     class ParcelCostBaseAuditViewItem
     {
-        public string TransactionType { get; set; }
         public DateTime Date { get; set; }
+        public string Description { get; set; }
         public int Units { get; set; }
         public decimal Amount { get; set; }
         public decimal CostBase { get; set; }
-        public string Comment { get; set; }
+        
     }
 }

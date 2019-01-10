@@ -1,74 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<IncomeResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T11:46:35.1562089+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
+<IncomeResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Income>
     <IncomeItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>667.95</FrankedAmount>
       <FrankingCredits>286.26</FrankingCredits>
-      <TotalAmount>954.21</TotalAmount>
+      <NettIncome>667.95</NettIncome>
+      <GrossIncome>954.21</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>66</FrankedAmount>
       <FrankingCredits>28.29</FrankingCredits>
-      <TotalAmount>94.29</TotalAmount>
+      <NettIncome>66</NettIncome>
+      <GrossIncome>94.29</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>228.12</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>228.12</TotalAmount>
+      <NettIncome>228.12</NettIncome>
+      <GrossIncome>228.12</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <UnfrankedAmount>64.05</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>64.05</TotalAmount>
+      <NettIncome>64.05</NettIncome>
+      <GrossIncome>64.05</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
       </Stock>
       <UnfrankedAmount>58.73</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>58.73</TotalAmount>
+      <NettIncome>58.73</NettIncome>
+      <GrossIncome>58.73</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>33.1</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>33.1</TotalAmount>
+      <NettIncome>33.1</NettIncome>
+      <GrossIncome>33.1</GrossIncome>
     </IncomeItem>
   </Income>
-</IncomeResponce>
+</IncomeResponse>

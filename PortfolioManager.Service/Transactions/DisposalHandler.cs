@@ -6,13 +6,14 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Utils;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Transactions
 {
     class DisposalHandler : TransacactionHandler, ITransactionHandler
     {
-        public DisposalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-            : base (portfolioQuery, stockQuery)
+        public DisposalHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+            : base (portfolioQuery, stockExchange)
         {
 
         }
@@ -21,16 +22,13 @@ namespace PortfolioManager.Service.Transactions
         {
             var disposal = transaction as Disposal;
 
-            var stock = _StockQuery.GetByASXCode(disposal.ASXCode, disposal.TransactionDate);
-
-            if (stock.ParentId != Guid.Empty)
-                throw new TransctionNotSupportedForChildSecurity(disposal, "Cannot dispose of child securities. Dispose of stapled security instead");
+            var stock = _StockExchange.Stocks.Get(disposal.ASXCode, disposal.TransactionDate);
 
             /* Determine which parcels to sell based on CGT method */
             IEnumerable<ShareParcel> ownedParcels;
-            if (stock.Type == StockType.StapledSecurity)
+          /*  if (stock.Type == StockType.StapledSecurity)
                 ownedParcels = PortfolioUtils.GetStapledSecurityParcels(stock, disposal.TransactionDate, _PortfolioQuery, _StockQuery);
-            else
+            else*/
                 ownedParcels = _PortfolioQuery.GetParcelsForStock(stock.Id, disposal.TransactionDate, disposal.TransactionDate);
             decimal amountReceived = (disposal.Units * disposal.AveragePrice) - disposal.TransactionCosts;
             var cgtCalculation = CGTCalculator.CalculateCapitalGain(ownedParcels, disposal.TransactionDate, disposal.Units, amountReceived, disposal.CGTMethod);
@@ -41,9 +39,9 @@ namespace PortfolioManager.Service.Transactions
                 throw new NotEnoughSharesForDisposal(disposal, "Not enough shares for disposal");
             
             /* dispose of select parcels */
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
             {
-                foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
+          /*      foreach (ParcelSold parcelSold in cgtCalculation.ParcelsSold)
                 {
                     var childStocks = _StockQuery.GetChildStocks(stock.Id, disposal.TransactionDate);
 
@@ -61,7 +59,7 @@ namespace PortfolioManager.Service.Transactions
                         i++;
                     }
 
-                };
+                }; */
             }
             else
             {

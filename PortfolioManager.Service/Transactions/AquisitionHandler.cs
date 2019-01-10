@@ -3,6 +3,7 @@
 using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Domain.Stocks;
 
 using PortfolioManager.Service.Utils;
 
@@ -10,8 +11,8 @@ namespace PortfolioManager.Service.Transactions
 {
     class AquisitionHandler : TransacactionHandler, ITransactionHandler
     {
-        public AquisitionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-            : base (portfolioQuery, stockQuery)
+        public AquisitionHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+            : base (portfolioQuery, stockExchange)
         {
         }
 
@@ -19,10 +20,7 @@ namespace PortfolioManager.Service.Transactions
         {
             var aquisition = transaction as Aquisition;
 
-            var stock = _StockQuery.GetByASXCode(aquisition.ASXCode, aquisition.TransactionDate);
-
-            if (stock.ParentId != Guid.Empty)
-                throw new TransctionNotSupportedForChildSecurity(aquisition, "Cannot aquire child securities. Aquire stapled security instead");
+            var stock = _StockExchange.Stocks.Get(aquisition.ASXCode, aquisition.TransactionDate);
 
             decimal amountPaid = (aquisition.Units * aquisition.AveragePrice) + aquisition.TransactionCosts;
             decimal costBase = amountPaid;

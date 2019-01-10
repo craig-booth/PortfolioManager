@@ -4,13 +4,14 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Utils;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Transactions
 {
     class CostBaseAdjustmentHandler : TransacactionHandler, ITransactionHandler
     {
-        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-            : base (portfolioQuery, stockQuery)
+        public CostBaseAdjustmentHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+            : base (portfolioQuery, stockExchange)
         {
 
         }
@@ -19,9 +20,9 @@ namespace PortfolioManager.Service.Transactions
         {
             var costBaseAdjustment = transaction as CostBaseAdjustment;
 
-            var stock = _StockQuery.GetByASXCode(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
+            var stock = _StockExchange.Stocks.Get(costBaseAdjustment.ASXCode, costBaseAdjustment.RecordDate);
 
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(costBaseAdjustment, "Cannot adjust cost base of stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the dividend applies to */

@@ -4,22 +4,20 @@ using System.Text;
 
 using AutoMapper;
 
-using PortfolioManager.Common;
 using PortfolioManager.Data.Portfolios;
-using PortfolioManager.Data.Stocks;
 using PortfolioManager.Service.Interface;
-using PortfolioManager.Service.Transactions;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Utils
 {
     public class ModelToServiceMapping : Profile
     {
-        public ModelToServiceMapping(IStockDatabase stockDatabase)
+        public ModelToServiceMapping(StockExchange stockExchange)
         {
-            var stockResolver = new StockResolver(stockDatabase);
+            var stockResolver = new StockResolver(stockExchange);
 
             CreateMap<Transaction, TransactionItem>()
-                .ForMember(dest => dest.Stock, opts => opts.MapFrom(stockResolver))
+                .ForMember(dest => dest.Stock, opts => opts.ResolveUsing(stockResolver))
                 .Include<Aquisition, AquisitionTransactionItem>()
                 .Include<CashTransaction, CashTransactionItem>()
                 .Include<CostBaseAdjustment, CostBaseAdjustmentTransactionItem>()
@@ -69,11 +67,11 @@ namespace PortfolioManager.Service.Utils
 
     public class StockResolver : IValueResolver<Transaction, TransactionItem, StockItem>
     {
-        private IStockDatabase _StockDatabase;
+        private StockExchange _StockExchange;
 
-        public StockResolver(IStockDatabase stockDatabase)
+        public StockResolver(StockExchange stockExchange)
         {
-            _StockDatabase = stockDatabase;
+            _StockExchange = stockExchange;
         }
 
         public StockItem Resolve(Transaction source, TransactionItem destination, StockItem member, ResolutionContext context)
@@ -81,17 +79,13 @@ namespace PortfolioManager.Service.Utils
             if (source.ASXCode == "")
                 return new StockItem(Guid.Empty, "", "");
 
-            using (var unitOfWork = _StockDatabase.CreateReadOnlyUnitOfWork())
+            try
             {
-                try
-                {
-                    var stock = unitOfWork.StockQuery.GetByASXCode(source.ASXCode, source.TransactionDate);
-                    return new StockItem(stock);
-                }
-                catch
-                {
-                    return new StockItem(Guid.Empty, source.ASXCode, "");
-                }
+                return _StockExchange.Stocks.Get(source.ASXCode, source.TransactionDate).ToStockItem(source.TransactionDate);
+            }
+            catch
+            {
+                return new StockItem(Guid.Empty, source.ASXCode, "");
             }
 
         }

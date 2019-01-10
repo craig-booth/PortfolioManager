@@ -1,107 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<IncomeResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T11:46:35.2442709+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
+<IncomeResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Income>
     <IncomeItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>1698.08</FrankedAmount>
       <FrankingCredits>727.74</FrankingCredits>
-      <TotalAmount>2425.82</TotalAmount>
+      <NettIncome>1698.08</NettIncome>
+      <GrossIncome>2425.82</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>138</FrankedAmount>
       <FrankingCredits>59.15</FrankingCredits>
-      <TotalAmount>197.15</TotalAmount>
+      <NettIncome>138</NettIncome>
+      <GrossIncome>197.15</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>476.38</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>476.38</TotalAmount>
+      <NettIncome>476.38</NettIncome>
+      <GrossIncome>476.38</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <UnfrankedAmount>271.67</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>271.67</TotalAmount>
+      <NettIncome>271.67</NettIncome>
+      <GrossIncome>271.67</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
       </Stock>
       <UnfrankedAmount>583.02</UnfrankedAmount>
       <FrankedAmount>53.91</FrankedAmount>
       <FrankingCredits>23.11</FrankingCredits>
-      <TotalAmount>660.04</TotalAmount>
+      <NettIncome>636.93</NettIncome>
+      <GrossIncome>660.04</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>1850.92</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>1850.92</TotalAmount>
+      <NettIncome>1850.92</NettIncome>
+      <GrossIncome>1850.92</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>456.66</FrankedAmount>
       <FrankingCredits>195.71</FrankingCredits>
-      <TotalAmount>652.37</TotalAmount>
+      <NettIncome>456.66</NettIncome>
+      <GrossIncome>652.37</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <UnfrankedAmount>0</UnfrankedAmount>
       <FrankedAmount>2480.37</FrankedAmount>
       <FrankingCredits>1063.01</FrankingCredits>
-      <TotalAmount>3543.38</TotalAmount>
+      <NettIncome>2480.37</NettIncome>
+      <GrossIncome>3543.38</GrossIncome>
     </IncomeItem>
     <IncomeItem>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
+        <Category>InternationlFixedInterest</Category>
       </Stock>
       <UnfrankedAmount>478.81</UnfrankedAmount>
       <FrankedAmount>0</FrankedAmount>
       <FrankingCredits>0</FrankingCredits>
-      <TotalAmount>478.81</TotalAmount>
+      <NettIncome>478.81</NettIncome>
+      <GrossIncome>478.81</GrossIncome>
     </IncomeItem>
   </Income>
-</IncomeResponce>
+</IncomeResponse>

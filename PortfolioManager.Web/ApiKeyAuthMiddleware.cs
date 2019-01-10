@@ -22,6 +22,7 @@ namespace PortfolioManager.Web
 
         public async Task Invoke(HttpContext httpContext)
         {
+#if !DEBUG
             var apiKeyHeader = httpContext.Request.Headers["Api-Key"];
             if (!Guid.TryParse(apiKeyHeader, out Guid apiKey) || !apiKey.Equals(_ApiKey))
             {
@@ -29,7 +30,7 @@ namespace PortfolioManager.Web
                 await httpContext.Response.WriteAsync("Invalid API Key");
                 return;
             }
-
+#endif
             // Call the next middleware delegate in the pipeline 
             await _Next.Invoke(httpContext);
         }

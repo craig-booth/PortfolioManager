@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -20,7 +21,7 @@ namespace PortfolioManager.Test.ImportDataTests
         [TestCaseSource(typeof(AvailableDataServices), "LiveStockPriceServices")]
         public async Task LiveStockPriceServiceSingle(ILiveStockPriceService dataService)
         {
-            var price = await dataService.GetSinglePrice("BHP");
+            var price = await dataService.GetSinglePrice("BHP", CancellationToken.None);
 
             var lastTradingDay = DateTime.Today;
             while (!lastTradingDay.WeekDay())
@@ -35,7 +36,7 @@ namespace PortfolioManager.Test.ImportDataTests
         public async Task LiveStockPriceServiceMultiple(ILiveStockPriceService dataService)
         {
             var asxCodes = new string[] { "BHP", "ARG", "NAB" }; 
-            var priceData = await dataService.GetMultiplePrices(asxCodes);
+            var priceData = await dataService.GetMultiplePrices(asxCodes, CancellationToken.None);
 
             Assert.That(priceData, Has.Exactly(3).Items);
         }

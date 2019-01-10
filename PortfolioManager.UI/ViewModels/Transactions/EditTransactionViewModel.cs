@@ -3,6 +3,7 @@
 using CBControls;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -50,6 +51,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
     class EditTransactionViewModel: PopupWindow
     {
         private RestWebClient _RestWebClient;
+        private RestClient _RestClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
         private TransactionViewModel _TransactionViewModel;
@@ -81,11 +83,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public EditTransactionViewModel(RestWebClient restWebClient)
+        public EditTransactionViewModel(RestWebClient restWebClient, RestClient restClient)
             : base()
         {
             _RestWebClient = restWebClient;
-            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient);
+            _RestClient = restClient; 
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient, restClient);
 
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
             SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);

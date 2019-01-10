@@ -1,37 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.ImportData
 {
     public class TradingDayImporter
     {
+        private readonly StockExchange _StockExchange;
         private readonly ITradingDayService _DataService;
-        private readonly IStockDatabase _Database;
+        private readonly ILogger _Logger;
 
-        public TradingDayImporter(IStockDatabase database, ITradingDayService dataService)
+        public TradingDayImporter(StockExchange stockExchange, ITradingDayService dataService, ILogger<TradingDayImporter> logger)
         {
-            _Database = database;
+            _StockExchange = stockExchange;
             _DataService = dataService;
+            _Logger = logger;
         }
 
-        public async Task Import()
+        public async Task Import(CancellationToken cancellationToken)
         {
-            var nonTradingDays = await _DataService.NonTradingDays(DateTime.Today.Year);
+            int year = DateTime.Today.Year;
 
-            using (var unitOfWork = _Database.CreateUnitOfWork())
+            var nonTradingDays = await _DataService.NonTradingDays(year, cancellationToken);
+
+            if (nonTradingDays.Any())
             {
-                foreach (var nonTradingDay in nonTradingDays)
-                {
-                    unitOfWork.NonTradingDayRepository.Add(nonTradingDay);
-                }
-
-                unitOfWork.Save();
-            }
+                _Logger?.LogInformation("Adding {0} non-trading days for {1}", nonTradingDays.Count(), year);
+                _StockExchange.TradingCalander.SetNonTradingDays(year, nonTradingDays);
+            }           
         }
     }
 }

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UnappliedCorporateActionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-03-18T17:50:04.5983533+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
   <CorporateActions>
     <CorporateActionItem>
       <Id>b197cfc3-e36c-4ae2-8b9a-504b56da69e4</Id>

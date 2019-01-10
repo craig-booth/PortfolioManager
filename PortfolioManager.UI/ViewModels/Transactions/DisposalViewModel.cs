@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PortfolioManager.Common;
+using PortfolioManager.RestApi.Client;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
@@ -83,8 +84,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(DisposalTransactionItem disposal, RestWebClient restWebClient)
-            : base(disposal, TransactionStockSelection.TradeableHoldings, restWebClient)
+        public DisposalViewModel(DisposalTransactionItem disposal, RestWebClient restWebClient, RestClient restClient)
+            : base(disposal, TransactionStockSelection.TradeableHoldings, restWebClient, restClient)
         {
             
         }

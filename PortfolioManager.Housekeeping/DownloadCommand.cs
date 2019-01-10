@@ -35,7 +35,7 @@ namespace PortfolioManager.Housekeeping
 
         private int RunCommand()
         {
-            var downloadTasks = new List<Task>();
+     /*       var downloadTasks = new List<Task>();
 
             var database = new SQLiteStockDatabase(_Database.Value);
    
@@ -59,8 +59,8 @@ namespace PortfolioManager.Housekeeping
             }
 
             Task.WaitAll(downloadTasks.ToArray());
-
-            return 0;
+            */
+            return 0; 
         }
     }
 

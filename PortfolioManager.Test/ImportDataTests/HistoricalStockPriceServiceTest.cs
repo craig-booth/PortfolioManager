@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -28,7 +29,7 @@ namespace PortfolioManager.Test.ImportDataTests
             while (!toDate.WeekDay())
                 toDate = toDate.AddDays(-1);
 
-            var priceData = await dataService.GetHistoricalPriceData("BHP", fromDate, toDate);
+            var priceData = await dataService.GetHistoricalPriceData("BHP", fromDate, toDate, CancellationToken.None);
 
             Assert.That(priceData, Is.Not.Empty);
 

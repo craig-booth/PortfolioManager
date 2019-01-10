@@ -1,114 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PortfolioSummaryResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-05T14:01:04.2118805+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
+<PortfolioSummaryResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PortfolioValue>264323.89</PortfolioValue>
-  <PortfolioCost>251092.44047</PortfolioCost>
+  <PortfolioCost>250970.9800</PortfolioCost>
   <Return1Year xsi:nil="true" />
   <Return3Year xsi:nil="true" />
   <Return5Year xsi:nil="true" />
   <ReturnAll>0.11259</ReturnAll>
   <CashBalance>5463.03</CashBalance>
   <Holdings>
-    <HoldingItem>
+    <Holding>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
-      <Category>InternationalStocks</Category>
       <Units>13543</Units>
       <Value>15709.88</Value>
-      <Cost>14023.41144</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <Cost>14043.36</Cost>
+      <CostBase>14043.36</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>6787</Units>
       <Value>51852.68</Value>
-      <Cost>49019.15067</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <Cost>49103.10</Cost>
+      <CostBase>49103.10</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>60</Units>
       <Value>7556.40</Value>
-      <Cost>5412.0</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <Cost>5466.00</Cost>
+      <CostBase>5466.00</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>280</Units>
       <Value>31729.60</Value>
-      <Cost>28722.40</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <Category>AustralianFixedInterest</Category>
-      <Units>242</Units>
-      <Value>11737.0</Value>
-      <Cost>12044.54999</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <Category>AustralianProperty</Category>
-      <Units>291</Units>
-      <Value>22337.16</Value>
-      <Cost>23542.2800</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
-      <Category>InternationalStocks</Category>
-      <Units>1080</Units>
-      <Value>63007.20</Value>
-      <Cost>62190.76007</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <Cost>28776.40</Cost>
+      <CostBase>28776.40</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
-      <Category>AustralianStocks</Category>
       <Units>17957</Units>
       <Value>43455.94</Value>
-      <Cost>38774.60830</Cost>
-    </HoldingItem>
-    <HoldingItem>
+      <Cost>38298.5300</Cost>
+      <CostBase>38806.1000</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>df514684-db72-493f-9427-0057029d4964</Id>
+        <ASXCode>VAF</ASXCode>
+        <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
+      </Stock>
+      <Units>242</Units>
+      <Value>11737.0</Value>
+      <Cost>12064.50</Cost>
+      <CostBase>12064.50</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+        <ASXCode>VAP</ASXCode>
+        <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
+      </Stock>
+      <Units>291</Units>
+      <Value>22337.16</Value>
+      <Cost>23572.23</Cost>
+      <CostBase>23572.23</CostBase>
+    </Holding>
+    <Holding>
+      <Stock>
+        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+        <ASXCode>VGS</ASXCode>
+        <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
+      </Stock>
+      <Units>1080</Units>
+      <Value>63007.20</Value>
+      <Cost>62253.63</Cost>
+      <CostBase>62253.63</CostBase>
+    </Holding>
+    <Holding>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
         <ASXCode>VCF</ASXCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
+        <Category>InternationlFixedInterest</Category>
       </Stock>
-      <Category>InternationlFixedInterest</Category>
       <Units>225</Units>
-      <Value>11475</Value>
-      <Cost>11900.25</Cost>
-    </HoldingItem>
+      <Value>11475.0</Value>
+      <Cost>11930.20</Cost>
+      <CostBase>11930.20</CostBase>
+    </Holding>
   </Holdings>
-</PortfolioSummaryResponce>
+</PortfolioSummaryResponse>

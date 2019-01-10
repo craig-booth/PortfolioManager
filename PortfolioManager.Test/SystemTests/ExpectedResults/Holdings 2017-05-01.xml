@@ -1,107 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HoldingsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T11:46:34.9120367+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
-  <Holdings>
-    <HoldingItem>
-      <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
-        <Name>Global Value Fund</Name>
-      </Stock>
+<ArrayOfHolding xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Holding>
+    <Stock>
+      <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
+      <ASXCode>GVF</ASXCode>
+      <Name>Global Value Fund</Name>
       <Category>InternationalStocks</Category>
-      <Units>13543</Units>
-      <Value>14761.87</Value>
-      <Cost>14023.41144</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
-        <Name>Argo Investments</Name>
-      </Stock>
+    </Stock>
+    <Units>13543</Units>
+    <Value>14761.87</Value>
+    <Cost>14043.36</Cost>
+    <CostBase>14043.36</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
+      <ASXCode>ARG</ASXCode>
+      <Name>Argo Investments</Name>
       <Category>AustralianStocks</Category>
-      <Units>6923</Units>
-      <Value>52753.26</Value>
-      <Cost>50037.20043</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
-        <Name>Cochlear Limited</Name>
-      </Stock>
+    </Stock>
+    <Units>6923</Units>
+    <Value>52753.26</Value>
+    <Cost>50121.15</Cost>
+    <CostBase>50121.15</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
+      <ASXCode>COH</ASXCode>
+      <Name>Cochlear Limited</Name>
       <Category>AustralianStocks</Category>
-      <Units>60</Units>
-      <Value>8421.00</Value>
-      <Cost>5412.0</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <ASXCode>CSL</ASXCode>
-        <Name>CSL Ltd</Name>
-      </Stock>
+    </Stock>
+    <Units>60</Units>
+    <Value>8421.00</Value>
+    <Cost>5466.00</Cost>
+    <CostBase>5466.00</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
+      <ASXCode>CSL</ASXCode>
+      <Name>CSL Ltd</Name>
       <Category>AustralianStocks</Category>
-      <Units>280</Units>
-      <Value>37181.20</Value>
-      <Cost>28722.40</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
+    </Stock>
+    <Units>280</Units>
+    <Value>37181.20</Value>
+    <Cost>28776.40</Cost>
+    <CostBase>28776.40</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
+      <ASXCode>WAM</ASXCode>
+      <Name>WAM Capital Limited</Name>
+      <Category>AustralianStocks</Category>
+    </Stock>
+    <Units>18525</Units>
+    <Value>43904.25</Value>
+    <Cost>39645.3100</Cost>
+    <CostBase>40152.8800</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>df514684-db72-493f-9427-0057029d4964</Id>
+      <ASXCode>VAF</ASXCode>
+      <Name>Vanguard Australian Fixed Interest ETF</Name>
       <Category>AustralianFixedInterest</Category>
-      <Units>244</Units>
-      <Value>11916.96</Value>
-      <Cost>12141.48999</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
+    </Stock>
+    <Units>244</Units>
+    <Value>11916.96</Value>
+    <Cost>12161.44</Cost>
+    <CostBase>12161.44</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
+      <ASXCode>VAP</ASXCode>
+      <Name>Vanguard Australian Property ETF</Name>
       <Category>AustralianProperty</Category>
-      <Units>360</Units>
-      <Value>29671.20</Value>
-      <Cost>29046.0100</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
-        <Name>Vanguard International Shares ETF</Name>
-      </Stock>
+    </Stock>
+    <Units>360</Units>
+    <Value>29671.20</Value>
+    <Cost>29095.91</Cost>
+    <CostBase>29095.91</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
+      <ASXCode>VGS</ASXCode>
+      <Name>Vanguard International Shares ETF</Name>
       <Category>InternationalStocks</Category>
-      <Units>1084</Units>
-      <Value>67229.68</Value>
-      <Cost>62429.40007</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
-        <Name>WAM Capital Limited</Name>
-      </Stock>
-      <Category>AustralianStocks</Category>
-      <Units>18525</Units>
-      <Value>43904.25</Value>
-      <Cost>40121.38742</Cost>
-    </HoldingItem>
-    <HoldingItem>
-      <Stock>
-        <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
-        <ASXCode>VCF</ASXCode>
-        <Name>Vangaurd International Fixed Interest ETF</Name>
-      </Stock>
+    </Stock>
+    <Units>1084</Units>
+    <Value>67229.68</Value>
+    <Cost>62492.27</Cost>
+    <CostBase>62492.27</CostBase>
+  </Holding>
+  <Holding>
+    <Stock>
+      <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
+      <ASXCode>VCF</ASXCode>
+      <Name>Vangaurd International Fixed Interest ETF</Name>
       <Category>InternationlFixedInterest</Category>
-      <Units>234</Units>
-      <Value>11704.68</Value>
-      <Cost>12344.19003</Cost>
-    </HoldingItem>
-  </Holdings>
-</HoldingsResponce>
+    </Stock>
+    <Units>234</Units>
+    <Value>11704.68</Value>
+    <Cost>12374.14</Cost>
+    <CostBase>12374.14</CostBase>
+  </Holding>
+</ArrayOfHolding>

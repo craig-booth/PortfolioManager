@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DetailedUnrealisedGainsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T10:23:34.3380735+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
-  <CGTItems>
+<DetailedUnrealisedGainsResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <UnrealisedGains>
     <DetailedUnrealisedGainsItem>
-      <Id>5521d451-925f-40a5-8e6d-0203ed2edb4e</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-09T00:00:00</AquisitionDate>
       <Units>7500</Units>
-      <CostBase>7575</CostBase>
+      <CostBase>7575.00</CostBase>
       <MarketValue>7575.00</MarketValue>
       <CapitalGain>0.00</CapitalGain>
       <DiscoutedGain>0.00</DiscoutedGain>
@@ -21,196 +18,188 @@
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-09T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 7,500 shares @ $1.01</Description>
           <UnitChange>0</UnitChange>
           <Units>7500</Units>
-          <CostBaseChange>7575</CostBaseChange>
+          <CostBaseChange>7575.00</CostBaseChange>
           <CostBase>7575.00</CostBase>
-          <Comment>Aquired 7,500 shares @ $1.01</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>a6e3925b-867a-4a5c-bdcd-d93e4071bad3</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
       <Units>4453</Units>
       <CostBase>32115.6</CostBase>
       <MarketValue>32150.66</MarketValue>
       <CapitalGain>35.06</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>35.06</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 4,453 shares @ $7.20</Description>
           <UnitChange>0</UnitChange>
           <Units>4453</Units>
           <CostBaseChange>32115.6</CostBaseChange>
           <CostBase>32115.60</CostBase>
-          <Comment>Aquired 4,453 shares @ $7.20</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8be0783b-f1b6-4f09-ba18-35b8c4b05978</Id>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
       <Units>60</Units>
-      <CostBase>5466</CostBase>
-      <MarketValue>6120</MarketValue>
-      <CapitalGain>654</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <CostBase>5466.0</CostBase>
+      <MarketValue>6120.0</MarketValue>
+      <CapitalGain>654.0</CapitalGain>
+      <DiscoutedGain>654.0</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 60 shares @ $90.20</Description>
           <UnitChange>0</UnitChange>
           <Units>60</Units>
-          <CostBaseChange>5466</CostBaseChange>
+          <CostBaseChange>5466.0</CostBaseChange>
           <CostBase>5466.00</CostBase>
-          <Comment>Aquired 60 shares @ $90.20</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>41d14ce3-0354-4ff5-b734-f1515ee3fbcd</Id>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
       <Units>280</Units>
-      <CostBase>28776.4</CostBase>
+      <CostBase>28776.40</CostBase>
       <MarketValue>28924.0</MarketValue>
-      <CapitalGain>147.6</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <CapitalGain>147.60</CapitalGain>
+      <DiscoutedGain>147.60</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 280 shares @ $102.58</Description>
           <UnitChange>0</UnitChange>
           <Units>280</Units>
-          <CostBaseChange>28776.4</CostBaseChange>
+          <CostBaseChange>28776.40</CostBaseChange>
           <CostBase>28776.40</CostBase>
-          <Comment>Aquired 280 shares @ $102.58</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>daea3704-a8b0-4bb9-9dae-41dbe908ebec</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-10T00:00:00</AquisitionDate>
       <Units>16813</Units>
       <CostBase>36538.21</CostBase>
       <MarketValue>36652.34</MarketValue>
       <CapitalGain>114.13</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>114.13</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-10T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 16,813 shares @ $2.17</Description>
           <UnitChange>0</UnitChange>
           <Units>16813</Units>
           <CostBaseChange>36538.21</CostBaseChange>
           <CostBase>36538.21</CostBase>
-          <Comment>Aquired 16,813 shares @ $2.17</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8357c770-f207-45db-9e33-d59e5e7b60a9</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <AquisitionDate>2016-02-15T00:00:00</AquisitionDate>
       <Units>150</Units>
-      <CostBase>7497</CostBase>
+      <CostBase>7497.00</CostBase>
       <MarketValue>7545.0</MarketValue>
-      <CapitalGain>48.0</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <CapitalGain>48.00</CapitalGain>
+      <DiscoutedGain>48.00</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-15T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 150 shares @ $49.98</Description>
           <UnitChange>0</UnitChange>
           <Units>150</Units>
-          <CostBaseChange>7497</CostBaseChange>
+          <CostBaseChange>7497.00</CostBaseChange>
           <CostBase>7497.00</CostBase>
-          <Comment>Aquired 150 shares @ $49.98</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>8063a017-c68b-46d5-a167-b83cf0bbe6b1</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
       </Stock>
       <AquisitionDate>2016-02-15T00:00:00</AquisitionDate>
       <Units>100</Units>
-      <CostBase>7527</CostBase>
+      <CostBase>7527.00</CostBase>
       <MarketValue>7804.00</MarketValue>
       <CapitalGain>277.00</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>277.00</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-15T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 100 shares @ $75.27</Description>
           <UnitChange>0</UnitChange>
           <Units>100</Units>
-          <CostBaseChange>7527</CostBaseChange>
+          <CostBaseChange>7527.00</CostBaseChange>
           <CostBase>7527.00</CostBase>
-          <Comment>Aquired 100 shares @ $75.27</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
     <DetailedUnrealisedGainsItem>
-      <Id>2f6892db-6c54-4be1-bc7f-946dc144271e</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <AquisitionDate>2016-02-23T00:00:00</AquisitionDate>
       <Units>140</Units>
-      <CostBase>7578.2</CostBase>
+      <CostBase>7578.20</CostBase>
       <MarketValue>7646.80</MarketValue>
       <CapitalGain>68.60</CapitalGain>
-      <DiscoutedGain>0.00</DiscoutedGain>
+      <DiscoutedGain>68.60</DiscoutedGain>
       <DiscountMethod>Other</DiscountMethod>
       <CGTEvents>
         <CGTEventItem>
           <Date>2016-02-23T00:00:00</Date>
-          <TransactionType>Aquisition</TransactionType>
+          <Description>Aquired 140 shares @ $54.13</Description>
           <UnitChange>0</UnitChange>
           <Units>140</Units>
-          <CostBaseChange>7578.2</CostBaseChange>
+          <CostBaseChange>7578.20</CostBaseChange>
           <CostBase>7578.20</CostBase>
-          <Comment>Aquired 140 shares @ $54.13</Comment>
         </CGTEventItem>
       </CGTEvents>
     </DetailedUnrealisedGainsItem>
-  </CGTItems>
-</DetailedUnrealisedGainsResponce>
+  </UnrealisedGains>
+</DetailedUnrealisedGainsResponse>

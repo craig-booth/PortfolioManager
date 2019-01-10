@@ -5,26 +5,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.5.3" />
+    <PackageReference Include="FluentAssertions" Version="5.5.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="NBench" Version="1.2.2" />
     <PackageReference Include="NUnit" Version="3.11.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj" />
     <ProjectReference Include="..\PortfolioManager.Data.SQLite\PortfolioManager.Data.SQLite.csproj" />
     <ProjectReference Include="..\PortfolioManager.Data\PortfolioManager.Data.csproj" />
+    <ProjectReference Include="..\PortfolioManager.Domain\PortfolioManager.Domain.csproj" />
+    <ProjectReference Include="..\PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj" />
+    <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
     <ProjectReference Include="..\PortfolioManager.ImportData\PortfolioManager.ImportData.csproj" />
     <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj" />
+    <ProjectReference Include="..\PortfolioManager.Web\PortfolioManager.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="PerformanceTests\Stocks.db">
+    <None Update="PerformanceTests\Events.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="PerformanceTests\Transactions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\Events.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SystemTests\ExpectedResults\CapitalGain 2016-01-01.xml">
@@ -243,6 +251,78 @@
     <None Update="SystemTests\ExpectedResults\CGTLiability 2017-12-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-01-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-02-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-03-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-04-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-05-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-06-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-07-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-08-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-09-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-10-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-11-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2016-12-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-01-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-02-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-03-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-04-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-05-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-06-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-07-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-08-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-09-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-10-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-11-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SystemTests\ExpectedResults\CorporateActions 2017-12-01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SystemTests\ExpectedResults\Holdings 2016-01-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -459,6 +539,9 @@
     <None Update="SystemTests\ExpectedResults\PortfolioPerformance 2017-12-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SystemTests\ExpectedResults\PortfolioProperties.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SystemTests\ExpectedResults\PortfolioSummary 2016-01-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -603,78 +686,6 @@
     <None Update="SystemTests\ExpectedResults\PortfolioValue 2017-12-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-01-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-02-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-03-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-04-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-05-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-06-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-07-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-08-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-09-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-10-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-11-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2016-12-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-01-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-02-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-03-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-04-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-05-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-06-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-07-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-08-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-09-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-10-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-11-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SystemTests\ExpectedResults\TradeableHoldings 2017-12-01.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="SystemTests\ExpectedResults\Transactions 2016-01-01.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -750,7 +761,7 @@
     <None Update="SystemTests\ExpectedResults\UnappliedCorporateActions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SystemTests\Stocks.db">
+    <None Update="SystemTests\Transactions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SystemTests\Transactions.xml">

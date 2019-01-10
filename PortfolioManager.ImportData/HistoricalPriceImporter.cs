@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Common;
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.ImportData
 {
     public class HistoricalPriceImporter
     {
-        private IHistoricalStockPriceService _DataService;
-        private readonly IStockDatabase _Database;
+        private readonly IHistoricalStockPriceService _DataService;
+        private readonly StockExchange _StockExchange;
+        private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(IStockDatabase database, IHistoricalStockPriceService dataService)
+        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
         {
-            _Database = database;
+            _StockExchange = stockExchange;
             _DataService = dataService;
+            _Logger = logger;
         }
 
         private class StockToImport
@@ -27,52 +31,43 @@ namespace PortfolioManager.ImportData
             public DateTime ToDate;
         }
 
-        public async Task Import()
+        public async Task Import(CancellationToken cancellationToken)
         {
-            var stocksToImport = new List<StockToImport>();
+            var lastExpectedDate = DateTime.Today.AddDays(-1);
+            while (! _StockExchange.TradingCalander.IsTradingDay(lastExpectedDate))
+                lastExpectedDate = lastExpectedDate.AddDays(-1);
 
-            using (var unitOfWork = _Database.CreateReadOnlyUnitOfWork())
+            foreach (var stock in _StockExchange.Stocks.All())
             {
-                var lastExpectedDate = DateTime.Today.AddDays(-1);
-                while (!unitOfWork.StockQuery.TradingDay(lastExpectedDate))
-                    lastExpectedDate = lastExpectedDate.AddDays(-1);
+                if (cancellationToken.IsCancellationRequested)
+                    return;
 
-                var stocks = unitOfWork.StockQuery.GetAll();
+                var latestDate = stock.DateOfLastestPrice(); 
 
-                foreach (var stock in stocks)
-                {
-                    if (stock.ParentId == Guid.Empty)
-                    {
-                        var latestDate = unitOfWork.StockQuery.GetLatestClosingPrice(stock.Id);
+                if (latestDate < lastExpectedDate)
+                {                 
+                    var fromDate = latestDate.AddDays(1);
+                    var toDate = lastExpectedDate;
+                    var asxCode = stock.Properties.ClosestTo(toDate).ASXCode;
 
-                        if (latestDate < lastExpectedDate)
-                        {
-                            stocksToImport.Add(new StockToImport()
-                            {
-                                Stock = stock,
-                                FromDate = latestDate.AddDays(1),
-                                ToDate = lastExpectedDate
-                            });
-                        }
-                    }
-                }
-            }
+                    _Logger?.LogInformation("Importing closing prices for {0} between {1:d} and {2:d}", asxCode, fromDate, toDate);
 
+                    var data = await _DataService.GetHistoricalPriceData(asxCode, fromDate, toDate, cancellationToken);
 
-            foreach (var stock in stocksToImport)
-            {
-                var data = await _DataService.GetHistoricalPriceData(stock.Stock.ASXCode, stock.FromDate, stock.ToDate);
-                using (var unitOfWork = _Database.CreateUnitOfWork())
-                {
+                    _Logger?.LogInformation("{0} closing prices found", data.Count());
                     foreach (var stockPrice in data)
                     {
-                        if (unitOfWork.StockPriceRepository.Exists(stock.Stock.Id, stockPrice.Date))
-                            unitOfWork.StockPriceRepository.Update(stock.Stock.Id, stockPrice.Date, stockPrice.Price, false);
-                        else
-                            unitOfWork.StockPriceRepository.Add(stock.Stock.Id, stockPrice.Date, stockPrice.Price, false);
+                        _Logger?.LogInformation("Updating closing price for {0:d} : {1}", stockPrice.Date, stockPrice.Price);
+                        try
+                        {
+                            stock.UpdateClosingPrice(stockPrice.Date, stockPrice.Price);
+                        }
+                        catch (Exception e)
+                        {
+                            _Logger.LogError(e, "Error occurred importing closing prices for {0} on {1:d}", asxCode, stockPrice.Date);
+                        }
                     }
-
-                    unitOfWork.Save();
+                        
                 }
             }
         }

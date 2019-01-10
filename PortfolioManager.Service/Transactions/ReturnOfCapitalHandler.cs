@@ -5,14 +5,15 @@ using PortfolioManager.Common;
 using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
 using PortfolioManager.Service.Utils;
+using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Service.Transactions
 {
     class ReturnOfCapitalHandler : TransacactionHandler, ITransactionHandler
     {
 
-        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
-            : base (portfolioQuery, stockQuery)
+        public ReturnOfCapitalHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
+            : base (portfolioQuery, stockExchange)
         {
 
         }
@@ -21,9 +22,9 @@ namespace PortfolioManager.Service.Transactions
         {
             var returnOfCapital = transaction as ReturnOfCapital;
 
-            var stock = _StockQuery.GetByASXCode(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
+            var stock = _StockExchange.Stocks.Get(returnOfCapital.ASXCode, returnOfCapital.RecordDate);
 
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
                 throw new TransctionNotSupportedForStapledSecurity(returnOfCapital, "Cannot have a return of capital for stapled securities. Adjust cost base of child securities instead");
 
             /* locate parcels that the transaction applies to */

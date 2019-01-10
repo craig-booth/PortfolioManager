@@ -2,7 +2,7 @@
 
 using PortfolioManager.Common;
 using PortfolioManager.Data.Portfolios;
-using PortfolioManager.Data.Stocks;
+using PortfolioManager.Domain.CorporateActions;
 
 namespace PortfolioManager.Service.CorporateActions
 {
@@ -21,18 +21,16 @@ namespace PortfolioManager.Service.CorporateActions
     {
         private ServiceFactory<ICorporateActionHandler> _HandlerFactory = new ServiceFactory<ICorporateActionHandler>();
         private readonly IPortfolioQuery _PortfolioQuery;
-        private readonly IStockQuery _StockQuery;
 
-        public CorporateActionHandlerFactory(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public CorporateActionHandlerFactory(IPortfolioQuery portfolioQuery)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
 
-            _HandlerFactory.Register<CapitalReturn>(() => new CapitalReturnHandler(_PortfolioQuery, _StockQuery))
-                .Register<CompositeAction>(() => new CompositeActionHandler(_PortfolioQuery, _StockQuery, this))
-                .Register<Dividend>(() => new DividendHandler(_PortfolioQuery, _StockQuery))
-                .Register<SplitConsolidation>(() => new SplitConsolidationHandler(_PortfolioQuery, _StockQuery))
-                .Register<Transformation>(() => new TransformationHandler(_PortfolioQuery, _StockQuery));
+            _HandlerFactory.Register<CapitalReturn>(() => new CapitalReturnHandler(_PortfolioQuery))
+                //      .Register<CompositeAction>(() => new CompositeActionHandler(_PortfolioQuery, _StockQuery, this))
+                .Register<Dividend>(() => new DividendHandler(_PortfolioQuery));
+           //     .Register<SplitConsolidation>(() => new SplitConsolidationHandler(_PortfolioQuery, _StockQuery))
+           //     .Register<Transformation>(() => new TransformationHandler(_PortfolioQuery, _StockQuery));
         }
 
         public ICorporateActionHandler GetHandler(CorporateAction corporateAction)

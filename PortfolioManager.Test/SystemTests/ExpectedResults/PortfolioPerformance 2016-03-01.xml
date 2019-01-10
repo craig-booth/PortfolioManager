@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PortfolioPerformanceResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ResponceTime>2018-01-07T10:23:35.1897073+10:30</ResponceTime>
-  <Status>Successfull</Status>
-  <Error />
+<PortfolioPerformanceResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <OpeningBalance>0</OpeningBalance>
   <Dividends>0</Dividends>
   <ChangeInMarketValue>1560.39</ChangeInMarketValue>
@@ -15,11 +12,12 @@
   <Fees>-216</Fees>
   <ClosingCashBalance>108.09</ClosingCashBalance>
   <HoldingPerformance>
-    <HoldingPerformance>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7575.00</Purchases>
@@ -29,13 +27,14 @@
       <CapitalGain>0.00</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>0.00</TotalReturn>
-      <IRR>8.2887594648956593E-17</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>0</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
         <ASXCode>ARG</ASXCode>
         <Name>Argo Investments</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>32061.6</Purchases>
@@ -45,29 +44,31 @@
       <CapitalGain>89.06</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>89.06</TotalReturn>
-      <IRR>0.051927468461809671</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>0.05193</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
         <ASXCode>COH</ASXCode>
         <Name>Cochlear Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>5412.0</Purchases>
       <Sales>0</Sales>
-      <ClosingBalance>6120</ClosingBalance>
+      <ClosingBalance>6120.0</ClosingBalance>
       <Dividends>0</Dividends>
       <CapitalGain>708.0</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>708.0</TotalReturn>
-      <IRR>8.428309369457498</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>8.42831</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
         <ASXCode>CSL</ASXCode>
         <Name>CSL Ltd</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>28722.40</Purchases>
@@ -77,13 +78,14 @@
       <CapitalGain>201.60</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>201.60</TotalReturn>
-      <IRR>0.13615265821452444</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>0.13615</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
         <ASXCode>WAM</ASXCode>
         <Name>WAM Capital Limited</Name>
+        <Category>AustralianStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>36484.21</Purchases>
@@ -93,13 +95,14 @@
       <CapitalGain>168.13</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>168.13</TotalReturn>
-      <IRR>0.087529047302796953</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>0.08753</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7497.00</Purchases>
@@ -109,13 +112,14 @@
       <CapitalGain>48.00</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>48.00</TotalReturn>
-      <IRR>0.16800717185374098</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>0.16801</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
+        <Category>AustralianProperty</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7527.00</Purchases>
@@ -125,13 +129,14 @@
       <CapitalGain>277.00</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>277.00</TotalReturn>
-      <IRR>1.4094618486192254</IRR>
-    </HoldingPerformance>
-    <HoldingPerformance>
+      <IRR>1.40946</IRR>
+    </HoldingPerformanceItem>
+    <HoldingPerformanceItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
+        <Category>InternationalStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7578.20</Purchases>
@@ -141,7 +146,7 @@
       <CapitalGain>68.60</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>68.60</TotalReturn>
-      <IRR>0.59981538360389564</IRR>
-    </HoldingPerformance>
+      <IRR>0.59982</IRR>
+    </HoldingPerformanceItem>
   </HoldingPerformance>
-</PortfolioPerformanceResponce>
+</PortfolioPerformanceResponse>

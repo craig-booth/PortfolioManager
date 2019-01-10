@@ -2,8 +2,9 @@
 
 using PortfolioManager.Common;
 using PortfolioManager.Service.Utils;
-using PortfolioManager.Data.Stocks;
+//using PortfolioManager.Data.Stocks;
 using PortfolioManager.Data.Portfolios;
+using PortfolioManager.Domain.Stocks;
 
 
 namespace PortfolioManager.Service.Transactions
@@ -16,29 +17,29 @@ namespace PortfolioManager.Service.Transactions
     abstract class TransacactionHandler
     {
         protected readonly IPortfolioQuery _PortfolioQuery;
-        protected readonly IStockQuery _StockQuery;
+        protected readonly StockExchange _StockExchange;
 
         protected TransacactionHandler()
         {
 
         }
 
-        public TransacactionHandler(IPortfolioQuery portfolioQuery, IStockQuery stockQuery)
+        public TransacactionHandler(IPortfolioQuery portfolioQuery, StockExchange stockExchange)
         {
             _PortfolioQuery = portfolioQuery;
-            _StockQuery = stockQuery;
+            _StockExchange = stockExchange;
         }
 
         protected void AddParcel(IPortfolioUnitOfWork unitOfWork, DateTime aquisitionDate, DateTime fromDate, Stock stock, int units, decimal unitPrice, decimal amount, decimal costBase, Guid transactionId, Guid purchaseId)
         {
             /* Handle Stapled Securities */
-            if (stock.Type == StockType.StapledSecurity)
+            if (stock is StapledSecurity)
             {
                 /* Get child stocks */
-                var childStocks = _StockQuery.GetChildStocks(stock.Id, fromDate);
+            //    var childStocks = stock.ChildSecurities; 
 
-                /* Apportion amount and cost base */
-                var apportionedAmounts = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, amount, _StockQuery);
+                /* //Apportion amount and cost base */
+         /*       var apportionedAmounts = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, amount, _StockQuery);
                 var apportionedCostBases = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, costBase, _StockQuery);
                 var apportionedUnitPrices = PortfolioUtils.ApportionAmountOverChildStocks(childStocks, fromDate, unitPrice, _StockQuery);
 
@@ -52,7 +53,7 @@ namespace PortfolioManager.Service.Transactions
                     unitOfWork.ParcelAuditRepository.Add(parcelAudit);
 
                     i++;
-                }
+                } */
             }
             else
             {

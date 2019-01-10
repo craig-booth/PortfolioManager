@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
@@ -53,7 +53,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var responce = await _Parameter.RestWebClient.GetCGTLiabilityAsync(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            var responce = await _Parameter.RestClient.Portfolio.GetCGTLiability(DateUtils.FinancialYear(_Parameter.FinancialYear));
             if (responce == null)
                 return;
 
@@ -72,8 +72,8 @@ namespace PortfolioManager.UI.ViewModels
             NetCapitalGainTotal = responce.NetCapitalGainTotal;
 
             CGTEvents.Clear();
-            foreach (var item in responce.Items)
-                CGTEvents.Add(new CGTEventViewModel(item));
+            foreach (var cgtEvent in responce.Events)
+                CGTEvents.Add(new CGTEventViewModel(cgtEvent));
 
             OnPropertyChanged("");
         }
@@ -88,16 +88,16 @@ namespace PortfolioManager.UI.ViewModels
         public decimal CapitalGain { get; private set; }
         public string Method { get; private set; }
 
-        public CGTEventViewModel(CGTLiabilityItem cgtItem)
+        public CGTEventViewModel(CgtLiabilityResponse.CgtLiabilityEvent cgtEvent)
         {
-            CompanyName = cgtItem.Stock.FormattedCompanyName();
-            EventDate = cgtItem.EventDate;
-            CostBase = cgtItem.CostBase;
-            AmountReceived = cgtItem.AmountReceived;
-            CapitalGain = cgtItem.CapitalGain;
-            if (cgtItem.Method == CGTMethod.Discount)
+            CompanyName = cgtEvent.Stock.FormattedCompanyName();
+            EventDate = cgtEvent.EventDate;
+            CostBase = cgtEvent.CostBase;
+            AmountReceived = cgtEvent.AmountReceived;
+            CapitalGain = cgtEvent.CapitalGain;
+            if (cgtEvent.Method == CGTMethod.Discount)
                 Method = "Discount";
-            else if (cgtItem.Method == CGTMethod.Indexation)
+            else if (cgtEvent.Method == CGTMethod.Indexation)
                 Method = "Indexation";
             else
                 Method = "Other";
