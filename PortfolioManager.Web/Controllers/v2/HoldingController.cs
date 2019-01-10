@@ -119,7 +119,7 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: corporateactions
         [Route("{id: guid}/corporateactions")]
         [HttpGet]
-        public ActionResult<CorporateActionsResponse> GetCorporateActions()
+        public ActionResult<CorporateActionsResponse> GetCorporateActions(Guid id)
         {
             var holding = _Portfolio.Holdings.Get(id);
             if (holding == null)
