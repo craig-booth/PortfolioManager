@@ -2,9 +2,10 @@
 <TransactionsResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Transactions>
     <TransactionItem>
+      <Id>1f67523d-7912-4e28-83d9-9d56b669a2da</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -14,9 +15,10 @@
       <Comment>Transfer from Craig</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>1b394c42-8f17-4002-8d59-e067254c8d08</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -26,9 +28,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>01ff9949-05b3-4a27-826d-71ce92f2a0df</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -38,9 +41,10 @@
       <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>1f028bcc-0601-461a-bba6-4cd73c413fe3</Id>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
+        <AsxCode>COH</AsxCode>
         <Name>Cochlear Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -50,9 +54,10 @@
       <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>0d13a6f3-56af-4bfc-baa9-b911b1672bad</Id>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <ASXCode>CSL</ASXCode>
+        <AsxCode>CSL</AsxCode>
         <Name>CSL Ltd</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -62,9 +67,10 @@
       <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>a8330ff8-b9be-40a2-bad3-8abc1751c3e2</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -74,9 +80,10 @@
       <Comment>Transfer of Shares from Craig - price based on previous day's closing price </Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>be728177-9ee6-410b-8e1c-f57267351436</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -86,9 +93,10 @@
       <Comment>Transfer of shares from Craig</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>5911f371-1a4d-49b1-8df8-ad6d2f0e2d1a</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -98,9 +106,10 @@
       <Comment>Transfer from Craig</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>9adb39d4-1b9b-482b-a2a4-0aba87e2b3c1</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -110,9 +119,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>8d4aceba-d92e-411a-9360-522b154c1cf9</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -122,9 +132,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>a52dd993-f2f4-4aeb-bd70-9ae2b64283da</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -134,9 +145,10 @@
       <Comment>Transfer from Craig</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>2cae326f-11f9-4759-883a-9705864b62f7</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -146,9 +158,10 @@
       <Comment>Regular Deposit</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>f29cbeed-cb7d-400a-9172-2aa5c8c34ad0</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -158,9 +171,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>7eb4171c-5ddb-4335-8d53-7d045d5fb528</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -170,9 +184,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>10f5a841-7eed-4480-bd01-7b7ff4b87ca4</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -182,9 +197,10 @@
       <Comment>Dividend $0.15</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>9f593836-4524-4d51-a259-05544b65f5f0</Id>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -194,9 +210,10 @@
       <Comment>DRP $7.15</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>ed2d729d-a4b3-493e-b266-a0e1352ba902</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -206,9 +223,10 @@
       <Comment>Regular Deposit</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>6149e071-86b5-44da-95da-614a15812026</Id>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
+        <AsxCode>COH</AsxCode>
         <Name>Cochlear Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -218,9 +236,10 @@
       <Comment>Dividend $1.10</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>abd3615b-e6f9-42a5-bbee-8fc1025f3079</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -230,9 +249,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>a52e6d1a-9d7d-401d-89d4-d03c6d0b1641</Id>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <ASXCode>CSL</ASXCode>
+        <AsxCode>CSL</AsxCode>
         <Name>CSL Ltd</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -242,9 +262,10 @@
       <Comment>Dividend $0.8147</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>d6fb82b9-9e26-4311-a3e8-25d2b2f69027</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -254,9 +275,10 @@
       <Comment>Dividend $0.427022</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>b21646a5-fafa-4317-ba68-6519be7a7426</Id>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -266,9 +288,10 @@
       <Comment>Dividend $0.587312</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>86e4eba7-55ca-423a-b8cf-bc8319b777af</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -278,9 +301,10 @@
       <Comment>Dividend $0.23645</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>5e79b17e-ff86-4117-a1d7-ef3a9e615b8a</Id>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -290,9 +314,10 @@
       <Comment>DRP $49.577</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>5f9c0764-b0d1-4761-ad3f-a4e1dafc4034</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -302,9 +327,10 @@
       <Comment>Regular Deposit</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>042a09a1-6876-4798-a323-16760d421baf</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -314,9 +340,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>a4322985-ba7f-436f-a976-6c2968780137</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -326,9 +353,10 @@
       <Comment>Dividend $0.03</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>50cc9761-db54-4314-88a6-e478930739ca</Id>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -338,9 +366,10 @@
       <Comment>DRP $1.0122</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>1f1febce-9f2d-492d-806f-73f8f1ef12e4</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -350,9 +379,10 @@
       <Comment>Dividend $0.0725</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>8ecae502-4798-419f-a2fd-c44a214b9b61</Id>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -362,9 +392,10 @@
       <Comment>DRP $2.1135</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>37301577-2a40-43ba-9810-f0ef3a6bed9c</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -374,9 +405,10 @@
       <Comment>Regular Deposit</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>38b27ebc-121f-497f-aa96-569f5df2a71f</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -386,9 +418,10 @@
       <Comment>Inheritance</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>8bea29e0-7d8b-4b05-80e3-188dc511fd5f</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -398,9 +431,10 @@
       <Comment>Inheritance</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>bf96960d-a7e2-4e56-ad2a-b094d1b8ac6b</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -410,9 +444,10 @@
       <Comment>Inheritance</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>17c177cf-d274-473b-8dfe-e2a983e54318</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -422,9 +457,10 @@
       <Comment>Inheritance</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>d97cb6fd-256f-47f4-aec3-ecdd06ced39a</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -434,9 +470,10 @@
       <Comment />
     </TransactionItem>
     <TransactionItem>
+      <Id>5669346f-a603-4ad0-9672-6de833c7abb1</Id>
       <Stock>
         <Id>00000000-0000-0000-0000-000000000000</Id>
-        <ASXCode />
+        <AsxCode />
         <Name />
         <Category>Cash</Category>
       </Stock>
@@ -446,9 +483,10 @@
       <Comment>Inheritance</Comment>
     </TransactionItem>
     <TransactionItem>
+      <Id>528d355c-b67e-4c13-8433-6620169aacf7</Id>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>

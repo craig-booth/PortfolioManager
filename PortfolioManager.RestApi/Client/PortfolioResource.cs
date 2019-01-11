@@ -77,5 +77,10 @@ namespace PortfolioManager.RestApi.Client
         {
             return await GetAsync<IncomeResponse>("/api/v2/portfolio/" + PortfolioId + "/income?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
         }
+
+        public async Task<CorporateActionsResponse> GetCorporateActions()
+        {
+            return await GetAsync<CorporateActionsResponse>("/api/v2/portfolio/" + PortfolioId + "/corporateactions");
+        }
     }
 }

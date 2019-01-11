@@ -17,7 +17,7 @@
     <CgtLiabilityEvent>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>

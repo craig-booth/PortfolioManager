@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.RestApi.Portfolios;
@@ -96,7 +97,7 @@ namespace PortfolioManager.UI.ViewModels
 
     public class StockPerformanceItem
     {
-        public string CompanyName { get; set; }
+        public StockViewItem Stock { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal Purchases { get; set; }
         public decimal Sales { get; set; }      
@@ -107,14 +108,14 @@ namespace PortfolioManager.UI.ViewModels
         public decimal TotalReturn { get; set; }
         public decimal IRR { get; set; }
 
-        public StockPerformanceItem(string companyName)
+        public StockPerformanceItem(string name)
         {
-            CompanyName = companyName;
+            Stock = new StockViewItem(Guid.Empty, "", name);
         }
 
         public StockPerformanceItem(PortfolioPerformanceResponse.HoldingPerformanceItem holdingPerformance)
         {
-            CompanyName = holdingPerformance.Stock.FormattedCompanyName();
+            Stock = new StockViewItem(holdingPerformance.Stock);
             OpeningBalance = holdingPerformance.OpeningBalance;
             Purchases = holdingPerformance.Purchases;
             Sales = holdingPerformance.Sales;

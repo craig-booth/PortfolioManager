@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
@@ -45,7 +46,7 @@ namespace PortfolioManager.UI.ViewModels
         private async void ApplyCorporateAction(CorporateActionViewModel corporateAction)
         {
             if (corporateAction != null)
-            { 
+            {
                 var transactions = await _Parameter.RestClient.Transactions.GetTransactionsForCorporateAction(corporateAction.Id);
                 
                 _CreateTransactionsViewModel.AddTransactions(transactions);
@@ -54,7 +55,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestClient.Portfolio.GetUnappliedCorporateActions();
+            var responce = await _Parameter.RestClient.Portfolio.GetCorporateActions();
             if (responce == null)
                 return;
 
@@ -72,14 +73,14 @@ namespace PortfolioManager.UI.ViewModels
     {
         public Guid Id { get; set; }
         public DateTime ActionDate { get; set; }
-        public string CompanyName { get; set; }
+        public StockViewItem Stock {get; set;}
         public string Description { get; set; }
 
-        public CorporateActionViewModel(CorporateActionItem corporateAction)
+        public CorporateActionViewModel(CorporateActionsResponse.CorporateActionItem corporateAction)
         {
             Id = corporateAction.Id;
             ActionDate = corporateAction.ActionDate;
-            CompanyName = corporateAction.Stock.FormattedCompanyName();
+            Stock = new StockViewItem(corporateAction.Stock);
             Description = corporateAction.Description;
         }
     }

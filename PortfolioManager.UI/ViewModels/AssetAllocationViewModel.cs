@@ -108,9 +108,10 @@ namespace PortfolioManager.UI.ViewModels
             {
                 if (holding.Stock.Category == category)
                 {
+                    var stock = new StockViewItem(holding.Stock);
                     var series = new PieSeries()
                     {
-                        Title = holding.Stock.FormattedASXCode(),
+                        Title = stock.FormattedAsxCode,
                         Values = new ChartValues<ObservableValue>() { new ObservableValue((double)holding.Value) },
                         LabelPoint = LabelFormatter
                     };

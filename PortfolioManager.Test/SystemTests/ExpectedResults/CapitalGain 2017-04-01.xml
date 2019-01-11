@@ -4,7 +4,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -29,7 +29,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -54,7 +54,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -79,7 +79,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -104,7 +104,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -129,7 +129,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -154,7 +154,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -179,7 +179,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -204,7 +204,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -229,7 +229,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -254,7 +254,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
+        <AsxCode>COH</AsxCode>
         <Name>Cochlear Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -279,7 +279,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <ASXCode>CSL</ASXCode>
+        <AsxCode>CSL</AsxCode>
         <Name>CSL Ltd</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -304,7 +304,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -337,7 +337,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -362,7 +362,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -387,7 +387,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -412,7 +412,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -437,7 +437,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -462,7 +462,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -487,7 +487,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -512,7 +512,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -537,7 +537,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
         <Category>AustralianFixedInterest</Category>
       </Stock>
@@ -562,7 +562,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -587,7 +587,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -612,7 +612,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -637,7 +637,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -662,7 +662,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -687,7 +687,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
         <Category>AustralianProperty</Category>
       </Stock>
@@ -712,7 +712,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -737,7 +737,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -762,7 +762,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -787,7 +787,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -812,7 +812,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
         <Category>InternationalStocks</Category>
       </Stock>
@@ -837,7 +837,7 @@
     <DetailedUnrealisedGainsItem>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
-        <ASXCode>VCF</ASXCode>
+        <AsxCode>VCF</AsxCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
         <Category>InternationlFixedInterest</Category>
       </Stock>

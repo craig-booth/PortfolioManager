@@ -4,7 +4,7 @@
     <IncomeItem>
       <Stock>
         <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <ASXCode>ARG</ASXCode>
+        <AsxCode>ARG</AsxCode>
         <Name>Argo Investments</Name>
         <Category>AustralianStocks</Category>
       </Stock>
@@ -17,7 +17,7 @@
     <IncomeItem>
       <Stock>
         <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <ASXCode>COH</ASXCode>
+        <AsxCode>COH</AsxCode>
         <Name>Cochlear Limited</Name>
         <Category>AustralianStocks</Category>
       </Stock>

@@ -81,7 +81,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class CGTEventViewModel
     {
-        public string CompanyName { get; private set; }
+        public StockViewItem Stock { get; private set; }
         public DateTime EventDate { get; private set; }
         public decimal CostBase { get; private set; }
         public decimal AmountReceived { get; private set; }
@@ -90,7 +90,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public CGTEventViewModel(CgtLiabilityResponse.CgtLiabilityEvent cgtEvent)
         {
-            CompanyName = cgtEvent.Stock.FormattedCompanyName();
+            Stock = new StockViewItem(cgtEvent.Stock);
             EventDate = cgtEvent.EventDate;
             CostBase = cgtEvent.CostBase;
             AmountReceived = cgtEvent.AmountReceived;

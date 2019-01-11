@@ -82,7 +82,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:  transactions/corporateaction/id
         [HttpGet("corporateaction/{id:guid}")]
-        public ActionResult<List<Transaction>> GetCorporateActionsForTransaction(Guid id)
+        public ActionResult<List<Transaction>> GetTransactionsForCorporateAction(Guid id)
         {
             var transactions = new List<Transaction>();
 

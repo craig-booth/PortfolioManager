@@ -58,7 +58,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class ParcelCostBaseViewItem
     {
-        public string CompanyName { get; private set; }
+        public StockViewItem Stock { get; private set; }
         public DateTime AquisitionDate { get; private set; }
         public int Units { get; private set; }
         public decimal CostBase { get; private set; }
@@ -66,8 +66,8 @@ namespace PortfolioManager.UI.ViewModels
         public ObservableCollection<ParcelCostBaseAuditViewItem> ParcelAudit { get; private set; }
 
         public ParcelCostBaseViewItem(DetailedUnrealisedGainsItem item)
-        {           
-            CompanyName = item.Stock.FormattedCompanyName();
+        {
+            Stock = new StockViewItem(item.Stock);
             AquisitionDate = item.AquisitionDate;
             Units = item.Units;
             CostBase = item.CostBase;

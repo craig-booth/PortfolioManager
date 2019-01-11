@@ -68,5 +68,9 @@ namespace PortfolioManager.RestApi.Client
             return await GetAsync<DetailedUnrealisedGainsResponse>("/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/detailedcapitalgains?date=" + date.ToIsoDateString());
         }
 
+        public async Task<CorporateActionsResponse> GetCorporateActions(Guid stockId)
+        {
+            return await GetAsync<CorporateActionsResponse>("/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/corporateactions");
+        }
     }
 }

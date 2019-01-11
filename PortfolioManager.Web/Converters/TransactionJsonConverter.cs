@@ -17,7 +17,7 @@ namespace PortfolioManager.Web.Converters
         public TransactionJsonConverter()
         {
             _TransactionTypes.Add(TransactionType.Aquisition.ToRestName(), typeof(Aquisition));
-            _TransactionTypes.Add(TransactionType.Aquisition.ToRestName(), typeof(Disposal));
+            _TransactionTypes.Add(TransactionType.Disposal.ToRestName(), typeof(Disposal));
             _TransactionTypes.Add(TransactionType.CashTransaction.ToRestName(), typeof(CashTransaction));
             _TransactionTypes.Add(TransactionType.OpeningBalance.ToRestName(), typeof(OpeningBalance));
             _TransactionTypes.Add(TransactionType.Income.ToRestName(), typeof(IncomeReceived));

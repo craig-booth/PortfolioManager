@@ -41,20 +41,19 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            SimpleUnrealisedGainsResponse responce;
+            SimpleUnrealisedGainsResponse response;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestClient.Portfolio.GetCapitalGains(_Parameter.Date);
+                response = await _Parameter.RestClient.Portfolio.GetCapitalGains(_Parameter.Date);
             else
-                responce = await _Parameter.RestClient.Holdings.GetCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
-            if (responce == null)
+                response = await _Parameter.RestClient.Holdings.GetCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
+            if (response == null)
                 return;
 
             UnrealisedGains.Clear();
-            foreach (var cgtItem in responce.UnrealisedGains.OrderBy(x => x.Stock.FormattedCompanyName()))
-            {
-                var viewItem = new UnrealisedGainViewItem(cgtItem);
-                UnrealisedGains.Add(viewItem);
-            }
+
+            var cgtItems = response.UnrealisedGains.Select(x => new UnrealisedGainViewItem(x));
+            foreach (var cgtItem in cgtItems.OrderBy(x => x.Stock.FormattedCompanyName))
+                UnrealisedGains.Add(cgtItem);
             
             OnPropertyChanged(""); 
         }
@@ -63,8 +62,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class UnrealisedGainViewItem
     {
-        public string CompanyName { get; private set; }
-
+        public StockViewItem Stock { get; private set; }
         public DateTime AquisitionDate { get; private set; }
         public int Units { get; private set; }
         public decimal CostBase { get; private set; }
@@ -75,7 +73,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public UnrealisedGainViewItem(SimpleUnrealisedGainsItem item)
         {
-            CompanyName = item.Stock.FormattedCompanyName();
+            Stock = new StockViewItem(item.Stock);
             AquisitionDate = item.AquisitionDate;
             Units = item.Units;
             CostBase = item.CostBase;

@@ -6,7 +6,7 @@
       <ActionDate>2017-10-03T00:00:00</ActionDate>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.28981</Description>
@@ -16,7 +16,7 @@
       <ActionDate>2017-10-03T00:00:00</ActionDate>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <Description>Dividend $0.44992</Description>
@@ -26,7 +26,7 @@
       <ActionDate>2017-10-03T00:00:00</ActionDate>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
       <Description>Dividend $0.23758</Description>
@@ -36,7 +36,7 @@
       <ActionDate>2017-10-03T00:00:00</ActionDate>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
-        <ASXCode>VCF</ASXCode>
+        <AsxCode>VCF</AsxCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $1.30618</Description>
@@ -46,7 +46,7 @@
       <ActionDate>2017-10-09T00:00:00</ActionDate>
       <Stock>
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <ASXCode>GVF</ASXCode>
+        <AsxCode>GVF</AsxCode>
         <Name>Global Value Fund</Name>
       </Stock>
       <Description>Dividend $0.0315</Description>
@@ -56,7 +56,7 @@
       <ActionDate>2017-10-18T00:00:00</ActionDate>
       <Stock>
         <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <ASXCode>WAM</ASXCode>
+        <AsxCode>WAM</AsxCode>
         <Name>WAM Capital Limited</Name>
       </Stock>
       <Description>Dividend $0.075</Description>
@@ -66,7 +66,7 @@
       <ActionDate>2018-01-03T00:00:00</ActionDate>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <ASXCode>VAF</ASXCode>
+        <AsxCode>VAF</AsxCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.4253</Description>
@@ -76,7 +76,7 @@
       <ActionDate>2018-01-03T00:00:00</ActionDate>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <ASXCode>VAP</ASXCode>
+        <AsxCode>VAP</AsxCode>
         <Name>Vanguard Australian Property ETF</Name>
       </Stock>
       <Description>Dividend $0.15532</Description>
@@ -86,7 +86,7 @@
       <ActionDate>2018-01-03T00:00:00</ActionDate>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
-        <ASXCode>VGS</ASXCode>
+        <AsxCode>VGS</AsxCode>
         <Name>Vanguard International Shares ETF</Name>
       </Stock>
       <Description>Dividend $0.3036</Description>
@@ -96,7 +96,7 @@
       <ActionDate>2018-01-03T00:00:00</ActionDate>
       <Stock>
         <Id>f12d9217-495e-42c8-8569-34b067755d04</Id>
-        <ASXCode>VCF</ASXCode>
+        <AsxCode>VCF</AsxCode>
         <Name>Vangaurd International Fixed Interest ETF</Name>
       </Stock>
       <Description>Dividend $0.39588</Description>
@@ -106,7 +106,7 @@
       <ActionDate>2018-01-03T00:00:00</ActionDate>
       <Stock>
         <Id>e88379fa-3675-4b26-aeea-0315759ecd52</Id>
-        <ASXCode>VGE</ASXCode>
+        <AsxCode>VGE</AsxCode>
         <Name>Vanguard Emerging Markets ETF</Name>
       </Stock>
       <Description>Dividend $0.23535</Description>

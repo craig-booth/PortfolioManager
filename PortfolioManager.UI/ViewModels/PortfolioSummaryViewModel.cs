@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.RestApi.Portfolios;
@@ -95,20 +96,20 @@ namespace PortfolioManager.UI.ViewModels
 
     class HoldingItemViewModel
     {
-        public string CompanyName { get; private set; }
+        public StockViewItem Stock { get; private set; }
         public int Units { get; private set; }
         public ChangeInValue ChangeInValue { get; private set; }
 
         public HoldingItemViewModel(string companyName, int units, decimal cost, decimal marketValue)
-        {           
-            CompanyName = companyName;
+        {
+            Stock = new StockViewItem(Guid.Empty, "", companyName);
             Units = units;
             ChangeInValue = new ChangeInValue(cost, marketValue);
         }
 
         public HoldingItemViewModel(Holding holding)
         {
-            CompanyName = holding.Stock.FormattedCompanyName();
+            Stock = new StockViewItem(holding.Stock);
             Units = holding.Units;
             ChangeInValue = new ChangeInValue(holding.Cost, holding.Value);
         }
