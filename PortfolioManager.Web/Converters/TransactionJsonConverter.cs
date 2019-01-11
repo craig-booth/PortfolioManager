@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using PortfolioManager.Web;
+using PortfolioManager.Common;
 using PortfolioManager.RestApi.Transactions;
 
 namespace PortfolioManager.Web.Converters
@@ -16,11 +16,11 @@ namespace PortfolioManager.Web.Converters
 
         public TransactionJsonConverter()
         {
-            _TransactionTypes.Add("aquisition", typeof(Aquisition));
-            _TransactionTypes.Add("disposal", typeof(Disposal));
-            _TransactionTypes.Add("cashtransaction", typeof(CashTransaction));
-            _TransactionTypes.Add("openingbalance", typeof(OpeningBalance));
-            _TransactionTypes.Add("incomereceived", typeof(IncomeReceived));
+            _TransactionTypes.Add(TransactionType.Aquisition.ToRestName(), typeof(Aquisition));
+            _TransactionTypes.Add(TransactionType.Aquisition.ToRestName(), typeof(Disposal));
+            _TransactionTypes.Add(TransactionType.CashTransaction.ToRestName(), typeof(CashTransaction));
+            _TransactionTypes.Add(TransactionType.OpeningBalance.ToRestName(), typeof(OpeningBalance));
+            _TransactionTypes.Add(TransactionType.Income.ToRestName(), typeof(IncomeReceived));
         }
 
         public override bool CanConvert(Type objectType)

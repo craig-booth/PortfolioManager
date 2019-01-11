@@ -15,8 +15,9 @@ namespace PortfolioManager.RestApi.Client
         public CorporateActionResource CorporateActions { get; }
         public PortfolioResource Portfolio { get; }
         public HoldingResource Holdings { get; }
+        public TransactionResource Transactions { get; }
 
-        public RestClient(string baseURL, Guid apiKey)
+        public RestClient(string baseURL, Guid apiKey, Guid portfolio)
         {
             _HttpClient = new HttpClient();
             _HttpClient.BaseAddress = new Uri(baseURL);
@@ -27,8 +28,9 @@ namespace PortfolioManager.RestApi.Client
             Stocks = new StockResource(_HttpClient);
             TradingCalander = new TradingCalanderResource(_HttpClient);
             CorporateActions = new CorporateActionResource(_HttpClient);
-            Portfolio = new PortfolioResource(Guid.Empty, _HttpClient);
-            Holdings = new HoldingResource(Guid.Empty, _HttpClient);
+            Portfolio = new PortfolioResource(portfolio, _HttpClient);
+            Holdings = new HoldingResource(portfolio, _HttpClient);
+            Transactions = new TransactionResource(portfolio, _HttpClient);
     }
     }
 }

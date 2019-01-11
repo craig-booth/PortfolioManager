@@ -2,8 +2,6 @@
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.Service.Interface;
-
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels
@@ -40,20 +38,17 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            GetTransactionsResponce responce;
+            RestApi.Portfolios.TransactionsResponse responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
+                responce = await _Parameter.RestClient.Portfolio.GetTransactions(_Parameter.DateRange);
             else
-                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.Stock.Id, _Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
+                responce = await _Parameter.RestClient.Holdings.GetTransactions(_Parameter.Stock.Id, _Parameter.DateRange);
             if (responce == null)
                 return;
 
             Transactions.Clear();
             foreach (var transaction in responce.Transactions)
-            {
-                if (transaction.Type != TransactionType.CashTransaction)
-                    Transactions.Add(new TransactionReportViewItem(transaction));
-            }
+                Transactions.Add(new TransactionReportViewItem(transaction));
          
             OnPropertyChanged("");
         }
@@ -62,19 +57,15 @@ namespace PortfolioManager.UI.ViewModels
 
     class TransactionReportViewItem
     {
-        public string ASXCode { get; private set; }
-        public string CompanyName { get; private set; }
+        public StockViewItem Stock;
 
         public DateTime TransactionDate { get; private set; }
         public string Description { get; private set; }
 
-        public TransactionReportViewItem(TransactionItem transaction)
+        public TransactionReportViewItem(RestApi.Portfolios.TransactionsResponse.TransactionItem transaction)
         {
-            ASXCode = transaction.Stock.ASXCode;
-            CompanyName = transaction.Stock.FormattedCompanyName();
-            
+            Stock = new StockViewItem(transaction.Stock);
             TransactionDate = transaction.TransactionDate;
-
             Description = transaction.Description;
         }
     }

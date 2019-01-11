@@ -1,56 +1,17 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 using CBControls;
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
-    class PopupWindow : NotifyClass
-    {
-        private bool _IsOpen;
-        public bool IsOpen
-        {
-            get
-            {
-                return _IsOpen;
-            }
-            set
-            {
-                if (_IsOpen != value)
-                {
-                    _IsOpen = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public ObservableCollection<DialogCommand> Commands { get; private set; }
-
-        public PopupWindow()
-        {
-            Commands = new ObservableCollection<DialogCommand>();
-        }
-
-        public void Show()
-        {
-            IsOpen = true;
-        }
-
-        public void Close()
-        {
-            IsOpen = false;
-        }
-
-    }
-
     class EditTransactionViewModel: PopupWindow
     {
-        private RestWebClient _RestWebClient;
         private RestClient _RestClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
@@ -83,12 +44,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public EditTransactionViewModel(RestWebClient restWebClient, RestClient restClient)
+        public EditTransactionViewModel(RestClient restClient)
             : base()
         {
-            _RestWebClient = restWebClient;
             _RestClient = restClient; 
-            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient, restClient);
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restClient);
 
             CancelTransactionCommand = new RelayCommand(CancelTransaction);
             SaveTransactionCommand = new RelayCommand(SaveTransaction, CanSaveTransaction);
@@ -108,21 +68,18 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             Show();
         }
 
-        public void EditTransaction(TransactionViewModel transactionViewModel)
+        public async void EditTransaction(Guid id)
         {
-            if (transactionViewModel != null)
-            {
-                TransactionViewModel = transactionViewModel;
-                TransactionViewModel.BeginEdit();
-                NewTransaction = false;
+            TransactionViewModel = await _TransactionViewModelFactory.CreateTransactionViewModel(id);
+            TransactionViewModel.BeginEdit();
+            NewTransaction = false;
 
-                Commands.Clear();
-                Commands.Add(new DialogCommand("Save", SaveTransactionCommand));
-                Commands.Add(new DialogCommand("Delete", DeleteTransactionCommand));
-                Commands.Add(new DialogCommand("Cancel", CancelTransactionCommand));
+            Commands.Clear();
+            Commands.Add(new DialogCommand("Save", SaveTransactionCommand));
+            Commands.Add(new DialogCommand("Delete", DeleteTransactionCommand));
+            Commands.Add(new DialogCommand("Cancel", CancelTransactionCommand));
 
-                Show();
-            }
+            Show();
         }
 
         public RelayCommand CancelTransactionCommand { get; private set; }
@@ -136,17 +93,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand SaveTransactionCommand { get; private set; }
-        private async void SaveTransaction()
+        private void SaveTransaction()
         {
             if (TransactionViewModel != null)
-            {
-                TransactionViewModel.EndEdit();
-
-                if (NewTransaction)
-                    await _RestWebClient.AddTransactionAsync(TransactionViewModel.Transaction);
-                else
-                    await _RestWebClient.UpdateTransactionAsync(TransactionViewModel.Transaction);
-            }
+                TransactionViewModel.Save();
 
             TransactionViewModel = null;
             Close();
@@ -164,7 +114,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 _TransactionViewModel.EndEdit();
 
-                await _RestWebClient.DeleteTransactionAsync(TransactionViewModel.Transaction.Id);
+         //       await _RestWebClient.DeleteTransactionAsync(TransactionViewModel.Transaction.Id);
             }
 
             TransactionViewModel = null;

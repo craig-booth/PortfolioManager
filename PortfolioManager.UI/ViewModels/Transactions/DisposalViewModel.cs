@@ -2,7 +2,7 @@
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -33,11 +33,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         private async void CheckEnoughUnitsOwned()
         {
-            var responce = await _RestWebClient.GetPortfolioHoldingsAsync(Stock.Id, RecordDate);
+            var holding = await _RestClient.Holdings.Get(Stock.Id, RecordDate);
 
-            var availableUnits = responce.Holding.Units;
-            if (Transaction != null)
-                availableUnits += ((DisposalTransaction)Transaction).Units;
+            var availableUnits = holding.Units;
+            if (_Transaction != null)
+                availableUnits += ((Disposal)_Transaction).Units;
 
             if (_Units > availableUnits)
                 AddError(String.Format("Only {0} units available", availableUnits), "Units");
@@ -84,8 +84,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalViewModel(DisposalTransaction disposal, RestWebClient restWebClient, RestClient restClient)
-            : base(disposal, TransactionStockSelection.TradeableHoldings, restWebClient, restClient)
+        public DisposalViewModel(Disposal disposal, RestClient restClient)
+            : base(disposal, TransactionStockSelection.TradeableHoldings, restClient)
         {
             
         }
@@ -94,13 +94,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             base.CopyTransactionToFields();
 
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                Units = ((DisposalTransaction)Transaction).Units;
-                AveragePrice = ((DisposalTransaction)Transaction).AveragePrice;
-                TransactionCosts = ((DisposalTransaction)Transaction).TransactionCosts;
-                CGTMethod = ((DisposalTransaction)Transaction).CGTMethod;
-                CreateCashTransaction = ((DisposalTransaction)Transaction).CreateCashTransaction;
+                Units = ((Disposal)_Transaction).Units;
+                AveragePrice = ((Disposal)_Transaction).AveragePrice;
+                TransactionCosts = ((Disposal)_Transaction).TransactionCosts;
+                CGTMethod = RestApiNameMapping.ToCGTCalculationMethod(((Disposal)_Transaction).CGTMethod);
+                CreateCashTransaction = ((Disposal)_Transaction).CreateCashTransaction;
             }
             else
             {
@@ -114,17 +114,17 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected override void CopyFieldsToTransaction()
         {
-            if (Transaction == null)
-                Transaction = new DisposalTransaction();
+            if (_Transaction == null)
+                _Transaction = new Disposal();
 
             base.CopyFieldsToTransaction();
 
-            var disposal = (DisposalTransaction)Transaction;
+            var disposal = (Disposal)_Transaction;
             disposal.TransactionDate = RecordDate;
             disposal.Units = Units;
             disposal.AveragePrice = AveragePrice;
             disposal.TransactionCosts = TransactionCosts;
-            disposal.CGTMethod = CGTMethod;
+            disposal.CGTMethod = CGTMethod.ToRestName();
             disposal.CreateCashTransaction = CreateCashTransaction;
         }
 

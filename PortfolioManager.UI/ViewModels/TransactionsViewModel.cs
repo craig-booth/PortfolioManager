@@ -2,8 +2,6 @@
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.Service.Interface;
-
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
@@ -19,11 +17,11 @@ namespace PortfolioManager.UI.ViewModels
 
             _Heading = label;
 
-            Transactions = new ObservableCollection<TransactionViewModel>();
+            Transactions = new ObservableCollection<TransactionViewItem>();
 
             _EditTransactionViewModel = editTransactionViewModel;
 
-            EditTransactionCommand = new RelayCommand<TransactionViewModel>(EditTransaction);
+            EditTransactionCommand = new RelayCommand<Guid>(EditTransaction);
             CreateTransactionCommand = new RelayCommand<TransactionType>(CreateTransaction);
         }
 
@@ -43,7 +41,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public TransactionViewModelFactory TransactionViewModelFactory { get; private set; }
 
-        public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
+        public ObservableCollection<TransactionViewItem> Transactions { get; private set; }
 
         private EditTransactionViewModel _EditTransactionViewModel;
 
@@ -51,7 +49,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (_Parameter != null)
             {
-                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestWebClient, _Parameter.RestClient);
+                TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestClient);
             }
 
             base.Activate();
@@ -59,18 +57,18 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            GetTransactionsResponce responce;
+            RestApi.Portfolios.TransactionsResponse responce;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
+                responce = await _Parameter.RestClient.Portfolio.GetTransactions(_Parameter.DateRange);
             else
-                responce = await _Parameter.RestWebClient.GetTransactionsAsync(_Parameter.Stock.Id, _Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
+                responce = await _Parameter.RestClient.Holdings.GetTransactions(_Parameter.Stock.Id, _Parameter.DateRange);
             if (responce == null)
                 return;
 
             Transactions.Clear();
 
             foreach (var transaction in responce.Transactions)
-                Transactions.Add(TransactionViewModelFactory.CreateTransactionViewModel(transaction));
+                Transactions.Add(new TransactionViewItem(transaction));
 
             OnPropertyChanged("");            
         }
@@ -81,13 +79,28 @@ namespace PortfolioManager.UI.ViewModels
             _EditTransactionViewModel.CreateTransaction(transactionType);
         }
 
-        public RelayCommand<TransactionViewModel> EditTransactionCommand { get; private set; }
-        private void EditTransaction(TransactionViewModel transactionViewModel)
+        public RelayCommand<Guid> EditTransactionCommand { get; private set; }
+        private void EditTransaction(Guid id)
         {
-            _EditTransactionViewModel.EditTransaction(transactionViewModel);
+            _EditTransactionViewModel.EditTransaction(id);
         }
 
     }
 
- 
+    class TransactionViewItem
+    {
+        public Guid Id { get; private set; }
+        public StockViewItem Stock;
+        public DateTime TransactionDate { get; private set; }
+        public string Description { get; private set; }
+
+        public TransactionViewItem(RestApi.Portfolios.TransactionsResponse.TransactionItem transaction)
+        {
+            Id = transaction.Id;
+            Stock = new StockViewItem(transaction.Stock);
+            TransactionDate = transaction.TransactionDate;
+            Description = transaction.Description;
+        }
+    }
+
 }

@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
+using PortfolioManager.UI.ViewModels;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
     enum TransactionStockSelection { None, Holdings, TradeableHoldings, Stocks, TradeableStocks }
 
-    class TransactionViewModel : ViewModel, IEditableObject
+    abstract class TransactionViewModel : ViewModel, IEditableObject
     {
         protected bool _BeingEdited;
         protected TransactionStockSelection _StockSelection;
-        protected RestWebClient _RestWebClient;
         protected RestClient _RestClient;
+        protected Transaction _Transaction { get; set; }
 
-        public Transaction Transaction { get; protected set; }
         public string Description { get; private set; }    
 
-        private Stock _Stock;
-        public Stock Stock
+        private StockViewItem _Stock;
+        public StockViewItem Stock
         {
             get
             {
@@ -66,35 +67,27 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public string CompanyName
-        {
-            get
-            {
-                return Stock.FormattedCompanyName;
-            }
-        }
         public string Comment { get; set; }
 
-        public ObservableCollection<Stock> AvailableStocks { get; private set; }
+        public ObservableCollection<StockViewItem> AvailableStocks { get; private set; }
 
         public bool IsStockEditable
         {
             get
             {
-                return (Transaction == null);
+                return (_Transaction == null);
             }
         }
 
-        public TransactionViewModel(Transaction transaction, TransactionStockSelection stockSeletion, RestWebClient restWebClient, RestClient restClient)
+        public TransactionViewModel(Transaction transaction, TransactionStockSelection stockSeletion, RestClient restClient)
         {
             _StockSelection = stockSeletion;
-            _RestWebClient = restWebClient;
             _RestClient = restClient;
 
-            Transaction = transaction;
+            _Transaction = transaction;
 
             if (_StockSelection != TransactionStockSelection.None)
-                AvailableStocks = new ObservableCollection<Stock>();                   
+                AvailableStocks = new ObservableCollection<StockViewItem>();                   
 
             CopyTransactionToFields();
         }
@@ -113,31 +106,44 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             _BeingEdited = false;
 
-            CopyFieldsToTransaction();
-
-            OnPropertyChanged("");
+            if (_Transaction != null)
+                CopyFieldsToTransaction();
         }
 
         public void CancelEdit()
         {
             _BeingEdited = false;
+        }
 
-            CopyTransactionToFields();
+        public async void Save()
+        {
+            EndEdit();
+
+            if (_Transaction != null)
+            {
+
+            }
+            else
+            {
+                CopyTransactionToFields();
+
+                await _RestClient.Transactions.Add(_Transaction);
+            }                
         }
 
         protected virtual void CopyTransactionToFields()
         {
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                Stock = Transaction.Stock;
-                Description = Transaction.Description;
-                TransactionDate = Transaction.TransactionDate;
-                RecordDate = Transaction.RecordDate;
-                Comment = Transaction.Comment;
+                Stock = AvailableStocks.FirstOrDefault(x => x.Id == _Transaction.Id);
+                Description = _Transaction.Description;
+                TransactionDate = _Transaction.TransactionDate;
+                RecordDate = _Transaction.RecordDate;
+                Comment = _Transaction.Comment;
             }
             else
             {
-                Stock = new Stock(Guid.Empty, "", "");
+                Stock = new StockViewItem(Guid.Empty, "", "");
                 Description = "";
                 TransactionDate = DateTime.Today;
                 RecordDate = DateTime.Today;
@@ -147,12 +153,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected virtual void CopyFieldsToTransaction()
         {
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                Transaction.Stock = Stock;
-                Transaction.TransactionDate = TransactionDate;
-                Transaction.RecordDate = RecordDate;
-                Transaction.Comment = Comment;
+                _Transaction.Stock = Stock.Id;
+                _Transaction.TransactionDate = TransactionDate;
+                _Transaction.RecordDate = RecordDate;
+                _Transaction.Comment = Comment;
             }
         }
 
@@ -165,17 +171,19 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (_StockSelection == TransactionStockSelection.Holdings)
             {
-                var responce = await _RestWebClient.GetPortfolioHoldingsAsync(date);
+                var response = await _RestClient.Holdings.Get(date);
 
-                foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.FormattedCompanyName()))
-                    AvailableStocks.Add(new Stock(holding.Stock));
+                var stocks = response.Select(x => new StockViewItem(x.Stock));
+                foreach (var stock in stocks.OrderBy(x => x.FormattedCompanyName))
+                    AvailableStocks.Add(stock);
             }
             else if (_StockSelection == TransactionStockSelection.TradeableHoldings)
             {
-                var responce = await _RestWebClient.GetPortfolioTradeableHoldingsAsync(date);
-        
-                foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.FormattedCompanyName()))
-                    AvailableStocks.Add(new Stock(holding.Stock));
+                var response = await _RestClient.Holdings.Get(date);
+
+                var stocks = response.Select(x => new StockViewItem(x.Stock));
+                foreach (var stock in stocks.OrderBy(x => x.FormattedCompanyName))
+                    AvailableStocks.Add(stock);
             }
             else if (_StockSelection == TransactionStockSelection.Stocks)
             {
@@ -183,13 +191,13 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 
                 foreach (var stock in stocks)
                 {
-                    var stockItem = new Stock(stock.Id, stock.ASXCode, stock.Name);
+                    var stockItem = new StockViewItem(stock.Id, stock.ASXCode, stock.Name);
                     AvailableStocks.Add(stockItem);
                     if (!stock.StapledSecurity)
                     {
                         foreach (var childSecurity in stock.ChildSecurities)
                         {
-                            stockItem = new Stock(stock.Id, childSecurity.ASXCode, childSecurity.Name);
+                            stockItem = new StockViewItem(stock.Id, childSecurity.ASXCode, childSecurity.Name);
                             AvailableStocks.Add(stockItem);
                         }
                     }
@@ -201,78 +209,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
                 foreach (var stock in stocks)
                 {
-                    var stockItem = new Stock(stock.Id, stock.ASXCode, stock.Name);
+                    var stockItem = new StockViewItem(stock.Id, stock.ASXCode, stock.Name);
                     AvailableStocks.Add(stockItem);
                 }
             }
         }
     }
 
-    class TransactionViewModelFactory
-    {
-        private RestWebClient _RestWebClient;
-        private RestClient _RestClient;
 
-        public Dictionary<string, TransactionType> TransactionTypes { get; private set; }
-
-        public TransactionViewModelFactory(RestWebClient restWebClient, RestClient restClient)
-        {
-            _RestWebClient = restWebClient;
-            _RestClient = restClient;
-
-            TransactionTypes = new Dictionary<string, TransactionType>();
-            TransactionTypes.Add("Buy", TransactionType.Aquisition);
-            TransactionTypes.Add("Cash Transaction", TransactionType.CashTransaction);
-            TransactionTypes.Add("Adjust Cost Base", TransactionType.CostBaseAdjustment);
-            TransactionTypes.Add("Sell", TransactionType.Disposal);
-            TransactionTypes.Add("Income Received", TransactionType.Income);
-            TransactionTypes.Add("Opening Balance", TransactionType.OpeningBalance);
-            TransactionTypes.Add("Return Of Capital", TransactionType.ReturnOfCapital);
-            TransactionTypes.Add("Adjust Unit Count", TransactionType.UnitCountAdjustment);
-        }
-
-        public TransactionViewModel CreateTransactionViewModel(TransactionType type)
-        {
-            if (type == TransactionType.Aquisition)
-                return new AquisitionViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.Disposal)
-                return new DisposalViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.Income)
-                return new IncomeReceivedViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(null, _RestWebClient, _RestClient);
-            else if (type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(null, _RestWebClient, _RestClient);
-            else
-                throw new NotSupportedException();
-        }
-
-        public TransactionViewModel CreateTransactionViewModel(Transaction transaction)
-        {
-            if (transaction.Type == TransactionType.Aquisition)
-                return new AquisitionViewModel(transaction as AquisitionTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.CashTransaction)
-                return new CashTransactionViewModel(transaction as CashTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.CostBaseAdjustment)
-                return new CostBaseAdjustmentViewModel(transaction as CostBaseAdjustmentTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.Disposal)
-                return new DisposalViewModel(transaction as DisposalTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.Income)
-                return new IncomeReceivedViewModel(transaction as IncomeTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.OpeningBalance)
-                return new OpeningBalanceViewModel(transaction as OpeningBalanceTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.ReturnOfCapital)
-                return new ReturnOfCapitalViewModel(transaction as ReturnOfCapitalTransaction, _RestWebClient, _RestClient);
-            else if (transaction.Type == TransactionType.UnitCountAdjustment)
-                return new UnitCountAdjustmentViewModel(transaction as UnitCountAdjustmentTransaction, _RestWebClient, _RestClient);
-            else
-                throw new NotSupportedException();
-        }
-    }
 }

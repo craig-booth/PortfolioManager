@@ -1,7 +1,7 @@
 ﻿using System;
 
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -46,8 +46,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public ReturnOfCapitalViewModel(ReturnOfCapitalTransaction returnOfCapital, RestWebClient restWebClient, RestClient restClient)
-            : base(returnOfCapital, TransactionStockSelection.Holdings, restWebClient, restClient)
+        public ReturnOfCapitalViewModel(ReturnOfCapital returnOfCapital, RestClient restClient)
+            : base(returnOfCapital, TransactionStockSelection.Holdings, restClient)
         {
 
         }
@@ -56,11 +56,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             base.CopyTransactionToFields();
 
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                PaymentDate = ((ReturnOfCapitalTransaction)Transaction).TransactionDate;
-                Amount = ((ReturnOfCapitalTransaction)Transaction).Amount;
-                CreateCashTransaction = ((ReturnOfCapitalTransaction)Transaction).CreateCashTransaction;
+                PaymentDate = ((ReturnOfCapital)_Transaction).TransactionDate;
+                Amount = ((ReturnOfCapital)_Transaction).Amount;
+                CreateCashTransaction = ((ReturnOfCapital)_Transaction).CreateCashTransaction;
             }
             else
             {
@@ -72,12 +72,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected override void CopyFieldsToTransaction()
         {
-            if (Transaction == null)
-                Transaction = new ReturnOfCapitalTransaction();
+            if (_Transaction == null)
+                _Transaction = new ReturnOfCapital();
 
             base.CopyFieldsToTransaction();
 
-            var returnOfCapital = (ReturnOfCapitalTransaction)Transaction;
+            var returnOfCapital = (ReturnOfCapital)_Transaction;
             returnOfCapital.TransactionDate = PaymentDate;
             returnOfCapital.Amount = Amount;
             returnOfCapital.CreateCashTransaction = CreateCashTransaction;

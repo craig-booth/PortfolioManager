@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 
 
@@ -41,7 +41,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var responce = await _Parameter.RestWebClient.GetIncomeAsync(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear));
+            var responce = await _Parameter.RestClient.Portfolio.GetIncome(new DateRange(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear)));
             if (responce == null)
                 return;
 
@@ -56,23 +56,23 @@ namespace PortfolioManager.UI.ViewModels
 
     class IncomeItemViewModel
     {
-        public string ASXCode { get; private set; }
-        public string CompanyName { get; private set; } 
+        public StockViewItem Stock { get; private set; }
 
         public decimal UnfrankedAmount { get; private set; }
         public decimal FrankedAmount { get; private set; }
         public decimal FrankingCredits { get; private set; }
-        public decimal TotalAmount { get; private set; }
+        public decimal NettIncome { get; private set; }
+        public decimal GrossIncome { get; private set; }
 
-        public IncomeItemViewModel(IncomeItem income)
+        public IncomeItemViewModel(IncomeResponse.IncomeItem income)
         {
-            ASXCode = income.Stock.ASXCode;
-            CompanyName = income.Stock.FormattedCompanyName();
+            Stock = new StockViewItem(income.Stock);
 
             UnfrankedAmount = income.UnfrankedAmount;
             FrankedAmount = income.FrankedAmount;
             FrankingCredits = income.FrankingCredits;
-            TotalAmount = income.TotalAmount;
+            NettIncome = income.NettIncome;
+            GrossIncome = income.GrossIncome;
         }
     }
 

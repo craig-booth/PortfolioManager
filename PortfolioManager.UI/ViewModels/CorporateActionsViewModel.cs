@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Service.Interface;
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 
@@ -47,15 +46,15 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (corporateAction != null)
             { 
-                var responce = await _Parameter.RestWebClient.GetTransactionsForCorporateActionAsync(corporateAction.Id);
+                var transactions = await _Parameter.RestClient.Transactions.GetTransactionsForCorporateAction(corporateAction.Id);
                 
-                _CreateTransactionsViewModel.AddTransactions(responce.Transactions);
+                _CreateTransactionsViewModel.AddTransactions(transactions);
             } 
         }
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestWebClient.GetUnappliedCorporateActionsAsync();
+            var responce = await _Parameter.RestClient.Portfolio.GetUnappliedCorporateActions();
             if (responce == null)
                 return;
 

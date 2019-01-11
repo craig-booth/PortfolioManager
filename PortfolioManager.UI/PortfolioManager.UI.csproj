@@ -89,16 +89,8 @@
     <Compile Include="Controls\MarginSetter.cs" />
     <Compile Include="Controls\PieChartLegend.xaml.cs" />
     <Compile Include="Controls\SelectionChangedCommand.cs" />
-    <Compile Include="Models\AquisitionTransaction.cs" />
-    <Compile Include="Models\CashTransaction.cs" />
-    <Compile Include="Models\CostBaseAdjustmentTransaction.cs" />
-    <Compile Include="Models\DisposalTransaction.cs" />
-    <Compile Include="Models\IncomeTransaction.cs" />
-    <Compile Include="Models\OpeningBalanceTransaction.cs" />
-    <Compile Include="Models\ReturnOfCapitalTransaction.cs" />
-    <Compile Include="Models\Stock.cs" />
-    <Compile Include="Models\Transaction.cs" />
-    <Compile Include="Models\UnitCountAdjustmentTransaction.cs" />
+    <Compile Include="Utilities\PopupWindow.cs" />
+    <Compile Include="ViewModels\StockViewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -120,8 +112,6 @@
     <Compile Include="Utilities\PageViewModel.cs" />
     <Compile Include="Utilities\PortfolioViewModel.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
-    <Compile Include="Utilities\RestWebClient.cs" />
-    <Compile Include="Utilities\StockItemExtension.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="Utilities\ViewParameter.cs" />
     <Compile Include="ViewModels\AssetAllocationViewModel.cs" />
@@ -147,6 +137,7 @@
     <Compile Include="ViewModels\Transactions\OpeningBalanceViewModel.cs" />
     <Compile Include="ViewModels\Transactions\ReturnOfCapitalViewModel.cs" />
     <Compile Include="ViewModels\Transactions\TransactionViewModel.cs" />
+    <Compile Include="ViewModels\Transactions\TransactionViewModelFactory.cs" />
     <Compile Include="ViewModels\Transactions\UnitCountAdjustmentViewModel.cs" />
     <Compile Include="ViewModels\UnrealisedGainsViewModel.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs" />
@@ -277,10 +268,6 @@
     <ProjectReference Include="..\PortfolioManager.RestApi\PortfolioManager.RestApi.csproj">
       <Project>{aaac69bf-4b0b-4d23-ad83-6c53d6676740}</Project>
       <Name>PortfolioManager.RestApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj">
-      <Project>{6f59be81-1e14-4454-9c3e-6cc0a586a6c2}</Project>
-      <Name>PortfolioManager.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

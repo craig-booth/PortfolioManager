@@ -25,7 +25,7 @@ namespace PortfolioManager.Web.Mappers
 
             CreateMap<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>();
             CreateMap<Domain.Transactions.Disposal, RestApi.Transactions.Disposal>()
-                .ForMember(x => x.CGTMethod, x => x.MapFrom(y => CGTMethodMapping.ToRest(y.CGTMethod)));
+                .ForMember(x => x.CGTMethod, x => x.MapFrom(y => y.CGTMethod.ToRestName()));
             CreateMap<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>()
                 .ForMember(x => x.TransactionDate, x => x.MapFrom(y => y.Date));
             CreateMap<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>();

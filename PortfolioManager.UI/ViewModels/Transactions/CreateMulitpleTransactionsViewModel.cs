@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using CBControls;
 
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -13,7 +13,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
     class CreateMulitpleTransactionsViewModel : PopupWindow
     {
-        protected RestWebClient _RestWebClient;
         protected RestClient _RestClient;
         private TransactionViewModelFactory _TransactionViewModelFactory;
 
@@ -36,11 +35,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public CreateMulitpleTransactionsViewModel(RestWebClient restWebClient, RestClient restClient)
+        public CreateMulitpleTransactionsViewModel(RestClient restClient)
             : base()
         {
-            _RestWebClient = restWebClient;
-            _TransactionViewModelFactory = new TransactionViewModelFactory(restWebClient, restClient);
+            _RestClient = restClient;
+            _TransactionViewModelFactory = new TransactionViewModelFactory(restClient);
             Transactions = new ObservableCollection<TransactionViewModel>();
 
             CancelCommand = new RelayCommand(Cancel);
@@ -50,7 +49,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             Commands.Add(new DialogCommand("Cancel", CancelCommand));
         }
 
-        public void AddTransactions(IEnumerable<TransactionItem> transactions)
+        public void AddTransactions(IEnumerable<Transaction> transactions)
         {
             Transactions.Clear();
 
@@ -77,13 +76,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand SaveTransactionsCommand { get; private set; }
-        private async void SaveTransactions()
+        private void SaveTransactions()
         {
             foreach (var transactionviewModel in Transactions)
-            {
-                transactionviewModel.EndEdit();
-                await _RestWebClient.AddTransactionAsync(transactionviewModel.Transaction);
-            }      
+                transactionviewModel.Save();   
 
             IsOpen = false;
         }

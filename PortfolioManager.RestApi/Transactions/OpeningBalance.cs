@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
+using PortfolioManager.Common;
+
 namespace PortfolioManager.RestApi.Transactions
 {
     public class OpeningBalance : Transaction
     {
-        public override string Type
-        {
-            get { return "openingbalance"; }
-        }
+        public override string Type => TransactionType.OpeningBalance.ToRestName();
         public int Units { get; set; }
         public decimal CostBase { get; set; }
         public DateTime AquisitionDate { get; set; }

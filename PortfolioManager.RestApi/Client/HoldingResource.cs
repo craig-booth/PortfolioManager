@@ -18,6 +18,13 @@ namespace PortfolioManager.RestApi.Client
             PortfolioId = portfolioId;
         }
 
+        public async Task<List<Holding>> Get(DateTime date)
+        {
+            var url = "/api/v2/portfolio/" + PortfolioId + "/holdings?date=" +date.ToIsoDateString();
+
+            return await GetAsync<List<Holding>>(url);
+
+        }
         public async Task<List<Holding>> Get(DateRange dateRange)
         {
             var url = "/api/v2/portfolio/" + PortfolioId + "/holdings?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString();

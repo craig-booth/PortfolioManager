@@ -35,7 +35,7 @@ namespace PortfolioManager.RestApi.Client
             return response;
         }
 
-        protected async Task PostAsync<D>(string url, D data)
+        protected async Task<bool> PostAsync<D>(string url, D data)
         {
  
             var formatter = new JsonMediaTypeFormatter
@@ -45,12 +45,7 @@ namespace PortfolioManager.RestApi.Client
             formatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
 
             HttpResponseMessage response = await _HttpClient.PostAsync<D>(url, data, formatter);
-            if (response.IsSuccessStatusCode)
-            {
-                return;
-            }
-
-            return;
+            return response.IsSuccessStatusCode;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Service.Interface;
+using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 
 
@@ -39,7 +39,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestWebClient.GetCashAccountTransactionsAsync(_Parameter.DateRange.FromDate, _Parameter.DateRange.ToDate);
+            var responce = await _Parameter.RestClient.Portfolio.GetCashAccount(_Parameter.DateRange);
             if (responce == null)
                 return;
 
@@ -63,7 +63,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal Amount { get; private set; }
         public decimal Balance { get; private set; }
 
-        public CashAccountItemViewModel(CashAccountTransactionItem transaction)
+        public CashAccountItemViewModel(CashAccountTransactionsResponse.TransactionItem transaction)
         {
             Date = transaction.Date;
             Description = transaction.Description;

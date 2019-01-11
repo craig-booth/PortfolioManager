@@ -1,7 +1,7 @@
 ﻿using System;
 
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -119,8 +119,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public IncomeReceivedViewModel(IncomeTransaction incomeReceived, RestWebClient restWebClient, RestClient restClient)
-            : base(incomeReceived, TransactionStockSelection.Holdings, restWebClient, restClient)
+        public IncomeReceivedViewModel(IncomeReceived incomeReceived, RestClient restClient)
+            : base(incomeReceived, TransactionStockSelection.Holdings, restClient)
         {
 
         }
@@ -129,15 +129,15 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             base.CopyTransactionToFields();
 
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                PaymentDate = ((IncomeTransaction)Transaction).TransactionDate;
-                FrankedAmount = ((IncomeTransaction)Transaction).FrankedAmount;
-                UnfrankedAmount = ((IncomeTransaction)Transaction).UnfrankedAmount;
-                FrankingCredits = ((IncomeTransaction)Transaction).FrankingCredits;
-                TaxDeferred = ((IncomeTransaction)Transaction).TaxDeferred;
-                Interest = ((IncomeTransaction)Transaction).Interest;
-                CreateCashTransaction = ((IncomeTransaction)Transaction).CreateCashTransaction;
+                PaymentDate = ((IncomeReceived)_Transaction).TransactionDate;
+                FrankedAmount = ((IncomeReceived)_Transaction).FrankedAmount;
+                UnfrankedAmount = ((IncomeReceived)_Transaction).UnfrankedAmount;
+                FrankingCredits = ((IncomeReceived)_Transaction).FrankingCredits;
+                TaxDeferred = ((IncomeReceived)_Transaction).TaxDeferred;
+                Interest = ((IncomeReceived)_Transaction).Interest;
+                CreateCashTransaction = ((IncomeReceived)_Transaction).CreateCashTransaction;
             }
             else
             {
@@ -153,12 +153,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected override void CopyFieldsToTransaction()
         {
-            if (Transaction == null)
-                Transaction = new IncomeTransaction();
+            if (_Transaction == null)
+                _Transaction = new IncomeReceived();
 
             base.CopyFieldsToTransaction();
 
-            var income = (IncomeTransaction)Transaction;
+            var income = (IncomeReceived)_Transaction;
             income.TransactionDate = PaymentDate;
             income.FrankedAmount = FrankedAmount;
             income.UnfrankedAmount = UnfrankedAmount;

@@ -4,32 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PortfolioManager.UI.Models
+namespace PortfolioManager.UI.ViewModels
 {
-    public class Stock
+    public class StockViewItem
     {
         public Guid Id { get; set; }
         public string AsxCode { get; set; }
         public string Name { get; set; }
 
-        public Stock(Guid id, string asxCode, string name)
+        public StockViewItem(Guid id, string asxCode, string name)
         {
             Id = id;
             AsxCode = asxCode;
             Name = name;
         }
 
-        public Stock(RestApi.Portfolios.Stock stock)
+        public StockViewItem(RestApi.Portfolios.Stock stock)
         {
             Id = stock.Id;
             AsxCode = stock.AsxCode;
-            Name = stock.Name;
-        }
-
-        public Stock(Service.Interface.StockItem stock)
-        {
-            Id = stock.Id;
-            AsxCode = stock.ASXCode;
             Name = stock.Name;
         }
 

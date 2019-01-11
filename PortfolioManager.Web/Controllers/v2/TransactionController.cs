@@ -38,20 +38,6 @@ namespace PortfolioManager.Web.Controllers.v2
             return _Mapper.Map<Transaction>(transaction);
         }
 
-        // GET: transactions?stock&fromDate&toDate
-        [HttpGet]
-        public ActionResult<List<Transaction>> Get(Guid? stock, DateTime? fromDate, DateTime? toDate)
-        {
-            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
-
-            var transactions = _Portfolio.Transactions.InDateRange(dateRange);
-            if (stock != null)
-                transactions = transactions.Where(x => x.Stock.Id == stock);
-
-            return _Mapper.Map<List<Transaction>>(transactions);
-        }
-
-
         // POST: transactions
         [HttpPost]
         public ActionResult AddTransaction([FromBody]Transaction transaction)
@@ -92,6 +78,15 @@ namespace PortfolioManager.Web.Controllers.v2
             }
 
             return Ok();
+        }
+
+        // GET:  transactions/corporateaction/id
+        [HttpGet("corporateaction/{id:guid}")]
+        public ActionResult<List<Transaction>> GetCorporateActionsForTransaction(Guid id)
+        {
+            var transactions = new List<Transaction>();
+
+            return transactions;
         }
     }
 }

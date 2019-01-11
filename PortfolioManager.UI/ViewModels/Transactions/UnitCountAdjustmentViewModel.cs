@@ -1,6 +1,6 @@
 ﻿
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -46,8 +46,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public bool CreateCashTransaction { get; set; }
 
-        public UnitCountAdjustmentViewModel(UnitCountAdjustmentTransaction unitCostAdjustment, RestWebClient restWebClient, RestClient restClient)
-            : base(unitCostAdjustment, TransactionStockSelection.Holdings, restWebClient, restClient)
+        public UnitCountAdjustmentViewModel(UnitCountAdjustment unitCostAdjustment, RestClient restClient)
+            : base(unitCostAdjustment, TransactionStockSelection.Holdings, restClient)
         {
 
         }
@@ -56,10 +56,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             base.CopyTransactionToFields();
 
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                OriginalUnits = ((UnitCountAdjustmentTransaction)Transaction).OriginalUnits;
-                NewUnits = ((UnitCountAdjustmentTransaction)Transaction).NewUnits;
+                OriginalUnits = ((UnitCountAdjustment)_Transaction).OriginalUnits;
+                NewUnits = ((UnitCountAdjustment)_Transaction).NewUnits;
             }
             else
             {
@@ -70,12 +70,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected override void CopyFieldsToTransaction()
         {
-            if (Transaction == null)
-                Transaction = new UnitCountAdjustmentTransaction();
+            if (_Transaction == null)
+                _Transaction = new UnitCountAdjustment();
 
             base.CopyFieldsToTransaction();
 
-            var unitCountAdjustment = (UnitCountAdjustmentTransaction)Transaction;
+            var unitCountAdjustment = (UnitCountAdjustment)_Transaction;
             unitCountAdjustment.TransactionDate = RecordDate;
             unitCountAdjustment.OriginalUnits = OriginalUnits;
             unitCountAdjustment.NewUnits = NewUnits;

@@ -1,7 +1,7 @@
 ﻿
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -11,8 +11,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public BankAccountTransactionType TransactionType { get; set; }
         public decimal Amount { get; set; }
 
-        public CashTransactionViewModel(CashTransaction cashTransaction, RestWebClient restWebClient, RestClient restClient)
-            : base(cashTransaction, TransactionStockSelection.None, restWebClient, restClient)
+        public CashTransactionViewModel(CashTransaction cashTransaction, RestClient restClient)
+            : base(cashTransaction, TransactionStockSelection.None, restClient)
         {
             
         }
@@ -21,10 +21,10 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             base.CopyTransactionToFields();
 
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                TransactionType = ((CashTransaction)Transaction).CashTransactionType;
-                Amount = ((CashTransaction)Transaction).Amount;
+                TransactionType = RestApiNameMapping.ToBankAccountTransactionType(((CashTransaction)_Transaction).CashTransactionType);
+                Amount = ((CashTransaction)_Transaction).Amount;
              }
             else
             {
@@ -35,14 +35,14 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected override void CopyFieldsToTransaction()
         {
-            if (Transaction == null)
-                Transaction = new CashTransaction();
+            if (_Transaction == null)
+                _Transaction = new CashTransaction();
 
             base.CopyFieldsToTransaction();
 
-            var cashTransaction = (CashTransaction)Transaction;
+            var cashTransaction = (CashTransaction)_Transaction;
             cashTransaction.TransactionDate = RecordDate;
-            cashTransaction.CashTransactionType = TransactionType;
+            cashTransaction.CashTransactionType = TransactionType.ToRestName();
             cashTransaction.Amount = Amount;
         }
     }

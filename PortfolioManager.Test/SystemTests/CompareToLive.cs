@@ -25,7 +25,6 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Service.Interface;
 using PortfolioManager.Web;
-using PortfolioManager.Web.Controllers.v1;
 using PortfolioManager.Web.Controllers.v2;
 using PortfolioManager.Web.Converters;
 
@@ -39,8 +38,6 @@ namespace PortfolioManager.Test.SystemTests
 
         private string _ExpectedResultsPath;
         private string _ActualResultsPath;
-
-        private ConvertToV2 _ResultsConverter;
 
         [OneTimeSetUp]
         public async Task Init()
@@ -70,17 +67,15 @@ namespace PortfolioManager.Test.SystemTests
             services.AddLogging();
             services.AddPortfolioManagerService(settings);
 
-            services.AddSingleton<Web.Controllers.v2.TransactionController>();
-            services.AddSingleton<Web.Controllers.v2.HoldingController>();
-            services.AddSingleton<Web.Controllers.v2.CorporateActionController>();
-            services.AddSingleton<Web.Controllers.v2.PortfolioController>();
+            services.AddSingleton<TransactionController>();
+            services.AddSingleton<HoldingController>();
+            services.AddSingleton<CorporateActionController>();
+            services.AddSingleton<PortfolioController>();
 
             _ServiceProvider = services.BuildServiceProvider();
 
             var stockExchange = _ServiceProvider.GetRequiredService<StockExchange>();
             stockExchange.LoadFromEventStream();
-
-            _ResultsConverter = new ConvertToV2();
 
             await LoadTransactions();
         }
@@ -105,7 +100,7 @@ namespace PortfolioManager.Test.SystemTests
             var transactions = serializer.Deserialize<List<RestApi.Transactions.Transaction>>(jsonReader);
             jsonFile.Close();
 
-            var controller = _ServiceProvider.GetRequiredService<Web.Controllers.v2.TransactionController>(); 
+            var controller = _ServiceProvider.GetRequiredService<TransactionController>(); 
             SetControllerContext(controller);
 
             controller.AddTransactions(transactions.Where(x => x != null).ToList());

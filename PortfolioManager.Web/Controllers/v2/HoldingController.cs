@@ -28,6 +28,17 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:
         [HttpGet]
+        public ActionResult<List<Holding>> Get([FromQuery]DateTime? date)
+        {
+            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
+
+            var holdings = _Portfolio.Holdings.All(requestedDate);
+
+            return _Mapper.Map<List<RestApi.Portfolios.Holding>>(holdings, opts => opts.Items["date"] = requestedDate);
+        }
+
+        // GET:
+        [HttpGet]
         public ActionResult<List<Holding>> Get([FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
@@ -114,6 +125,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCapitalGainsService(_Portfolio);
 
             return service.GetDetailedCapitalGains(holding, requestedDate);
-        } 
+        }
+
     }
 }

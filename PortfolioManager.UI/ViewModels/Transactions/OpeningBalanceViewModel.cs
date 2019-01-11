@@ -1,7 +1,7 @@
 ﻿using System;
 
 using PortfolioManager.RestApi.Client;
-using PortfolioManager.UI.Models;
+using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
@@ -62,8 +62,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public OpeningBalanceViewModel(OpeningBalanceTransaction openingBalance, RestWebClient restWebClient, RestClient restClient)
-            : base(openingBalance, TransactionStockSelection.Stocks, restWebClient, restClient)
+        public OpeningBalanceViewModel(OpeningBalance openingBalance, RestClient restClient)
+            : base(openingBalance, TransactionStockSelection.Stocks, restClient)
         {
         }
 
@@ -71,9 +71,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             base.CopyTransactionToFields();
 
-            if (Transaction != null)
+            if (_Transaction != null)
             {
-                var openingBalance = (OpeningBalanceTransaction)Transaction;
+                var openingBalance = (OpeningBalance)_Transaction;
 
                 Units = openingBalance.Units;
                 CostBase = openingBalance.CostBase;
@@ -89,12 +89,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         protected override void CopyFieldsToTransaction()
         {
-            if (Transaction == null)
-                Transaction = new OpeningBalanceTransaction();
+            if (_Transaction == null)
+                _Transaction = new OpeningBalance();
 
             base.CopyFieldsToTransaction();
 
-            var openingBalance = (OpeningBalanceTransaction)Transaction;
+            var openingBalance = (OpeningBalance)_Transaction;
             openingBalance.TransactionDate = RecordDate;
             openingBalance.Units = Units;
             openingBalance.CostBase = CostBase;
