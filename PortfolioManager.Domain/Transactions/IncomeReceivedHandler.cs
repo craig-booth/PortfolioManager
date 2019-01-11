@@ -24,7 +24,7 @@ namespace PortfolioManager.Domain.Transactions
             if ((holding == null) || (!holding.IsEffectiveAt(incomeReceived.RecordDate)))
                 throw new NoParcelsForTransaction(incomeReceived, "No parcels found for transaction");
 
-            var holdingProperties = holding.Properties[incomeReceived.RecordDate].Units;
+            var holdingProperties = holding.Properties[incomeReceived.RecordDate];
             
             // Handle any tax deferred amount recieved 
             if (incomeReceived.TaxDeferred > 0)
@@ -52,7 +52,10 @@ namespace PortfolioManager.Domain.Transactions
                 _CashAccount.Transfer(incomeReceived.Date, incomeReceived.CashIncome, String.Format("Distribution for {0}", asxCode));
             }
 
-            // UpdateDRPCashBalance(unitOfWork, stock, incomeReceived.TransactionDate, incomeReceived.DRPCashBalance);
+            var drpCashBalance = holding.DrpAccount.Balance(incomeReceived.Date);
+
+            var drpAccountCredit = incomeReceived.DRPCashBalance - drpCashBalance;
+            holding.AddDrpAccountAmount(incomeReceived.Date, drpAccountCredit);
         }
     }
 }

@@ -103,12 +103,12 @@ namespace PortfolioManager.Domain.Utils
             return irr;
         }
 
-        public static double CalculateIRR(CashFlows cashFlows)
+        public static double CalculateIrr(CashFlows cashFlows)
         {
-            return CalculateIRR(cashFlows, 0.10);
+            return CalculateIrr(cashFlows, 0.10);
         }
 
-        public static double CalculateIRR(CashFlows cashFlows, double guess)
+        public static double CalculateIrr(CashFlows cashFlows, double guess)
         {
             double[] values;
             double[] periods;

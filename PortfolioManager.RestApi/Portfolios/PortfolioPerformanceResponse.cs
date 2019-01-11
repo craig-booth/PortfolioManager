@@ -31,7 +31,7 @@ namespace PortfolioManager.RestApi.Portfolios
             public decimal CapitalGain { get; set; }
             public decimal DRPCashBalance { get; set; }
             public decimal TotalReturn { get; set; }
-            public double IRR { get; set; }
+            public decimal IRR { get; set; }
         }
 
         public List<HoldingPerformanceItem> HoldingPerformance { get; } = new List<HoldingPerformanceItem>();

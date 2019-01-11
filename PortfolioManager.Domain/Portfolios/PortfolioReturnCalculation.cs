@@ -50,7 +50,7 @@ namespace PortfolioManager.Domain.Portfolios
             var finalValue = finalHoldingsValue + finalCashBalance;
             cashFlows.Add(dateRange.ToDate, finalValue);
 
-            var irr = IrrCalculator.CalculateIRR(cashFlows);
+            var irr = IrrCalculator.CalculateIrr(cashFlows);
 
             return (decimal)Math.Round(irr, 5);
         }

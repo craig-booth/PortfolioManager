@@ -17,7 +17,7 @@
         <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
         <ASXCode>GVF</ASXCode>
         <Name>Global Value Fund</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationalStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7575.00</Purchases>
@@ -27,7 +27,7 @@
       <CapitalGain>-75.00</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>-75.00</TotalReturn>
-      <IRR>-0.043324577831947625</IRR>
+      <IRR>-0.04332</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
@@ -42,9 +42,9 @@
       <ClosingBalance>33003.96</ClosingBalance>
       <Dividends>667.95</Dividends>
       <CapitalGain>274.41</CapitalGain>
-      <DRPCashBalance>0</DRPCashBalance>
+      <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>942.36</TotalReturn>
-      <IRR>0.13944018555029924</IRR>
+      <IRR>0.13944</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
@@ -59,9 +59,9 @@
       <ClosingBalance>6481.80</ClosingBalance>
       <Dividends>66</Dividends>
       <CapitalGain>1069.80</CapitalGain>
-      <DRPCashBalance>0</DRPCashBalance>
+      <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>1135.80</TotalReturn>
-      <IRR>1.3674314337019113</IRR>
+      <IRR>1.36743</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
@@ -76,9 +76,9 @@
       <ClosingBalance>29450.40</ClosingBalance>
       <Dividends>228.12</Dividends>
       <CapitalGain>728.00</CapitalGain>
-      <DRPCashBalance>0</DRPCashBalance>
+      <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>956.12</TotalReturn>
-      <IRR>0.15926403054476285</IRR>
+      <IRR>0.15926</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
@@ -95,14 +95,14 @@
       <CapitalGain>-336.26</CapitalGain>
       <DRPCashBalance>0.00</DRPCashBalance>
       <TotalReturn>-336.26</TotalReturn>
-      <IRR>-0.04086565059862142</IRR>
+      <IRR>-0.04087</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
         <Id>df514684-db72-493f-9427-0057029d4964</Id>
         <ASXCode>VAF</ASXCode>
         <Name>Vanguard Australian Fixed Interest ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>AustralianFixedInterest</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7546.58</Purchases>
@@ -112,14 +112,14 @@
       <CapitalGain>-29.80</CapitalGain>
       <DRPCashBalance>28.946</DRPCashBalance>
       <TotalReturn>34.25</TotalReturn>
-      <IRR>0.022139548865931783</IRR>
+      <IRR>0.02214</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
         <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
         <ASXCode>VAP</ASXCode>
         <Name>Vanguard Australian Property ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>AustralianProperty</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7527.00</Purchases>
@@ -129,14 +129,14 @@
       <CapitalGain>554.00</CapitalGain>
       <DRPCashBalance>58.73</DRPCashBalance>
       <TotalReturn>612.73</TotalReturn>
-      <IRR>0.45691863795610616</IRR>
+      <IRR>0.45692</IRR>
     </HoldingPerformanceItem>
     <HoldingPerformanceItem>
       <Stock>
         <Id>a3e6b4c2-bba0-4319-9c7a-654d3341ecd6</Id>
         <ASXCode>VGS</ASXCode>
         <Name>Vanguard International Shares ETF</Name>
-        <Category>AustralianStocks</Category>
+        <Category>InternationalStocks</Category>
       </Stock>
       <OpeningBalance>0</OpeningBalance>
       <Purchases>7578.20</Purchases>
@@ -144,9 +144,9 @@
       <ClosingBalance>7725.20</ClosingBalance>
       <Dividends>33.1</Dividends>
       <CapitalGain>147.00</CapitalGain>
-      <DRPCashBalance>33.1</DRPCashBalance>
+      <DRPCashBalance>33.10</DRPCashBalance>
       <TotalReturn>180.10</TotalReturn>
-      <IRR>0.13448174546216679</IRR>
+      <IRR>0.13448</IRR>
     </HoldingPerformanceItem>
   </HoldingPerformance>
 </PortfolioPerformanceResponse>

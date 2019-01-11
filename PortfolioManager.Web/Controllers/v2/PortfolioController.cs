@@ -147,6 +147,16 @@ namespace PortfolioManager.Web.Controllers.v2
 
             return service.GetIncome(dateRange);
         }
+
+        // GET: corporateactions
+        [Route("corporateactions")]
+        [HttpGet]
+        public ActionResult<CorporateActionsResponse> GetCorporateActions()
+        {
+            var service = new PortfolioCorporateActionsService(_Portfolio);
+
+            return service.GetCorporateActions();
+        }
     }
 
 }
