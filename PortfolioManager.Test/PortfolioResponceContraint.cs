@@ -11,7 +11,6 @@ using NUnit.Framework.Constraints;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 
-using PortfolioManager.Service.Interface;
 
 namespace PortfolioManager.Test
 { 
@@ -75,12 +74,6 @@ namespace PortfolioManager.Test
 
     public static class PortfolioResponceContraintExtensions
     {
-        public static PortfolioResponceContraint EquivalentTo(this ConstraintExpression expression, ServiceResponce expected)
-        {
-            var constraint = new PortfolioResponceContraint(expected);
-            expression.Append(constraint);
-            return constraint;
-        }
 
         public static PortfolioResponceContraint EquivalentTo(this ConstraintExpression expression, Type type, string fileName)
         {

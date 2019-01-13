@@ -23,7 +23,6 @@ using Newtonsoft.Json.Serialization;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.Service.Interface;
 using PortfolioManager.Web;
 using PortfolioManager.Web.Controllers.v2;
 using PortfolioManager.Web.Converters;
@@ -40,7 +39,7 @@ namespace PortfolioManager.Test.SystemTests
         private string _ActualResultsPath;
 
         [OneTimeSetUp]
-        public async Task Init()
+        public void Init()
         {
             _ExpectedResultsPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "ExpectedResults");
             _ActualResultsPath = Path.Combine(TestContext.CurrentContext.WorkDirectory, "SystemTests", "ActualResults");
@@ -58,7 +57,6 @@ namespace PortfolioManager.Test.SystemTests
             var settings = new PortfolioManagerSettings()
             {
                 ApiKey = Guid.Empty,
-                PortfolioDatabase = Path.Combine(_ActualResultsPath, "Portfolio.db"),
                 EventStore = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017",
                 //EventStore = "mongodb://192.168.99.100:27017",
                 Port = 0
@@ -77,15 +75,12 @@ namespace PortfolioManager.Test.SystemTests
             var stockExchange = _ServiceProvider.GetRequiredService<StockExchange>();
             stockExchange.LoadFromEventStream();
 
-            await LoadTransactions();
+            LoadTransactions();
         }
 
-        public async Task LoadTransactions()
+        public void LoadTransactions()
         {
-            var service = _ServiceProvider.GetRequiredService<ITransactionService>();
             var transactionConverter = _ServiceProvider.GetRequiredService<TransactionJsonConverter>();
-
-            await service.ImportTransactions(Path.Combine(TestContext.CurrentContext.TestDirectory, "SystemTests", "Transactions.xml"));
 
             var settings = new JsonSerializerSettings();
             settings.NullValueHandling = NullValueHandling.Ignore;
@@ -302,8 +297,6 @@ namespace PortfolioManager.Test.SystemTests
             var stocks = stockRepository.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate))).OrderBy(x => x, new StockComparer());
             foreach (var stock in stocks)
             {
-                var stockItem = new StockItem(stock.Id, stock.Properties.ClosestTo(toDate).ASXCode, stock.Properties.ClosestTo(toDate).Name);
-
                 var corporateActions = controller.GetCorporateActions(stock.Id, fromDate, toDate);
 
                 response.AddRange(corporateActions.Value);

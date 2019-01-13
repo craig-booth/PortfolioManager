@@ -16,21 +16,13 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-
 using AutoMapper;
 
 using PortfolioManager.Common.Scheduler;
-using PortfolioManager.Data.Portfolios;
 using PortfolioManager.ImportData;
 using PortfolioManager.ImportData.DataServices;
-using PortfolioManager.Data.SQLite.Portfolios;
-using PortfolioManager.Service.Interface;
-using PortfolioManager.Service.Services;
-using PortfolioManager.Service;
-using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
-using PortfolioManager.Domain.Transactions;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Mongodb;
 
@@ -48,7 +40,6 @@ namespace PortfolioManager.Web
             var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
             services.AddSingleton<PortfolioManagerSettings>(settings);
-            services.AddSingleton<IPortfolioDatabase>(x => new SQLitePortfolioDatabase(settings.PortfolioDatabase));
             services.AddSingleton<IEventStore>(CreateEventStore);
             services.AddSingleton<StockExchange>();
             services.AddSingleton<IStockRepository>(x => x.GetRequiredService<StockExchange>().Stocks);
@@ -62,18 +53,6 @@ namespace PortfolioManager.Web
 
             services.AddSingleton<TransactionJsonConverter, TransactionJsonConverter>();
             services.AddSingleton<IConfigureOptions<MvcJsonOptions>, JsonMvcConfiguration>();
-
-            services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
-            services.AddScoped<IPortfolioPerformanceService, PortfolioPerformanceService>();
-            services.AddScoped<ICapitalGainService, CapitalGainService>();
-            services.AddScoped<IPortfolioValueService, PortfolioValueService>();
-            services.AddScoped<ICorporateActionService, CorporateActionService>();
-            services.AddScoped<PortfolioManager.Service.Interface.ITransactionService, PortfolioManager.Service.Services.TransactionService>();
-            services.AddScoped<IHoldingService, HoldingService>();
-            services.AddScoped<ICashAccountService, CashAccountService>();
-            services.AddScoped<IIncomeService, IncomeService>();
-            services.AddScoped<IStockService, StockService>();
-            services.AddScoped<IAttachmentService, AttachmentService>();
 
             return services;
         }
@@ -110,7 +89,6 @@ namespace PortfolioManager.Web
             var profiles = serviceProvider.GetServices<Profile>();
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new Service.Utils.ModelToServiceMapping(stockExchange));
                 foreach (var profile in profiles)
                     cfg.AddProfile(profile);
             });
@@ -133,7 +111,6 @@ namespace PortfolioManager.Web
     public class PortfolioManagerSettings
     {
         public Guid ApiKey { get; set; }
-        public string PortfolioDatabase { get; set; }
         public string EventStore { get; set; }
         public int Port { get; set; }
     }

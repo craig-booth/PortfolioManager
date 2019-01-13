@@ -8,6 +8,7 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
@@ -33,7 +34,6 @@
     <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
     <ProjectReference Include="..\PortfolioManager.ImportData\PortfolioManager.ImportData.csproj" />
     <ProjectReference Include="..\PortfolioManager.RestApi\PortfolioManager.RestApi.csproj" />
-    <ProjectReference Include="..\PortfolioManager.Service\PortfolioManager.Service.csproj" />
   </ItemGroup>
 
 </Project>
