@@ -24,6 +24,11 @@ namespace PortfolioManager.RestApi.CorporateActions
             public decimal CostBase { get; set; }
             public DateTime AquisitionDate { get; set; }
 
+            public ResultingStock()
+            {
+
+            }
+
             public ResultingStock(Guid stock, int originalUnits, int newUnits, decimal costBase, DateTime aquisitionDate)
             {
                 Stock = stock;

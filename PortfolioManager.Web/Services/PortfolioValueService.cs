@@ -52,12 +52,14 @@ namespace PortfolioManager.Web.Services
             var closingBalanceEnumerator = closingBalances.GetEnumerator();
             closingBalanceEnumerator.MoveNext();
 
+            var h = holdings.ToArray();
+
             foreach (var date in dates)
             {
                 var amount = 0.00m;
 
                 // Add holding values
-                foreach (var holding in holdings)
+                foreach (var holding in h)
                     amount += holding.Value(date);
 
                 // Add cash account balances
@@ -76,5 +78,8 @@ namespace PortfolioManager.Web.Services
 
             return response;
         }
+
+
     }
+
 }

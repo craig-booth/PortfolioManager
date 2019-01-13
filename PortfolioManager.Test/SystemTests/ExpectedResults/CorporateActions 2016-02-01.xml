@@ -1,335 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CorporateActionsResponce xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <CorporateActions>
-    <CorporateActionItem>
-      <Id>d392c892-67de-4d84-ba3b-8adb86ad8b85</Id>
-      <ActionDate>2015-02-16T00:00:00</ActionDate>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <AsxCode>ARG</AsxCode>
-        <Name>Argo Investments</Name>
-      </Stock>
-      <Description>Dividend $0.14</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>80c824bb-1a23-4039-94a3-d41308cea8cd</Id>
-      <ActionDate>2015-08-19T00:00:00</ActionDate>
-      <Stock>
-        <Id>5b1a7880-172f-4ad2-8db7-d6b28644b622</Id>
-        <AsxCode>ARG</AsxCode>
-        <Name>Argo Investments</Name>
-      </Stock>
-      <Description>Dividend $0.155</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>f06176dc-e5e9-4d79-8daf-b5b2c5b0e849</Id>
-      <ActionDate>2015-03-05T00:00:00</ActionDate>
-      <Stock>
-        <Id>7c1da28b-dd85-46d5-a4e4-c2820d4b6de2</Id>
-        <AsxCode>AMP</AsxCode>
-        <Name>AMP Limited</Name>
-      </Stock>
-      <Description>Dividend $0.135</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>0c59cb5b-95d1-4666-b88e-657b1375c89b</Id>
-      <ActionDate>2015-05-19T00:00:00</ActionDate>
-      <Stock>
-        <Id>666870cb-ce77-4faa-9f30-a4ebbb322029</Id>
-        <AsxCode>NAB</AsxCode>
-        <Name>National Australia Bank</Name>
-      </Stock>
-      <Description>Dividend $0.99</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>bfb3791c-850c-4cc0-b3fd-cae8f86aea6e</Id>
-      <ActionDate>2015-02-27T00:00:00</ActionDate>
-      <Stock>
-        <Id>25a7ce67-9053-46fd-a230-a7a928c97aa1</Id>
-        <AsxCode>TLS</AsxCode>
-        <Name>Telstra</Name>
-      </Stock>
-      <Description>Dividend $0.15</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>68c98d21-690a-4fb5-97df-a1d2e07975db</Id>
-      <ActionDate>2015-03-25T00:00:00</ActionDate>
-      <Stock>
-        <Id>a7acf7f9-1cf9-4541-865e-d27231bdb6b3</Id>
-        <AsxCode>AGI</AsxCode>
-        <Name>Ainsworth Game Tech</Name>
-      </Stock>
-      <Description>Dividend $0.05</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>485ccb09-8f96-4454-adbf-ee6ad2b60748</Id>
-      <ActionDate>2015-09-10T00:00:00</ActionDate>
-      <Stock>
-        <Id>a7acf7f9-1cf9-4541-865e-d27231bdb6b3</Id>
-        <AsxCode>AGI</AsxCode>
-        <Name>Ainsworth Game Tech</Name>
-      </Stock>
-      <Description>Dividend $0.05</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>0af4533c-fc0b-4552-93be-6dc31c11e2a3</Id>
-      <ActionDate>2015-03-11T00:00:00</ActionDate>
-      <Stock>
-        <Id>ba594390-2f59-460e-9a5d-e2f42b8b079a</Id>
-        <AsxCode>TWE</AsxCode>
-        <Name>Treasury Wine Estate</Name>
-      </Stock>
-      <Description>Dividend $0.06</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>6353eb12-c66a-4302-a0c9-4b3a4d342709</Id>
-      <ActionDate>2015-03-18T00:00:00</ActionDate>
-      <Stock>
-        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <AsxCode>CSL</AsxCode>
-        <Name>CSL Ltd</Name>
-      </Stock>
-      <Description>Dividend $0.74385</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>91ef0a6f-c755-4407-acc7-fc36edf98fd6</Id>
-      <ActionDate>2015-09-09T00:00:00</ActionDate>
-      <Stock>
-        <Id>36eddd85-ee27-4f48-a060-0880ec74c94e</Id>
-        <AsxCode>CSL</AsxCode>
-        <Name>CSL Ltd</Name>
-      </Stock>
-      <Description>USD 0.62c (1USD = 1.3635AUD)</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>3c4f72d6-da6b-457f-b940-e6e85c579fff</Id>
-      <ActionDate>2015-03-13T00:00:00</ActionDate>
-      <Stock>
-        <Id>15def383-18f9-4c51-bde5-d34cf15c9899</Id>
-        <AsxCode>BHP</AsxCode>
-        <Name>BHP Billiton Limited</Name>
-      </Stock>
-      <Description>Dividend $0.80824</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>6681647b-cc5b-48fc-9c3e-6cd1f44d605b</Id>
-      <ActionDate>2015-05-20T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>South32 Demerger</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>b7ab1dfc-cf1b-45ca-9605-eb7543a72dbe</Id>
-      <ActionDate>2015-09-11T00:00:00</ActionDate>
-      <Stock>
-        <Id>15def383-18f9-4c51-bde5-d34cf15c9899</Id>
-        <AsxCode>BHP</AsxCode>
-        <Name>BHP Billiton Limited</Name>
-      </Stock>
-      <Description>Dividend $0.87781</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>b9ab2936-53fa-4968-9264-8286492aa074</Id>
-      <ActionDate>2015-03-05T00:00:00</ActionDate>
-      <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <AsxCode>COH</AsxCode>
-        <Name>Cochlear Limited</Name>
-      </Stock>
-      <Description>Dividend $0.90</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>d70bfe2c-7ace-4f5c-8de1-0d33b05e0ccd</Id>
-      <ActionDate>2015-09-10T00:00:00</ActionDate>
-      <Stock>
-        <Id>1d16881e-d7f1-469a-9e90-015680cfe355</Id>
-        <AsxCode>COH</AsxCode>
-        <Name>Cochlear Limited</Name>
-      </Stock>
-      <Description>Dividend $1.00</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>631bd104-2620-4671-a96b-0ea9cd8b2b74</Id>
-      <ActionDate>2015-04-22T00:00:00</ActionDate>
-      <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <AsxCode>WAM</AsxCode>
-        <Name>WAM Capital Limited</Name>
-      </Stock>
-      <Description>Dividend $0.07</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>d15a27e8-fd7b-488d-9713-31432d19e888</Id>
-      <ActionDate>2015-10-21T00:00:00</ActionDate>
-      <Stock>
-        <Id>dca953ae-2233-4206-be1e-a24e640f90c7</Id>
-        <AsxCode>WAM</AsxCode>
-        <Name>WAM Capital Limited</Name>
-      </Stock>
-      <Description>Dividend $0.07</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>672206d7-f465-4e9b-b203-4e5f00e6467f</Id>
-      <ActionDate>2015-10-23T00:00:00</ActionDate>
-      <Stock>
-        <Id>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Id>
-        <AsxCode>GVF</AsxCode>
-        <Name>Global Value Fund</Name>
-      </Stock>
-      <Description>Dividend $0.02</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>e2b9bfe6-2a0b-49af-bc17-c82b87b100d5</Id>
-      <ActionDate>2015-02-13T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend US$0.0364</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>433bf56d-2e5f-4a97-9823-8337c90de557</Id>
-      <ActionDate>2015-08-17T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend US$0.09</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>09f753ac-2241-41c8-af8a-7443302490fb</Id>
-      <ActionDate>2015-02-13T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend $0.0285</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>0d3f2e90-7312-4d0d-b8c1-7ad310f01fa7</Id>
-      <ActionDate>2015-08-17T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend $0.042</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>673c9007-1d0d-4c1f-97b1-f6f2be6d0931</Id>
-      <ActionDate>2015-02-13T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend $0.0285</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>1b50aa90-159f-49f0-a0b4-9f3a734c8e8c</Id>
-      <ActionDate>2015-02-13T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend US$0.0866</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>fa9ef502-b5a2-446a-a851-57049a3b8a55</Id>
-      <ActionDate>2015-08-17T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend US$0.0355</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>3a46ac3d-d46a-41db-a4aa-4819b3eb286a</Id>
-      <ActionDate>2015-02-13T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend $0.045</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>a5acd9ae-1c85-4458-b973-416df48fa2bf</Id>
-      <ActionDate>2015-08-17T00:00:00</ActionDate>
-      <Stock>
-        <Id>00000000-0000-0000-0000-000000000000</Id>
-      </Stock>
-      <Description>Dividend $0.0625</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>c70e8c9c-773f-483b-97bf-c7da872281f4</Id>
-      <ActionDate>2015-04-07T00:00:00</ActionDate>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <AsxCode>VAF</AsxCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <Description>Dividend $0.4366</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>af5b18d5-c4ae-4f51-b22e-58587c57001b</Id>
-      <ActionDate>2015-07-03T00:00:00</ActionDate>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <AsxCode>VAF</AsxCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <Description>Dividend $0.4762</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>75ebd38b-a467-43bc-9e92-876fc5c296fe</Id>
-      <ActionDate>2015-10-06T00:00:00</ActionDate>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <AsxCode>VAF</AsxCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <Description>Dividend $0.5285</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>6bcea176-31a2-42ed-ad4d-196626dcfce7</Id>
-      <ActionDate>2016-01-06T00:00:00</ActionDate>
-      <Stock>
-        <Id>df514684-db72-493f-9427-0057029d4964</Id>
-        <AsxCode>VAF</AsxCode>
-        <Name>Vanguard Australian Fixed Interest ETF</Name>
-      </Stock>
-      <Description>Dividend $0.49607</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>9e20543a-e46a-4dc5-b884-556a69221bb6</Id>
-      <ActionDate>2015-04-07T00:00:00</ActionDate>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <AsxCode>VAP</AsxCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <Description>Dividend $0.5627</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>6309bce7-6832-49c3-8078-9e2251af07ac</Id>
-      <ActionDate>2015-07-03T00:00:00</ActionDate>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <AsxCode>VAP</AsxCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <Description>Dividend $1.2769</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>33d51844-37fb-4244-bb0e-b376133f02eb</Id>
-      <ActionDate>2015-10-06T00:00:00</ActionDate>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <AsxCode>VAP</AsxCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <Description>Dividend $0.5691</Description>
-    </CorporateActionItem>
-    <CorporateActionItem>
-      <Id>8df64c80-fce1-40df-878b-5d930b6c317b</Id>
-      <ActionDate>2016-01-06T00:00:00</ActionDate>
-      <Stock>
-        <Id>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Id>
-        <AsxCode>VAP</AsxCode>
-        <Name>Vanguard Australian Property ETF</Name>
-      </Stock>
-      <Description>Dividend $1.19225</Description>
-    </CorporateActionItem>
-  </CorporateActions>
-</CorporateActionsResponce>
+<ArrayOfCorporateAction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CorporateAction xsi:type="Dividend">
+    <Id>d392c892-67de-4d84-ba3b-8adb86ad8b85</Id>
+    <Stock>5b1a7880-172f-4ad2-8db7-d6b28644b622</Stock>
+    <ActionDate>2015-02-16T00:00:00Z</ActionDate>
+    <Description>Dividend $0.14</Description>
+    <PaymentDate>2015-03-04T00:00:00Z</PaymentDate>
+    <DividendAmount>0.14</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>7.95</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>80c824bb-1a23-4039-94a3-d41308cea8cd</Id>
+    <Stock>5b1a7880-172f-4ad2-8db7-d6b28644b622</Stock>
+    <ActionDate>2015-08-19T00:00:00Z</ActionDate>
+    <Description>Dividend $0.155</Description>
+    <PaymentDate>2015-09-02T00:00:00Z</PaymentDate>
+    <DividendAmount>0.155</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>7.85</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>f06176dc-e5e9-4d79-8daf-b5b2c5b0e849</Id>
+    <Stock>7c1da28b-dd85-46d5-a4e4-c2820d4b6de2</Stock>
+    <ActionDate>2015-03-05T00:00:00Z</ActionDate>
+    <Description>Dividend $0.135</Description>
+    <PaymentDate>2015-04-10T00:00:00Z</PaymentDate>
+    <DividendAmount>0.135</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.8</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>0c59cb5b-95d1-4666-b88e-657b1375c89b</Id>
+    <Stock>666870cb-ce77-4faa-9f30-a4ebbb322029</Stock>
+    <ActionDate>2015-05-19T00:00:00Z</ActionDate>
+    <Description>Dividend $0.99</Description>
+    <PaymentDate>2015-07-03T00:00:00Z</PaymentDate>
+    <DividendAmount>0.99</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>bfb3791c-850c-4cc0-b3fd-cae8f86aea6e</Id>
+    <Stock>25a7ce67-9053-46fd-a230-a7a928c97aa1</Stock>
+    <ActionDate>2015-02-27T00:00:00Z</ActionDate>
+    <Description>Dividend $0.15</Description>
+    <PaymentDate>2015-03-27T00:00:00Z</PaymentDate>
+    <DividendAmount>0.15</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>68c98d21-690a-4fb5-97df-a1d2e07975db</Id>
+    <Stock>a7acf7f9-1cf9-4541-865e-d27231bdb6b3</Stock>
+    <ActionDate>2015-03-25T00:00:00Z</ActionDate>
+    <Description>Dividend $0.05</Description>
+    <PaymentDate>2015-04-21T00:00:00Z</PaymentDate>
+    <DividendAmount>0.05</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>485ccb09-8f96-4454-adbf-ee6ad2b60748</Id>
+    <Stock>a7acf7f9-1cf9-4541-865e-d27231bdb6b3</Stock>
+    <ActionDate>2015-09-10T00:00:00Z</ActionDate>
+    <Description>Dividend $0.05</Description>
+    <PaymentDate>2015-09-29T00:00:00Z</PaymentDate>
+    <DividendAmount>0.05</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>0af4533c-fc0b-4552-93be-6dc31c11e2a3</Id>
+    <Stock>ba594390-2f59-460e-9a5d-e2f42b8b079a</Stock>
+    <ActionDate>2015-03-11T00:00:00Z</ActionDate>
+    <Description>Dividend $0.06</Description>
+    <PaymentDate>2015-04-17T00:00:00Z</PaymentDate>
+    <DividendAmount>0.06</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>6353eb12-c66a-4302-a0c9-4b3a4d342709</Id>
+    <Stock>36eddd85-ee27-4f48-a060-0880ec74c94e</Stock>
+    <ActionDate>2015-03-18T00:00:00Z</ActionDate>
+    <Description>Dividend $0.74385</Description>
+    <PaymentDate>2015-04-10T00:00:00Z</PaymentDate>
+    <DividendAmount>0.74385</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>91ef0a6f-c755-4407-acc7-fc36edf98fd6</Id>
+    <Stock>36eddd85-ee27-4f48-a060-0880ec74c94e</Stock>
+    <ActionDate>2015-09-09T00:00:00Z</ActionDate>
+    <Description>USD 0.62c (1USD = 1.3635AUD)</Description>
+    <PaymentDate>2015-10-02T00:00:00Z</PaymentDate>
+    <DividendAmount>0.89991</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>3c4f72d6-da6b-457f-b940-e6e85c579fff</Id>
+    <Stock>15def383-18f9-4c51-bde5-d34cf15c9899</Stock>
+    <ActionDate>2015-03-13T00:00:00Z</ActionDate>
+    <Description>Dividend $0.80824</Description>
+    <PaymentDate>2015-03-31T00:00:00Z</PaymentDate>
+    <DividendAmount>0.80823</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Transformation">
+    <Id>6681647b-cc5b-48fc-9c3e-6cd1f44d605b</Id>
+    <Stock>15def383-18f9-4c51-bde5-d34cf15c9899</Stock>
+    <ActionDate>2015-05-20T00:00:00Z</ActionDate>
+    <Description>South32 Demerger</Description>
+    <ResultingStocks>
+      <ResultingStock>
+        <Stock>af70f9fc-5145-47ad-9916-b2901f8cf7fd</Stock>
+        <OriginalUnits>1</OriginalUnits>
+        <NewUnits>1</NewUnits>
+        <CostBase>0.071</CostBase>
+        <AquisitionDate>0001-01-01T00:00:00Z</AquisitionDate>
+      </ResultingStock>
+    </ResultingStocks>
+    <ImplementationDate>2015-05-24T00:00:00Z</ImplementationDate>
+    <CashComponent>0.0</CashComponent>
+    <RolloverRefliefApplies>true</RolloverRefliefApplies>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>b7ab1dfc-cf1b-45ca-9605-eb7543a72dbe</Id>
+    <Stock>15def383-18f9-4c51-bde5-d34cf15c9899</Stock>
+    <ActionDate>2015-09-11T00:00:00Z</ActionDate>
+    <Description>Dividend $0.87781</Description>
+    <PaymentDate>2015-09-29T00:00:00Z</PaymentDate>
+    <DividendAmount>0.87781</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>b9ab2936-53fa-4968-9264-8286492aa074</Id>
+    <Stock>1d16881e-d7f1-469a-9e90-015680cfe355</Stock>
+    <ActionDate>2015-03-05T00:00:00Z</ActionDate>
+    <Description>Dividend $0.90</Description>
+    <PaymentDate>2015-03-26T00:00:00Z</PaymentDate>
+    <DividendAmount>0.9</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.35</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>d70bfe2c-7ace-4f5c-8de1-0d33b05e0ccd</Id>
+    <Stock>1d16881e-d7f1-469a-9e90-015680cfe355</Stock>
+    <ActionDate>2015-09-10T00:00:00Z</ActionDate>
+    <Description>Dividend $1.00</Description>
+    <PaymentDate>2015-10-01T00:00:00Z</PaymentDate>
+    <DividendAmount>1.0</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>631bd104-2620-4671-a96b-0ea9cd8b2b74</Id>
+    <Stock>dca953ae-2233-4206-be1e-a24e640f90c7</Stock>
+    <ActionDate>2015-04-22T00:00:00Z</ActionDate>
+    <Description>Dividend $0.07</Description>
+    <PaymentDate>2015-04-30T00:00:00Z</PaymentDate>
+    <DividendAmount>0.07</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>1.9154</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>d15a27e8-fd7b-488d-9713-31432d19e888</Id>
+    <Stock>dca953ae-2233-4206-be1e-a24e640f90c7</Stock>
+    <ActionDate>2015-10-21T00:00:00Z</ActionDate>
+    <Description>Dividend $0.07</Description>
+    <PaymentDate>2015-10-30T00:00:00Z</PaymentDate>
+    <DividendAmount>0.07</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>1.9186</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>672206d7-f465-4e9b-b203-4e5f00e6467f</Id>
+    <Stock>3a6a8435-a230-4a25-8a70-198bc5b6f40d</Stock>
+    <ActionDate>2015-10-23T00:00:00Z</ActionDate>
+    <Description>Dividend $0.02</Description>
+    <PaymentDate>2015-11-06T00:00:00Z</PaymentDate>
+    <DividendAmount>0.02</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>1.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>c70e8c9c-773f-483b-97bf-c7da872281f4</Id>
+    <Stock>df514684-db72-493f-9427-0057029d4964</Stock>
+    <ActionDate>2015-04-07T00:00:00Z</ActionDate>
+    <Description>Dividend $0.4366</Description>
+    <PaymentDate>2015-04-20T00:00:00Z</PaymentDate>
+    <DividendAmount>0.4366</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>af5b18d5-c4ae-4f51-b22e-58587c57001b</Id>
+    <Stock>df514684-db72-493f-9427-0057029d4964</Stock>
+    <ActionDate>2015-07-03T00:00:00Z</ActionDate>
+    <Description>Dividend $0.4762</Description>
+    <PaymentDate>2015-07-16T00:00:00Z</PaymentDate>
+    <DividendAmount>0.4762</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>75ebd38b-a467-43bc-9e92-876fc5c296fe</Id>
+    <Stock>df514684-db72-493f-9427-0057029d4964</Stock>
+    <ActionDate>2015-10-06T00:00:00Z</ActionDate>
+    <Description>Dividend $0.5285</Description>
+    <PaymentDate>2015-10-19T00:00:00Z</PaymentDate>
+    <DividendAmount>0.5285</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>6bcea176-31a2-42ed-ad4d-196626dcfce7</Id>
+    <Stock>df514684-db72-493f-9427-0057029d4964</Stock>
+    <ActionDate>2016-01-06T00:00:00Z</ActionDate>
+    <Description>Dividend $0.49607</Description>
+    <PaymentDate>2016-01-19T00:00:00Z</PaymentDate>
+    <DividendAmount>0.49606</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>9e20543a-e46a-4dc5-b884-556a69221bb6</Id>
+    <Stock>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Stock>
+    <ActionDate>2015-04-07T00:00:00Z</ActionDate>
+    <Description>Dividend $0.5627</Description>
+    <PaymentDate>2015-04-20T00:00:00Z</PaymentDate>
+    <DividendAmount>0.5627</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>6309bce7-6832-49c3-8078-9e2251af07ac</Id>
+    <Stock>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Stock>
+    <ActionDate>2015-07-03T00:00:00Z</ActionDate>
+    <Description>Dividend $1.2769</Description>
+    <PaymentDate>2015-07-16T00:00:00Z</PaymentDate>
+    <DividendAmount>1.2769</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>33d51844-37fb-4244-bb0e-b376133f02eb</Id>
+    <Stock>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Stock>
+    <ActionDate>2015-10-06T00:00:00Z</ActionDate>
+    <Description>Dividend $0.5691</Description>
+    <PaymentDate>2015-10-19T00:00:00Z</PaymentDate>
+    <DividendAmount>0.5691</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+  <CorporateAction xsi:type="Dividend">
+    <Id>8df64c80-fce1-40df-878b-5d930b6c317b</Id>
+    <Stock>6d29271b-dffe-43b0-ae9f-c55b2a36af0d</Stock>
+    <ActionDate>2016-01-06T00:00:00Z</ActionDate>
+    <Description>Dividend $1.19225</Description>
+    <PaymentDate>2016-01-19T00:00:00Z</PaymentDate>
+    <DividendAmount>1.19224</DividendAmount>
+    <CompanyTaxRate>0.3</CompanyTaxRate>
+    <PercentFranked>0.0</PercentFranked>
+    <DRPPrice>0.0</DRPPrice>
+  </CorporateAction>
+</ArrayOfCorporateAction>

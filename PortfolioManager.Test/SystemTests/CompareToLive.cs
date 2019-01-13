@@ -294,8 +294,7 @@ namespace PortfolioManager.Test.SystemTests
             var fileName = String.Format("CorporateActions {0:yyy-MM-dd}.xml", toDate);
             var expectedFile = Path.Combine(_ExpectedResultsPath, fileName);
 
-            CorporateActionsResponce response = new CorporateActionsResponce();
-
+            var response = new List<RestApi.CorporateActions.CorporateAction>();
 
             var controller = _ServiceProvider.GetRequiredService<CorporateActionController>();
 
@@ -305,26 +304,22 @@ namespace PortfolioManager.Test.SystemTests
             {
                 var stockItem = new StockItem(stock.Id, stock.Properties.ClosestTo(toDate).ASXCode, stock.Properties.ClosestTo(toDate).Name);
 
-                var result = controller.GetCorporateActions(stock.Id, fromDate, toDate);
+                var corporateActions = controller.GetCorporateActions(stock.Id, fromDate, toDate);
 
-                if (result.Value != null)
-                {
-                    var corporateActions = result.Value.Select(x => new CorporateActionItem()
-                    {
-                        Id = x.Id,
-                        ActionDate = x.ActionDate,
-                        Stock = stockItem,
-                        Description = x.Description
-                    });
-
-                    response.CorporateActions.AddRange(corporateActions);
-                }
-
+                response.AddRange(corporateActions.Value);
             }
 
-            SaveActualResult(response, fileName);
+            var actionTypes = new Type[] 
+            {
+                typeof(RestApi.CorporateActions.CapitalReturn),
+                typeof(RestApi.CorporateActions.CompositeAction),
+                typeof(RestApi.CorporateActions.Dividend),
+                typeof(RestApi.CorporateActions.SplitConsolidation),
+                typeof(RestApi.CorporateActions.Transformation)
+            };
+            SaveActualResult(response, fileName, actionTypes);
 
-            Assert.That(response, Is.EquivalentTo(typeof(CorporateActionsResponce), expectedFile));
+            Assert.That(response, Is.EquivalentTo(typeof(List<RestApi.CorporateActions.CorporateAction>), expectedFile, actionTypes));
         }
 
         [Test]

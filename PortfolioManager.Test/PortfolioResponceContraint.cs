@@ -33,6 +33,15 @@ namespace PortfolioManager.Test
             }
         }
 
+        public PortfolioResponceContraint(Type type, string fileName, Type[] extraTypes)
+        {
+            using (var streamReader = new StreamReader(fileName))
+            {
+                var serializer = new XmlSerializer(type, extraTypes);
+                Expected = serializer.Deserialize(streamReader);
+            }
+        }
+
         public override ConstraintResult ApplyTo<TActual>(TActual actual)
         {
             var result = new ConstraintResult(this, actual);
@@ -57,6 +66,11 @@ namespace PortfolioManager.Test
         {
             return new PortfolioResponceContraint(type, fileName);
         }
+
+        public static PortfolioResponceContraint EquivalentTo(Type type, string fileName, Type[] extraTypes)
+        {
+            return new PortfolioResponceContraint(type, fileName, extraTypes);
+        }
     }
 
     public static class PortfolioResponceContraintExtensions
@@ -71,6 +85,12 @@ namespace PortfolioManager.Test
         public static PortfolioResponceContraint EquivalentTo(this ConstraintExpression expression, Type type, string fileName)
         {
             var constraint = new PortfolioResponceContraint(type, fileName);
+            expression.Append(constraint);
+            return constraint;
+        }
+        public static PortfolioResponceContraint EquivalentTo(this ConstraintExpression expression, Type type, string fileName, Type[] extraTypes)
+        {
+            var constraint = new PortfolioResponceContraint(type, fileName, extraTypes);
             expression.Append(constraint);
             return constraint;
         }
