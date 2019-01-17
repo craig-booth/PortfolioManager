@@ -137,7 +137,7 @@ namespace PortfolioManager.Web.Mappers
             {
                 Id = dividend.Id,
                 Stock = dividend.Stock.Id,
-                ActionDate = dividend.ActionDate,
+                ActionDate = dividend.Date,
                 Description = dividend.Description,
                 PaymentDate = dividend.PaymentDate,
                 DividendAmount = dividend.DividendAmount,
@@ -153,7 +153,7 @@ namespace PortfolioManager.Web.Mappers
             {
                 Id = capitalReturn.Id,
                 Stock = capitalReturn.Stock.Id,
-                ActionDate = capitalReturn.ActionDate,
+                ActionDate = capitalReturn.Date,
                 Description = capitalReturn.Description,
                 PaymentDate = capitalReturn.PaymentDate,
                 Amount = capitalReturn.Amount
@@ -166,7 +166,7 @@ namespace PortfolioManager.Web.Mappers
             {
                 Id = transformation.Id,
                 Stock = transformation.Stock.Id,
-                ActionDate = transformation.ActionDate,
+                ActionDate = transformation.Date,
                 Description = transformation.Description,
                 ImplementationDate = transformation.ImplementationDate,
                 CashComponent = transformation.CashComponent,

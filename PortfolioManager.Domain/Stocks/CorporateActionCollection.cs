@@ -6,15 +6,16 @@ using PortfolioManager.Common;
 using PortfolioManager.EventStore;
 using PortfolioManager.Domain.CorporateActions;
 using PortfolioManager.Domain.CorporateActions.Events;
+using PortfolioManager.Domain.Utils;
 
 namespace PortfolioManager.Domain.Stocks
 {
-    public class CorporateActionCollection : IReadOnlyCollection<CorporateAction>
+    public class CorporateActionCollection :
+        TransactionList<CorporateAction>,
+        ITransactionList<CorporateAction>
     {
         protected IEventStream _EventStream;
         public Stock Stock { get; }
-
-        private readonly Dictionary<Guid, CorporateAction> _CorporateActions = new Dictionary<Guid, CorporateAction>();
 
         public CorporateActionCollection(Stock stock, IEventStream eventStream)
         {
@@ -37,7 +38,7 @@ namespace PortfolioManager.Domain.Stocks
         {
             var capitalReturn = new CapitalReturn(@event.ActionId, Stock, @event.ActionDate, @event.Description, @event.PaymentDate, @event.Amount);
 
-            _CorporateActions.Add(capitalReturn.Id, capitalReturn);
+            Add(capitalReturn);
         }
 
         public void AddDividend(Guid id, DateTime recordDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
@@ -55,7 +56,7 @@ namespace PortfolioManager.Domain.Stocks
         {
             var dividend = new Dividend(@event.ActionId, Stock, @event.ActionDate, @event.Description, @event.PaymentDate, @event.DividendAmount, @event.CompanyTaxRate, @event.PercentFranked, @event.DRPPrice);
 
-            _CorporateActions.Add(dividend.Id, dividend);
+            Add(dividend);
         }
 
         public void AddTransformation(Guid id, DateTime recordDate, string description, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, IEnumerable<Transformation.ResultingStock> resultingStocks)
@@ -73,33 +74,14 @@ namespace PortfolioManager.Domain.Stocks
             var transformationResultingStocks = @event.ResultingStocks.Select(x => new Transformation.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate));
             var transformation = new Transformation(@event.ActionId, Stock, @event.ActionDate, @event.Description, @event.ImplementationDate, @event.CashComponent, @event.RolloverRefliefApplies, transformationResultingStocks);
 
-            _CorporateActions.Add(transformation.Id, transformation);
+            Add(transformation);
         }
 
-        public CorporateAction this[Guid id] 
+     /*   public T Get<T>(Guid id) where T : CorporateAction
         {
-            get
-            {
-                if (_CorporateActions.ContainsKey(id))
-                    return _CorporateActions[id];
-                else
-                    return null;
-            }
+            return this[id] as T;
         } 
-
-        public T Get<T>(Guid id) where T : CorporateAction
-        {
-            if (_CorporateActions.ContainsKey(id))
-                return _CorporateActions[id] as T;
-            else
-                return null;
-        } 
-     
-        public IEnumerable<CorporateAction> Get(DateRange dateRange)
-        {
-            return _CorporateActions.Values.Where(x => dateRange.Contains(x.ActionDate));
-        } 
-   
+      
         public IEnumerable<T> Get<T>() where T : CorporateAction
         {
             return _CorporateActions.Values.Where(x => x is T).Select(x => x as T);
@@ -107,22 +89,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public IEnumerable<T> Get<T>(DateRange dateRange) where T : CorporateAction
         {
-            return _CorporateActions.Values.Where(x => x is T && dateRange.Contains(x.ActionDate)).Select(x => x as T);
-        }
-
-        public int Count
-        {
-            get { return _CorporateActions.Count; }
-        }
-
-        public IEnumerator<CorporateAction> GetEnumerator()
-        {
-            return _CorporateActions.Values.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return _CorporateActions.Values.GetEnumerator();
-        }
+            return _CorporateActions.Values.Where(x => x is T && dateRange.Contains(x.Date)).Select(x => x as T);
+        } */
     }
 }

@@ -34,7 +34,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return stock.CorporateActions.Get(dateRange).Select(x => CorporateActionResponse(x)).ToList();
+            return stock.CorporateActions.InDateRange(dateRange).Select(x => CorporateActionResponse(x)).ToList();
         }
 
         // GET : /api/stocks/{stockId}/corporateactions/{id}
