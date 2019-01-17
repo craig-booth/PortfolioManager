@@ -21,10 +21,15 @@ namespace PortfolioManager.Domain.Portfolios
 
     public class CashAccount : ICashAccount
     {
-        private TransactionList<Transaction> _Transactions = new TransactionList<Transaction>();
+        private CashTransactionList _Transactions;
         public ITransactionList<Transaction> Transactions
         {
             get { return _Transactions; }
+        }
+
+        public CashAccount()
+        {
+            _Transactions = new CashTransactionList(this);
         }
 
         public decimal Balance()
@@ -104,22 +109,37 @@ namespace PortfolioManager.Domain.Portfolios
         
         public void AddTransaction(DateTime date, decimal amount, string description, BankAccountTransactionType type)
         {
-            if ((_Transactions.Count == 0) || (date >= _Transactions.Latest))
-            {
-                var transaction = new Transaction(Guid.NewGuid(), date, description, amount, type, Balance() + amount);
-                _Transactions.Add(transaction);
-            }
-            else
-            {
-                var transaction = new Transaction(Guid.NewGuid(), date, description, amount, type, Balance(date) + amount);
-                _Transactions.Add(transaction);
+            _Transactions.Add(date, amount, description, type);
+        }
 
-                // Update balance on subsequent transactions
-                var index = _Transactions.IndexOf(date, TransationListPosition.Last);
-                for (var i = index + 1; i < _Transactions.Count; i++)
-                    _Transactions[i].Balance += amount;
+        private class CashTransactionList
+            : TransactionList<Transaction>
+        {
+            private CashAccount _CashAccount;
+            public CashTransactionList(CashAccount cashAccount)
+            {
+                _CashAccount = cashAccount;
             }
-        } 
+
+            public void Add(DateTime date, decimal amount, string description, BankAccountTransactionType type)
+            {
+                if ((Count == 0) || (date >= Latest))
+                {
+                    var transaction = new Transaction(Guid.NewGuid(), date, description, amount, type, _CashAccount.Balance() + amount);
+                    Add(transaction);
+                }
+                else
+                {
+                    var transaction = new Transaction(Guid.NewGuid(), date, description, amount, type, _CashAccount.Balance(date) + amount);
+                    Add(transaction);
+
+                    // Update balance on subsequent transactions
+                    var index = IndexOf(date, TransationListPosition.Last);
+                    for (var i = index + 1; i < Count; i++)
+                        this[i].Balance += amount;
+                }
+            }
+        }
 
         public class Transaction : ITransaction
         {

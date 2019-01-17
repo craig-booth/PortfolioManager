@@ -65,17 +65,7 @@ namespace PortfolioManager.Domain.Transactions
                 {
                     holding.DisposeOfParcel(parcelSold.Parcel, disposal.Date, parcelSold.UnitsSold, parcelSold.AmountReceived, transaction);
 
-                    _CgtEvents.Add(new CgtEvent()
-                    {
-                        Id = Guid.NewGuid(),
-                        Date = disposal.Date,
-                        Stock = disposal.Stock,
-                        Units = parcelSold.UnitsSold,
-                        CostBase = parcelSold.CostBase,
-                        AmountReceived = parcelSold.AmountReceived,
-                        CapitalGain = parcelSold.CapitalGain,
-                        CgtMethod = parcelSold.CgtMethod
-                    });
+                    _CgtEvents.Add(disposal.Date, disposal.Stock, parcelSold.UnitsSold, parcelSold.CostBase, parcelSold.AmountReceived, parcelSold.CapitalGain, parcelSold.CgtMethod);
                 }
             } 
             

@@ -22,7 +22,6 @@ namespace PortfolioManager.Domain.Utils
         T this[int index] { get; }
         T this[Guid id] { get; }
 
-        int IndexOf(DateTime date, TransationListPosition position);
         DateTime Earliest { get; }
         DateTime Latest { get; }
 
@@ -31,7 +30,7 @@ namespace PortfolioManager.Domain.Utils
         IEnumerable<T> InDateRange(DateRange dateRange);
     }
 
-    public class TransactionList<T>
+    public abstract class TransactionList<T>
         : ITransactionList<T>
         where T : ITransaction
     {
@@ -93,7 +92,7 @@ namespace PortfolioManager.Domain.Utils
             }
         }
 
-        public void Add(T transaction)
+        protected void Add(T transaction)
         {
             _IdLookup.Add(transaction.Id, transaction);
 
@@ -115,7 +114,7 @@ namespace PortfolioManager.Domain.Utils
             }
         }
 
-        public void Clear()
+        protected void Clear()
         {
             _IdLookup.Clear();
             _Dates.Clear();
@@ -182,7 +181,7 @@ namespace PortfolioManager.Domain.Utils
             return _Transactions.Skip(start).Take(end - start);
         }
 
-        public void RemoveAt(int index)
+        protected void RemoveAt(int index)
         {
             var id = _Transactions[index].Id;
             _IdLookup.Remove(id);
