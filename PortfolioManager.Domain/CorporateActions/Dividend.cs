@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Portfolios;
+using PortfolioManager.Domain.Transactions;
+using PortfolioManager.Domain.Utils;
 
 namespace PortfolioManager.Domain.CorporateActions
 {
@@ -23,6 +26,18 @@ namespace PortfolioManager.Domain.CorporateActions
             CompanyTaxRate = companyTaxRate;
             PercentFranked = percentFranked;
             DRPPrice = drpPrice;
+        }
+
+        public override IEnumerable<Transaction> GetTransactionList(Holding holding)
+        {
+            var transactions = new List<Transaction>();
+
+            return transactions;
+        }
+
+        public override bool HasBeenApplied(ITransactionList<Transaction> transactions)
+        {
+            return transactions.InDateRange(new DateRange(PaymentDate, PaymentDate)).Any(x => x is IncomeReceived);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
+using PortfolioManager.Web.Mappers;
 
 namespace PortfolioManager.Web.Services
 {
@@ -31,6 +32,23 @@ namespace PortfolioManager.Web.Services
         private CorporateActionsResponse GetCorporateActions(IEnumerable<Domain.Portfolios.Holding> holdings)
         {
             var response = new CorporateActionsResponse();
+
+            foreach (var holding in holdings)
+            {
+                foreach (var corporateAction in holding.Stock.CorporateActions.InDateRange(holding.EffectivePeriod))
+                {
+                    if (! corporateAction.HasBeenApplied(Portfolio.Transactions))
+                    {
+                        response.CorporateActions.Add(new CorporateActionsResponse.CorporateActionItem()
+                        {
+                            Id = corporateAction.Id,
+                            ActionDate = corporateAction.Date,
+                            Stock = corporateAction.Stock.Convert(corporateAction.Date),
+                            Description = corporateAction.Description
+                        });
+                    }
+                }
+            }
 
             return response;
         }

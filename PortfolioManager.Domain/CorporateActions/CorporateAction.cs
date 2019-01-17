@@ -4,6 +4,8 @@ using System.Text;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Portfolios;
+using PortfolioManager.Domain.Transactions;
 using PortfolioManager.Domain.Utils;
 
 namespace PortfolioManager.Domain.CorporateActions
@@ -24,5 +26,8 @@ namespace PortfolioManager.Domain.CorporateActions
             Date = actionDate;
             Description = description;
         }
+
+        public abstract IEnumerable<Transaction> GetTransactionList(Holding holding);
+        public abstract bool HasBeenApplied(ITransactionList<Transaction> transactions);
     }
 }
