@@ -12,10 +12,10 @@ using PortfolioManager.Domain.CorporateActions.Events;
 namespace PortfolioManager.Domain.Stocks
 {
 
-    public class Stock : EffectiveEntity
+    public class Stock : EffectiveEntity, ITrackedEntity
     {
         public int Version { get; protected set; } = 0;
-        protected IEventStream _EventStream;
+        protected EventList _Events = new EventList();
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
 
@@ -29,12 +29,10 @@ namespace PortfolioManager.Domain.Stocks
 
         public CorporateActionCollection CorporateActions { get; }
 
-        public Stock(Guid id, DateTime listingDate, IEventStream eventStream)
+        public Stock(Guid id, DateTime listingDate)
             : base(id, listingDate)
         {
-            _EventStream = eventStream;
-
-            CorporateActions = new CorporateActionCollection(this, _EventStream);
+            CorporateActions = new CorporateActionCollection(this);
         }
 
         public override string ToString()
@@ -48,7 +46,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StockListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, trust);
             Apply(@event);
 
-            _EventStream.StoreEvent(@event);
+            _Events.Add(@event);
         }
 
         public void Apply(StockListedEvent @event)
@@ -68,7 +66,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StockDelistedEvent(Id, Version, date);
             Apply(@event);
 
-            _EventStream.StoreEvent(@event);
+            _Events.Add(@event);
         }
 
         public virtual void Apply(StockDelistedEvent @event)
@@ -98,7 +96,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPricesAddedEvent(Id, Version, new ClosingPricesAddedEvent.ClosingPrice[] { new ClosingPricesAddedEvent.ClosingPrice(date, closingPrice) });
             Apply(@event);
 
-            _EventStream.StoreEvent(@event);
+            _Events.Add(@event);
         }
 
         public void UpdateClosingPrices(IEnumerable<Tuple<DateTime, decimal>> closingPrices)
@@ -113,7 +111,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Item1, x.Item2)));
             Apply(@event);
 
-            _EventStream.StoreEvent(@event);
+            _Events.Add(@event);
         }
 
         public void Apply(ClosingPricesAddedEvent @event)
@@ -190,7 +188,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StockPropertiesChangedEvent(Id, Version, changeDate, newAsxCode, newName, newAssetCategory);
 
             Apply(@event);
-            _EventStream.StoreEvent(@event);
+            _Events.Add(@event);
         }
 
         public void ChangeDividendRules(DateTime changeDate, decimal companyTaxRate, RoundingRule newDividendRoundingRule, bool drpActive, DRPMethod newDrpMethod)
@@ -200,7 +198,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ChangeDividendRulesEvent(Id, Version, changeDate, companyTaxRate, newDividendRoundingRule, drpActive, newDrpMethod);
 
             Apply(@event);
-            _EventStream.StoreEvent(@event);
+            _Events.Add(@event);
         }
 
         public void Apply(StockPropertiesChangedEvent @event)
@@ -226,6 +224,20 @@ namespace PortfolioManager.Domain.Stocks
                 @event.DRPMethod);
 
             _DividendRules.Change(@event.ChangeDate, newProperties);
+        }
+
+        public IEnumerable<Event> FetchEvents()
+        {
+            return _Events.Fetch();
+        }
+
+        public void ApplyEvents(IEnumerable<Event> events)
+        {
+            foreach (var @event in events)
+            {
+                dynamic dynamicEvent = @event;
+                Apply(dynamicEvent);
+            }              
         }
 
     }

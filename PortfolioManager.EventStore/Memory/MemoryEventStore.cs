@@ -13,14 +13,14 @@ namespace PortfolioManager.EventStore.Memory
             _EventStreams = new Dictionary<string, IEventStream>();
         }
 
-        public IEventStream GetEventStream(string streamName)
+        public IEventStream GetEventStream(string collection)
         {
-            if (_EventStreams.ContainsKey(streamName))
-                return _EventStreams[streamName];
+            if (_EventStreams.ContainsKey(collection))
+                return _EventStreams[collection];
             else
             {
-                var eventStream = new MemoryEventStream(streamName);
-                _EventStreams.Add(streamName, eventStream);
+                var eventStream = new MemoryEventStream(collection);
+                _EventStreams.Add(collection, eventStream);
 
                 return eventStream;
             }

@@ -29,7 +29,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StapledSecurityListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, childSecurities?.ToArray());
             Apply(@event);
 
-            _EventStream.StoreEvent(@event);
+            _EventStream.StoreEvent(Id, @event);
         }
 
         public void Apply(StapledSecurityListedEvent @event)

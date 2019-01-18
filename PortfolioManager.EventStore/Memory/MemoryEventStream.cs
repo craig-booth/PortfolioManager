@@ -14,23 +14,18 @@ namespace PortfolioManager.EventStore.Memory
             public string EventData;
         }
 
-        public string Name { get; private set; }
+        public string Collection { get; private set; }
         private List<MemoryEvent> _Events;
 
-        public MemoryEventStream(string name)
+        public MemoryEventStream(string collection)
         {
-            Name = name;
+            Collection = collection;
             _Events = new List<MemoryEvent>();
         }
 
-        public IEnumerable<Event> RetrieveEvents()
+        public IEnumerable<Guid> GetStoredEntityIds()
         {
-            foreach (var @event in _Events)
-            {
-                var result = JsonConvert.DeserializeObject(@event.EventData, @event.EventType);
-
-                yield return (Event)result;
-            }
+            return _Events.GroupBy(x => x.EntityId).Select(y => y.Key);
         }
 
         public IEnumerable<Event> RetrieveEvents(Guid entityId)
@@ -43,23 +38,22 @@ namespace PortfolioManager.EventStore.Memory
             }
         }
 
-        public void StoreEvent(Event @event)
+        public void StoreEvent(Guid entityId, Event @event)
         {
             var jsonData = JsonConvert.SerializeObject(@event);
 
-
             _Events.Add(new MemoryEvent()
             {
-                EntityId = @event.EntityId,
+                EntityId = entityId,
                 EventType = @event.GetType(),
                 EventData = jsonData
             });
         }
 
-        public void StoreEvents(IEnumerable<Event> events)
+        public void StoreEvents(Guid entityId, IEnumerable<Event> events)
         {
             foreach (var @event in events)
-                StoreEvent(@event);
+                StoreEvent(entityId, @event);
         }
     }
 }
