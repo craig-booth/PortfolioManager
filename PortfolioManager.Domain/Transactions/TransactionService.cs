@@ -33,6 +33,7 @@ namespace PortfolioManager.Domain.Transactions
             _Handlers.Add(typeof(CashTransaction), new CashTransactionHandler(cashAccount));
             _Handlers.Add(typeof(OpeningBalance), new OpeningBalanceHandler(holdings, cashAccount));
             _Handlers.Add(typeof(IncomeReceived), new IncomeReceivedHandler(holdings, cashAccount));
+            _Handlers.Add(typeof(ReturnOfCapital), new ReturnOfCapitalHandler(holdings, cashAccount));
         }
         
         public void Apply(Transaction transaction)

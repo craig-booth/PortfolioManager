@@ -58,6 +58,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (_Transaction != null)
             {
+                RecordDate = ((ReturnOfCapital)_Transaction).RecordDate;
                 PaymentDate = ((ReturnOfCapital)_Transaction).TransactionDate;
                 Amount = ((ReturnOfCapital)_Transaction).Amount;
                 CreateCashTransaction = ((ReturnOfCapital)_Transaction).CreateCashTransaction;
@@ -78,6 +79,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             base.CopyFieldsToTransaction();
 
             var returnOfCapital = (ReturnOfCapital)_Transaction;
+            returnOfCapital.RecordDate = RecordDate;
             returnOfCapital.TransactionDate = PaymentDate;
             returnOfCapital.Amount = Amount;
             returnOfCapital.CreateCashTransaction = CreateCashTransaction;

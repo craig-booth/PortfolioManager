@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 using PortfolioManager.Domain.Portfolios;
 
 namespace PortfolioManager.Domain.Transactions

@@ -138,7 +138,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 Stock = AvailableStocks.FirstOrDefault(x => x.Id == _Transaction.Id);
                 Description = _Transaction.Description;
                 TransactionDate = _Transaction.TransactionDate;
-                RecordDate = _Transaction.RecordDate;
                 Comment = _Transaction.Comment;
             }
             else
@@ -157,7 +156,6 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             {
                 _Transaction.Stock = Stock.Id;
                 _Transaction.TransactionDate = TransactionDate;
-                _Transaction.RecordDate = RecordDate;
                 _Transaction.Comment = Comment;
             }
         }

@@ -12,7 +12,6 @@ namespace PortfolioManager.Domain.Transactions
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
         public Stock Stock { get; set; }
-        public DateTime RecordDate { get; set; }
         public string Comment { get; set; }
         public abstract string Description { get; }
     }

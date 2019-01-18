@@ -4,13 +4,20 @@ using System.Text;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.RestApi.Transactions
+namespace PortfolioManager.Domain.Transactions
 {
     public class ReturnOfCapital : Transaction
     {
-        public override string Type => TransactionType.ReturnOfCapital.ToRestName();
         public DateTime RecordDate { get; set; }
         public decimal Amount { get; set; }
         public bool CreateCashTransaction { get; set; }
+
+        public override string Description
+        {
+            get
+            {
+                return "Return of capital " + MathUtils.FormatCurrency(Amount, false, true);
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace PortfolioManager.Domain.Transactions
 {
     public class IncomeReceived : Transaction
     {
+        public DateTime RecordDate { get; set; }
         public decimal FrankedAmount { get; set; }
         public decimal UnfrankedAmount { get; set; }
         public decimal FrankingCredits { get; set; }

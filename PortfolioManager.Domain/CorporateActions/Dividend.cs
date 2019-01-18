@@ -102,7 +102,6 @@ namespace PortfolioManager.Domain.CorporateActions
                         Units = drpUnits,
                         CostBase = costBase,
                         AquisitionDate = PaymentDate,
-                        RecordDate = PaymentDate,
                         Comment = "DRP " + MathUtils.FormatCurrency(DRPPrice, false, true)
                     });
                 }

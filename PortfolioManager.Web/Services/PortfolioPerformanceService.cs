@@ -59,7 +59,7 @@ namespace PortfolioManager.Web.Services
                     workItem = workingList.FirstOrDefault(x => x.HoldingPerformance.Stock.Id == transaction.Stock.Id);
                     if (workItem == null)
                     {
-                        workItem = new HoldingPerformanceWorkItem(transaction.Stock.Convert(transaction.RecordDate));
+                        workItem = new HoldingPerformanceWorkItem(transaction.Stock.Convert(transaction.Date));
                         workingList.Add(workItem);
                     }
 

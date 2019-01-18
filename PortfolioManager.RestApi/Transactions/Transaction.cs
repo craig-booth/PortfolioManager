@@ -17,7 +17,6 @@ namespace PortfolioManager.RestApi.Transactions
         public Guid Id { get; set; }
         public Guid Stock { get; set; }
         public abstract string Type { get; }
-        public DateTime RecordDate { get; set; }
         public DateTime TransactionDate { get; set; }
         public string Comment { get; set; }
         public string Description { get; set; }

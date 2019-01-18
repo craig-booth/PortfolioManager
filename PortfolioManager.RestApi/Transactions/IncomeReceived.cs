@@ -9,6 +9,7 @@ namespace PortfolioManager.RestApi.Transactions
     public class IncomeReceived : Transaction
     {
         public override string Type => TransactionType.Income.ToRestName();
+        public DateTime RecordDate { get; set; }
         public decimal FrankedAmount { get; set; }
         public decimal UnfrankedAmount { get; set; }
         public decimal FrankingCredits { get; set; }

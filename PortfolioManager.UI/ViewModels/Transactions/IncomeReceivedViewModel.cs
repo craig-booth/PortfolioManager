@@ -131,6 +131,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             if (_Transaction != null)
             {
+                RecordDate = ((IncomeReceived)_Transaction).RecordDate;
                 PaymentDate = ((IncomeReceived)_Transaction).TransactionDate;
                 FrankedAmount = ((IncomeReceived)_Transaction).FrankedAmount;
                 UnfrankedAmount = ((IncomeReceived)_Transaction).UnfrankedAmount;
@@ -159,6 +160,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             base.CopyFieldsToTransaction();
 
             var income = (IncomeReceived)_Transaction;
+            income.RecordDate = RecordDate;
             income.TransactionDate = PaymentDate;
             income.FrankedAmount = FrankedAmount;
             income.UnfrankedAmount = UnfrankedAmount;
