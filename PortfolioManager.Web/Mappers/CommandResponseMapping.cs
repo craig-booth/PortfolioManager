@@ -141,7 +141,6 @@ namespace PortfolioManager.Web.Mappers
                 Description = dividend.Description,
                 PaymentDate = dividend.PaymentDate,
                 DividendAmount = dividend.DividendAmount,
-                CompanyTaxRate = dividend.CompanyTaxRate,
                 PercentFranked = dividend.PercentFranked,
                 DRPPrice = dividend.DRPPrice
             };

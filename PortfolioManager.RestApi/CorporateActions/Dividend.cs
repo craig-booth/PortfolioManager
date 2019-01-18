@@ -12,7 +12,6 @@ namespace PortfolioManager.RestApi.CorporateActions
         }
         public DateTime PaymentDate { get; set; }
         public decimal DividendAmount { get; set; }
-        public decimal CompanyTaxRate { get; set; }
         public decimal PercentFranked { get; set; }
         public decimal DRPPrice { get; set; }
     }

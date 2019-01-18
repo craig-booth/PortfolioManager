@@ -10,6 +10,7 @@ namespace PortfolioManager.RestApi.Stocks
     {
         public Guid Id { get; set; }
         public DateTime ChangeDate { get; set; }
+        public decimal CompanyTaxRate { get; set; }
         public RoundingRule DividendRoundingRule { get; set; }
         public bool DRPActive { get; set; }
         public DRPMethod DRPMethod { get; set; }

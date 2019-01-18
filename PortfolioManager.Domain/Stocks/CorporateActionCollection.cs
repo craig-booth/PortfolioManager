@@ -41,12 +41,12 @@ namespace PortfolioManager.Domain.Stocks
             Add(capitalReturn);
         }
 
-        public void AddDividend(Guid id, DateTime recordDate, string description, DateTime paymentDate, decimal dividendAmount, decimal companyTaxRate, decimal percentFranked, decimal drpPrice)
+        public void AddDividend(Guid id, DateTime recordDate, string description, DateTime paymentDate, decimal dividendAmount, decimal percentFranked, decimal drpPrice)
         {
             if (description == "")
                 description = "Dividend " + MathUtils.FormatCurrency(dividendAmount, false, true);
 
-            var @event = new DividendAddedEvent(Stock.Id, Stock.Version, id, recordDate, description, paymentDate, dividendAmount, companyTaxRate, percentFranked, drpPrice);
+            var @event = new DividendAddedEvent(Stock.Id, Stock.Version, id, recordDate, description, paymentDate, dividendAmount, percentFranked, drpPrice);
 
             Apply(@event);
             _EventStream.StoreEvent(@event);
@@ -54,7 +54,7 @@ namespace PortfolioManager.Domain.Stocks
 
         public void Apply(DividendAddedEvent @event)
         {
-            var dividend = new Dividend(@event.ActionId, Stock, @event.ActionDate, @event.Description, @event.PaymentDate, @event.DividendAmount, @event.CompanyTaxRate, @event.PercentFranked, @event.DRPPrice);
+            var dividend = new Dividend(@event.ActionId, Stock, @event.ActionDate, @event.Description, @event.PaymentDate, @event.DividendAmount, @event.PercentFranked, @event.DRPPrice);
 
             Add(dividend);
         }

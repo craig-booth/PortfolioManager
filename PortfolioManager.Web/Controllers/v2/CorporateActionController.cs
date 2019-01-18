@@ -104,7 +104,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         private void AddDividend(Stock stock, RestApi.CorporateActions.Dividend dividend)
         {
-            stock.CorporateActions.AddDividend(dividend.Id, dividend.ActionDate, dividend.Description, dividend.PaymentDate, dividend.DividendAmount, dividend.CompanyTaxRate, dividend.PercentFranked, dividend.DRPPrice);
+            stock.CorporateActions.AddDividend(dividend.Id, dividend.ActionDate, dividend.Description, dividend.PaymentDate, dividend.DividendAmount, dividend.PercentFranked, dividend.DRPPrice);
         }
 
         private void AddCapitalReturn(Stock stock, RestApi.CorporateActions.CapitalReturn capitalReturn)

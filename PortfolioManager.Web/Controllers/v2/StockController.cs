@@ -221,7 +221,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                stock.ChangeDividendRules(command.ChangeDate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
+                stock.ChangeDividendRules(command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
             }
             catch (Exception e)
             {

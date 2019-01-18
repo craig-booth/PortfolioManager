@@ -15,6 +15,9 @@ namespace PortfolioManager.Domain.Portfolios
         private EffectiveProperties<HoldingProperties> _Properties = new EffectiveProperties<HoldingProperties>();
         public IEffectiveProperties<HoldingProperties> Properties => _Properties;
 
+        private EffectiveProperties<HoldingSettings> _Settings = new EffectiveProperties<HoldingSettings>();
+        public IEffectiveProperties<HoldingSettings> Settings => _Settings;
+
         private Dictionary<Guid, Parcel> _Parcels = new Dictionary<Guid, Parcel>();
 
         private CashAccount _DrpAccount = new CashAccount();
@@ -26,6 +29,7 @@ namespace PortfolioManager.Domain.Portfolios
             Stock = stock;
             
             _Properties.Change(fromDate, new HoldingProperties(0, 0.00m, 0.00m));
+            _Settings.Change(fromDate, new HoldingSettings(false));
         }
 
         public IEnumerable<Parcel> Parcels(DateTime date)
@@ -86,6 +90,13 @@ namespace PortfolioManager.Domain.Portfolios
             else if (amount < 0.00m)
                 _DrpAccount.Withdraw(date, -amount, "");
         }
+
+        public void ChangeDrpParticipation(DateTime date, bool participateInDrp)
+        {
+            var newSettings = new HoldingSettings(participateInDrp);
+
+            _Settings.Change(date, newSettings);
+        }
     }
 
     public struct HoldingProperties
@@ -99,6 +110,16 @@ namespace PortfolioManager.Domain.Portfolios
             Units = units;
             Amount = amount;
             CostBase = costBase;
+        }
+    }
+
+    public struct HoldingSettings
+    {
+        public readonly bool ParticipateInDrp;
+
+        public HoldingSettings(bool participateInDrp)
+        {
+            ParticipateInDrp = participateInDrp;
         }
     }
 }

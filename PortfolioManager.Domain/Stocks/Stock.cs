@@ -59,7 +59,7 @@ namespace PortfolioManager.Domain.Stocks
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             _Properties.Change(@event.ListingDate, properties);
 
-            var dividendRules = new DividendRules(RoundingRule.Round, false, DRPMethod.Round);
+            var dividendRules = new DividendRules(0.30m, RoundingRule.Round, false, DRPMethod.Round);
             _DividendRules.Change(@event.ListingDate, dividendRules);
         }
 
@@ -193,11 +193,11 @@ namespace PortfolioManager.Domain.Stocks
             _EventStream.StoreEvent(@event);
         }
 
-        public void ChangeDividendRules(DateTime changeDate, RoundingRule newDividendRoundingRule, bool drpActive, DRPMethod newDrpMethod)
+        public void ChangeDividendRules(DateTime changeDate, decimal companyTaxRate, RoundingRule newDividendRoundingRule, bool drpActive, DRPMethod newDrpMethod)
         {
             var properties = Properties[changeDate];
 
-            var @event = new ChangeDividendRulesEvent(Id, Version, changeDate, newDividendRoundingRule, drpActive, newDrpMethod);
+            var @event = new ChangeDividendRulesEvent(Id, Version, changeDate, companyTaxRate, newDividendRoundingRule, drpActive, newDrpMethod);
 
             Apply(@event);
             _EventStream.StoreEvent(@event);
@@ -220,6 +220,7 @@ namespace PortfolioManager.Domain.Stocks
             Version++;
 
             var newProperties = new DividendRules(
+                @event.CompanyTaxRate,
                 @event.DividendRoundingRule,
                 @event.DRPActive,
                 @event.DRPMethod);
@@ -245,13 +246,15 @@ namespace PortfolioManager.Domain.Stocks
 
     public struct DividendRules
     {
+        public readonly decimal CompanyTaxRate;
         public readonly RoundingRule DividendRoundingRule;
 
         public readonly bool DRPActive;       
         public readonly DRPMethod DRPMethod;
 
-        public DividendRules(RoundingRule dividendRoundingRule, bool drpActive, DRPMethod drpMethod)
+        public DividendRules(decimal companyTaxRate, RoundingRule dividendRoundingRule, bool drpActive, DRPMethod drpMethod)
         {
+            CompanyTaxRate = companyTaxRate;
             DividendRoundingRule = dividendRoundingRule;
             DRPActive = drpActive;
             DRPMethod = drpMethod;

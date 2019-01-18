@@ -43,7 +43,7 @@ namespace PortfolioManager.Domain.Stocks
             for (var i = 0; i < @event.ChildSecurities.Length; i++)
                 _ChildSecurities[i] = new StapledSecurityChild(@event.ChildSecurities[i].ASXCode, @event.ChildSecurities[i].Name, @event.ChildSecurities[i].Trust);
             
-            var dividendRules = new DividendRules(RoundingRule.Round, false, DRPMethod.Round);
+            var dividendRules = new DividendRules(0.30m, RoundingRule.Round, false, DRPMethod.Round);
             _DividendRules.Change(@event.ListingDate, dividendRules);
 
             var percentages = new decimal[_ChildSecurities.Length];
