@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using PortfolioManager.RestApi.TradingCalander;
+using PortfolioManager.Domain.TradingCalanders;
+using PortfolioManager.RestApi.TradingCalanders;
 
 namespace PortfolioManager.Web.Controllers.v2
 {

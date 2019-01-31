@@ -19,6 +19,9 @@ namespace PortfolioManager.Web.Mappers
 
         public Stock Resolve(RestApi.Transactions.Transaction source, Domain.Transactions.Transaction destination, Stock member, ResolutionContext context)
         {
+            if (source.Stock == Guid.Empty)
+                return null;
+
             return _StockRepository.Get(source.Stock);
         }
     }

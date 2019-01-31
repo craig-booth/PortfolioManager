@@ -15,7 +15,7 @@ namespace PortfolioManager.Domain.Stocks
     public class Stock : EffectiveEntity, ITrackedEntity
     {
         public int Version { get; protected set; } = 0;
-        protected EventList _Events = new EventList();
+        private EventList _Events = new EventList();
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
 
@@ -29,10 +29,9 @@ namespace PortfolioManager.Domain.Stocks
 
         public CorporateActionCollection CorporateActions { get; }
 
-        public Stock(Guid id, DateTime listingDate)
-            : base(id, listingDate)
+        public Stock()
         {
-            CorporateActions = new CorporateActionCollection(this);
+            CorporateActions = new CorporateActionCollection(this, this._Events);
         }
 
         public override string ToString()
@@ -41,18 +40,25 @@ namespace PortfolioManager.Domain.Stocks
             return String.Format("{0} - {1}", properties.ASXCode, properties.Name);
         }
 
+        protected void PublishEvent(Event @event)
+        {
+            _Events.Add(@event);
+        }
+
         public void List(string asxCode, string name, bool trust, AssetCategory category)
         {
             var @event = new StockListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, trust);
             Apply(@event);
 
-            _Events.Add(@event);
+            PublishEvent(@event);
         }
 
         public void Apply(StockListedEvent @event)
         {
             Version++;
             Trust = @event.Trust;
+
+            Start(@event.EntityId, @event.ListingDate);
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             _Properties.Change(@event.ListingDate, properties);
@@ -66,7 +72,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new StockDelistedEvent(Id, Version, date);
             Apply(@event);
 
-            _Events.Add(@event);
+            PublishEvent(@event);
         }
 
         public virtual void Apply(StockDelistedEvent @event)
@@ -96,7 +102,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPricesAddedEvent(Id, Version, new ClosingPricesAddedEvent.ClosingPrice[] { new ClosingPricesAddedEvent.ClosingPrice(date, closingPrice) });
             Apply(@event);
 
-            _Events.Add(@event);
+            PublishEvent(@event);
         }
 
         public void UpdateClosingPrices(IEnumerable<Tuple<DateTime, decimal>> closingPrices)
@@ -111,7 +117,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Item1, x.Item2)));
             Apply(@event);
 
-            _Events.Add(@event);
+            PublishEvent(@event);
         }
 
         public void Apply(ClosingPricesAddedEvent @event)

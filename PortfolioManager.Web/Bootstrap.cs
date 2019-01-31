@@ -21,6 +21,8 @@ using AutoMapper;
 using PortfolioManager.Common.Scheduler;
 using PortfolioManager.ImportData;
 using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.Domain;
+using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.EventStore;
@@ -41,10 +43,24 @@ namespace PortfolioManager.Web
 
             services.AddSingleton<PortfolioManagerSettings>(settings);
             services.AddSingleton<IEventStore>(CreateEventStore);
-            services.AddSingleton<StockExchange>();
-            services.AddSingleton<IStockRepository>(x => x.GetRequiredService<StockExchange>().Stocks);
-            services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<StockExchange>().TradingCalander);
-            services.AddSingleton<IPortfolioCache>(new PortfolioCache());
+
+            services.Add(ServiceDescriptor.Singleton(typeof(IEntityCache<>), typeof(EntityCache<>)));
+            services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
+
+            services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("StockRepository"));
+            services.AddSingleton<IEventStream<StapledSecurity>>(x => x.GetRequiredService<IEventStore>().GetEventStream<StapledSecurity>("StapledSecurities"));
+
+            services.AddSingleton<IRepository<Stock>, StockRepository>();
+            services.AddSingleton<IStockRepository, StockRepository>();
+            services.AddSingleton<ILoadableRepository<Stock>, StockRepository>();
+        
+            services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));
+            services.AddSingleton<IRepository<TradingCalander>, TradingCalanderRepository>();
+            services.AddSingleton<ILoadableRepository<TradingCalander>, TradingCalanderRepository>();
+
+            services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IRepository<TradingCalander>>().Get(TradingCalanderIds.ASX));
+
+            services.AddSingleton<IPortfolioCache, PortfolioCache>();
 
             services.AddSingleton<StockResolver, StockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
@@ -84,8 +100,6 @@ namespace PortfolioManager.Web
 
         private static IMapper CreateMapper(IServiceProvider serviceProvider)
         {
-            var stockExchange = serviceProvider.GetRequiredService<StockExchange>();
-
             var profiles = serviceProvider.GetServices<Profile>();
             var config = new MapperConfiguration(cfg =>
             {
@@ -101,11 +115,22 @@ namespace PortfolioManager.Web
     {
         public static IApplicationBuilder InitializeStockExchange(this IApplicationBuilder app)
         {
-            var stockExchange = app.ApplicationServices.GetRequiredService<StockExchange>();
-            stockExchange.LoadFromEventStream();
+            app.ApplicationServices.InitializeStockExchange();
 
             return app;
         }
+
+        public static IServiceProvider InitializeStockExchange(this IServiceProvider serviceProvider)
+        {
+            var stockRepository = serviceProvider.GetRequiredService<ILoadableRepository<Stock>>();
+            stockRepository.LoadFromEventStream();
+
+            var tradingCalanderRepository = serviceProvider.GetRequiredService<ILoadableRepository<TradingCalander>>();
+            tradingCalanderRepository.LoadFromEventStream();
+
+            return serviceProvider;
+        }
+
     }
 
     public class PortfolioManagerSettings

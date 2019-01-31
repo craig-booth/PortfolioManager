@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
-using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 
 

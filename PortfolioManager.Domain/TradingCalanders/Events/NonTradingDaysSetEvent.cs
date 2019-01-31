@@ -4,7 +4,7 @@ using System.Linq;
 
 using PortfolioManager.EventStore;
 
-namespace PortfolioManager.Domain.Stocks.Events
+namespace PortfolioManager.Domain.TradingCalanders.Events
 {
     public class NonTradingDaysSetEvent : Event
     {
@@ -23,7 +23,7 @@ namespace PortfolioManager.Domain.Stocks.Events
             }
         }
 
-        public NonTradingDaysSetEvent(Guid entityId, int version, int year, IEnumerable<Domain.Stocks.NonTradingDay> nonTradingDays)
+        public NonTradingDaysSetEvent(Guid entityId, int version, int year, IEnumerable<TradingCalanders.NonTradingDay> nonTradingDays)
             : base(entityId, version)
         {
             Year = year;

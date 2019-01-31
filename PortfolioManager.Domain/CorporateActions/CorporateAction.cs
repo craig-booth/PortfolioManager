@@ -18,7 +18,7 @@ namespace PortfolioManager.Domain.CorporateActions
         public CorporateActionType Type { get; private set; }
         public string Description { get; private set; }
 
-        public CorporateAction(Guid id, Stock stock, CorporateActionType type, DateTime actionDate, string description)
+        internal CorporateAction(Guid id, Stock stock, CorporateActionType type, DateTime actionDate, string description)
         {
             Id = id;
             Stock = stock;

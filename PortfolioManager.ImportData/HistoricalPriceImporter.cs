@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.ImportData.DataServices;
 
 namespace PortfolioManager.ImportData
@@ -14,12 +16,14 @@ namespace PortfolioManager.ImportData
     public class HistoricalPriceImporter
     {
         private readonly IHistoricalStockPriceService _DataService;
-        private readonly StockExchange _StockExchange;
+        private readonly IStockRepository _StockRepository;
+        private readonly ITradingCalander _TradingCalander;
         private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(StockExchange stockExchange, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
+        public HistoricalPriceImporter(IStockRepository stockRepository, IRepository<TradingCalander> tradingCalanderRepository, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
         {
-            _StockExchange = stockExchange;
+            _StockRepository = stockRepository;
+            _TradingCalander = tradingCalanderRepository.Get(TradingCalanderIds.ASX);
             _DataService = dataService;
             _Logger = logger;
         }
@@ -34,10 +38,10 @@ namespace PortfolioManager.ImportData
         public async Task Import(CancellationToken cancellationToken)
         {
             var lastExpectedDate = DateTime.Today.AddDays(-1);
-            while (! _StockExchange.TradingCalander.IsTradingDay(lastExpectedDate))
+            while (! _TradingCalander.IsTradingDay(lastExpectedDate))
                 lastExpectedDate = lastExpectedDate.AddDays(-1);
 
-            foreach (var stock in _StockExchange.Stocks.All())
+            foreach (var stock in _StockRepository.All())
             {
                 if (cancellationToken.IsCancellationRequested)
                     return;

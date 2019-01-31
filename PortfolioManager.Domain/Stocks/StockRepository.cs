@@ -8,9 +8,8 @@ using PortfolioManager.Domain.Stocks.Events;
 
 namespace PortfolioManager.Domain.Stocks
 {
-    public interface IStockRepository
+    public interface IStockRepository : IRepository<Stock>
     {
-        Stock Get(Guid id);
         Stock Get(string asxCode, DateTime date);
         IEnumerable<Stock> All();
         IEnumerable<Stock> All(DateTime date);
@@ -23,122 +22,96 @@ namespace PortfolioManager.Domain.Stocks
         void DelistStock(Guid id, DateTime date);
     }
 
-    public class StockRepository : IStockRepository
+    public class StockRepository :
+        Repository<Stock>,
+        IRepository<Stock>,
+        IStockRepository,
+        ILoadableRepository<Stock>
     {
-        private IEventStream _EventStream;
+        private IEventStream<StapledSecurity> _StapledSecurityEventStream;
 
-        private Dictionary<Guid, Stock> _Stocks = new Dictionary<Guid, Stock>();
-
-        public StockRepository(IEventStream eventStream)
+        public StockRepository(IEventStream<Stock> stockEventStream, IEventStream<StapledSecurity> stapledSecurityEventStream, IEntityCache<Stock> cache)
+            : base(stockEventStream, cache)
         {
-            _EventStream = eventStream;
+            _StapledSecurityEventStream = stapledSecurityEventStream;
         }
 
         public void LoadFromEventStream()
         {
-            var events = _EventStream.RetrieveEvents();
-            foreach (var @event in events)
-            {
-                if (@event is StockListedEvent)
-                {
-                    var listingEvent = @event as StockListedEvent;
-                    var stock = new Stock(listingEvent.EntityId, listingEvent.ListingDate, _EventStream);
-                    _Stocks.Add(@event.EntityId, stock);
+            var entityIds = _EventStream.GetStoredEntityIds();
+            foreach (var id in entityIds)
+                Get(id);
 
-                    stock.Apply(listingEvent);
-                }
-                else if (@event is StapledSecurityListedEvent)
-                {
-                    var listingEvent = @event as StapledSecurityListedEvent;
-                    var stock = new StapledSecurity(listingEvent.EntityId, listingEvent.ListingDate, _EventStream);
-                    _Stocks.Add(@event.EntityId, stock);
-
-                    stock.Apply(listingEvent);
-                }
-                else
-                {
-                    var stock = _Stocks[@event.EntityId];
-                    dynamic dynamicEvent = @event;
-
-                    if (stock is StapledSecurity)
-                        (stock as StapledSecurity).Apply(dynamicEvent);
-                    else
-                        stock.Apply(dynamicEvent);
-                }
-            }
-        }
-
-        public Stock Get(Guid id)
-        {
-            if (_Stocks.ContainsKey(id))
-                return _Stocks[id];
-            else
-                return null;
-        }
+            entityIds = _StapledSecurityEventStream.GetStoredEntityIds();
+            foreach (var id in entityIds)
+                Get(id);
+        } 
 
         public Stock Get(string asxCode, DateTime date)
         {
-            return _Stocks.Values.FirstOrDefault(x => x.IsEffectiveAt(date) && x.Properties.Matches(date, y => y.ASXCode == asxCode));
-        }
+            return _Cache.All().FirstOrDefault(x => x.IsEffectiveAt(date) && x.Properties.Matches(date, y => y.ASXCode == asxCode));
+        } 
 
         public IEnumerable<Stock> All()
         {
-            return _Stocks.Values;
-        }
+            return _Cache.All();
+        } 
 
         public IEnumerable<Stock> All(DateTime date)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveAt(date));
+            return _Cache.All().Where(x => x.IsEffectiveAt(date));
         }
-
+         
         public IEnumerable<Stock> All(DateRange dateRange)
         {
-            return _Stocks.Values.Where(x => x.IsEffectiveDuring(dateRange));
-        }
+            return _Cache.All().Where(x => x.IsEffectiveDuring(dateRange));
+        } 
 
         public IEnumerable<Stock> Find(DateTime date, Func<StockProperties, bool> predicate)
         {
             return All(date).Where(x => x.Properties.Matches(date, predicate));
-        }
+        } 
 
         public IEnumerable<Stock> Find(DateRange dateRange, Func<StockProperties, bool> predicate)
         {
             return All(dateRange).Where(x => x.Properties.Matches(dateRange, predicate));
-        }
+        } 
 
         public void ListStock(Guid id, string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category)
         {
             // Check that id is unique
-            if (_Stocks.ContainsKey(id))
+            var stock = _Cache.Get(id);
+            if (stock != null)
                 throw new Exception("Id not unique");
 
             // Check if stock already exists with this code
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
-            if (_Stocks.Values.Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
+            if (_Cache.All().Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            var stock = new Stock(id, listingDate, _EventStream);
-            _Stocks.Add(stock.Id, stock);
-
+            stock = new Stock();
             stock.List(asxCode, name, trust, category);
-        }
+
+            _Cache.Add(stock);
+        } 
 
         public void ListStapledSecurity(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
-        {   
+        {
             // Check that id is unique
-            if (_Stocks.ContainsKey(id))
+            var stock = _Cache.Get(id);
+            if (stock != null)
                 throw new Exception("Id not unique");
 
             // Check if stock already exists with this code
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
-            if (_Stocks.Values.Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
+            if (_Cache.All().Any(x => x.Properties.Matches(effectivePeriod, y => y.ASXCode == asxCode)))
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            var stapledSecurity = new StapledSecurity(id, listingDate, _EventStream);
-            _Stocks.Add(stapledSecurity.Id, stapledSecurity);
-
+            var stapledSecurity = new StapledSecurity();
             stapledSecurity.List(asxCode, name, category, childSecurities);
-        }
+
+            _Cache.Add(stapledSecurity);
+        } 
 
         public void DelistStock(Guid id, DateTime date)
         {
@@ -149,5 +122,5 @@ namespace PortfolioManager.Domain.Stocks
 
             stock.DeList(date);
         }
-    }
+    } 
 }

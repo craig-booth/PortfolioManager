@@ -38,9 +38,10 @@ namespace PortfolioManager.EventStore.Mongodb
                 BsonClassMap.LookupClassMap(eventType);
         }
 
-        public IEventStream GetEventStream(string streamName)
+        public IEventStream<T> GetEventStream<T>(string streamName)
         {
-            return new MongodbEventStream(streamName, _ConnectionString, _Logger);
+            var eventStream = new MongodbEventStream<T>(streamName, _ConnectionString, _Logger);
+            return (IEventStream<T>)eventStream;
         }
     }
 

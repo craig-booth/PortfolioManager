@@ -12,7 +12,7 @@ namespace PortfolioManager.Domain.CorporateActions
 {
     public class CompositeAction : CorporateAction
     {
-        public CompositeAction(Guid id, Stock stock, DateTime actionDate, string description)
+        internal CompositeAction(Guid id, Stock stock, DateTime actionDate, string description)
             : base(id, stock, CorporateActionType.Composite, actionDate, description)
         {
 

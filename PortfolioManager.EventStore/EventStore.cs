@@ -7,10 +7,10 @@ namespace PortfolioManager.EventStore
 {
     public interface IEventStore
     {
-        IEventStream GetEventStream(string collection);
+        IEventStream<T> GetEventStream<T>(string collection);
     }
 
-    public interface IEventStream
+    public interface IEventStream<T>
     {
         string Collection { get; }
 
@@ -21,5 +21,4 @@ namespace PortfolioManager.EventStore
 
         IEnumerable<Event> RetrieveEvents(Guid entityId);
     }
-
 }

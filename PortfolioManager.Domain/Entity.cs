@@ -6,15 +6,39 @@ using PortfolioManager.Common;
 
 namespace PortfolioManager.Domain
 {
-    public abstract class EffectiveEntity
+    public interface IEntity
     {
-        public Guid Id { get; }
+        Guid Id { get; }
+    }
+
+    interface IEffectiveEntity
+    {
+        Guid Id { get; }
+        DateRange EffectivePeriod { get; }
+    }
+    
+    public abstract class EffectiveEntity :
+        IEntity,
+        IEffectiveEntity
+    {
+        public Guid Id { get; private set; }
         public DateRange EffectivePeriod { get; private set; }
 
-        public EffectiveEntity(Guid id, DateTime fromDate)
+        protected virtual void Start(Guid id, DateTime date)
         {
+            if (!EffectivePeriod.FromDate.Equals(DateUtils.NoStartDate))
+                throw new Exception("Entity already started");
+
             Id = id;
-            EffectivePeriod = new DateRange(fromDate, DateUtils.NoEndDate);
+            EffectivePeriod = new DateRange(date, DateUtils.NoEndDate);
+        }
+
+        protected virtual void End(DateTime date)
+        {
+            if (!EffectivePeriod.ToDate.Equals(DateUtils.NoEndDate))
+                throw new Exception("Entity is not current");
+
+            EffectivePeriod = new DateRange(EffectivePeriod.FromDate, date);
         }
 
         public bool IsEffectiveAt(DateTime date)
@@ -25,14 +49,6 @@ namespace PortfolioManager.Domain
         public bool IsEffectiveDuring(DateRange dateRange)
         {
             return EffectivePeriod.Overlaps(dateRange);
-        }
-
-        public virtual void End(DateTime date)
-        {
-            if (!EffectivePeriod.ToDate.Equals(DateUtils.NoEndDate))
-                throw new Exception("Entity is not current");
-
-            EffectivePeriod = new DateRange(EffectivePeriod.FromDate, date);
         }
     }
 

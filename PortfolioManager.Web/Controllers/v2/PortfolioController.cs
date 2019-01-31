@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using AutoMapper;
 
 using PortfolioManager.Common;
-using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
 

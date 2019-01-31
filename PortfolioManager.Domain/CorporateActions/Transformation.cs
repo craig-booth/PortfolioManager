@@ -22,7 +22,7 @@ namespace PortfolioManager.Domain.CorporateActions
            get { return _ResultingStocks; }
         }
 
-        public Transformation(Guid id, Stock stock, DateTime actionDate, string description, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, IEnumerable<ResultingStock> resultingStocks)
+        internal Transformation(Guid id, Stock stock, DateTime actionDate, string description, DateTime implementationDate, decimal cashComponent, bool rolloverReliefApplies, IEnumerable<ResultingStock> resultingStocks)
             : base(id, stock, CorporateActionType.Transformation, actionDate, description)
         {
             ImplementationDate = implementationDate;

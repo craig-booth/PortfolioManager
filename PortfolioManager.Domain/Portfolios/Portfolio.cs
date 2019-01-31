@@ -15,7 +15,7 @@ namespace PortfolioManager.Domain.Portfolios
         public string Name { get; private set; }
 
         public int Version { get; private set; } = 0;
-        protected IEventStream _EventStream;
+        protected IEventStream<Portfolio> _EventStream;
 
         private HoldingCollection _Holdings;
         public IHoldingCollection Holdings => _Holdings;
@@ -39,7 +39,7 @@ namespace PortfolioManager.Domain.Portfolios
             get { return DateUtils.NoEndDate; }
         }
 
-        public Portfolio(Guid id, string name, IEventStream eventStream)
+        public Portfolio(Guid id, string name, IEventStream<Portfolio> eventStream)
         {
             Id = id;
             Name = name;

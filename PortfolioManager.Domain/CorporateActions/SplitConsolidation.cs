@@ -11,8 +11,8 @@ using PortfolioManager.Domain.Utils;
 namespace PortfolioManager.Domain.CorporateActions
 {
     public class SplitConsolidation : CorporateAction
-    { 
-        public SplitConsolidation(Guid id, Stock stock, DateTime actionDate, string description)
+    {
+        internal SplitConsolidation(Guid id, Stock stock, DateTime actionDate, string description)
             : base(id, stock, CorporateActionType.SplitConsolidation, actionDate, description)
         {
         }

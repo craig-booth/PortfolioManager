@@ -15,7 +15,7 @@ namespace PortfolioManager.Domain.CorporateActions
         public DateTime PaymentDate { get; private set; }
         public decimal Amount { get; private set; }
 
-        public CapitalReturn(Guid id, Stock stock, DateTime actionDate, string description, DateTime paymentDate, decimal amount)
+        internal CapitalReturn(Guid id, Stock stock, DateTime actionDate, string description, DateTime paymentDate, decimal amount)
             : base(id, stock, CorporateActionType.CapitalReturn, actionDate, description)
         {
             PaymentDate = paymentDate;

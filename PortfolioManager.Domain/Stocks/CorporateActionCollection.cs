@@ -14,13 +14,18 @@ namespace PortfolioManager.Domain.Stocks
         TransactionList<CorporateAction>,
         ITransactionList<CorporateAction>
     {
-        protected IEventStream _EventStream;
+        private EventList _Events;
         public Stock Stock { get; }
 
-        public CorporateActionCollection(Stock stock, IEventStream eventStream)
+        internal CorporateActionCollection(Stock stock, EventList eventList)
         {
             Stock = stock;
-            _EventStream = eventStream;
+            _Events = eventList;
+        }
+
+        protected void PublishEvent(Event @event)
+        {
+            _Events.Add(@event);
         }
 
         public void AddCapitalReturn(Guid id, DateTime recordDate, string description, DateTime paymentDate, decimal amount)
@@ -31,7 +36,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new CapitalReturnAddedEvent(Stock.Id, Stock.Version, id, recordDate, description, paymentDate, amount);
 
             Apply(@event);
-            _EventStream.StoreEvent(@event);
+            PublishEvent(@event);
         }
 
         public void Apply(CapitalReturnAddedEvent @event)
@@ -49,7 +54,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new DividendAddedEvent(Stock.Id, Stock.Version, id, recordDate, description, paymentDate, dividendAmount, percentFranked, drpPrice);
 
             Apply(@event);
-            _EventStream.StoreEvent(@event);
+            PublishEvent(@event);
         }
 
         public void Apply(DividendAddedEvent @event)
@@ -66,7 +71,7 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new TransformationAddedEvent(Stock.Id, Stock.Version, id, recordDate, description, implementationDate, cashComponent, rolloverReliefApplies, eventResultingStocks);                
 
             Apply(@event);
-            _EventStream.StoreEvent(@event);
+            PublishEvent(@event);
         }
 
         public void Apply(TransformationAddedEvent @event)
@@ -76,20 +81,5 @@ namespace PortfolioManager.Domain.Stocks
 
             Add(transformation);
         }
-
-     /*   public T Get<T>(Guid id) where T : CorporateAction
-        {
-            return this[id] as T;
-        } 
-      
-        public IEnumerable<T> Get<T>() where T : CorporateAction
-        {
-            return _CorporateActions.Values.Where(x => x is T).Select(x => x as T);
-        } 
-
-        public IEnumerable<T> Get<T>(DateRange dateRange) where T : CorporateAction
-        {
-            return _CorporateActions.Values.Where(x => x is T && dateRange.Contains(x.Date)).Select(x => x as T);
-        } */
     }
 }

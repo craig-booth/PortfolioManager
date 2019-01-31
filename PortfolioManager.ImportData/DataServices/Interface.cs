@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.TradingCalanders;
 
 namespace PortfolioManager.ImportData.DataServices
 {

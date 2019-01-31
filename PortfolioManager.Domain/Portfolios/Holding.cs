@@ -24,10 +24,10 @@ namespace PortfolioManager.Domain.Portfolios
         public ICashAccount DrpAccount => _DrpAccount;
 
         public Holding(Stock stock, DateTime fromDate)
-            : base(stock.Id, fromDate)
         {
             Stock = stock;
-            
+            Start(stock.Id, fromDate);
+
             _Properties.Change(fromDate, new HoldingProperties(0, 0.00m, 0.00m));
             _Settings.Change(fromDate, new HoldingSettings(false));
         }

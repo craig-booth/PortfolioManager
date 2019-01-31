@@ -1,59 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace PortfolioManager.EventStore.Memory
 {
-    public class MemoryEventStream : IEventStream
+    public class MemoryEventStream<T> : IEventStream<T>
     {
-        private class MemoryEvent
+        private class StoredEntity
         {
-            public Guid EntityId;
-            public Type EventType;
-            public string EventData;
+            public Guid Id;
+            public List<Event> Events = new List<Event>();
         }
 
         public string Collection { get; private set; }
-        private List<MemoryEvent> _Events;
+        private Dictionary<Guid, StoredEntity> _Entities = new Dictionary<Guid, StoredEntity>();
 
         public MemoryEventStream(string collection)
         {
             Collection = collection;
-            _Events = new List<MemoryEvent>();
         }
 
         public IEnumerable<Guid> GetStoredEntityIds()
         {
-            return _Events.GroupBy(x => x.EntityId).Select(y => y.Key);
+            return _Entities.Keys;
         }
 
         public IEnumerable<Event> RetrieveEvents(Guid entityId)
         {
-            foreach (var @event in _Events.Where(x => x.EntityId == entityId))
+            if (_Entities.ContainsKey(entityId))
             {
-                var result = JsonConvert.DeserializeObject(@event.EventData, @event.EventType);
+                var entity = _Entities[entityId];
 
-                yield return (Event)result;
+                return entity.Events;
             }
+            else
+                return new Event[0];
         }
 
         public void StoreEvent(Guid entityId, Event @event)
         {
-            var jsonData = JsonConvert.SerializeObject(@event);
+            StoredEntity entity;
+            if (_Entities.ContainsKey(entityId))
+                entity = _Entities[entityId];
+            else
+                entity = new StoredEntity() { Id = entityId };
 
-            _Events.Add(new MemoryEvent()
-            {
-                EntityId = entityId,
-                EventType = @event.GetType(),
-                EventData = jsonData
-            });
+            entity.Events.Add(@event); 
         }
 
         public void StoreEvents(Guid entityId, IEnumerable<Event> events)
         {
-            foreach (var @event in events)
-                StoreEvent(entityId, @event);
+
+            StoredEntity entity;
+            if (_Entities.ContainsKey(entityId))
+                entity = _Entities[entityId];
+            else
+                entity = new StoredEntity() { Id = entityId };
+
+            entity.Events.AddRange(events);
         }
     }
 }

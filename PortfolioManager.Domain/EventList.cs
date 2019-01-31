@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PortfolioManager.EventStore
+using PortfolioManager.EventStore;
+
+namespace PortfolioManager.Domain
 {
-    public class EventList
+    class EventList
     {
         private Queue<Event> _Events = new Queue<Event>();
 

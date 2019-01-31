@@ -4,10 +4,16 @@ using System.Linq;
 
 using PortfolioManager.Common;
 using PortfolioManager.EventStore;
-using PortfolioManager.Domain.Stocks.Events;
+using PortfolioManager.Domain.TradingCalanders.Events;
 
-namespace PortfolioManager.Domain.Stocks
+namespace PortfolioManager.Domain.TradingCalanders
 {
+
+    public static class TradingCalanderIds
+    {
+        public static Guid ASX => new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
+    }
+
     public interface ITradingCalander
     {
         IEnumerable<NonTradingDay> NonTradingDays(int year);
@@ -17,46 +23,16 @@ namespace PortfolioManager.Domain.Stocks
         void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays);
     }
 
-    public class NonTradingDay : IComparable<NonTradingDay>
+    public class TradingCalander :
+        ITradingCalander,
+        ITrackedEntity
     {
-        public DateTime Date { get; set; }
-        public string Desciption { get; set; }
+        public Guid Id => TradingCalanderIds.ASX;
 
-        public NonTradingDay(DateTime date, string description)
-        {
-            Date = date;
-            Desciption = description;
-        }
-
-        public int CompareTo(NonTradingDay other)
-        {
-            return Date.CompareTo(other.Date);
-        }
-    }
-
-    public class TradingCalander : ITradingCalander
-    {
-        public static readonly Guid Id = new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
-
-        public int Version { get; private set; } = 0;
-        private IEventStream _EventStream;
+        public int Version { get; protected set; } = 0;
+        private EventList _Events = new EventList();
 
         private List<NonTradingDay> _NonTradingDays = new List<NonTradingDay>();
-
-        public TradingCalander(IEventStream eventStream)
-        {
-            _EventStream = eventStream;
-        }
-
-        public void LoadFromEventStream()
-        {
-            var events = _EventStream.RetrieveEvents();
-            foreach (var @event in events)
-            {
-                dynamic dynamicEvent = @event;
-                Apply(dynamicEvent);
-            }
-        }
 
         public void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays)
         {
@@ -68,7 +44,12 @@ namespace PortfolioManager.Domain.Stocks
             var @event = new NonTradingDaysSetEvent(Id, Version, year, nonTradingDays);
             Apply(@event);
 
-            _EventStream.StoreEvent(@event);
+            PublishEvent(@event);
+        }
+
+        protected void PublishEvent(Event @event)
+        {
+            _Events.Add(@event);
         }
 
         public void Apply(NonTradingDaysSetEvent @event)
@@ -100,6 +81,37 @@ namespace PortfolioManager.Domain.Stocks
         public IEnumerable<DateTime> TradingDays(DateRange range)
         {
             return DateUtils.Days(range.FromDate, range.ToDate).Where(x => x.WeekDay() && IsTradingDay(x));
+        }
+
+        public IEnumerable<Event> FetchEvents()
+        {
+            return _Events.Fetch();
+        }
+
+        public void ApplyEvents(IEnumerable<Event> events)
+        {
+            foreach (var @event in events)
+            {
+                dynamic dynamicEvent = @event;
+                Apply(dynamicEvent);
+            }
+        }
+    }
+
+    public class NonTradingDay : IComparable<NonTradingDay>
+    {
+        public DateTime Date { get; set; }
+        public string Desciption { get; set; }
+
+        public NonTradingDay(DateTime date, string description)
+        {
+            Date = date;
+            Desciption = description;
+        }
+
+        public int CompareTo(NonTradingDay other)
+        {
+            return Date.CompareTo(other.Date);
         }
     }
 }

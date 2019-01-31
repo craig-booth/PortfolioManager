@@ -17,7 +17,7 @@ namespace PortfolioManager.Domain.CorporateActions
         public decimal PercentFranked { get; private set; }
         public decimal DRPPrice { get; private set; }
 
-        public Dividend(Guid id, Stock stock, DateTime actionDate, string description, DateTime paymentDate, decimal dividendAmount, decimal percentFranked, decimal drpPrice)
+        internal Dividend(Guid id, Stock stock, DateTime actionDate, string description, DateTime paymentDate, decimal dividendAmount, decimal percentFranked, decimal drpPrice)
             : base(id, stock, CorporateActionType.Dividend, actionDate, description)
         {
             PaymentDate = paymentDate;

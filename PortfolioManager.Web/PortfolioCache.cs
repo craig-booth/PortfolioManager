@@ -29,7 +29,7 @@ namespace PortfolioManager.Web
         public Portfolio Get(Guid id)
         {
             if (_Portfolio == null)
-                _Portfolio = new Portfolio(id, "Test", _EventStore.GetEventStream("Portfolios"));
+                _Portfolio = new Portfolio(id, "Test", _EventStore.GetEventStream<Portfolio>("Portfolios"));
 
             return _Portfolio;
         }

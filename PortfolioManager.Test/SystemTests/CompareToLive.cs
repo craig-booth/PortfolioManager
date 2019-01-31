@@ -71,9 +71,7 @@ namespace PortfolioManager.Test.SystemTests
             services.AddSingleton<PortfolioController>();
 
             _ServiceProvider = services.BuildServiceProvider();
-
-            var stockExchange = _ServiceProvider.GetRequiredService<StockExchange>();
-            stockExchange.LoadFromEventStream();
+            _ServiceProvider.InitializeStockExchange();
 
             LoadTransactions();
         }
