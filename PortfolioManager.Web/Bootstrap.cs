@@ -48,10 +48,9 @@ namespace PortfolioManager.Web
             services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
 
             services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("StockRepository"));
-            services.AddSingleton<IEventStream<StapledSecurity>>(x => x.GetRequiredService<IEventStore>().GetEventStream<StapledSecurity>("StapledSecurities"));
 
+            services.AddSingleton<IStockQuery, StockQuery>();
             services.AddSingleton<IRepository<Stock>, StockRepository>();
-            services.AddSingleton<IStockRepository, StockRepository>();
             services.AddSingleton<ILoadableRepository<Stock>, StockRepository>();
         
             services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));

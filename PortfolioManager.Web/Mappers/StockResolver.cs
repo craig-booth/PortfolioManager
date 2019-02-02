@@ -10,11 +10,11 @@ namespace PortfolioManager.Web.Mappers
 {
     public class StockResolver : IValueResolver<RestApi.Transactions.Transaction, Domain.Transactions.Transaction, Stock>
     {
-        private IStockRepository _StockRepository;
+        private IStockQuery _StockQuery;
 
-        public StockResolver(IStockRepository stockRepository)
+        public StockResolver(IStockQuery stockQuery)
         {
-            _StockRepository = stockRepository;
+            _StockQuery = stockQuery;
         }
 
         public Stock Resolve(RestApi.Transactions.Transaction source, Domain.Transactions.Transaction destination, Stock member, ResolutionContext context)
@@ -22,7 +22,7 @@ namespace PortfolioManager.Web.Mappers
             if (source.Stock == Guid.Empty)
                 return null;
 
-            return _StockRepository.Get(source.Stock);
+            return _StockQuery.Get(source.Stock);
         }
     }
 }

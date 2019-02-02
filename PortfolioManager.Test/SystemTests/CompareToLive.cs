@@ -291,8 +291,8 @@ namespace PortfolioManager.Test.SystemTests
 
             var controller = _ServiceProvider.GetRequiredService<CorporateActionController>();
 
-            var stockRepository = _ServiceProvider.GetRequiredService<Domain.Stocks.IStockRepository>();
-            var stocks = stockRepository.All().Where(x => x.IsEffectiveDuring(new DateRange(fromDate, toDate))).OrderBy(x => x, new StockComparer());
+            var stockQuery = _ServiceProvider.GetRequiredService<IStockQuery>();
+            var stocks = stockQuery.All(new DateRange(fromDate, toDate)).OrderBy(x => x, new StockComparer());
             foreach (var stock in stocks)
             {
                 var corporateActions = controller.GetCorporateActions(stock.Id, fromDate, toDate);

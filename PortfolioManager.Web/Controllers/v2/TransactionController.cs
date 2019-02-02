@@ -17,13 +17,11 @@ namespace PortfolioManager.Web.Controllers.v2
     [Route("api/v2/portfolio/{portfolioId:guid}/transactions")]
     public class TransactionController : BasePortfolioController
     {
-        private IStockRepository _StockRepository;
         private IMapper _Mapper;
 
-        public TransactionController(IPortfolioCache portfolioCache, IStockRepository stockRepository, IMapper mapper)
+        public TransactionController(IPortfolioCache portfolioCache, IMapper mapper)
             : base(portfolioCache)
         {
-            _StockRepository = stockRepository;
             _Mapper = mapper;
         }
 

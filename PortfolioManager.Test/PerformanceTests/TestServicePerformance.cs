@@ -286,13 +286,11 @@ namespace PortfolioManager.Test.PerformanceTests
         [CounterThroughputAssertion("TestCounter", MustBe.GreaterThan, 1000.0d)]
         public void TestCorporateActionsForStockServicePerformance()
         {
-            var stockRepository = _ServiceProvider.GetRequiredService<IStockRepository>();
-
             var controller = _ServiceProvider.GetRequiredService<CorporateActionController>();
             SetControllerContext(controller);
 
-
-            var stocks = stockRepository.All().Where(x => x.IsEffectiveDuring(new DateRange(_FromDate, _ToDate)));
+            var stockQuery = _ServiceProvider.GetRequiredService<IStockQuery>();
+            var stocks = stockQuery.All(new DateRange(_FromDate, _ToDate));
             foreach (var stock in stocks)
             {
                 var response = controller.GetCorporateActions(stock.Id, _FromDate, _ToDate);

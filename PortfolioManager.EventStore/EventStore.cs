@@ -14,11 +14,20 @@ namespace PortfolioManager.EventStore
     {
         string Collection { get; }
 
-        IEnumerable<Guid> GetStoredEntityIds();
+        StoredEntity Get(Guid entityId);
+        IEnumerable<StoredEntity> GetAll();
 
-        void StoreEvent(Guid entityId, Event @event);
-        void StoreEvents(Guid entityId, IEnumerable<Event> events);
+        void Add(Guid entityId, string type, IEnumerable<Event> events);
+        void AppendEvent(Guid entityId, Event @event);
+        void AppendEvents(Guid entityId, IEnumerable<Event> events);
+    }
 
-        IEnumerable<Event> RetrieveEvents(Guid entityId);
+    public class StoredEntity
+    {
+        public Guid EntityId { get; set; }
+        public string Type { get; set; }
+        public int CurrentVersion { get; set; }
+
+        public List<Event> Events { get; } = new List<Event>();
     }
 }

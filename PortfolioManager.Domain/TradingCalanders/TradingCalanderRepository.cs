@@ -18,9 +18,13 @@ namespace PortfolioManager.Domain.TradingCalanders
 
         public void LoadFromEventStream()
         {
-            var entityIds = _EventStream.GetStoredEntityIds();
-            foreach (var id in entityIds)
-                Get(id);
+            var storedEntities = _EventStream.GetAll();
+            foreach (var storedEntity in storedEntities)
+            {
+                var tradingCalander = new TradingCalander();
+                tradingCalander.ApplyEvents(storedEntity.Events);
+                _Cache.Add(tradingCalander);
+            }
         }
     }
 }

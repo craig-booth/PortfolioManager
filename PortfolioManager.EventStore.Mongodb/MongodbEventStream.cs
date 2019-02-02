@@ -21,38 +21,69 @@ namespace PortfolioManager.EventStore.Mongodb
             _Logger = logger;
         }
 
-        public IEnumerable<Guid> GetStoredEntityIds()
+        public StoredEntity Get(Guid entityId)
         {
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
             var collection = database.GetCollection<Event>(Collection);
 
-            if (typeof(T).Name == "Stock")
-            {
-                var events = collection.Find<Event>(x => true).ToList();
-                return events.Where(x => x.GetType().Name == "StockListedEvent").Select(x => x.EntityId);
-            }
-            else if (typeof(T).Name == "StapledSecurity")
-            {
-                var events = collection.Find<Event>(x => true).ToList();
-                return events.Where(x => x.GetType().Name == "StapledSecurityListedEvent").Select(x => x.EntityId);
-            }
-            else
-                return collection.AsQueryable<Event>().Select(x => x.EntityId).Distinct();
+            var events = collection.Find<Event>(x => x.EntityId == entityId).SortBy(x => x.Version).ToList<Event>();
+
+            return CreateEntity(entityId, events);
         }
 
-        public IEnumerable<Event> RetrieveEvents(Guid entityId)
+        public IEnumerable<StoredEntity> GetAll()
+        {
+            var result = new List<StoredEntity>();
+
+            var client = new MongoClient(_ConnectionString);
+            var database = client.GetDatabase("PortfolioManager");
+
+            var collection = database.GetCollection<Event>(Collection);
+
+            var events = collection.Find<Event>(x => true).ToList<Event>();
+
+            foreach (var eventGroup in events.GroupBy(x => x.EntityId))
+            {
+                result.Add(CreateEntity(eventGroup.Key, eventGroup.OrderBy(y => y.Version).ToList()));
+            }
+
+            return result;
+        }
+
+        private StoredEntity CreateEntity(Guid entityId, IList<Event> events)
+        {
+            var entity = new StoredEntity()
+            {
+                EntityId = entityId,
+                CurrentVersion = events[events.Count - 1].Version + 1
+            };
+
+            entity.Events.AddRange(events);
+
+            if (events[0].GetType().Name == "StockListedEvent")
+                entity.Type = "Stock";
+            else if (events[0].GetType().Name == "StapledSecurityListedEvent")
+                entity.Type = "StapledSecurity";
+            else if (events[0].GetType().Name == "NonTradingDaysSetEvent")
+                entity.Type = "TradingCalander";
+
+            return entity;
+
+        }
+
+        public void Add(Guid entityId, string type, IEnumerable<Event> events)
         {
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
             var collection = database.GetCollection<Event>(Collection);
 
-            return collection.Find<Event>(x => x.EntityId == entityId).SortBy(x => x.Version).ToList<Event>();
+            collection.InsertMany(events);
         }
 
-        public void StoreEvent(Guid entityId, Event @event)
+        public void AppendEvent(Guid entityId, Event @event)
         {
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
@@ -62,7 +93,7 @@ namespace PortfolioManager.EventStore.Mongodb
             collection.InsertOne(@event);
         }
 
-        public void StoreEvents(Guid entityId, IEnumerable<Event> events)
+        public void AppendEvents(Guid entityId, IEnumerable<Event> events)
         {
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
@@ -71,5 +102,6 @@ namespace PortfolioManager.EventStore.Mongodb
 
             collection.InsertMany(events);
         }
+
     }
 }

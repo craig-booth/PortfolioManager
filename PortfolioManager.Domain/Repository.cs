@@ -9,7 +9,8 @@ namespace PortfolioManager.Domain
     public interface IRepository<T> where T : ITrackedEntity
     {
         T Get(Guid id);
-        void Save(T entity);
+        void Add(T entity);
+        void Update(T entity);
     }
     
     public interface ILoadableRepository<T>
@@ -37,19 +38,36 @@ namespace PortfolioManager.Domain
 
             entity = new T();
 
-            var events = _EventStream.RetrieveEvents(id);
-            entity.ApplyEvents(events);
+            var storedEntity = _EventStream.Get(id);
+            entity.ApplyEvents(storedEntity.Events);
 
             _Cache.Add(entity);
 
             return entity;
         }
 
-        public void Save(T entity)
+        protected virtual T CreateEntity(StoredEntity storedEntity)
+        {
+            var entity = new T();
+            entity.ApplyEvents(storedEntity.Events);
+
+            return entity;
+        }
+
+        public void Add(T entity)
         {
             var newEvents = entity.FetchEvents();
 
-            _EventStream.StoreEvents(entity.Id, newEvents);
+            _EventStream.Add(entity.Id, entity.GetType().Name, newEvents);
+
+            _Cache.Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+            var newEvents = entity.FetchEvents();
+
+            _EventStream.AppendEvents(entity.Id, newEvents);
         }
     }
 }

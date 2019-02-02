@@ -6,20 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
 
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Services;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/stocks")]
     public class StockController : Controller
     {
-        private IStockRepository _StockRepository;
+        private IStockQuery _StockQuery;
+        private IRepository<Stock> _StockRepository;
 
-        public StockController(IStockRepository stockRepository)
+        public StockController(IStockQuery stockQuery, IRepository<Stock> stockRepository)
         {
+            _StockQuery = stockQuery;
             _StockRepository = stockRepository;
         }
 
@@ -33,9 +37,9 @@ namespace PortfolioManager.Web.Controllers.v2
             if (date != null)
             {
                 if (query == null)
-                    stocks = _StockRepository.All((DateTime)date);
+                    stocks = _StockQuery.All((DateTime)date);
                 else
-                    stocks = _StockRepository.Find((DateTime)date, x => MatchesQuery(x, query));
+                    stocks = _StockQuery.Find((DateTime)date, x => MatchesQuery(x, query));
 
                 resultDate = (DateTime)date;
             }
@@ -44,9 +48,9 @@ namespace PortfolioManager.Web.Controllers.v2
                 var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateUtils.NoEndDate);
 
                 if (query == null)
-                    stocks = _StockRepository.All(dateRange);
+                    stocks = _StockQuery.All(dateRange);
                 else
-                    stocks = stocks = _StockRepository.Find(dateRange, x => MatchesQuery(x, query));
+                    stocks = stocks = _StockQuery.Find(dateRange, x => MatchesQuery(x, query));
 
                 resultDate = dateRange.ToDate;
             }
@@ -59,7 +63,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [Route("{id:guid}")]
         public ActionResult<StockResponse> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
@@ -74,7 +78,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [Route("{id:guid}/history")]
         public ActionResult<StockHistoryResponse> GetHistory([FromRoute]Guid id)
         {
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
@@ -86,7 +90,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [Route("{id:guid}/closingprices")]
         public ActionResult<StockPriceResponse> GetClosingPrices([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
@@ -107,16 +111,17 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
+                var stockService = new StockService(_StockQuery, _StockRepository);
                 if (command.ChildSecurities.Count == 0)
                 {
-                    _StockRepository.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
+                    stockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
                 }
                 else
                 {
                     if (command.Trust)
                         return BadRequest("A Stapled security cannot be a trust");
 
-                    _StockRepository.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
+                    stockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
                 } 
             }
             catch (Exception e)
@@ -143,6 +148,7 @@ namespace PortfolioManager.Web.Controllers.v2
             try
             {
                 stock.ChangeProperties(command.ChangeDate, command.AsxCode, command.Name, command.Category);
+                _StockRepository.Update(stock);
             }
             catch (Exception e)
             {
@@ -167,7 +173,8 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                stock.DeList(command.DelistingDate);
+                var stockService = new StockService(_StockQuery, _StockRepository);
+                stockService.DelistStock(id, command.DelistingDate);
             }
             catch (Exception e)
             {
@@ -236,7 +243,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet]
         public ActionResult GetRelativeNTA([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 

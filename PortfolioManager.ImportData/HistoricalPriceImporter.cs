@@ -16,14 +16,16 @@ namespace PortfolioManager.ImportData
     public class HistoricalPriceImporter
     {
         private readonly IHistoricalStockPriceService _DataService;
-        private readonly IStockRepository _StockRepository;
+        private readonly IStockQuery _StockQuery;
+        private readonly IRepository<Stock> _StockRepository;
         private readonly ITradingCalander _TradingCalander;
         private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(IStockRepository stockRepository, IRepository<TradingCalander> tradingCalanderRepository, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
+        public HistoricalPriceImporter(IStockQuery stockQuery, IRepository<Stock> stockRepository, ITradingCalander tradingCalander, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
         {
+            _StockQuery = stockQuery;
             _StockRepository = stockRepository;
-            _TradingCalander = tradingCalanderRepository.Get(TradingCalanderIds.ASX);
+            _TradingCalander = tradingCalander;
             _DataService = dataService;
             _Logger = logger;
         }
@@ -41,7 +43,7 @@ namespace PortfolioManager.ImportData
             while (! _TradingCalander.IsTradingDay(lastExpectedDate))
                 lastExpectedDate = lastExpectedDate.AddDays(-1);
 
-            foreach (var stock in _StockRepository.All())
+            foreach (var stock in _StockQuery.All())
             {
                 if (cancellationToken.IsCancellationRequested)
                     return;

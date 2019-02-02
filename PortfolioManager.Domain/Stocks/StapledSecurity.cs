@@ -81,6 +81,15 @@ namespace PortfolioManager.Domain.Stocks
             _RelativeNTAs.Change(@event.Date, new RelativeNTA(@event.Percentages));
         }
 
+        public new void ApplyEvents(IEnumerable<Event> events)
+        {
+            foreach (var @event in events)
+            {
+                dynamic dynamicEvent = @event;
+                Apply(dynamicEvent);
+            }
+        }
+
     }
 
     public class StapledSecurityChild

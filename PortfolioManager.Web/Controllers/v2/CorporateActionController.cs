@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.CorporateActions;
 using PortfolioManager.Web.Mappers;
@@ -16,9 +17,9 @@ namespace PortfolioManager.Web.Controllers.v2
     [Route("api/v2/stocks/{stockId:guid}/corporateactions")]
     public class CorporateActionController : Controller
     {
-        private IStockRepository _StockRepository;
+        private IRepository<Stock> _StockRepository;
 
-        public CorporateActionController(IStockRepository stockRepository)
+        public CorporateActionController(IRepository<Stock> stockRepository)
         {
             _StockRepository = stockRepository;
         }

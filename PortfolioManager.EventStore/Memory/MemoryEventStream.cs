@@ -6,12 +6,6 @@ namespace PortfolioManager.EventStore.Memory
 {
     public class MemoryEventStream<T> : IEventStream<T>
     {
-        private class StoredEntity
-        {
-            public Guid Id;
-            public List<Event> Events = new List<Event>();
-        }
-
         public string Collection { get; private set; }
         private Dictionary<Guid, StoredEntity> _Entities = new Dictionary<Guid, StoredEntity>();
 
@@ -20,44 +14,53 @@ namespace PortfolioManager.EventStore.Memory
             Collection = collection;
         }
 
-        public IEnumerable<Guid> GetStoredEntityIds()
+        public StoredEntity Get(Guid entityId)
         {
-            return _Entities.Keys;
+            if (_Entities.ContainsKey(entityId))
+                return _Entities[entityId];
+            else
+                return null;
         }
 
-        public IEnumerable<Event> RetrieveEvents(Guid entityId)
+        public IEnumerable<StoredEntity> GetAll()
+        {
+            return _Entities.Values;
+        }
+
+        public void Add(Guid entityId, string type, IEnumerable<Event> events)
+        {
+            var entity = new StoredEntity()
+            {
+                EntityId = entityId,
+                Type = type,
+                CurrentVersion = 0
+            };
+
+            entity.Events.AddRange(events);
+
+            _Entities.Add(entityId, entity);
+        }
+
+        public void AppendEvent(Guid entityId, Event @event)
         {
             if (_Entities.ContainsKey(entityId))
             {
                 var entity = _Entities[entityId];
-
-                return entity.Events;
+                entity.Events.Add(@event);
             }
             else
-                return new Event[0];
+                throw new KeyNotFoundException();
         }
 
-        public void StoreEvent(Guid entityId, Event @event)
+        public void AppendEvents(Guid entityId, IEnumerable<Event> events)
         {
-            StoredEntity entity;
             if (_Entities.ContainsKey(entityId))
-                entity = _Entities[entityId];
+            {
+                var entity = _Entities[entityId];
+                entity.Events.AddRange(events);
+            }
             else
-                entity = new StoredEntity() { Id = entityId };
-
-            entity.Events.Add(@event); 
-        }
-
-        public void StoreEvents(Guid entityId, IEnumerable<Event> events)
-        {
-
-            StoredEntity entity;
-            if (_Entities.ContainsKey(entityId))
-                entity = _Entities[entityId];
-            else
-                entity = new StoredEntity() { Id = entityId };
-
-            entity.Events.AddRange(events);
+                throw new KeyNotFoundException();
         }
     }
 }
