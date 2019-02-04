@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace PortfolioManager.EventStore.Memory
 {
-    public class MemoryEventStream<T> : IEventStream<T>
+    public class MemoryEventStream<T> : 
+        IEventStream, 
+        IEventStream<T>
     {
         public string Collection { get; private set; }
         private Dictionary<Guid, StoredEntity> _Entities = new Dictionary<Guid, StoredEntity>();

@@ -13,6 +13,11 @@ namespace PortfolioManager.EventStore.Memory
             _EventStreams = new Dictionary<string, object>();
         }
 
+        public IEventStream GetEventStream(string collection)
+        {
+            return GetEventStream<object>(collection);
+        }
+
         public IEventStream<T> GetEventStream<T>(string collection)
         {
             if (_EventStreams.ContainsKey(collection))

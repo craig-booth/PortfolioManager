@@ -7,10 +7,12 @@ namespace PortfolioManager.EventStore
 {
     public interface IEventStore
     {
+        IEventStream GetEventStream(string collection);
         IEventStream<T> GetEventStream<T>(string collection);
     }
 
-    public interface IEventStream<T>
+
+    public interface IEventStream
     {
         string Collection { get; }
 
@@ -20,6 +22,12 @@ namespace PortfolioManager.EventStore
         void Add(Guid entityId, string type, IEnumerable<Event> events);
         void AppendEvent(Guid entityId, Event @event);
         void AppendEvents(Guid entityId, IEnumerable<Event> events);
+    }
+
+    public interface IEventStream<T>
+        : IEventStream
+    {
+
     }
 
     public class StoredEntity

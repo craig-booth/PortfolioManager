@@ -6,7 +6,9 @@ using MongoDB.Driver;
 
 namespace PortfolioManager.EventStore.Mongodb
 {
-    public class MongodbEventStream<T> : IEventStream<T>
+    public class MongodbEventStream<T> :
+        IEventStream,
+        IEventStream<T>
     {
         public string Collection { get; private set; }
 
