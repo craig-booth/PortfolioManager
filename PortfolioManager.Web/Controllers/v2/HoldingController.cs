@@ -63,7 +63,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // GET: id/value?fromDate&toDate
-        [Route("{id: guid}/value")]
+        [Route("{id:guid}/value")]
         [HttpGet]
         public ActionResult<PortfolioValueResponse> GetValue(Guid id, DateTime? fromDate, DateTime? toDate, ValueFrequency? frequency)
         {
@@ -80,7 +80,7 @@ namespace PortfolioManager.Web.Controllers.v2
         } 
 
         // GET: transactions?fromDate&toDate
-        [Route("{id: guid}/transactions")]
+        [Route("{id:guid}/transactions")]
         [HttpGet]
         public ActionResult<TransactionsResponse> GetTransactions(Guid id, DateTime? fromDate, DateTime? toDate)
         {
@@ -96,7 +96,7 @@ namespace PortfolioManager.Web.Controllers.v2
         } 
 
         // GET: capitalgains?date
-        [Route("{id: guid}/capitalgains")]
+        [Route("{id:guid}/capitalgains")]
         [HttpGet]
         public ActionResult<SimpleUnrealisedGainsResponse> GetCapitalGains(Guid id, DateTime? date)
         {
@@ -112,7 +112,7 @@ namespace PortfolioManager.Web.Controllers.v2
         } 
 
         // GET: detailedcapitalgains?date
-        [Route("{id: guid}/detailedcapitalgains")]
+        [Route("{id:guid}/detailedcapitalgains")]
         [HttpGet]
         public ActionResult<DetailedUnrealisedGainsResponse> GetDetailedCapitalGains(Guid id, DateTime? date)
         {
@@ -128,7 +128,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // GET: corporateactions
-        [Route("{id: guid}/corporateactions")]
+        [Route("{id:guid}/corporateactions")]
         [HttpGet]
         public ActionResult<CorporateActionsResponse> GetCorporateActions(Guid id)
         {
@@ -140,5 +140,5 @@ namespace PortfolioManager.Web.Controllers.v2
 
             return service.GetCorporateActions(holding);
         }
-    }
+    } 
 }

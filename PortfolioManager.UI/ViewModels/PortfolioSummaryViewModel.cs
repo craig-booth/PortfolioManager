@@ -40,46 +40,46 @@ namespace PortfolioManager.UI.ViewModels
 
             if (responce.Return1Year != null)
             {
-                Return1Year.Value = (decimal)responce.Return1Year;
                 Return1Year.NotApplicable = false;
+                Return1Year.Value = (decimal)responce.Return1Year;
             } 
             else
             {
-                Return1Year.Value = 0.00m;
                 Return1Year.NotApplicable = true;
+                Return1Year.Value = 0.00m;
             }
 
             if (responce.Return3Year != null)
             {
-                Return3Year.Value = (decimal)responce.Return3Year;
                 Return3Year.NotApplicable = false;
+                Return3Year.Value = (decimal)responce.Return3Year;
             }
             else
             {
-                Return3Year.Value = 0.00m;
                 Return3Year.NotApplicable = true;
+                Return3Year.Value = 0.00m;
             }
 
             if (responce.Return5Year != null)
             {
-                Return5Year.Value = (decimal)responce.Return5Year;
                 Return5Year.NotApplicable = false;
+                Return5Year.Value = (decimal)responce.Return5Year;
             }
             else
             {
-                Return5Year.Value = 0.00m;
                 Return5Year.NotApplicable = true;
+                Return5Year.Value = 0.00m;
             }
 
             if (responce.ReturnAll != null)
             {
-                ReturnAll.Value = (decimal)responce.ReturnAll;
                 ReturnAll.NotApplicable = false;
+                ReturnAll.Value = (decimal)responce.ReturnAll;
             }
             else
             {
-                ReturnAll.Value = 0.00m;
                 ReturnAll.NotApplicable = true;
+                ReturnAll.Value = 0.00m;
             }
 
             Holdings.Clear();
@@ -227,7 +227,9 @@ namespace PortfolioManager.UI.ViewModels
 
         public PortfolioReturn(string period)
             : this(period, 0)
+
         {
+            NotApplicable = true;
         }
     } 
 

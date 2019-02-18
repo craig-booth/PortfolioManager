@@ -31,6 +31,6 @@ namespace PortfolioManager.RestApi.Client
             Portfolio = new PortfolioResource(portfolio, _HttpClient);
             Holdings = new HoldingResource(portfolio, _HttpClient);
             Transactions = new TransactionResource(portfolio, _HttpClient);
-    }
+        }
     }
 }

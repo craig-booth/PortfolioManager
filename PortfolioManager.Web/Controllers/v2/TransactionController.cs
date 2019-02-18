@@ -58,8 +58,9 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST: transactions
-        [HttpPost]
-        public ActionResult AddTransactions([FromBody]List<Transaction> transactions)
+     //   [HttpPost]
+    //    public ActionResult AddTransactions([FromBody]List<Transaction> transactions)
+        public ActionResult AddTransactions(List<Transaction> transactions)
         {
             if (transactions == null)
                 return BadRequest("Unknown Transaction type");
@@ -76,7 +77,7 @@ namespace PortfolioManager.Web.Controllers.v2
             }
 
             return Ok();
-        }
+        } 
 
         // GET:  transactions/corporateaction/id
         [HttpGet("corporateaction/{id:guid}")]

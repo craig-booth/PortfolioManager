@@ -10,7 +10,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Date" Width="70" DisplayMemberBinding="{Binding ActionDate, StringFormat={}{0:d}, Mode=OneWay}"/>
-                    <GridViewColumn Header="Company" Width="200" DisplayMemberBinding="{Binding CompanyName, Mode=OneWay}"/>
+                    <GridViewColumn Header="Company" Width="200" DisplayMemberBinding="{Binding Stock.FormattedCompanyName, Mode=OneWay}"/>
                     <GridViewColumn Header="Description" Width="Auto" DisplayMemberBinding="{Binding Description, Mode=OneWay}"/>
                 </GridView>
             </ListView.View>

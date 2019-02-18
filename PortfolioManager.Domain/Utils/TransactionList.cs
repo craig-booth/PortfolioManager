@@ -129,7 +129,7 @@ namespace PortfolioManager.Domain.Utils
         public int IndexOf(DateTime date, TransationListPosition position)
         {
             var index = _Dates.BinarySearch(date);
-            if (index > 0)
+            if (index >= 0)
             {
                 if (position == TransationListPosition.First)
                 {

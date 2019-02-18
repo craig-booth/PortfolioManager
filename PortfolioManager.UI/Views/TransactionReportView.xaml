@@ -11,7 +11,7 @@
             <controls:DataTable Data="{Binding Transactions}" DataType="{x:Type viewmodels:TransactionReportViewItem}" Margin="0,10,0,0">
                 <controls:DataTable.Columns>
                     <controls:DataTableColumn Heading="Date" Width="70" MemberBinding="{Binding TransactionDate, StringFormat={}{0:d}, Mode=OneWay}" SummaryType="Fixed" />
-                    <controls:DataTableColumn Heading="Company" Width="200" MemberBinding="{Binding CompanyName, Mode=OneWay}" />
+                    <controls:DataTableColumn Heading="Company" Width="200" MemberBinding="{Binding Stock.FormattedCompanyName, Mode=OneWay}" />
                     <controls:DataTableColumn Heading="Description" Width="*" MemberBinding="{Binding Description, Mode=OneWay}" />
                 </controls:DataTable.Columns>
             </controls:DataTable>

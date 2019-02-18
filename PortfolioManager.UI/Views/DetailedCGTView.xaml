@@ -32,7 +32,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Company"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CompanyName}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Stock.FormattedCompanyName}"/>
                                 <TextBlock Grid.Row="0" Grid.Column="2" Text="Aquisition Date"/>
                                 <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding AquisitionDate, StringFormat={}{0:d}}"/>
 

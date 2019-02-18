@@ -36,6 +36,6 @@ namespace PortfolioManager.EventStore
         public string Type { get; set; }
         public int CurrentVersion { get; set; }
 
-        public List<Event> Events { get; } = new List<Event>();
+        public List<Event> Events { get; set; } = new List<Event>();
     }
 }

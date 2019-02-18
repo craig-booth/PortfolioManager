@@ -77,7 +77,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <ContentControl  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding PortfolioValue}" ContentTemplate="{StaticResource PortfolioValue}" />
+            <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding PortfolioValue}" ContentTemplate="{StaticResource PortfolioValue}" />
             <ContentControl Grid.Row="1" Grid.Column="0" Content="{Binding Return1Year}" />
             <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding Return3Year}" />
             <ContentControl Grid.Row="1" Grid.Column="2" Content="{Binding Return5Year}" />
@@ -94,7 +94,7 @@
                                 <ColumnDefinition Width="70"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding CompanyName, Mode=OneWay}" Grid.Column="0" Margin="2,5"/>
+                            <TextBlock Text="{Binding Stock.FormattedCompanyName, Mode=OneWay}" Grid.Column="0" Margin="2,5"/>
                             <TextBlock Text="{Binding ChangeInValue.Value, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="1" Style="{StaticResource ListText}" TextAlignment="Right"  />
                             <TextBlock Text="{Binding ChangeInValue.Change, StringFormat={}{0:c0}, Mode=OneWay}" Grid.Column="2" TextAlignment="Right" />
                             <TextBlock Text="{Binding ChangeInValue.PercentageChange, StringFormat={}{0:p}, Mode=OneWay}" Grid.Column="3" Margin="2,5" HorizontalAlignment="Right" />

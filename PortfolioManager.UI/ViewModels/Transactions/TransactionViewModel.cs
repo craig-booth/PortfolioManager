@@ -125,7 +125,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else
             {
-                CopyTransactionToFields();
+                CopyFieldsToTransaction();
+                _Transaction.Id = Guid.NewGuid();
 
                 await _RestClient.Transactions.Add(_Transaction);
             }                
@@ -153,7 +154,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected virtual void CopyFieldsToTransaction()
         {
             if (_Transaction != null)
-            {
+            { 
                 _Transaction.Stock = Stock.Id;
                 _Transaction.TransactionDate = TransactionDate;
                 _Transaction.Comment = Comment;

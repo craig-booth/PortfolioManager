@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Windows;
+using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.Common;
@@ -68,6 +69,8 @@ namespace PortfolioManager.UI.ViewModels
             get { return _Modules; }
         }
 
+        public DateRange PortfolioDateRange { get; private set; }
+
         public ViewParameter ViewParameter { get; set; }
 
         public ObservableCollection<DescribedObject<int>> FinancialYears { get; set; }
@@ -98,13 +101,13 @@ namespace PortfolioManager.UI.ViewModels
 
 #if DEBUG 
             var url = "https://docker.local:8443";
-          //  url = "http://localhost";
+          //  var url = "http://localhost";
             var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #else
             var url = "https://portfolio.boothfamily.id.au";
             var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #endif
-            _RestClient = new RestClient(url, apiKey, Guid.Empty);
+            _RestClient = new RestClient(url, apiKey, Guid.NewGuid());
 
             ViewParameter = new ViewParameter();
             ViewParameter.Stock = _AllCompanies;
@@ -112,6 +115,7 @@ namespace PortfolioManager.UI.ViewModels
             ViewParameter.RestClient = _RestClient;
 
             EditTransactionWindow = new EditTransactionViewModel(_RestClient);
+            EditTransactionWindow.TransactionChanged += HandleTransactionChanged;
             CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel(_RestClient);
 
             _Settings = new ApplicationSettings();
@@ -178,49 +182,97 @@ namespace PortfolioManager.UI.ViewModels
             if (!Path.IsPathRooted(portfolioDatabasePath))
                 portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
 
-            var response = await _RestClient.Portfolio.GetProperties();
-          
-            PopulateFinancialYearList(response.StartDate);
-            PopulateStockList(response.StocksHeld);
+            await UpdatePortfolioProperties();
         }
    
-        private void PopulateFinancialYearList(DateTime startDate)
+        private async Task UpdatePortfolioProperties()
         {
-            FinancialYears.Clear();
+            var response = await _RestClient.Portfolio.GetProperties();
 
+            PortfolioDateRange = new DateRange(response.StartDate, response.EndDate);
+
+            PopulateFinancialYearList();
+            PopulateStockList(response.StocksHeld);
+        }
+            
+        private void PopulateFinancialYearList()
+        {
             // Determinefirst and last financial years
-            int currentFinancialYear = DateTime.Today.FinancialYear();
-            int oldestFinancialYear = startDate.FinancialYear();
+            var currentFinancialYear = DateTime.Today.FinancialYear();
+            var oldestFinancialYear = PortfolioDateRange.FromDate.FinancialYear();
 
-            int year = currentFinancialYear;
-            while (year >= oldestFinancialYear)
+            if (FinancialYears.Count == 0)
             {
-                if (year == currentFinancialYear)
-                    FinancialYears.Add(new DescribedObject<int>(year, "Current"));
-                else if (year == currentFinancialYear - 1)
-                    FinancialYears.Add(new DescribedObject<int>(year, "Previous"));
-                else
-                    FinancialYears.Add(new DescribedObject<int>(year, String.Format("{0} - {1}", year - 1, year)));
+                FinancialYears.Add(new DescribedObject<int>(currentFinancialYear, "Current"));
+                FinancialYears.Add(new DescribedObject<int>(currentFinancialYear - 1, "Previous"));
 
-                year--;
+                ViewParameter.FinancialYear = currentFinancialYear;
+
+                return;
             }
 
-            ViewParameter.FinancialYear = currentFinancialYear;
+            if (PortfolioDateRange.FromDate == DateUtils.NoStartDate)
+                return;
+
+            var lastYearInList = FinancialYears.Last().Value;
+            if (lastYearInList > oldestFinancialYear)
+            {
+                var year = lastYearInList - 1;
+                while (year > oldestFinancialYear)
+                {
+                    FinancialYears.Add(new DescribedObject<int>(year, String.Format("{0} - {1}", year - 1, year)));
+                    year--;
+                }
+            }
+            else if (lastYearInList < oldestFinancialYear)
+            {
+                var year = lastYearInList;
+                while (year > oldestFinancialYear)
+                {
+                    FinancialYears.RemoveAt(FinancialYears.Count - 1);
+                    year++;
+                }
+            }            
         }
 
         private void PopulateStockList(IEnumerable<RestApi.Portfolios.Stock> stocks)
         {
-            OwnedStocks.Clear();
-
-            // Add entry to entire portfolio
-            OwnedStocks.Add(new DescribedObject<StockViewItem>(_AllCompanies, "All Companies"));
-
-            foreach (var stock in stocks.Select(x => new StockViewItem(x)).OrderBy(x => x.FormattedCompanyName))
+            if (OwnedStocks.Count == 0)
             {
-                OwnedStocks.Add(new DescribedObject<StockViewItem>(stock, stock.FormattedCompanyName));
+                // Add entry to entire portfolio
+                OwnedStocks.Add(new DescribedObject<StockViewItem>(_AllCompanies, "All Companies"));
+
+                ViewParameter.Stock = _AllCompanies;
+                return;
             }
 
-            ViewParameter.Stock = _AllCompanies;
+            foreach (var stock in stocks.Select(x => new StockViewItem(x)))
+            {
+                var index = 1;
+                for (var i = OwnedStocks.Count - 1; i == 1; i--)
+                {
+                    if (stock.FormattedCompanyName.CompareTo(OwnedStocks[i].Value.FormattedCompanyName) < 0)
+                    {
+                        index = i; 
+                        break;
+                    }
+                }
+
+                OwnedStocks.Insert(index, new DescribedObject<StockViewItem>(stock, stock.FormattedCompanyName));
+            }            
+        }
+
+        private async void HandleTransactionChanged(object sender, TransactionEventArgs e)
+        {
+            var transaction = e.Transaction;
+
+            if ((PortfolioDateRange.FromDate == DateUtils.NoStartDate) || 
+                !PortfolioDateRange.Contains(transaction.TransactionDate) ||
+                ! OwnedStocks.Any(x => x.Value.Id == transaction.Stock.Id))
+            {
+                await UpdatePortfolioProperties();
+                SelectedPage.Activate();
+            }
         }
 
     }

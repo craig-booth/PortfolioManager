@@ -179,7 +179,14 @@ namespace PortfolioManager.UI.Controls
                 if (column.SummaryType == SummaryType.Fixed)
                     summaryField = new SummaryField(column.SummaryValue);
                 else
-                    summaryField = new SummaryField(column.SummaryType, DataType.GetProperty(column.MemberBinding.Path.Path));
+                {
+                    var propertyInfo = DataType.GetProperty(column.MemberBinding.Path.Path);
+                    if (propertyInfo != null)
+                       summaryField = new SummaryField(column.SummaryType, propertyInfo);
+                    else
+                        summaryField = new SummaryField("");                    
+
+                }
 
                 SummaryFields.Add(summaryField);
             }
@@ -243,6 +250,7 @@ namespace PortfolioManager.UI.Controls
             Type = SummaryType.Fixed;
             _Value = value;
         }
+
         public SummaryField(SummaryType type, System.Reflection.PropertyInfo propertyInfo)
         {
             Type = type;

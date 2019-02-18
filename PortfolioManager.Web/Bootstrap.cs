@@ -27,9 +27,10 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Mongodb;
+using PortfolioManager.RestApi.Converters;
 
 using PortfolioManager.Web.Mappers;
-using PortfolioManager.Web.Converters;
+
 
 namespace PortfolioManager.Web
 {
@@ -94,7 +95,7 @@ namespace PortfolioManager.Web
             var settings = serviceProvider.GetRequiredService<PortfolioManagerSettings>();
             var logger = serviceProvider.GetRequiredService<ILogger<IEventStore>>();
 
-            return new MongodbEventStore(settings.EventStore, logger);
+            return new MongodbEventStore2(settings.EventStore, logger);
         }
 
         private static IMapper CreateMapper(IServiceProvider serviceProvider)

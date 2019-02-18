@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Transactions;
 
-namespace PortfolioManager.Web.Converters
+namespace PortfolioManager.RestApi.Converters
 {
     public class TransactionJsonConverter : JsonConverter
     {

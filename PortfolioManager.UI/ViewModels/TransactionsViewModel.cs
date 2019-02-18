@@ -90,7 +90,8 @@ namespace PortfolioManager.UI.ViewModels
     class TransactionViewItem
     {
         public Guid Id { get; private set; }
-        public StockViewItem Stock;
+        public StockViewItem Stock { get; private set; }
+        public string CompanyName {  get { return Stock.FormattedCompanyName; } }
         public DateTime TransactionDate { get; private set; }
         public string Description { get; private set; }
 

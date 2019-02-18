@@ -23,9 +23,11 @@ using Newtonsoft.Json.Serialization;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.RestApi.Converters;
+
 using PortfolioManager.Web;
 using PortfolioManager.Web.Controllers.v2;
-using PortfolioManager.Web.Converters;
+
 
 namespace PortfolioManager.Test.SystemTests
 {
@@ -57,8 +59,8 @@ namespace PortfolioManager.Test.SystemTests
             var settings = new PortfolioManagerSettings()
             {
                 ApiKey = Guid.Empty,
-                EventStore = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017",
-                //EventStore = "mongodb://192.168.99.100:27017",
+                //EventStore = "mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017",
+                EventStore = "mongodb://192.168.99.100:27017",
                 Port = 0
             };
             ServiceCollection services = new ServiceCollection();

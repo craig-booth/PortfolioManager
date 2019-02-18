@@ -57,7 +57,7 @@ namespace PortfolioManager.UI.ViewModels
 
     class TransactionReportViewItem
     {
-        public StockViewItem Stock;
+        public StockViewItem Stock { get; private set; }
 
         public DateTime TransactionDate { get; private set; }
         public string Description { get; private set; }

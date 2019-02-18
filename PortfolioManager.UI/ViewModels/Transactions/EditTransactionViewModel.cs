@@ -10,6 +10,7 @@ using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {
+
     class EditTransactionViewModel: PopupWindow
     {
         private RestClient _RestClient;
@@ -98,8 +99,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             if (TransactionViewModel != null)
                 TransactionViewModel.Save();
 
+            var eventArgs = new TransactionEventArgs(TransactionViewModel);
+
             TransactionViewModel = null;
             Close();
+
+            OnTransactionChangedEvent(eventArgs);
         }
 
         private bool CanSaveTransaction()
@@ -126,6 +131,25 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             return (TransactionViewModel != null) && (NewTransaction == false);
         }
 
+        public event EventHandler<TransactionEventArgs> TransactionChanged;
+
+        private void OnTransactionChangedEvent(TransactionEventArgs e)
+        {
+            var handler = TransactionChanged;
+            if (handler != null)
+                handler(this, e);
+        }
 
     }
+
+    class TransactionEventArgs : EventArgs
+    {
+        public TransactionViewModel Transaction { get; set; }
+
+        public TransactionEventArgs(TransactionViewModel transaction)
+        {
+            Transaction = transaction;
+        }
+    }
+
 }

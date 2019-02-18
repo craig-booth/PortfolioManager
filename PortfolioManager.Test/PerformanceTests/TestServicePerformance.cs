@@ -24,7 +24,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Web;
 using PortfolioManager.Web.Controllers.v2;
-using PortfolioManager.Web.Converters;
+using PortfolioManager.RestApi.Converters;
 
 namespace PortfolioManager.Test.PerformanceTests
 {

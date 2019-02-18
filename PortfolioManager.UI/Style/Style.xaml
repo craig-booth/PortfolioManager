@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:style="clr-namespace:PortfolioManager.UI.Style"
-                    xmlns:service="clr-namespace:PortfolioManager.Service.Interface;assembly=PortfolioManager.Service">
+                    xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels">
 
 
     <style:NotTrue x:Key="NotTrue"/>
@@ -175,9 +175,9 @@
     <Style x:Key="FormStockList" TargetType="ComboBox" BasedOn="{StaticResource FormComboBox}">
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate DataType="service:StockItem">
+                <DataTemplate DataType="viewmodels:StockViewItem">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding ASXCode}" Width="60"/>
+                        <TextBlock Text="{Binding AsxCode}" Width="60"/>
                         <TextBlock Text="{Binding Name}"/>
                     </StackPanel>
                 </DataTemplate>

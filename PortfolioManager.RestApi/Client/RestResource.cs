@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+
+using PortfolioManager.RestApi.Converters;
 
 namespace PortfolioManager.RestApi.Client
 {
@@ -23,11 +27,12 @@ namespace PortfolioManager.RestApi.Client
             HttpResponseMessage httpResponse = await _HttpClient.GetAsync(url);
             if (httpResponse.IsSuccessStatusCode)
             {
-                var formatter = new JsonMediaTypeFormatter
-                {
-                    SerializerSettings = {TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto }
-                };
+                var formatter = new JsonMediaTypeFormatter();
+                formatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 formatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+                formatter.SerializerSettings.Converters.Add(new TransactionJsonConverter());
+                formatter.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
 
                 response = await httpResponse.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { formatter });
             }
@@ -37,12 +42,12 @@ namespace PortfolioManager.RestApi.Client
 
         protected async Task<bool> PostAsync<D>(string url, D data)
         {
- 
-            var formatter = new JsonMediaTypeFormatter
-            {
-                SerializerSettings = { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects }
-            };
+            var formatter = new JsonMediaTypeFormatter();
+            formatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             formatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            formatter.SerializerSettings.Converters.Add(new TransactionJsonConverter());
+            formatter.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
 
             HttpResponseMessage response = await _HttpClient.PostAsync<D>(url, data, formatter);
             return response.IsSuccessStatusCode;

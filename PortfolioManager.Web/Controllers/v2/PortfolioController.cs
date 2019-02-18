@@ -67,7 +67,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet]
         public ActionResult<PortfolioValueResponse> GetValue(DateTime? fromDate, DateTime? toDate, ValueFrequency? frequency)
         {
-            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : (toDate != null) ? ((DateTime)toDate).AddYears(-1) : DateTime.Today.AddYears(-1), (toDate != null) ? (DateTime)toDate : DateTime.Today);
             var requestedFrequency = (frequency != null) ? (ValueFrequency)frequency : ValueFrequency.Daily;
 
             var service = new PortfolioValueService(_Portfolio, _TradingCalander);
@@ -86,7 +86,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             return service.GetTransactions(dateRange);
 
-        }
+        } 
 
         // GET: capitalgains?date
         [Route("capitalgains")]
