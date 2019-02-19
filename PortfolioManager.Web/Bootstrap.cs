@@ -22,6 +22,7 @@ using PortfolioManager.Common.Scheduler;
 using PortfolioManager.ImportData;
 using PortfolioManager.ImportData.DataServices;
 using PortfolioManager.Domain;
+using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
@@ -60,7 +61,7 @@ namespace PortfolioManager.Web
 
             services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IRepository<TradingCalander>>().Get(TradingCalanderIds.ASX));
 
-            services.AddSingleton<IPortfolioCache, PortfolioCache>();
+            services.AddSingleton<IEventStream<Portfolio>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Portfolio>("Portfolios"));
 
             services.AddSingleton<StockResolver, StockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
@@ -130,7 +131,6 @@ namespace PortfolioManager.Web
 
             return serviceProvider;
         }
-
     }
 
     public class PortfolioManagerSettings

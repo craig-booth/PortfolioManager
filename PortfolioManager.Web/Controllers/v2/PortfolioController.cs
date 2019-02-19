@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using AutoMapper;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain;
+using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
@@ -20,8 +22,8 @@ namespace PortfolioManager.Web.Controllers.v2
         private IMapper _Mapper;
         private ITradingCalander _TradingCalander;
 
-        public PortfolioController(IPortfolioCache portfolioCache, ITradingCalander tradingCalander,  IMapper mapper)
-            : base(portfolioCache)
+        public PortfolioController(IRepository<Portfolio> portfolioRepository, ITradingCalander tradingCalander,  IMapper mapper)
+            : base(portfolioRepository)
         {
             _Mapper = mapper;
             _TradingCalander = tradingCalander;

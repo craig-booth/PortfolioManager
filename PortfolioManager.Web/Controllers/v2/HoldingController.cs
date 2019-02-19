@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using AutoMapper;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain;
+using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
@@ -19,8 +21,8 @@ namespace PortfolioManager.Web.Controllers.v2
         private IMapper _Mapper;
         private ITradingCalander _TradingCalander;
 
-        public HoldingController(IPortfolioCache portfolioCache, ITradingCalander tradingCalander, IMapper mapper)
-            : base(portfolioCache)
+        public HoldingController(IRepository<Portfolio> portfolioRepository, ITradingCalander tradingCalander, IMapper mapper)
+            : base(portfolioRepository)
         {
             _Mapper = mapper;
             _TradingCalander = tradingCalander;
@@ -28,7 +30,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:
         [HttpGet]
-        public ActionResult<List<Holding>> Get([FromQuery]DateTime? date)
+        public ActionResult<List<RestApi.Portfolios.Holding>> Get([FromQuery]DateTime? date)
         {
             var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
 
@@ -39,7 +41,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:
         [HttpGet]
-        public ActionResult<List<Holding>> Get([FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        public ActionResult<List<RestApi.Portfolios.Holding>> Get([FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
@@ -50,7 +52,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:  id
         [HttpGet("{id:guid}")]
-        public ActionResult<Holding> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
+        public ActionResult<RestApi.Portfolios.Holding> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
             var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
 

@@ -7,8 +7,7 @@ using System.Linq;
 
 using AutoMapper;
 
-using PortfolioManager.Common;
-using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Transactions;
 
@@ -19,8 +18,8 @@ namespace PortfolioManager.Web.Controllers.v2
     {
         private IMapper _Mapper;
 
-        public TransactionController(IPortfolioCache portfolioCache, IMapper mapper)
-            : base(portfolioCache)
+        public TransactionController(IRepository<Portfolio> portfolioRepository, IMapper mapper)
+            : base(portfolioRepository)
         {
             _Mapper = mapper;
         }

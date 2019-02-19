@@ -75,6 +75,11 @@ namespace PortfolioManager.Test.SystemTests
             _ServiceProvider = services.BuildServiceProvider();
             _ServiceProvider.InitializeStockExchange();
 
+            var portfolio = new PortfolioManager.Domain.Portfolios.Portfolio();
+            portfolio.Create(_PortfolioId, "Compare To Live");
+            var cache = _ServiceProvider.GetRequiredService<PortfolioManager.Domain.IEntityCache<PortfolioManager.Domain.Portfolios.Portfolio>>();
+            cache.Add(portfolio);
+
             LoadTransactions();
         }
 

@@ -2,18 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     public abstract class BasePortfolioController : Controller
     {
-        private IPortfolioCache _PortfolioCache;
+        private IRepository<Portfolio> _PortfolioRepository;
         protected Portfolio _Portfolio { get; private set; }
 
-        public BasePortfolioController(IPortfolioCache portfolioCache)
+        public BasePortfolioController(IRepository<Portfolio> portfolioRepository)
         {
-            _PortfolioCache = portfolioCache;
+            _PortfolioRepository = portfolioRepository;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -22,7 +23,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var portfolioId = (string)filterContext.RouteData.Values["portfolioId"];
 
-            _Portfolio = _PortfolioCache.Get(Guid.Parse(portfolioId));
+            _Portfolio = _PortfolioRepository.Get(Guid.Parse(portfolioId));
         }
     }
 }

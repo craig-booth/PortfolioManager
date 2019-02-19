@@ -36,11 +36,12 @@ namespace PortfolioManager.Domain
             if (entity != null)
                 return entity;
 
-            entity = new T();
-
             var storedEntity = _EventStream.Get(id);
-            entity.ApplyEvents(storedEntity.Events);
+            if (storedEntity == null)
+                return default(T);
 
+            entity = new T();
+            entity.ApplyEvents(storedEntity.Events);
             _Cache.Add(entity);
 
             return entity;

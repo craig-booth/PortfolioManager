@@ -17,6 +17,9 @@ namespace PortfolioManager.Utils
 
             EventStoreUtils.CopyEventStore(sourceEventStore, destinationEventStore);
 
+            var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
+            EventStoreUtils.CreatePortfolio(destinationEventStore, portfolioId, "Test");
+
             Console.WriteLine("Done");
             Console.ReadKey();
         }

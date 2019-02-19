@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.Concurrent;
 
 namespace PortfolioManager.Domain
 {
@@ -19,7 +19,7 @@ namespace PortfolioManager.Domain
         IEntityCache<T>
         where T : IEntity
     {
-        private Dictionary<Guid, T> _Entities = new Dictionary<Guid, T>();
+        private ConcurrentDictionary<Guid, T> _Entities = new ConcurrentDictionary<Guid, T>();
 
         public T Get(Guid id)
         {
@@ -31,12 +31,12 @@ namespace PortfolioManager.Domain
 
         public void Add(T entity)
         {
-            _Entities.Add(entity.Id, entity);
+            _Entities.TryAdd(entity.Id, entity);
         }
 
         public void Remove(Guid id)
         {
-            _Entities.Remove(id);
+            _Entities.TryRemove(id, out var entity);
         }
 
         public void Clear()

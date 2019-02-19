@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PortfolioManager.EventStore;
+using PortfolioManager.Domain.Portfolios.Events;
 
 namespace PortfolioManager.Utils
 {
@@ -23,6 +24,14 @@ namespace PortfolioManager.Utils
         {
             foreach (var entity in source.GetAll())
                 destination.Add(entity.EntityId, entity.Type, entity.Events);
+        }
+
+        public static void CreatePortfolio(IEventStore eventStore, Guid id, string name)
+        {
+            var eventStream = eventStore.GetEventStream("Portfolios");
+
+            var events = new Event[] { new PortfolioCreatedEvent(id, 0, name) };
+            eventStream.Add(id, "Portfolio", events);
         }
     }
 
