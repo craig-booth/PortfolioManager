@@ -9,6 +9,7 @@ using AutoMapper;
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
+using PortfolioManager.Domain.Transactions;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
@@ -33,24 +34,24 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:
         [HttpGet]
-        public ActionResult<List<RestApi.Portfolios.Holding>> Get([FromQuery]DateTime? date)
+        public ActionResult<List<RestApi.Portfolios.Holding>> Get([FromQuery]DateTime? date, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
-            var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
+            DateTime requestedDate;
+            IEnumerable<Domain.Portfolios.Holding> holdings;
+            if (date != null)
+            {
+                requestedDate = (DateTime)date;
+                holdings = _Portfolio.Holdings.All(requestedDate);
+            }
+            else
+            {
+                var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            var holdings = _Portfolio.Holdings.All(requestedDate);
+                requestedDate = dateRange.ToDate;
+                holdings = _Portfolio.Holdings.All(dateRange);
+            }
 
             return _Mapper.Map<List<RestApi.Portfolios.Holding>>(holdings, opts => opts.Items["date"] = requestedDate);
-        }
-
-        // GET:
-        [HttpGet]
-        public ActionResult<List<RestApi.Portfolios.Holding>> Get([FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
-        {
-            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
-
-            var holdings = _Portfolio.Holdings.All(dateRange);
-
-            return _Mapper.Map<List<RestApi.Portfolios.Holding>>(holdings, opts => opts.Items["date"] = dateRange.ToDate);
         }
 
         // GET:  id
@@ -141,7 +142,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (holding == null)
                 return NotFound();
 
-            var service = new PortfolioCorporateActionsService(_Portfolio);
+            var service = new PortfolioCorporateActionsService(_Portfolio, _Mapper);
 
             return service.GetCorporateActions(holding);
         }

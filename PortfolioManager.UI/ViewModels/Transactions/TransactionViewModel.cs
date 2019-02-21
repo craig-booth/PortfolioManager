@@ -87,7 +87,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             _Transaction = transaction;
 
             if (_StockSelection != TransactionStockSelection.None)
-                AvailableStocks = new ObservableCollection<StockViewItem>();                   
+                AvailableStocks = new ObservableCollection<StockViewItem>();
 
             CopyTransactionToFields();
         }

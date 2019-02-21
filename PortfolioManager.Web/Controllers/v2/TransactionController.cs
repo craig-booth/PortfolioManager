@@ -82,13 +82,23 @@ namespace PortfolioManager.Web.Controllers.v2
             return Ok();
         } 
 
-        // GET:  transactions/corporateaction/id
-        [HttpGet("corporateaction/{id:guid}")]
-        public ActionResult<List<Transaction>> GetTransactionsForCorporateAction(Guid id)
+        // GET:  transactions/id/corporateaction/id
+        [HttpGet("{stockId:guid}/corporateaction/{actionId:guid}")]
+        public ActionResult<List<Transaction>> GetTransactionsForCorporateAction(Guid stockId, Guid actionId)
         {
-            var transactions = new List<Transaction>();
+            var holding = _Portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                return NotFound();
 
-            return transactions;
+            var corporateAction = holding.Stock.CorporateActions[actionId];
+            if (corporateAction == null)
+                return NotFound();
+
+            var corporateActionsService = new PortfolioCorporateActionsService(_Portfolio, _Mapper);
+           
+            var transactions = corporateActionsService.GetTransactionsForCorporateAction(holding, corporateAction);
+
+            return transactions.ToList();
         }
     }
 }

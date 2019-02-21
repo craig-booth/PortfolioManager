@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
@@ -13,10 +15,12 @@ namespace PortfolioManager.Web.Services
     public class PortfolioCorporateActionsService
     {
         public Portfolio Portfolio { get; }
+        private IMapper _Mapper;
 
-        public PortfolioCorporateActionsService(Portfolio portfolio)
+        public PortfolioCorporateActionsService(Portfolio portfolio, IMapper mapper)
         {
             Portfolio = portfolio;
+            _Mapper = mapper;
         }
 
         public CorporateActionsResponse GetCorporateActions()
@@ -52,6 +56,13 @@ namespace PortfolioManager.Web.Services
 
             return response;
         }
-        
+
+        public IEnumerable<RestApi.Transactions.Transaction> GetTransactionsForCorporateAction(Domain.Portfolios.Holding holding, Domain.CorporateActions.CorporateAction corporateAction)
+        {
+            var transactions = corporateAction.GetTransactionList(holding);
+
+            return _Mapper.Map<IEnumerable<RestApi.Transactions.Transaction>>(transactions);
+        }
+
     }
 }

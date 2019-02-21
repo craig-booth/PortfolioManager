@@ -158,7 +158,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [HttpGet]
         public ActionResult<CorporateActionsResponse> GetCorporateActions()
         {
-            var service = new PortfolioCorporateActionsService(_Portfolio);
+            var service = new PortfolioCorporateActionsService(_Portfolio, _Mapper);
 
             return service.GetCorporateActions();
         }

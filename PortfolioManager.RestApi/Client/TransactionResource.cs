@@ -39,9 +39,9 @@ namespace PortfolioManager.RestApi.Client
             return await PostAsync<IEnumerable<Transaction>>(url, transactions);
         }
 
-        public async Task<List<Transaction>> GetTransactionsForCorporateAction(Guid id)
+        public async Task<List<Transaction>> GetTransactionsForCorporateAction(Guid stock, Guid action)
         {
-            return await GetAsync<List<Transaction>>("/api/v2/portfolio/" + PortfolioId + "/transactions/corporateaction/" + id.ToString());
+            return await GetAsync<List<Transaction>>("/api/v2/portfolio/" + PortfolioId + "/transactions/" + stock.ToString() + "/corporateaction/" + action.ToString());
         }
 
     }

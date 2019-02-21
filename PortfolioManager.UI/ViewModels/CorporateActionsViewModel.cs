@@ -47,7 +47,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             if (corporateAction != null)
             {
-                var transactions = await _Parameter.RestClient.Transactions.GetTransactionsForCorporateAction(corporateAction.Id);
+                var transactions = await _Parameter.RestClient.Transactions.GetTransactionsForCorporateAction(corporateAction.Stock.Id, corporateAction.Id);
                 
                 _CreateTransactionsViewModel.AddTransactions(transactions);
             } 
