@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-using PortfolioManager.EventStore;
-
-namespace PortfolioManager.Domain.Portfolios.Events
+namespace PortfolioManager.Domain.Transactions.Events
 {
-    public class IncomeOccurredEvent : TransactionnOccurredEvent
+    public class IncomeOccurredEvent : TransactionOccurredEvent
     {
         public DateTime RecordDate { get; set; }
         public decimal FrankedAmount { get; set; }
@@ -17,8 +15,8 @@ namespace PortfolioManager.Domain.Portfolios.Events
         public bool CreateCashTransaction { get; set; }
         public decimal DRPCashBalance { get; set; }
 
-        public IncomeOccurredEvent(Guid entityId, int version, DateTime date, Guid stock, string comment)
-            : base(entityId, version, date, stock, comment)
+        public IncomeOccurredEvent(Guid entityId, int version, Guid transactionId, DateTime date, Guid stock, string comment)
+            : base(entityId, version, transactionId, date, stock, comment)
         {
 
         }

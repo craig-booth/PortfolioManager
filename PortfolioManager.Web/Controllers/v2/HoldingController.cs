@@ -9,6 +9,7 @@ using AutoMapper;
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
@@ -19,13 +20,15 @@ namespace PortfolioManager.Web.Controllers.v2
     public class HoldingController : BasePortfolioController
     {
         private IMapper _Mapper;
+        private IStockQuery _StockQuery;
         private ITradingCalander _TradingCalander;
 
-        public HoldingController(IRepository<Portfolio> portfolioRepository, ITradingCalander tradingCalander, IMapper mapper)
+        public HoldingController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, ITradingCalander tradingCalander, IMapper mapper)
             : base(portfolioRepository)
         {
-            _Mapper = mapper;
+            _StockQuery = stockQuery;
             _TradingCalander = tradingCalander;
+            _Mapper = mapper;
         }
 
         // GET:
@@ -92,7 +95,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            var service = new PortfolioTransactionService(_Portfolio, _Mapper);
+            var service = new PortfolioTransactionService(_Portfolio, _PortfolioRepository, _StockQuery, _Mapper);
 
             return service.GetTransactions(holding, dateRange);
         } 

@@ -75,9 +75,11 @@ namespace PortfolioManager.Test.SystemTests
             _ServiceProvider = services.BuildServiceProvider();
             _ServiceProvider.InitializeStockExchange();
 
-            var portfolio = new PortfolioManager.Domain.Portfolios.Portfolio();
-            portfolio.Create(_PortfolioId, "Compare To Live");
             var cache = _ServiceProvider.GetRequiredService<PortfolioManager.Domain.IEntityCache<PortfolioManager.Domain.Portfolios.Portfolio>>();
+            var stockQuery = _ServiceProvider.GetRequiredService<IStockQuery>();
+            var portfolio = new PortfolioManager.Domain.Portfolios.Portfolio(stockQuery);
+            portfolio.Create(_PortfolioId, "Compare To Live");
+            
             cache.Add(portfolio);
 
             LoadTransactions();
@@ -103,7 +105,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<TransactionController>(); 
             SetControllerContext(controller);
 
-            controller.AddTransactions(transactions.Where(x => x != null).ToList());
+            controller.AddTransactions(transactions);
         }
 
         private void SaveActualResult(object actual, string fileName)

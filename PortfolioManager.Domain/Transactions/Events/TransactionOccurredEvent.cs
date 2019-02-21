@@ -4,17 +4,19 @@ using System.Text;
 
 using PortfolioManager.EventStore;
 
-namespace PortfolioManager.Domain.Portfolios.Events
+namespace PortfolioManager.Domain.Transactions.Events
 {
-    public abstract class TransactionnOccurredEvent : Event
+    public abstract class TransactionOccurredEvent : Event
     {
+        public Guid TransactionId { get; set; }
         public DateTime Date { get; set; }
         public Guid Stock { get; set; }
         public string Comment { get; set; }
 
-        public TransactionnOccurredEvent(Guid entityId, int version, DateTime date, Guid stock, string comment)
+        public TransactionOccurredEvent(Guid entityId, int version, Guid transactionId, DateTime date, Guid stock, string comment)
             : base(entityId, version)
         {
+            TransactionId = transactionId;
             Date = date;
             Stock = stock;
             Comment = comment;

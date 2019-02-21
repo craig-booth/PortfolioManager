@@ -204,13 +204,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else if (_StockSelection == TransactionStockSelection.TradeableStocks)
             {
-                var stocks = await _RestClient.Stocks.Get(date);
+                var response = await _RestClient.Stocks.Get(date);
 
-                foreach (var stock in stocks)
-                {
-                    var stockItem = new StockViewItem(stock.Id, stock.ASXCode, stock.Name);
-                    AvailableStocks.Add(stockItem);
-                }
+                var stocks = response.Select(x => new StockViewItem(x.Id, x.ASXCode, x.Name));
+                foreach (var stock in stocks.OrderBy(x => x.FormattedCompanyName))
+                    AvailableStocks.Add(stock);
             }
         }
     }

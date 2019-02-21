@@ -9,7 +9,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
     public abstract class BasePortfolioController : Controller
     {
-        private IRepository<Portfolio> _PortfolioRepository;
+        protected IRepository<Portfolio> _PortfolioRepository;
         protected Portfolio _Portfolio { get; private set; }
 
         public BasePortfolioController(IRepository<Portfolio> portfolioRepository)

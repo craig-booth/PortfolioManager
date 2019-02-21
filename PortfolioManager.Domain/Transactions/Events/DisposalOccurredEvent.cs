@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 using PortfolioManager.Common;
-using PortfolioManager.EventStore;
 
-namespace PortfolioManager.Domain.Portfolios.Events
+namespace PortfolioManager.Domain.Transactions.Events
 {
-    public class DisposalOccurredEvent : TransactionnOccurredEvent
+    public class DisposalOccurredEvent : TransactionOccurredEvent
     {
         public int Units { get; set; }
         public decimal AveragePrice { get; set; }
@@ -15,8 +14,8 @@ namespace PortfolioManager.Domain.Portfolios.Events
         public CGTCalculationMethod CGTMethod { get; set; }
         public bool CreateCashTransaction { get; set; }
 
-        public DisposalOccurredEvent(Guid entityId, int version, DateTime date, Guid stock, string comment)
-            : base(entityId, version, date, stock, comment)
+        public DisposalOccurredEvent(Guid entityId, int version, Guid transactionId, DateTime date, Guid stock, string comment)
+            : base(entityId, version, transactionId, date, stock, comment)
         {
 
         }

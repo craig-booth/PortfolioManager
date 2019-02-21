@@ -48,20 +48,17 @@ namespace PortfolioManager.Web
 
             services.Add(ServiceDescriptor.Singleton(typeof(IEntityCache<>), typeof(EntityCache<>)));
             services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
+            services.Add(ServiceDescriptor.Singleton(typeof(IEntityFactory<>), typeof(DefaultEntityFactory<>)));
 
             services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("StockRepository"));
-
             services.AddSingleton<IStockQuery, StockQuery>();
-            services.AddSingleton<IRepository<Stock>, StockRepository>();
-            services.AddSingleton<ILoadableRepository<Stock>, StockRepository>();
+            services.AddSingleton<IEntityFactory<Stock>, StockEntityFactory>();
         
             services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));
-            services.AddSingleton<IRepository<TradingCalander>, TradingCalanderRepository>();
-            services.AddSingleton<ILoadableRepository<TradingCalander>, TradingCalanderRepository>();
-
             services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IRepository<TradingCalander>>().Get(TradingCalanderIds.ASX));
 
             services.AddSingleton<IEventStream<Portfolio>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Portfolio>("Portfolios"));
+            services.AddSingleton<IEntityFactory<Portfolio>, PortfolioEntityFactory>();
 
             services.AddSingleton<StockResolver, StockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
@@ -123,11 +120,11 @@ namespace PortfolioManager.Web
 
         public static IServiceProvider InitializeStockExchange(this IServiceProvider serviceProvider)
         {
-            var stockRepository = serviceProvider.GetRequiredService<ILoadableRepository<Stock>>();
-            stockRepository.LoadFromEventStream();
+            var stockRepository = serviceProvider.GetRequiredService<IRepository<Stock>>();
+            stockRepository.PopulateCache();
 
-            var tradingCalanderRepository = serviceProvider.GetRequiredService<ILoadableRepository<TradingCalander>>();
-            tradingCalanderRepository.LoadFromEventStream();
+            var tradingCalanderRepository = serviceProvider.GetRequiredService<IRepository<TradingCalander>>();
+            tradingCalanderRepository.PopulateCache();
 
             return serviceProvider;
         }

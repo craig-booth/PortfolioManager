@@ -11,23 +11,33 @@ namespace PortfolioManager.Domain
         T Get(Guid id);
         void Add(T entity);
         void Update(T entity);
-    }
-    
-    public interface ILoadableRepository<T>
-    {
-        void LoadFromEventStream();
+        void PopulateCache();
     }
 
     public class Repository<T> : IRepository<T>
-         where T : ITrackedEntity, new()
+         where T : ITrackedEntity
     {
         protected IEventStream<T> _EventStream;
         protected IEntityCache<T> _Cache;
+        protected IEntityFactory<T> _EntityFactory;
+        protected Func<string, T> _CreateFunction;
 
-        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache)
+        private Repository(IEventStream<T> eventStream, IEntityCache<T> cache)
         {
             _EventStream = eventStream;
             _Cache = cache;
+        }
+
+        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache, IEntityFactory<T> entityFactory)
+            : this(eventStream, cache)
+        {
+            _EntityFactory = entityFactory;
+        }
+
+        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache, Func<string, T> createFunction)
+            : this(eventStream, cache)
+        {
+            _CreateFunction = createFunction;
         }
 
         public T Get(Guid id)
@@ -40,17 +50,22 @@ namespace PortfolioManager.Domain
             if (storedEntity == null)
                 return default(T);
 
-            entity = new T();
-            entity.ApplyEvents(storedEntity.Events);
+            entity = CreateEntity(storedEntity);
             _Cache.Add(entity);
 
             return entity;
         }
 
-        protected virtual T CreateEntity(StoredEntity storedEntity)
+        protected T CreateEntity(StoredEntity storedEntity)
         {
-            var entity = new T();
-            entity.ApplyEvents(storedEntity.Events);
+            T entity;
+
+            if (_EntityFactory != null)
+                entity = _EntityFactory.Create(storedEntity.Type);
+            else
+                entity = _CreateFunction(storedEntity.Type);
+
+            ((dynamic)entity).ApplyEvents(storedEntity.Events);
 
             return entity;
         }
@@ -70,5 +85,17 @@ namespace PortfolioManager.Domain
 
             _EventStream.AppendEvents(entity.Id, newEvents);
         }
+
+        public void PopulateCache()
+        {
+            var storedEntities = _EventStream.GetAll();
+            foreach (var storedEntity in storedEntities)
+            {
+                var entity = CreateEntity(storedEntity);
+                if (entity != null)
+                    _Cache.Add(entity);
+            }
+        }
     }
+    
 }

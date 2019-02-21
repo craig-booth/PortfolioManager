@@ -9,7 +9,9 @@ using AutoMapper;
 
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
+using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Transactions;
+using PortfolioManager.Web.Services;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
@@ -17,10 +19,12 @@ namespace PortfolioManager.Web.Controllers.v2
     public class TransactionController : BasePortfolioController
     {
         private IMapper _Mapper;
+        private IStockQuery _StockQuery;
 
-        public TransactionController(IRepository<Portfolio> portfolioRepository, IMapper mapper)
+        public TransactionController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, IMapper mapper)
             : base(portfolioRepository)
         {
+            _StockQuery = stockQuery;
             _Mapper = mapper;
         }
 
@@ -44,9 +48,8 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                var domainTransaction = _Mapper.Map<Domain.Transactions.Transaction>(transaction);
-
-                _Portfolio.Transactions.Apply(domainTransaction);
+                var transactionService = new PortfolioTransactionService(_Portfolio, _PortfolioRepository, _StockQuery, _Mapper);
+                transactionService.ApplyTransaction((dynamic)transaction);
             }
             catch (Exception e)
             {
@@ -66,9 +69,10 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                var domainTransactions = _Mapper.Map<List<Domain.Transactions.Transaction>>(transactions);
+                var transactionService = new PortfolioTransactionService(_Portfolio, _PortfolioRepository, _StockQuery, _Mapper);
 
-                _Portfolio.Transactions.Apply(domainTransactions);
+                foreach (var transaction in transactions)
+                    transactionService.ApplyTransaction((dynamic)transaction);
             }
             catch (Exception e)
             {
