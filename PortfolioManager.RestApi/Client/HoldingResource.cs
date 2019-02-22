@@ -27,7 +27,7 @@ namespace PortfolioManager.RestApi.Client
         }
         public async Task<List<Holding>> Get(DateRange dateRange)
         {
-            var url = "/api/v2/portfolio/" + PortfolioId + "/holdings?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString();
+            var url = "/api/v2/portfolio/" + PortfolioId + "/holdings?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString();
 
             return await GetAsync<List<Holding>>(url);
         }
@@ -41,7 +41,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<PortfolioValueResponse> GetValue(Guid stockId, DateRange dateRange, ValueFrequency frequency)
         {
-            var url = "/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/value?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString();
+            var url = "/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/value?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString();
 
             if (frequency == ValueFrequency.Weekly)
                 url += "&frequency=weekly";
@@ -55,7 +55,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<TransactionsResponse> GetTransactions(Guid stockId, DateRange dateRange)
         {
-            return await GetAsync<TransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/transactions?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<TransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/transactions?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<SimpleUnrealisedGainsResponse> GetCapitalGains(Guid stockId, DateTime date)

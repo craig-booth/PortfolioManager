@@ -31,7 +31,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<PortfolioPerformanceResponse> GetPerformance(DateRange dateRange)
         {
-            return await GetAsync<PortfolioPerformanceResponse>("/api/v2/portfolio/" + PortfolioId + "/performance?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<PortfolioPerformanceResponse>("/api/v2/portfolio/" + PortfolioId + "/performance?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<PortfolioValueResponse> GetValue(DateRange dateRange, ValueFrequency frequency)
@@ -50,7 +50,7 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<TransactionsResponse> GetTransactions(DateRange dateRange)
         {
-            return await GetAsync<TransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/transactions?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<TransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/transactions?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<SimpleUnrealisedGainsResponse> GetCapitalGains(DateTime date)
@@ -65,17 +65,17 @@ namespace PortfolioManager.RestApi.Client
 
         public async Task<CgtLiabilityResponse> GetCGTLiability(DateRange dateRange)
         {
-            return await GetAsync<CgtLiabilityResponse>("/api/v2/portfolio/" + PortfolioId + "/cgtliability?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<CgtLiabilityResponse>("/api/v2/portfolio/" + PortfolioId + "/cgtliability?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<CashAccountTransactionsResponse> GetCashAccount(DateRange dateRange)
         {
-            return await GetAsync<CashAccountTransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/cashaccount?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<CashAccountTransactionsResponse>("/api/v2/portfolio/" + PortfolioId + "/cashaccount?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<IncomeResponse> GetIncome(DateRange dateRange)
         {
-            return await GetAsync<IncomeResponse>("/api/v2/portfolio/" + PortfolioId + "/income?fromdate=" + dateRange.FromDate.ToIsoDateString() + "?todate=" + dateRange.ToDate.ToIsoDateString());
+            return await GetAsync<IncomeResponse>("/api/v2/portfolio/" + PortfolioId + "/income?fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
         }
 
         public async Task<CorporateActionsResponse> GetCorporateActions()

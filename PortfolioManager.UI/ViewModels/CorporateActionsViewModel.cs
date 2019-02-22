@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
@@ -61,7 +62,7 @@ namespace PortfolioManager.UI.ViewModels
 
             CorporateActions.Clear();
             
-            foreach (var corporateAction in responce.CorporateActions)
+            foreach (var corporateAction in responce.CorporateActions.OrderBy(x => x.ActionDate))
                 CorporateActions.Add(new CorporateActionViewModel(corporateAction));
 
             OnPropertyChanged(""); 

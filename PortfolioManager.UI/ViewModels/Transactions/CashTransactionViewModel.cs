@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Transactions;
@@ -31,6 +32,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 TransactionType = BankAccountTransactionType.Deposit;
                 Amount = 0.00m;
             }
+
+            Stock = new StockViewItem(Guid.Empty, "", "");
         }
 
         protected override void CopyFieldsToTransaction()

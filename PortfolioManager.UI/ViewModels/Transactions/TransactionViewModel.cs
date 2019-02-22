@@ -33,7 +33,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             set
             {
-                _Stock = value;
+                if (_Stock != value)
+                {
+                    _Stock = value;
+
+                    OnPropertyChanged();
+                }
 
                 if (_StockSelection != TransactionStockSelection.None)
                 {
@@ -97,9 +102,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             _BeingEdited = true;
 
             if (_StockSelection != TransactionStockSelection.None)
-            {
                 PopulateAvailableStocks(RecordDate);
-            }
         }
 
         public void EndEdit()
@@ -136,14 +139,14 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             if (_Transaction != null)
             {
-                Stock = AvailableStocks.FirstOrDefault(x => x.Id == _Transaction.Id);
+                Stock = null;
                 Description = _Transaction.Description;
                 TransactionDate = _Transaction.TransactionDate;
                 Comment = _Transaction.Comment;
             }
             else
             {
-                Stock = new StockViewItem(Guid.Empty, "", "");
+                Stock = null;
                 Description = "";
                 TransactionDate = DateTime.Today;
                 RecordDate = DateTime.Today;
@@ -210,6 +213,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 foreach (var stock in stocks.OrderBy(x => x.FormattedCompanyName))
                     AvailableStocks.Add(stock);
             }
+
+            if (_Transaction != null)
+                Stock = AvailableStocks.FirstOrDefault(x => x.Id == _Transaction.Stock);
         }
     }
 
