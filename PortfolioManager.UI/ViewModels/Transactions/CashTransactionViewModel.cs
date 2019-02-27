@@ -13,7 +13,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public decimal Amount { get; set; }
 
         public CashTransactionViewModel(CashTransaction cashTransaction, RestClient restClient)
-            : base(cashTransaction, TransactionStockSelection.None, restClient)
+            : base(cashTransaction, "Cash Transaction", TransactionStockSelection.None, restClient)
         {
             
         }

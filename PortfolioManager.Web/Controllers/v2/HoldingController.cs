@@ -68,6 +68,22 @@ namespace PortfolioManager.Web.Controllers.v2
             return _Mapper.Map<RestApi.Portfolios.Holding>(holding, opts => opts.Items["date"] = requestedDate);
         }
 
+        // GET: properties
+        [Route("{id:guid}/changedrpparticipation")]
+        [HttpPost]
+        public ActionResult ChangeDrpParticipation(Guid id, DateTime date, bool participate)
+        {
+            var holding = _Portfolio.Holdings.Get(id);
+            if (holding == null)
+                return NotFound();
+
+            var service = new PortfolioService(_Portfolio, _PortfolioRepository);
+
+            service.ChangeDrpParticipation(holding.Id, date, participate);
+
+            return Ok();
+        }
+
         // GET: id/value?fromDate&toDate
         [Route("{id:guid}/value")]
         [HttpGet]

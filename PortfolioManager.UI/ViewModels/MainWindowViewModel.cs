@@ -100,8 +100,8 @@ namespace PortfolioManager.UI.ViewModels
             OwnedStocks = new ObservableCollection<DescribedObject<StockViewItem>>();
 
 #if DEBUG 
-        //    var url = "https://docker.local:8443";
-            var url = "http://localhost";
+            var url = "https://docker.local:8443";
+          //  var url = "http://localhost";
             var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #else
             var url = "https://portfolio.boothfamily.id.au";

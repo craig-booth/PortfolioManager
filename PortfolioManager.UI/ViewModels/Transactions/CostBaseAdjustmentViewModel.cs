@@ -26,7 +26,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public CostBaseAdjustmentViewModel(CostBaseAdjustment costBaseAdjustment, RestClient restClient)
-            : base(costBaseAdjustment, TransactionStockSelection.Holdings, restClient)
+            : base(costBaseAdjustment, "Costbase Adjustment", TransactionStockSelection.Holdings, restClient)
         {
 
         }

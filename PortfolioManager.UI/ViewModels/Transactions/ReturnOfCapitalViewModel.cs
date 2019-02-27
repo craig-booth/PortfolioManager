@@ -47,7 +47,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public bool CreateCashTransaction { get; set; }
 
         public ReturnOfCapitalViewModel(ReturnOfCapital returnOfCapital, RestClient restClient)
-            : base(returnOfCapital, TransactionStockSelection.Holdings, restClient)
+            : base(returnOfCapital, "Return of Capital", TransactionStockSelection.Holdings, restClient)
         {
 
         }
@@ -65,7 +65,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else
             {
-                PaymentDate = RecordDate;
+                RecordDate = DateTime.Today;
+                PaymentDate = DateTime.Today;
                 Amount = 0.00m;
                 CreateCashTransaction = true;
             }

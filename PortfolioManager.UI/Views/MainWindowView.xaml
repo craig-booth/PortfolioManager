@@ -219,7 +219,7 @@
             <TabControl ItemsSource="{Binding CreateTransactionsWindow.Transactions}" SelectedValue="{Binding CreateTransactionsWindow.SelectedTransaction}">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Transaction.Type}"/>
+                        <TextBlock Text="{Binding Heading}"/>
                     </DataTemplate>
                 </TabControl.ItemTemplate>
             </TabControl>

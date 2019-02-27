@@ -120,7 +120,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public bool CreateCashTransaction { get; set; }
 
         public IncomeReceivedViewModel(IncomeReceived incomeReceived, RestClient restClient)
-            : base(incomeReceived, TransactionStockSelection.Holdings, restClient)
+            : base(incomeReceived, "Income Received", TransactionStockSelection.Holdings, restClient)
         {
 
         }
@@ -142,7 +142,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
             else
             {
-                PaymentDate = RecordDate;
+                PaymentDate = DateTime.Today;
+                RecordDate = DateTime.Today;
                 FrankedAmount = 0.00m;
                 UnfrankedAmount = 0.00m;
                 FrankingCredits = 0.00m;

@@ -115,6 +115,9 @@ namespace PortfolioManager.Domain.Utils
 
             cashFlows.GetCashFlows(out values, out periods);
 
+            if (periods.Count() <= 1)
+                return 0.00;
+
             return Calculate(values, periods, guess);
         }
 

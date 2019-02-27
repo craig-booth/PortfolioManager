@@ -224,7 +224,7 @@ namespace PortfolioManager.Test.SystemTests
             var controller = _ServiceProvider.GetRequiredService<HoldingController>();
             SetControllerContext(controller);
 
-            var response = controller.Get(null, date);
+            var response = controller.Get(date, null, null);
             SaveActualResult(response.Value, fileName);
 
             Assert.That(response.Value, Is.EquivalentTo(typeof(List<RestApi.Portfolios.Holding>), expectedFile));

@@ -63,7 +63,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public OpeningBalanceViewModel(OpeningBalance openingBalance, RestClient restClient)
-            : base(openingBalance, TransactionStockSelection.Stocks, restClient)
+            : base(openingBalance, "Opening Balance", TransactionStockSelection.Stocks, restClient)
         {
         }
 

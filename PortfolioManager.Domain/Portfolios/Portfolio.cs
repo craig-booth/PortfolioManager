@@ -72,6 +72,23 @@ namespace PortfolioManager.Domain.Portfolios
             Name = @event.Name;
         }
 
+        public void ChangeDrpParticipation(Guid holding, DateTime date, bool participateInDrp)
+        {
+            var @event = new DrpParticipationChangedEvent(Id, Version, holding, date, participateInDrp);
+            Apply(@event);
+
+            PublishEvent(@event);
+        }
+
+        public void Apply(DrpParticipationChangedEvent @event)
+        {
+            Version++;
+
+            var holding = _Holdings.Get(@event.Holding);
+            if (holding != null)
+                holding.ChangeDrpParticipation(@event.Date, @event.ParticipateInDrp);
+        }
+
         public void MakeCashTransaction(DateTime transactionDate, BankAccountTransactionType type, decimal amount, string comment, Guid transactionId)
         {
             var @event = new CashTransactionOccurredEvent(Id, Version, transactionId, transactionDate, Guid.Empty, comment)

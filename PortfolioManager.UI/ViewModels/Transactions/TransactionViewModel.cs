@@ -74,6 +74,8 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         public string Comment { get; set; }
 
+        public string Heading { get; set; }
+
         public ObservableCollection<StockViewItem> AvailableStocks { get; private set; }
 
         public bool IsStockEditable
@@ -84,11 +86,11 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
-        public TransactionViewModel(Transaction transaction, TransactionStockSelection stockSeletion, RestClient restClient)
+        public TransactionViewModel(Transaction transaction, string heading, TransactionStockSelection stockSeletion, RestClient restClient)
         {
             _StockSelection = stockSeletion;
             _RestClient = restClient;
-
+            Heading = heading;
             _Transaction = transaction;
 
             if (_StockSelection != TransactionStockSelection.None)
@@ -142,6 +144,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 Stock = null;
                 Description = _Transaction.Description;
                 TransactionDate = _Transaction.TransactionDate;
+                RecordDate = _Transaction.TransactionDate;
                 Comment = _Transaction.Comment;
             }
             else

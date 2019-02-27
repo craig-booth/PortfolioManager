@@ -85,7 +85,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public bool CreateCashTransaction { get; set; }
 
         public DisposalViewModel(Disposal disposal, RestClient restClient)
-            : base(disposal, TransactionStockSelection.TradeableHoldings, restClient)
+            : base(disposal, "Disposal", TransactionStockSelection.TradeableHoldings, restClient)
         {
             
         }

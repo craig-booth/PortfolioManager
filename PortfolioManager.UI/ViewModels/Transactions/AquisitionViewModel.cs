@@ -63,7 +63,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         public bool CreateCashTransaction { get; set; }
 
         public AquisitionViewModel(Aquisition aquisition, RestClient restClient)
-            : base(aquisition, TransactionStockSelection.TradeableStocks, restClient)
+            : base(aquisition, "Aquisition", TransactionStockSelection.TradeableStocks, restClient)
         {
 
         }

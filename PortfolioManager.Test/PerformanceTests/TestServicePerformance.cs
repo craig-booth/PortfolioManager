@@ -191,7 +191,7 @@ namespace PortfolioManager.Test.PerformanceTests
             var controller = _ServiceProvider.GetRequiredService<HoldingController>();
             SetControllerContext(controller);
 
-            var response = controller.Get(_AtDate);
+            var response = controller.Get(_AtDate, null, null);
 
             _Counter.Increment();
         }

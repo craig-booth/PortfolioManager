@@ -97,7 +97,9 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         private void SaveTransaction()
         {
             if (TransactionViewModel != null)
+            {
                 TransactionViewModel.Save();
+            }             
 
             var eventArgs = new TransactionEventArgs(TransactionViewModel);
 
