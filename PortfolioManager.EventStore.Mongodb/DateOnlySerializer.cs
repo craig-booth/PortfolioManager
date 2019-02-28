@@ -13,6 +13,13 @@ namespace PortfolioManager.EventStore.Mongodb
     [BsonSerializer(typeof(DateOnlySerializer))]
     class DateOnlySerializer : SerializerBase<DateTime>
     {
+        private DateTime _UnixEpoch;
+
+        public DateOnlySerializer()
+        {
+            _UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        }
+
         public override DateTime Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
             if (context.Reader.CurrentBsonType == BsonType.String)
@@ -26,8 +33,14 @@ namespace PortfolioManager.EventStore.Mongodb
                     return date.Date;
                 else
                     return DateUtils.NoDate;
-
             }
+            else if (context.Reader.CurrentBsonType == BsonType.DateTime)
+            {
+                var value = context.Reader.ReadDateTime();
+                var date =_UnixEpoch.AddMilliseconds(value);
+                return date.Date;
+            }
+
             context.Reader.SkipValue();
             return DateUtils.NoDate;
         }

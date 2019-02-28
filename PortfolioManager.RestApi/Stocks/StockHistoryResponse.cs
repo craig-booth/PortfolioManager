@@ -32,6 +32,7 @@ namespace PortfolioManager.RestApi.Stocks
         {
             public DateTime FromDate { get; set; }
             public DateTime ToDate { get; set; }
+            public decimal CompanyTaxRate { get; set; }
             public RoundingRule DividendRoundingRule { get; set; }
             public bool DRPActive { get; set; }
             public DRPMethod DRPMethod { get; set; }

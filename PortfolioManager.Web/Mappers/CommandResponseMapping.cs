@@ -40,6 +40,7 @@ namespace PortfolioManager.Web.Mappers
             {
                 var drp = stock.DividendRules[date];
 
+                response.CompanyTaxRate = drp.CompanyTaxRate;
                 response.DividendRoundingRule = drp.DividendRoundingRule;
                 response.DRPActive = drp.DRPActive;
                 response.DRPMethod = drp.DRPMethod;
@@ -79,6 +80,7 @@ namespace PortfolioManager.Web.Mappers
                     {
                         FromDate = x.EffectivePeriod.FromDate,
                         ToDate = x.EffectivePeriod.ToDate,
+                        CompanyTaxRate = x.Properties.CompanyTaxRate,
                         DividendRoundingRule = x.Properties.DividendRoundingRule,
                         DRPActive = x.Properties.DRPActive,
                         DRPMethod = x.Properties.DRPMethod

@@ -94,12 +94,18 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand SaveTransactionCommand { get; private set; }
-        private void SaveTransaction()
+        private async void SaveTransaction()
         {
-            if (TransactionViewModel != null)
+            if (_TransactionViewModel != null)
             {
-                TransactionViewModel.Save();
-            }             
+                _TransactionViewModel.EndEdit();
+
+                if (NewTransaction)
+                {
+                    _TransactionViewModel._Transaction.Id = Guid.NewGuid();
+                    await _RestClient.Transactions.Add(_TransactionViewModel._Transaction);
+                }
+            }
 
             var eventArgs = new TransactionEventArgs(TransactionViewModel);
 

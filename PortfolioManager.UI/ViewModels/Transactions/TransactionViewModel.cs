@@ -20,7 +20,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         protected bool _BeingEdited;
         protected TransactionStockSelection _StockSelection;
         protected RestClient _RestClient;
-        protected Transaction _Transaction { get; set; }
+        public Transaction _Transaction { get; protected set; }
 
         public string Description { get; private set; }    
 
@@ -111,30 +111,12 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         {
             _BeingEdited = false;
 
-            if (_Transaction != null)
-                CopyFieldsToTransaction();
+            CopyFieldsToTransaction();
         }
 
         public void CancelEdit()
         {
             _BeingEdited = false;
-        }
-
-        public async void Save()
-        {
-            EndEdit();
-
-            if (_Transaction != null)
-            {
-
-            }
-            else
-            {
-                CopyFieldsToTransaction();
-                _Transaction.Id = Guid.NewGuid();
-
-                await _RestClient.Transactions.Add(_Transaction);
-            }                
         }
 
         protected virtual void CopyTransactionToFields()

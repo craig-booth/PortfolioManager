@@ -76,10 +76,14 @@ namespace PortfolioManager.UI.ViewModels.Transactions
         }
 
         public RelayCommand SaveTransactionsCommand { get; private set; }
-        private void SaveTransactions()
+        private async void SaveTransactions()
         {
             foreach (var transactionviewModel in Transactions)
-                transactionviewModel.Save();   
+            {
+                transactionviewModel.EndEdit();
+
+                await _RestClient.Transactions.Add(transactionviewModel._Transaction);
+            }
 
             IsOpen = false;
         }

@@ -11,13 +11,17 @@ namespace PortfolioManager.Utils
     {
         public static void CopyEventStore(IEventStore source, IEventStore destination)
         {
-            var sourceStream = source.GetEventStream("TradingCalander");
-            var destinationStream = destination.GetEventStream("TradingCalander");
+            var sourceStream = source.GetEventStream("Portfolios_Old");
+            var destinationStream = destination.GetEventStream("Portfolios");
             CopyEventStream(sourceStream, destinationStream);
 
-            sourceStream = source.GetEventStream("StockRepository");
-            destinationStream = destination.GetEventStream("StockRepository");
+            sourceStream = source.GetEventStream("TradingCalander_Old");
+            destinationStream = destination.GetEventStream("TradingCalander");
             CopyEventStream(sourceStream, destinationStream);
+
+            sourceStream = source.GetEventStream("StockRepository_Old");
+            destinationStream = destination.GetEventStream("StockRepository");
+            CopyEventStream(sourceStream, destinationStream);  
         }
 
         public static void CopyEventStream(IEventStream source, IEventStream destination)
@@ -33,6 +37,7 @@ namespace PortfolioManager.Utils
             var events = new Event[] { new PortfolioCreatedEvent(id, 0, name) };
             eventStream.Add(id, "Portfolio", events);
         }
+
     }
 
 }
