@@ -204,6 +204,7 @@ namespace PortfolioManager.Web.Controllers.v2
                     closingPrices.Add(closingPrice.Date, closingPrice.Price);
 
                 stock.UpdateClosingPrices(command.Prices.Select(x => new Tuple<DateTime, decimal>(x.Date, x.Price)));
+                _StockRepository.Update(stock);
             }
             catch (Exception e)
             {
@@ -229,6 +230,7 @@ namespace PortfolioManager.Web.Controllers.v2
             try
             {
                 stock.ChangeDividendRules(command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
+                _StockRepository.Update(stock);
             }
             catch (Exception e)
             {
@@ -295,6 +297,7 @@ namespace PortfolioManager.Web.Controllers.v2
             try
             {
                 stapledSecurity.SetRelativeNTAs(command.ChangeDate, ntas);
+                _StockRepository.Update(stock);
             }
             catch (Exception e)
             {

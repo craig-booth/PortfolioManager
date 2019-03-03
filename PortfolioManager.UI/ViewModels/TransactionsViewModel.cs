@@ -18,6 +18,7 @@ namespace PortfolioManager.UI.ViewModels
             _Heading = label;
 
             Transactions = new ObservableCollection<TransactionViewItem>();
+            TransactionCommands = new ObservableCollection<RelayUICommand>();
 
             _EditTransactionViewModel = editTransactionViewModel;
 
@@ -45,11 +46,17 @@ namespace PortfolioManager.UI.ViewModels
 
         private EditTransactionViewModel _EditTransactionViewModel;
 
+        public ObservableCollection<RelayUICommand> TransactionCommands { get; private set; }
+
         public override void Activate()
         {
             if (_Parameter != null)
             {
                 TransactionViewModelFactory = new TransactionViewModelFactory(_Parameter.RestClient);
+
+                TransactionCommands.Clear();
+                foreach (var transactionType in TransactionViewModelFactory.TransactionTypes)
+                    TransactionCommands.Add(new RelayUICommand(transactionType.Key, () => CreateTransaction(transactionType.Value)));
             }
 
             base.Activate();

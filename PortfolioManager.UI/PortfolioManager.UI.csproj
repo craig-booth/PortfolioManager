@@ -86,10 +86,12 @@
     </Compile>
     <Compile Include="Controls\DataTable.xaml.cs" />
     <Compile Include="Controls\DoubleClickCommand.cs" />
+    <Compile Include="Controls\DropDownButton.xaml.cs" />
     <Compile Include="Controls\MarginSetter.cs" />
     <Compile Include="Controls\PieChartLegend.xaml.cs" />
     <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Utilities\PopupWindow.cs" />
+    <Compile Include="Utilities\RelayUICommand.cs" />
     <Compile Include="ViewModels\StockViewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -160,6 +162,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\DataTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DropDownButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
