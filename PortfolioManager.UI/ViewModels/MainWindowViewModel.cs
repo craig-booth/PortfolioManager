@@ -165,10 +165,11 @@ namespace PortfolioManager.UI.ViewModels
 
             var settingsModule = new Module("Settings", "SettingsIcon")
             {
-                PageSelectionAreaVisible = Visibility.Hidden,
+                PageSelectionAreaVisible = Visibility.Visible,
                 PageParameterAreaVisible = Visibility.Hidden
             };
             _Modules.Add(settingsModule);
+            settingsModule.Pages.Add(new PortfolioSettingsViewModel("Portfolio", ViewParameter));
             settingsModule.Pages.Add(new SettingsViewModel("Settings", _Settings));
 
             LoadPortfolio(_Settings, EventArgs.Empty);
@@ -196,7 +197,7 @@ namespace PortfolioManager.UI.ViewModels
             PortfolioDateRange = new DateRange(response.StartDate, response.EndDate);
 
             PopulateFinancialYearList();
-            PopulateStockList(response.StocksHeld);
+            PopulateStockList(response.Holdings.Select(x => x.Stock));
         }
             
         private void PopulateFinancialYearList()
@@ -247,17 +248,16 @@ namespace PortfolioManager.UI.ViewModels
                 OwnedStocks.Add(new DescribedObject<StockViewItem>(_AllCompanies, "All Companies"));
 
                 ViewParameter.Stock = _AllCompanies;
-                return;
             }
 
             foreach (var stock in stocks.Select(x => new StockViewItem(x)))
             {
                 var index = 1;
-                for (var i = OwnedStocks.Count - 1; i == 1; i--)
+                for (var i = OwnedStocks.Count - 1; i >= 1; i--)
                 {
-                    if (stock.FormattedCompanyName.CompareTo(OwnedStocks[i].Value.FormattedCompanyName) < 0)
+                    if (stock.FormattedCompanyName.CompareTo(OwnedStocks[i].Value.FormattedCompanyName) > 0)
                     {
-                        index = i; 
+                        index = i + 1; 
                         break;
                     }
                 }

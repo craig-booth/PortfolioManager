@@ -72,9 +72,9 @@ namespace PortfolioManager.Domain.Portfolios
             Name = @event.Name;
         }
 
-        public void ChangeDrpParticipation(Guid holding, DateTime date, bool participateInDrp)
+        public void ChangeDrpParticipation(Guid holding, bool participateInDrp)
         {
-            var @event = new DrpParticipationChangedEvent(Id, Version, holding, date, participateInDrp);
+            var @event = new DrpParticipationChangedEvent(Id, Version, holding, participateInDrp);
             Apply(@event);
 
             PublishEvent(@event);
@@ -86,7 +86,7 @@ namespace PortfolioManager.Domain.Portfolios
 
             var holding = _Holdings.Get(@event.Holding);
             if (holding != null)
-                holding.ChangeDrpParticipation(@event.Date, @event.ParticipateInDrp);
+                holding.ChangeDrpParticipation(@event.ParticipateInDrp);
         }
 
         public void MakeCashTransaction(DateTime transactionDate, BankAccountTransactionType type, decimal amount, string comment, Guid transactionId)

@@ -71,7 +71,7 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: properties
         [Route("{id:guid}/changedrpparticipation")]
         [HttpPost]
-        public ActionResult ChangeDrpParticipation(Guid id, DateTime date, bool participate)
+        public ActionResult ChangeDrpParticipation(Guid id, bool participate)
         {
             var holding = _Portfolio.Holdings.Get(id);
             if (holding == null)
@@ -79,7 +79,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             var service = new PortfolioService(_Portfolio, _PortfolioRepository);
 
-            service.ChangeDrpParticipation(holding.Id, date, participate);
+            service.ChangeDrpParticipation(holding.Id, participate);
 
             return Ok();
         }

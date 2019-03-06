@@ -20,9 +20,9 @@ namespace PortfolioManager.Web.Services
             _PortfolioRepository = portfolioRepository;
         }
 
-        public void ChangeDrpParticipation(Guid holding, DateTime date, bool participation)
+        public void ChangeDrpParticipation(Guid holding, bool participation)
         {
-            Portfolio.ChangeDrpParticipation(holding, date, participation);
+            Portfolio.ChangeDrpParticipation(holding, participation);
 
             _PortfolioRepository.Update(Portfolio);
         }

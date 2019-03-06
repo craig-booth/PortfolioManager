@@ -29,6 +29,7 @@
                 <ResourceDictionary Source="Views/AssetAllocationView.xaml"/>
                 <ResourceDictionary Source="Views/PerformanceView.xaml"/>
                 <ResourceDictionary Source="Views/PortfolioValueView.xaml"/>
+                <ResourceDictionary Source="Views/PortfolioSettingsView.xaml"/>
 
                 <!-- Transactions -->
                 <ResourceDictionary Source="Views/Transactions/AquisitionView.xaml"/>

@@ -9,14 +9,12 @@ namespace PortfolioManager.Domain.Portfolios.Events
     public class DrpParticipationChangedEvent : Event
     {
         public Guid Holding { get; set; }
-        public DateTime Date { get; set; }
         public bool ParticipateInDrp { get; set; }
 
-        public DrpParticipationChangedEvent(Guid entityId, int version, Guid holding, DateTime date, bool participateInDrp)
+        public DrpParticipationChangedEvent(Guid entityId, int version, Guid holding, bool participateInDrp)
             : base(entityId, version)
         {
             Holding = holding;
-            Date = date;
             ParticipateInDrp = participateInDrp;
         }
 

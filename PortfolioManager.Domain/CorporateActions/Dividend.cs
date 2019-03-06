@@ -59,7 +59,7 @@ namespace PortfolioManager.Domain.CorporateActions
             transactions.Add(incomeReceived);
 
             /* Handle Dividend Reinvestment Plan */
-            var holdingSettings = holding.Settings[Date];
+            var holdingSettings = holding.Settings;
             if (dividendRules.DRPActive && holdingSettings.ParticipateInDrp && (DRPPrice != 0.00m))
             { 
                 incomeReceived.CreateCashTransaction = false;
