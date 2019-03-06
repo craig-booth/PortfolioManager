@@ -23,7 +23,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 ClearErrors();
 
                 if (_FrankedAmount < 0.00m)
-                    AddError("Franked amounr must not be less than 0");
+                    AddError("Franked amount must not be less than 0");
             }
         }
 
@@ -117,6 +117,24 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             }
         }
 
+        private decimal _DrpCashBalance;
+        public decimal DrpCashBalance
+        {
+            get
+            {
+                return _DrpCashBalance;
+            }
+            set
+            {
+                _DrpCashBalance = value;
+
+                ClearErrors();
+
+                if (_DrpCashBalance < 0.00m)
+                    AddError("DRP Cash Balance must not be less than 0");
+            }
+        }
+
         public bool CreateCashTransaction { get; set; }
 
         public IncomeReceivedViewModel(IncomeReceived incomeReceived, RestClient restClient)
@@ -139,6 +157,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 TaxDeferred = ((IncomeReceived)_Transaction).TaxDeferred;
                 Interest = ((IncomeReceived)_Transaction).Interest;
                 CreateCashTransaction = ((IncomeReceived)_Transaction).CreateCashTransaction;
+                DrpCashBalance = ((IncomeReceived)_Transaction).DRPCashBalance;
             }
             else
             {
@@ -150,6 +169,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
                 TaxDeferred = 0.00m;
                 Interest = 0.00m;
                 CreateCashTransaction = true;
+                DrpCashBalance = 0.00m;
             }
         }
 
@@ -169,6 +189,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             income.TaxDeferred = TaxDeferred;
             income.Interest = Interest;
             income.CreateCashTransaction = CreateCashTransaction;
+            income.DRPCashBalance = DrpCashBalance;
         }
 
     }

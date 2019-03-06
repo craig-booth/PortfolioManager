@@ -22,11 +22,22 @@ namespace PortfolioManager.Web.Services
         {
             var response = new PortfolioPropertiesResponse();
 
-            foreach (var holding in Portfolio.Holdings.All())
-                response.StocksHeld.Add(holding.Stock.Convert(DateTime.Now));
-
+            response.Id = Portfolio.Id;
+            response.Name = Portfolio.Name;
             response.StartDate = Portfolio.StartDate;
             response.EndDate = Portfolio.EndDate;
+
+            foreach (var holding in Portfolio.Holdings.All())
+            {
+                var holdingProperty = new RestApi.Portfolios.HoldingProperties()
+                {
+                    Stock = holding.Stock.Convert(DateTime.Now),
+                    StartDate = holding.EffectivePeriod.FromDate,
+                    EndDate = holding.EffectivePeriod.ToDate,
+                    ParticipatingInDrp = holding.Settings.ParticipateInDrp
+                };
+                response.Holdings.Add(holdingProperty);
+            }
 
             return response;
         }

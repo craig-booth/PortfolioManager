@@ -24,6 +24,7 @@
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
@@ -55,9 +56,12 @@
             <CheckBox Grid.Column="1" Grid.Row="8" IsChecked="{Binding CreateCashTransaction, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" >
                 <TextBlock Text="Create Cash Transaction" />
             </CheckBox>
+            
+            <TextBlock Grid.Column="0" Grid.Row="9" Style="{StaticResource FormLabel}" Text="DRP Cash Balance" />
+            <TextBox Grid.Column="1" Grid.Row="9" Style="{StaticResource FormTextBox}" Text="{Binding DrpCashBalance, StringFormat={}{0:c2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="9" Style="{StaticResource FormLabel}" Text="Comment"/>
-            <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="9" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>
+            <TextBlock Grid.Column="0" Grid.Row="10" Style="{StaticResource FormLabel}" Text="Comment"/>
+            <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="10" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>
 
         </Grid>
 

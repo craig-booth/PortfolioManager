@@ -6,9 +6,20 @@ namespace PortfolioManager.RestApi.Portfolios
 {
     public class PortfolioPropertiesResponse
     {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public List<Stock> StocksHeld { get; } = new List<Stock>();
+        public List<HoldingProperties> Holdings { get; } = new List<HoldingProperties>();
+    }
+
+    public class HoldingProperties
+    {
+        public Stock Stock { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public bool ParticipatingInDrp { get; set; }
     }
 }
