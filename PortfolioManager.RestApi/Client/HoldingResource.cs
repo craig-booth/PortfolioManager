@@ -72,5 +72,10 @@ namespace PortfolioManager.RestApi.Client
         {
             return await GetAsync<CorporateActionsResponse>("/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/corporateactions");
         }
+
+        public async Task<bool> ChangeDrpParticipation(Guid stockId, bool participate)
+        {
+            return await PostAsync("/api/v2/portfolio/" + PortfolioId + "/holdings/" + stockId + "/changedrpparticipation?participate=" + participate.ToString());
+        }
     }
 }

@@ -92,6 +92,7 @@
     <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Utilities\PopupWindow.cs" />
     <Compile Include="Utilities\RelayUICommand.cs" />
+    <Compile Include="ViewModels\PortfolioSettingsViewModel.cs" />
     <Compile Include="ViewModels\StockViewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -204,6 +205,10 @@
     <Page Include="Views\PerformanceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PortfolioSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PortfolioSummaryView.xaml">
       <Generator>MSBuild:Compile</Generator>

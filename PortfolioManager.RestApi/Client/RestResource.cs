@@ -40,6 +40,12 @@ namespace PortfolioManager.RestApi.Client
             return response;
         }
 
+        protected async Task<bool> PostAsync(string url)
+        {
+            HttpResponseMessage response = await _HttpClient.PostAsync(url, null);
+            return response.IsSuccessStatusCode;
+        }
+
         protected async Task<bool> PostAsync<D>(string url, D data)
         {
             var formatter = new JsonMediaTypeFormatter();
