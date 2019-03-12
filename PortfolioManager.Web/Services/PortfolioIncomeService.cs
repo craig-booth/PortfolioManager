@@ -24,9 +24,7 @@ namespace PortfolioManager.Web.Services
         {
             var response = new IncomeResponse();
 
-            var incomes = Portfolio.Transactions.InDateRange(dateRange)
-                .Where(x => x is IncomeReceived)
-                .Select(x => x as IncomeReceived)
+            var incomes = Portfolio.Transactions.InDateRange(dateRange).OfType<IncomeReceived>()
                 .GroupBy(x => x.Stock,
                         x => x,
                         (key, result) => new IncomeResponse.IncomeItem()

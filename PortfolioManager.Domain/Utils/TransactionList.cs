@@ -15,23 +15,103 @@ namespace PortfolioManager.Domain.Utils
         DateTime Date { get; }
     }
 
-    public interface ITransactionList<T>
-    : IEnumerable<T>
+    public interface ITransactionList<T> : ITransactionRange<T> where T : ITransaction
     {
-        int Count { get; }
         T this[int index] { get; }
         T this[Guid id] { get; }
 
-        DateTime Earliest { get; }
-        DateTime Latest { get; }
-
-        IEnumerable<T> FromDate(DateTime date);
-        IEnumerable<T> ToDate(DateTime date);
-        IEnumerable<T> InDateRange(DateRange dateRange);
+        ITransactionRange<T> FromDate(DateTime date);
+        ITransactionRange<T> ToDate(DateTime date);
+        ITransactionRange<T> InDateRange(DateRange dateRange);
     }
 
-    public abstract class TransactionList<T>
-        : ITransactionList<T>
+    public interface ITransactionRange<T> : IEnumerable<T> where T : ITransaction
+    {
+        int Count { get; }
+        DateTime Earliest { get; }
+        DateTime Latest { get; }
+    }
+
+    public class TransactionRange<T> : ITransactionRange<T> where T : ITransaction
+    {
+        private ITransactionList<T> _TransactionList;
+        private int _FromIndex;
+        private int _ToIndex;
+
+        public int Count => _ToIndex - _FromIndex + 1;
+
+        public TransactionRange(ITransactionList<T> transactionList, int fromIndex, int toIndex)
+        {
+            _TransactionList = transactionList;
+            _FromIndex = fromIndex;
+            _ToIndex = toIndex;
+        }
+
+        public DateTime Earliest
+        {
+            get
+            {
+                if (Count >= 0)
+                    return _TransactionList[_FromIndex].Date;
+                else
+                    return DateUtils.NoDate;
+            }
+        }
+
+        public DateTime Latest
+        {
+            get
+            {
+                if (Count >= 0)
+                    return _TransactionList[_ToIndex].Date;
+                else
+                    return DateUtils.NoDate;
+            }
+        }
+
+        private class TransactionRangeEnumerator<Y> : IEnumerator<Y> where Y : ITransaction
+        {
+            private TransactionRange<Y> _TransactionRange;
+            private int _CurrentIndex;
+
+            public TransactionRangeEnumerator(TransactionRange<Y> transactionRange)
+            {
+                _TransactionRange = transactionRange;
+                _CurrentIndex = transactionRange._FromIndex - 1;
+            }
+
+            public Y Current => _TransactionRange._TransactionList[_CurrentIndex];
+
+            object IEnumerator.Current => _TransactionRange._TransactionList[_CurrentIndex];
+
+            public void Dispose() { }
+
+            public bool MoveNext()
+            {
+                if (_CurrentIndex >= _TransactionRange._ToIndex)
+                    return false;
+
+                _CurrentIndex++;
+                return true;
+            }
+
+            public void Reset()
+            {
+                _CurrentIndex = _TransactionRange._FromIndex - 1;
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new TransactionRangeEnumerator<T>(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new TransactionRangeEnumerator<T>(this);
+        }
+    }
+    public abstract class TransactionList<T>: ITransactionList<T>
         where T : ITransaction
     {
         private Dictionary<Guid, T> _IdLookup = new Dictionary<Guid, T>();
@@ -146,16 +226,16 @@ namespace PortfolioManager.Domain.Utils
             return index;
         }
 
-        public IEnumerable<T> FromDate(DateTime date)
+        public ITransactionRange<T> FromDate(DateTime date)
         {
             var start = IndexOf(date, TransationListPosition.First);
             if (start < 0)
                 start = ~start;
 
-            return _Transactions.Skip(start);
+            return new TransactionRange<T>(this, start, Count - 1);
         }
 
-        public IEnumerable<T> ToDate(DateTime date)
+        public ITransactionRange<T> ToDate(DateTime date)
         {
             var end = IndexOf(date, TransationListPosition.Last);
             if (end < 0)
@@ -163,10 +243,10 @@ namespace PortfolioManager.Domain.Utils
             else
                 end = end + 1;
 
-            return _Transactions.Take(end);
+            return new TransactionRange<T>(this, 0, end);
         }
 
-        public IEnumerable<T> InDateRange(DateRange dateRange)
+        public ITransactionRange<T> InDateRange(DateRange dateRange)
         {
             var start = IndexOf(dateRange.FromDate, TransationListPosition.First);
             if (start < 0)
@@ -174,11 +254,11 @@ namespace PortfolioManager.Domain.Utils
 
             var end = IndexOf(dateRange.ToDate, TransationListPosition.Last);
             if (end < 0)
-                end = ~end;
+                end = ~end - 1;
             else
                 end = end + 1;
 
-            return _Transactions.Skip(start).Take(end - start);
+            return new TransactionRange<T>(this, start, end);
         }
 
         protected void RemoveAt(int index)
