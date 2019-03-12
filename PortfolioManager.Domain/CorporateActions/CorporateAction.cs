@@ -28,6 +28,6 @@ namespace PortfolioManager.Domain.CorporateActions
         }
 
         public abstract IEnumerable<Transaction> GetTransactionList(Holding holding);
-        public abstract bool HasBeenApplied(ITransactionList<Transaction> transactions);
+        public abstract bool HasBeenApplied(ITransactionCollection transactions);
     }
 }

@@ -27,15 +27,14 @@ namespace PortfolioManager.Domain.Portfolios
 
             // generate list of cashFlows
             var transactionRange = new DateRange(dateRange.FromDate.AddDays(1), dateRange.ToDate);
-            var transactions = portfolio.Transactions.InDateRange(transactionRange);
+            var transactions = portfolio.Transactions.InDateRange(transactionRange).OfType<CashTransaction>();
             foreach (var transaction in transactions)
             {
-                if (transaction is CashTransaction)
+                var cashTransaction = transaction as CashTransaction;
+                if ((cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit) ||
+                    (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl))
                 {
-                    var cashTransaction = transaction as CashTransaction;
-                    if ((cashTransaction.CashTransactionType == BankAccountTransactionType.Deposit) ||
-                        (cashTransaction.CashTransactionType == BankAccountTransactionType.Withdrawl))
-                        cashFlows.Add(cashTransaction.Date, -cashTransaction.Amount);
+                    cashFlows.Add(cashTransaction.Date, -cashTransaction.Amount);
                 }
             }
 

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
+using PortfolioManager.Common;
 using PortfolioManager.Domain.Utils;
-using PortfolioManager.Domain.Portfolios;
-using PortfolioManager.Domain.Transactions.Events;
-using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Transactions
 {
@@ -17,7 +15,8 @@ namespace PortfolioManager.Domain.Transactions
 
     public interface ITransactionCollection : ITransactionList<Transaction>
     {
-
+        IEnumerable<Transaction> ForHolding(Guid stockId);
+        IEnumerable<Transaction> ForHolding(Guid stockId, DateRange dateRange);
     }
 
     class TransactionCollection :
@@ -28,6 +27,16 @@ namespace PortfolioManager.Domain.Transactions
         public new void Add(Transaction transaction)
         {
             base.Add(transaction);
+        }
+
+        public IEnumerable<Transaction> ForHolding(Guid stockId)
+        {
+            return this.Where(x => (x.Stock != null) && (x.Stock.Id == stockId));
+        }
+
+        public IEnumerable<Transaction> ForHolding(Guid stockId, DateRange dateRange)
+        {
+            return InDateRange(dateRange).Where(x => (x.Stock != null) && (x.Stock.Id == stockId));
         }
     }
 }

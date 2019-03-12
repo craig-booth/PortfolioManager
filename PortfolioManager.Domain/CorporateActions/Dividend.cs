@@ -110,9 +110,9 @@ namespace PortfolioManager.Domain.CorporateActions
             return transactions;
         }
 
-        public override bool HasBeenApplied(ITransactionList<Transaction> transactions)
+        public override bool HasBeenApplied(ITransactionCollection transactions)
         {
-            return transactions.InDateRange(new DateRange(PaymentDate, PaymentDate)).Any(x => x is IncomeReceived);
+            return transactions.ForHolding(Stock.Id, new DateRange(PaymentDate, PaymentDate)).OfType<IncomeReceived>().Any();
         }
     }
 }
