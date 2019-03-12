@@ -9,6 +9,7 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Stocks;
+using PortfolioManager.Domain.Transactions;
 using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.RestApi.Portfolios;
 
@@ -37,7 +38,7 @@ namespace PortfolioManager.Web.Services
 
         public TransactionsResponse GetTransactions(Domain.Portfolios.Holding holding, DateRange dateRange)
         {
-            return GetTransactions(Portfolio.Transactions.InDateRange(dateRange).Where(x => x.Stock.Id == holding.Stock.Id), dateRange.ToDate);
+            return GetTransactions(Portfolio.Transactions.ForHolding(holding.Stock.Id, dateRange), dateRange.ToDate);
         }
 
         private TransactionsResponse GetTransactions(IEnumerable<Domain.Transactions.Transaction> transactions, DateTime date)
@@ -105,7 +106,7 @@ namespace PortfolioManager.Web.Services
             _PortfolioRepository.Update(Portfolio);
         }
 
-        public void ApplyTransaction(RestApi.Transactions.UnitCountAdjustment unitCountAdjustment)
+        public void ApplyTransaction(UnitCountAdjustment unitCountAdjustment)
         {
 
         }

@@ -24,7 +24,7 @@ namespace PortfolioManager.Domain.CorporateActions
             return transactions;
         }
 
-        public override bool HasBeenApplied(ITransactionList<Transaction> transactions)
+        public override bool HasBeenApplied(ITransactionCollection transactions)
         {
             return false;
         }
