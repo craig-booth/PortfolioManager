@@ -10,7 +10,8 @@ namespace PortfolioManager.Utils
     {
         static void Main(string[] args)
         {
-            CopyStore();
+            AddDividends.Add();
+          //  CopyStore();
             // CheckStockDividendRules();
         }
 
