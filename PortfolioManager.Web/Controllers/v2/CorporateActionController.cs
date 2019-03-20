@@ -94,6 +94,8 @@ namespace PortfolioManager.Web.Controllers.v2
                     AddCapitalReturn(stock, corporateAction as RestApi.CorporateActions.CapitalReturn);
                 else if (corporateAction is RestApi.CorporateActions.Transformation)
                     AddTransformation(stock, corporateAction as RestApi.CorporateActions.Transformation);
+
+                _StockRepository.Update(stock);
             }
             catch (Exception e)
             {

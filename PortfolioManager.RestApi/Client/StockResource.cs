@@ -41,6 +41,21 @@ namespace PortfolioManager.RestApi.Client
             return await GetAsync<StockResponse>("/api/v2/stocks/" + id.ToString() + "?date=" + date.ToIsoDateString());
         }
 
+        public async Task<IEnumerable<StockResponse>> Find(string query)
+        {
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks?query=" + query);
+        }
+
+        public async Task<IEnumerable<StockResponse>> Find(string query, DateTime date)
+        {
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks/?query=" + query + "&date=" + date.ToIsoDateString());
+        }
+
+        public async Task<IEnumerable<StockResponse>> Find(string query, DateRange dateRange)
+        {
+            return await GetAsync<IEnumerable<StockResponse>>("/api/v2/stocks/?query=" + query + "&fromdate=" + dateRange.FromDate.ToIsoDateString() + "&todate=" + dateRange.ToDate.ToIsoDateString());
+        }
+
         public async Task<StockHistoryResponse> GetHistory(Guid id)
         {
             return await GetAsync<StockHistoryResponse>("/api/v2/stocks/" + id.ToString() + "/history");

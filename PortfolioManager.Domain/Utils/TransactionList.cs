@@ -255,8 +255,6 @@ namespace PortfolioManager.Domain.Utils
             var end = IndexOf(dateRange.ToDate, TransationListPosition.Last);
             if (end < 0)
                 end = ~end - 1;
-            else
-                end = end + 1;
 
             return new TransactionRange<T>(this, start, end);
         }
