@@ -10,8 +10,8 @@ namespace PortfolioManager.Utils
     {
         static void Main(string[] args)
         {
-            AddDividends.Add();
-          //  CopyStore();
+          //  AddDividends.Add();
+            CopyStore();
             // CheckStockDividendRules();
         }
 
@@ -30,11 +30,10 @@ namespace PortfolioManager.Utils
             // Ensure that PortfolioManager.Domain assembly is loaded
             var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
-            // var sourceEventStore = new MongodbEventStore("mongodb://ec2-52-62-34-156.ap-southeast-2.compute.amazonaws.com:27017");
-       //     var sourceEventStore = new MongodbEventStore2("mongodb://192.168.99.100:27017");
-            var destinationEventStore = new MongodbEventStore3("mongodb://192.168.99.100:27017");
+            var sourceEventStore = new MongodbEventStore("mongodb://192.168.99.100:27017");
+            var destinationEventStore = new MongodbEventStore("mongodb://portfolio.boothfamily.id.au:27017");
 
-            EventStoreUtils.CopyEventStore(destinationEventStore, destinationEventStore);
+            EventStoreUtils.CopyEventStore(sourceEventStore, destinationEventStore);
 
       //      var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
        //     EventStoreUtils.CreatePortfolio(destinationEventStore, portfolioId, "Test");
