@@ -109,7 +109,10 @@ namespace PortfolioManager.Domain.Portfolios
         
         public void AddTransaction(DateTime date, decimal amount, string description, BankAccountTransactionType type)
         {
-            _Transactions.Add(date, amount, description, type);
+            if (((type == BankAccountTransactionType.Withdrawl) || (type == BankAccountTransactionType.Fee)) && (amount > 0.00m))
+                _Transactions.Add(date, -amount, description, type);
+            else
+                _Transactions.Add(date, amount, description, type);
         }
 
         private class CashTransactionList
