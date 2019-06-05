@@ -93,7 +93,7 @@ namespace PortfolioManager.Web
             var settings = serviceProvider.GetRequiredService<PortfolioManagerSettings>();
             var logger = serviceProvider.GetRequiredService<ILogger<IEventStore>>();
 
-            return new MongodbEventStore3(settings.EventStore, logger);
+            return new MongodbEventStore(settings.EventStore, logger);
         }
 
         private static IMapper CreateMapper(IServiceProvider serviceProvider)

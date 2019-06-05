@@ -11,15 +11,15 @@ namespace PortfolioManager.Utils
     {
         public static void CopyEventStore(IEventStore source, IEventStore destination)
         {
-            var sourceStream = source.GetEventStream("Portfolios_Old");
+            var sourceStream = source.GetEventStream("Portfolios");
             var destinationStream = destination.GetEventStream("Portfolios");
             CopyEventStream(sourceStream, destinationStream);
 
-            sourceStream = source.GetEventStream("TradingCalander_Old");
+            sourceStream = source.GetEventStream("TradingCalander");
             destinationStream = destination.GetEventStream("TradingCalander");
             CopyEventStream(sourceStream, destinationStream);
 
-            sourceStream = source.GetEventStream("StockRepository_Old");
+            sourceStream = source.GetEventStream("StockRepository");
             destinationStream = destination.GetEventStream("StockRepository");
             CopyEventStream(sourceStream, destinationStream);  
         }
