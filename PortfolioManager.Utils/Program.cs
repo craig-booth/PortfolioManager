@@ -10,9 +10,11 @@ namespace PortfolioManager.Utils
     {
         static void Main(string[] args)
         {
-          //  AddDividends.Add();
-            CopyStore();
+            //  AddDividends.Add();
+            // CopyStore();
             // CheckStockDividendRules();
+
+            StockPriceHistoryTest.Test();
         }
 
         public static void CheckStockDividendRules()

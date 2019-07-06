@@ -17,7 +17,7 @@ namespace PortfolioManager.Domain.Stocks
         public int Version { get; protected set; } = 0;
         private EventList _Events = new EventList();
 
-        private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
+        private StockPriceHistory _Prices = new StockPriceHistory();
 
         public bool Trust { get; private set; }
 
@@ -138,53 +138,23 @@ namespace PortfolioManager.Domain.Stocks
 
         private void UpdatePrice(DateTime date, decimal price)
         {
-            if (_Prices.ContainsKey(date))
-                _Prices[date] = price;
-            else
-                _Prices.Add(date, price);
+            _Prices.UpdatePrice(date, price);
         }
 
         public decimal GetPrice(DateTime date)
         {
-            if (_Prices.ContainsKey(date))
-                return _Prices[date];
-            else
-                return ClosestPrice(date);
+            return _Prices.GetPrice(date);
         }
 
         public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
         {
-            return _Prices.Where(x => dateRange.Contains(x.Key)).AsEnumerable();
+            return _Prices.GetPrices(dateRange);
         }
 
-        private decimal ClosestPrice(DateTime date)
-        {
-            if (_Prices.Keys.Count == 0)
-                return 0.00m;
-
-            int begin = 0;
-            int end = _Prices.Keys.Count;
-            while (end > begin)
-            {
-                int index = (begin + end) / 2;
-                var el = _Prices.Keys[index];
-                if (el.CompareTo(date) >= 0)
-                    end = index;
-                else
-                    begin = index + 1;
-            }
-
-            return _Prices.Values[end - 1];
-        } 
-
+   
         public DateTime DateOfLastestPrice()
         {
-            var latestPrice = _Prices.LastOrDefault(x => x.Key != DateTime.Today);
-
-            if (latestPrice.Key != null)
-                return latestPrice.Key;
-            else
-                return DateUtils.NoDate;
+            return _Prices.LatestDate;
         }
 
         public void ChangeProperties(DateTime changeDate, string newAsxCode, string newName, AssetCategory newAssetCategory)

@@ -111,6 +111,7 @@ namespace PortfolioManager.Domain.Utils
             return new TransactionRangeEnumerator<T>(this);
         }
     }
+
     public abstract class TransactionList<T>: ITransactionList<T>
         where T : ITransaction
     {
