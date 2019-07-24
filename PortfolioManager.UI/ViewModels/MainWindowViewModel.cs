@@ -100,8 +100,9 @@ namespace PortfolioManager.UI.ViewModels
             OwnedStocks = new ObservableCollection<DescribedObject<StockViewItem>>();
 
 #if DEBUG 
-            var url = "https://docker.local:8443";
-           // var url = "http://localhost";
+           // var url = "https://docker.local:8443";
+            // var url = "http://localhost";
+            var url = "https://portfolio.boothfamily.id.au";
             var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #else
             var url = "https://portfolio.boothfamily.id.au";
@@ -110,10 +111,12 @@ namespace PortfolioManager.UI.ViewModels
             var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
             _RestClient = new RestClient(url, apiKey, portfolioId);
 
-            ViewParameter = new ViewParameter();
-            ViewParameter.Stock = _AllCompanies;
-            ViewParameter.FinancialYear = DateTime.Today.FinancialYear();
-            ViewParameter.RestClient = _RestClient;
+            ViewParameter = new ViewParameter
+            {
+                Stock = _AllCompanies,
+                FinancialYear = DateTime.Today.FinancialYear(),
+                RestClient = _RestClient
+            };
 
             EditTransactionWindow = new EditTransactionViewModel(_RestClient);
             EditTransactionWindow.TransactionChanged += HandleTransactionChanged;

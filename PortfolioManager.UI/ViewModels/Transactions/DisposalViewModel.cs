@@ -25,8 +25,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
                 if (_Units <= 0)
                     AddError("Units must be greater than 0");
-
-                if (Stock.Id != Guid.Empty)
+                else if (Stock != null)
                     CheckEnoughUnitsOwned();
             }
         }

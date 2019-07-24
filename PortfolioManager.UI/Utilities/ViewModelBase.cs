@@ -39,9 +39,7 @@ namespace PortfolioManager.UI.Utilities
         
         protected void OnErrorsChanged(string propertyName)
         {
-            var handler = ErrorsChanged;
-            if (handler != null)
-                handler(this, new DataErrorsChangedEventArgs(propertyName));
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
         protected void AddError(string error, [CallerMemberName] string propertyName = null)
@@ -55,7 +53,7 @@ namespace PortfolioManager.UI.Utilities
             }
 
             errors.Add(error);
-
+            OnErrorsChanged(propertyName);
         }
 
         protected void ClearErrors([CallerMemberName] string propertyName = null)
