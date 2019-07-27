@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
+using PortfolioManager.EventStore;
 
 namespace PortfolioManager.Domain.Stocks
 {
-    public class StockPriceHistory
+    public class StockPriceHistory : ITrackedEntity
     {
         public Guid Id { get; private set; }
+
+        public int Version { get; protected set; } = 0;
+        private EventList _Events = new EventList();
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
 
@@ -58,13 +62,11 @@ namespace PortfolioManager.Domain.Stocks
 
         public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
         {
-            IEnumerable<KeyValuePair<DateTime, decimal>> range;
-
             var first = IndexOf(dateRange.FromDate);
             if (first == -1)
                 first = 0;
             else if (first < 0)
-                first = ~first;
+                first = ~first + 1;
 
             var last = IndexOf(dateRange.ToDate);
             if (last == -1)
@@ -102,5 +104,23 @@ namespace PortfolioManager.Domain.Stocks
                 return -end;
         }
 
+        protected void PublishEvent(Event @event)
+        {
+            _Events.Add(@event);
+        }
+
+        public IEnumerable<Event> FetchEvents()
+        {
+            return _Events.Fetch();
+        }
+
+        public void ApplyEvents(IEnumerable<Event> events)
+        {
+            foreach (var @event in events)
+            {
+                dynamic dynamicEvent = @event;
+                Apply(dynamicEvent);
+            }
+        }
     }
 }
