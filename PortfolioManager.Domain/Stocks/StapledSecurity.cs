@@ -19,6 +19,12 @@ namespace PortfolioManager.Domain.Stocks
         private EffectiveProperties<RelativeNTA> _RelativeNTAs = new EffectiveProperties<RelativeNTA>();
         public IEffectiveProperties<RelativeNTA> RelativeNTAs => _RelativeNTAs;
 
+        public StapledSecurity(IStockPriceHistory stockPriceHistory)
+            : base(stockPriceHistory)
+        {
+
+        }
+
         public void List(string asxCode, string name, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
         {
             var @event = new StapledSecurityListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, childSecurities?.ToArray());

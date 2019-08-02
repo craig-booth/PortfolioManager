@@ -10,12 +10,26 @@ namespace PortfolioManager.Domain.Stocks
 {
     public class StockEntityFactory : IEntityFactory<Stock>
     {
-        public Stock Create(string storedEntityType)
+
+        private readonly IRepository<StockPriceHistory> _StockPriceHistoryRepository;
+
+        public StockEntityFactory(IRepository<StockPriceHistory> stockPriceHistoryRepository)
+        {
+            _StockPriceHistoryRepository = stockPriceHistoryRepository;
+        }
+
+        public Stock Create(Guid id, string storedEntityType)
         {
             if (storedEntityType == "Stock")
-                return new Stock();
+            {
+                var stockPriceHistory =  _StockPriceHistoryRepository.Get(id);
+                return new Stock(stockPriceHistory);
+            }
             else if (storedEntityType == "StapledSecurity")
-                return new StapledSecurity();
+            {
+                var stockPriceHistory = _StockPriceHistoryRepository.Get(id);
+                return new StapledSecurity(stockPriceHistory);
+            }
             else
                 throw new NotSupportedException();
         }

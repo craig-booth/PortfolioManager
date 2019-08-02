@@ -12,12 +12,14 @@ namespace PortfolioManager.Web.Services
     public class StockService
     {
         private IStockQuery _StockQuery;
-        private IRepository<Stock> _StockRepository;     
+        private IRepository<Stock> _StockRepository;
+        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
 
-        public StockService(IStockQuery stockQuery, IRepository<Stock> stockRepository)
+        public StockService(IStockQuery stockQuery, IRepository<Stock> stockRepository, IRepository<StockPriceHistory> stockPriceHistoryRepository)
         {
             _StockQuery = stockQuery;
             _StockRepository = stockRepository;
+            _StockPriceHistoryRepository = stockPriceHistoryRepository;
         }
 
         public void ListStock(Guid id, string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category)
@@ -31,6 +33,9 @@ namespace PortfolioManager.Web.Services
             var effectivePeriod = new DateRange(listingDate, DateUtils.NoEndDate);
             if (_StockQuery.Find(effectivePeriod, y => y.ASXCode == asxCode).Any())
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
+
+            var stockPriceHistory = new StockPriceHistory();
+            _StockPriceHistoryRepository.Add(stockPriceHistory);
 
             stock = new Stock();
             stock.List(asxCode, name, trust, category);

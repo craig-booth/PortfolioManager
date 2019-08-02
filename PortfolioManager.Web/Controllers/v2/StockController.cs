@@ -20,11 +20,13 @@ namespace PortfolioManager.Web.Controllers.v2
     {
         private IStockQuery _StockQuery;
         private IRepository<Stock> _StockRepository;
+        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
 
-        public StockController(IStockQuery stockQuery, IRepository<Stock> stockRepository)
+        public StockController(IStockQuery stockQuery, IRepository<Stock> stockRepository, IRepository<StockPriceHistory> stockPriceHistoryRepository)
         {
             _StockQuery = stockQuery;
             _StockRepository = stockRepository;
+            _StockPriceHistoryRepository = stockPriceHistoryRepository;
         }
 
         // GET: api/stocks
@@ -197,14 +199,22 @@ namespace PortfolioManager.Web.Controllers.v2
             if (stock == null)
                 return NotFound();
 
+            var closingPrices = command.Prices.Select(x => new Tuple<DateTime, decimal>(x.Date, x.Price));
+
+            // Check that the date is within the effective period
+            foreach (var closingPrice in closingPrices)
+            {
+                if (stock.IsEffectiveAt(closingPrice.Item1))
+                    throw new Exception(String.Format("Stock not active on {0}", closingPrice.Item1));
+            }
+
             try
             {
-                var closingPrices = new Dictionary<DateTime, decimal>();
-                foreach (var closingPrice in command.Prices)
-                    closingPrices.Add(closingPrice.Date, closingPrice.Price);
+                var stockPriceHistory = _StockPriceHistoryRepository.Get(stock.Id);
 
-                stock.UpdateClosingPrices(command.Prices.Select(x => new Tuple<DateTime, decimal>(x.Date, x.Price)));
-                _StockRepository.Update(stock);
+                stockPriceHistory.UpdateClosingPrices(closingPrices);
+
+                _StockPriceHistoryRepository.Update(stockPriceHistory);
             }
             catch (Exception e)
             {

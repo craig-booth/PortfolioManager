@@ -11,7 +11,7 @@ namespace PortfolioManager.Utils
     {
         public static void Test()
         {
-            var prices = new StockPriceHistory();
+         /*   var prices = new StockPriceHistory();
 
             prices.UpdatePrice(new DateTime(2019, 06, 01), 1.00m);
             prices.UpdatePrice(new DateTime(2019, 06, 02), 2.00m);
@@ -46,7 +46,7 @@ namespace PortfolioManager.Utils
             TestRange(prices, new DateTime(2019, 06, 03), new DateTime(2019, 06, 21));
             TestRange(prices, new DateTime(2019, 06, 05), new DateTime(2019, 06, 22));
 
-            Console.ReadKey();
+            Console.ReadKey(); */
         }
 
         private static void TestRange(StockPriceHistory prices, DateTime from, DateTime to)

@@ -53,7 +53,9 @@ namespace PortfolioManager.Web
             services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("StockRepository"));
             services.AddSingleton<IStockQuery, StockQuery>();
             services.AddSingleton<IEntityFactory<Stock>, StockEntityFactory>();
-        
+
+            services.AddSingleton<IEventStream<StockPriceHistory>>(x => x.GetRequiredService<IEventStore>().GetEventStream<StockPriceHistory>("StockPriceRepository"));
+
             services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));
             services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IRepository<TradingCalander>>().Get(TradingCalanderIds.ASX));
 
