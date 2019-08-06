@@ -5,6 +5,7 @@ using System.Linq;
 using PortfolioManager.Common;
 using PortfolioManager.EventStore;
 using PortfolioManager.Domain.Stocks.Events;
+using PortfolioManager.Domain.CorporateActions.Events;
 
 namespace PortfolioManager.Domain.Stocks
 {
@@ -105,6 +106,14 @@ namespace PortfolioManager.Domain.Stocks
             foreach (var closingPrice in @event.ClosingPrices)
                 UpdatePrice(closingPrice.Date, closingPrice.Price);
         }
+
+        public void Apply(StockListedEvent @event) { }
+        public void Apply(StockDelistedEvent @event) { }
+        public void Apply(CorporateActionAddedEvent @event) { }
+        public void Apply(StockPropertiesChangedEvent @event) { }
+        public void Apply(ChangeDividendRulesEvent @event) { }
+        public void Apply(StapledSecurityListedEvent @event) { }
+        public void Apply(RelativeNTAChangedEvent @event) { }
 
         private void UpdatePrice(DateTime date, decimal price)
         {

@@ -17,7 +17,7 @@ namespace PortfolioManager.Domain.Stocks
         public int Version { get; protected set; } = 0;
         private EventList _Events = new EventList();
 
-        private readonly IStockPriceHistory _StockPriceHistory;
+        private IStockPriceHistory _StockPriceHistory;
 
         public bool Trust { get; private set; }
 
@@ -29,10 +29,8 @@ namespace PortfolioManager.Domain.Stocks
 
         public CorporateActionCollection CorporateActions { get; }
 
-        public Stock(IStockPriceHistory stockPriceHistory)
+        public Stock()
         {
-            _StockPriceHistory = stockPriceHistory;
-
             CorporateActions = new CorporateActionCollection(this, this._Events);
         }
 
@@ -40,6 +38,11 @@ namespace PortfolioManager.Domain.Stocks
         {
             var properties = Properties.ClosestTo(DateTime.Today);
             return String.Format("{0} - {1}", properties.ASXCode, properties.Name);
+        }
+
+        public void SetPriceHistory(IStockPriceHistory stockPriceHistory)
+        {
+            _StockPriceHistory = stockPriceHistory;
         }
 
         protected void PublishEvent(Event @event)
@@ -97,17 +100,26 @@ namespace PortfolioManager.Domain.Stocks
 
         public decimal GetPrice(DateTime date)
         {
-            return _StockPriceHistory.GetPrice(date);
+            if (_StockPriceHistory != null)
+                return _StockPriceHistory.GetPrice(date);
+            else
+                return 0.00m;
         }
 
         public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
         {
-            return _StockPriceHistory.GetPrices(dateRange);
+            if (_StockPriceHistory != null)
+                return _StockPriceHistory.GetPrices(dateRange);
+            else
+                return new KeyValuePair<DateTime, decimal>[0];
         }
 
         public DateTime DateOfLastestPrice()
         {
-            return _StockPriceHistory.LatestDate;
+            if (_StockPriceHistory != null)
+                return _StockPriceHistory.LatestDate;
+            else
+                return DateUtils.NoDate;
         }
 
         public void ChangeProperties(DateTime changeDate, string newAsxCode, string newName, AssetCategory newAssetCategory)
@@ -169,6 +181,11 @@ namespace PortfolioManager.Domain.Stocks
             }              
         }
 
+
+        public void Apply(ClosingPricesAddedEvent @event)
+        {
+
+        }
     }
 
     public struct StockProperties

@@ -6,12 +6,12 @@ namespace PortfolioManager.Domain
 {
     public interface IEntityFactory<T>
     {
-        T Create(Guid id, string storedEntityType);
+        T Create(string storedEntityType);
     }
 
     public class DefaultEntityFactory<T> : IEntityFactory<T> where T : new()
     {
-        public T Create(Guid id, string storedEntityType)
+        public T Create(string storedEntityType)
         {
             return new T();
         }

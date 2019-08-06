@@ -33,7 +33,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
             var collection = database.GetCollection<StoredEntity>(Collection);
 
-            var entity = collection.Find<StoredEntity>(x => x.EntityId == entityId).Single();
+            var entity = collection.Find<StoredEntity>(x => x.EntityId == entityId)?.Single();
 
             return entity;
         }

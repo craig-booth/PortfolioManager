@@ -113,7 +113,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                var stockService = new StockService(_StockQuery, _StockRepository);
+                var stockService = new StockService(_StockQuery, _StockRepository, _StockPriceHistoryRepository);
                 if (command.ChildSecurities.Count == 0)
                 {
                     stockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
@@ -175,7 +175,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                var stockService = new StockService(_StockQuery, _StockRepository);
+                var stockService = new StockService(_StockQuery, _StockRepository, _StockPriceHistoryRepository);
                 stockService.DelistStock(id, command.DelistingDate);
             }
             catch (Exception e)

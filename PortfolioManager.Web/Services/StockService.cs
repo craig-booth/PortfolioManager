@@ -34,12 +34,12 @@ namespace PortfolioManager.Web.Services
             if (_StockQuery.Find(effectivePeriod, y => y.ASXCode == asxCode).Any())
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            var stockPriceHistory = new StockPriceHistory();
-            _StockPriceHistoryRepository.Add(stockPriceHistory);
-
             stock = new Stock();
             stock.List(asxCode, name, trust, category);
             _StockRepository.Add(stock);
+
+            var stockPriceHistory = new StockPriceHistory();
+            _StockPriceHistoryRepository.Add(stockPriceHistory);
         }
 
         public void ListStapledSecurity(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
@@ -54,9 +54,13 @@ namespace PortfolioManager.Web.Services
             if (_StockQuery.Find(effectivePeriod, y => y.ASXCode == asxCode).Any())
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
+
             var stapledSecurity = new StapledSecurity();
             stapledSecurity.List(asxCode, name, category, childSecurities);
             _StockRepository.Add(stock);
+
+            var stockPriceHistory = new StockPriceHistory();
+            _StockPriceHistoryRepository.Add(stockPriceHistory);
         }
 
         public void DelistStock(Guid id, DateTime date)
