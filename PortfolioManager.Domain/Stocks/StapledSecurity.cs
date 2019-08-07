@@ -19,6 +19,13 @@ namespace PortfolioManager.Domain.Stocks
         private EffectiveProperties<RelativeNTA> _RelativeNTAs = new EffectiveProperties<RelativeNTA>();
         public IEffectiveProperties<RelativeNTA> RelativeNTAs => _RelativeNTAs;
 
+        public StapledSecurity(Guid id)
+            : base(id)
+        {
+
+        }
+
+
         public void List(string asxCode, string name, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
         {
             var @event = new StapledSecurityListedEvent(Id, Version, asxCode, name, EffectivePeriod.FromDate, category, childSecurities?.ToArray());
@@ -31,7 +38,7 @@ namespace PortfolioManager.Domain.Stocks
         {
             Version++;
 
-            Start(@event.EntityId, @event.ListingDate);
+            Start(@event.ListingDate);
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             _Properties.Change(@event.ListingDate, properties);

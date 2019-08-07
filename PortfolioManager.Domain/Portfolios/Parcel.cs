@@ -17,8 +17,9 @@ namespace PortfolioManager.Domain.Portfolios
         public IEnumerable<ParcelAudit> Audit => _Audit;
 
         public Parcel(Guid id, DateTime fromDate, DateTime aquisitionDate, ParcelProperties properties, Transaction transaction)
+            : base(id)
         {
-            Start(id, fromDate);
+            Start(fromDate);
 
             AquisitionDate = aquisitionDate;
             _Properties.Change(fromDate, properties);

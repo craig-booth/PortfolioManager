@@ -29,7 +29,8 @@ namespace PortfolioManager.Domain.Stocks
 
         public CorporateActionCollection CorporateActions { get; }
 
-        public Stock()
+        public Stock(Guid id)
+            : base(id)
         {
             CorporateActions = new CorporateActionCollection(this, this._Events);
         }
@@ -63,7 +64,7 @@ namespace PortfolioManager.Domain.Stocks
             Version++;
             Trust = @event.Trust;
 
-            Start(@event.EntityId, @event.ListingDate);
+            Start(@event.ListingDate);
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             _Properties.Change(@event.ListingDate, properties);

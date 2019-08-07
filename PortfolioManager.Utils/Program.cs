@@ -14,7 +14,9 @@ namespace PortfolioManager.Utils
             // CopyStore();
             // CheckStockDividendRules();
 
-            StockPriceHistoryTest.Test();
+            // StockPriceHistoryTest.Test();
+
+            SpliPriceHistoryFromStock();
         }
 
         public static void CheckStockDividendRules()
@@ -42,6 +44,18 @@ namespace PortfolioManager.Utils
 
             Console.WriteLine("Done");
             Console.ReadKey(); 
+        }
+
+        public static void SpliPriceHistoryFromStock()
+        {
+            // Ensure that PortfolioManager.Domain assembly is loaded
+            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+
+            var eventStore = new MongodbEventStore("mongodb://portfolio.boothfamily.id.au:27017");
+            EventStoreUtils.SplitPriceHistoryFromStock(eventStore);
+
+            Console.WriteLine("Done");
+            Console.ReadKey();
         }
     }
 

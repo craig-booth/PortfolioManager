@@ -34,11 +34,11 @@ namespace PortfolioManager.Web.Services
             if (_StockQuery.Find(effectivePeriod, y => y.ASXCode == asxCode).Any())
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            stock = new Stock();
+            stock = new Stock(id);
             stock.List(asxCode, name, trust, category);
             _StockRepository.Add(stock);
 
-            var stockPriceHistory = new StockPriceHistory();
+            var stockPriceHistory = new StockPriceHistory(id);
             _StockPriceHistoryRepository.Add(stockPriceHistory);
         }
 
@@ -55,11 +55,11 @@ namespace PortfolioManager.Web.Services
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
 
-            var stapledSecurity = new StapledSecurity();
+            var stapledSecurity = new StapledSecurity(id);
             stapledSecurity.List(asxCode, name, category, childSecurities);
             _StockRepository.Add(stock);
 
-            var stockPriceHistory = new StockPriceHistory();
+            var stockPriceHistory = new StockPriceHistory(id);
             _StockPriceHistoryRepository.Add(stockPriceHistory);
         }
 

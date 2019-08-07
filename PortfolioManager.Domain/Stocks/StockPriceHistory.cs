@@ -21,11 +21,16 @@ namespace PortfolioManager.Domain.Stocks
 
     public class StockPriceHistory : IStockPriceHistory, ITrackedEntity
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public int Version { get; protected set; } = 0;
         private EventList _Events = new EventList();
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
+
+        public StockPriceHistory(Guid id)
+        {
+            Id = id;
+        }
 
         public DateTime EarliestDate
         {
