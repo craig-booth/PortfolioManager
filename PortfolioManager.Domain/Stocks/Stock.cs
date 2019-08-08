@@ -181,12 +181,6 @@ namespace PortfolioManager.Domain.Stocks
                 Apply(dynamicEvent);
             }              
         }
-
-
-        public void Apply(ClosingPricesAddedEvent @event)
-        {
-
-        }
     }
 
     public struct StockProperties

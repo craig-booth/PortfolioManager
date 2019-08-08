@@ -112,14 +112,6 @@ namespace PortfolioManager.Domain.Stocks
                 UpdatePrice(closingPrice.Date, closingPrice.Price);
         }
 
-        public void Apply(StockListedEvent @event) { }
-        public void Apply(StockDelistedEvent @event) { }
-        public void Apply(CorporateActionAddedEvent @event) { }
-        public void Apply(StockPropertiesChangedEvent @event) { }
-        public void Apply(ChangeDividendRulesEvent @event) { }
-        public void Apply(StapledSecurityListedEvent @event) { }
-        public void Apply(RelativeNTAChangedEvent @event) { }
-
         private void UpdatePrice(DateTime date, decimal price)
         {
             if (_Prices.ContainsKey(date))
