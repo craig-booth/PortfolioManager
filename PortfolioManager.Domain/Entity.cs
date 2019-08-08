@@ -21,15 +21,19 @@ namespace PortfolioManager.Domain
         IEntity,
         IEffectiveEntity
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public DateRange EffectivePeriod { get; private set; }
 
-        protected virtual void Start(Guid id, DateTime date)
+        public EffectiveEntity(Guid id)
+        {
+            Id = id;
+        }
+
+        protected virtual void Start(DateTime date)
         {
             if (!EffectivePeriod.FromDate.Equals(DateUtils.NoStartDate))
                 throw new Exception("Entity already started");
 
-            Id = id;
             EffectivePeriod = new DateRange(date, DateUtils.NoEndDate);
         }
 

@@ -15,10 +15,9 @@ namespace PortfolioManager.Domain.Portfolios
             _StockQuery = stockQuery;
         }
 
-
-        public Portfolio Create(string storedEntityType)
+        public Portfolio Create(Guid id, string storedEntityType)
         {
-            return new Portfolio(_StockQuery);
+            return new Portfolio(id, _StockQuery);
         }
     }
 }

@@ -12,12 +12,14 @@ namespace PortfolioManager.Web.Services
     public class StockService
     {
         private IStockQuery _StockQuery;
-        private IRepository<Stock> _StockRepository;     
+        private IRepository<Stock> _StockRepository;
+        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
 
-        public StockService(IStockQuery stockQuery, IRepository<Stock> stockRepository)
+        public StockService(IStockQuery stockQuery, IRepository<Stock> stockRepository, IRepository<StockPriceHistory> stockPriceHistoryRepository)
         {
             _StockQuery = stockQuery;
             _StockRepository = stockRepository;
+            _StockPriceHistoryRepository = stockPriceHistoryRepository;
         }
 
         public void ListStock(Guid id, string asxCode, string name, DateTime listingDate, bool trust, AssetCategory category)
@@ -32,9 +34,12 @@ namespace PortfolioManager.Web.Services
             if (_StockQuery.Find(effectivePeriod, y => y.ASXCode == asxCode).Any())
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            stock = new Stock();
+            stock = new Stock(id);
             stock.List(asxCode, name, trust, category);
             _StockRepository.Add(stock);
+
+            var stockPriceHistory = new StockPriceHistory(id);
+            _StockPriceHistoryRepository.Add(stockPriceHistory);
         }
 
         public void ListStapledSecurity(Guid id, string asxCode, string name, DateTime listingDate, AssetCategory category, IEnumerable<StapledSecurityChild> childSecurities)
@@ -49,9 +54,13 @@ namespace PortfolioManager.Web.Services
             if (_StockQuery.Find(effectivePeriod, y => y.ASXCode == asxCode).Any())
                 throw new Exception(String.Format("Stock already exists with the code {0} at {1}", asxCode, listingDate));
 
-            var stapledSecurity = new StapledSecurity();
+
+            var stapledSecurity = new StapledSecurity(id);
             stapledSecurity.List(asxCode, name, category, childSecurities);
             _StockRepository.Add(stock);
+
+            var stockPriceHistory = new StockPriceHistory(id);
+            _StockPriceHistoryRepository.Add(stockPriceHistory);
         }
 
         public void DelistStock(Guid id, DateTime date)

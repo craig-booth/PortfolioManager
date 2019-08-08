@@ -3,14 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
+using PortfolioManager.EventStore;
+using PortfolioManager.Domain.Stocks.Events;
+using PortfolioManager.Domain.CorporateActions.Events;
 
 namespace PortfolioManager.Domain.Stocks
 {
-    public class StockPriceHistory
+
+    public interface IStockPriceHistory
     {
-        public Guid Id { get; private set; }
+        Guid Id { get;  }
+        DateTime EarliestDate { get; }
+        DateTime LatestDate { get; }
+        decimal GetPrice(DateTime date);
+        IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange);
+    }
+
+    public class StockPriceHistory : IStockPriceHistory, ITrackedEntity
+    {
+        public Guid Id { get; }
+        public int Version { get; protected set; } = 0;
+        private EventList _Events = new EventList();
 
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
+
+        public StockPriceHistory(Guid id)
+        {
+            Id = id;
+        }
 
         public DateTime EarliestDate
         {
@@ -34,15 +54,6 @@ namespace PortfolioManager.Domain.Stocks
             }
         }
 
-
-        public void UpdatePrice(DateTime date, decimal price)
-        {
-            if (_Prices.ContainsKey(date))
-                _Prices[date] = price;
-            else
-                _Prices.Add(date, price);
-        }
-
         public decimal GetPrice(DateTime date)
         {
             var index = IndexOf(date);
@@ -53,13 +64,11 @@ namespace PortfolioManager.Domain.Stocks
                 return 0.00m;
             else
                 return _Prices.Values[~index];
-                
+
         }
 
         public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
         {
-            IEnumerable<KeyValuePair<DateTime, decimal>> range;
-
             var first = IndexOf(dateRange.FromDate);
             if (first == -1)
                 first = 0;
@@ -73,6 +82,50 @@ namespace PortfolioManager.Domain.Stocks
                 last = ~last;
 
             return _Prices.Skip(first).Take(last - first + 1);
+        }
+
+        public void UpdateCurrentPrice(decimal currentPrice)
+        {
+            UpdatePrice(DateTime.Today, currentPrice);
+        }
+
+        public void UpdateClosingPrice(DateTime date, decimal closingPrice)
+        {
+            var @event = new ClosingPricesAddedEvent(Id, Version, new ClosingPricesAddedEvent.ClosingPrice[] { new ClosingPricesAddedEvent.ClosingPrice(date, closingPrice) });
+            Apply(@event);
+
+            PublishEvent(@event);
+        }
+
+        public void UpdateClosingPrices(IEnumerable<Tuple<DateTime, decimal>> closingPrices)
+        {
+            var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Item1, x.Item2)));
+            Apply(@event);
+
+            PublishEvent(@event);
+        }
+
+        public void Apply(ClosingPricesAddedEvent @event)
+        {
+            Version++;
+            foreach (var closingPrice in @event.ClosingPrices)
+                UpdatePrice(closingPrice.Date, closingPrice.Price);
+        }
+
+        public void Apply(StockListedEvent @event) { }
+        public void Apply(StockDelistedEvent @event) { }
+        public void Apply(CorporateActionAddedEvent @event) { }
+        public void Apply(StockPropertiesChangedEvent @event) { }
+        public void Apply(ChangeDividendRulesEvent @event) { }
+        public void Apply(StapledSecurityListedEvent @event) { }
+        public void Apply(RelativeNTAChangedEvent @event) { }
+
+        private void UpdatePrice(DateTime date, decimal price)
+        {
+            if (_Prices.ContainsKey(date))
+                _Prices[date] = price;
+            else
+                _Prices.Add(date, price);
         }
 
         private int IndexOf(DateTime date)
@@ -102,5 +155,23 @@ namespace PortfolioManager.Domain.Stocks
                 return -end;
         }
 
+        protected void PublishEvent(Event @event)
+        {
+            _Events.Add(@event);
+        }
+
+        public IEnumerable<Event> FetchEvents()
+        {
+            return _Events.Fetch();
+        }
+
+        public void ApplyEvents(IEnumerable<Event> events)
+        {
+            foreach (var @event in events)
+            {
+                dynamic dynamicEvent = @event;
+                Apply(dynamicEvent);
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace PortfolioManager.Domain.Stocks
         public int Version { get; protected set; } = 0;
         private EventList _Events = new EventList();
 
-        private StockPriceHistory _Prices = new StockPriceHistory();
+        private IStockPriceHistory _StockPriceHistory;
 
         public bool Trust { get; private set; }
 
@@ -29,7 +29,8 @@ namespace PortfolioManager.Domain.Stocks
 
         public CorporateActionCollection CorporateActions { get; }
 
-        public Stock()
+        public Stock(Guid id)
+            : base(id)
         {
             CorporateActions = new CorporateActionCollection(this, this._Events);
         }
@@ -38,6 +39,11 @@ namespace PortfolioManager.Domain.Stocks
         {
             var properties = Properties.ClosestTo(DateTime.Today);
             return String.Format("{0} - {1}", properties.ASXCode, properties.Name);
+        }
+
+        public void SetPriceHistory(IStockPriceHistory stockPriceHistory)
+        {
+            _StockPriceHistory = stockPriceHistory;
         }
 
         protected void PublishEvent(Event @event)
@@ -58,7 +64,7 @@ namespace PortfolioManager.Domain.Stocks
             Version++;
             Trust = @event.Trust;
 
-            Start(@event.EntityId, @event.ListingDate);
+            Start(@event.ListingDate);
 
             var properties = new StockProperties(@event.ASXCode, @event.Name, @event.Category);
             _Properties.Change(@event.ListingDate, properties);
@@ -93,68 +99,28 @@ namespace PortfolioManager.Domain.Stocks
             CorporateActions.Apply(dynamicEvent);
         }
 
-        public void UpdateClosingPrice(DateTime date, decimal closingPrice)
-        {
-            // Check that the date is within the effective period
-            if (!EffectivePeriod.Contains(date))
-                throw new Exception(String.Format("Stock not active on {0}", date));
-
-            var @event = new ClosingPricesAddedEvent(Id, Version, new ClosingPricesAddedEvent.ClosingPrice[] { new ClosingPricesAddedEvent.ClosingPrice(date, closingPrice) });
-            Apply(@event);
-
-            PublishEvent(@event);
-        }
-
-        public void UpdateClosingPrices(IEnumerable<Tuple<DateTime, decimal>> closingPrices)
-        {
-            // Check that the date is within the effective period
-            foreach (var closingPrice in closingPrices)
-            {
-                if (!EffectivePeriod.Contains(closingPrice.Item1))
-                    throw new Exception(String.Format("Stock not active on {0}", closingPrice.Item1));
-            }
-
-            var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Item1, x.Item2)));
-            Apply(@event);
-
-            PublishEvent(@event);
-        }
-
-        public void Apply(ClosingPricesAddedEvent @event)
-        {
-            Version++;
-            foreach(var closingPrice in @event.ClosingPrices)
-                UpdatePrice(closingPrice.Date, closingPrice.Price);
-        }
-
-        public void UpdateCurrentPrice(decimal currentPrice)
-        {
-            // Check that the date is within the effective period
-            if (!EffectivePeriod.Contains(DateTime.Today))
-                throw new Exception("Stock not currently active");
-
-            UpdatePrice(DateTime.Today, currentPrice);
-        }
-
-        private void UpdatePrice(DateTime date, decimal price)
-        {
-            _Prices.UpdatePrice(date, price);
-        }
-
         public decimal GetPrice(DateTime date)
         {
-            return _Prices.GetPrice(date);
+            if (_StockPriceHistory != null)
+                return _StockPriceHistory.GetPrice(date);
+            else
+                return 0.00m;
         }
 
         public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
         {
-            return _Prices.GetPrices(dateRange);
+            if (_StockPriceHistory != null)
+                return _StockPriceHistory.GetPrices(dateRange);
+            else
+                return new KeyValuePair<DateTime, decimal>[0];
         }
 
-   
         public DateTime DateOfLastestPrice()
         {
-            return _Prices.LatestDate;
+            if (_StockPriceHistory != null)
+                return _StockPriceHistory.LatestDate;
+            else
+                return DateUtils.NoDate;
         }
 
         public void ChangeProperties(DateTime changeDate, string newAsxCode, string newName, AssetCategory newAssetCategory)
@@ -216,6 +182,11 @@ namespace PortfolioManager.Domain.Stocks
             }              
         }
 
+
+        public void Apply(ClosingPricesAddedEvent @event)
+        {
+
+        }
     }
 
     public struct StockProperties

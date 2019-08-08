@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 using PortfolioManager.EventStore;
+using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.Domain.Portfolios.Events;
 
 namespace PortfolioManager.Utils
@@ -36,6 +37,20 @@ namespace PortfolioManager.Utils
 
             var events = new Event[] { new PortfolioCreatedEvent(id, 0, name) };
             eventStream.Add(id, "Portfolio", events);
+        }
+
+        public static void SplitPriceHistoryFromStock(IEventStore eventStore)
+        {
+            var oldStockEventStream = eventStore.GetEventStream("StockRepository");
+
+            var newStockEventStream = eventStore.GetEventStream("Stocks");
+            var newPriceHistoryEventStream = eventStore.GetEventStream("StockPriceHistory");
+
+            foreach (var oldStockEntity in oldStockEventStream.GetAll())
+            {
+                newStockEventStream.Add(oldStockEntity.EntityId, oldStockEntity.Type, oldStockEntity.Events.Where(x => !(x is ClosingPricesAddedEvent)));
+                newPriceHistoryEventStream.Add(oldStockEntity.EntityId, "StockPriceHistory", oldStockEntity.Events.Where(x => x is ClosingPricesAddedEvent));
+            }
         }
 
     }

@@ -20,7 +20,7 @@ namespace PortfolioManager.Domain
         protected IEventStream<T> _EventStream;
         protected IEntityCache<T> _Cache;
         protected IEntityFactory<T> _EntityFactory;
-        protected Func<string, T> _CreateFunction;
+        protected Func<Guid, string, T> _CreateFunction;
 
         private Repository(IEventStream<T> eventStream, IEntityCache<T> cache)
         {
@@ -34,7 +34,7 @@ namespace PortfolioManager.Domain
             _EntityFactory = entityFactory;
         }
 
-        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache, Func<string, T> createFunction)
+        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache, Func<Guid, string, T> createFunction)
             : this(eventStream, cache)
         {
             _CreateFunction = createFunction;
@@ -61,9 +61,9 @@ namespace PortfolioManager.Domain
             T entity;
 
             if (_EntityFactory != null)
-                entity = _EntityFactory.Create(storedEntity.Type);
+                entity = _EntityFactory.Create(storedEntity.EntityId, storedEntity.Type);
             else
-                entity = _CreateFunction(storedEntity.Type);
+                entity = _CreateFunction(storedEntity.EntityId, storedEntity.Type);
 
             ((dynamic)entity).ApplyEvents(storedEntity.Events);
 
