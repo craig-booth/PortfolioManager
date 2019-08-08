@@ -16,16 +16,16 @@ namespace PortfolioManager.ImportData.DataServices
 {
     public class ASXDataService : ITradingDayService, ILiveStockPriceService, IHistoricalStockPriceService
     {
+        private readonly HttpClient _HttpClient = new HttpClient();
+
         public async Task<IEnumerable<StockPrice>> GetHistoricalPriceData(string asxCode, DateTime fromDate, DateTime toDate, CancellationToken cancellationToken)
         {
             var result = new List<StockPrice>();
 
             try
             {
-                var httpClient = new HttpClient();
-
                 string url = String.Format("https://www.asx.com.au/asx/1/share/{0}/prices?interval=daily&count={1}", asxCode, toDate.Subtract(fromDate).Days);
-                var response = await httpClient.GetAsync(url, cancellationToken);
+                var response = await _HttpClient.GetAsync(url, cancellationToken);
 
                 if (!cancellationToken.IsCancellationRequested)
                 {
@@ -63,10 +63,8 @@ namespace PortfolioManager.ImportData.DataServices
             
             try
             {
-                var httpClient = new HttpClient();
-
                 string url = "https://www.asx.com.au/asx/1/share/" + asxCode;         
-                var response = await httpClient.GetAsync(url, cancellationToken);
+                var response = await _HttpClient.GetAsync(url, cancellationToken);
                 if (cancellationToken.IsCancellationRequested)
                     return null;
 
@@ -108,10 +106,8 @@ namespace PortfolioManager.ImportData.DataServices
 
         private async Task<XElement> DownloadData(int year, CancellationToken cancellationToken)
         {
-            var httpClient = new HttpClient();
-
             var url = String.Format("http://www.asx.com.au/about/asx-trading-calendar-{0:d}.htm", year);
-            var response = await httpClient.GetAsync(url, cancellationToken);
+            var response = await _HttpClient.GetAsync(url, cancellationToken);
 
             if (cancellationToken.IsCancellationRequested)
                 return null;
