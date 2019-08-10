@@ -17,13 +17,13 @@ namespace PortfolioManager.ImportData
     {
         private readonly ILiveStockPriceService _DataService;
         private readonly IStockQuery _StockQuery;
-        private readonly IRepository<Stock> _StockRepository;
+        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
         private readonly ILogger _Logger;
 
-        public LivePriceImporter(IStockQuery stockQuery, IRepository<Stock> stockRepository, ILiveStockPriceService dataService, ILogger<LivePriceImporter> logger)
+        public LivePriceImporter(IStockQuery stockQuery, IRepository<StockPriceHistory> stockPriceHistoryRepository, ILiveStockPriceService dataService, ILogger<LivePriceImporter> logger)
         {
             _StockQuery = stockQuery;
-            _StockRepository = stockRepository;
+            _StockPriceHistoryRepository = stockPriceHistoryRepository;
             _DataService = dataService;
             _Logger = logger;
         }
@@ -42,9 +42,9 @@ namespace PortfolioManager.ImportData
                     if (stock != null)
                     {
                         _Logger?.LogInformation("Updating current price foe {0}: {1}", stockQuote.ASXCode, stockQuote.Price);
-                        stock.UpdateCurrentPrice(stockQuote.Price);
 
-                        _StockRepository.Update(stock);
+                        var stockPriceHistory = _StockPriceHistoryRepository.Get(stock.Id);
+                        stockPriceHistory.UpdateCurrentPrice(stockQuote.Price);
                     }
                         
                 }

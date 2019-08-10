@@ -13,7 +13,7 @@ namespace PortfolioManager.Domain.Portfolios
 {
     public class Portfolio : ITrackedEntity
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public int Version { get; private set; } = 0;
         private EventList _Events = new EventList();
         private ServiceFactory<ITransactionHandler> _TransactionHandlers = new ServiceFactory<ITransactionHandler>();
@@ -44,8 +44,9 @@ namespace PortfolioManager.Domain.Portfolios
             get { return DateUtils.NoEndDate; }
         }
 
-        public Portfolio(IStockQuery stockQuery)
+        public Portfolio(Guid id, IStockQuery stockQuery)
         {
+            Id = id;
             _StockQuery = stockQuery;
 
             _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_Holdings, _CashAccount));
@@ -56,9 +57,9 @@ namespace PortfolioManager.Domain.Portfolios
             _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(_Holdings, _CashAccount));
         }
 
-        public void Create(Guid id, string name)
+        public void Create(string name)
         {
-            var @event = new PortfolioCreatedEvent(id, Version, name);
+            var @event = new PortfolioCreatedEvent(Id, Version, name);
             Apply(@event);
 
             PublishEvent(@event);
@@ -68,7 +69,6 @@ namespace PortfolioManager.Domain.Portfolios
         {
             Version++;
 
-            Id = @event.EntityId;
             Name = @event.Name;
         }
 

@@ -27,12 +27,17 @@ namespace PortfolioManager.Domain.TradingCalanders
         ITradingCalander,
         ITrackedEntity
     {
-        public Guid Id => TradingCalanderIds.ASX;
+        public Guid Id { get; }
 
         public int Version { get; protected set; } = 0;
         private EventList _Events = new EventList();
 
         private List<NonTradingDay> _NonTradingDays = new List<NonTradingDay>();
+
+        public TradingCalander(Guid id)
+        {
+            Id = id;
+        }
 
         public void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays)
         {

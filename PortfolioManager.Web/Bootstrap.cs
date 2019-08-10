@@ -50,10 +50,12 @@ namespace PortfolioManager.Web
             services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
             services.Add(ServiceDescriptor.Singleton(typeof(IEntityFactory<>), typeof(DefaultEntityFactory<>)));
 
-            services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("StockRepository"));
+            services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("Stocks"));
             services.AddSingleton<IStockQuery, StockQuery>();
             services.AddSingleton<IEntityFactory<Stock>, StockEntityFactory>();
-        
+
+            services.AddSingleton<IEventStream<StockPriceHistory>>(x => x.GetRequiredService<IEventStore>().GetEventStream<StockPriceHistory>("StockPriceHistory"));
+
             services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));
             services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IRepository<TradingCalander>>().Get(TradingCalanderIds.ASX));
 
@@ -120,11 +122,21 @@ namespace PortfolioManager.Web
 
         public static IServiceProvider InitializeStockExchange(this IServiceProvider serviceProvider)
         {
+            var tradingCalanderRepository = serviceProvider.GetRequiredService<IRepository<TradingCalander>>();
+            tradingCalanderRepository.PopulateCache();
+
             var stockRepository = serviceProvider.GetRequiredService<IRepository<Stock>>();
             stockRepository.PopulateCache();
 
-            var tradingCalanderRepository = serviceProvider.GetRequiredService<IRepository<TradingCalander>>();
-            tradingCalanderRepository.PopulateCache();
+            // Load stock price history
+            var stockPriceRepository = serviceProvider.GetRequiredService<IRepository<StockPriceHistory>>();
+            var stockQuery = serviceProvider.GetRequiredService<IStockQuery>();
+            foreach (var stock in stockQuery.All())
+            {
+                var stockPriceHistory = stockPriceRepository.Get(stock.Id);
+                if (stockPriceHistory != null)
+                    stock.SetPriceHistory(stockPriceHistory);
+            }
 
             return serviceProvider;
         }

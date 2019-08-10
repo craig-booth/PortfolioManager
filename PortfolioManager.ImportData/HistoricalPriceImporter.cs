@@ -17,25 +17,19 @@ namespace PortfolioManager.ImportData
     {
         private readonly IHistoricalStockPriceService _DataService;
         private readonly IStockQuery _StockQuery;
-        private readonly IRepository<Stock> _StockRepository;
+        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
         private readonly ITradingCalander _TradingCalander;
         private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(IStockQuery stockQuery, IRepository<Stock> stockRepository, ITradingCalander tradingCalander, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
+        public HistoricalPriceImporter(IStockQuery stockQuery, IRepository<StockPriceHistory> stockPriceHistoryRepository, ITradingCalander tradingCalander, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
         {
             _StockQuery = stockQuery;
-            _StockRepository = stockRepository;
+            _StockPriceHistoryRepository = stockPriceHistoryRepository;
             _TradingCalander = tradingCalander;
             _DataService = dataService;
             _Logger = logger;
         }
 
-        private class StockToImport
-        {
-            public Stock Stock;
-            public DateTime FromDate;
-            public DateTime ToDate;
-        }
 
         public async Task Import(CancellationToken cancellationToken)
         {
@@ -59,21 +53,23 @@ namespace PortfolioManager.ImportData
                     _Logger?.LogInformation("Importing closing prices for {0} between {1:d} and {2:d}", asxCode, fromDate, toDate);
 
                     var data = await _DataService.GetHistoricalPriceData(asxCode, fromDate, toDate, cancellationToken);
-
-                    _Logger?.LogInformation("{0} closing prices found", data.Count());
-                    foreach (var stockPrice in data)
+                 
+                    var closingPrices = data.Select(x => new Tuple<DateTime, decimal>(x.Date, x.Price)).ToList();
+                    _Logger?.LogInformation("{0} closing prices found", closingPrices.Count);
+                    if (closingPrices.Count > 0)
                     {
-                        _Logger?.LogInformation("Updating closing price for {0:d} : {1}", stockPrice.Date, stockPrice.Price);
+                        var stockPriceHistory = _StockPriceHistoryRepository.Get(stock.Id);
+
                         try
                         {
-                            stock.UpdateClosingPrice(stockPrice.Date, stockPrice.Price);
+                            stockPriceHistory.UpdateClosingPrices(closingPrices);
                         }
                         catch (Exception e)
                         {
-                            _Logger.LogError(e, "Error occurred importing closing prices for {0} on {1:d}", asxCode, stockPrice.Date);
+                            _Logger.LogError(e, "Error occurred importing closing prices for {0}", asxCode);
                         }
                     }
-                        
+                     
                 }
             }
         }
