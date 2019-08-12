@@ -31,6 +31,7 @@ using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.RestApi.Converters;
 
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Services;
 
 
 namespace PortfolioManager.Web
@@ -46,8 +47,8 @@ namespace PortfolioManager.Web
             services.AddSingleton<PortfolioManagerSettings>(settings);
             services.AddSingleton<IEventStore>(CreateEventStore);
 
-            services.Add(ServiceDescriptor.Singleton(typeof(IEntityCache<>), typeof(EntityCache<>)));
             services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
+            services.Add(ServiceDescriptor.Singleton(typeof(IEntityCache<>), typeof(EntityCache<>)));
             services.Add(ServiceDescriptor.Singleton(typeof(IEntityFactory<>), typeof(DefaultEntityFactory<>)));
 
             services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("Stocks"));
@@ -61,6 +62,10 @@ namespace PortfolioManager.Web
 
             services.AddSingleton<IEventStream<Portfolio>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Portfolio>("Portfolios"));
             services.AddSingleton<IEntityFactory<Portfolio>, PortfolioEntityFactory>();
+
+
+            // Add services
+            services.AddSingleton<IStockService, StockService>();
 
             services.AddSingleton<StockResolver, StockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
@@ -113,27 +118,27 @@ namespace PortfolioManager.Web
 
     public static class PortfolioManagerAppBuilderExtensions
     {
-        public static IApplicationBuilder InitializeStockExchange(this IApplicationBuilder app)
+        public static IApplicationBuilder InitializeStockCache(this IApplicationBuilder app)
         {
-            app.ApplicationServices.InitializeStockExchange();
+            app.ApplicationServices.InitializeStockCache();
 
             return app;
         }
 
-        public static IServiceProvider InitializeStockExchange(this IServiceProvider serviceProvider)
+        public static IServiceProvider InitializeStockCache(this IServiceProvider serviceProvider)
         {
-            var tradingCalanderRepository = serviceProvider.GetRequiredService<IRepository<TradingCalander>>();
-            tradingCalanderRepository.PopulateCache();
-
+            var stockCache = serviceProvider.GetRequiredService<IEntityCache<Stock>>();
             var stockRepository = serviceProvider.GetRequiredService<IRepository<Stock>>();
-            stockRepository.PopulateCache();
+            stockRepository.PopulateCache(stockCache);
 
-            // Load stock price history
+            var stockPriceHistoryCache = serviceProvider.GetRequiredService<IEntityCache<StockPriceHistory>>();
             var stockPriceRepository = serviceProvider.GetRequiredService<IRepository<StockPriceHistory>>();
-            var stockQuery = serviceProvider.GetRequiredService<IStockQuery>();
-            foreach (var stock in stockQuery.All())
+            stockPriceRepository.PopulateCache(stockPriceHistoryCache);
+
+            // Hook up stock prices to stocks
+            foreach (var stock in stockCache.All())
             {
-                var stockPriceHistory = stockPriceRepository.Get(stock.Id);
+                var stockPriceHistory = stockPriceHistoryCache.Get(stock.Id);
                 if (stockPriceHistory != null)
                     stock.SetPriceHistory(stockPriceHistory);
             }

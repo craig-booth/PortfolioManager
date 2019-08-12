@@ -19,14 +19,12 @@ namespace PortfolioManager.Web.Controllers.v2
     public class StockController : Controller
     {
         private IStockQuery _StockQuery;
-        private IRepository<Stock> _StockRepository;
-        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
+        private IStockService _StockService;
 
-        public StockController(IStockQuery stockQuery, IRepository<Stock> stockRepository, IRepository<StockPriceHistory> stockPriceHistoryRepository)
+        public StockController(IStockQuery stockQuery, IStockService stockService)
         {
             _StockQuery = stockQuery;
-            _StockRepository = stockRepository;
-            _StockPriceHistoryRepository = stockPriceHistoryRepository;
+            _StockService = stockService;
         }
 
         // GET: api/stocks
@@ -113,17 +111,16 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                var stockService = new StockService(_StockQuery, _StockRepository, _StockPriceHistoryRepository);
                 if (command.ChildSecurities.Count == 0)
                 {
-                    stockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
+                    _StockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
                 }
                 else
                 {
                     if (command.Trust)
                         return BadRequest("A Stapled security cannot be a trust");
 
-                    stockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
+                    _StockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
                 } 
             }
             catch (Exception e)
@@ -143,14 +140,13 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
             try
             {
-                stock.ChangeProperties(command.ChangeDate, command.AsxCode, command.Name, command.Category);
-                _StockRepository.Update(stock);
+                _StockService.ChangeStock(id, command.ChangeDate, command.AsxCode, command.Name, command.Category);
             }
             catch (Exception e)
             {
@@ -169,14 +165,13 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
             try
             {
-                var stockService = new StockService(_StockQuery, _StockRepository, _StockPriceHistoryRepository);
-                stockService.DelistStock(id, command.DelistingDate);
+                _StockService.DelistStock(id, command.DelistingDate);
             }
             catch (Exception e)
             {
@@ -195,7 +190,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
@@ -210,11 +205,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
             try
             {
-                var stockPriceHistory = _StockPriceHistoryRepository.Get(stock.Id);
-
-                stockPriceHistory.UpdateClosingPrices(closingPrices);
-
-                _StockPriceHistoryRepository.Update(stockPriceHistory);
+                _StockService.UpdateClosingPrices(id, closingPrices);
             }
             catch (Exception e)
             {
@@ -233,14 +224,13 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
             try
             {
-                stock.ChangeDividendRules(command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
-                _StockRepository.Update(stock);
+                _StockService.ChangeDividendRules(id, command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
             }
             catch (Exception e)
             {
@@ -279,7 +269,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(id);
+            var stock = _StockQuery.Get(id);
             if (stock == null)
                 return NotFound();
 
@@ -306,8 +296,7 @@ namespace PortfolioManager.Web.Controllers.v2
          
             try
             {
-                stapledSecurity.SetRelativeNTAs(command.ChangeDate, ntas);
-                _StockRepository.Update(stock);
+                _StockService.ChangeRelativeNTAs(id, command.ChangeDate, ntas);
             }
             catch (Exception e)
             {

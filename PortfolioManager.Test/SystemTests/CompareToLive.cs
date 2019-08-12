@@ -73,7 +73,7 @@ namespace PortfolioManager.Test.SystemTests
             services.AddSingleton<PortfolioController>();
 
             _ServiceProvider = services.BuildServiceProvider();
-            _ServiceProvider.InitializeStockExchange();
+            _ServiceProvider.InitializeStockCache();
 
             var cache = _ServiceProvider.GetRequiredService<PortfolioManager.Domain.IEntityCache<PortfolioManager.Domain.Portfolios.Portfolio>>();
             var stockQuery = _ServiceProvider.GetRequiredService<IStockQuery>();

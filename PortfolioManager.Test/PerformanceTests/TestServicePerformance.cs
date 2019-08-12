@@ -57,7 +57,7 @@ namespace PortfolioManager.Test.PerformanceTests
                 services.AddSingleton<PortfolioController>();
 
                 _ServiceProvider = services.BuildServiceProvider();
-                _ServiceProvider.InitializeStockExchange();
+                _ServiceProvider.InitializeStockCache();
 
                 LoadTransactions(testPath);
             }

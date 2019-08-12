@@ -11,47 +11,40 @@ namespace PortfolioManager.Domain
         T Get(Guid id);
         void Add(T entity);
         void Update(T entity);
-        void PopulateCache();
+        void PopulateCache(IEntityCache<T> cache);
     }
 
     public class Repository<T> : IRepository<T>
          where T : ITrackedEntity
     {
         protected IEventStream<T> _EventStream;
-        protected IEntityCache<T> _Cache;
         protected IEntityFactory<T> _EntityFactory;
         protected Func<Guid, string, T> _CreateFunction;
 
-        private Repository(IEventStream<T> eventStream, IEntityCache<T> cache)
+        private Repository(IEventStream<T> eventStream)
         {
             _EventStream = eventStream;
-            _Cache = cache;
         }
 
-        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache, IEntityFactory<T> entityFactory)
-            : this(eventStream, cache)
+        public Repository(IEventStream<T> eventStream, IEntityFactory<T> entityFactory)
+            : this(eventStream)
         {
             _EntityFactory = entityFactory;
         }
 
-        public Repository(IEventStream<T> eventStream, IEntityCache<T> cache, Func<Guid, string, T> createFunction)
-            : this(eventStream, cache)
+        public Repository(IEventStream<T> eventStream, Func<Guid, string, T> createFunction)
+            : this(eventStream)
         {
             _CreateFunction = createFunction;
         }
 
         public T Get(Guid id)
         {
-            var entity = _Cache.Get(id);
-            if (entity != null)
-                return entity;
-
             var storedEntity = _EventStream.Get(id);
             if (storedEntity == null)
                 return default(T);
 
-            entity = CreateEntity(storedEntity);
-            _Cache.Add(entity);
+            var entity = CreateEntity(storedEntity);
 
             return entity;
         }
@@ -75,8 +68,6 @@ namespace PortfolioManager.Domain
             var newEvents = entity.FetchEvents();
 
             _EventStream.Add(entity.Id, entity.GetType().Name, newEvents);
-
-            _Cache.Add(entity);
         }
 
         public void Update(T entity)
@@ -86,14 +77,16 @@ namespace PortfolioManager.Domain
             _EventStream.AppendEvents(entity.Id, newEvents);
         }
 
-        public void PopulateCache()
+        public void PopulateCache(IEntityCache<T> cache)
         {
+            cache.Clear();
+
             var storedEntities = _EventStream.GetAll();
             foreach (var storedEntity in storedEntities)
             {
                 var entity = CreateEntity(storedEntity);
                 if (entity != null)
-                    _Cache.Add(entity);
+                    cache.Add(entity);
             }
         }
     }
