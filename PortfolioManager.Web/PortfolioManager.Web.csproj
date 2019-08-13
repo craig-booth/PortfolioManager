@@ -29,10 +29,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj" />
+    <ProjectReference Include="..\PortfolioManager.DataServices\PortfolioManager.DataServices.csproj" />
     <ProjectReference Include="..\PortfolioManager.Domain\PortfolioManager.Domain.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
-    <ProjectReference Include="..\PortfolioManager.ImportData\PortfolioManager.ImportData.csproj" />
     <ProjectReference Include="..\PortfolioManager.RestApi\PortfolioManager.RestApi.csproj" />
   </ItemGroup>
 

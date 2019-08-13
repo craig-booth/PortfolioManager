@@ -13,6 +13,8 @@ using PortfolioManager.Domain.Transactions;
 using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.RestApi.Portfolios;
 
+using PortfolioManager.Web.Utilities;
+
 namespace PortfolioManager.Web.Services
 {
     public class PortfolioTransactionService

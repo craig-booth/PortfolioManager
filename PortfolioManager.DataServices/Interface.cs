@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using PortfolioManager.Domain.TradingCalanders;
 
-namespace PortfolioManager.ImportData.DataServices
+namespace PortfolioManager.DataServices
 {
     public interface ILiveStockPriceService
     {

@@ -9,9 +9,9 @@ namespace PortfolioManager.Domain
     public interface IRepository<T> where T : ITrackedEntity
     {
         T Get(Guid id);
+        IEnumerable<T> All();
         void Add(T entity);
         void Update(T entity);
-        void PopulateCache(IEntityCache<T> cache);
     }
 
     public class Repository<T> : IRepository<T>
@@ -49,6 +49,17 @@ namespace PortfolioManager.Domain
             return entity;
         }
 
+        public IEnumerable<T> All()
+        {
+            var storedEntities = _EventStream.GetAll();
+            foreach (var storedEntity in storedEntities)
+            {
+                var entity = CreateEntity(storedEntity);
+                if (entity != null)
+                    yield return entity;
+            }
+        }
+
         protected T CreateEntity(StoredEntity storedEntity)
         {
             T entity;
@@ -77,18 +88,6 @@ namespace PortfolioManager.Domain
             _EventStream.AppendEvents(entity.Id, newEvents);
         }
 
-        public void PopulateCache(IEntityCache<T> cache)
-        {
-            cache.Clear();
-
-            var storedEntities = _EventStream.GetAll();
-            foreach (var storedEntity in storedEntities)
-            {
-                var entity = CreateEntity(storedEntity);
-                if (entity != null)
-                    cache.Add(entity);
-            }
-        }
     }
     
 }

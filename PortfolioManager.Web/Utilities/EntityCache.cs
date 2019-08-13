@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
-namespace PortfolioManager.Domain
+using PortfolioManager.Domain;
+
+namespace PortfolioManager.Web.Utilities
 {
     public interface IEntityCache<T> where T : IEntity
     {
@@ -49,4 +51,19 @@ namespace PortfolioManager.Domain
             return _Entities.Values;
         }
     }
+
+    public static class EntityCacheExtensions
+    {
+        public static IEntityCache<T> PopulateCache<T>(this IEntityCache<T> entityCache, IRepository<T> repository)
+            where T : ITrackedEntity
+        {
+            entityCache.Clear();
+
+            foreach (var entity in repository.All())
+                entityCache.Add(entity);
+
+            return entityCache;
+        }
+    }
+
 }

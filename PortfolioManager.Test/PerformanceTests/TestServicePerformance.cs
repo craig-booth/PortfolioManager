@@ -23,6 +23,7 @@ using Newtonsoft.Json.Serialization;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Web;
+using PortfolioManager.Web.Utilities;
 using PortfolioManager.Web.Controllers.v2;
 using PortfolioManager.RestApi.Converters;
 

@@ -19,8 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 
 using PortfolioManager.Common.Scheduler;
-using PortfolioManager.ImportData;
-using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.DataServices;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
@@ -30,8 +29,10 @@ using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.RestApi.Converters;
 
+using PortfolioManager.Web.Utilities;
 using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Services;
+using PortfolioManager.Web.DataImporters;
 
 
 namespace PortfolioManager.Web
@@ -44,11 +45,14 @@ namespace PortfolioManager.Web
             // Ensure that PortfolioManager.Domain assembly is loaded
             var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
 
+
+            services.AddSingleton<IStockResolver, StockResolver>();
+            services.Add(ServiceDescriptor.Singleton(typeof(IEntityCache<>), typeof(EntityCache<>)));
+
             services.AddSingleton<PortfolioManagerSettings>(settings);
             services.AddSingleton<IEventStore>(CreateEventStore);
 
             services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
-            services.Add(ServiceDescriptor.Singleton(typeof(IEntityCache<>), typeof(EntityCache<>)));
             services.Add(ServiceDescriptor.Singleton(typeof(IEntityFactory<>), typeof(DefaultEntityFactory<>)));
 
             services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("Stocks"));
@@ -67,7 +71,7 @@ namespace PortfolioManager.Web
             // Add services
             services.AddSingleton<IStockService, StockService>();
 
-            services.AddSingleton<StockResolver, StockResolver>();
+            services.AddSingleton<MapperStockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
             services.AddSingleton<Profile, DomainToRestApiMappingProfile>();
             services.AddSingleton<IMapper>(CreateMapper);
@@ -126,14 +130,14 @@ namespace PortfolioManager.Web
         }
 
         public static IServiceProvider InitializeStockCache(this IServiceProvider serviceProvider)
-        {
-            var stockCache = serviceProvider.GetRequiredService<IEntityCache<Stock>>();
+        {          
             var stockRepository = serviceProvider.GetRequiredService<IRepository<Stock>>();
-            stockRepository.PopulateCache(stockCache);
+            var stockCache = serviceProvider.GetRequiredService<IEntityCache<Stock>>();
+            stockCache.PopulateCache(stockRepository);
 
-            var stockPriceHistoryCache = serviceProvider.GetRequiredService<IEntityCache<StockPriceHistory>>();
             var stockPriceRepository = serviceProvider.GetRequiredService<IRepository<StockPriceHistory>>();
-            stockPriceRepository.PopulateCache(stockPriceHistoryCache);
+            var stockPriceHistoryCache = serviceProvider.GetRequiredService<IEntityCache<StockPriceHistory>>();
+            stockPriceHistoryCache.PopulateCache(stockPriceRepository);
 
             // Hook up stock prices to stocks
             foreach (var stock in stockCache.All())
@@ -156,7 +160,7 @@ namespace PortfolioManager.Web
 
     public class JsonMvcConfiguration : IConfigureOptions<MvcJsonOptions>
     {
-        private TransactionJsonConverter _TransactionConverter;
+        private readonly TransactionJsonConverter _TransactionConverter;
 
         public JsonMvcConfiguration(TransactionJsonConverter transactionConverter)
         {

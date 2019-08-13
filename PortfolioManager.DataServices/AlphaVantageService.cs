@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 using PortfolioManager.Common;
 
-namespace PortfolioManager.ImportData.DataServices
+namespace PortfolioManager.DataServices
 {
     public class AlphaVantageService : ILiveStockPriceService, IHistoricalStockPriceService
     {

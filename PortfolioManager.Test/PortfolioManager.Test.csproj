@@ -18,7 +18,6 @@
     <ProjectReference Include="..\PortfolioManager.Domain\PortfolioManager.Domain.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore.Mongodb\PortfolioManager.EventStore.Mongodb.csproj" />
     <ProjectReference Include="..\PortfolioManager.EventStore\PortfolioManager.EventStore.csproj" />
-    <ProjectReference Include="..\PortfolioManager.ImportData\PortfolioManager.ImportData.csproj" />
     <ProjectReference Include="..\PortfolioManager.Web\PortfolioManager.Web.csproj" />
   </ItemGroup>
 

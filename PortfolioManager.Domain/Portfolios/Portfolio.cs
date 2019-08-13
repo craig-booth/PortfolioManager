@@ -11,6 +11,7 @@ using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Domain.Portfolios
 {
+
     public class Portfolio : ITrackedEntity
     {
         public Guid Id { get; }
@@ -20,7 +21,7 @@ namespace PortfolioManager.Domain.Portfolios
 
         public string Name { get; private set; }
 
-        private IStockQuery _StockQuery;
+        private IStockResolver _StockResolver;
 
         private HoldingCollection _Holdings = new HoldingCollection();
         public IHoldingCollection Holdings => _Holdings;
@@ -44,10 +45,10 @@ namespace PortfolioManager.Domain.Portfolios
             get { return DateUtils.NoEndDate; }
         }
 
-        public Portfolio(Guid id, IStockQuery stockQuery)
+        public Portfolio(Guid id, IStockResolver stockResolver)
         {
             Id = id;
-            _StockQuery = stockQuery;
+            _StockResolver = stockResolver;
 
             _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_Holdings, _CashAccount));
             _TransactionHandlers.Register<Disposal>(() => new DisposalHandler(_Holdings, _CashAccount, _CgtEvents));
@@ -246,7 +247,7 @@ namespace PortfolioManager.Domain.Portfolios
         {
             transaction.Id = @event.TransactionId;
             transaction.Date = @event.Date;
-            transaction.Stock = _StockQuery.Get(@event.Stock);
+            transaction.Stock = _StockResolver.GetStock(@event.Stock);
             transaction.Comment = @event.Comment;
         }
 

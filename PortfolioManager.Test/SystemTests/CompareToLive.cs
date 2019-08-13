@@ -26,6 +26,7 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Converters;
 
 using PortfolioManager.Web;
+using PortfolioManager.Web.Utilities;
 using PortfolioManager.Web.Controllers.v2;
 
 
@@ -75,9 +76,9 @@ namespace PortfolioManager.Test.SystemTests
             _ServiceProvider = services.BuildServiceProvider();
             _ServiceProvider.InitializeStockCache();
 
-            var cache = _ServiceProvider.GetRequiredService<PortfolioManager.Domain.IEntityCache<PortfolioManager.Domain.Portfolios.Portfolio>>();
-            var stockQuery = _ServiceProvider.GetRequiredService<IStockQuery>();
-            var portfolio = new PortfolioManager.Domain.Portfolios.Portfolio(_PortfolioId, stockQuery);
+            var cache = _ServiceProvider.GetRequiredService<IEntityCache<PortfolioManager.Domain.Portfolios.Portfolio>>();
+            var stockResolver = _ServiceProvider.GetRequiredService<IStockResolver>();
+            var portfolio = new PortfolioManager.Domain.Portfolios.Portfolio(_PortfolioId, stockResolver);
             portfolio.Create("Compare To Live");
             
             cache.Add(portfolio);

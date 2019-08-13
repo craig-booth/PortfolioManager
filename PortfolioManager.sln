@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Web", "Por
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "PortfolioManager.UI\PortfolioManager.UI.csproj", "{92F26883-8D8C-4F37-AEA2-09D5088A9390}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.ImportData", "PortfolioManager.ImportData\PortfolioManager.ImportData.csproj", "{020361D4-4C03-4D69-9013-2F57F66B1B3F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{246A1222-9C9E-4616-BD29-2755A7CD5D20}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Domain", "PortfolioManager.Domain\PortfolioManager.Domain.csproj", "{AC9C06DE-041D-4513-8F37-B2802EA402BF}"
@@ -21,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.RestApi", "PortfolioManager.RestApi\PortfolioManager.RestApi.csproj", "{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.Utils", "PortfolioManager.Utils\PortfolioManager.Utils.csproj", "{2CBDF4A9-FADA-4F17-9604-4077FA36B164}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Utils", "PortfolioManager.Utils\PortfolioManager.Utils.csproj", "{2CBDF4A9-FADA-4F17-9604-4077FA36B164}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.DataServices", "PortfolioManager.DataServices\PortfolioManager.DataServices.csproj", "{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,6 @@ Global
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Release|Any CPU.Build.0 = Release|Any CPU
-		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{020361D4-4C03-4D69-9013-2F57F66B1B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

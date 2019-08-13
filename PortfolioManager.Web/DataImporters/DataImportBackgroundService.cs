@@ -7,11 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Common.Scheduler;
-using PortfolioManager.Domain.Stocks;
-using PortfolioManager.ImportData;
-using PortfolioManager.ImportData.DataServices;
 
-namespace PortfolioManager.Web
+namespace PortfolioManager.Web.DataImporters
 {
     public class DataImportBackgroundService : BackgroundService
     {

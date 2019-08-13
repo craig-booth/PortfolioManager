@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.DataServices;
 
 namespace PortfolioManager.Test.ImportDataTests
 {
     class AvailableDataServices
     {
-        private static object[] _DataServices = {
+        private static readonly object[] _DataServices = {
             new ASXDataService(),
             new FloatComAuDataService(),
             new GoogleDataService(),
@@ -23,8 +23,7 @@ namespace PortfolioManager.Test.ImportDataTests
         {          
             foreach (var dataService in _DataServices)
             {
-                var requestDataService = dataService as IHistoricalStockPriceService;
-                if (requestDataService != null)
+                if (dataService is IHistoricalStockPriceService requestDataService)
                 {
                     var testData = new TestCaseData(requestDataService);
                     testData.SetName(requestDataService.GetType().Name + " - Historical Data");
@@ -37,8 +36,7 @@ namespace PortfolioManager.Test.ImportDataTests
         {
             foreach (var dataService in _DataServices)
             {
-                var requestDataService = dataService as ILiveStockPriceService;
-                if (requestDataService != null)
+                if (dataService is ILiveStockPriceService requestDataService)
                 {
                     var testData = new TestCaseData(requestDataService);
                     testData.SetName(requestDataService.GetType().Name + " - Live Data");
@@ -51,14 +49,12 @@ namespace PortfolioManager.Test.ImportDataTests
         {
             foreach (var dataService in _DataServices)
             {
-                var requestDataService = dataService as ITradingDayService;
-                if (requestDataService != null)
-                    if (requestDataService != null)
-                    {
-                        var testData = new TestCaseData(requestDataService);
-                        testData.SetName(requestDataService.GetType().Name + " - Trading Days");
-                        yield return testData;
-                    }
+                if (dataService is ITradingDayService requestDataService)
+                {
+                    var testData = new TestCaseData(requestDataService);
+                    testData.SetName(requestDataService.GetType().Name + " - Trading Days");
+                    yield return testData;
+                }
             }
         }
     }

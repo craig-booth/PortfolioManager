@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using PortfolioManager.Common;
-using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.DataServices;
 
 namespace PortfolioManager.Test.ImportDataTests
 {

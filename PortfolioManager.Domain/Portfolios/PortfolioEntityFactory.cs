@@ -8,16 +8,16 @@ namespace PortfolioManager.Domain.Portfolios
 {
     public class PortfolioEntityFactory : IEntityFactory<Portfolio>
     {
-        private IStockQuery _StockQuery;
+        private IStockResolver _StockResolver;
 
-        public PortfolioEntityFactory(IStockQuery stockQuery)
+        public PortfolioEntityFactory(IStockResolver stockResolver)
         {
-            _StockQuery = stockQuery;
+            _StockResolver = stockResolver;
         }
 
         public Portfolio Create(Guid id, string storedEntityType)
         {
-            return new Portfolio(id, _StockQuery);
+            return new Portfolio(id, _StockResolver);
         }
     }
 }

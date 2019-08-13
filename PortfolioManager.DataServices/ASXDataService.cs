@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.TradingCalanders;
 
-namespace PortfolioManager.ImportData.DataServices
+namespace PortfolioManager.DataServices
 {
     public class ASXDataService : ITradingDayService, ILiveStockPriceService, IHistoricalStockPriceService
     {

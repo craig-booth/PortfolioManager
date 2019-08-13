@@ -5,13 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
-using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.Web.Utilities;
+using PortfolioManager.DataServices;
 
-namespace PortfolioManager.ImportData
+namespace PortfolioManager.Web.DataImporters
 {
     public class HistoricalPriceImporter
     {

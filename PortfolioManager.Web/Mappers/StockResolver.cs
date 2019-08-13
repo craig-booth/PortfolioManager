@@ -8,13 +8,13 @@ using PortfolioManager.Domain.Stocks;
 
 namespace PortfolioManager.Web.Mappers
 {
-    public class StockResolver : IValueResolver<RestApi.Transactions.Transaction, Domain.Transactions.Transaction, Stock>
+    public class MapperStockResolver : IValueResolver<RestApi.Transactions.Transaction, Domain.Transactions.Transaction, Stock>
     {
-        private IStockQuery _StockQuery;
+        private IStockResolver _StockResolver;
 
-        public StockResolver(IStockQuery stockQuery)
+        public MapperStockResolver(IStockResolver stockResolver)
         {
-            _StockQuery = stockQuery;
+            _StockResolver = stockResolver;
         }
 
         public Stock Resolve(RestApi.Transactions.Transaction source, Domain.Transactions.Transaction destination, Stock member, ResolutionContext context)
@@ -22,7 +22,7 @@ namespace PortfolioManager.Web.Mappers
             if (source.Stock == Guid.Empty)
                 return null;
 
-            return _StockQuery.Get(source.Stock);
+            return _StockResolver.GetStock(source.Stock);
         }
     }
 }

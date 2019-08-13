@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
+using PortfolioManager.Domain.Stocks;
 
-namespace PortfolioManager.Domain.Stocks
+namespace PortfolioManager.Web.Utilities
 {
     public interface IStockQuery
     {

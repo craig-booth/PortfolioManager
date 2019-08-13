@@ -12,6 +12,7 @@ using PortfolioManager.RestApi.Stocks;
 
 using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Services;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
@@ -249,15 +250,18 @@ namespace PortfolioManager.Web.Controllers.v2
             if (stock == null)
                 return NotFound();
 
-            var stapledSecurity = stock as StapledSecurity;
-            if (stapledSecurity == null)
+            if (stock is StapledSecurity stapledSecurity)
+            {
+                var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+
+                return Ok(stapledSecurity.ToRelativeNTAResponse(dateRange));
+            }
+            else
             {
                 return BadRequest("Relative NTAs only apply stapled securities");
             }
 
-            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return Ok(stapledSecurity.ToRelativeNTAResponse(dateRange));
         }
 
         // POST : /api/stocks/{id}/relativenta
@@ -273,37 +277,40 @@ namespace PortfolioManager.Web.Controllers.v2
             if (stock == null)
                 return NotFound();
 
-            var stapledSecurity = stock as StapledSecurity;
-            if (stapledSecurity == null)
+            if (stock is StapledSecurity stapledSecurity)
+            {
+                if (command.RelativeNTAs.Count != stapledSecurity.ChildSecurities.Count)
+                {
+                    return BadRequest(String.Format("The number of relative ntas provided ({0}) did not match the number of child securities ({1})", command.RelativeNTAs.Count, stapledSecurity.ChildSecurities.Count));
+                }
+
+                var ntas = new decimal[stapledSecurity.ChildSecurities.Count];
+                for (var i = 0; i < stapledSecurity.ChildSecurities.Count; i++)
+                {
+                    var nta = command.RelativeNTAs.Find(x => x.ChildSecurity == stapledSecurity.ChildSecurities[i].ASXCode);
+                    if (nta == null)
+                        return BadRequest(String.Format("Relative nta not provided for {0}", stapledSecurity.ChildSecurities[i].ASXCode));
+
+                    ntas[i] = nta.Percentage;
+                }
+
+                try
+                {
+                    _StockService.ChangeRelativeNTAs(id, command.ChangeDate, ntas);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+
+                return Ok();
+            }
+            else
             {
                 return BadRequest("Relative NTAs only apply stapled securities");
             }
 
-            if (command.RelativeNTAs.Count != stapledSecurity.ChildSecurities.Count)
-            {
-                return BadRequest(String.Format("The number of relative ntas provided ({0}) did not match the number of child securities ({1})", command.RelativeNTAs.Count, stapledSecurity.ChildSecurities.Count));
-            }
-
-            var ntas = new decimal[stapledSecurity.ChildSecurities.Count];
-            for (var i = 0; i < stapledSecurity.ChildSecurities.Count; i++)
-            {
-                var nta = command.RelativeNTAs.Find(x => x.ChildSecurity == stapledSecurity.ChildSecurities[i].ASXCode);
-                if (nta == null)
-                    return BadRequest(String.Format("Relative nta not provided for {0}", stapledSecurity.ChildSecurities[i].ASXCode));
-
-                ntas[i] = nta.Percentage;
-            }
-         
-            try
-            {
-                _StockService.ChangeRelativeNTAs(id, command.ChangeDate, ntas);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            return Ok();
+ 
         }
 
         private bool MatchesQuery(StockProperties stock, string query)

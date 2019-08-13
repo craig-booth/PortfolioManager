@@ -7,7 +7,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace PortfolioManager.ImportData.DataServices
+namespace PortfolioManager.DataServices
 {
     public class GoogleDataService : ILiveStockPriceService
     {

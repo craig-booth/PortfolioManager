@@ -12,7 +12,7 @@ namespace PortfolioManager.Web.Mappers
 {
     public class RestApiToDomainMappingProfile: Profile
     {
-        public RestApiToDomainMappingProfile(StockResolver stockResolver)
+        public RestApiToDomainMappingProfile(MapperStockResolver stockResolver)
         {
             CreateMap<RestApi.Transactions.Transaction, Domain.Transactions.Transaction>()
                 .ForMember(dest => dest.Stock, opts => opts.MapFrom(stockResolver))

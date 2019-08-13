@@ -14,15 +14,16 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}")]
     public class PortfolioController : BasePortfolioController
     {
-        private IMapper _Mapper;
-        private IStockQuery _StockQuery;
-        private ITradingCalander _TradingCalander;
+        private readonly IMapper _Mapper;
+        private readonly IStockQuery _StockQuery;
+        private readonly ITradingCalander _TradingCalander;
 
         public PortfolioController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, ITradingCalander tradingCalander,  IMapper mapper)
             : base(portfolioRepository)

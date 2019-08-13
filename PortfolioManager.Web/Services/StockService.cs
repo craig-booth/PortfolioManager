@@ -7,6 +7,8 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 
+using PortfolioManager.Web.Utilities;
+
 namespace PortfolioManager.Web.Services
 {
 

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
-using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.DataServices;
+using PortfolioManager.Web.Utilities;
 
-namespace PortfolioManager.ImportData
+namespace PortfolioManager.Web.DataImporters
 {
     public class LivePriceImporter
     {

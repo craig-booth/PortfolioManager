@@ -7,7 +7,7 @@ using System.IO;
 using System.Globalization;
 using KBCsv;
 
-namespace PortfolioManager.ImportData.DataServices
+namespace PortfolioManager.DataServices
 {
     public class FloatComAuDataService : IHistoricalStockPriceService
     {

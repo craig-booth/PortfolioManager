@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.TradingCalanders;
-using PortfolioManager.ImportData.DataServices;
+using PortfolioManager.DataServices;
 
-namespace PortfolioManager.ImportData
+namespace PortfolioManager.Web.DataImporters
 {
     public class TradingDayImporter
     {

@@ -12,14 +12,15 @@ using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.Web.Services;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/transactions")]
     public class TransactionController : BasePortfolioController
     {
-        private IMapper _Mapper;
-        private IStockQuery _StockQuery;
+        private readonly IMapper _Mapper;
+        private readonly IStockQuery _StockQuery;
 
         public TransactionController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, IMapper mapper)
             : base(portfolioRepository)
