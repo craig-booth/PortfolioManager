@@ -19,6 +19,7 @@ namespace PortfolioManager.Web.Services
         void DelistStock(Guid id, DateTime date);
 
         void ChangeStock(Guid id, DateTime changeDate, string newAsxCode, string newName, AssetCategory newAssetCategory);
+        void UpdateCurrentPrice(Guid id, decimal price);
         void UpdateClosingPrices(Guid id, IEnumerable<Tuple<DateTime, decimal>> closingPrices);
         void ChangeDividendRules(Guid id, DateTime changeDate, decimal companyTaxRate, RoundingRule newDividendRoundingRule, bool drpActive, DRPMethod newDrpMethod);
         void ChangeRelativeNTAs(Guid id, DateTime date, decimal[] percentages);
@@ -106,6 +107,15 @@ namespace PortfolioManager.Web.Services
             _StockRepository.Update(stock);
         }
 
+        public void UpdateCurrentPrice(Guid id, decimal price)
+        {
+            var stockPriceHistory = _StockPriceHistoryCache.Get(id);
+            if (stockPriceHistory == null)
+                throw new Exception("Stock not found");
+
+            stockPriceHistory.UpdateCurrentPrice(price);
+        }
+
         public void UpdateClosingPrices(Guid id, IEnumerable<Tuple<DateTime, decimal>> closingPrices)
         {
             var stockPriceHistory = _StockPriceHistoryCache.Get(id);
@@ -135,19 +145,22 @@ namespace PortfolioManager.Web.Services
             if (stock == null)
                 throw new Exception("Stock not found");
 
-            var stapledSecurity = stock as StapledSecurity;
-            if (stapledSecurity == null)
+            if (stock is StapledSecurity stapledSecurity)
+            {
+                if (percentages.Length != stapledSecurity.ChildSecurities.Count)
+                {
+                    throw new Exception(String.Format("The number of relative ntas provided ({0}) did not match the number of child securities ({1})", percentages.Length, stapledSecurity.ChildSecurities.Count));
+                }
+
+                stapledSecurity.SetRelativeNTAs(date, percentages);
+                _StockRepository.Update(stock);
+            }
+            else
             {
                 throw new Exception("Relative NTAs only apply stapled securities");
             }
 
-            if (percentages.Length != stapledSecurity.ChildSecurities.Count)
-            {
-                throw new Exception(String.Format("The number of relative ntas provided ({0}) did not match the number of child securities ({1})", percentages.Length, stapledSecurity.ChildSecurities.Count));
-            }
 
-            stapledSecurity.SetRelativeNTAs(date, percentages);
-            _StockRepository.Update(stock);
         }
     }
 }

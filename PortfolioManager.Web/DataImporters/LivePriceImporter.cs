@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 
-using PortfolioManager.Domain;
-using PortfolioManager.Domain.Stocks;
 using PortfolioManager.DataServices;
+using PortfolioManager.Web.Services;
 using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.DataImporters
@@ -17,13 +16,13 @@ namespace PortfolioManager.Web.DataImporters
     {
         private readonly ILiveStockPriceService _DataService;
         private readonly IStockQuery _StockQuery;
-        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
+        private IStockService _StockService;
         private readonly ILogger _Logger;
 
-        public LivePriceImporter(IStockQuery stockQuery, IRepository<StockPriceHistory> stockPriceHistoryRepository, ILiveStockPriceService dataService, ILogger<LivePriceImporter> logger)
+        public LivePriceImporter(IStockQuery stockQuery, IStockService stockService, ILiveStockPriceService dataService, ILogger<LivePriceImporter> logger)
         {
             _StockQuery = stockQuery;
-            _StockPriceHistoryRepository = stockPriceHistoryRepository;
+            _StockService = stockService;
             _DataService = dataService;
             _Logger = logger;
         }
@@ -43,8 +42,7 @@ namespace PortfolioManager.Web.DataImporters
                     {
                         _Logger?.LogInformation("Updating current price foe {0}: {1}", stockQuote.ASXCode, stockQuote.Price);
 
-                        var stockPriceHistory = _StockPriceHistoryRepository.Get(stock.Id);
-                        stockPriceHistory.UpdateCurrentPrice(stockQuote.Price);
+                        _StockService.UpdateCurrentPrice(stock.Id, stockQuote.Price);
                     }
                         
                 }

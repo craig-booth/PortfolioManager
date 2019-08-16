@@ -8,8 +8,9 @@ using Microsoft.Extensions.Logging;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
-using PortfolioManager.Web.Utilities;
 using PortfolioManager.DataServices;
+using PortfolioManager.Web.Utilities;
+using PortfolioManager.Web.Services;
 
 namespace PortfolioManager.Web.DataImporters
 {
@@ -17,14 +18,14 @@ namespace PortfolioManager.Web.DataImporters
     {
         private readonly IHistoricalStockPriceService _DataService;
         private readonly IStockQuery _StockQuery;
-        private IRepository<StockPriceHistory> _StockPriceHistoryRepository;
+        private IStockService _StockService;
         private readonly ITradingCalander _TradingCalander;
         private readonly ILogger _Logger;
 
-        public HistoricalPriceImporter(IStockQuery stockQuery, IRepository<StockPriceHistory> stockPriceHistoryRepository, ITradingCalander tradingCalander, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
+        public HistoricalPriceImporter(IStockQuery stockQuery, IStockService stockService, ITradingCalander tradingCalander, IHistoricalStockPriceService dataService, ILogger<HistoricalPriceImporter> logger)
         {
             _StockQuery = stockQuery;
-            _StockPriceHistoryRepository = stockPriceHistoryRepository;
+            _StockService = stockService;
             _TradingCalander = tradingCalander;
             _DataService = dataService;
             _Logger = logger;
@@ -58,11 +59,9 @@ namespace PortfolioManager.Web.DataImporters
                     _Logger?.LogInformation("{0} closing prices found", closingPrices.Count);
                     if (closingPrices.Count > 0)
                     {
-                        var stockPriceHistory = _StockPriceHistoryRepository.Get(stock.Id);
-
                         try
                         {
-                            stockPriceHistory.UpdateClosingPrices(closingPrices);
+                            _StockService.UpdateClosingPrices(stock.Id, closingPrices);
                         }
                         catch (Exception e)
                         {
