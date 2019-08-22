@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
+using PortfolioManager.EventStore;
 using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.EventStore.Mongodb;
 
@@ -16,7 +18,37 @@ namespace PortfolioManager.Utils
 
             // StockPriceHistoryTest.Test();
 
-            SpliPriceHistoryFromStock();
+            // SpliPriceHistoryFromStock();
+
+            TestEntityProperties();
+        }
+
+
+        public static void TestEntityProperties()
+        {
+            // Ensure that PortfolioManager.Domain assembly is loaded
+            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+
+            var eventStore = new MongodbEventStore("mongodb://portfolio.boothfamily.id.au:27017");
+            var eventStream = eventStore.GetEventStream("Test");
+
+            var id = Guid.NewGuid();
+
+            var properties = new Dictionary<string, string>();
+            properties.Add("UserName", "craig@boothfamily.id.au");
+            properties.Add("Type", "Admin");
+
+            var events = new List<Event>();
+            eventStream.Add(id, "Test", properties, events);
+
+            properties.Remove("Type");
+            eventStream.UpdateProperties(id, properties);
+
+
+            var x = eventStream.Find("UserName", "craig@boothfamily.id.au");
+
+            Console.WriteLine("Done");
+            Console.ReadKey();
         }
 
         public static void CheckStockDividendRules()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 
@@ -52,7 +53,41 @@ namespace PortfolioManager.EventStore.Mongodb
             return entities;
         }
 
-        public void Add(Guid entityId, string type, IEnumerable<Event> events)
+        public StoredEntity FindFirst(string property, string value)
+        {
+            var client = new MongoClient(_ConnectionString);
+            var database = client.GetDatabase("PortfolioManager");
+
+            var collection = database.GetCollection<BsonDocument>(Collection);
+
+            var result = collection.Find<BsonDocument>(
+                Builders<BsonDocument>.Filter.ElemMatch("Properties", Builders<BsonDocument>.Filter.Eq(property, value))).Limit(1).ToList();
+
+            if (result.Count == 0)
+                return null;
+
+            return BsonSerializer.Deserialize<StoredEntity>(result.First());
+        }
+
+        public IEnumerable<StoredEntity> Find(string property, string value)
+        {
+            var client = new MongoClient(_ConnectionString);
+            var database = client.GetDatabase("PortfolioManager");
+
+            var collection = database.GetCollection<BsonDocument>(Collection);
+
+            var result = collection.Find<BsonDocument>(
+                Builders<BsonDocument>.Filter.ElemMatch("Properties", Builders<BsonDocument>.Filter.Eq(property, value))).ToList();
+
+            return result.Select(x => BsonSerializer.Deserialize<StoredEntity>(x));
+        }
+
+        public void Add(Guid entityId, string type, IEnumerable<Event> events) 
+        {
+            Add(entityId, type, null, events);
+        }
+
+        public void Add(Guid entityId, string type, IDictionary<string, string> properties, IEnumerable<Event> events)
         {
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
@@ -64,9 +99,24 @@ namespace PortfolioManager.EventStore.Mongodb
                 EntityId = entityId,
                 Type = type
             };
+
+            foreach (var item in properties)
+                entity.Properties.Add(item.Key, item.Value);
+
             entity.Events.AddRange(events);
 
             collection.InsertOne(entity);
+        }
+
+        public void UpdateProperties(Guid entityId, IDictionary<string, string> properties)
+        {
+            var client = new MongoClient(_ConnectionString);
+            var database = client.GetDatabase("PortfolioManager");
+
+            var collection = database.GetCollection<StoredEntity>(Collection);
+
+            collection.FindOneAndUpdate<StoredEntity>(x => x.EntityId == entityId,
+                Builders<StoredEntity>.Update.Set<Dictionary<string,string>>(x => x.Properties, (Dictionary<string,string>)properties));
         }
 
         public void AppendEvent(Guid entityId, Event @event)
