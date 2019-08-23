@@ -97,5 +97,47 @@ namespace PortfolioManager.Domain
             }
         }
     }
-    
+
+
+    public interface ITrackedEntityWithProperties : ITrackedEntity
+    {
+        IDictionary<string, string> GetProperties();
+    }
+
+    public class RepositoryWithProperties<T> : Repository<T>
+        where T : ITrackedEntityWithProperties
+    {
+
+        public RepositoryWithProperties(IEventStream<T> eventStream, IEntityCache<T> cache, IEntityFactory<T> entityFactory)
+            : base(eventStream, cache, entityFactory)
+        {
+            _EntityFactory = entityFactory;
+        }
+
+        public RepositoryWithProperties(IEventStream<T> eventStream, IEntityCache<T> cache, Func<Guid, string, T> createFunction)
+            : base(eventStream, cache, createFunction)
+        {
+            _CreateFunction = createFunction;
+        }
+
+        public new void Add(T entity)
+        {
+            var properties = entity.GetProperties();
+            var newEvents = entity.FetchEvents();
+       
+            _EventStream.Add(entity.Id, entity.GetType().Name, properties, newEvents);
+
+            _Cache.Add(entity);
+        }
+        
+        public new void Update(T entity)
+        {
+            var properties = entity.GetProperties();          
+            _EventStream.UpdateProperties(entity.Id, properties);
+
+            var newEvents = entity.FetchEvents();
+            _EventStream.AppendEvents(entity.Id, newEvents);
+        }
+
+    }
 }

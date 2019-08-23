@@ -48,7 +48,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
             var collection = database.GetCollection<StoredEntity>(Collection);
 
-            var entities = collection.Find(x => true).ToList<StoredEntity>();
+            var entities = collection.Find("{}").ToList<StoredEntity>();
 
             return entities;
         }
@@ -115,7 +115,7 @@ namespace PortfolioManager.EventStore.Mongodb
             var collection = database.GetCollection<StoredEntity>(Collection);
 
             collection.FindOneAndUpdate<StoredEntity>(x => x.EntityId == entityId,
-                Builders<StoredEntity>.Update.Set<Dictionary<string,string>>(x => x.Properties, (Dictionary<string,string>)properties));
+                Builders<StoredEntity>.Update.Set<Dictionary<string, string>>(x => x.Properties, (Dictionary<string, string>)properties));
         }
 
         public void AppendEvent(Guid entityId, Event @event)

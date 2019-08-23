@@ -51,6 +51,15 @@ namespace PortfolioManager.Utils
             Console.ReadKey();
         }
 
+        public static void TestEntityProperties2()
+        {
+
+
+
+
+        }
+
+
         public static void CheckStockDividendRules()
         {
             var check = new CheckStockDividendRules();
