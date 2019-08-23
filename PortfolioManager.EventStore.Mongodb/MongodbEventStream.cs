@@ -34,7 +34,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
             var collection = database.GetCollection<StoredEntity>(Collection);
 
-            var entity = collection.Find<StoredEntity>(x => x.EntityId == entityId)?.Single();
+            var entity = collection.Find(x => x.EntityId == entityId)?.Single();
 
             return entity;
         }
@@ -48,7 +48,7 @@ namespace PortfolioManager.EventStore.Mongodb
 
             var collection = database.GetCollection<StoredEntity>(Collection);
 
-            var entities = collection.Find<StoredEntity>(x => true).ToList<StoredEntity>();
+            var entities = collection.Find(x => true).ToList<StoredEntity>();
 
             return entities;
         }
@@ -58,15 +58,14 @@ namespace PortfolioManager.EventStore.Mongodb
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
-            var collection = database.GetCollection<BsonDocument>(Collection);
+            var collection = database.GetCollection<StoredEntity>(Collection);
 
-            var result = collection.Find<BsonDocument>(
-                Builders<BsonDocument>.Filter.ElemMatch("Properties", Builders<BsonDocument>.Filter.Eq(property, value))).Limit(1).ToList();
-
+            var filter = String.Format("{{Properties: {{{0}: '{1}'}}}}", property, value);
+            var result = collection.Find(filter).Limit(1).ToList();
             if (result.Count == 0)
                 return null;
 
-            return BsonSerializer.Deserialize<StoredEntity>(result.First());
+            return result[0];
         }
 
         public IEnumerable<StoredEntity> Find(string property, string value)
@@ -74,12 +73,12 @@ namespace PortfolioManager.EventStore.Mongodb
             var client = new MongoClient(_ConnectionString);
             var database = client.GetDatabase("PortfolioManager");
 
-            var collection = database.GetCollection<BsonDocument>(Collection);
+            var collection = database.GetCollection<StoredEntity>(Collection);
 
-            var result = collection.Find<BsonDocument>(
-                Builders<BsonDocument>.Filter.ElemMatch("Properties", Builders<BsonDocument>.Filter.Eq(property, value))).ToList();
+            var filter = String.Format("{{Properties: {{{0}: '{1}'}}}}", property, value);
+            var result = collection.Find(filter).ToList();
 
-            return result.Select(x => BsonSerializer.Deserialize<StoredEntity>(x));
+            return result;
         }
 
         public void Add(Guid entityId, string type, IEnumerable<Event> events) 
