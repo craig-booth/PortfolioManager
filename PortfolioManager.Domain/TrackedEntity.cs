@@ -11,4 +11,9 @@ namespace PortfolioManager.Domain
         IEnumerable<Event> FetchEvents();
         void ApplyEvents(IEnumerable<Event> events);
     }
+
+    public interface ITrackedEntityWithProperties : ITrackedEntity
+    {
+        IDictionary<string, string> GetProperties();
+    }
 }

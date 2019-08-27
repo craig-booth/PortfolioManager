@@ -12,6 +12,9 @@ namespace PortfolioManager.Domain
         void Add(T entity);
         void Update(T entity);
         void PopulateCache();
+
+        T FindFirst(string property, string value);
+        IEnumerable<T> Find(string property, string value);
     }
 
     public class Repository<T> : IRepository<T>
@@ -74,7 +77,16 @@ namespace PortfolioManager.Domain
         {
             var newEvents = entity.FetchEvents();
 
-            _EventStream.Add(entity.Id, entity.GetType().Name, newEvents);
+            if (entity is ITrackedEntityWithProperties entityWithProperties)
+            {
+                var properties = entityWithProperties.GetProperties();
+
+                _EventStream.Add(entity.Id, entity.GetType().Name, properties, newEvents);
+            }
+            else
+            {
+                _EventStream.Add(entity.Id, entity.GetType().Name, newEvents);
+            }
 
             _Cache.Add(entity);
         }
@@ -82,51 +94,14 @@ namespace PortfolioManager.Domain
         public void Update(T entity)
         {
             var newEvents = entity.FetchEvents();
-
             _EventStream.AppendEvents(entity.Id, newEvents);
-        }
 
-        public void PopulateCache()
-        {
-            var storedEntities = _EventStream.GetAll();
-            foreach (var storedEntity in storedEntities)
+            if (entity is ITrackedEntityWithProperties entityWithProperties)
             {
-                var entity = CreateEntity(storedEntity);
-                if (entity != null)
-                    _Cache.Add(entity);
+                var properties = entityWithProperties.GetProperties();
+                _EventStream.UpdateProperties(entity.Id, properties);
             }
         }
-    }
-
-
-    public interface ITrackedEntityWithProperties : ITrackedEntity
-    {
-        IDictionary<string, string> GetProperties();
-    }
-
-    public interface IRepositoryWithProperties<T> : IRepository<T>
-        where T : ITrackedEntityWithProperties
-    {
-        T FindFirst(string property, string value);
-        IEnumerable<T> Find(string property, string value);
-    }
-
-    public class RepositoryWithProperties<T> : Repository<T>
-        where T : ITrackedEntityWithProperties
-    {
-
-        public RepositoryWithProperties(IEventStream<T> eventStream, IEntityCache<T> cache, IEntityFactory<T> entityFactory)
-            : base(eventStream, cache, entityFactory)
-        {
-            _EntityFactory = entityFactory;
-        }
-
-        public RepositoryWithProperties(IEventStream<T> eventStream, IEntityCache<T> cache, Func<Guid, string, T> createFunction)
-            : base(eventStream, cache, createFunction)
-        {
-            _CreateFunction = createFunction;
-        }
-
 
         public T FindFirst(string property, string value)
         {
@@ -149,24 +124,15 @@ namespace PortfolioManager.Domain
             return entities;
         }
 
-        public new void Add(T entity)
+        public void PopulateCache()
         {
-            var properties = entity.GetProperties();
-            var newEvents = entity.FetchEvents();
-       
-            _EventStream.Add(entity.Id, entity.GetType().Name, properties, newEvents);
-
-            _Cache.Add(entity);
+            var storedEntities = _EventStream.GetAll();
+            foreach (var storedEntity in storedEntities)
+            {
+                var entity = CreateEntity(storedEntity);
+                if (entity != null)
+                    _Cache.Add(entity);
+            }
         }
-        
-        public new void Update(T entity)
-        {
-            var properties = entity.GetProperties();          
-            _EventStream.UpdateProperties(entity.Id, properties);
-
-            var newEvents = entity.FetchEvents();
-            _EventStream.AppendEvents(entity.Id, newEvents);
-        }
-
     }
 }

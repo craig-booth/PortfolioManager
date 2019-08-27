@@ -47,7 +47,7 @@ namespace PortfolioManager.Utils
 
             var factory = new DefaultEntityFactory<TestEntity>();
 
-            var repository = new RepositoryWithProperties<TestEntity>(eventStream, cache, factory);
+            var repository = new Repository<TestEntity>(eventStream, cache, factory);
 
             var id = Guid.NewGuid();
             var myentity = new TestEntity(id);
