@@ -43,11 +43,9 @@ namespace PortfolioManager.Utils
             var eventStore = new MongodbEventStore("mongodb://portfolio.boothfamily.id.au:27017");
             var eventStream = eventStore.GetEventStream<TestEntity>("Test");
 
-            var cache = new EntityCache<TestEntity>();
-
             var factory = new DefaultEntityFactory<TestEntity>();
 
-            var repository = new Repository<TestEntity>(eventStream, cache, factory);
+            var repository = new Repository<TestEntity>(eventStream, factory);
 
             var id = Guid.NewGuid();
             var myentity = new TestEntity(id);
