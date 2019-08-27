@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace PortfolioManager.EventStore.Memory
 {
-    public class MemoryEventStream<T> : 
-        IEventStream, 
+    public class MemoryEventStream<T> :
+        IEventStream,
         IEventStream<T>
     {
         public string Collection { get; private set; }
@@ -29,6 +29,18 @@ namespace PortfolioManager.EventStore.Memory
             return _Entities.Values;
         }
 
+        public StoredEntity FindFirst(string property, string value)
+        {
+            var item = _Entities.FirstOrDefault(x => x.Value.Properties[property] == value);
+            return item.Value;
+        }
+
+        public IEnumerable<StoredEntity> Find(string property, string value)
+        {
+            var item = _Entities.Where(x => x.Value.Properties[property] == value);
+            return item.Select(x => x.Value);
+        }
+
         public void Add(Guid entityId, string type, IEnumerable<Event> events)
         {
             var entity = new StoredEntity()
@@ -41,6 +53,35 @@ namespace PortfolioManager.EventStore.Memory
             entity.Events.AddRange(events);
 
             _Entities.Add(entityId, entity);
+        }
+
+        public void Add(Guid entityId, string type, IDictionary<string, string> properties, IEnumerable<Event> events)
+        {
+            var entity = new StoredEntity()
+            {
+                EntityId = entityId,
+                Type = type,
+                CurrentVersion = 0
+            };
+
+            foreach (var item in properties)
+                entity.Properties.Add(item.Key, item.Value);
+
+            entity.Events.AddRange(events);
+
+            _Entities.Add(entityId, entity);
+        }
+
+        public void UpdateProperties(Guid entityId, IDictionary<string, string> properties)
+        {
+            if (_Entities.ContainsKey(entityId))
+            {
+                var entity = _Entities[entityId];
+                foreach (var item in properties)
+                    entity.Properties[item.Key] = item.Value;
+            }
+            else
+                throw new KeyNotFoundException();
         }
 
         public void AppendEvent(Guid entityId, Event @event)

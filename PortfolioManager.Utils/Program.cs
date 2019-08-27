@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
+using PortfolioManager.EventStore;
 using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.EventStore.Mongodb;
 
@@ -16,8 +18,32 @@ namespace PortfolioManager.Utils
 
             // StockPriceHistoryTest.Test();
 
-            SpliPriceHistoryFromStock();
+            // SpliPriceHistoryFromStock();
+
+            TestEntityProperties2();
         }
+
+
+        public static void TestEntityProperties()
+        {
+            var test = new EntityProperties();
+
+            test.TestEventStreamProperties();
+
+            Console.WriteLine("Done");
+            Console.ReadKey();
+        }
+
+        public static void TestEntityProperties2()
+        {
+            var test = new EntityProperties();
+
+            test.TestEntityProperties();
+
+            Console.WriteLine("Done");
+            Console.ReadKey();
+        }
+
 
         public static void CheckStockDividendRules()
         {

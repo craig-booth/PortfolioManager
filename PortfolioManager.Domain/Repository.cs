@@ -12,6 +12,9 @@ namespace PortfolioManager.Domain
         IEnumerable<T> All();
         void Add(T entity);
         void Update(T entity);
+
+        T FindFirst(string property, string value);
+        IEnumerable<T> Find(string property, string value);
     }
 
     public class Repository<T> : IRepository<T>
@@ -78,16 +81,49 @@ namespace PortfolioManager.Domain
         {
             var newEvents = entity.FetchEvents();
 
-            _EventStream.Add(entity.Id, entity.GetType().Name, newEvents);
+            if (entity is ITrackedEntityWithProperties entityWithProperties)
+            {
+                var properties = entityWithProperties.GetProperties();
+
+                _EventStream.Add(entity.Id, entity.GetType().Name, properties, newEvents);
+            }
+            else
+            {
+                _EventStream.Add(entity.Id, entity.GetType().Name, newEvents);
+            }
         }
 
         public void Update(T entity)
         {
             var newEvents = entity.FetchEvents();
-
             _EventStream.AppendEvents(entity.Id, newEvents);
+
+            if (entity is ITrackedEntityWithProperties entityWithProperties)
+            {
+                var properties = entityWithProperties.GetProperties();
+                _EventStream.UpdateProperties(entity.Id, properties);
+            }
+        }
+
+        public T FindFirst(string property, string value)
+        {
+            var storedEntity = _EventStream.FindFirst(property, value);
+            if (storedEntity == null)
+                return default(T);
+
+            var entity = CreateEntity(storedEntity);
+
+            return entity;
+        }
+
+        public IEnumerable<T> Find(string property, string value)
+        {
+            var storedEntities = _EventStream.Find(property, value);
+
+            var entities = storedEntities.Select(x => CreateEntity(x));
+
+            return entities;
         }
 
     }
-    
 }
