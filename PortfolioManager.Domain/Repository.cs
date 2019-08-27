@@ -104,6 +104,13 @@ namespace PortfolioManager.Domain
         IDictionary<string, string> GetProperties();
     }
 
+    public interface IRepositoryWithProperties<T> : IRepository<T>
+        where T : ITrackedEntityWithProperties
+    {
+        T FindFirst(string property, string value);
+        IEnumerable<T> Find(string property, string value);
+    }
+
     public class RepositoryWithProperties<T> : Repository<T>
         where T : ITrackedEntityWithProperties
     {
@@ -118,6 +125,28 @@ namespace PortfolioManager.Domain
             : base(eventStream, cache, createFunction)
         {
             _CreateFunction = createFunction;
+        }
+
+
+        public T FindFirst(string property, string value)
+        {
+            var storedEntity = _EventStream.FindFirst(property, value);
+            if (storedEntity == null)
+                return default(T);
+
+            var entity = CreateEntity(storedEntity);
+            _Cache.Add(entity);
+
+            return entity;
+        }
+
+        public IEnumerable<T> Find(string property, string value)
+        {
+            var storedEntities = _EventStream.Find(property, value);
+
+            var entities = storedEntities.Select(x => CreateEntity(x));
+
+            return entities;
         }
 
         public new void Add(T entity)

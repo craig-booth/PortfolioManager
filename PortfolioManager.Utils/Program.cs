@@ -20,32 +20,15 @@ namespace PortfolioManager.Utils
 
             // SpliPriceHistoryFromStock();
 
-            TestEntityProperties();
+            TestEntityProperties2();
         }
 
 
         public static void TestEntityProperties()
         {
-            // Ensure that PortfolioManager.Domain assembly is loaded
-            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+            var test = new EntityProperties();
 
-            var eventStore = new MongodbEventStore("mongodb://portfolio.boothfamily.id.au:27017");
-            var eventStream = eventStore.GetEventStream("Test");
-
-            var id = Guid.NewGuid();
-
-            var properties = new Dictionary<string, string>();
-            properties.Add("UserName", "craig@boothfamily.id.au");
-            properties.Add("Type", "Admin");
-
-            var events = new List<Event>();
-            eventStream.Add(id, "Test", properties, events);
-
-            properties.Remove("Type");
-            eventStream.UpdateProperties(id, properties);
-
-
-            var x = eventStream.Find("UserName", "craig@boothfamily.id.au");
+            test.TestEventStreamProperties();
 
             Console.WriteLine("Done");
             Console.ReadKey();
@@ -53,10 +36,12 @@ namespace PortfolioManager.Utils
 
         public static void TestEntityProperties2()
         {
+            var test = new EntityProperties();
 
+            test.TestEntityProperties();
 
-
-
+            Console.WriteLine("Done");
+            Console.ReadKey();
         }
 
 
