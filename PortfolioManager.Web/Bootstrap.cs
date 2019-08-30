@@ -25,6 +25,7 @@ using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Stocks.Events;
+using PortfolioManager.Domain.Users;
 using PortfolioManager.EventStore;
 using PortfolioManager.EventStore.Mongodb;
 using PortfolioManager.RestApi.Converters;
@@ -55,6 +56,8 @@ namespace PortfolioManager.Web
             services.Add(ServiceDescriptor.Singleton(typeof(IRepository<>), typeof(Repository<>)));
             services.Add(ServiceDescriptor.Singleton(typeof(IEntityFactory<>), typeof(DefaultEntityFactory<>)));
 
+            services.AddSingleton<IEventStream<User>>(x => x.GetRequiredService<IEventStore>().GetEventStream<User>("Users"));
+
             services.AddSingleton<IEventStream<Stock>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Stock>("Stocks"));
             services.AddSingleton<IStockQuery, StockQuery>();
             services.AddSingleton<IEntityFactory<Stock>, StockEntityFactory>();
@@ -70,6 +73,7 @@ namespace PortfolioManager.Web
 
             // Add services
             services.AddSingleton<IStockService, StockService>();
+            services.AddSingleton<IUserService, UserService>();
 
             services.AddSingleton<MapperStockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();

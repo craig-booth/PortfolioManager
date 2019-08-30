@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 using AutoMapper;
 
@@ -18,6 +18,7 @@ using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
+    [Authorize]
     [Route("api/v2/portfolio/{portfolioId:guid}")]
     public class PortfolioController : BasePortfolioController
     {

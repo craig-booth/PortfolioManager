@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PortfolioManager.Common;
-using PortfolioManager.EventStore;
 using PortfolioManager.Domain.Stocks.Events;
-using PortfolioManager.Domain.CorporateActions.Events;
 
 namespace PortfolioManager.Domain.Stocks
 {

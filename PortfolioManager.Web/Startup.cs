@@ -8,12 +8,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Server;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
 namespace PortfolioManager.Web
 {
@@ -39,8 +36,13 @@ namespace PortfolioManager.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+
             // Add framework services.
             services.AddMvc();
+
 
             services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
                 .AddPortfolioManagerService(PortfolioManagerSettings)
@@ -54,7 +56,8 @@ namespace PortfolioManager.Web
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApiKeyAuthentication(PortfolioManagerSettings.ApiKey);
+            //   app.UseApiKeyAuthentication(PortfolioManagerSettings.ApiKey);
+            app.UseAuthentication();
             app.UseMvc();
 
             app.InitializeStockCache();
