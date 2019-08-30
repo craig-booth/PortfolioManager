@@ -62,18 +62,15 @@ namespace PortfolioManager.Utils
         }
     }
 
-    public class TestEntity : ITrackedEntity, ITrackedEntityWithProperties
+    public class TestEntity : TrackedEntity, IEntityProperties
     {
-
-        public Guid Id { get; }
-
-        private List<Event> _Events = new List<Event>();
 
         public string Name { get; private set; }
 
         public TestEntity(Guid id)
+            : base(id)
         {
-            Id = id;
+
         }
 
         public void ChangeName(string name)
@@ -81,30 +78,12 @@ namespace PortfolioManager.Utils
             var @event = new ChangeNameEvent(Guid.NewGuid(), 0, name);
             Apply(@event);
 
-            _Events.Add(@event);
+            PublishEvent(@event);
         }
 
         public void Apply(ChangeNameEvent @event)
         {
             Name = @event.Name;
-        }
-
-        public void ApplyEvents(IEnumerable<Event> events)
-        {
-            foreach (var @event in events)
-            {
-                dynamic dynamicEvent = @event;
-                Apply(dynamicEvent);
-            }
-        }
-
-        public IEnumerable<Event> FetchEvents()
-        {
-            var events = new List<Event>(_Events);
-
-            _Events.Clear();
-
-            return events;
         }
 
         public IDictionary<string, string> GetProperties()

@@ -12,24 +12,21 @@ namespace PortfolioManager.Domain.Stocks
 
     public interface IStockPriceHistory
     {
-        Guid Id { get;  }
+        Guid Id { get; }
         DateTime EarliestDate { get; }
         DateTime LatestDate { get; }
         decimal GetPrice(DateTime date);
         IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange);
     }
 
-    public class StockPriceHistory : IStockPriceHistory, ITrackedEntity
+    public class StockPriceHistory : TrackedEntity, IStockPriceHistory
     {
-        public Guid Id { get; }
-        public int Version { get; protected set; } = 0;
-        private EventList _Events = new EventList();
-
         private SortedList<DateTime, decimal> _Prices { get; } = new SortedList<DateTime, decimal>();
 
         public StockPriceHistory(Guid id)
+            : base(id)
         {
-            Id = id;
+
         }
 
         public DateTime EarliestDate
@@ -145,25 +142,6 @@ namespace PortfolioManager.Domain.Stocks
                 return -1;
             else
                 return -end;
-        }
-
-        protected void PublishEvent(Event @event)
-        {
-            _Events.Add(@event);
-        }
-
-        public IEnumerable<Event> FetchEvents()
-        {
-            return _Events.Fetch();
-        }
-
-        public void ApplyEvents(IEnumerable<Event> events)
-        {
-            foreach (var @event in events)
-            {
-                dynamic dynamicEvent = @event;
-                Apply(dynamicEvent);
-            }
         }
     }
 }

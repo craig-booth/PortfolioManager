@@ -8,7 +8,6 @@ using PortfolioManager.Domain.TradingCalanders.Events;
 
 namespace PortfolioManager.Domain.TradingCalanders
 {
-
     public static class TradingCalanderIds
     {
         public static Guid ASX => new Guid("712E464B-1CE6-4B21-8FB2-D679DFFE3EE3");
@@ -23,20 +22,13 @@ namespace PortfolioManager.Domain.TradingCalanders
         void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays);
     }
 
-    public class TradingCalander :
-        ITradingCalander,
-        ITrackedEntity
+    public class TradingCalander : TrackedEntity, ITradingCalander
     {
-        public Guid Id { get; }
-
-        public int Version { get; protected set; } = 0;
-        private EventList _Events = new EventList();
-
         private List<NonTradingDay> _NonTradingDays = new List<NonTradingDay>();
 
         public TradingCalander(Guid id)
+            : base(id)
         {
-            Id = id;
         }
 
         public void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays)
@@ -50,11 +42,6 @@ namespace PortfolioManager.Domain.TradingCalanders
             Apply(@event);
 
             PublishEvent(@event);
-        }
-
-        protected void PublishEvent(Event @event)
-        {
-            _Events.Add(@event);
         }
 
         public void Apply(NonTradingDaysSetEvent @event)
@@ -80,7 +67,7 @@ namespace PortfolioManager.Domain.TradingCalanders
 
         public bool IsTradingDay(DateTime date)
         {
-            return (_NonTradingDays.BinarySearch(new NonTradingDay(date,"")) < 0);
+            return (_NonTradingDays.BinarySearch(new NonTradingDay(date, "")) < 0);
         }
 
         public IEnumerable<DateTime> TradingDays(DateRange range)
@@ -88,19 +75,6 @@ namespace PortfolioManager.Domain.TradingCalanders
             return DateUtils.Days(range.FromDate, range.ToDate).Where(x => x.WeekDay() && IsTradingDay(x));
         }
 
-        public IEnumerable<Event> FetchEvents()
-        {
-            return _Events.Fetch();
-        }
-
-        public void ApplyEvents(IEnumerable<Event> events)
-        {
-            foreach (var @event in events)
-            {
-                dynamic dynamicEvent = @event;
-                Apply(dynamicEvent);
-            }
-        }
     }
 
     public class NonTradingDay : IComparable<NonTradingDay>

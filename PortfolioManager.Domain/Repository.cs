@@ -81,7 +81,7 @@ namespace PortfolioManager.Domain
         {
             var newEvents = entity.FetchEvents();
 
-            if (entity is ITrackedEntityWithProperties entityWithProperties)
+            if (entity is IEntityProperties entityWithProperties)
             {
                 var properties = entityWithProperties.GetProperties();
 
@@ -98,7 +98,7 @@ namespace PortfolioManager.Domain
             var newEvents = entity.FetchEvents();
             _EventStream.AppendEvents(entity.Id, newEvents);
 
-            if (entity is ITrackedEntityWithProperties entityWithProperties)
+            if (entity is IEntityProperties entityWithProperties)
             {
                 var properties = entityWithProperties.GetProperties();
                 _EventStream.UpdateProperties(entity.Id, properties);

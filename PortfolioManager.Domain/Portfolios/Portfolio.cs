@@ -12,11 +12,8 @@ using PortfolioManager.Domain.Stocks;
 namespace PortfolioManager.Domain.Portfolios
 {
 
-    public class Portfolio : ITrackedEntity
+    public class Portfolio : TrackedEntity
     {
-        public Guid Id { get; }
-        public int Version { get; private set; } = 0;
-        private EventList _Events = new EventList();
         private ServiceFactory<ITransactionHandler> _TransactionHandlers = new ServiceFactory<ITransactionHandler>();
 
         public string Name { get; private set; }
@@ -46,8 +43,8 @@ namespace PortfolioManager.Domain.Portfolios
         }
 
         public Portfolio(Guid id, IStockResolver stockResolver)
+            : base(id)
         {
-            Id = id;
             _StockResolver = stockResolver;
 
             _TransactionHandlers.Register<Aquisition>(() => new AquisitionHandler(_Holdings, _CashAccount));
@@ -249,25 +246,6 @@ namespace PortfolioManager.Domain.Portfolios
             transaction.Date = @event.Date;
             transaction.Stock = _StockResolver.GetStock(@event.Stock);
             transaction.Comment = @event.Comment;
-        }
-
-        protected void PublishEvent(Event @event)
-        {
-            _Events.Add(@event);
-        }
-
-        public IEnumerable<Event> FetchEvents()
-        {
-            return _Events.Fetch();
-        }
-
-        public void ApplyEvents(IEnumerable<Event> events)
-        {
-            foreach (var @event in events)
-            {
-                dynamic dynamicEvent = @event;
-                Apply(dynamicEvent);
-            }
         }
     }
 }
