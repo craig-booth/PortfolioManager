@@ -34,7 +34,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var authorizationResult = await _AuthorizationService.AuthorizeAsync(User, _Portfolio, new PortfolioOwnerRequirement());
             if (!authorizationResult.Succeeded)
             {
-                filterContext.Result = new UnauthorizedResult();
+                filterContext.Result = new ForbidResult();
             }
         }
     }

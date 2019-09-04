@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PortfolioManager.Domain.Stocks;
+﻿using PortfolioManager.Domain.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.TradingCalanders;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
+    [Authorize]
     [Route("api/v2/tradingcalander")]
     public class TradingCalanderController : Controller
     {
@@ -30,6 +32,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST: api/tradingcalander/{year}
+        [Authorize(Roles.Administrator)]
         [HttpPost]
         [Route("{year:int}")]
         public ActionResult Post([FromRoute]int year, [FromBody] UpdateTradingCalanderCommand command)

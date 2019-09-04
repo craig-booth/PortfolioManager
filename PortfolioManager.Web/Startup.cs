@@ -41,8 +41,8 @@ namespace PortfolioManager.Web
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AccessPortfolioPolicy", policy =>
-                    policy.Requirements.Add(new PortfolioOwnerRequirement()));
+                options.AddPolicy(Policies.IsPortfolioOwner, policy => policy.Requirements.Add(new PortfolioOwnerRequirement()));
+                options.AddPolicy(Policies.IsAdministrator, policy => policy.RequireRole(Roles.Administrator));
             });
 
             // Add framework services.

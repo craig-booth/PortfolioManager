@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
@@ -13,7 +13,7 @@ using PortfolioManager.Web.Mappers;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
-
+    [Authorize]
     [Route("api/v2/stocks/{stockId:guid}/corporateactions")]
     public class CorporateActionController : Controller
     {
@@ -71,6 +71,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{stockId}/corporateactions
+        [Authorize(Roles.Administrator)]
         [Route("")]
         [HttpPost]
         public ActionResult AddCorporateAction([FromRoute]Guid stockId, [FromBody] RestApi.CorporateActions.CorporateAction corporateAction)

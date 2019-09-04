@@ -10,7 +10,9 @@ using PortfolioManager.Domain.Portfolios;
 
 namespace PortfolioManager.Web
 {
+
     public class PortfolioOwnerRequirement : IAuthorizationRequirement { }
+
     public class PortfolioOwnerAuthorizationHandler : AuthorizationHandler<PortfolioOwnerRequirement, Portfolio>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
