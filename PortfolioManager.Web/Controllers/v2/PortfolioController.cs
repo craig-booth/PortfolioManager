@@ -18,7 +18,7 @@ using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
-    [Authorize]
+    
     [Route("api/v2/portfolio/{portfolioId:guid}")]
     public class PortfolioController : BasePortfolioController
     {
@@ -26,8 +26,8 @@ namespace PortfolioManager.Web.Controllers.v2
         private readonly IStockQuery _StockQuery;
         private readonly ITradingCalander _TradingCalander;
 
-        public PortfolioController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, ITradingCalander tradingCalander,  IMapper mapper)
-            : base(portfolioRepository)
+        public PortfolioController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, ITradingCalander tradingCalander,  IMapper mapper, IAuthorizationService authorizationService)
+            : base(portfolioRepository, authorizationService)
         {
             _Mapper = mapper;
             _StockQuery = stockQuery;

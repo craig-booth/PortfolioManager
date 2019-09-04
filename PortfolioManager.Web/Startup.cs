@@ -39,6 +39,11 @@ namespace PortfolioManager.Web
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AccessPortfolioPolicy", policy =>
+                    policy.Requirements.Add(new PortfolioOwnerRequirement()));
+            });
 
             // Add framework services.
             services.AddMvc();
@@ -63,4 +68,5 @@ namespace PortfolioManager.Web
             app.InitializeStockCache();
         }
     }
+
 }

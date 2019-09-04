@@ -2,14 +2,13 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 
 using AutoMapper;
 
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
-using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.Web.Services;
 using PortfolioManager.Web.Utilities;
@@ -22,8 +21,8 @@ namespace PortfolioManager.Web.Controllers.v2
         private readonly IMapper _Mapper;
         private readonly IStockQuery _StockQuery;
 
-        public TransactionController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, IMapper mapper)
-            : base(portfolioRepository)
+        public TransactionController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, IMapper mapper, IAuthorizationService authorizationService)
+            : base(portfolioRepository, authorizationService)
         {
             _StockQuery = stockQuery;
             _Mapper = mapper;

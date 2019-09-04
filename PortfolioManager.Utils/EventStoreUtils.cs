@@ -31,11 +31,11 @@ namespace PortfolioManager.Utils
                 destination.Add(entity.EntityId, entity.Type, entity.Events);
         }
 
-        public static void CreatePortfolio(IEventStore eventStore, Guid id, string name)
+        public static void CreatePortfolio(IEventStore eventStore, Guid id, string name, Guid owner)
         {
             var eventStream = eventStore.GetEventStream("Portfolios");
 
-            var events = new Event[] { new PortfolioCreatedEvent(id, 0, name) };
+            var events = new Event[] { new PortfolioCreatedEvent(id, 0, name, owner) };
             eventStream.Add(id, "Portfolio", events);
         }
 

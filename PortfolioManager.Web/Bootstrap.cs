@@ -11,10 +11,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using AutoMapper;
 
@@ -75,11 +75,13 @@ namespace PortfolioManager.Web
             services.AddSingleton<IStockService, StockService>();
             services.AddSingleton<IUserService, UserService>();
 
+                    
             services.AddSingleton<MapperStockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
             services.AddSingleton<Profile, DomainToRestApiMappingProfile>();
             services.AddSingleton<IMapper>(CreateMapper);
 
+            services.AddSingleton<IAuthorizationHandler, PortfolioOwnerAuthorizationHandler>();
             services.AddSingleton<TransactionJsonConverter, TransactionJsonConverter>();
             services.AddSingleton<IConfigureOptions<MvcJsonOptions>, JsonMvcConfiguration>();
 

@@ -17,6 +17,7 @@ namespace PortfolioManager.Domain.Portfolios
         private ServiceFactory<ITransactionHandler> _TransactionHandlers = new ServiceFactory<ITransactionHandler>();
 
         public string Name { get; private set; }
+        public Guid Owner { get; private set; }
 
         private IStockResolver _StockResolver;
 
@@ -55,9 +56,9 @@ namespace PortfolioManager.Domain.Portfolios
             _TransactionHandlers.Register<ReturnOfCapital>(() => new ReturnOfCapitalHandler(_Holdings, _CashAccount));
         }
 
-        public void Create(string name)
+        public void Create(string name, Guid owner)
         {
-            var @event = new PortfolioCreatedEvent(Id, Version, name);
+            var @event = new PortfolioCreatedEvent(Id, Version, name, owner);
             Apply(@event);
 
             PublishEvent(@event);
@@ -68,6 +69,7 @@ namespace PortfolioManager.Domain.Portfolios
             Version++;
 
             Name = @event.Name;
+            Owner = @event.Owner;
         }
 
         public void ChangeDrpParticipation(Guid holding, bool participateInDrp)

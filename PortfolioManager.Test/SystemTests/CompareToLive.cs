@@ -79,7 +79,7 @@ namespace PortfolioManager.Test.SystemTests
             var cache = _ServiceProvider.GetRequiredService<IEntityCache<PortfolioManager.Domain.Portfolios.Portfolio>>();
             var stockResolver = _ServiceProvider.GetRequiredService<IStockResolver>();
             var portfolio = new PortfolioManager.Domain.Portfolios.Portfolio(_PortfolioId, stockResolver);
-            portfolio.Create("Compare To Live");
+            portfolio.Create("Compare To Live", Guid.Empty);
             
             cache.Add(portfolio);
 

@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 using AutoMapper;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
-using PortfolioManager.Domain.Transactions;
-using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
@@ -25,8 +23,8 @@ namespace PortfolioManager.Web.Controllers.v2
         private readonly IStockQuery _StockQuery;
         private readonly ITradingCalander _TradingCalander;
 
-        public HoldingController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, ITradingCalander tradingCalander, IMapper mapper)
-            : base(portfolioRepository)
+        public HoldingController(IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, ITradingCalander tradingCalander, IMapper mapper, IAuthorizationService authorizationService)
+            : base(portfolioRepository,authorizationService)
         {
             _StockQuery = stockQuery;
             _TradingCalander = tradingCalander;
