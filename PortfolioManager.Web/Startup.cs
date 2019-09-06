@@ -13,18 +13,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace PortfolioManager.Web
 {
     public class Startup
     {
 
-        private readonly bool _InDevelopment;
-
         public Startup(IHostingEnvironment env)
         {
-            _InDevelopment = env.IsDevelopment();
-
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -43,32 +40,21 @@ namespace PortfolioManager.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var key = System.Text.Encoding.ASCII.GetBytes("this is a secret");
-
-            if (_InDevelopment)
+            if (PortfolioManagerSettings.EnableAuthentication)
             {
-                services.AddAuthentication("AnonymousAuthentication")
-                    .AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("AnonymousAuthentication", null);
+                var tokenConfiguration = PortfolioManagerSettings.JwtTokenConfiguration;
 
-                services.AddAuthorization(options =>
-                {
-                    options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.RequireUserName("DebugUser"));
-                    options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireUserName("DebugUser"));
-                });
-            } 
-            else
-            {
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters()
                         {
                             ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(key),
+                            IssuerSigningKey = tokenConfiguration.GetKey(),
                             ValidateIssuer = true,
-                            ValidIssuer = "http://portfolio.boothfamily.id.au",
+                            ValidIssuer = tokenConfiguration.Issuer,
                             ValidateAudience = true,
-                            ValidAudience = "http://portfolio.boothfamily.id.au",
+                            ValidAudience = tokenConfiguration.Audience,
                             ValidateLifetime = true
                         };
                     });
@@ -79,6 +65,19 @@ namespace PortfolioManager.Web
                     options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireRole(Role.Administrator));
                 });
             }
+            else
+            {
+                services.AddAuthentication("AnonymousAuthentication")
+                    .AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("AnonymousAuthentication", null);
+
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.RequireUserName("DebugUser"));
+                    options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireUserName("DebugUser"));
+                });
+            } 
+            
+
 
             services.AddLogging(config =>
             {
@@ -103,6 +102,13 @@ namespace PortfolioManager.Web
             app.UseMvc();
 
             app.InitializeStockCache();
+        }
+
+        private SymmetricSecurityKey LoadKey(string fileName)
+        {
+            var base64Key = System.IO.File.ReadAllText(fileName);
+            var key = Convert.FromBase64String(base64Key);
+            return new SymmetricSecurityKey(key);
         }
     }
 

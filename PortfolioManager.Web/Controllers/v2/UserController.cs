@@ -20,17 +20,19 @@ namespace PortfolioManager.Web.Controllers.v2
     public class UserController : Controller
     {
         private readonly IUserService _UserService;
+        private readonly PortfolioManagerSettings _Settings;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, PortfolioManagerSettings settings)
         {
             _UserService = userService;
+            _Settings = settings;
         }
 
         // POST : /api/v2/users/authenticate       
         [AllowAnonymous]
         [Route("authenticate")]
         [HttpPost]
-        public ActionResult<AuthenticationResponse> CreateStock([FromBody] AuthenticateCommand command)
+        public ActionResult<AuthenticationResponse> Authenticate([FromBody] AuthenticateCommand command)
         {
 
             if (!ModelState.IsValid)
@@ -44,14 +46,12 @@ namespace PortfolioManager.Web.Controllers.v2
                 if (user == null)
                     return Forbid();
 
-                var key = System.Text.Encoding.ASCII.GetBytes("this is a secret");
-
                 // Authentication successful so generate jwt token
                 var tokenHandler = new JwtSecurityTokenHandler();              
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Issuer = "http://portfolio.boothfamily.id.au",
-                    Audience = "http://portfolio.boothfamily.id.au",
+                    Issuer = _Settings.JwtTokenConfiguration.Issuer,
+                    Audience = _Settings.JwtTokenConfiguration.Audience,
                     Expires = DateTime.UtcNow.AddHours(1),
                     IssuedAt = DateTime.UtcNow,
                     Subject = new ClaimsIdentity(new Claim[]
@@ -61,7 +61,7 @@ namespace PortfolioManager.Web.Controllers.v2
                         new Claim(ClaimTypes.Role, Role.Administrator)
                     }),
                     
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(_Settings.JwtTokenConfiguration.GetKey(), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
