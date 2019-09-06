@@ -9,15 +9,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PortfolioManager.Web
 {
     public class Startup
     {
+
+        private readonly bool _InDevelopment;
+
         public Startup(IHostingEnvironment env)
         {
+            _InDevelopment = env.IsDevelopment();
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -36,18 +43,52 @@ namespace PortfolioManager.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            var key = System.Text.Encoding.ASCII.GetBytes("this is a secret");
 
-            services.AddAuthorization(options =>
+            if (_InDevelopment)
             {
-                options.AddPolicy(Policies.IsPortfolioOwner, policy => policy.Requirements.Add(new PortfolioOwnerRequirement()));
-                options.AddPolicy(Policies.IsAdministrator, policy => policy.RequireRole(Roles.Administrator));
+                services.AddAuthentication("AnonymousAuthentication")
+                    .AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("AnonymousAuthentication", null);
+
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.RequireUserName("DebugUser"));
+                    options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireUserName("DebugUser"));
+                });
+            } 
+            else
+            {
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(key),
+                            ValidateIssuer = true,
+                            ValidIssuer = "http://portfolio.boothfamily.id.au",
+                            ValidateAudience = true,
+                            ValidAudience = "http://portfolio.boothfamily.id.au",
+                            ValidateLifetime = true
+                        };
+                    });
+
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.Requirements.Add(new PortfolioOwnerRequirement()));
+                    options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireRole(Role.Administrator));
+                });
+            }
+
+            services.AddLogging(config =>
+            {
+                config.AddConfiguration(Configuration.GetSection("Logging"));
+                config.AddConsole();
+                config.AddDebug();              
             });
 
             // Add framework services.
             services.AddMvc();
-
 
             services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
                 .AddPortfolioManagerService(PortfolioManagerSettings)
@@ -58,10 +99,6 @@ namespace PortfolioManager.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            //   app.UseApiKeyAuthentication(PortfolioManagerSettings.ApiKey);
             app.UseAuthentication();
             app.UseMvc();
 

@@ -32,7 +32,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST: api/tradingcalander/{year}
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [HttpPost]
         [Route("{year:int}")]
         public ActionResult Post([FromRoute]int year, [FromBody] UpdateTradingCalanderCommand command)

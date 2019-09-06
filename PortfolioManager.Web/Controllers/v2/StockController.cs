@@ -103,7 +103,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [HttpPost]
         public ActionResult CreateStock([FromBody] CreateStockCommand command)
         {
@@ -136,7 +136,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{id}/change
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/change")]
         [HttpPost]
         public ActionResult ChangeStock([FromRoute]Guid id, [FromBody] ChangeStockCommand command)
@@ -162,7 +162,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{id}/delist
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/delist")]
         [HttpPost]
         public ActionResult DelistStock([FromRoute]Guid id, [FromBody] DelistStockCommand command)
@@ -188,7 +188,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{id}/closingprices
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/closingprices")]
         [HttpPost]
         public ActionResult UpdateClosingPrices([FromRoute]Guid id, [FromBody] UpdateClosingPricesCommand command)
@@ -223,7 +223,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{id}/changedividendrules
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [Route("{id}/changedividendrules")]
         [HttpPost]
         public ActionResult ChangeDividendRules([FromRoute]Guid id, [FromBody] ChangeDividendRulesCommand command)
@@ -272,7 +272,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{id}/relativenta
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/relativenta")]
         [HttpPost]
         public ActionResult ChangeRelativeNTA([FromRoute]Guid id, [FromBody] ChangeRelativeNTAsCommand command)
