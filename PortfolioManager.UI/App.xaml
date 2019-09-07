@@ -30,6 +30,7 @@
                 <ResourceDictionary Source="Views/PerformanceView.xaml"/>
                 <ResourceDictionary Source="Views/PortfolioValueView.xaml"/>
                 <ResourceDictionary Source="Views/PortfolioSettingsView.xaml"/>
+                <ResourceDictionary Source="Views/LogonView.xaml"/>
 
                 <!-- Transactions -->
                 <ResourceDictionary Source="Views/Transactions/AquisitionView.xaml"/>

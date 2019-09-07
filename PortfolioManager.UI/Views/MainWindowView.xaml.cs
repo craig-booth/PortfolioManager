@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using PortfolioManager.UI.ViewModels;
+
 namespace PortfolioManager.UI.Views
 {
     /// <summary>
@@ -23,5 +25,15 @@ namespace PortfolioManager.UI.Views
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (MainWindowViewModel)(this.DataContext);
+
+            viewModel.LogonWindow.Show();
+
+        }
     }
+
+
 }

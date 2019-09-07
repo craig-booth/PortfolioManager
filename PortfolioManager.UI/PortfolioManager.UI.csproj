@@ -92,6 +92,7 @@
     <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Utilities\PopupWindow.cs" />
     <Compile Include="Utilities\RelayUICommand.cs" />
+    <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSettingsViewModel.cs" />
     <Compile Include="ViewModels\StockViewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -197,6 +198,10 @@
     <Page Include="Views\DetailedCGTView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LogonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>

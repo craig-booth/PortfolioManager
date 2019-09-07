@@ -91,6 +91,7 @@ namespace PortfolioManager.UI.ViewModels
 
         public EditTransactionViewModel EditTransactionWindow { get; private set; }
         public CreateMulitpleTransactionsViewModel CreateTransactionsWindow { get; private set; }
+        public LogonViewModel LogonWindow { get; private set; }
     
         public MainWindowViewModel()
         {
@@ -103,13 +104,10 @@ namespace PortfolioManager.UI.ViewModels
            // var url = "https://docker.local:8443";
             // var url = "http://localhost";
             var url = "https://portfolio.boothfamily.id.au";
-            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
 #else
             var url = "https://portfolio.boothfamily.id.au";
-            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
-#endif
-            var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
-            _RestClient = new RestClient(url, apiKey, portfolioId);
+#endif           
+            _RestClient = new RestClient(url);
 
             ViewParameter = new ViewParameter
             {
@@ -121,6 +119,9 @@ namespace PortfolioManager.UI.ViewModels
             EditTransactionWindow = new EditTransactionViewModel(_RestClient);
             EditTransactionWindow.TransactionChanged += HandleTransactionChanged;
             CreateTransactionsWindow = new CreateMulitpleTransactionsViewModel(_RestClient);
+            
+            LogonWindow = new LogonViewModel(_RestClient);
+            LogonWindow.LoggedOn += HandleLoggedOn;
 
             _Settings = new ApplicationSettings();
             _Settings.DatabaseChanged += LoadPortfolio;
@@ -170,11 +171,7 @@ namespace PortfolioManager.UI.ViewModels
             };
             _Modules.Add(settingsModule);
             settingsModule.Pages.Add(new PortfolioSettingsViewModel("Portfolio", ViewParameter));
-            settingsModule.Pages.Add(new SettingsViewModel("Settings", _Settings));
-
-            LoadPortfolio(_Settings, EventArgs.Empty);
-
-            SelectedModule = homeModule;
+            settingsModule.Pages.Add(new SettingsViewModel("Settings", _Settings));     
         }
 
         private async void LoadPortfolio(object sender, EventArgs e)
@@ -277,6 +274,13 @@ namespace PortfolioManager.UI.ViewModels
                 await UpdatePortfolioProperties();
                 SelectedPage.Activate();
             }
+        }
+
+        private void HandleLoggedOn(object sender, EventArgs e)
+        {
+            LoadPortfolio(_Settings, EventArgs.Empty);
+
+            SelectedModule = _Modules.First();     
         }
 
     }

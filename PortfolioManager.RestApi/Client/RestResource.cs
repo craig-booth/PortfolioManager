@@ -13,28 +13,29 @@ namespace PortfolioManager.RestApi.Client
 {
     public abstract class RestResource
     {
-        private readonly HttpClient _HttpClient;
+        protected readonly ClientSession _Session;
+        private readonly JsonMediaTypeFormatter _Formatter;
 
-        public RestResource(HttpClient httpClient)
+        public RestResource(ClientSession session)
         {
-            _HttpClient = httpClient;
+            _Session = session;
+
+            _Formatter = new JsonMediaTypeFormatter();
+            _Formatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            _Formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            _Formatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
+            _Formatter.SerializerSettings.Converters.Add(new TransactionJsonConverter());
+            _Formatter.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
         }
 
         protected async Task<T> GetAsync<T>(string url)
         {
             T response = default(T);
 
-            HttpResponseMessage httpResponse = await _HttpClient.GetAsync(url);
+            HttpResponseMessage httpResponse = await _Session.HttpClient.GetAsync(url);
             if (httpResponse.IsSuccessStatusCode)
             {
-                var formatter = new JsonMediaTypeFormatter();
-                formatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                formatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
-                formatter.SerializerSettings.Converters.Add(new TransactionJsonConverter());
-                formatter.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
-
-                response = await httpResponse.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { formatter });
+                response = await httpResponse.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { _Formatter });
             }
 
             return response;
@@ -42,20 +43,13 @@ namespace PortfolioManager.RestApi.Client
 
         protected async Task<bool> PostAsync(string url)
         {
-            HttpResponseMessage response = await _HttpClient.PostAsync(url, null);
+            HttpResponseMessage response = await _Session.HttpClient.PostAsync(url, null);
             return response.IsSuccessStatusCode;
         }
 
         protected async Task<bool> PostAsync<D>(string url, D data)
         {
-            var formatter = new JsonMediaTypeFormatter();
-            formatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            formatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd" });
-            formatter.SerializerSettings.Converters.Add(new TransactionJsonConverter());
-            formatter.SerializerSettings.Converters.Add(new CorporateActionJsonConverter());
-
-            HttpResponseMessage response = await _HttpClient.PostAsync<D>(url, data, formatter);
+            HttpResponseMessage response = await _Session.HttpClient.PostAsync<D>(url, data, _Formatter);
             return response.IsSuccessStatusCode;
         }
     }

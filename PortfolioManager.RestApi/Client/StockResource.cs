@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.Stocks;
@@ -10,8 +9,8 @@ namespace PortfolioManager.RestApi.Client
 {
     public class StockResource : RestResource
     {
-        public StockResource(HttpClient httpClient)
-            : base(httpClient)
+        public StockResource(ClientSession session)
+            : base(session)
         {
 
         }

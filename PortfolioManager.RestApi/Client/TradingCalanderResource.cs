@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 using PortfolioManager.RestApi.TradingCalanders;
 
@@ -9,8 +8,8 @@ namespace PortfolioManager.RestApi.Client
 {
     public class TradingCalanderResource : RestResource
     {
-        public TradingCalanderResource(HttpClient httpClient)
-            : base(httpClient)
+        public TradingCalanderResource(ClientSession session)
+            : base(session)
         {
 
         }

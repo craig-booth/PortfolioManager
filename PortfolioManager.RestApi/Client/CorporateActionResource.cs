@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 using PortfolioManager.Common;
 using PortfolioManager.RestApi.CorporateActions;
@@ -10,8 +9,8 @@ namespace PortfolioManager.RestApi.Client
 {
     public class CorporateActionResource : RestResource
     {
-        public CorporateActionResource(HttpClient httpClient)
-            : base(httpClient)
+        public CorporateActionResource(ClientSession session)
+            : base(session)
         {
 
         }

@@ -19,7 +19,7 @@ namespace PortfolioManager.Utils
             var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
             var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
 
-            _RestClient = new RestClient(url, apiKey, portfolioId);
+          //  _RestClient = new RestClient(url, apiKey, portfolioId);
         }
 
         public async Task CheckAll()
