@@ -20,9 +20,10 @@ namespace PortfolioManager.UI.ViewModels
         {
             _RestClient = restClient;
             LogonCommand = new RelayCommand(Logon);
+            CancelCommand = new RelayCommand(Cancel);
 
-            Commands.Add(new DialogCommand("Logon", LogonCommand));
-            
+            Commands.Add(new DialogCommand("Logon", LogonCommand) { IsDefault = true });
+            Commands.Add(new DialogCommand("Cancel", CancelCommand) { IsCancel = true });
         }
 
         public RelayCommand LogonCommand { get; private set; }
@@ -39,6 +40,12 @@ namespace PortfolioManager.UI.ViewModels
                 OnLoggedOn(EventArgs.Empty);
             }
 
+        }
+
+        public RelayCommand CancelCommand { get; private set; }
+        private void Cancel()
+        {
+            Close();
         }
 
         public event EventHandler LoggedOn;
