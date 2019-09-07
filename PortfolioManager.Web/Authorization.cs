@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Authorization;
 namespace PortfolioManager.Web
 {
 
-   public static class Roles
+   public static class Role
     {
         public const string Administrator = "Administrator";
     }
 
-    public static class Policies
+    public static class Policy
     {
-        public const string IsAdministrator = "IsAdministrator";
+        public const string CanMantainStocks = "CanMaintainStocks";
         public const string IsPortfolioOwner = "CanAccessPortfolio";
     } 
 

@@ -71,7 +71,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST : /api/stocks/{stockId}/corporateactions
-        [Authorize(Roles.Administrator)]
+        [Authorize(Policy.CanMantainStocks)]
         [Route("")]
         [HttpPost]
         public ActionResult AddCorporateAction([FromRoute]Guid stockId, [FromBody] RestApi.CorporateActions.CorporateAction corporateAction)

@@ -19,12 +19,14 @@ namespace PortfolioManager.Web
                                                         PortfolioOwnerRequirement requirement,
                                                         Portfolio resource)
         {
-            var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
 
-            var userId = new Guid(userIdClaim.Value);
-            if (resource.Owner == userId)
+            if (context.User.Identity.IsAuthenticated)
             {
-                context.Succeed(requirement);
+                var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
+
+                var userId = new Guid(userIdClaim.Value);
+                if (resource.Owner == userId)
+                    context.Succeed(requirement);
             }
 
             return Task.CompletedTask;

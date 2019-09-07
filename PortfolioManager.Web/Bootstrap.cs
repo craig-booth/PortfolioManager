@@ -157,13 +157,6 @@ namespace PortfolioManager.Web
         }
     }
 
-    public class PortfolioManagerSettings
-    {
-        public Guid ApiKey { get; set; }
-        public string EventStore { get; set; }
-        public int Port { get; set; }
-    }
-
     public class JsonMvcConfiguration : IConfigureOptions<MvcJsonOptions>
     {
         private readonly TransactionJsonConverter _TransactionConverter;

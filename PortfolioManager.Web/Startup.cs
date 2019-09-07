@@ -9,13 +9,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace PortfolioManager.Web
 {
     public class Startup
     {
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -36,18 +40,54 @@ namespace PortfolioManager.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-
-            services.AddAuthorization(options =>
+            if (PortfolioManagerSettings.EnableAuthentication)
             {
-                options.AddPolicy(Policies.IsPortfolioOwner, policy => policy.Requirements.Add(new PortfolioOwnerRequirement()));
-                options.AddPolicy(Policies.IsAdministrator, policy => policy.RequireRole(Roles.Administrator));
+                var tokenConfiguration = PortfolioManagerSettings.JwtTokenConfiguration;
+
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = tokenConfiguration.GetKey(),
+                            ValidateIssuer = true,
+                            ValidIssuer = tokenConfiguration.Issuer,
+                            ValidateAudience = true,
+                            ValidAudience = tokenConfiguration.Audience,
+                            ValidateLifetime = true
+                        };
+                    });
+
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.Requirements.Add(new PortfolioOwnerRequirement()));
+                    options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireRole(Role.Administrator));
+                });
+            }
+            else
+            {
+                services.AddAuthentication("AnonymousAuthentication")
+                    .AddScheme<AuthenticationSchemeOptions, AnonymousAuthenticationHandler>("AnonymousAuthentication", null);
+
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.RequireUserName("DebugUser"));
+                    options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireUserName("DebugUser"));
+                });
+            } 
+            
+
+
+            services.AddLogging(config =>
+            {
+                config.AddConfiguration(Configuration.GetSection("Logging"));
+                config.AddConsole();
+                config.AddDebug();              
             });
 
             // Add framework services.
             services.AddMvc();
-
 
             services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
                 .AddPortfolioManagerService(PortfolioManagerSettings)
@@ -58,14 +98,17 @@ namespace PortfolioManager.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            //   app.UseApiKeyAuthentication(PortfolioManagerSettings.ApiKey);
             app.UseAuthentication();
             app.UseMvc();
 
             app.InitializeStockCache();
+        }
+
+        private SymmetricSecurityKey LoadKey(string fileName)
+        {
+            var base64Key = System.IO.File.ReadAllText(fileName);
+            var key = Convert.FromBase64String(base64Key);
+            return new SymmetricSecurityKey(key);
         }
     }
 
