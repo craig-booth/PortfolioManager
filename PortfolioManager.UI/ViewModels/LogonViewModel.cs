@@ -22,18 +22,23 @@ namespace PortfolioManager.UI.ViewModels
             LogonCommand = new RelayCommand(Logon);
 
             Commands.Add(new DialogCommand("Logon", LogonCommand));
+            
         }
 
         public RelayCommand LogonCommand { get; private set; }
-        private void Logon()
+        private async void Logon()
         {
-            _RestClient.Authenticate(UserName, Password);
+            var result = await _RestClient.Authenticate(UserName, Password);
 
-            _RestClient.SetPortfolio(new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90"));
-           
-            Close();
+            if (result)
+            {
+                _RestClient.SetPortfolio(new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90"));
 
-            OnLoggedOn(EventArgs.Empty);
+                Close();
+
+                OnLoggedOn(EventArgs.Empty);
+            }
+
         }
 
         public event EventHandler LoggedOn;

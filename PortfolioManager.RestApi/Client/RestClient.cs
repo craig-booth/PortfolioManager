@@ -22,8 +22,6 @@ namespace PortfolioManager.RestApi.Client
         {
             _HttpClient = new HttpClient();
             _HttpClient.BaseAddress = new Uri(server);
-            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
-            _HttpClient.DefaultRequestHeaders.Add("Api-Key", apiKey.ToString());
             _HttpClient.DefaultRequestHeaders.Accept.Clear();
             _HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -37,12 +35,15 @@ namespace PortfolioManager.RestApi.Client
             Transactions = new TransactionResource(Session);
         }
 
-        public bool Authenticate(string userName, string password)
+        public async Task<bool> Authenticate(string userName, string password)
         {
-            Session.UserName = userName;
-            Session.Password = password;
+            var userResource = new UserResource(Session);
 
-            return true;
+            var result = await userResource.Authenticate(userName, password);
+
+            _HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Session.JwtToken);
+
+            return result;
         }
 
         public void SetPortfolio(Guid portfolio)
@@ -53,8 +54,7 @@ namespace PortfolioManager.RestApi.Client
 
     public class ClientSession
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public string JwtToken { get; set; }
         public Guid Portfolio { get; set; }
         public HttpClient HttpClient { get; }
 

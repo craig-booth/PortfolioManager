@@ -52,5 +52,18 @@ namespace PortfolioManager.RestApi.Client
             HttpResponseMessage response = await _Session.HttpClient.PostAsync<D>(url, data, _Formatter);
             return response.IsSuccessStatusCode;
         }
+
+        protected async Task<T> PostAsync<T, D>(string url, D data)
+        {
+            T response = default(T);
+
+            HttpResponseMessage httpResponse = await _Session.HttpClient.PostAsync<D>(url, data, _Formatter);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                response = await httpResponse.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { _Formatter });
+            }
+
+            return response;
+        }
     }
 }
