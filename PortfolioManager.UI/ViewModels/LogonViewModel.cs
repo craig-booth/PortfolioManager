@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
 using CBControls;
 
 using PortfolioManager.RestApi.Client;
@@ -14,7 +15,7 @@ namespace PortfolioManager.UI.ViewModels
     {
         private readonly RestClient _RestClient;
         public string UserName { get; set; }
-        public string Password { get; set; }
+        public SecureString Password { get; set; }
 
         public LogonViewModel(RestClient restClient)
         {

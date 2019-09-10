@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
 
 using PortfolioManager.RestApi.Users;
 
@@ -15,12 +16,12 @@ namespace PortfolioManager.RestApi.Client
 
         }
 
-        public async Task<bool> Authenticate(string userName, string password)
+        public async Task<bool> Authenticate(string userName, SecureString password)
         {
             var command = new AuthenticateCommand()
             {
                 UserName = userName,
-                Password = password
+                Password = new System.Net.NetworkCredential(string.Empty, password).Password
             };
 
             var response = await PostAsync<AuthenticationResponse, AuthenticateCommand>("/api/v2/users/authenticate", command);
