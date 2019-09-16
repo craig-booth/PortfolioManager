@@ -17,7 +17,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
 
     [Route("api/v2/users")]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
         private readonly IUserService _UserService;
         private readonly PortfolioManagerSettings _Settings;

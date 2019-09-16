@@ -15,7 +15,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
     [Authorize]
     [Route("api/v2/stocks/{stockId:guid}/corporateactions")]
-    public class CorporateActionController : Controller
+    public class CorporateActionController : ControllerBase
     {
         private IRepository<Stock> _StockRepository;
 

@@ -19,7 +19,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
     [Authorize]
     [Route("api/v2/stocks")]
-    public class StockController : Controller
+    public class StockController : ControllerBase
     {
         private IStockQuery _StockQuery;
         private IStockService _StockService;

@@ -17,7 +17,7 @@ using PortfolioManager.Web.Utilities;
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/holdings")]
-    public class HoldingController : BasePortfolioController
+    public class HoldingController : PortfolioControllerBase
     {
         private readonly IMapper _Mapper;
         private readonly IStockQuery _StockQuery;

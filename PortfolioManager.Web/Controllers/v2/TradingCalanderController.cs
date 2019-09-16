@@ -12,7 +12,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
     [Authorize]
     [Route("api/v2/tradingcalander")]
-    public class TradingCalanderController : Controller
+    public class TradingCalanderController : ControllerBase
     {
         private ITradingCalander _TradingCalander;
 
