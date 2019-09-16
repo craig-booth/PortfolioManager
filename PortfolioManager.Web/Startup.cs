@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PortfolioManager.Web
 {
@@ -87,7 +88,8 @@ namespace PortfolioManager.Web
             });
 
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<KestrelServerOptions>(x => x.Listen(IPAddress.Any, PortfolioManagerSettings.Port))
                 .AddPortfolioManagerService(PortfolioManagerSettings)
