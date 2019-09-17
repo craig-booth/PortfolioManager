@@ -31,7 +31,7 @@ namespace PortfolioManager.Web.Mappers
             if (stock is StapledSecurity)
             {
                 response.StapledSecurity = true;
-                response.ChildSecurities.AddRange(((StapledSecurity)stock).ChildSecurities.Select(x => new StockResponse.StapledSecurityChild() { ASXCode = x.ASXCode, Name = x.Name, Trust = x.Trust }));
+                response.ChildSecurities.AddRange(((StapledSecurity)stock).ChildSecurities.Select(x => new StockResponse.StapledSecurityChildResponse() { ASXCode = x.ASXCode, Name = x.Name, Trust = x.Trust }));
             }
             else
                 response.StapledSecurity = false;
@@ -101,7 +101,7 @@ namespace PortfolioManager.Web.Mappers
                 Name = properties.Name,
             };
 
-            response.ClosingPrices.AddRange(stock.GetPrices(dateRange).Select(x => new StockPriceResponse.ClosingPrice(x.Key, x.Value)));
+            response.ClosingPrices.AddRange(stock.GetPrices(dateRange).Select(x => new ClosingPrice(x.Key, x.Value)));
 
             return response;
         }

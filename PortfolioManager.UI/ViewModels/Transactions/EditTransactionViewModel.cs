@@ -143,9 +143,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
         private void OnTransactionChangedEvent(TransactionEventArgs e)
         {
-            var handler = TransactionChanged;
-            if (handler != null)
-                handler(this, e);
+            TransactionChanged?.Invoke(this, e);
         }
 
     }

@@ -10,25 +10,25 @@ namespace PortfolioManager.Utils
 {
     class CheckStockDividendRules
     {
-        RestClient _RestClient;
+      //  RestClient _RestClient;
 
         public CheckStockDividendRules()
         {
-            var url = "https://docker.local:8443";
+       //     var url = "https://docker.local:8443";
             //   var url = "http://localhost";
-            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
-            var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
+       //     var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
+      //      var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
 
           //  _RestClient = new RestClient(url, apiKey, portfolioId);
         }
 
         public async Task CheckAll()
         {
-            var stocks = await _RestClient.Stocks.Get(DateTime.Today);
+       /*     var stocks = await _RestClient.Stocks.Get(DateTime.Today);
             foreach (var stock in stocks)
             {
                 await CheckStock(stock);
-            }
+            } */
         }
       
         public async Task CheckStock(StockResponse stock)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
-
+using Microsoft.AspNetCore.Http;
 using AutoMapper;
 
 using PortfolioManager.Domain;
@@ -13,9 +13,11 @@ using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.Web.Services;
 using PortfolioManager.Web.Utilities;
 
+
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/transactions")]
+    [ApiController]
     public class TransactionController : PortfolioControllerBase
     {
         private readonly IMapper _Mapper;
@@ -30,6 +32,8 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:  transactions/id
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Transaction> Get(Guid id)
         {
             var transaction = _Portfolio.Transactions[id];
@@ -41,6 +45,8 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // POST: transactions
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public ActionResult AddTransaction([FromBody]Transaction transaction)
         {
             if (transaction == null)
@@ -60,6 +66,7 @@ namespace PortfolioManager.Web.Controllers.v2
         }
 
         // POST: transactions
+        [NonAction]
      //   [HttpPost]
     //    public ActionResult AddTransactions([FromBody]List<Transaction> transactions)
         public ActionResult AddTransactions(List<Transaction> transactions)
@@ -80,10 +87,12 @@ namespace PortfolioManager.Web.Controllers.v2
             }
 
             return Ok();
-        } 
+        }  
 
         // GET:  transactions/id/corporateaction/id
         [HttpGet("{stockId:guid}/corporateaction/{actionId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<Transaction>> GetTransactionsForCorporateAction(Guid stockId, Guid actionId)
         {
             var holding = _Portfolio.Holdings.Get(stockId);
@@ -99,6 +108,6 @@ namespace PortfolioManager.Web.Controllers.v2
             var transactions = corporateActionsService.GetTransactionsForCorporateAction(holding, corporateAction);
 
             return transactions.ToList();
-        }
+        } 
     }
 }

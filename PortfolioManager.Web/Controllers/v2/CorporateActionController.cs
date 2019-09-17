@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
@@ -11,10 +12,12 @@ using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.CorporateActions;
 using PortfolioManager.Web.Mappers;
 
+
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Authorize]
     [Route("api/v2/stocks/{stockId:guid}/corporateactions")]
+    [ApiController]
     public class CorporateActionController : ControllerBase
     {
         private IRepository<Stock> _StockRepository;
@@ -27,6 +30,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET : /api/stocks/{stockId}/corporateactions
         [Route("")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<CorporateAction>> GetCorporateActions([FromRoute]Guid stockId, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             var stock = _StockRepository.Get(stockId);
@@ -41,6 +46,9 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET : /api/stocks/{stockId}/corporateactions/{id}
         [Route("{id:guid}")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]        
         public ActionResult<CorporateAction> GetCorporateAction([FromRoute]Guid stockId, [FromRoute]Guid id)
         {
             var stock = _StockRepository.Get(stockId);
@@ -74,6 +82,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [Authorize(Policy.CanMantainStocks)]
         [Route("")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult AddCorporateAction([FromRoute]Guid stockId, [FromBody] RestApi.CorporateActions.CorporateAction corporateAction)
         {
             if (corporateAction == null)
@@ -120,7 +131,7 @@ namespace PortfolioManager.Web.Controllers.v2
         {
             var resultingStocks = transformation.ResultingStocks.Select(x => new Domain.CorporateActions.Transformation.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate));
             stock.CorporateActions.AddTransformation(transformation.Id, transformation.ActionDate, transformation.Description, transformation.ImplementationDate, transformation.CashComponent, transformation.RolloverRefliefApplies, resultingStocks);
-        }
+        } 
     }
 
 }

@@ -33,7 +33,7 @@ namespace PortfolioManager.Web.Services
             response.OpeningBalance = CashAccount.Balance(dateRange.FromDate);
             response.ClosingBalance = CashAccount.Balance(dateRange.ToDate);
 
-            response.Transactions.AddRange(_Mapper.Map<IEnumerable<CashAccountTransactionsResponse.TransactionItem>>(transactions));
+            response.Transactions.AddRange(_Mapper.Map<IEnumerable<CashAccountTransactionsResponse.CashTransactionItem>>(transactions));
 
             return response;
         }

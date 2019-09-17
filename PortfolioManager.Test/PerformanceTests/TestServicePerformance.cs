@@ -88,16 +88,16 @@ namespace PortfolioManager.Test.PerformanceTests
             controller.AddTransactions(transactions.Where(x => x != null).ToList());
         }
 
-        private static void SetControllerContext(Controller controller)
+        private static void SetControllerContext(ControllerBase controller)
         {
-            var httpContext = new DefaultHttpContext();
+    /*        var httpContext = new DefaultHttpContext();
             var routeData = new RouteData();
             routeData.Values["portfolioId"] = Guid.NewGuid().ToString();
             var actionDescription = new ActionDescriptor();
             var actionContext = new ActionContext(httpContext, routeData, actionDescription);
             var context = new ActionExecutingContext(actionContext, new List<IFilterMetadata>(), new Dictionary<string, object>(), controller);
 
-            controller.OnActionExecuting(context);
+            controller.OnActionExecuting(context); */
         }
 
     }
@@ -128,16 +128,16 @@ namespace PortfolioManager.Test.PerformanceTests
             _Counter = context.GetCounter("TestCounter");
         }
 
-        private void SetControllerContext(Controller controller)
+        private void SetControllerContext(ControllerBase controller)
         {
-            var httpContext = new DefaultHttpContext();
+       /*     var httpContext = new DefaultHttpContext();
             var routeData = new RouteData();
             routeData.Values["portfolioId"] = Guid.NewGuid().ToString();
             var actionDescription = new ActionDescriptor();
             var actionContext = new ActionContext(httpContext, routeData, actionDescription);
             var context = new ActionExecutingContext(actionContext, new List<IFilterMetadata>(), new Dictionary<string, object>(), controller);
 
-            controller.OnActionExecuting(context);
+            controller.OnActionExecuting(context); */
         }
 
         [PerfBenchmark(Description = "Test to ensure that a minimal throughput test can be rapidly executed.",

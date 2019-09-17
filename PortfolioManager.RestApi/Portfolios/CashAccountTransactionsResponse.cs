@@ -11,9 +11,9 @@ namespace PortfolioManager.RestApi.Portfolios
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
 
-        public List<TransactionItem> Transactions { get; } = new List<TransactionItem>();
+        public List<CashTransactionItem> Transactions { get; } = new List<CashTransactionItem>();
 
-        public class TransactionItem
+        public class CashTransactionItem
         {
             public DateTime Date { get; set; }
             public BankAccountTransactionType Type { get; set; }

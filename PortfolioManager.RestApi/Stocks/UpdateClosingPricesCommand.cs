@@ -9,21 +9,10 @@ namespace PortfolioManager.RestApi.Stocks
         public Guid Id { get; set; }
         public List<ClosingPrice> Prices { get; }
 
-        public class ClosingPrice
-        {
-            public DateTime Date { get; set; }
-            public decimal Price { get; set; }
-
-            public ClosingPrice(DateTime date, decimal price)
-            {
-                Date = date;
-                Price = price;
-            }
-        }
-
         public UpdateClosingPricesCommand()
         {
             Prices = new List<ClosingPrice>();
         }
     }
+
 }

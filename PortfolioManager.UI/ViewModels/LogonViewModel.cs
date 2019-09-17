@@ -53,9 +53,7 @@ namespace PortfolioManager.UI.ViewModels
 
         private void OnLoggedOn(EventArgs e)
         {
-            var handler = LoggedOn;
-            if (handler != null)
-                handler(this, e);
+            LoggedOn?.Invoke(this, e);
         }
     }
 }

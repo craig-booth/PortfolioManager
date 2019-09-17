@@ -13,10 +13,10 @@ namespace PortfolioManager.Utils
 
         public static async void Add()
         {
-            var url = "https://docker.local:8443";
+        //    var url = "https://docker.local:8443";
             //   var url = "http://localhost";
-            var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
-            var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
+        //    var apiKey = new Guid("B34A4C8B-6B17-4E25-A3CC-2E512D5F1B3D");
+        //    var portfolioId = new Guid("5D5DE669-726C-4C5D-BB2E-6520C924DB90");
 
         //    var restClient = new RestClient(url, apiKey, portfolioId);
 
@@ -26,7 +26,7 @@ namespace PortfolioManager.Utils
 
         private static async Task AddAll(RestClient restClient)
         {
-            Guid stockId;
+      //      Guid stockId;
 
      /*       stockId = await GetStockId(restClient, "ARG");
             await AddDividend(restClient, stockId, new DateTime(2018, 02, 19), new DateTime(2018, 03, 09), 0.155m, 1.0m, 7.98m, "");

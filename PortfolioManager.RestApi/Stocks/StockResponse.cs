@@ -27,18 +27,18 @@ namespace PortfolioManager.RestApi.Stocks
         public bool DRPActive { get; set; }
         public DRPMethod DRPMethod { get; set; }
 
-        public class StapledSecurityChild
+        public class StapledSecurityChildResponse
         {
             public string ASXCode { get; set; }
             public string Name { get; set; }
             public bool Trust { get; set; }
         }
 
-        public List<StapledSecurityChild> ChildSecurities { get; set; }
+        public List<StapledSecurityChildResponse> ChildSecurities { get; set; }
 
         public StockResponse()
         {
-            ChildSecurities = new List<StapledSecurityChild>();
+            ChildSecurities = new List<StapledSecurityChildResponse>();
         }
     }
 }

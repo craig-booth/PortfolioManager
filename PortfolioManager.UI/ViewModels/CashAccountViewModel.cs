@@ -63,7 +63,7 @@ namespace PortfolioManager.UI.ViewModels
         public decimal Amount { get; private set; }
         public decimal Balance { get; private set; }
 
-        public CashAccountItemViewModel(CashAccountTransactionsResponse.TransactionItem transaction)
+        public CashAccountItemViewModel(CashAccountTransactionsResponse.CashTransactionItem transaction)
         {
             Date = transaction.Date;
             Description = transaction.Description;

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 
 using PortfolioManager.RestApi.Users;
 using PortfolioManager.Web.Services;
@@ -17,6 +17,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
 
     [Route("api/v2/users")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserService _UserService;
@@ -32,14 +33,10 @@ namespace PortfolioManager.Web.Controllers.v2
         [AllowAnonymous]
         [Route("authenticate")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public ActionResult<AuthenticationResponse> Authenticate([FromBody] AuthenticateCommand command)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 var user = _UserService.Authenticate(command.UserName, command.Password);
@@ -78,7 +75,7 @@ namespace PortfolioManager.Web.Controllers.v2
                 return BadRequest(e.Message);
             }
 
-        }
+        } 
 
 
 

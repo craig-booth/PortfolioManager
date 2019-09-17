@@ -13,18 +13,5 @@ namespace PortfolioManager.RestApi.TradingCalanders
         {
             NonTradingDays = new List<NonTradingDay>();
         }
-
-
-        public class NonTradingDay
-        {
-            public DateTime Date { get; set; }
-            public string Desciption { get; set; }
-
-            public NonTradingDay(DateTime date, string description)
-            {
-                Date = date;
-                Desciption = description;
-            }
-        }
     }    
 }

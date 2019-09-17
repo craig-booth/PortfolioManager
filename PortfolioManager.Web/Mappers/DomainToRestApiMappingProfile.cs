@@ -37,7 +37,7 @@ namespace PortfolioManager.Web.Mappers
 
             CreateMap<Domain.Portfolios.Holding, RestApi.Portfolios.Holding>().ConvertUsing<HoldingConverter>();
 
-            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.TransactionItem>();
+            CreateMap<Domain.Portfolios.CashAccount.Transaction, RestApi.Portfolios.CashAccountTransactionsResponse.CashTransactionItem>();
         }
 
     }

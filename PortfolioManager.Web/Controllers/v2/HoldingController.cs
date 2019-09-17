@@ -13,10 +13,12 @@ using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
 using PortfolioManager.Web.Utilities;
+using Microsoft.AspNetCore.Http;
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Route("api/v2/portfolio/{portfolioId:guid}/holdings")]
+    [ApiController]
     public class HoldingController : PortfolioControllerBase
     {
         private readonly IMapper _Mapper;
@@ -55,6 +57,9 @@ namespace PortfolioManager.Web.Controllers.v2
 
         // GET:  id
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public ActionResult<RestApi.Portfolios.Holding> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
             var requestedDate = (date != null) ? (DateTime)date : DateTime.Today;
@@ -70,6 +75,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: properties
         [Route("{id:guid}/changedrpparticipation")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeDrpParticipation(Guid id, bool participate)
         {
             var holding = _Portfolio.Holdings.Get(id);
@@ -86,6 +93,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: id/value?fromDate&toDate
         [Route("{id:guid}/value")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<PortfolioValueResponse> GetValue(Guid id, DateTime? fromDate, DateTime? toDate, ValueFrequency? frequency)
         {
             var holding = _Portfolio.Holdings.Get(id);
@@ -103,6 +112,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: transactions?fromDate&toDate
         [Route("{id:guid}/transactions")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<TransactionsResponse> GetTransactions(Guid id, DateTime? fromDate, DateTime? toDate)
         {
             var holding = _Portfolio.Holdings.Get(id);
@@ -119,6 +130,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: capitalgains?date
         [Route("{id:guid}/capitalgains")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<SimpleUnrealisedGainsResponse> GetCapitalGains(Guid id, DateTime? date)
         {
             var holding = _Portfolio.Holdings.Get(id);
@@ -135,6 +148,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: detailedcapitalgains?date
         [Route("{id:guid}/detailedcapitalgains")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<DetailedUnrealisedGainsResponse> GetDetailedCapitalGains(Guid id, DateTime? date)
         {
             var holding = _Portfolio.Holdings.Get(id);
@@ -151,6 +166,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: corporateactions
         [Route("{id:guid}/corporateactions")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<CorporateActionsResponse> GetCorporateActions(Guid id)
         {
             var holding = _Portfolio.Holdings.Get(id);
@@ -160,6 +177,6 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCorporateActionsService(_Portfolio, _Mapper);
 
             return service.GetCorporateActions(holding);
-        }
+        } 
     } 
 }

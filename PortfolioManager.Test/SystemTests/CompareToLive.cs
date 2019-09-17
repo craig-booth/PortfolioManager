@@ -132,16 +132,16 @@ namespace PortfolioManager.Test.SystemTests
             }
         }
 
-        private void SetControllerContext(Controller controller)
+        private void SetControllerContext(ControllerBase controller)
         {
-            var httpContext = new DefaultHttpContext();
+     /*       var httpContext = new DefaultHttpContext();
             var routeData = new RouteData();
             routeData.Values["portfolioId"] = _PortfolioId.ToString();
             var actionDescription = new ActionDescriptor();
             var actionContext = new ActionContext(httpContext, routeData, actionDescription);
             var context = new ActionExecutingContext(actionContext, new List<IFilterMetadata>(), new Dictionary<string, object>(), controller);
 
-            controller.OnActionExecuting(context);
+            controller.OnActionExecuting(context); */
         } 
 
         [Test, TestCaseSource(typeof(CompareToLiveTestData), "TestDateRanges")]

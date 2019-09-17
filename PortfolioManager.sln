@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Web", "Por
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioManager.UI", "PortfolioManager.UI\PortfolioManager.UI.csproj", "{92F26883-8D8C-4F37-AEA2-09D5088A9390}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Test", "PortfolioManager.Test\PortfolioManager.Test.csproj", "{246A1222-9C9E-4616-BD29-2755A7CD5D20}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Domain", "PortfolioManager.Domain\PortfolioManager.Domain.csproj", "{AC9C06DE-041D-4513-8F37-B2802EA402BF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore", "PortfolioManager.EventStore\PortfolioManager.EventStore.csproj", "{22E528EF-35A3-4328-95CA-9E95DCBB87D2}"
@@ -41,10 +39,6 @@ Global
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F26883-8D8C-4F37-AEA2-09D5088A9390}.Release|Any CPU.Build.0 = Release|Any CPU
-		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{246A1222-9C9E-4616-BD29-2755A7CD5D20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC9C06DE-041D-4513-8F37-B2802EA402BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC9C06DE-041D-4513-8F37-B2802EA402BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC9C06DE-041D-4513-8F37-B2802EA402BF}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -13,18 +13,6 @@ namespace PortfolioManager.RestApi.Stocks
         public string ASXCode { get; set; }
         public string Name { get; set; }
 
-        public class ClosingPrice
-        {
-            public string Date { get; }
-            public decimal Price { get; }
-
-            public ClosingPrice(DateTime date, decimal price)
-            {
-                Date = date.ToIsoDateString();
-                Price = price;
-            }
-        }
-
         public List<ClosingPrice> ClosingPrices { get; set; }
 
         public StockPriceResponse()

@@ -4,21 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 
 using PortfolioManager.Common;
-using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
-
 using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Services;
 using PortfolioManager.Web.Utilities;
+
 
 namespace PortfolioManager.Web.Controllers.v2
 {
     [Authorize]
     [Route("api/v2/stocks")]
+    [ApiController]
     public class StockController : ControllerBase
     {
         private IStockQuery _StockQuery;
@@ -64,6 +64,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET: api/stocks/{id}
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<StockResponse> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
             var stock = _StockQuery.Get(id);
@@ -79,6 +81,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET : /api/stocks/{id}/history
         [HttpGet]
         [Route("{id:guid}/history")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<StockHistoryResponse> GetHistory([FromRoute]Guid id)
         {
             var stock = _StockQuery.Get(id);
@@ -91,6 +95,8 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET : /api/stocks/{id}/closingprices
         [HttpGet]
         [Route("{id:guid}/closingprices")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<StockPriceResponse> GetClosingPrices([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             var stock = _StockQuery.Get(id);
@@ -105,14 +111,10 @@ namespace PortfolioManager.Web.Controllers.v2
         // POST : /api/stocks
         [Authorize(Policy.CanMantainStocks)]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public ActionResult CreateStock([FromBody] CreateStockCommand command)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 if (command.ChildSecurities.Count == 0)
@@ -139,6 +141,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/change")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeStock([FromRoute]Guid id, [FromBody] ChangeStockCommand command)
         {
             // Check id in URL and id in command match
@@ -165,6 +170,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/delist")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DelistStock([FromRoute]Guid id, [FromBody] DelistStockCommand command)
         {
             // Check id in URL and id in command match
@@ -191,6 +199,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/closingprices")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult UpdateClosingPrices([FromRoute]Guid id, [FromBody] UpdateClosingPricesCommand command)
         {
             // Check id in URL and id in command match
@@ -226,6 +237,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [Authorize(Policy.CanMantainStocks)]
         [Route("{id}/changedividendrules")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeDividendRules([FromRoute]Guid id, [FromBody] ChangeDividendRulesCommand command)
         {
             // Check id in URL and id in command match
@@ -251,6 +265,9 @@ namespace PortfolioManager.Web.Controllers.v2
         // GET : /api/stocks/{id}/relativenta
         [Route("{id:guid}/relativenta")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult GetRelativeNTA([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
             var stock = _StockQuery.Get(id);
@@ -275,6 +292,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [Authorize(Policy.CanMantainStocks)]
         [Route("{id:guid}/relativenta")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult ChangeRelativeNTA([FromRoute]Guid id, [FromBody] ChangeRelativeNTAsCommand command)
         {
             // Check id in URL and id in command match
@@ -324,7 +344,7 @@ namespace PortfolioManager.Web.Controllers.v2
         private bool MatchesQuery(StockProperties stock, string query)
         {
             return ((stock.ASXCode.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) || (stock.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0));
-        }
+        } 
     }
 
 }

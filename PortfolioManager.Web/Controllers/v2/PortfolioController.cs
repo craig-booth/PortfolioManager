@@ -20,6 +20,7 @@ namespace PortfolioManager.Web.Controllers.v2
 {
 
     [Route("api/v2/portfolio/{portfolioId:guid}")]
+    [ApiController]
     public class PortfolioController : PortfolioControllerBase
     {
         private readonly IMapper _Mapper;
@@ -42,7 +43,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioPropertiesService(_Portfolio);
 
             return service.GetProperties();
-        }
+        } 
 
         // GET: summary?date
         [Route("summary")]
@@ -54,7 +55,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioSummaryService(_Portfolio);
 
             return service.GetSummary(requestedDate);        
-        }
+        } 
 
 
         // GET: performance?fromDate&toDate
@@ -67,7 +68,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioPerformanceService(_Portfolio);
 
             return service.GetPerformance(dateRange);
-        }
+        } 
 
         // GET: value?fromDate&toDate
         [Route("value")]
@@ -80,7 +81,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioValueService(_Portfolio, _TradingCalander);
 
             return service.GetValue(dateRange, requestedFrequency);
-        }
+        } 
 
         // GET: transactions?fromDate&toDate
         [Route("transactions")]
@@ -92,8 +93,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioTransactionService(_Portfolio, _PortfolioRepository, _StockQuery, _Mapper);
 
             return service.GetTransactions(dateRange);
-
-        } 
+        }  
 
         // GET: capitalgains?date
         [Route("capitalgains")]
@@ -105,7 +105,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCapitalGainsService(_Portfolio);
 
             return service.GetCapitalGains(requestedDate);
-        }
+        } 
 
         // GET: detailedcapitalgains?date
         [Route("detailedcapitalgains")]
@@ -117,7 +117,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCapitalGainsService(_Portfolio);
 
             return service.GetDetailedCapitalGains(requestedDate);         
-        }
+        } 
 
         // GET: cgtliability?fromDate&toDate
         [Route("cgtliability")]
@@ -129,7 +129,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCgtLiabilityService(_Portfolio);
 
             return service.GetCGTLiability(dateRange);
-        }
+        } 
 
         // GET: cashaccount?fromDate&toDate
         [Route("cashaccount")]
@@ -141,7 +141,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new CashAccountService(_Portfolio.CashAccount, _Mapper);
 
             return service.GetCashAccountTransactions(dateRange);
-        }
+        }  
 
         // GET: income?fromDate&toDate
         [Route("income")]
@@ -153,7 +153,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioIncomeService(_Portfolio);
 
             return service.GetIncome(dateRange);
-        }
+        } 
 
         // GET: corporateactions
         [Route("corporateactions")]
@@ -163,7 +163,7 @@ namespace PortfolioManager.Web.Controllers.v2
             var service = new PortfolioCorporateActionsService(_Portfolio, _Mapper);
 
             return service.GetCorporateActions();
-        }
+        } 
     }
 
 }

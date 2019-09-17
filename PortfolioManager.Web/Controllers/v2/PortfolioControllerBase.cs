@@ -26,6 +26,7 @@ namespace PortfolioManager.Web.Controllers.v2
 
         }
 
+        [NonAction]
         public async Task<bool> SetPortfolio(Guid id)
         {
             _Portfolio = _PortfolioRepository.Get(id);
