@@ -107,12 +107,12 @@ namespace PortfolioManager.Domain.Stocks
                 return 0.00m;
         }
 
-        public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
+        public IEnumerable<StockPrice> GetPrices(DateRange dateRange)
         {
             if (_StockPriceHistory != null)
                 return _StockPriceHistory.GetPrices(dateRange);
             else
-                return new KeyValuePair<DateTime, decimal>[0];
+                return new StockPrice[0];
         }
 
         public DateTime DateOfLastestPrice()

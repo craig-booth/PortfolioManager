@@ -9,27 +9,35 @@ using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Transactions;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioPerformanceService
-    {
-        public Portfolio Portfolio { get; }
 
-        public PortfolioPerformanceService(Portfolio portfolio)
+    public interface IPortfolioPerformanceService
+    {
+        PortfolioPerformanceResponse GetPerformance(Guid portfolioId, DateRange dateRange);
+    }
+
+    public class PortfolioPerformanceService : IPortfolioPerformanceService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioPerformanceService(IPortfolioCache portfolioCache)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
         }
 
-        public PortfolioPerformanceResponse GetPerformance(DateRange dateRange)
+        public PortfolioPerformanceResponse GetPerformance(Guid portfolioId, DateRange dateRange)
         {
-            var response = new PortfolioPerformanceResponse();
+            var portfolio = _PortfolioCache.Get(portfolioId);
 
+            var response = new PortfolioPerformanceResponse();
 
             var dateRangeExcludingFirstDay = new DateRange(dateRange.FromDate.AddDays(1), dateRange.ToDate);
 
-            var openingHoldings = Portfolio.Holdings.All(dateRange.FromDate);
-            var closingHoldings = Portfolio.Holdings.All(dateRange.ToDate);
+            var openingHoldings = portfolio.Holdings.All(dateRange.FromDate);
+            var closingHoldings = portfolio.Holdings.All(dateRange.ToDate);
 
 
             var workingList = new List<HoldingPerformanceWorkItem>();
@@ -48,7 +56,7 @@ namespace PortfolioManager.Web.Services
             }
 
             // Process transactions during the period
-            var transactions = Portfolio.Transactions.InDateRange(dateRangeExcludingFirstDay);
+            var transactions = portfolio.Transactions.InDateRange(dateRangeExcludingFirstDay);
             foreach (var transaction in transactions)
             {
                 if ((transaction is Aquisition) ||
@@ -118,13 +126,13 @@ namespace PortfolioManager.Web.Services
                 response.HoldingPerformance.Add(item.HoldingPerformance);
             }
 
-            var cashTransactions = Portfolio.CashAccount.Transactions.InDateRange(dateRangeExcludingFirstDay);
-            response.OpeningCashBalance = Portfolio.CashAccount.Balance(dateRange.FromDate);
+            var cashTransactions = portfolio.CashAccount.Transactions.InDateRange(dateRangeExcludingFirstDay);
+            response.OpeningCashBalance = portfolio.CashAccount.Balance(dateRange.FromDate);
             response.Deposits = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Deposit).Sum(x => x.Amount);
             response.Withdrawls = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Withdrawl).Sum(x => x.Amount);
             response.Interest = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Interest).Sum(x => x.Amount);
             response.Fees = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Fee).Sum(x => x.Amount);
-            response.ClosingCashBalance = Portfolio.CashAccount.Balance(dateRange.ToDate);
+            response.ClosingCashBalance = portfolio.CashAccount.Balance(dateRange.ToDate);
 
             response.OpeningBalance = openingHoldings.Sum(x => x.Value(dateRange.FromDate));
             response.Dividends = response.HoldingPerformance.Sum(x => x.Dividends);
@@ -142,8 +150,10 @@ namespace PortfolioManager.Web.Services
 
             public HoldingPerformanceWorkItem(Stock stock)
             {
-                HoldingPerformance = new PortfolioPerformanceResponse.HoldingPerformanceItem();
-                HoldingPerformance.Stock = stock;
+                HoldingPerformance = new PortfolioPerformanceResponse.HoldingPerformanceItem()
+                {
+                    Stock = stock
+                };
                 CashFlows = new CashFlows();
             }
         }

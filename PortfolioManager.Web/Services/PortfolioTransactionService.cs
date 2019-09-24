@@ -8,107 +8,152 @@ using AutoMapper;
 using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
-using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Transactions;
-using PortfolioManager.RestApi.Transactions;
-using PortfolioManager.RestApi.Portfolios;
 
 using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioTransactionService
+
+    public interface IPortfolioTransactionService
     {
-        public Portfolio Portfolio { get; }
-        private IStockQuery _StockQuery;
-        private IRepository<Portfolio> _PortfolioRepository;
-        private IMapper _Mapper;
+        RestApi.Transactions.Transaction GetTransaction(Guid portfolioId, Guid id);
 
-        public PortfolioTransactionService(Portfolio portfolio, IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, IMapper mapper)
+        RestApi.Portfolios.TransactionsResponse GetTransactions(Guid portfolioId, DateRange dateRange);
+        RestApi.Portfolios.TransactionsResponse GetTransactions(Guid portfolioId, Guid stockId, DateRange dateRange);
+   
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.Aquisition aquisition);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.CashTransaction cashTransaction);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.CostBaseAdjustment costBaseAdjustment);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.Disposal disposal);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.IncomeReceived incomeReceived);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.OpeningBalance openingBalance);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.ReturnOfCapital returnOfCapital);
+        void ApplyTransaction(Guid portfolioId, RestApi.Transactions.UnitCountAdjustment unitCountAdjustment);
+    }
+
+    public class PortfolioTransactionService : IPortfolioTransactionService
+    {
+        private readonly IStockQuery _StockQuery;
+        private readonly IRepository<Portfolio> _PortfolioRepository;
+        private readonly IMapper _Mapper;
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioTransactionService(IPortfolioCache portfolioCache, IRepository<Portfolio> portfolioRepository, IStockQuery stockQuery, IMapper mapper)
         {
-            Portfolio = portfolio;
-
+            _PortfolioCache = portfolioCache;
             _PortfolioRepository = portfolioRepository;
             _StockQuery = stockQuery;
             _Mapper = mapper;
         }
 
-        public TransactionsResponse GetTransactions(DateRange dateRange)
+        public RestApi.Transactions.Transaction GetTransaction(Guid portfolioId, Guid id)
         {
-            return GetTransactions(Portfolio.Transactions.InDateRange(dateRange), dateRange.ToDate);
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var transaction = portfolio.Transactions[id];
+            if (transaction == null)
+                throw new TransactionNotFoundException(id);
+
+            return _Mapper.Map<RestApi.Transactions.Transaction>(transaction);
         }
 
-        public TransactionsResponse GetTransactions(Domain.Portfolios.Holding holding, DateRange dateRange)
+        public RestApi.Portfolios.TransactionsResponse GetTransactions(Guid portfolioId, DateRange dateRange)
         {
-            return GetTransactions(Portfolio.Transactions.ForHolding(holding.Stock.Id, dateRange), dateRange.ToDate);
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            return GetTransactions(portfolio.Transactions.InDateRange(dateRange), dateRange.ToDate);
         }
 
-        private TransactionsResponse GetTransactions(IEnumerable<Domain.Transactions.Transaction> transactions, DateTime date)
+        public RestApi.Portfolios.TransactionsResponse GetTransactions(Guid portfolioId, Guid stockId, DateRange dateRange)
         {
-            var response = new TransactionsResponse();
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var holding = portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                throw new HoldingNotFoundException(stockId);
+
+            return GetTransactions(portfolio.Transactions.ForHolding(holding.Stock.Id, dateRange), dateRange.ToDate);
+        }
+
+        private RestApi.Portfolios.TransactionsResponse GetTransactions(IEnumerable<Transaction> transactions, DateTime date)
+        {
+            var response = new RestApi.Portfolios.TransactionsResponse();
 
             foreach (var transaction in transactions)
             {
-                var t = _Mapper.Map<TransactionsResponse.TransactionItem>(transaction, opts => opts.Items["date"] = date);
+                var t = _Mapper.Map<RestApi.Portfolios.TransactionsResponse.TransactionItem>(transaction, opts => opts.Items["date"] = date);
                 response.Transactions.Add(t);
             }
 
             return response;
         }
 
-        public void ApplyTransaction(RestApi.Transactions.Aquisition aquisition)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.Aquisition aquisition)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var stock = _StockQuery.Get(aquisition.Stock);
-            Portfolio.AquireShares(aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, aquisition.TransactionCosts, aquisition.CreateCashTransaction, aquisition.Comment, aquisition.Id);
+            portfolio.AquireShares(aquisition.TransactionDate, stock, aquisition.Units, aquisition.AveragePrice, aquisition.TransactionCosts, aquisition.CreateCashTransaction, aquisition.Comment, aquisition.Id);
 
-            _PortfolioRepository.Update(Portfolio);
+            _PortfolioRepository.Update(portfolio);
         }
 
-        public void ApplyTransaction(RestApi.Transactions.CashTransaction cashTransaction)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.CashTransaction cashTransaction)
         {
-            Portfolio.MakeCashTransaction(cashTransaction.TransactionDate, RestApiNameMapping.ToBankAccountTransactionType(cashTransaction.CashTransactionType), cashTransaction.Amount, cashTransaction.Comment, cashTransaction.Id);
+            var portfolio = _PortfolioCache.Get(portfolioId);
 
-            _PortfolioRepository.Update(Portfolio);
+            portfolio.MakeCashTransaction(cashTransaction.TransactionDate, PortfolioManager.RestApi.Transactions.RestApiNameMapping.ToBankAccountTransactionType(cashTransaction.CashTransactionType), cashTransaction.Amount, cashTransaction.Comment, cashTransaction.Id);
+
+            _PortfolioRepository.Update(portfolio);
         }
 
-        public void ApplyTransaction(RestApi.Transactions.CostBaseAdjustment costBaseAdjustment)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.CostBaseAdjustment costBaseAdjustment)
         {
 
         }
 
-        public void ApplyTransaction(RestApi.Transactions.Disposal disposal)
-        { 
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.Disposal disposal)
+        {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var stock = _StockQuery.Get(disposal.Stock);
-            Portfolio.DisposeOfShares(disposal.TransactionDate, stock, disposal.Units, disposal.AveragePrice, disposal.TransactionCosts, RestApiNameMapping.ToCGTCalculationMethod(disposal.CGTMethod), disposal.CreateCashTransaction, disposal.Comment, disposal.Id);
+            portfolio.DisposeOfShares(disposal.TransactionDate, stock, disposal.Units, disposal.AveragePrice, disposal.TransactionCosts, RestApi.Transactions.RestApiNameMapping.ToCGTCalculationMethod(disposal.CGTMethod), disposal.CreateCashTransaction, disposal.Comment, disposal.Id);
 
-            _PortfolioRepository.Update(Portfolio);
+            _PortfolioRepository.Update(portfolio);
         }
 
-        public void ApplyTransaction(RestApi.Transactions.IncomeReceived incomeReceived)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.IncomeReceived incomeReceived)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var stock = _StockQuery.Get(incomeReceived.Stock);
-            Portfolio.IncomeReceived(incomeReceived.RecordDate, incomeReceived.TransactionDate, stock, incomeReceived.FrankedAmount, incomeReceived.UnfrankedAmount, incomeReceived.FrankingCredits, incomeReceived.Interest, incomeReceived.TaxDeferred, incomeReceived.DRPCashBalance, incomeReceived.CreateCashTransaction, incomeReceived.Comment, incomeReceived.Id);
+            portfolio.IncomeReceived(incomeReceived.RecordDate, incomeReceived.TransactionDate, stock, incomeReceived.FrankedAmount, incomeReceived.UnfrankedAmount, incomeReceived.FrankingCredits, incomeReceived.Interest, incomeReceived.TaxDeferred, incomeReceived.DRPCashBalance, incomeReceived.CreateCashTransaction, incomeReceived.Comment, incomeReceived.Id);
 
-            _PortfolioRepository.Update(Portfolio);
+            _PortfolioRepository.Update(portfolio);
         }
 
-        public void ApplyTransaction(RestApi.Transactions.OpeningBalance openingBalance)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.OpeningBalance openingBalance)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var stock = _StockQuery.Get(openingBalance.Stock);
-            Portfolio.AddOpeningBalance(openingBalance.TransactionDate, openingBalance.AquisitionDate, stock, openingBalance.Units, openingBalance.CostBase, openingBalance.Comment, openingBalance.Id);
+            portfolio.AddOpeningBalance(openingBalance.TransactionDate, openingBalance.AquisitionDate, stock, openingBalance.Units, openingBalance.CostBase, openingBalance.Comment, openingBalance.Id);
 
-            _PortfolioRepository.Update(Portfolio);
+            _PortfolioRepository.Update(portfolio);
         }
 
-        public void ApplyTransaction(RestApi.Transactions.ReturnOfCapital returnOfCapital)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.ReturnOfCapital returnOfCapital)
         {
-            var stock = _StockQuery.Get(returnOfCapital.Stock);
-            Portfolio.ReturnOfCapitalReceived(returnOfCapital.TransactionDate, returnOfCapital.RecordDate, stock, returnOfCapital.Amount, returnOfCapital.CreateCashTransaction, returnOfCapital.Comment, returnOfCapital.Id);
+            var portfolio = _PortfolioCache.Get(portfolioId);
 
-            _PortfolioRepository.Update(Portfolio);
+            var stock = _StockQuery.Get(returnOfCapital.Stock);
+            portfolio.ReturnOfCapitalReceived(returnOfCapital.TransactionDate, returnOfCapital.RecordDate, stock, returnOfCapital.Amount, returnOfCapital.CreateCashTransaction, returnOfCapital.Comment, returnOfCapital.Id);
+
+            _PortfolioRepository.Update(portfolio);
         }
 
-        public void ApplyTransaction(UnitCountAdjustment unitCountAdjustment)
+        public void ApplyTransaction(Guid portfolioId, RestApi.Transactions.UnitCountAdjustment unitCountAdjustment)
         {
 
         }

@@ -7,24 +7,32 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioCgtLiabilityService
+    public interface IPortfolioCgtLiabilityService
     {
-        public Portfolio Portfolio { get; }
+        CgtLiabilityResponse GetCGTLiability(Guid portfolioId, DateRange dateRange);
+    }
 
-        public PortfolioCgtLiabilityService(Portfolio portfolio)
+    public class PortfolioCgtLiabilityService : IPortfolioCgtLiabilityService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioCgtLiabilityService(IPortfolioCache portfolioCache)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
         }
 
-        public CgtLiabilityResponse GetCGTLiability(DateRange dateRange)
+        public CgtLiabilityResponse GetCGTLiability(Guid portfolioId, DateRange dateRange)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var response = new CgtLiabilityResponse();
 
             // Get a list of all the cgt events for the year
-            var cgtEvents = Portfolio.CgtEvents.InDateRange(dateRange);
+            var cgtEvents = portfolio.CgtEvents.InDateRange(dateRange);
             foreach (var cgtEvent in cgtEvents)
             {
                 var item = new CgtLiabilityResponse.CgtLiabilityEvent()

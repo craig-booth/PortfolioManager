@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 using PortfolioManager.Common;
-using PortfolioManager.Domain;
-using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.CorporateActions;
-using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Services;
 
 
 namespace PortfolioManager.Web.Controllers.v2
@@ -20,11 +18,11 @@ namespace PortfolioManager.Web.Controllers.v2
     [ApiController]
     public class CorporateActionController : ControllerBase
     {
-        private IRepository<Stock> _StockRepository;
+        private readonly ICorporateActionService _Service;
 
-        public CorporateActionController(IRepository<Stock> stockRepository)
+        public CorporateActionController(ICorporateActionService service)
         {
-            _StockRepository = stockRepository;
+            _Service = service;
         }
 
         // GET : /api/stocks/{stockId}/corporateactions
@@ -33,14 +31,10 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<CorporateAction>> GetCorporateActions([FromRoute]Guid stockId, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
-        {
-            var stock = _StockRepository.Get(stockId);
-            if (stock == null)
-                return NotFound();
-
+        {     
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return stock.CorporateActions.InDateRange(dateRange).Select(x => CorporateActionResponse(x)).ToList();
+            return _Service.GetCorporateActions(stockId, dateRange).ToList();
         }
 
         // GET : /api/stocks/{stockId}/corporateactions/{id}
@@ -51,31 +45,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(StatusCodes.Status404NotFound)]        
         public ActionResult<CorporateAction> GetCorporateAction([FromRoute]Guid stockId, [FromRoute]Guid id)
         {
-            var stock = _StockRepository.Get(stockId);
-            if (stock == null)
-                return NotFound();
-
-            var corporateAction = stock.CorporateActions[id];
-            if (corporateAction == null)
-                return NotFound();
-
-            var response = CorporateActionResponse(corporateAction);
-            if (response == null)
-                return BadRequest("Unknown corporate action type");
-
-            return response;       
-        }
-
-        private CorporateAction CorporateActionResponse(Domain.CorporateActions.CorporateAction corporateAction)
-        {
-            if (corporateAction.Type == CorporateActionType.Dividend)
-                return (corporateAction as Domain.CorporateActions.Dividend).ToResponse();
-            else if (corporateAction.Type == CorporateActionType.CapitalReturn)
-                return (corporateAction as Domain.CorporateActions.CapitalReturn).ToResponse();
-            else if (corporateAction.Type == CorporateActionType.Transformation)
-                return (corporateAction as Domain.CorporateActions.Transformation).ToResponse();
-            else
-                return null;
+            return _Service.GetCorporateAction(stockId, id);  
         }
 
         // POST : /api/stocks/{stockId}/corporateactions
@@ -88,50 +58,16 @@ namespace PortfolioManager.Web.Controllers.v2
         public ActionResult AddCorporateAction([FromRoute]Guid stockId, [FromBody] RestApi.CorporateActions.CorporateAction corporateAction)
         {
             if (corporateAction == null)
-                return BadRequest("Unknown Corporate Action type");
+                throw new UnknownCorporateActionType();
 
             // Check id in URL and id in command match
             if (stockId != corporateAction.Stock)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockRepository.Get(stockId);
-            if (stock == null)
-                return NotFound();
-
-            try
-            {
-                if (corporateAction is RestApi.CorporateActions.Dividend)
-                    AddDividend(stock, corporateAction as RestApi.CorporateActions.Dividend);
-                else if (corporateAction is RestApi.CorporateActions.CapitalReturn)
-                    AddCapitalReturn(stock, corporateAction as RestApi.CorporateActions.CapitalReturn);
-                else if (corporateAction is RestApi.CorporateActions.Transformation)
-                    AddTransformation(stock, corporateAction as RestApi.CorporateActions.Transformation);
-
-                _StockRepository.Update(stock);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            } 
+            _Service.AddCorporateAction(stockId, corporateAction);
 
             return Ok();
         }
-
-        private void AddDividend(Stock stock, RestApi.CorporateActions.Dividend dividend)
-        {
-            stock.CorporateActions.AddDividend(dividend.Id, dividend.ActionDate, dividend.Description, dividend.PaymentDate, dividend.DividendAmount, dividend.PercentFranked, dividend.DRPPrice);
-        }
-
-        private void AddCapitalReturn(Stock stock, RestApi.CorporateActions.CapitalReturn capitalReturn)
-        {
-            stock.CorporateActions.AddCapitalReturn(capitalReturn.Id, capitalReturn.ActionDate, capitalReturn.Description, capitalReturn.PaymentDate, capitalReturn.Amount);
-        }
-
-        private void AddTransformation(Stock stock, RestApi.CorporateActions.Transformation transformation)
-        {
-            var resultingStocks = transformation.ResultingStocks.Select(x => new Domain.CorporateActions.Transformation.ResultingStock(x.Stock, x.OriginalUnits, x.NewUnits, x.CostBase, x.AquisitionDate));
-            stock.CorporateActions.AddTransformation(transformation.Id, transformation.ActionDate, transformation.Description, transformation.ImplementationDate, transformation.CashComponent, transformation.RolloverRefliefApplies, resultingStocks);
-        } 
     }
 
 }

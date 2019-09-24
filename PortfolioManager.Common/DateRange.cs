@@ -40,5 +40,18 @@ namespace PortfolioManager.Common
         {
             return String.Format("{0} - {1}", FromDate, ToDate);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DateRange)
+                return this == (DateRange)obj;
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (FromDate.GetHashCode() * -1521134295) + ToDate.GetHashCode();
+        }
     }
 }

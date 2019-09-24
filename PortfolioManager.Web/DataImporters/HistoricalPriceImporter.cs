@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-using PortfolioManager.Domain;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.DataServices;
@@ -55,7 +54,7 @@ namespace PortfolioManager.Web.DataImporters
 
                     var data = await _DataService.GetHistoricalPriceData(asxCode, fromDate, toDate, cancellationToken);
                  
-                    var closingPrices = data.Select(x => new Tuple<DateTime, decimal>(x.Date, x.Price)).ToList();
+                    var closingPrices = data.Select(x => new Domain.Stocks.StockPrice(x.Date, x.Price)).ToList();
                     _Logger?.LogInformation("{0} closing prices found", closingPrices.Count);
                     if (closingPrices.Count > 0)
                     {

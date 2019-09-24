@@ -53,7 +53,7 @@ namespace PortfolioManager.Utils
         {
             var range = prices.GetPrices(new DateRange(from, to));
 
-            Console.WriteLine("Entries: {0}, First {1:d}, Last {2:d}", range.Count(), range.FirstOrDefault().Key, range.LastOrDefault().Key);
+            Console.WriteLine("Entries: {0}, First {1:d}, Last {2:d}", range.Count(), range.FirstOrDefault().Date, range.LastOrDefault().Price);
         }
     }
 }

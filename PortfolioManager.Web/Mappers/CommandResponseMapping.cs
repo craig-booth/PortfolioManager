@@ -101,7 +101,7 @@ namespace PortfolioManager.Web.Mappers
                 Name = properties.Name,
             };
 
-            response.ClosingPrices.AddRange(stock.GetPrices(dateRange).Select(x => new ClosingPrice(x.Key, x.Value)));
+            response.ClosingPrices.AddRange(stock.GetPrices(dateRange).Select(x => new ClosingPrice(x.Date, x.Price)));
 
             return response;
         }

@@ -77,9 +77,9 @@ namespace PortfolioManager.Web
                     options.AddPolicy(Policy.IsPortfolioOwner, policy => policy.RequireUserName("DebugUser"));
                     options.AddPolicy(Policy.CanMantainStocks, policy => policy.RequireUserName("DebugUser"));
                 });
-            } 
-            
+            }
 
+            services.AddMemoryCache();
 
             services.AddLogging(config =>
             {
@@ -89,7 +89,10 @@ namespace PortfolioManager.Web
             });
 
             // Add framework services.
-            services.AddMvc()
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add<PortfolioExceptionFilter>();
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 

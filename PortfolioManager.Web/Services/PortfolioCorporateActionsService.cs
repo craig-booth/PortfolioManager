@@ -9,31 +9,47 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioCorporateActionsService
+    public interface IPortfolioCorporateActionsService
     {
-        public Portfolio Portfolio { get; }
+        CorporateActionsResponse GetCorporateActions(Guid portfolioId);
+        CorporateActionsResponse GetCorporateActions(Guid portfolioId, Guid stockId);
+        IEnumerable<RestApi.Transactions.Transaction> GetTransactionsForCorporateAction(Guid portfolioId, Guid stockId, Guid actionId);
+    }
+
+    public class PortfolioCorporateActionsService : IPortfolioCorporateActionsService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
         private IMapper _Mapper;
 
-        public PortfolioCorporateActionsService(Portfolio portfolio, IMapper mapper)
+        public PortfolioCorporateActionsService(IPortfolioCache portfolioCache, IMapper mapper)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
             _Mapper = mapper;
         }
 
-        public CorporateActionsResponse GetCorporateActions()
+        public CorporateActionsResponse GetCorporateActions(Guid portfolioId)
         {
-            return GetCorporateActions(Portfolio.Holdings.All(DateTime.Today));
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            return GetCorporateActions(portfolio, portfolio.Holdings.All(DateTime.Today));
         }
 
-        public CorporateActionsResponse GetCorporateActions(Domain.Portfolios.Holding holding)
+        public CorporateActionsResponse GetCorporateActions(Guid portfolioId, Guid stockId)
         {
-            return GetCorporateActions(new[] { holding });
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var holding = portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                throw new HoldingNotFoundException(stockId);
+
+            return GetCorporateActions(portfolio, new[] { holding });
         }
 
-        private CorporateActionsResponse GetCorporateActions(IEnumerable<Domain.Portfolios.Holding> holdings)
+        private CorporateActionsResponse GetCorporateActions(Portfolio portfolio, IEnumerable<Domain.Portfolios.Holding> holdings)
         {
             var response = new CorporateActionsResponse();
 
@@ -41,7 +57,7 @@ namespace PortfolioManager.Web.Services
             {
                 foreach (var corporateAction in holding.Stock.CorporateActions.InDateRange(holding.EffectivePeriod))
                 {
-                    if (! corporateAction.HasBeenApplied(Portfolio.Transactions))
+                    if (! corporateAction.HasBeenApplied(portfolio.Transactions))
                     {
                         response.CorporateActions.Add(new CorporateActionsResponse.CorporateActionItem()
                         {
@@ -57,8 +73,18 @@ namespace PortfolioManager.Web.Services
             return response;
         }
 
-        public IEnumerable<RestApi.Transactions.Transaction> GetTransactionsForCorporateAction(Domain.Portfolios.Holding holding, Domain.CorporateActions.CorporateAction corporateAction)
+        public IEnumerable<RestApi.Transactions.Transaction> GetTransactionsForCorporateAction(Guid portfolioId, Guid stockId, Guid actionId)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var holding = portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                throw new HoldingNotFoundException(stockId);
+
+            var corporateAction = holding.Stock.CorporateActions[actionId];
+            if (corporateAction == null)
+                throw new CorporateActionNotFoundException(actionId);
+
             var transactions = corporateAction.GetTransactionList(holding);
 
             return _Mapper.Map<IEnumerable<RestApi.Transactions.Transaction>>(transactions);

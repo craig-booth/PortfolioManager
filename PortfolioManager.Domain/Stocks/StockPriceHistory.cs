@@ -8,13 +8,25 @@ using PortfolioManager.Domain.Stocks.Events;
 namespace PortfolioManager.Domain.Stocks
 {
 
+    public struct StockPrice
+    {
+        public DateTime Date;
+        public decimal Price;
+
+        public StockPrice(DateTime date, decimal price)
+        {
+            Date = date;
+            Price = price;
+        }
+    }
+
     public interface IStockPriceHistory
     {
         Guid Id { get; }
         DateTime EarliestDate { get; }
         DateTime LatestDate { get; }
         decimal GetPrice(DateTime date);
-        IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange);
+        IEnumerable<StockPrice> GetPrices(DateRange dateRange);
     }
 
     public class StockPriceHistory : TrackedEntity, IStockPriceHistory
@@ -62,7 +74,7 @@ namespace PortfolioManager.Domain.Stocks
 
         }
 
-        public IEnumerable<KeyValuePair<DateTime, decimal>> GetPrices(DateRange dateRange)
+        public IEnumerable<StockPrice> GetPrices(DateRange dateRange)
         {
             var first = IndexOf(dateRange.FromDate);
             if (first == -1)
@@ -76,7 +88,7 @@ namespace PortfolioManager.Domain.Stocks
             else if (last < 0)
                 last = ~last;
 
-            return _Prices.Skip(first).Take(last - first + 1);
+            return _Prices.Skip(first).Take(last - first + 1).Select(x => new StockPrice(x.Key, x.Value));
         }
 
         public void UpdateCurrentPrice(decimal currentPrice)
@@ -92,9 +104,9 @@ namespace PortfolioManager.Domain.Stocks
             PublishEvent(@event);
         }
 
-        public void UpdateClosingPrices(IEnumerable<Tuple<DateTime, decimal>> closingPrices)
+        public void UpdateClosingPrices(IEnumerable<StockPrice> closingPrices)
         {
-            var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Item1, x.Item2)));
+            var @event = new ClosingPricesAddedEvent(Id, Version, closingPrices.Select(x => new ClosingPricesAddedEvent.ClosingPrice(x.Date, x.Price)));
             Apply(@event);
 
             PublishEvent(@event);

@@ -7,24 +7,31 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioSummaryService
+    public interface IPortfolioSummaryService
     {
-        public Portfolio Portfolio { get; }
+        PortfolioSummaryResponse GetSummary(Guid portfolioId, DateTime date);
+    }
 
-        public PortfolioSummaryService(Portfolio portfolio)
+    public class PortfolioSummaryService : IPortfolioSummaryService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioSummaryService(IPortfolioCache portfolioCache)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
         }
 
-        public PortfolioSummaryResponse GetSummary(DateTime date)
+        public PortfolioSummaryResponse GetSummary(Guid portfolioId, DateTime date)
         {
-            var response = new PortfolioSummaryResponse();
+            var portfolio = _PortfolioCache.Get(portfolioId);
 
-            response.Holdings.AddRange(Portfolio.Holdings.All(date).Select(x => x.Convert(date)));
-            response.CashBalance = Portfolio.CashAccount.Balance(date);
+            var response = new PortfolioSummaryResponse();
+            response.Holdings.AddRange(portfolio.Holdings.All(date).Select(x => x.Convert(date)));
+            response.CashBalance = portfolio.CashAccount.Balance(date);
             response.PortfolioValue = response.Holdings.Sum(x => x.Value) + response.CashBalance;
             response.PortfolioCost = response.Holdings.Sum(x => x.Cost) + response.CashBalance;
 
@@ -32,22 +39,22 @@ namespace PortfolioManager.Web.Services
             response.Return3Year = null;
             response.Return5Year = null;
             response.ReturnAll = null;
-            if (Portfolio.StartDate != DateUtils.NoStartDate)
+            if (portfolio.StartDate != DateUtils.NoStartDate)
             {
                 var fromDate = date.AddYears(-1).AddDays(1);
-                if (fromDate >= Portfolio.StartDate)
-                    response.Return1Year = Portfolio.CalculateIRR(new DateRange(fromDate, date));
+                if (fromDate >= portfolio.StartDate)
+                    response.Return1Year = portfolio.CalculateIRR(new DateRange(fromDate, date));
 
                 fromDate = date.AddYears(-3).AddDays(1);
-                if (fromDate >= Portfolio.StartDate)
-                    response.Return3Year = Portfolio.CalculateIRR(new DateRange(fromDate, date));
+                if (fromDate >= portfolio.StartDate)
+                    response.Return3Year = portfolio.CalculateIRR(new DateRange(fromDate, date));
 
                 fromDate = date.AddYears(-5).AddDays(1);
-                if (fromDate >= Portfolio.StartDate)
-                    response.Return5Year = Portfolio.CalculateIRR(new DateRange(fromDate, date));
+                if (fromDate >= portfolio.StartDate)
+                    response.Return5Year = portfolio.CalculateIRR(new DateRange(fromDate, date));
 
-                if (date >= Portfolio.StartDate)
-                    response.ReturnAll = Portfolio.CalculateIRR(new DateRange(Portfolio.StartDate, date));
+                if (date >= portfolio.StartDate)
+                    response.ReturnAll = portfolio.CalculateIRR(new DateRange(portfolio.StartDate, date));
             }
 
             return response;

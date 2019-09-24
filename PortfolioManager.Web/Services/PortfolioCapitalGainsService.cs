@@ -8,35 +8,60 @@ using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Utils;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioCapitalGainsService
+    public interface IPortfolioCapitalGainsService
     {
-        public Portfolio Portfolio { get; }
+        SimpleUnrealisedGainsResponse GetCapitalGains(Guid portfolioId, DateTime date);
+        SimpleUnrealisedGainsResponse GetCapitalGains(Guid portfolioId, Guid stockId, DateTime date);
+        DetailedUnrealisedGainsResponse GetDetailedCapitalGains(Guid portfolioId, DateTime date);
+        DetailedUnrealisedGainsResponse GetDetailedCapitalGains(Guid portfolioId, Guid stockId, DateTime date);
+    }
 
-        public PortfolioCapitalGainsService(Portfolio portfolio)
+    public class PortfolioCapitalGainsService: IPortfolioCapitalGainsService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioCapitalGainsService(IPortfolioCache portfolioCache)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
         }
 
-        public SimpleUnrealisedGainsResponse GetCapitalGains(DateTime date)
+        public SimpleUnrealisedGainsResponse GetCapitalGains(Guid portfolioId, DateTime date)
         {
-            return GetCapitalGains(Portfolio.Holdings.All(date), date);
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            return GetCapitalGains(portfolio.Holdings.All(date), date);
         }
 
-        public SimpleUnrealisedGainsResponse GetCapitalGains(Domain.Portfolios.Holding holding, DateTime date)
+        public SimpleUnrealisedGainsResponse GetCapitalGains(Guid portfolioId, Guid stockId, DateTime date)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var holding = portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                throw new HoldingNotFoundException(stockId);
+
             return GetCapitalGains(new[] { holding} , date); 
         }
 
-        public DetailedUnrealisedGainsResponse GetDetailedCapitalGains(DateTime date)
+        public DetailedUnrealisedGainsResponse GetDetailedCapitalGains(Guid portfolioId, DateTime date)
         {
-            return GetDetailedCapitalGains(Portfolio.Holdings.All(date), date);
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            return GetDetailedCapitalGains(portfolio.Holdings.All(date), date);
         }
 
-        public DetailedUnrealisedGainsResponse GetDetailedCapitalGains(Domain.Portfolios.Holding holding, DateTime date)
+        public DetailedUnrealisedGainsResponse GetDetailedCapitalGains(Guid portfolioId, Guid stockId, DateTime date)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var holding = portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                throw new HoldingNotFoundException(stockId);
+
             return GetDetailedCapitalGains(new[] { holding }, date);
         }
 

@@ -38,6 +38,7 @@ using PortfolioManager.Web.DataImporters;
 
 namespace PortfolioManager.Web
 {
+
     public static class PortfolioManagerServiceCollectionExtensions
     {
 
@@ -64,18 +65,29 @@ namespace PortfolioManager.Web
 
             services.AddSingleton<IEventStream<StockPriceHistory>>(x => x.GetRequiredService<IEventStore>().GetEventStream<StockPriceHistory>("StockPriceHistory"));
 
-            services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));
-            services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IRepository<TradingCalander>>().Get(TradingCalanderIds.ASX));
+            services.AddSingleton<IEventStream<TradingCalander>>(x => x.GetRequiredService<IEventStore>().GetEventStream<TradingCalander>("TradingCalander"));         
 
             services.AddSingleton<IEventStream<Portfolio>>(x => x.GetRequiredService<IEventStore>().GetEventStream<Portfolio>("Portfolios"));
             services.AddSingleton<IEntityFactory<Portfolio>, PortfolioEntityFactory>();
+            services.AddSingleton<IPortfolioCache, PortfolioCache>();
 
 
             // Add services
+            services.AddSingleton<ICashAccountService, CashAccountService>();
+            services.AddSingleton<IPortfolioCapitalGainsService, PortfolioCapitalGainsService>();
+            services.AddSingleton<IPortfolioCgtLiabilityService, PortfolioCgtLiabilityService>();
+            services.AddSingleton<IPortfolioCorporateActionsService, PortfolioCorporateActionsService>();
+            services.AddSingleton<IPortfolioIncomeService, PortfolioIncomeService>();
+            services.AddSingleton<IPortfolioPerformanceService, PortfolioPerformanceService>();
+            services.AddSingleton<IPortfolioPropertiesService, PortfolioPropertiesService>();
+            services.AddSingleton<IPortfolioService, PortfolioService>();
+            services.AddSingleton<IPortfolioTransactionService, PortfolioTransactionService>();
+            services.AddSingleton<IPortfolioValueService, PortfolioValueService>();
             services.AddSingleton<IStockService, StockService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<ICorporateActionService, CorporateActionService>();
+            services.AddSingleton<ITradingCalanderService, TradingCalanderService>();
 
-                    
             services.AddSingleton<MapperStockResolver>();
             services.AddSingleton<Profile, RestApiToDomainMappingProfile>();
             services.AddSingleton<Profile, DomainToRestApiMappingProfile>();
@@ -84,6 +96,9 @@ namespace PortfolioManager.Web
             services.AddSingleton<IAuthorizationHandler, PortfolioOwnerAuthorizationHandler>();
             services.AddSingleton<TransactionJsonConverter, TransactionJsonConverter>();
             services.AddSingleton<IConfigureOptions<MvcJsonOptions>, JsonMvcConfiguration>();
+
+            // Add default trading calander for ASX 
+            services.AddSingleton<ITradingCalander>(x => x.GetRequiredService<IEntityCache<TradingCalander>>().Get(TradingCalanderIds.ASX));
 
             return services;
         }
@@ -136,7 +151,11 @@ namespace PortfolioManager.Web
         }
 
         public static IServiceProvider InitializeStockCache(this IServiceProvider serviceProvider)
-        {          
+        {
+            var tradingCalanderRepository = serviceProvider.GetRequiredService<IRepository<TradingCalander>>();
+            var tradingCalanderCache = serviceProvider.GetRequiredService<IEntityCache<TradingCalander>>();
+            tradingCalanderCache.PopulateCache(tradingCalanderRepository);
+
             var stockRepository = serviceProvider.GetRequiredService<IRepository<Stock>>();
             var stockCache = serviceProvider.GetRequiredService<IEntityCache<Stock>>();
             stockCache.PopulateCache(stockRepository);

@@ -8,23 +8,32 @@ using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Transactions;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioIncomeService
-    {
-        public Portfolio Portfolio { get; }
 
-        public PortfolioIncomeService(Portfolio portfolio)
+    public interface IPortfolioIncomeService
+    {
+        IncomeResponse GetIncome(Guid portfolioId, DateRange dateRange);
+    }
+
+    public class PortfolioIncomeService : IPortfolioIncomeService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioIncomeService(IPortfolioCache portfolioCache)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
         }
 
-        public IncomeResponse GetIncome(DateRange dateRange)
+        public IncomeResponse GetIncome(Guid portfolioId, DateRange dateRange)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var response = new IncomeResponse();
 
-            var incomes = Portfolio.Transactions.InDateRange(dateRange).OfType<IncomeReceived>()
+            var incomes = portfolio.Transactions.InDateRange(dateRange).OfType<IncomeReceived>()
                 .GroupBy(x => x.Stock,
                         x => x,
                         (key, result) => new IncomeResponse.IncomeItem()

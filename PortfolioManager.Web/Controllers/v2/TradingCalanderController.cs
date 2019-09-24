@@ -1,12 +1,11 @@
-﻿using PortfolioManager.Domain.Stocks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-using PortfolioManager.Domain.TradingCalanders;
+using PortfolioManager.Web.Services;
 using PortfolioManager.RestApi.TradingCalanders;
 
 
@@ -17,11 +16,11 @@ namespace PortfolioManager.Web.Controllers.v2
     [ApiController]
     public class TradingCalanderController : ControllerBase
     {
-        private ITradingCalander _TradingCalander;
+        private ITradingCalanderService _Service;
 
-        public TradingCalanderController(ITradingCalander tradingCalander)
+        public TradingCalanderController(ITradingCalanderService tradingCalanderService)
         {
-            _TradingCalander = tradingCalander;
+            _Service = tradingCalanderService;
         }
 
         // GET: api/tradingcalander/{year}
@@ -29,9 +28,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [Route("{year:int}")]
         public ActionResult<TradingCalanderResponse> Get([FromRoute]int year)
         {
-            var nonTradingDays = _TradingCalander.NonTradingDays(year);
-
-            return Ok(nonTradingDays);
+            return _Service.Get(year);
         }
 
         // POST: api/tradingcalander/{year}
@@ -45,7 +42,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (year != command.Year)
                 return BadRequest(String.Format("Year in command doesn't match year on URL"));
 
-            _TradingCalander.SetNonTradingDays(year, command.NonTradingDays.Select(x => new Domain.TradingCalanders.NonTradingDay(x.Date, x.Desciption)));
+            _Service.Update(year, command.NonTradingDays.Select(x => new Domain.TradingCalanders.NonTradingDay(x.Date, x.Desciption)));
 
             return Ok();
         } 

@@ -6,32 +6,38 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using PortfolioManager.Common;
-using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
 
-
-    public class CashAccountService
+    public interface ICashAccountService
     {
-        public ICashAccount CashAccount { get; }
-        private IMapper _Mapper;
+        CashAccountTransactionsResponse GetCashAccountTransactions(Guid portfolioId, DateRange dateRange);
+    }
 
-        public CashAccountService(ICashAccount cashAccount, IMapper mapper)
+    public class CashAccountService : ICashAccountService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+        private readonly IMapper _Mapper;
+
+        public CashAccountService(IPortfolioCache portfolioCache, IMapper mapper)
         {
-            CashAccount = cashAccount;
-            _Mapper = mapper;
+            _PortfolioCache = portfolioCache;
+            _Mapper = mapper;          
         }
 
-        public CashAccountTransactionsResponse GetCashAccountTransactions(DateRange dateRange)
+        public CashAccountTransactionsResponse GetCashAccountTransactions(Guid portfolioId, DateRange dateRange)
         {
-        var response = new CashAccountTransactionsResponse();
+            var portfolio = _PortfolioCache.Get(portfolioId);
 
-            var transactions = CashAccount.Transactions.InDateRange(dateRange);
+            var response = new CashAccountTransactionsResponse();
 
-            response.OpeningBalance = CashAccount.Balance(dateRange.FromDate);
-            response.ClosingBalance = CashAccount.Balance(dateRange.ToDate);
+            var transactions = portfolio.CashAccount.Transactions.InDateRange(dateRange);
+
+            response.OpeningBalance = portfolio.CashAccount.Balance(dateRange.FromDate);
+            response.ClosingBalance = portfolio.CashAccount.Balance(dateRange.ToDate);
 
             response.Transactions.AddRange(_Mapper.Map<IEnumerable<CashAccountTransactionsResponse.CashTransactionItem>>(transactions));
 

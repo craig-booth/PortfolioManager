@@ -9,9 +9,7 @@ using Microsoft.AspNetCore.Http;
 using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
-using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Services;
-using PortfolioManager.Web.Utilities;
 
 
 namespace PortfolioManager.Web.Controllers.v2
@@ -21,44 +19,34 @@ namespace PortfolioManager.Web.Controllers.v2
     [ApiController]
     public class StockController : ControllerBase
     {
-        private IStockQuery _StockQuery;
         private IStockService _StockService;
 
-        public StockController(IStockQuery stockQuery, IStockService stockService)
+        public StockController(IStockService stockService)
         {
-            _StockQuery = stockQuery;
             _StockService = stockService;
         }
 
         // GET: api/stocks
         [HttpGet]
         public ActionResult<List<StockResponse>> Get([FromQuery]string query, [FromQuery]DateTime? date, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
-        {
-            IEnumerable<Stock> stocks;
-            DateTime resultDate;
-        
+        {       
             if (date != null)
             {
+                var requestedDate = (DateTime)date;
                 if (query == null)
-                    stocks = _StockQuery.All((DateTime)date);
+                    return _StockService.Get("", requestedDate).ToList();
                 else
-                    stocks = _StockQuery.Find((DateTime)date, x => MatchesQuery(x, query));
-
-                resultDate = (DateTime)date;
+                    return _StockService.Get(query, requestedDate).ToList();
             }
             else
             {
                 var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateUtils.NoEndDate);
 
                 if (query == null)
-                    stocks = _StockQuery.All(dateRange);
+                    return _StockService.Get("", dateRange).ToList();
                 else
-                    stocks = stocks = _StockQuery.Find(dateRange, x => MatchesQuery(x, query));
-
-                resultDate = dateRange.ToDate;
+                    return _StockService.Get(query, dateRange).ToList();
             }
-
-            return Ok(stocks.Select(x => x.ToResponse(resultDate)).ToList());
         }
 
         // GET: api/stocks/{id}
@@ -68,14 +56,10 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<StockResponse> Get([FromRoute]Guid id, [FromQuery]DateTime? date)
         {
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
             if (date != null)
-                return Ok(stock.ToResponse((DateTime)date));
+                return _StockService.Get(id, (DateTime)date);
             else
-                return Ok(stock.ToResponse(DateTime.Today));
+                return _StockService.Get(id, DateTime.Today);
         }
 
         // GET : /api/stocks/{id}/history
@@ -85,11 +69,7 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<StockHistoryResponse> GetHistory([FromRoute]Guid id)
         {
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            return Ok(stock.ToHistoryResponse());
+            return _StockService.GetHistory(id);
         }
 
         // GET : /api/stocks/{id}/closingprices
@@ -99,13 +79,9 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<StockPriceResponse> GetClosingPrices([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
             var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateTime.Today.AddYears(-1), (toDate != null) ? (DateTime)toDate : DateTime.Today);
 
-            return Ok(stock.ToPriceResponse(dateRange));
+            return _StockService.GetClosingPrices(id, dateRange);
         }
 
         // POST : /api/stocks
@@ -115,23 +91,16 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public ActionResult CreateStock([FromBody] CreateStockCommand command)
         {
-            try
+            if (command.ChildSecurities.Count == 0)
             {
-                if (command.ChildSecurities.Count == 0)
-                {
-                    _StockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
-                }
-                else
-                {
-                    if (command.Trust)
-                        return BadRequest("A Stapled security cannot be a trust");
-
-                    _StockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
-                } 
+                _StockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
             }
-            catch (Exception e)
+            else
             {
-                return BadRequest(e.Message);
+                if (command.Trust)
+                    return BadRequest("A Stapled security cannot be a trust");
+
+                _StockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
             }
 
             return Ok();
@@ -150,18 +119,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            try
-            {
-                _StockService.ChangeStock(id, command.ChangeDate, command.AsxCode, command.Name, command.Category);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _StockService.ChangeStock(id, command.ChangeDate, command.AsxCode, command.Name, command.Category);
 
             return Ok();
         }
@@ -179,18 +137,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            try
-            {
-                _StockService.DelistStock(id, command.DelistingDate);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _StockService.DelistStock(id, command.DelistingDate);
 
             return Ok();
         }
@@ -208,27 +155,9 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
+            var closingPrices = command.Prices.Select(x => new StockPrice(x.Date, x.Price));
 
-            var closingPrices = command.Prices.Select(x => new Tuple<DateTime, decimal>(x.Date, x.Price));
-
-            // Check that the date is within the effective period
-            foreach (var closingPrice in closingPrices)
-            {
-                if (stock.IsEffectiveAt(closingPrice.Item1))
-                    throw new Exception(String.Format("Stock not active on {0}", closingPrice.Item1));
-            }
-
-            try
-            {
-                _StockService.UpdateClosingPrices(id, closingPrices);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _StockService.UpdateClosingPrices(id, closingPrices);
 
             return Ok();
         }
@@ -246,18 +175,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            try
-            {
-                _StockService.ChangeDividendRules(id, command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _StockService.ChangeDividendRules(id, command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
 
             return Ok();
         }
@@ -268,24 +186,10 @@ namespace PortfolioManager.Web.Controllers.v2
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult GetRelativeNTA([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
+        public RelativeNTAResponse GetRelativeNTA([FromRoute]Guid id, [FromQuery]DateTime? fromDate, [FromQuery]DateTime? toDate)
         {
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
-
-            if (stock is StapledSecurity stapledSecurity)
-            {
-                var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
-
-                return Ok(stapledSecurity.ToRelativeNTAResponse(dateRange));
-            }
-            else
-            {
-                return BadRequest("Relative NTAs only apply stapled securities");
-            }
-
-
+            var dateRange = new DateRange((fromDate != null) ? (DateTime)fromDate : DateUtils.NoStartDate, (toDate != null) ? (DateTime)toDate : DateTime.Today);
+            return _StockService.GetRelativeNTA(id, dateRange);
         }
 
         // POST : /api/stocks/{id}/relativenta
@@ -301,50 +205,13 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            var stock = _StockQuery.Get(id);
-            if (stock == null)
-                return NotFound();
+            var ntas = command.RelativeNTAs.Select(x => new Tuple<string, decimal>(x.ChildSecurity, x.Percentage));
 
-            if (stock is StapledSecurity stapledSecurity)
-            {
-                if (command.RelativeNTAs.Count != stapledSecurity.ChildSecurities.Count)
-                {
-                    return BadRequest(String.Format("The number of relative ntas provided ({0}) did not match the number of child securities ({1})", command.RelativeNTAs.Count, stapledSecurity.ChildSecurities.Count));
-                }
+            _StockService.ChangeRelativeNTAs(id, command.ChangeDate, ntas);
 
-                var ntas = new decimal[stapledSecurity.ChildSecurities.Count];
-                for (var i = 0; i < stapledSecurity.ChildSecurities.Count; i++)
-                {
-                    var nta = command.RelativeNTAs.Find(x => x.ChildSecurity == stapledSecurity.ChildSecurities[i].ASXCode);
-                    if (nta == null)
-                        return BadRequest(String.Format("Relative nta not provided for {0}", stapledSecurity.ChildSecurities[i].ASXCode));
-
-                    ntas[i] = nta.Percentage;
-                }
-
-                try
-                {
-                    _StockService.ChangeRelativeNTAs(id, command.ChangeDate, ntas);
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e.Message);
-                }
-
-                return Ok();
-            }
-            else
-            {
-                return BadRequest("Relative NTAs only apply stapled securities");
-            }
-
- 
+            return Ok();
         }
 
-        private bool MatchesQuery(StockProperties stock, string query)
-        {
-            return ((stock.ASXCode.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0) || (stock.Name.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0));
-        } 
     }
 
 }

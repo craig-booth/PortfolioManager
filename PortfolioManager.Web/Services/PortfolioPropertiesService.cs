@@ -6,28 +6,36 @@ using System.Threading.Tasks;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioPropertiesService
-    {
-        public Portfolio Portfolio { get; }
 
-        public PortfolioPropertiesService(Portfolio portfolio)
+    public interface IPortfolioPropertiesService
+    { 
+        PortfolioPropertiesResponse GetProperties(Guid portfolioId);
+    }
+
+    public class PortfolioPropertiesService : IPortfolioPropertiesService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+
+        public PortfolioPropertiesService(IPortfolioCache portfolioCache)
         {
-            Portfolio = portfolio;
+            _PortfolioCache = portfolioCache;
         }
 
-        public PortfolioPropertiesResponse GetProperties()
+        public PortfolioPropertiesResponse GetProperties(Guid portfolioId)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
             var response = new PortfolioPropertiesResponse();
+            response.Id = portfolio.Id;
+            response.Name = portfolio.Name;
+            response.StartDate = portfolio.StartDate;
+            response.EndDate = portfolio.EndDate;
 
-            response.Id = Portfolio.Id;
-            response.Name = Portfolio.Name;
-            response.StartDate = Portfolio.StartDate;
-            response.EndDate = Portfolio.EndDate;
-
-            foreach (var holding in Portfolio.Holdings.All())
+            foreach (var holding in portfolio.Holdings.All())
             {
                 var holdingProperty = new RestApi.Portfolios.HoldingProperties()
                 {

@@ -8,18 +8,19 @@ using Microsoft.Extensions.Logging;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.DataServices;
+using PortfolioManager.Web.Services;
 
 namespace PortfolioManager.Web.DataImporters
 {
     public class TradingDayImporter
     {
-        private readonly ITradingCalander _TradingCalander;
+        private readonly ITradingCalanderService _TradingCalanderService;
         private readonly ITradingDayService _DataService;
         private readonly ILogger _Logger;
 
-        public TradingDayImporter(IRepository<TradingCalander> tradingCalanderRepository, ITradingDayService dataService, ILogger<TradingDayImporter> logger)
+        public TradingDayImporter(IRepository<TradingCalander> tradingCalanderRepository, ITradingCalanderService tradingCalanderService, ITradingDayService dataService, ILogger<TradingDayImporter> logger)
         {
-            _TradingCalander = tradingCalanderRepository.Get(TradingCalanderIds.ASX);
+            _TradingCalanderService = tradingCalanderService;
             _DataService = dataService;
             _Logger = logger;
         }
@@ -33,7 +34,7 @@ namespace PortfolioManager.Web.DataImporters
             if (nonTradingDays.Any())
             {
                 _Logger?.LogInformation("Adding {0} non-trading days for {1}", nonTradingDays.Count(), year);
-                _TradingCalander.SetNonTradingDays(year, nonTradingDays);
+                _TradingCalanderService.Update(year, nonTradingDays);
             }           
         }
     }

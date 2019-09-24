@@ -7,28 +7,43 @@ using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
-
+using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
 {
-    public class PortfolioValueService
+
+    public interface IPortfolioValueService
     {
-        public Portfolio Portfolio { get; }
-        public ITradingCalander TradingCalander { get; }
+        PortfolioValueResponse GetValue(Guid portfolioId, DateRange dateRange, ValueFrequency frequency);
+        PortfolioValueResponse GetValue(Guid portfolioId, Guid stockId, DateRange dateRange, ValueFrequency frequency);
+    }
 
-        public PortfolioValueService(Portfolio portfolio, ITradingCalander tradingCalander)
+    public class PortfolioValueService : IPortfolioValueService
+    {
+        private readonly IPortfolioCache _PortfolioCache;
+        private readonly ITradingCalander _TradingCalander;
+
+        public PortfolioValueService(IPortfolioCache portfolioCache, ITradingCalander tradingCalander)
         {
-            Portfolio = portfolio;
-            TradingCalander = tradingCalander;
+            _PortfolioCache = portfolioCache;
+            _TradingCalander = tradingCalander;
         }
 
-        public PortfolioValueResponse GetValue(DateRange dateRange, ValueFrequency frequency)
+        public PortfolioValueResponse GetValue(Guid portfolioId, DateRange dateRange, ValueFrequency frequency)
         {
-            return GetValue(Portfolio.Holdings.All(dateRange), Portfolio.CashAccount, dateRange, frequency);
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            return GetValue(portfolio.Holdings.All(dateRange), portfolio.CashAccount, dateRange, frequency);
         }
 
-        public PortfolioValueResponse GetValue(Domain.Portfolios.Holding holding, DateRange dateRange, ValueFrequency frequency)
+        public PortfolioValueResponse GetValue(Guid portfolioId, Guid stockId, DateRange dateRange, ValueFrequency frequency)
         {
+            var portfolio = _PortfolioCache.Get(portfolioId);
+
+            var holding = portfolio.Holdings.Get(stockId);
+            if (holding == null)
+                throw new HoldingNotFoundException(stockId);
+
             return GetValue(new[] { holding }, null, dateRange, frequency);
         }
 
@@ -38,7 +53,7 @@ namespace PortfolioManager.Web.Services
 
             IEnumerable<DateTime> dates = null;
             if (frequency == ValueFrequency.Daily)
-                dates = TradingCalander.TradingDays(dateRange);
+                dates = _TradingCalander.TradingDays(dateRange);
             else if (frequency == ValueFrequency.Weekly)
                 dates = DateUtils.WeekEndingDays(dateRange.FromDate, dateRange.ToDate);
             else if (frequency == ValueFrequency.Monthly)
@@ -46,7 +61,7 @@ namespace PortfolioManager.Web.Services
 
             IEnumerable<CashAccount.EffectiveBalance> closingBalances;
             if (cashAccount != null)
-                closingBalances = Portfolio.CashAccount.EffectiveBalances(dateRange);
+                closingBalances = cashAccount.EffectiveBalances(dateRange);
             else
                 closingBalances = new[] { new CashAccount.EffectiveBalance(dateRange.FromDate, dateRange.ToDate, 0.00m) };
             var closingBalanceEnumerator = closingBalances.GetEnumerator();

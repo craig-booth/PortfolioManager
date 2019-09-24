@@ -18,8 +18,6 @@ namespace PortfolioManager.Domain.TradingCalanders
         IEnumerable<NonTradingDay> NonTradingDays(int year);
         bool IsTradingDay(DateTime date);
         IEnumerable<DateTime> TradingDays(DateRange range);
-
-        void SetNonTradingDays(int year, IEnumerable<NonTradingDay> nonTradingDays);
     }
 
     public class TradingCalander : TrackedEntity, ITradingCalander
