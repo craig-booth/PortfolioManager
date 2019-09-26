@@ -25,12 +25,12 @@
                 <ResourceDictionary Source="Views/CashAccountView.xaml"/>
                 <ResourceDictionary Source="Views/TransactionsView.xaml"/>
                 <ResourceDictionary Source="Views/CorporateActionsView.xaml"/>
-                <ResourceDictionary Source="Views/SettingsView.xaml"/>
                 <ResourceDictionary Source="Views/AssetAllocationView.xaml"/>
                 <ResourceDictionary Source="Views/PerformanceView.xaml"/>
                 <ResourceDictionary Source="Views/PortfolioValueView.xaml"/>
                 <ResourceDictionary Source="Views/PortfolioSettingsView.xaml"/>
                 <ResourceDictionary Source="Views/LogonView.xaml"/>
+                <ResourceDictionary Source="Views/AddDividendView.xaml"/>
 
                 <!-- Transactions -->
                 <ResourceDictionary Source="Views/Transactions/AquisitionView.xaml"/>

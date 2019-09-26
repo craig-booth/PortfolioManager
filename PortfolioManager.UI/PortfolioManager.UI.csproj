@@ -99,6 +99,7 @@
     <Compile Include="Controls\SelectionChangedCommand.cs" />
     <Compile Include="Utilities\PopupWindow.cs" />
     <Compile Include="Utilities\RelayUICommand.cs" />
+    <Compile Include="ViewModels\AddDividendViewModel.cs" />
     <Compile Include="ViewModels\LogonViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSettingsViewModel.cs" />
     <Compile Include="ViewModels\StockViewItem.cs" />
@@ -116,7 +117,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Style\ValueConverters.cs" />
-    <Compile Include="Utilities\ApplicationSettings.cs" />
     <Compile Include="Utilities\DescribedObject.cs" />
     <Compile Include="Utilities\Module.cs" />
     <Compile Include="Utilities\NotifyClass.cs" />
@@ -134,7 +134,6 @@
     <Compile Include="ViewModels\PerformanceViewModel.cs" />
     <Compile Include="ViewModels\PortfolioSummaryViewModel.cs" />
     <Compile Include="ViewModels\PortfolioValueViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TaxableIncomeViewModel.cs" />
     <Compile Include="ViewModels\TransactionReportViewModel.cs" />
     <Compile Include="ViewModels\TransactionsViewModel.cs" />
@@ -186,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AddDividendView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AssetAllocationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -227,10 +230,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PortfolioValueView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

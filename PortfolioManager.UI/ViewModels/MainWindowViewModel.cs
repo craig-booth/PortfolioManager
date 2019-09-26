@@ -76,19 +76,6 @@ namespace PortfolioManager.UI.ViewModels
         public ObservableCollection<DescribedObject<int>> FinancialYears { get; set; }
         public ObservableCollection<DescribedObject<StockViewItem>> OwnedStocks { get; set; }
 
-        private ApplicationSettings _Settings;
-        public ApplicationSettings Settings
-        {
-            get
-            {
-                return _Settings;
-            }
-            private set
-            {
-                _Settings = value;
-            }
-        }
-
         public EditTransactionViewModel EditTransactionWindow { get; private set; }
         public CreateMulitpleTransactionsViewModel CreateTransactionsWindow { get; private set; }
         public LogonViewModel LogonWindow { get; private set; }
@@ -122,9 +109,6 @@ namespace PortfolioManager.UI.ViewModels
             
             LogonWindow = new LogonViewModel(_RestClient);
             LogonWindow.LoggedOn += HandleLoggedOn;
-
-            _Settings = new ApplicationSettings();
-            _Settings.DatabaseChanged += LoadPortfolio;
 
             _Modules.Clear();
             var homeModule = new Module("Home", "HomeIcon");
@@ -170,21 +154,16 @@ namespace PortfolioManager.UI.ViewModels
                 PageParameterAreaVisible = Visibility.Hidden
             };
             _Modules.Add(settingsModule);
+            settingsModule.Pages.Add(new AddDividendViewModel(_RestClient));
             settingsModule.Pages.Add(new PortfolioSettingsViewModel("Portfolio", ViewParameter));
-            settingsModule.Pages.Add(new SettingsViewModel("Settings", _Settings));     
+            
         }
 
-        private async void LoadPortfolio(object sender, EventArgs e)
+        private async Task LoadPortfolio()
         {
-            var stockDatabasePath = _Settings.StockDatabase;
-            if (!Path.IsPathRooted(stockDatabasePath))
-                stockDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, stockDatabasePath);
-
-            var portfolioDatabasePath = _Settings.PortfolioDatabase;
-            if (!Path.IsPathRooted(portfolioDatabasePath))
-                portfolioDatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, portfolioDatabasePath);
-
             await UpdatePortfolioProperties();
+
+            SelectedModule = _Modules.First();
         }
    
         private async Task UpdatePortfolioProperties()
@@ -276,11 +255,9 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        private void HandleLoggedOn(object sender, EventArgs e)
+        private async void HandleLoggedOn(object sender, EventArgs e)
         {
-            LoadPortfolio(_Settings, EventArgs.Empty);
-
-            SelectedModule = _Modules.First();     
+            await LoadPortfolio();
         }
 
     }
