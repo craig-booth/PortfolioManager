@@ -27,7 +27,7 @@
             <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Stock.FormattedCompanyName}" Style="{StaticResource FormLabel}" Visibility="{Binding IsStockEditable,Converter={StaticResource HideIfTrue}}"/>
 
             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource FormLabel}" Text="Percentage" />
-            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Percentage, StringFormat={}{0:p2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource FormTextBox}" Text="{Binding Percentage, StringFormat={}{0:F2}%, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />
 
             <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource FormLabel}" Text="Comment"/>
             <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Style="{StaticResource FormTextBox}" Text="{Binding Comment}" Height="96"/>

@@ -148,7 +148,7 @@ namespace PortfolioManager.UI.ViewModels
                 Description = Description,
                 PaymentDate = PaymentDate,
                 DividendAmount = Amount,
-                PercentFranked = PercentFranked,
+                PercentFranked = PercentFranked / 100,
                 DRPPrice = DRPPrice
             };
 
@@ -220,7 +220,7 @@ namespace PortfolioManager.UI.ViewModels
             RecordDate = DateTime.Today;
             Description = "";
             Amount = 0.00m;
-            PercentFranked = 0.00m;
+            PercentFranked = 0.0m;
             DRPPrice = 0.00m;
 
             OnPropertyChanged("");

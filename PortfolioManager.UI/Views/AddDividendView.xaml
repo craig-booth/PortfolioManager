@@ -37,7 +37,7 @@
             <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource FormTextBox}" Text="{Binding Amount, StringFormat={}{0:c5}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right" />
 
             <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource FormLabel}" Text="Percent Franked" />
-            <TextBox Grid.Column="1" Grid.Row="4" Style="{StaticResource FormTextBox}" Text="{Binding PercentFranked, StringFormat={}{0:p2}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Style="{StaticResource FormTextBox}" Text="{Binding PercentFranked, StringFormat={}{0:F2}%, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>
 
             <TextBlock Grid.Column="0" Grid.Row="5" Style="{StaticResource FormLabel}" Text="DRP Price" />
             <TextBox Grid.Column="1" Grid.Row="5" Style="{StaticResource FormTextBox}" Text="{Binding DRPPrice, StringFormat={}{0:c5}, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True, NotifyOnValidationError=true}" TextAlignment="Right"/>

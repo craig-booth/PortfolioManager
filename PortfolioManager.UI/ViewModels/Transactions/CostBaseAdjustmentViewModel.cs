@@ -36,7 +36,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
             base.CopyTransactionToFields();
 
             if (_Transaction != null)
-                Percentage = ((CostBaseAdjustment)_Transaction).Percentage;
+                Percentage = ((CostBaseAdjustment)_Transaction).Percentage * 100;
             else
                 Percentage = 0.00m;
         }
@@ -50,7 +50,7 @@ namespace PortfolioManager.UI.ViewModels.Transactions
 
             var costBaseAdjustment = (CostBaseAdjustment)_Transaction;
             costBaseAdjustment.TransactionDate = RecordDate;
-            costBaseAdjustment.Percentage = Percentage;
+            costBaseAdjustment.Percentage = Percentage / 100;
         }
     }
 }
