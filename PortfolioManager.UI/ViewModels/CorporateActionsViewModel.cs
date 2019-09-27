@@ -56,13 +56,13 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestClient.Portfolio.GetCorporateActions();
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetCorporateActions();
+            if (response == null)
                 return;
 
             CorporateActions.Clear();
             
-            foreach (var corporateAction in responce.CorporateActions.OrderBy(x => x.ActionDate))
+            foreach (var corporateAction in response.CorporateActions.OrderBy(x => x.ActionDate))
                 CorporateActions.Add(new CorporateActionViewModel(corporateAction));
 
             OnPropertyChanged(""); 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 
 using PortfolioManager.RestApi.Portfolios;
@@ -39,17 +40,16 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestClient.Portfolio.GetCashAccount(_Parameter.DateRange);
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetCashAccount(_Parameter.DateRange);
+            if (response == null)
                 return;
 
-            OpeningBalance = responce.OpeningBalance;
-            ClosingBalance = responce.ClosingBalance;
+            OpeningBalance = response.OpeningBalance;
+            ClosingBalance = response.ClosingBalance;
 
             Transactions.Clear();
-            foreach (var transaction in responce.Transactions)
-                Transactions.Add(new CashAccountItemViewModel(transaction));
-
+            for (var i = response.Transactions.Count - 1; i >= 0; i--)
+                Transactions.Add(new CashAccountItemViewModel(response.Transactions[i]));
 
             OnPropertyChanged("");
         }

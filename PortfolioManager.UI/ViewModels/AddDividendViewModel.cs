@@ -42,33 +42,80 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
-        public DateTime PaymentDate { get; set; }
-
-        private DateTime _RecordDate;
-        public DateTime RecordDate
+        private DateTime _PaymentDate;
+        public DateTime PaymentDate
         {
             get
             {
-                return _RecordDate;
+                return _PaymentDate;
             }
-
             set
             {
-                if (_RecordDate != value)
-                {
-                    _RecordDate = value;
+                _PaymentDate = value;
 
-                    if (_BeingEdited)
-                        PopulateAvailableStocks(_RecordDate);
-                }
+                ClearErrors();
+
+                if (_PaymentDate < RecordDate)
+                    AddError("Payment Date must be after the Record date");
             }
         }
 
+        public DateTime RecordDate { get; set; }
         public string Description { get; set; }
 
-        public decimal Amount { get; set; }
-        public decimal PercentFranked { get; set; }
-        public decimal DRPPrice { get; set; }
+        private decimal _Amount;
+        public decimal Amount
+        {
+            get
+            {
+                return _Amount;
+            }
+            set
+            {
+                _Amount = value;
+
+                ClearErrors();
+
+                if (_Amount <= 0.00m)
+                    AddError("Amount must not be greater than 0");
+            }
+        }
+
+        private decimal _PercentFranked;
+        public decimal PercentFranked
+        {
+            get
+            {
+                return _PercentFranked;
+            }
+            set
+            {
+                _PercentFranked = value;
+
+                ClearErrors();
+
+                if (_PercentFranked < 0.00m)
+                    AddError("Percent Franked must not be less than 0");
+            }
+        }
+
+        private decimal _DRPPrice;
+        public decimal DRPPrice
+        {
+            get
+            {
+                return _DRPPrice;
+            }
+            set
+            {
+                _DRPPrice = value;
+
+                ClearErrors();
+
+                if (_DRPPrice < 0.00m)
+                    AddError("DRP Price must not be less than 0");
+            }
+        }
 
         public ObservableCollection<StockViewItem> AvailableStocks { get; private set; }
 
@@ -106,6 +153,9 @@ namespace PortfolioManager.UI.ViewModels
             };
 
             await _RestClient.CorporateActions.Add(Stock.Id, dividend);
+
+            ClearFields();
+            BeginEdit();
         }
 
         private bool CanSaveTransaction()
@@ -115,6 +165,8 @@ namespace PortfolioManager.UI.ViewModels
 
         public void Activate()
         {
+            ClearFields();
+
             BeginEdit();
         }
 
@@ -127,7 +179,7 @@ namespace PortfolioManager.UI.ViewModels
         {
             _BeingEdited = true;
 
-            PopulateAvailableStocks(RecordDate);
+            PopulateAvailableStocks();
         }
 
         public void EndEdit()
@@ -140,13 +192,13 @@ namespace PortfolioManager.UI.ViewModels
             _BeingEdited = false;
         }
 
-        private async void PopulateAvailableStocks(DateTime date)
+        private async void PopulateAvailableStocks()
         {
             AvailableStocks.Clear();
 
-            var stocks = await _RestClient.Stocks.Get(date);
+            var stocks = await _RestClient.Stocks.Get();
 
-            foreach (var stock in stocks)
+            foreach (var stock in stocks.OrderBy(x => x.ASXCode))
             {
                 var stockItem = new StockViewItem(stock.Id, stock.ASXCode, stock.Name);
                 AvailableStocks.Add(stockItem);
@@ -161,5 +213,17 @@ namespace PortfolioManager.UI.ViewModels
             }
         }
 
+        private void ClearFields()
+        {
+            Stock = null;
+            PaymentDate = DateTime.Today;
+            RecordDate = DateTime.Today;
+            Description = "";
+            Amount = 0.00m;
+            PercentFranked = 0.00m;
+            DRPPrice = 0.00m;
+
+            OnPropertyChanged("");
+        }
     }
 }

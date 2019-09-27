@@ -53,26 +53,26 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var responce = await _Parameter.RestClient.Portfolio.GetCGTLiability(DateUtils.FinancialYear(_Parameter.FinancialYear));
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetCGTLiability(DateUtils.FinancialYear(_Parameter.FinancialYear));
+            if (response == null)
                 return;
 
-            CurrentYearCapitalGainsOther = responce.CurrentYearCapitalGainsDiscounted;
-            CurrentYearCapitalGainsDiscounted = responce.CurrentYearCapitalGainsDiscounted;
-            CurrentYearCapitalGainsTotal = responce.CurrentYearCapitalGainsTotal;
-            CurrentYearCapitalLossesOther = responce.CurrentYearCapitalLossesOther;
-            CurrentYearCapitalLossesDiscounted = responce.CurrentYearCapitalLossesDiscounted;
-            CurrentYearCapitalLossesTotal = responce.CurrentYearCapitalLossesTotal;
-            GrossCapitalGainOther = responce.GrossCapitalGainOther;
-            GrossCapitalGainDiscounted = responce.GrossCapitalGainDiscounted;
-            GrossCapitalGainTotal = responce.GrossCapitalGainTotal;
-            Discount = responce.Discount;
-            NetCapitalGainOther = responce.NetCapitalGainOther;
-            NetCapitalGainDiscounted = responce.NetCapitalGainDiscounted;
-            NetCapitalGainTotal = responce.NetCapitalGainTotal;
+            CurrentYearCapitalGainsOther = response.CurrentYearCapitalGainsDiscounted;
+            CurrentYearCapitalGainsDiscounted = response.CurrentYearCapitalGainsDiscounted;
+            CurrentYearCapitalGainsTotal = response.CurrentYearCapitalGainsTotal;
+            CurrentYearCapitalLossesOther = response.CurrentYearCapitalLossesOther;
+            CurrentYearCapitalLossesDiscounted = response.CurrentYearCapitalLossesDiscounted;
+            CurrentYearCapitalLossesTotal = response.CurrentYearCapitalLossesTotal;
+            GrossCapitalGainOther = response.GrossCapitalGainOther;
+            GrossCapitalGainDiscounted = response.GrossCapitalGainDiscounted;
+            GrossCapitalGainTotal = response.GrossCapitalGainTotal;
+            Discount = response.Discount;
+            NetCapitalGainOther = response.NetCapitalGainOther;
+            NetCapitalGainDiscounted = response.NetCapitalGainDiscounted;
+            NetCapitalGainTotal = response.NetCapitalGainTotal;
 
             CGTEvents.Clear();
-            foreach (var cgtEvent in responce.Events)
+            foreach (var cgtEvent in response.Events)
                 CGTEvents.Add(new CGTEventViewModel(cgtEvent));
 
             OnPropertyChanged("");

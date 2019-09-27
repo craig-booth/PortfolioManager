@@ -64,18 +64,18 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            RestApi.Portfolios.TransactionsResponse responce;
+            RestApi.Portfolios.TransactionsResponse response;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestClient.Portfolio.GetTransactions(_Parameter.DateRange);
+                response = await _Parameter.RestClient.Portfolio.GetTransactions(_Parameter.DateRange);
             else
-                responce = await _Parameter.RestClient.Holdings.GetTransactions(_Parameter.Stock.Id, _Parameter.DateRange);
-            if (responce == null)
+                response = await _Parameter.RestClient.Holdings.GetTransactions(_Parameter.Stock.Id, _Parameter.DateRange);
+            if (response == null)
                 return;
 
             Transactions.Clear();
 
-            foreach (var transaction in responce.Transactions)
-                Transactions.Add(new TransactionViewItem(transaction));
+            for (var i = response.Transactions.Count - 1; i >= 0; i--)
+                Transactions.Add(new TransactionViewItem(response.Transactions[i]));
 
             OnPropertyChanged("");            
         }

@@ -34,7 +34,7 @@ namespace PortfolioManager.DataServices
 
                     var jsonObject = JObject.Parse(text);
 
-                    result.AddRange(ParseResponce(jsonObject).Where(x => x.Date.Between(fromDate, toDate)).OrderBy(x => x.Date));
+                    result.AddRange(ParseResponse(jsonObject).Where(x => x.Date.Between(fromDate, toDate)).OrderBy(x => x.Date));
                 }
             }
             catch
@@ -72,7 +72,7 @@ namespace PortfolioManager.DataServices
 
                 var jsonObject = JObject.Parse(text);
 
-                return ParseResponce(jsonObject).First();
+                return ParseResponse(jsonObject).First();
             }
             catch
             {
@@ -80,14 +80,14 @@ namespace PortfolioManager.DataServices
             }     
         }
 
-        private IEnumerable<StockPrice> ParseResponce(JObject responce)
+        private IEnumerable<StockPrice> ParseResponse(JObject response)
         {
-            var symbol = (JValue)responce.SelectToken("['Meta Data']['2. Symbol']");
+            var symbol = (JValue)response.SelectToken("['Meta Data']['2. Symbol']");
             var asxCode = (string)symbol.Value;
             if (asxCode.EndsWith(".AX"))
                 asxCode = asxCode.Remove(asxCode.Length - 3);
 
-            var dailyPrices = (JObject)responce.SelectToken("['Time Series (Daily)']");
+            var dailyPrices = (JObject)response.SelectToken("['Time Series (Daily)']");
             foreach (var dailyPrice in dailyPrices.Properties())
             {
                 var date = DateTime.ParseExact(dailyPrice.Name, "yyyy-MM-dd", CultureInfo.CurrentCulture);

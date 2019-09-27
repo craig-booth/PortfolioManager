@@ -52,11 +52,11 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestClient.Portfolio.GetSummary(_Parameter.Date);
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetSummary(_Parameter.Date);
+            if (response == null)
                 return;
 
-            Cash[0].Value = (double)responce.CashBalance;
+            Cash[0].Value = (double)response.CashBalance;
 
             IndividualStocks.Clear();
 
@@ -65,27 +65,27 @@ namespace PortfolioManager.UI.ViewModels
             decimal incomeValue = 0m;
 
 
-            value = AddAssetCategory(responce.Holdings, AssetCategory.AustralianStocks);
+            value = AddAssetCategory(response.Holdings, AssetCategory.AustralianStocks);
             AustralianShares[0].Value = (double)value;
             growthValue += value; 
 
-            value = AddAssetCategory(responce.Holdings, AssetCategory.InternationalStocks);
+            value = AddAssetCategory(response.Holdings, AssetCategory.InternationalStocks);
             InternationalShares[0].Value = (double)value;
             growthValue += value;
 
-            value = AddAssetCategory(responce.Holdings, AssetCategory.AustralianProperty);
+            value = AddAssetCategory(response.Holdings, AssetCategory.AustralianProperty);
             AustralianProperty[0].Value = (double)value;
             growthValue += value; 
 
-            value = AddAssetCategory(responce.Holdings, AssetCategory.InternationalProperty);
+            value = AddAssetCategory(response.Holdings, AssetCategory.InternationalProperty);
             InternationalProperty[0].Value = (double)value;
             growthValue += value; 
 
-            value = AddAssetCategory(responce.Holdings, AssetCategory.AustralianFixedInterest);
+            value = AddAssetCategory(response.Holdings, AssetCategory.AustralianFixedInterest);
             AustralianFixedInterest[0].Value = (double)value;
             incomeValue += value; 
 
-            value = AddAssetCategory(responce.Holdings, AssetCategory.InternationlFixedInterest);
+            value = AddAssetCategory(response.Holdings, AssetCategory.InternationlFixedInterest);
             InternationalFixedInterest[0].Value = (double)value;
             incomeValue += value; 
 

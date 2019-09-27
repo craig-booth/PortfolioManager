@@ -31,17 +31,17 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestClient.Portfolio.GetSummary(_Parameter.Date);
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetSummary(_Parameter.Date);
+            if (response == null)
                 return;
 
-            PortfolioValue.InitialValue = responce.PortfolioCost;
-            PortfolioValue.Value = responce.PortfolioValue;
+            PortfolioValue.InitialValue = response.PortfolioCost;
+            PortfolioValue.Value = response.PortfolioValue;
 
-            if (responce.Return1Year != null)
+            if (response.Return1Year != null)
             {
                 Return1Year.NotApplicable = false;
-                Return1Year.Value = (decimal)responce.Return1Year;
+                Return1Year.Value = (decimal)response.Return1Year;
             } 
             else
             {
@@ -49,10 +49,10 @@ namespace PortfolioManager.UI.ViewModels
                 Return1Year.Value = 0.00m;
             }
 
-            if (responce.Return3Year != null)
+            if (response.Return3Year != null)
             {
                 Return3Year.NotApplicable = false;
-                Return3Year.Value = (decimal)responce.Return3Year;
+                Return3Year.Value = (decimal)response.Return3Year;
             }
             else
             {
@@ -60,10 +60,10 @@ namespace PortfolioManager.UI.ViewModels
                 Return3Year.Value = 0.00m;
             }
 
-            if (responce.Return5Year != null)
+            if (response.Return5Year != null)
             {
                 Return5Year.NotApplicable = false;
-                Return5Year.Value = (decimal)responce.Return5Year;
+                Return5Year.Value = (decimal)response.Return5Year;
             }
             else
             {
@@ -71,10 +71,10 @@ namespace PortfolioManager.UI.ViewModels
                 Return5Year.Value = 0.00m;
             }
 
-            if (responce.ReturnAll != null)
+            if (response.ReturnAll != null)
             {
                 ReturnAll.NotApplicable = false;
-                ReturnAll.Value = (decimal)responce.ReturnAll;
+                ReturnAll.Value = (decimal)response.ReturnAll;
             }
             else
             {
@@ -83,11 +83,11 @@ namespace PortfolioManager.UI.ViewModels
             }
 
             Holdings.Clear();
-            foreach (var holding in responce.Holdings.OrderBy(x => x.Stock.Name))
+            foreach (var holding in response.Holdings.OrderBy(x => x.Stock.Name))
                 Holdings.Add(new HoldingItemViewModel(holding));
 
 
-            Holdings.Add(new HoldingItemViewModel("Cash Account", 0, responce.CashBalance, responce.CashBalance));
+            Holdings.Add(new HoldingItemViewModel("Cash Account", 0, response.CashBalance, response.CashBalance));
 
             OnPropertyChanged("");
         }

@@ -41,12 +41,12 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Taxable Income Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            var responce = await _Parameter.RestClient.Portfolio.GetIncome(new DateRange(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear)));
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetIncome(new DateRange(DateUtils.StartOfFinancialYear(_Parameter.FinancialYear), DateUtils.EndOfFinancialYear(_Parameter.FinancialYear)));
+            if (response == null)
                 return;
 
             Income.Clear();
-            foreach (var incomeItem in responce.Income.OrderBy(x => x.Stock.Name))
+            foreach (var incomeItem in response.Income.OrderBy(x => x.Stock.Name))
                 Income.Add(new IncomeItemViewModel(incomeItem));
 
             OnPropertyChanged("");

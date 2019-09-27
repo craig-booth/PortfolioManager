@@ -40,16 +40,16 @@ namespace PortfolioManager.UI.ViewModels
         {
             Heading = string.Format("Detailed CGT Report for {0}/{1} Financial Year", _Parameter.FinancialYear - 1, _Parameter.FinancialYear);
 
-            DetailedUnrealisedGainsResponse responce;
+            DetailedUnrealisedGainsResponse response;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestClient.Portfolio.GetDetailedCapitalGains(_Parameter.Date);
+                response = await _Parameter.RestClient.Portfolio.GetDetailedCapitalGains(_Parameter.Date);
             else
-                responce = await _Parameter.RestClient.Holdings.GetDetailedCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
-            if (responce == null)
+                response = await _Parameter.RestClient.Holdings.GetDetailedCapitalGains(_Parameter.Stock.Id, _Parameter.Date);
+            if (response == null)
                 return;
 
             Parcels.Clear();
-            foreach (var item in responce.UnrealisedGains.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate))
+            foreach (var item in response.UnrealisedGains.OrderBy(x => x.Stock.Name).ThenBy(x => x.AquisitionDate))
                  Parcels.Add(new ParcelCostBaseViewItem(item));
  
             OnPropertyChanged("");

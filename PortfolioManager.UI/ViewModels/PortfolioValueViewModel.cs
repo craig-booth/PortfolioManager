@@ -45,17 +45,17 @@ namespace PortfolioManager.UI.ViewModels
             else if (timeSpan.Days > 365)
                 valueFrequency = ValueFrequency.Weekly;
 
-            PortfolioValueResponse responce;
+            PortfolioValueResponse response;
             if (_Parameter.Stock.Id == Guid.Empty)
-                responce = await _Parameter.RestClient.Portfolio.GetValue(_Parameter.DateRange, valueFrequency);
+                response = await _Parameter.RestClient.Portfolio.GetValue(_Parameter.DateRange, valueFrequency);
             else
-                responce = await _Parameter.RestClient.Holdings.GetValue(_Parameter.Stock.Id, _Parameter.DateRange, valueFrequency);
-            if (responce == null)
+                response = await _Parameter.RestClient.Holdings.GetValue(_Parameter.Stock.Id, _Parameter.DateRange, valueFrequency);
+            if (response == null)
                 return;
 
             // create chart data
             var values = new List<double>();
-            foreach (var value in responce.Values)
+            foreach (var value in response.Values)
             {
                 DateValues.Add(value.Date.ToShortDateString());
                 values.Add((double)value.Amount);

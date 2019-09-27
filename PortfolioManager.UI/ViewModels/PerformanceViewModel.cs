@@ -65,28 +65,28 @@ namespace PortfolioManager.UI.ViewModels
 
         public async override void RefreshView()
         {
-            var responce = await _Parameter.RestClient.Portfolio.GetPerformance(_Parameter.DateRange);
-            if (responce == null)
+            var response = await _Parameter.RestClient.Portfolio.GetPerformance(_Parameter.DateRange);
+            if (response == null)
                 return;
 
-            OpeningBalance = responce.OpeningBalance + responce.OpeningCashBalance;
-            Deposits = responce.Deposits;
-            Withdrawls = responce.Withdrawls;
-            Interest = responce.Interest;
-            Dividends = responce.Dividends;
-            Fees = responce.Fees;
-            ChangeInMarketValue = responce.ChangeInMarketValue;
-            OutstandingDRPAmount = responce.OutstandingDRPAmount;
+            OpeningBalance = response.OpeningBalance + response.OpeningCashBalance;
+            Deposits = response.Deposits;
+            Withdrawls = response.Withdrawls;
+            Interest = response.Interest;
+            Dividends = response.Dividends;
+            Fees = response.Fees;
+            ChangeInMarketValue = response.ChangeInMarketValue;
+            OutstandingDRPAmount = response.OutstandingDRPAmount;
 
             StockPerformance.Clear();
-            foreach (var holdingPerformance in responce.HoldingPerformance.OrderBy(x => x.Stock.Name))
+            foreach (var holdingPerformance in response.HoldingPerformance.OrderBy(x => x.Stock.Name))
                 StockPerformance.Add(new StockPerformanceItem(holdingPerformance));
 
             StockPerformance.Add(new StockPerformanceItem("Cash")
             {
-                OpeningBalance = responce.OpeningCashBalance,
+                OpeningBalance = response.OpeningCashBalance,
                 Dividends = Interest,
-                ClosingBalance = responce.ClosingCashBalance
+                ClosingBalance = response.ClosingCashBalance
             });
 
             OnPropertyChanged(""); 
