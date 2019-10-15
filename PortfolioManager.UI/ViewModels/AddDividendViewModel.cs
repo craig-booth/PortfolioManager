@@ -134,7 +134,11 @@ namespace PortfolioManager.UI.ViewModels
 
         public string Heading => "Add Dividend";
 
-        public PageViewOptions Options => throw new NotImplementedException();
+        public PageViewOptions Options => new PageViewOptions()
+        {
+            AllowStockSelection = false,
+            DateSelection = DateSelectionType.None
+        };
 
         private async void SaveTransaction()
         {         
