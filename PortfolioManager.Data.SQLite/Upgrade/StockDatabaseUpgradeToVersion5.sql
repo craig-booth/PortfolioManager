@@ -1,4 +1,0 @@
-﻿
-
-ALTER TABLE [Stocks]
-	ADD COLUMN [Category] INTEGER NOT NULL DEFAULT 0;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Common", "PortfolioManager.Common\PortfolioManager.Common.csproj", "{C754D5DE-F2D5-4E1D-999A-B2DEB7DDCE04}"
 EndProject
@@ -17,14 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.EventStore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.RestApi", "PortfolioManager.RestApi\PortfolioManager.RestApi.csproj", "{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.Utils", "PortfolioManager.Utils\PortfolioManager.Utils.csproj", "{2CBDF4A9-FADA-4F17-9604-4077FA36B164}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioManager.DataServices", "PortfolioManager.DataServices\PortfolioManager.DataServices.csproj", "{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}"
 EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -58,10 +53,6 @@ Global
 		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAAC69BF-4B0B-4D23-AD83-6C53D6676740}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CBDF4A9-FADA-4F17-9604-4077FA36B164}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CDE7EA7-E555-432F-BD29-2DC7419AEB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,6 +63,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C00E4DC8-4E98-4679-A500-84D42418A541}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
