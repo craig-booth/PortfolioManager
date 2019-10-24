@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using PortfolioManager.Common;
+using Booth.Common;
 
 namespace PortfolioManager.RestApi.Stocks
 {

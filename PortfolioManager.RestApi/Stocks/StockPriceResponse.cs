@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using PortfolioManager.Common;
-
 namespace PortfolioManager.RestApi.Stocks
 {
     public class StockPriceResponse

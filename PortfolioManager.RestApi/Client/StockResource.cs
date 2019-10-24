@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Stocks;
 
 namespace PortfolioManager.RestApi.Client

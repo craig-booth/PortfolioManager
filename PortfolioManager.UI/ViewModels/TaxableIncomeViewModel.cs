@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.ObjectModel;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
-
 
 namespace PortfolioManager.UI.ViewModels
 {

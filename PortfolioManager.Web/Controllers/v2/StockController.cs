@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
 using PortfolioManager.Web.Services;
+using PortfolioManager.Web.Mappers;
 
 
 namespace PortfolioManager.Web.Controllers.v2
@@ -93,14 +94,14 @@ namespace PortfolioManager.Web.Controllers.v2
         {
             if (command.ChildSecurities.Count == 0)
             {
-                _StockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category);
+                _StockService.ListStock(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Trust, command.Category.ToDomain());
             }
             else
             {
                 if (command.Trust)
                     return BadRequest("A Stapled security cannot be a trust");
 
-                _StockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category, command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
+                _StockService.ListStapledSecurity(command.Id, command.AsxCode, command.Name, command.ListingDate, command.Category.ToDomain(), command.ChildSecurities.Select(x => new StapledSecurityChild(x.ASXCode, x.Name, x.Trust)));
             }
 
             return Ok();
@@ -119,7 +120,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            _StockService.ChangeStock(id, command.ChangeDate, command.AsxCode, command.Name, command.Category);
+            _StockService.ChangeStock(id, command.ChangeDate, command.AsxCode, command.Name, command.Category.ToDomain());
 
             return Ok();
         }
@@ -175,7 +176,7 @@ namespace PortfolioManager.Web.Controllers.v2
             if (id != command.Id)
                 return BadRequest("Id in command doesn't match id on URL");
 
-            _StockService.ChangeDividendRules(id, command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod);
+            _StockService.ChangeDividendRules(id, command.ChangeDate, command.CompanyTaxRate, command.DividendRoundingRule, command.DRPActive, command.DRPMethod.ToDomain());
 
             return Ok();
         }

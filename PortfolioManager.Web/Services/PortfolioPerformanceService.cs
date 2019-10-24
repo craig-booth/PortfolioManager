@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Utils;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Transactions;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Utilities;
@@ -128,10 +129,10 @@ namespace PortfolioManager.Web.Services
 
             var cashTransactions = portfolio.CashAccount.Transactions.InDateRange(dateRangeExcludingFirstDay);
             response.OpeningCashBalance = portfolio.CashAccount.Balance(dateRange.FromDate);
-            response.Deposits = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Deposit).Sum(x => x.Amount);
-            response.Withdrawls = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Withdrawl).Sum(x => x.Amount);
-            response.Interest = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Interest).Sum(x => x.Amount);
-            response.Fees = cashTransactions.Where(x => x.Type == BankAccountTransactionType.Fee).Sum(x => x.Amount);
+            response.Deposits = cashTransactions.Where(x => x.Type == Domain.BankAccountTransactionType.Deposit).Sum(x => x.Amount);
+            response.Withdrawls = cashTransactions.Where(x => x.Type == Domain.BankAccountTransactionType.Withdrawl).Sum(x => x.Amount);
+            response.Interest = cashTransactions.Where(x => x.Type == Domain.BankAccountTransactionType.Interest).Sum(x => x.Amount);
+            response.Fees = cashTransactions.Where(x => x.Type == Domain.BankAccountTransactionType.Fee).Sum(x => x.Amount);
             response.ClosingCashBalance = portfolio.CashAccount.Balance(dateRange.ToDate);
 
             response.OpeningBalance = openingHoldings.Sum(x => x.Value(dateRange.FromDate));

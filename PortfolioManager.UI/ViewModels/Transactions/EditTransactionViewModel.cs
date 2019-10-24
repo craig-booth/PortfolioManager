@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 using CBControls;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.UI.Utilities;
 

@@ -8,8 +8,8 @@ using System.Xml.Linq;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.TradingCalanders;
 
 namespace PortfolioManager.DataServices

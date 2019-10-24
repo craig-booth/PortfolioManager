@@ -1,6 +1,6 @@
 ﻿using System;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.UI.ViewModels;
 using PortfolioManager.RestApi.Client;
 

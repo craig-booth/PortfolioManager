@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.EventStore;
 using PortfolioManager.Domain.Stocks.Events;
 using PortfolioManager.Domain.CorporateActions;

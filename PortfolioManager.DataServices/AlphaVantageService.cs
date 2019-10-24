@@ -4,12 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Globalization;
+using Booth.Common;
 
 using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-using PortfolioManager.Common;
 
 namespace PortfolioManager.DataServices
 {

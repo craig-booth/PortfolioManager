@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Booth.Common;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Booth.Common;
 
-
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Services;
 

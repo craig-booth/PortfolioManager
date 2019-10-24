@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Booth.Common, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Booth.Common.1.0.1\lib\netstandard2.0\Booth.Common.dll</HintPath>
+    </Reference>
     <Reference Include="CBControls">
       <HintPath>.\CBControls.dll</HintPath>
     </Reference>
@@ -283,10 +286,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortfolioManager.Common\PortfolioManager.Common.csproj">
-      <Project>{c754d5de-f2d5-4e1d-999a-b2deb7ddce04}</Project>
-      <Name>PortfolioManager.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PortfolioManager.RestApi\PortfolioManager.RestApi.csproj">
       <Project>{aaac69bf-4b0b-4d23-ad83-6c53d6676740}</Project>
       <Name>PortfolioManager.RestApi</Name>

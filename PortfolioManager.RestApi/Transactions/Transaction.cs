@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Portfolios;
 
 namespace PortfolioManager.RestApi.Transactions

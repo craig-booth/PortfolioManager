@@ -5,7 +5,6 @@ using System.Linq;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.ViewModels;

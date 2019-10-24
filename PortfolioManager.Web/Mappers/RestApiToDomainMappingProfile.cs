@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using AutoMapper;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Transactions;
 
 namespace PortfolioManager.Web.Mappers

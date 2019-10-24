@@ -5,10 +5,9 @@ using System.IO;
 using System.Windows;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
-
 using PortfolioManager.UI.Utilities;
 using PortfolioManager.UI.ViewModels.Transactions;
 

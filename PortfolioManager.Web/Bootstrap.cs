@@ -15,9 +15,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
 using AutoMapper;
-
 using PortfolioManager.Common.Scheduler;
 using PortfolioManager.DataServices;
 using PortfolioManager.Domain;
@@ -45,7 +43,7 @@ namespace PortfolioManager.Web
         public static IServiceCollection AddPortfolioManagerService(this IServiceCollection services, PortfolioManagerSettings settings)
         {
             // Ensure that PortfolioManager.Domain assembly is loaded
-            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, Common.AssetCategory.AustralianStocks, false);
+            var xx = new StockListedEvent(Guid.Empty, 0, "", "", DateTime.Today, AssetCategory.AustralianStocks, false);
 
 
             services.AddSingleton<IStockResolver, StockResolver>();

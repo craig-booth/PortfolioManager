@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.CorporateActions;
 using PortfolioManager.RestApi.Portfolios;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Transactions;

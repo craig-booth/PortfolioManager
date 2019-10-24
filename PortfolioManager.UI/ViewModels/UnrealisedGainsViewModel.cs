@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.ObjectModel;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 

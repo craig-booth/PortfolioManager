@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.Domain.Utils;
 

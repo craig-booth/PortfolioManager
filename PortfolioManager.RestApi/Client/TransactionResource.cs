@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Transactions;
 
 namespace PortfolioManager.RestApi.Client

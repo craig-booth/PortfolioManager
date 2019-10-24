@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using AutoMapper;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Transactions;
 
 namespace PortfolioManager.Web.Mappers
@@ -25,7 +24,7 @@ namespace PortfolioManager.Web.Mappers
 
             CreateMap<Domain.Transactions.Aquisition, RestApi.Transactions.Aquisition>();
             CreateMap<Domain.Transactions.Disposal, RestApi.Transactions.Disposal>()
-                .ForMember(x => x.CGTMethod, x => x.MapFrom(y => y.CGTMethod.ToRestName()));
+                .ForMember(x => x.CGTMethod, x => x.MapFrom(y => y.CGTMethod.ToRestApi().ToRestName()));
             CreateMap<Domain.Transactions.CashTransaction, RestApi.Transactions.CashTransaction>()
                 .ForMember(x => x.TransactionDate, x => x.MapFrom(y => y.Date));
             CreateMap<Domain.Transactions.OpeningBalance, RestApi.Transactions.OpeningBalance>();
@@ -94,7 +93,7 @@ namespace PortfolioManager.Web.Mappers
                 Id = source.Id,
                 AsxCode = properties.ASXCode,
                 Name = properties.Name,
-                Category = properties.Category
+                Category = properties.Category.ToRestApi()
             };
         }
 

@@ -1,9 +1,8 @@
 ﻿using System;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Transactions;
-using PortfolioManager.UI.Utilities;
 
 namespace PortfolioManager.UI.ViewModels.Transactions
 {

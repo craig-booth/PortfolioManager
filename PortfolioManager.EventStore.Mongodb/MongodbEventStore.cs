@@ -2,8 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-
-using PortfolioManager.Common;
+using Booth.Common;
 
 namespace PortfolioManager.EventStore.Mongodb
 {

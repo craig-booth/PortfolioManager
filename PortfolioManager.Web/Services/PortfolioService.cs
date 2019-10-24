@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using AutoMapper;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Web.Utilities;

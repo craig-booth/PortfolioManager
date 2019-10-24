@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using PortfolioManager.Common;
+using Booth.Common;
 
 namespace PortfolioManager.Domain
 {

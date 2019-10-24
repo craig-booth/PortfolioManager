@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Stocks;
 using PortfolioManager.RestApi.Stocks;
 
@@ -21,7 +21,7 @@ namespace PortfolioManager.Web.Mappers
                 Id = stock.Id,
                 ASXCode = properties.ASXCode,
                 Name = properties.Name,
-                Category = properties.Category,
+                Category = properties.Category.ToRestApi(),
                 Trust = stock.Trust,
                 ListingDate = stock.EffectivePeriod.FromDate,
                 DelistedDate = stock.EffectivePeriod.ToDate,
@@ -43,7 +43,7 @@ namespace PortfolioManager.Web.Mappers
                 response.CompanyTaxRate = drp.CompanyTaxRate;
                 response.DividendRoundingRule = drp.DividendRoundingRule;
                 response.DRPActive = drp.DRPActive;
-                response.DRPMethod = drp.DRPMethod;
+                response.DRPMethod = drp.DRPMethod.ToRestApi();
             }
 
             return response;
@@ -70,7 +70,7 @@ namespace PortfolioManager.Web.Mappers
                         ToDate = x.EffectivePeriod.ToDate,
                         ASXCode = x.Properties.ASXCode,
                         Name = x.Properties.Name,
-                        Category = x.Properties.Category
+                        Category = x.Properties.Category.ToRestApi()
                     })
             );
 
@@ -83,7 +83,7 @@ namespace PortfolioManager.Web.Mappers
                         CompanyTaxRate = x.Properties.CompanyTaxRate,
                         DividendRoundingRule = x.Properties.DividendRoundingRule,
                         DRPActive = x.Properties.DRPActive,
-                        DRPMethod = x.Properties.DRPMethod
+                        DRPMethod = x.Properties.DRPMethod.ToRestApi()
                     })
             );
 

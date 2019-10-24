@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.UI.Utilities;
 

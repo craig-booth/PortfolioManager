@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-using PortfolioManager.Common;
-
 namespace PortfolioManager.RestApi.Portfolios
 {
     public class CgtLiabilityResponse

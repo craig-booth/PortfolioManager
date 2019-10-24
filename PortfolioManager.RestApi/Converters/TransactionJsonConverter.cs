@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using PortfolioManager.Common;
 using PortfolioManager.RestApi.Transactions;
 
 namespace PortfolioManager.RestApi.Converters

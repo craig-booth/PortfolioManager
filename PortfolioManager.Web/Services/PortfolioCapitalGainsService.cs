@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Utils;
 using PortfolioManager.RestApi.Portfolios;
@@ -78,7 +77,7 @@ namespace PortfolioManager.Web.Services
                     var value = properties.Units * holding.Stock.GetPrice(date);
                     var capitalGain = value - properties.CostBase;
                     var discountMethod = CgtCalculator.CgtMethodForParcel(parcel.AquisitionDate, date);
-                    var discoutedGain = (discountMethod == CGTMethod.Discount) ? CgtCalculator.CgtDiscount(capitalGain) : capitalGain;
+                    var discoutedGain = (discountMethod == Domain.CGTMethod.Discount) ? CgtCalculator.CgtDiscount(capitalGain) : capitalGain;
 
                     var unrealisedGain = new SimpleUnrealisedGainsItem()
                     {
@@ -89,7 +88,7 @@ namespace PortfolioManager.Web.Services
                         MarketValue = value,
                         CapitalGain = capitalGain,
                         DiscoutedGain = discoutedGain,
-                        DiscountMethod = discountMethod
+                        DiscountMethod = discountMethod.ToRestApi()
                     };
 
                     response.UnrealisedGains.Add(unrealisedGain);
@@ -112,7 +111,7 @@ namespace PortfolioManager.Web.Services
                     var value = properties.Units * holding.Stock.GetPrice(date);
                     var capitalGain = value - properties.CostBase;
                     var discountMethod = CgtCalculator.CgtMethodForParcel(parcel.AquisitionDate, date);
-                    var discoutedGain = (discountMethod == CGTMethod.Discount) ? CgtCalculator.CgtDiscount(capitalGain) : capitalGain;
+                    var discoutedGain = (discountMethod == Domain.CGTMethod.Discount) ? CgtCalculator.CgtDiscount(capitalGain) : capitalGain;
 
                     var unrealisedGain = new DetailedUnrealisedGainsItem()
                     {
@@ -123,7 +122,7 @@ namespace PortfolioManager.Web.Services
                         MarketValue = value,
                         CapitalGain = capitalGain,
                         DiscoutedGain = discoutedGain,
-                        DiscountMethod = discountMethod
+                        DiscountMethod = discountMethod.ToRestApi()
                     };
 
                     int units = 0;

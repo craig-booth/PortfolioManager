@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using PortfolioManager.Common;
+using PortfolioManager.RestApi;
 using PortfolioManager.RestApi.Client;
 using PortfolioManager.RestApi.Transactions;
 using PortfolioManager.UI.ViewModels;

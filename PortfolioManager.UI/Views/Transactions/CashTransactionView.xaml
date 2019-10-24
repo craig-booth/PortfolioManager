@@ -3,13 +3,13 @@
                     xmlns:views="clr-namespace:PortfolioManager.UI.Views"
                     xmlns:viewmodels="clr-namespace:PortfolioManager.UI.ViewModels.Transactions"
                     xmlns:controls="clr-namespace:PortfolioManager.UI.Controls"                    
-                    xmlns:common="clr-namespace:PortfolioManager.Common;assembly=PortfolioManager.Common">
+                    xmlns:enums="clr-namespace:PortfolioManager.RestApi;assembly=PortfolioManager.RestApi">
 
     <DataTemplate DataType="{x:Type viewmodels:CashTransactionViewModel}">
 
         <DataTemplate.Resources>
-            
-            <ObjectDataProvider x:Key="CashTransactionTypes" MethodName="GetValues" ObjectType="{x:Type common:BankAccountTransactionType}">
+
+            <ObjectDataProvider x:Key="CashTransactionTypes" MethodName="GetValues" ObjectType="{x:Type enums:BankAccountTransactionType}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="common:BankAccountTransactionType"/>
                 </ObjectDataProvider.MethodParameters>

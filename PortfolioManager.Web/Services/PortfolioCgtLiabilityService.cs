@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Booth.Common;
 
-using PortfolioManager.Common;
-using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.RestApi.Portfolios;
 using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Utilities;
@@ -42,7 +41,7 @@ namespace PortfolioManager.Web.Services
                     CostBase = cgtEvent.CostBase,
                     AmountReceived = cgtEvent.AmountReceived,
                     CapitalGain = cgtEvent.CapitalGain,
-                    Method = cgtEvent.CgtMethod
+                    Method = cgtEvent.CgtMethod.ToRestApi()
                 };
 
                 response.Events.Add(item);
@@ -50,7 +49,7 @@ namespace PortfolioManager.Web.Services
                 // Apportion capital gains
                 if (cgtEvent.CapitalGain < 0)
                     response.CurrentYearCapitalLossesTotal += -cgtEvent.CapitalGain;
-                else if (cgtEvent.CgtMethod == CGTMethod.Discount)
+                else if (cgtEvent.CgtMethod == Domain.CGTMethod.Discount)
                     response.CurrentYearCapitalGainsDiscounted += cgtEvent.CapitalGain;
                 else
                     response.CurrentYearCapitalGainsOther += cgtEvent.CapitalGain;

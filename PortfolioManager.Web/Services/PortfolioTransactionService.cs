@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using AutoMapper;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.Transactions;
-
+using PortfolioManager.Web.Mappers;
 using PortfolioManager.Web.Utilities;
 
 namespace PortfolioManager.Web.Services
@@ -103,7 +102,7 @@ namespace PortfolioManager.Web.Services
         {
             var portfolio = _PortfolioCache.Get(portfolioId);
 
-            portfolio.MakeCashTransaction(cashTransaction.TransactionDate, PortfolioManager.RestApi.Transactions.RestApiNameMapping.ToBankAccountTransactionType(cashTransaction.CashTransactionType), cashTransaction.Amount, cashTransaction.Comment, cashTransaction.Id);
+            portfolio.MakeCashTransaction(cashTransaction.TransactionDate, RestApi.Transactions.RestApiNameMapping.ToBankAccountTransactionType(cashTransaction.CashTransactionType).ToDomain(), cashTransaction.Amount, cashTransaction.Comment, cashTransaction.Id);
 
             _PortfolioRepository.Update(portfolio);
         }
@@ -118,7 +117,7 @@ namespace PortfolioManager.Web.Services
             var portfolio = _PortfolioCache.Get(portfolioId);
 
             var stock = _StockQuery.Get(disposal.Stock);
-            portfolio.DisposeOfShares(disposal.TransactionDate, stock, disposal.Units, disposal.AveragePrice, disposal.TransactionCosts, RestApi.Transactions.RestApiNameMapping.ToCGTCalculationMethod(disposal.CGTMethod), disposal.CreateCashTransaction, disposal.Comment, disposal.Id);
+            portfolio.DisposeOfShares(disposal.TransactionDate, stock, disposal.Units, disposal.AveragePrice, disposal.TransactionCosts, RestApi.Transactions.RestApiNameMapping.ToCGTCalculationMethod(disposal.CGTMethod).ToDomain(), disposal.CreateCashTransaction, disposal.Comment, disposal.Id);
 
             _PortfolioRepository.Update(portfolio);
         }

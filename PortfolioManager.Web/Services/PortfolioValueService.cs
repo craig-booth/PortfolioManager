@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Booth.Common;
 
-using PortfolioManager.Common;
 using PortfolioManager.Domain.Portfolios;
 using PortfolioManager.Domain.TradingCalanders;
 using PortfolioManager.RestApi.Portfolios;
